@@ -1,0 +1,7 @@
+.env.json
+*.iml
+node_modules
+ts-build
+dist
+.idea/
+node_modules/
