@@ -16,18 +16,23 @@ module.exports = {
     publicPath: '/',
     filename: 'app.js',
   },
+  devtool: 'source-map',
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
     // Fix webpack's default behavior to not load packages with jsnext:main module
     // https://github.com/Microsoft/TypeScript/issues/11677 
-    mainFields: ['main']
+    mainFields: ['main'],
+    modules: [
+      sourcePath,
+      path.join(__dirname, 'node_modules')
+    ]
   },
   module: {
     rules: [
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
-        loaders: ['react-hot-loader', 'babel-loader', 'awesome-typescript-loader']
+        loaders: ['react-hot-loader', 'awesome-typescript-loader']
       },
       {
         test: /\.jsx?$/,
@@ -47,7 +52,8 @@ module.exports = {
   ],
   devServer: {
     contentBase: sourcePath,
-    hot: true,
+    historyApiFallback: true,
+    port: 3000,
     stats: {
       warnings: false
     },

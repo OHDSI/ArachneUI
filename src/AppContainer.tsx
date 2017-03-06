@@ -1,20 +1,21 @@
-import * as React from 'react';
+import React = require('react');
+import { Component, Props } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-interface AppProps { // extends
-  someProp: number;
-  // children 
-};
+interface AppProps extends Props<App> {};
 
 interface AppState {
   /* empty */
 }
 
-class App extends React.Component<AppProps, AppState>{
+class App extends Component<AppProps, AppState>{
   render() {
     return (
-      <div>12345</div>
+      <div>
+        <div>Navbar here!</div>
+        {this.props.children}
+      </div>
     );
   }
 }
