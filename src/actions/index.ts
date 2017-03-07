@@ -2,6 +2,7 @@ import { Action } from 'redux';
 import modules from './modules';
 
 interface IAppAction<T> extends Action {
+  type: string;
 	payload: T;
 }
 

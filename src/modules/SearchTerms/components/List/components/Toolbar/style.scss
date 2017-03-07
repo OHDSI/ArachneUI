@@ -1,0 +1,44 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+
+  &search-toolbar {
+    background: $black;
+    margin: 0;
+    padding: 1rem 0;
+    position: relative;
+    width: 100%;
+
+  	&__title-wrapper {
+  		@include title();
+	    align-items: center;
+  		color: $white;
+  		display: flex;
+  	}
+
+  	&__title {
+  		width: 100%;
+  		margin-left: 1.5rem;
+  	}
+
+  	&__search-string {
+      margin: 0 0.5rem 0 -0.5rem;
+      padding-right: 1.5rem;
+  	}
+
+    &__search-button {
+      @include material-icon();
+      color: $grey-dark-light;
+      font-size: 3rem;
+      position: absolute;
+      margin-top: 1px;
+      right: 3rem;
+      padding: 0;
+    }
+
+  	&__input {
+  		@include input();
+      padding: 0 1.5rem !important;
+  	}
+  }
+}

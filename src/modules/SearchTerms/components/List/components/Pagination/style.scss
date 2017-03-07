@@ -1,0 +1,22 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+  &search-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    & .ac-pagination__page--active {
+      background: $blue-light;
+    }
+    
+    &__page-size-select {
+      width: 8rem;
+      margin: 0 0.5rem;
+
+      & .ac-select-control__arrow-wrapper {
+        background: $purple-darker;
+      }
+    }
+  }
+}

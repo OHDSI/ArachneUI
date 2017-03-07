@@ -1,0 +1,30 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+  &search-results {
+  	margin: 0 -0.5rem;
+
+		&__management-panel {
+  		display: flex;
+  		padding: 1rem 1.5rem;
+  	}
+
+  	&__download-button {
+  		margin-right: auto;
+  		background: $purple-darker;
+  		color: $white;
+  	}
+
+    &__th-th {
+      width: 10%;
+    }
+
+    &__th-wide-th {
+      width: 25%;
+    }
+
+    &__th-class-th {
+      width: 15%;
+    }
+  }
+}

@@ -1,1 +1,5 @@
-export default {};
+import termList from './termList';
+
+export default {
+  termList,
+};

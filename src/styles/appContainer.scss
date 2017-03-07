@@ -1,0 +1,21 @@
+@import 'arachne-components/lib/styles/app.scss';
+
+$namespace: 'at-';
+
+.#{$namespace} {
+  &root {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+
+    &__main {
+      display: flex;
+      min-height: calc(100% - #{$header-height});
+      flex-grow: 1;
+    }
+
+    & .ac-header {
+      background: $green;
+    }
+  }
+}

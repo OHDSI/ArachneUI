@@ -40,9 +40,13 @@
     "@types/redux-form": "^6.3.2",
     "@types/redux-logger": "^2.6.34",
     "classnames": "^2.2.5",
+    "copy-webpack-plugin": "^4.0.1",
     "core-js": "^2.4.1",
+    "css-loader": "^0.26.2",
     "es6-promise": "^4.0.5",
     "lodash": "^4.17.4",
+    "node-sass": "^4.5.0",
+    "numeral": "^2.0.4",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.3",
@@ -52,6 +56,9 @@
     "redux-form": "^6.5.0",
     "redux-logger": "^2.8.2",
     "redux-thunk": "^2.2.0",
+    "reselect": "^2.5.4",
+    "sass-loader": "^6.0.2",
+    "style-loader": "^0.13.2",
     "whatwg-fetch": "^2.0.2"
   }
 }
