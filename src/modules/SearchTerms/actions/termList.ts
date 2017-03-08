@@ -1,3 +1,6 @@
+import API from 'services/Api';
+import services from '../apiServices';
+
 import { actionTypes } from 'modules/SearchTerms/const';
 import { IAppAction } from 'actions';
 
@@ -14,6 +17,11 @@ function changePageSize(pageSize: number) {
   return (dispatch: Function) => dispatch(pageSizeUpdated(pageSize));
 }
 
+function load() {
+	return services.posts.find();
+}
+
 export default {
   changePageSize,
+  load,
 };

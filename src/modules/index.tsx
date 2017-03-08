@@ -5,7 +5,7 @@ import SearchTerms from './SearchTerms';
 const modules: IModule[] = [
   {
     namespace: 'searchTerms',
-    rootRoute: SearchTerms.rootRoute('search-terms'),
+    rootRoute: () => SearchTerms.rootRoute('search-terms'),
     actions: SearchTerms.actions,
     reducer: SearchTerms.reducer,
   } as IModule,

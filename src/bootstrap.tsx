@@ -6,6 +6,7 @@ import { syncHistoryWithStore, routerReducer as routing } from 'react-router-red
 
 import configureStore from 'stores/configureStore';
 import { IStoreAsync, injectReducer } from 'stores/configureStore';
+import { configure as configureApi } from 'services/Api';
 import IModule from './modules/IModule';
 import AppContainer from './AppContainer';
 import { injectAction } from 'actions';
@@ -44,18 +45,25 @@ function setActiveModule(activeModulePath: string) {
 
 function initModule(module: IModule): RouteConfig {
 	// Inject module's action creators
-	injectAction(module.namespace, module.actions);
+	injectAction(module.namespace, module.actions());
 	// Inject module's reducer
-	injectReducer(globalStore, module.namespace, module.reducer);
+	injectReducer(globalStore, module.namespace, module.reducer());
+	// TODO: Inject reducer together with reducers
+	//
 	// Fire action when module is activated
-	module.rootRoute.onEnter = (nextState, replace) => setActiveModule(module.rootRoute.path);
+	const moduleRoute = module.rootRoute();
+	moduleRoute.onEnter = (nextState, replace) => setActiveModule(moduleRoute.path);
 	// Register module in store
 	registerModule({
-		path: module.rootRoute.path,
+		path: moduleRoute.path,
 		navbarElement: module.navbarElement,
 	});
 	// Return module's Route
-	return module.rootRoute;
+	return moduleRoute;
+}
+
+function initializeApi() {
+	configureApi();
 }
 
 function buildStore() {
@@ -63,6 +71,8 @@ function buildStore() {
 }
 
 function bootstrap() {
+	initializeApi();
+
 	const store = globalStore = buildStore();
 	const history = syncHistoryWithStore(browserHistory, store);
 	const modulesRoutes: PlainRoute[] = modules.map(initModule);

@@ -39,3 +39,6 @@ function SearchTermsList(props: ISearchTermProps) {
 }
 
 export default SearchTermsList;
+export {
+  ISearchTermProps,
+};

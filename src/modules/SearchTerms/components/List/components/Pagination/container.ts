@@ -23,10 +23,10 @@ function mapStateToProps(state: Object, ownProps: IPaginationOwnProps): IPaginat
   const pageSize = get(state, 'searchTerms.termList.data.pageSize', resultsPageSize);
   const pages = get(state, 'searchTerms.termList.data.totalPages', 18);
   const currentPage = parseInt(get(state, 'routing.locationBeforeTransitions.query.page', '1'), 0);
-  const path = get(state, 'routing.locationBeforeTransitions', {
+  const path = get(state, 'routing.locationBeforeTransitions') || {
     pathname: paths.termsList(),
     search: '',
-  });
+  };
   const totalItems = 14691;
 
   // select options

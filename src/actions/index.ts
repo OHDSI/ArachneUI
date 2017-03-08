@@ -6,8 +6,10 @@ interface IAppAction<T> extends Action {
 	payload: T;
 }
 
+type IAppActionCreator = Function;
+
 interface IAppActionCreatorTree {
-	[key: string]: Function | IAppActionCreatorTree;
+	[key: string]: IAppActionCreator | IAppActionCreatorTree;
 };
 
 const rootActions: IAppActionCreatorTree = {

@@ -18,7 +18,7 @@
     "@types/react-router-redux": "^4.0.39",
     "@types/webpack": "^2.2.4",
     "@types/webpack-env": "^1.13.0",
-    "arachne-components": "git+https://Odysseus:A0Ol60zeF4gdnnNSlotOqsr0Eytogz3A@bitbucket.org/Odysseus/arachnefrontcomponents.git#59785151df5d268a9e9ee34eecc125c110e9f33e",
+    "arachne-components": "git+https://Odysseus:A0Ol60zeF4gdnnNSlotOqsr0Eytogz3A@bitbucket.org/Odysseus/arachnefrontcomponents.git#5978515",
     "awesome-typescript-loader": "^3.0.8",
     "babel-core": "^6.23.1",
     "babel-loader": "^6.3.2",
@@ -44,6 +44,8 @@
     "core-js": "^2.4.1",
     "css-loader": "^0.26.2",
     "es6-promise": "^4.0.5",
+    "feathers-client": "^1.9.0",
+    "feathers-reduxify-services": "^0.3.0",
     "lodash": "^4.17.4",
     "node-sass": "^4.5.0",
     "numeral": "^2.0.4",
@@ -55,10 +57,11 @@
     "redux": "^3.6.0",
     "redux-form": "^6.5.0",
     "redux-logger": "^2.8.2",
+    "redux-promise-middleware": "^4.2.0",
     "redux-thunk": "^2.2.0",
     "reselect": "^2.5.4",
     "sass-loader": "^6.0.2",
     "style-loader": "^0.13.2",
-    "whatwg-fetch": "^2.0.2"
+    "superagent": "^3.5.0"
   }
 }

@@ -75,6 +75,9 @@ module.exports = {
     stats: {
       warnings: false
     },
+    proxy: {
+      '/api': 'http://localhost:8080',
+    }
   },
   plugins: [
     new CopyWebpackPlugin([
