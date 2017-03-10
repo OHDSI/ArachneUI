@@ -26,13 +26,17 @@
       padding-right: 1.5rem;
   	}
 
+    &__search-button-wrapper {
+      margin-top: 11px;
+      position: absolute;
+      right: 3rem;
+      top: 0;
+    }
+
     &__search-button {
       @include material-icon();
       color: $grey-dark-light;
       font-size: 3rem;
-      position: absolute;
-      margin-top: 1px;
-      right: 3rem;
       padding: 0;
     }
 
@@ -40,5 +44,9 @@
   		@include input();
       padding: 0 1.5rem !important;
   	}
+
+    & .ac-form__group {
+      margin-bottom: 0;
+    }
   }
 }

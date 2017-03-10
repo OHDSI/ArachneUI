@@ -1,16 +1,21 @@
+import { ReactElement } from 'react';
 import { PlainRoute } from 'react-router';
 import { Reducer } from 'redux';
 import { IAppActionCreatorTree } from 'actions';
+
+type NavItem = {
+	ico?: string;
+  name: string;
+  path?: string;
+}
 
 interface IModule {
   namespace: string; // Actions and reducers of module are put inside this namespace
   rootRoute: () => PlainRoute;
   actions: () => IAppActionCreatorTree,
   reducer: () => Reducer<any>;
-  navbarElement?: {
-    ico: string;
-    name: string;
-  };
+  navbarElement?: Array<ReactElement<any>>;
 }
 
 export default IModule;
+export { NavItem };

@@ -10,9 +10,16 @@
   	}
 
   	&__download-button {
-  		margin-right: auto;
-  		background: $purple-darker;
-  		color: $white;
+      background: $purple-darker;
+      color: $white;
+      margin-right: auto;
+      align-items: center;
+      display: flex;
+
+      &--disabled {
+        background: $grey-medium;
+        pointer-events: none;
+      }
   	}
 
     &__th-th {

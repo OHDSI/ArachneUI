@@ -1,12 +1,10 @@
+import { ReactElement } from 'react';
 import actionTypes from 'const/actionTypes';
 import { IAppAction } from './index';
 
 interface IModuleMetadata {
   path: string;
-  navbarElement: {
-    ico: string;
-    name: string;
-  };
+  navbarElement: Array<ReactElement<any>>;
 };
 
 function register(module: IModuleMetadata): IAppAction<IModuleMetadata> {

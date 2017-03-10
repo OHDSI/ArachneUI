@@ -10,7 +10,7 @@ let API = feathers();
 
 function configure() {
 	API = API
-	  .configure(rest('https://jsonplaceholder.typicode.com').superagent(superagent))
+	  .configure(rest('/api/v1').superagent(superagent))
 	  .configure(hooks())
 	  .configure(authentication({
 	  	header: authTokenName,

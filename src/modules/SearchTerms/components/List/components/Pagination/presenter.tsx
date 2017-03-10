@@ -16,9 +16,6 @@ interface IPaginationStateProps {
   currentPage: number;
   pages: number;
   path: string;
-  shownItemsFrom: string;
-  shownItemsTo: number;
-  totalItems: string;
   pageSizeSelectOptions: IPageSizeSelectOption[];
   pageSize: number;
 };
@@ -42,22 +39,18 @@ function Pages(props: IPaginationProps) {
     pageSize,
     pageSizeSelectOptions,
     path,
-    shownItemsFrom,
-    shownItemsTo,
-    totalItems,
   } = props;
   const classes = BEMHelper('search-pagination');
 
   return (
     <div {...classes()}>
-      Showing {shownItemsFrom} to
-      <Select
+      Show by <Select
         {...classes('page-size-select')}
         mods={['rounded', 'bordered']}
         options={pageSizeSelectOptions}
         value={pageSize}
         onChange={changePageSize}
-      /> of {totalItems} results.
+      /> items
       <Pagination pages={pages} currentPage={currentPage} path={path} />
     </div>
     );

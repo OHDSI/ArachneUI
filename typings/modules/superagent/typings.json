@@ -1,0 +1,8 @@
+{
+  "resolution": "main",
+  "tree": {
+    "src": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/1c80f69f6e13770589b3d549b556c1529dd7b085/superagent/index.d.ts",
+    "raw": "registry:dt/superagent#2.0.0+20161124104740",
+    "typings": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/1c80f69f6e13770589b3d549b556c1529dd7b085/superagent/index.d.ts"
+  }
+}

@@ -20,20 +20,33 @@ type IFacet = {
   type: string;
   max?: number;
   min?: number;
-  options?: FacetOption[],
+  options?: FacetOption[];
 }
 
 interface IFacetProps {
   facets: IFacet[];
+  filterFormState: { [key: string]: string | Array<string> } | {};
+  initialValues: { [key: string]: string | Array<string> };
+  pageSize: number;
+  currentAddress: Object;
+  query: string;
 }
 
-interface IFacets extends FormProps<{}, {}, {}> {
-  facets: IFacet[];
+interface IFacetDispatchProps {
+  search: Function;
+  updateFacets: Function;
+}
+
+interface IFacets extends FormProps<{}, {}, {}>, IFacetProps, IFacetDispatchProps {
+  clearFilter: Function;
+  filter: Function;
 }
 
 function Facets(props: IFacets) {
   const {
     facets,
+    filter,
+    clearFilter,
   } = props;
   const classes = BEMHelper('search-facets');
 
@@ -44,7 +57,8 @@ function Facets(props: IFacets) {
         showRefineSearch={false}
         fullTextSearchEnabled={false}
         sortingEnabled={false}
-        doSubmit={() => {}}
+        doSubmit={filter}
+        doClear={clearFilter}
         {...props}
       />
     </div>
@@ -52,4 +66,4 @@ function Facets(props: IFacets) {
 }
 
 export default Facets;
-export { IFacetProps, IFacets };
+export { IFacetProps, IFacetDispatchProps, IFacets };

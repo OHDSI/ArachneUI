@@ -2,12 +2,12 @@ import reduxifyServices from 'feathers-reduxify-services';
 import API from 'services/Api';
 
 interface ISearchTermsServices {
-	posts: any,
+	terms: any,
 }
 
 export default <ISearchTermsServices> reduxifyServices(
 	API,
 	{
-		'posts': 'posts'
+		'concepts': 'terms',
 	}
 );

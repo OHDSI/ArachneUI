@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ReactElement } from 'react';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import { browserHistory, Router, RouteConfig, PlainRoute, RouteComponent } from 'react-router';

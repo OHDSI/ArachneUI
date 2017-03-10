@@ -3,12 +3,7 @@ import IModule from './IModule';
 import SearchTerms from './SearchTerms';
 
 const modules: IModule[] = [
-  {
-    namespace: 'searchTerms',
-    rootRoute: () => SearchTerms.rootRoute('search-terms'),
-    actions: SearchTerms.actions,
-    reducer: SearchTerms.reducer,
-  } as IModule,
+  SearchTerms,
 ];
 
 const indexRoute: PlainRoute = {

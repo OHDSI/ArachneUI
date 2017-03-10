@@ -5,5 +5,5 @@ import termList from './termList';
 
 export default combineReducers({
 	termList,
-	posts: services.posts.reducer,
+	terms: services.terms.reducer,
 });

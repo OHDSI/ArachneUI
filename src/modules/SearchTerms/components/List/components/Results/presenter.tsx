@@ -13,7 +13,7 @@ require('./style.scss');
 type SearchResult = {
   id: number;
   code: string;
-  name: string;
+  className: string;
   class: string;
   rc: string;
   drc: string;
@@ -24,6 +24,7 @@ type SearchResult = {
 
 interface IResultStateProps {
   searchResults: SearchResult[];
+  downloadingEnabled: boolean;
 };
 
 interface IResultDispatchProps {};
@@ -31,22 +32,31 @@ interface IResultDispatchProps {};
 interface IResultOwnProps {};
 
 interface IResultProps extends IResultStateProps, IResultDispatchProps, IResultOwnProps {
-  download: () => void;
-  showResult: () => void;
+  downloadLink: Function;
+  showResult: Function;
+  sorting: Function;
+  setSorting: Function;
 }
 
 function Results(props: IResultProps) {
   const {
-    download,
+    downloadLink,
     searchResults,
     showResult,
+    sorting,
+    setSorting,
+    downloadingEnabled,
   } = props;
   const classes = BEMHelper('search-results');
 
   return (
     <div {...classes()}>
       <div {...classes('management-panel')}>
-        <Button {...classes('download-button')} mods={['rounded']} onClick={download}>
+        <Button
+          {...classes({ element: 'download-button', modifiers: { disabled: !downloadingEnabled } })}
+          mods={['rounded']}
+          link={downloadLink}
+        >
           Download results
         </Button>
         <Pagination resultsCount={searchResults.length}/>
@@ -55,6 +65,8 @@ function Results(props: IResultProps) {
         data={searchResults}
         mods={['hover', 'padded', 'selectable']}
         onRowClick={showResult}
+        sorting={sorting}
+        setSorting={setSorting}
       >
         <Cell
           {...classes('th')}
@@ -83,17 +95,17 @@ function Results(props: IResultProps) {
         <Cell
           {...classes('th-class')}
           header='CLASS'
-          field='class'
+          field='className'
         />
         <Cell
           {...classes('th')}
-          header='RC'
-          field='rc'
+          header='Standard concept'
+          field='standardConcept'
         />
         <Cell
           {...classes('th')}
-          header='DRC'
-          field='drc'
+          header='Invalid reason'
+          field='invalidReason'
         />
         <Cell
           {...classes('th')}

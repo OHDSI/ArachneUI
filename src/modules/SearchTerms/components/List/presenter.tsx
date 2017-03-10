@@ -11,6 +11,7 @@ import Results from './components/Results';
 require('./style.scss');
 
 interface ISearchTermProps {
+  searchStr: string;
   isLoading: boolean;
 };
 

@@ -46,6 +46,7 @@
     "es6-promise": "^4.0.5",
     "feathers-client": "^1.9.0",
     "feathers-reduxify-services": "^0.3.0",
+    "jquery-param": "^0.2.0",
     "lodash": "^4.17.4",
     "node-sass": "^4.5.0",
     "numeral": "^2.0.4",
@@ -62,6 +63,7 @@
     "reselect": "^2.5.4",
     "sass-loader": "^6.0.2",
     "style-loader": "^0.13.2",
-    "superagent": "^3.5.0"
+    "superagent": "^3.5.0",
+    "urijs": "^1.18.9"
   }
 }
