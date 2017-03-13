@@ -5,16 +5,19 @@ declare module 'arachne-components' {
 	import { Reducer } from 'redux';
 
 	module 'arachne-components' {
-		class Header extends React.Component<any, any> {}
+		class Button extends React.Component<any, any> {}
 		class FacetedSearchPanel extends React.Component<any, any> {}
+		class Form extends React.Component<any, any> {}
+		class FormInput extends React.Component<any, any> {}
+		class Header extends React.Component<any, any> {}
+		class Link extends React.Component<any, any> {}
+		class LoadingPanel extends React.Component<any, any> {}
+		class PageContent extends React.Component<any, any> {}
 		class Pagination extends React.Component<any, any> {}
 		class Select extends React.Component<any, any> {}
-		class Button extends React.Component<any, any> {}
 		class Table extends React.Component<any, any> {}
 		class TableCellLink extends React.Component<any, any> {}
 		class TableCellText extends React.Component<any, any> {}
-		class PageContent extends React.Component<any, any> {}
-		class LoadingPanel extends React.Component<any, any> {}
 		module ModalUtils {			
 			const connect: Function;
 			const actions: Object;

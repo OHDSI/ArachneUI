@@ -37,7 +37,7 @@ function mapStateToProps(state: Object, ownProps: IPaginationOwnProps): IPaginat
   for(
     let label = resultsPageSize;
     label <= maxResultsPageSize;
-    label+=1) {
+    label+=5) {
     pageSizeSelectOptions.push({
       value: label,
       label,

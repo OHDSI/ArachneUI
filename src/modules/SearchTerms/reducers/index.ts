@@ -6,4 +6,5 @@ import termList from './termList';
 export default combineReducers({
 	termList,
 	terms: services.terms.reducer,
+	facets: services.facets.reducer,
 });

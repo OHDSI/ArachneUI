@@ -40,3 +40,5 @@ export default {
   changePageSize,
   load,
 };
+
+export { searchParams };

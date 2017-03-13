@@ -7,6 +7,7 @@ import {
 } from 'arachne-components';
 import { locationDescriptor } from 'modules/SearchTerms/components/List/presenter';
 import { push } from 'react-router-redux';
+import { searchParams } from 'modules/SearchTerms/actions/termList';
 
 require('./style.scss');
 
@@ -44,11 +45,13 @@ interface IFacetStateProps {
 interface IFacetDispatchProps {
   search: (address: string) => typeof push;
   resetForm: () => Action;
+  updateFacets: (params: searchParams) => (dispatch: Function) => any;
 }
 
 interface IFacets extends FormProps<{}, {}, {}>, IFacetStateProps, IFacetDispatchProps {
   clearFilter: Function;
   filter: Function;
+  doUpdateFacets: Function;
 }
 
 function Facets(props: IFacets) {

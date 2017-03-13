@@ -48,16 +48,16 @@ function mapStateToProps(state: any): AppProps {
   const isUserAuthed = true;
   let navItems: Array<ReactElement<any>> = [];
   state.modules.list
-    .filter((module: IModule) => module.navbarElement)
-    .map((module: IModule) => {
-      navItems = navItems.concat(module.navbarElement)
-    });
-  state.modules.list
     .filter((module: IModule) => module.sidebarElement)
     .map((module: IModule) => {
       navItems = navItems.concat(
         module.sidebarElement.map((item: SideItem) => <SidebarItem {...item} />)
       );
+    });
+  state.modules.list
+    .filter((module: IModule) => module.navbarElement)
+    .map((module: IModule) => {
+      navItems = navItems.concat(module.navbarElement)
     });
 
   return {

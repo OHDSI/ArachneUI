@@ -12,6 +12,18 @@ import selectors from './selectors';
 import { IFacetStateProps, IFacetDispatchProps, IFacets } from './presenter';
 
 class Facets extends Component<IFacets, void> {
+  componentWillReceiveProps(props: IFacets) {
+    if (
+      ( // if form was cleared
+        typeof this.props.filterFormState !== 'undefined' &&
+        typeof props.filterFormState === 'undefined'
+      ) ||
+      // or updated
+      this.props.filterFormState !== props.filterFormState
+    ) {
+      this.props.doUpdateFacets(props.filterFormState);
+    }
+  }
 
   render() {
     return presenter(this.props);
@@ -42,6 +54,7 @@ function mapStateToProps(state: Object): IFacetStateProps {
 const mapDispatchToProps = {
   search: (address: string) => goToPage(address),
   resetForm: () => reset(forms.filter),
+  updateFacets: actions.facets.updateFacets,
 };
 
 function mergeProps(stateProps: IFacetStateProps, dispatchProps: IFacetDispatchProps, ownProps: Object): IFacets
@@ -75,6 +88,15 @@ function mergeProps(stateProps: IFacetStateProps, dispatchProps: IFacetDispatchP
 
       dispatchProps.search(currentAddress.resource());
       dispatchProps.resetForm();
+    },
+    doUpdateFacets: (newFilterState: { filter: { [key: number]: string; } }) {      
+      const requestParams = {
+        ...newFilterState.filter,
+        page: 1,
+        pageSize: 1,
+        query: stateProps.query,
+      };
+      dispatchProps.updateFacets(requestParams);
     },
   };
 
