@@ -6,6 +6,7 @@ import * as numeral from 'numeral';
 import actions from 'modules/SearchTerms/actions';
 import { push as goToPage } from 'react-router-redux';
 import * as URI from 'urijs';
+import { locationDescriptor } from 'modules/SearchTerms/components/List/presenter';
 import presenter from './presenter';
 import {
   IPaginationProps,
@@ -15,6 +16,7 @@ import {
   IPageSizeSelectOption,
 } from './presenter';
 
+
 class Pagination extends Component<IPaginationStateProps & IPaginationDispatchProps, void> {
   render() {
     return presenter(this.props);
@@ -22,15 +24,15 @@ class Pagination extends Component<IPaginationStateProps & IPaginationDispatchPr
 }
 
 function mapStateToProps(state: Object, ownProps: IPaginationOwnProps): IPaginationStateProps {
-  const pageSize = parseInt(get(state, 'routing.locationBeforeTransitions.query.pageSize', '1')) ||
+  const pageSize = get(state, 'routing.locationBeforeTransitions.query.pageSize') ||
     get(state, 'searchTerms.termList.data.pageSize') ||
     resultsPageSize;
   const pages = get(state, 'searchTerms.terms.queryResult.totalPages', 0);
   const currentPage = parseInt(get(state, 'routing.locationBeforeTransitions.query.page', '1'), 0);
-  const path = get(state, 'routing.locationBeforeTransitions') || {
+  const path: locationDescriptor = get(state, 'routing.locationBeforeTransitions', {
     pathname: paths.termsList(),
     search: '',
-  };
+  });
   const pageSizeSelectOptions = new Array<IPageSizeSelectOption>();
   for(
     let label = resultsPageSize;
@@ -41,16 +43,15 @@ function mapStateToProps(state: Object, ownProps: IPaginationOwnProps): IPaginat
       label,
     });
   }
-  const search = get(state, 'routing.locationBeforeTransitions');
 
   return {
     currentPage,
     pages,
     path: path.pathname + path.search,
     pageSizeSelectOptions,
-    pageSize,
+    pageSize: parseInt(pageSize.toString(), 0),
     // to be used in changePageSize
-    search,
+    locationSearch: path,
   };
 }
 
@@ -69,11 +70,11 @@ function mergeProps(
     ...dispatchProps,
     ...ownProps,
     changePageSize: (pageSize: number) => {
-      const currentAddress = new URI(`${stateProps.search.pathname}${stateProps.search.search}`);
+      const currentAddress = new URI(`${stateProps.locationSearch.pathname}${stateProps.locationSearch.search}`);
       dispatchProps.changePageSize(pageSize);
       currentAddress.setSearch('pageSize', pageSize);
       currentAddress.setSearch('page', 1);
-      dispatchProps.search(currentAddress.resource());
+      return dispatchProps.search(currentAddress.resource());
     },
   };
 }

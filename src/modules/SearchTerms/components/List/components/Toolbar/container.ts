@@ -7,7 +7,7 @@ import * as URI from 'urijs';
 import { get } from 'lodash';
 import presenter from './presenter';
 
-import { IToolbarProps, IToolbarStateProps } from './presenter';
+import { IToolbarProps, IToolbarStateProps, IToolbarDispatchProps } from './presenter';
 
 class Toolbar extends Component<IToolbarProps, void> {
 	render() {
@@ -16,13 +16,19 @@ class Toolbar extends Component<IToolbarProps, void> {
 }
 
 function mapStateToProps(state: Object): IToolbarStateProps {
-  const search = get(state, 'routing.locationBeforeTransitions');
+  const locationSearch = get(state, 'routing.locationBeforeTransitions', {
+  	pathname: '',
+  	search: '',
+  	query: {
+  		query: '',
+  	},
+  });
 
   return {
   	initialValues: {
-  		searchString: get(search, 'query.query') || '',
+  		searchString: get(locationSearch, 'query.query') || '',
   	},
-  	search,
+  	locationSearch,
   };
 }
 
@@ -30,13 +36,17 @@ const mapDispatchToProps = {
   search: (address: string) => goToPage(address),
 };
 
-function mergeProps(stateProps: IToolbarStateProps, dispatchProps: Object, ownProps: Object): IToolbarProps {
+function mergeProps(
+		stateProps: IToolbarStateProps,
+		dispatchProps: IToolbarDispatchProps,
+		ownProps: Object
+	): IToolbarProps {
 	return {
 		...stateProps,
 		...dispatchProps,
 		...ownProps,
 		filter: (data: { searchString: string }) => {
-			const currentAddress = new URI(`${stateProps.search.pathname}${stateProps.search.search}`);
+			const currentAddress = new URI(`${stateProps.locationSearch.pathname}${stateProps.locationSearch.search}`);
       currentAddress.setSearch('query', data.searchString);
       dispatchProps.search(currentAddress.resource());
 		},
@@ -48,6 +58,6 @@ const FormToolbar = reduxForm({
 })(Toolbar);
 
 export default connect
-<IToolbarStateProps, {}, {}>
+<IToolbarStateProps, IToolbarDispatchProps, {}>
 (mapStateToProps, mapDispatchToProps, mergeProps)
 (FormToolbar);

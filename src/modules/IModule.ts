@@ -3,7 +3,7 @@ import { PlainRoute } from 'react-router';
 import { Reducer } from 'redux';
 import { IAppActionCreatorTree } from 'actions';
 
-type NavItem = {
+type SideItem = {
 	ico?: string;
   name: string;
   path?: string;
@@ -15,7 +15,8 @@ interface IModule {
   actions: () => IAppActionCreatorTree,
   reducer: () => Reducer<any>;
   navbarElement?: Array<ReactElement<any>>;
+  sidebarElement?: Array<SideItem>;
 }
 
 export default IModule;
-export { NavItem };
+export { SideItem };

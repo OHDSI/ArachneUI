@@ -3,18 +3,22 @@
 .#{$namespace} {
   &search-results {
   	margin: 0 -0.5rem;
+    overflow-x: hidden;
 
 		&__management-panel {
   		display: flex;
   		padding: 1rem 1.5rem;
   	}
 
-  	&__download-button {
-      background: $purple-darker;
-      color: $white;
+    &__download-button-wrapper {
       margin-right: auto;
       align-items: center;
       display: flex;
+    }
+
+  	&__download-button {
+      background: $purple-darker;
+      color: $white;
 
       &--disabled {
         background: $grey-medium;
@@ -22,16 +26,34 @@
       }
   	}
 
-    &__th-th {
+    &__table {
+      table-layout: fixed;
+    }
+
+    &__th-id-th {
+      width: 8%;
+    }
+    &__th-code-th {
+      width: 8%;
+    }
+    &__th-name-th {
+      width: 20%;
+    }
+    &__th-class-th {
+      width: 8%;
+    }
+    &__th-standard-th {
+      width: 20%;
+    }
+    &__th-invalid-th {
+      width: 17%;
+    }
+    &__th-domain-th {
       width: 10%;
     }
-
-    &__th-wide-th {
-      width: 25%;
-    }
-
-    &__th-class-th {
+    &__th-vocabulary-th {
       width: 15%;
     }
+
   }
 }

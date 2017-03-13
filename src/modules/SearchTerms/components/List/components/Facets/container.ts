@@ -9,7 +9,7 @@ import { get } from 'lodash';
 import presenter from './presenter';
 import selectors from './selectors';
 
-import { IFacetProps, IFacetDispatchProps, IFacets } from './presenter';
+import { IFacetStateProps, IFacetDispatchProps, IFacets } from './presenter';
 
 class Facets extends Component<IFacets, void> {
 
@@ -18,9 +18,12 @@ class Facets extends Component<IFacets, void> {
   }
 }
 
-function mapStateToProps(state: Object): IFacetProps {
+function mapStateToProps(state: Object): IFacetStateProps {
 	const facets = selectors.getFacets(state);
-  const currentAddress = get(state, 'routing.locationBeforeTransitions');
+  const currentAddress = get(state, 'routing.locationBeforeTransitions', {
+    pathname: '',
+    search: '',
+  });
   const pageSize = get(state, 'searchTerms.termList.data.pageSize', resultsPageSize);
   const query = get(state, 'routing.locationBeforeTransitions.query.query', '');
   const initialValues = selectors.getFilterInitialValues(state);
@@ -28,7 +31,7 @@ function mapStateToProps(state: Object): IFacetProps {
   return {
   	facets,
     initialValues,
-    filterFormState: get(state, `form.${forms.filter}.values`),
+    filterFormState: get(state, `form.${forms.filter}.values`, { filter: {} }),
     // to be used in filter
     pageSize,
     currentAddress,
@@ -41,7 +44,7 @@ const mapDispatchToProps = {
   resetForm: () => reset(forms.filter),
 };
 
-function mergeProps(stateProps: IFacetProps, dispatchProps: IFacetDispatchProps, ownProps: Object): IFacets
+function mergeProps(stateProps: IFacetStateProps, dispatchProps: IFacetDispatchProps, ownProps: Object): IFacets
 {
   return {
     ...stateProps,
@@ -81,6 +84,6 @@ const FormFacets = reduxForm({
   form: forms.filter,
 })(Facets);
 
-export default connect<IFacetProps, IFacetDispatchProps, {}>
+export default connect<IFacetStateProps, IFacetDispatchProps, {}>
 (mapStateToProps, mapDispatchToProps, mergeProps)
 (FormFacets);

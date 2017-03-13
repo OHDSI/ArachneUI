@@ -1,11 +1,20 @@
 import * as React from 'react';
 import BEMHelper from 'services/BemHelper';
+import { Action } from 'redux';
 import { FormProps } from 'redux-form';
 import {
   FacetedSearchPanel,
 } from 'arachne-components';
+import { locationDescriptor } from 'modules/SearchTerms/components/List/presenter';
+import { push } from 'react-router-redux';
 
 require('./style.scss');
+
+type initialValues = { [key: string]: string | Array<string> };
+
+interface initialFormState {
+  filter: initialValues | {};
+};
 
 type FacetOption = {
   facetCount: number;
@@ -23,21 +32,21 @@ type IFacet = {
   options?: FacetOption[];
 }
 
-interface IFacetProps {
+interface IFacetStateProps {
   facets: IFacet[];
-  filterFormState: { [key: string]: string | Array<string> } | {};
-  initialValues: { [key: string]: string | Array<string> };
+  filterFormState: initialFormState;
+  initialValues: initialFormState;
   pageSize: number;
-  currentAddress: Object;
+  currentAddress: locationDescriptor;
   query: string;
 }
 
 interface IFacetDispatchProps {
-  search: Function;
-  updateFacets: Function;
+  search: (address: string) => typeof push;
+  resetForm: () => Action;
 }
 
-interface IFacets extends FormProps<{}, {}, {}>, IFacetProps, IFacetDispatchProps {
+interface IFacets extends FormProps<{}, {}, {}>, IFacetStateProps, IFacetDispatchProps {
   clearFilter: Function;
   filter: Function;
 }
@@ -66,4 +75,4 @@ function Facets(props: IFacets) {
 }
 
 export default Facets;
-export { IFacetProps, IFacetDispatchProps, IFacets };
+export { IFacetStateProps, IFacetDispatchProps, IFacets };

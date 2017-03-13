@@ -6,11 +6,13 @@ import {
   TableCellLink as CellLink,
   TableCellText as Cell,
 } from 'arachne-components';
+import { locationDescriptor } from 'modules/SearchTerms/components/List/presenter';
+import { push } from 'react-router-redux';
 import Pagination from '../Pagination';
 
 require('./style.scss');
 
-type SearchResult = {
+type Term = {
   id: number;
   code: string;
   className: string;
@@ -22,19 +24,28 @@ type SearchResult = {
   link: string;
 };
 
-interface IResultStateProps {
-  searchResults: SearchResult[];
-  downloadingEnabled: boolean;
+type SortingParams = {
+  sortBy: string;
+  sortAsc: boolean;
 };
 
-interface IResultDispatchProps {};
+interface IResultStateProps {
+  searchResults: Term[];
+  downloadingEnabled: boolean;
+  sorting: SortingParams;
+  searchLocation: locationDescriptor;
+  downloadLink: string;
+};
+
+interface IResultDispatchProps {
+  search: (address: string) => typeof push;
+};
 
 interface IResultOwnProps {};
 
 interface IResultProps extends IResultStateProps, IResultDispatchProps, IResultOwnProps {
-  downloadLink: Function;
   showResult: Function;
-  sorting: Function;
+  sorting: SortingParams;
   setSorting: Function;
 }
 
@@ -48,20 +59,36 @@ function Results(props: IResultProps) {
     downloadingEnabled,
   } = props;
   const classes = BEMHelper('search-results');
+  const tooltipClass = BEMHelper('ac-tooltip', false);
 
   return (
     <div {...classes()}>
       <div {...classes('management-panel')}>
+      <div
+        {...classes({
+          element: 'download-button-wrapper',
+          extra: downloadingEnabled ? '' : tooltipClass().className,
+        })}
+        aria-label='Enter at least 3 letters of keyword'
+        data-tootik-conf='bottom'
+       >
         <Button
-          {...classes({ element: 'download-button', modifiers: { disabled: !downloadingEnabled } })}
+          {...classes({
+            element: 'download-button',
+            modifiers: {
+              disabled: !downloadingEnabled
+            }
+          })}
           mods={['rounded']}
           link={downloadLink}
         >
           Download results
         </Button>
+        </div>
         <Pagination resultsCount={searchResults.length}/>
       </div>
       <Table
+        {...classes('table')}
         data={searchResults}
         mods={['hover', 'padded', 'selectable']}
         onRowClick={showResult}
@@ -69,17 +96,17 @@ function Results(props: IResultProps) {
         setSorting={setSorting}
       >
         <Cell
-          {...classes('th')}
+          {...classes('th-id')}
           header='ID'
           field='id'
         />
         <Cell
-          {...classes('th')}
+          {...classes('th-code')}
           header='CODE'
           field='code'
         />
         <CellLink
-          {...classes('th-wide')}
+          {...classes('th-name')}
           header='NAME'
           field='name'
           props={(result: { [key: string]: string }) => {
@@ -98,22 +125,22 @@ function Results(props: IResultProps) {
           field='className'
         />
         <Cell
-          {...classes('th')}
+          {...classes('th-standard')}
           header='Standard concept'
           field='standardConcept'
         />
         <Cell
-          {...classes('th')}
+          {...classes('th-invalid')}
           header='Invalid reason'
           field='invalidReason'
         />
         <Cell
-          {...classes('th')}
+          {...classes('th-domain')}
           header='DOMAIN'
           field='domain'
         />
         <Cell
-          {...classes('th')}
+          {...classes('th-vocabulary')}
           header='VOCABULARY'
           field='vocabulary'
         />
@@ -128,5 +155,6 @@ export {
   IResultStateProps,
   IResultDispatchProps,
   IResultOwnProps,
-  SearchResult
+  Term,
+  SortingParams,
 };

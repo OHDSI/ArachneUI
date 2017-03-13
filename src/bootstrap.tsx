@@ -58,6 +58,7 @@ function initModule(module: IModule): RouteConfig {
 	registerModule({
 		path: moduleRoute.path,
 		navbarElement: module.navbarElement,
+		sidebarElement: module.sidebarElement,
 	});
 	// Return module's Route
 	return moduleRoute;

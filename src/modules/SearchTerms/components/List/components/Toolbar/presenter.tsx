@@ -5,14 +5,21 @@ import {
   Form,
   FormInput,
 } from 'arachne-components';
+import { push } from 'react-router-redux';
+import { locationDescriptor } from 'modules/SearchTerms/components/List/presenter';
 
 require('./style.scss');
 
 interface IToolbarStateProps {
-  initialValues: { [key: string]: object };
+  initialValues: { [key: string]: Object };
+  locationSearch: locationDescriptor;
 }
 
-interface IToolbarProps extends IToolbarStateProps {
+interface IToolbarDispatchProps {
+  search: (address: string) => typeof push;
+}
+
+interface IToolbarProps extends IToolbarStateProps, IToolbarDispatchProps {
   filter: Function;
 }
 
@@ -55,4 +62,4 @@ function Toolbar(props: IToolbarProps) {
 }
 
 export default Toolbar;
-export { IToolbarProps, IToolbarStateProps };
+export { IToolbarProps, IToolbarStateProps, IToolbarDispatchProps };

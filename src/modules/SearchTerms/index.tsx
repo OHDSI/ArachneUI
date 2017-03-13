@@ -12,10 +12,20 @@ const module: IModule = {
 	actions: () => require('./actions').default,
 	reducer: () => require('./reducers').default,
 	navbarElement: [
-		<div>
-			<Link to={paths.termsList()}>Search Terms</Link>
-		</div>,
+		<Link to={paths.termsList()}>Search Terms</Link>,
 	],
+	sidebarElement: [
+	{
+		name: 'Sidebar item 1'
+	},
+	{
+		ico: 'report_problem',
+		name: 'Sidebar item 2'
+	},
+	{
+		name: 'Sidebar item 3',
+		path: 'http://google.com'
+	}],
 };
 
 export default module;

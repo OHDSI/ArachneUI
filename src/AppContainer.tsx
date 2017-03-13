@@ -5,9 +5,13 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import BEMHelper from 'services/BemHelper';
 import IModule from 'modules/IModule';
+import { SideItem } from 'modules/IModule';
 import {
   Header,
 } from 'arachne-components';
+import {
+  SidebarItem,
+} from 'components';
 import imgs from 'const/images';
 
 require('./styles/appContainer.scss');
@@ -47,6 +51,13 @@ function mapStateToProps(state: any): AppProps {
     .filter((module: IModule) => module.navbarElement)
     .map((module: IModule) => {
       navItems = navItems.concat(module.navbarElement)
+    });
+  state.modules.list
+    .filter((module: IModule) => module.sidebarElement)
+    .map((module: IModule) => {
+      navItems = navItems.concat(
+        module.sidebarElement.map((item: SideItem) => <SidebarItem {...item} />)
+      );
     });
 
   return {

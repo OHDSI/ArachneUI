@@ -15,6 +15,12 @@ interface ISearchTermProps {
   isLoading: boolean;
 };
 
+type locationDescriptor = {
+  pathname: string;
+  search: string;
+  query?: { [key: string]: string | number | Array<string> };
+};
+
 function SearchTermsList(props: ISearchTermProps) {
   const { isLoading } = props;
   const classes = BEMHelper('search');
@@ -42,4 +48,5 @@ function SearchTermsList(props: ISearchTermProps) {
 export default SearchTermsList;
 export {
   ISearchTermProps,
+  locationDescriptor,
 };

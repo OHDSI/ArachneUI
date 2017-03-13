@@ -12,7 +12,7 @@ import {
 	IResultDispatchProps,
 	IResultOwnProps,
 	IResultProps,
-	SearchResult
+	SortingParams,
 } from './presenter';
 
 class Results extends Component<IResultProps, {}> {
@@ -23,22 +23,28 @@ class Results extends Component<IResultProps, {}> {
 
 function mapStateToProps(state: Object): IResultStateProps {
 	const searchResults = selectors.getResults(state);
-  const search = get(state, 'routing.locationBeforeTransitions');
-  const downloadingEnabled = search.query.query && search.query.query.length > 3;
+  const searchLocation = get(state, 'routing.locationBeforeTransitions', {
+  	pathname: '',
+  	search: '',
+  	query: {
+  		query: '',
+  	},
+  });
+  const downloadingEnabled = searchLocation.query.query && searchLocation.query.query.length > 3;
   const downloadLink = new URI();
-  downloadLink.setSearch(search.query);
+  downloadLink.setSearch(searchLocation.query);
   // query should be 3 letters min
-  if(!search.query.query || search.query.query.length < 3) {
+  if(!searchLocation.query.query || searchLocation.query.query.length < 3) {
   	downloadLink.removeSearch('query');
   }
 
 	return {
 		searchResults,
 		sorting: {
-			sortBy: selectors.getConceptFieldName(get(search, 'query.sort', '')),
-			sortAsc: get(search, 'query.order') === 'asc',
+			sortBy: selectors.getConceptFieldName(get(searchLocation, 'query.sort', '')),
+			sortAsc: get(searchLocation, 'query.order') === 'asc',
 		},
-		search,
+		searchLocation,
 		downloadLink: apiPaths.downloadCsv(downloadLink.search()),
 		downloadingEnabled,
 	};
@@ -58,8 +64,8 @@ function mergeProps(
 		...dispatchProps,
 		...ownProps,
 		showResult: () => {},
-		setSorting: (sortParams) => {
-      const currentAddress = new URI(`${stateProps.search.pathname}${stateProps.search.search}`);
+		setSorting: (sortParams: SortingParams) => {
+      const currentAddress = new URI(`${stateProps.searchLocation.pathname}${stateProps.searchLocation.search}`);
       currentAddress.setSearch('sort', selectors.getConceptFieldId(sortParams.sortBy));
       currentAddress.setSearch('order', stateProps.sorting.sortAsc ? 'desc' : 'asc');
       dispatchProps.search(currentAddress.resource());

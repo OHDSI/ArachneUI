@@ -4,6 +4,8 @@ import {
   Pagination,
   Select,
 } from 'arachne-components';
+import { locationDescriptor } from 'modules/SearchTerms/components/List/presenter';
+import { push } from 'react-router-redux';
 
 require('./style.scss');
 
@@ -18,9 +20,11 @@ interface IPaginationStateProps {
   path: string;
   pageSizeSelectOptions: IPageSizeSelectOption[];
   pageSize: number;
+  locationSearch: locationDescriptor;
 };
 
 interface IPaginationDispatchProps {
+  search: (address: string) => typeof push;
   changePageSize: (pageSize: number) => (dispatch: Function) => any;
 };
 
@@ -62,5 +66,6 @@ export {
   IPaginationStateProps,
   IPaginationDispatchProps,
   IPageSizeSelectOption,
-  IPaginationOwnProps
+  IPaginationOwnProps,
+  locationDescriptor,
 };

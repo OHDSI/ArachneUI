@@ -3,6 +3,10 @@ import { get } from 'lodash';
 import * as URI from 'urijs';
 import types from 'const/metadataTypes';
 
+type map = {
+  [key: string]: any;
+};
+
 function getFacetTitle(facetId: string): string {
   let title = facetId;
   switch(facetId.toLowerCase()) {
@@ -34,7 +38,7 @@ const getRawInitialValues = (state: Object) => get(state, 'routing.locationBefor
 
 const getFacets = createSelector(
   getRawFacets,
-  rawFacets => Object.keys(rawFacets).map(facet => ({
+  (rawFacets: map) => Object.keys(rawFacets).map(facet => ({
     faceted: true,
     label: getFacetTitle(facet),
     name: getFacetKey(facet),
@@ -49,8 +53,8 @@ const getFacets = createSelector(
 
 const getFilterInitialValues = createSelector(
   getRawInitialValues,
-  rawValues => {
-      let filter = {};
+  (rawValues: map) => {
+      let filter: map = {};
       Object.keys(rawValues)
         .map((facetKey: string) => {
           filter[`${facetKey}`] = Array.isArray(rawValues[facetKey]) ? rawValues[facetKey] : [rawValues[facetKey]];
