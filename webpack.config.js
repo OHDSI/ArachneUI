@@ -82,7 +82,7 @@ module.exports = {
   plugins: [
     new CopyWebpackPlugin([
       {
-        from: path.join(__dirname, 'resources/fonts'),
+        from: path.join(__dirname, 'node_modules/arachne-components/lib/resources/fonts'),
         to: path.join(outPath, 'fonts')
       },
       {
