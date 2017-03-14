@@ -6,8 +6,10 @@
     flex-direction: column;
     flex-grow: 1;
 
-    & .ac-faceted-search__form-fields {
-    	overflow-y: scroll;
-    }
+    & .ac-faceted-search {
+	    &__form-fields {
+	    	overflow-y: scroll;
+	    }
+	  }
   }
 }

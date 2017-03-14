@@ -11,12 +11,12 @@ type searchParams = {
   pageSize: number;
   page?: number;
 
-  query?: string;
-  vocabulary?: string;
-  domain?: string;
-  conceptClass?: string;
-  standardConcept?: string;
-  invalidReason?: string;
+  query?: Array<string> | string;
+  vocabulary?: Array<string> | string;
+  domain?: Array<string> | string;
+  conceptClass?: Array<string> | string;
+  standardConcept?: Array<string> | string;
+  invalidReason?: Array<string> | string;
 };
 
 function pageSizeUpdated(pageSize: number): IAppAction<{ pageSize: number }> {
@@ -29,7 +29,7 @@ function pageSizeUpdated(pageSize: number): IAppAction<{ pageSize: number }> {
 }
 
 function changePageSize(pageSize: number) {
-  return (dispatch: Function) => dispatch(pageSizeUpdated(pageSize));
+  return pageSizeUpdated(pageSize);
 }
 
 function load(params: searchParams) {

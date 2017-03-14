@@ -89,7 +89,7 @@ function mergeProps(stateProps: IFacetStateProps, dispatchProps: IFacetDispatchP
       dispatchProps.search(currentAddress.resource());
       dispatchProps.resetForm();
     },
-    doUpdateFacets: (newFilterState: { filter: { [key: number]: string; } }) {      
+    doUpdateFacets: (newFilterState: { filter: { [key: number]: string; } }) => {      
       const requestParams = {
         ...newFilterState.filter,
         page: 1,

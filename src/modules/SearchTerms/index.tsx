@@ -11,21 +11,12 @@ const module: IModule = {
   rootRoute: () => rootRoute('search-terms'),
 	actions: () => require('./actions').default,
 	reducer: () => require('./reducers').default,
-	navbarElement: [
-		<Link to={paths.termsList()}>Search Terms</Link>,
-	],
 	sidebarElement: [
-	{
-		name: 'Sidebar item 1'
-	},
-	{
-		ico: 'report_problem',
-		name: 'Sidebar item 2'
-	},
-	{
-		name: 'Sidebar item 3',
-		path: 'http://google.com'
-	}],
+		{
+			name: 'Search Terms',
+			path: paths.termsList(),
+		},
+	],
 };
 
 export default module;
