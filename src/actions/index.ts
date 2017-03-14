@@ -2,11 +2,14 @@ import { Action } from 'redux';
 import modules from './modules';
 
 interface IAppAction<T> extends Action {
+  type: string;
 	payload: T;
 }
 
+type IAppActionCreator = Function;
+
 interface IAppActionCreatorTree {
-	[key: string]: Function | IAppActionCreatorTree;
+	[key: string]: IAppActionCreator | IAppActionCreatorTree;
 };
 
 const rootActions: IAppActionCreatorTree = {

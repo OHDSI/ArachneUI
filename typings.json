@@ -1,0 +1,10 @@
+{
+  "globalDependencies": {
+    "numeral": "registry:dt/numeral#0.0.0+20170119210526"
+  },
+  "dependencies": {
+    "arachne-components": "file:./typings/modules/arachne-components/index.d.ts",
+    "redux-promise-middleware": "registry:dt/redux-promise-middleware#0.0.0+20161130131544",
+    "superagent": "registry:dt/superagent#2.0.0+20161124104740"
+  }
+}

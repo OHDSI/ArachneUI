@@ -1,0 +1,15 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+  &search-facets {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+
+    & .ac-faceted-search {
+	    &__form-fields {
+	    	overflow-y: scroll;
+	    }
+	  }
+  }
+}

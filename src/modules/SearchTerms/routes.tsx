@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { PlainRoute } from 'react-router';
 
-import SearchTermsList from './components/List';
-
 function rootRoute(path: string): PlainRoute {
   return {
     path,
@@ -15,8 +13,8 @@ function rootRoute(path: string): PlainRoute {
     childRoutes: [
       {
         path: 'terms',
-        component: SearchTermsList,
-      },
+        component: require('./components/List').default,
+      }
     ],
   };
 }

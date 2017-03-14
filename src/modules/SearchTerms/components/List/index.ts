@@ -1,3 +1,3 @@
-import SearchTermsList from './presenter';
+import SearchTermsList from './container';
 
 export default SearchTermsList;

@@ -1,0 +1,8 @@
+{
+  "resolution": "main",
+  "tree": {
+    "src": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/f676f726ee69ef6f06c355540280f34fa3b9ed4e/redux-promise-middleware/index.d.ts",
+    "raw": "registry:dt/redux-promise-middleware#0.0.0+20161130131544",
+    "typings": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/f676f726ee69ef6f06c355540280f34fa3b9ed4e/redux-promise-middleware/index.d.ts"
+  }
+}

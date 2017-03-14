@@ -2,13 +2,14 @@ import { createStore, compose, applyMiddleware, Reducer, Middleware, Store, Gene
 import { browserHistory } from 'react-router';
 import { routerMiddleware } from 'react-router-redux';
 import thunk from 'redux-thunk';
+import reduxPromiseMiddleware from 'redux-promise-middleware'; // for feathersjs
 import * as createLogger from 'redux-logger';
 import createAppReducer from 'reducers';
 
 const logger = createLogger();
 const router = routerMiddleware(browserHistory);
 
-const appMiddleware: Middleware[] = [thunk, router, logger];
+const appMiddleware: Middleware[] = [thunk, router, reduxPromiseMiddleware(), logger];
 
 interface IStoreAsync extends Store<any> {
   asyncReducers: {[key: string]: Reducer<any>};

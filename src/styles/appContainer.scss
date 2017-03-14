@@ -1,0 +1,55 @@
+@import 'arachne-components/lib/styles/app.scss';
+
+$namespace: 'at-';
+
+.#{$namespace} {
+  &root {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+
+    &__main {
+      display: flex;
+      min-height: calc(100% - #{$header-height});
+      flex-grow: 1;
+    }
+
+    & .ac-header__nav {
+      border-left: 1px solid rgba(255, 255, 255, 0.3);
+      border-right: 1px solid rgba(0, 0, 0, 0.2);
+    }
+
+    &__header {
+      background: $green;
+
+      &--empty {
+        & .ac-header__nav {
+          border: none;
+        }
+      }
+    }
+
+    & .ac-header__menu-item {
+      align-items: center;
+      border-right: 1px solid rgba(255, 255, 255, 0.3);
+      border-left: 1px solid rgba(0, 0, 0, 0.2);
+      color: #fff;
+      display: flex;
+      font-weight: $font-weight-bold;
+      height: 100%;
+      margin-left: 0;
+
+      &--selected {
+        background: rgba(255, 255, 255, 0.25);
+      }
+
+      & .ac-link {        
+        align-items: center;
+        color: #fff;
+        display: flex;
+        height: 100%;
+        padding: 0 2rem;
+      }
+    }
+  }
+}
