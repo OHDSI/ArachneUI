@@ -38,6 +38,7 @@ $namespace: 'at-';
       font-weight: $font-weight-bold;
       height: 100%;
       margin-left: 0;
+      text-transform: uppercase;
 
       &--selected {
         background: rgba(255, 255, 255, 0.25);

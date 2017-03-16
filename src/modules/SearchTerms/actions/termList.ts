@@ -36,9 +36,14 @@ function load(params: searchParams) {
 	return services.terms.find({ query: params });
 }
 
+function fetch(id: number) {
+  return services.terms.get(id);
+}
+
 export default {
   changePageSize,
   load,
+  fetch,
 };
 
 export { searchParams };

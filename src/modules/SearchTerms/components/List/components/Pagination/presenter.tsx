@@ -21,6 +21,7 @@ interface IPaginationStateProps {
   pageSizeSelectOptions: IPageSizeSelectOption[];
   pageSize: number;
   locationSearch: locationDescriptor;
+  totalCount: number;
 };
 
 interface IPaginationDispatchProps {
@@ -43,6 +44,7 @@ function Pages(props: IPaginationProps) {
     pageSize,
     pageSizeSelectOptions,
     path,
+    totalCount,
   } = props;
   const classes = BEMHelper('search-pagination');
 
@@ -55,6 +57,9 @@ function Pages(props: IPaginationProps) {
         value={pageSize}
         onChange={changePageSize}
       /> items
+      <span {...classes('total')}>
+        Total {totalCount} items
+      </span>
       <Pagination pages={pages} currentPage={currentPage} path={path} />
     </div>
     );

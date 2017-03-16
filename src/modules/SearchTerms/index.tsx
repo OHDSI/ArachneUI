@@ -13,7 +13,7 @@ const module: IModule = {
 	reducer: () => require('./reducers').default,
 	sidebarElement: [
 		{
-			name: 'Search Terms',
+			name: 'Search',
 			path: paths.termsList(),
 		},
 	],
