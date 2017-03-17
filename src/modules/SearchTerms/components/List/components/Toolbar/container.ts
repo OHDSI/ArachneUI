@@ -52,11 +52,13 @@ function mergeProps(
 		filter: (data: { searchString: string }) => {
 			const currentAddress = new URI(`${stateProps.locationSearch.pathname}${stateProps.locationSearch.search}`);
       currentAddress.setSearch('query', data.searchString);
-      dispatchProps.search(currentAddress.resource());
+      const search = currentAddress.href();
+      dispatchProps.search(search);
       const filterParams = {
         ...stateProps.filterParams,
         query: data.searchString,
       };
+
       dispatchProps.updateFacets(filterParams);
 		},
 	};

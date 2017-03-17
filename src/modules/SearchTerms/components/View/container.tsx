@@ -31,7 +31,7 @@ function mapStateToProps(state: Object, ownProps: ITermRoute): ITermStateProps {
 	const isLoading = get(state, 'searchTerms.terms.isLoading', false);
 	const termId = parseInt(ownProps.routeParams.termId, 0);
 	const name = get(state, 'searchTerms.terms.data.name', 'Term');
-	const details = selectors.getTermDetails(state);
+	const details = get(state, 'searchTerms.terms.data', {});
 	const connections = selectors.getConnections(state);
 
 	return {

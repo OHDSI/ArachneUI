@@ -9,13 +9,9 @@ import {
 import { NavigateAction } from 'react-router-redux';
 import BEMHelper from 'services/BemHelper';
 import { paths } from 'modules/SearchTerms/const';
+import { get } from 'lodash';
 
 require('./style.scss');
-
-type DetailAttribute = {
-  name: string;
-  value: string;
-};
 
 interface ITermStateProps {
   connections: any;
@@ -56,12 +52,34 @@ function Term(props: ITermProps) {
           title='Details'
         >
           <ul>
-            {details.map((attribute: DetailAttribute, index: number) =>
-              <ListItem key={index}>
-                <span {...classes('attribute-name')}>{attribute.name}</span>
-                <span>{attribute.value}</span>
-              </ListItem>
-            )}
+            <ListItem>
+              <span {...classes('attribute-name')}>Domain ID</span>
+              <span>{get(details, 'domain.id', '')}</span>
+            </ListItem>
+            <ListItem>
+              <span {...classes('attribute-name')}>Concept Class ID</span>
+              <span>{get(details, 'conceptClassId', '')}</span>
+            </ListItem>
+            <ListItem>
+              <span {...classes('attribute-name')}>Vocabulary ID</span>
+              <span>{get(details, 'vocabulary.id', '')}</span>
+            </ListItem>
+            <ListItem>
+              <span {...classes('attribute-name')}>Concept ID</span>
+              <span>{get(details, 'id', '')}</span>
+            </ListItem>
+            <ListItem>
+              <span {...classes('attribute-name')}>Concept code</span>
+              <span>{get(details, 'conceptCode', '')}</span>
+            </ListItem>
+            <ListItem>
+              <span {...classes('attribute-name')}>Invalid reason</span>
+              <span>{get(details, 'invalidReason', '')}</span>
+            </ListItem>
+            <ListItem>
+              <span {...classes('attribute-name')}>Standard concept</span>
+              <span>{get(details, 'standardConcept', '')}</span>
+            </ListItem>
           </ul>
         </Panel>
         {/* <Panel

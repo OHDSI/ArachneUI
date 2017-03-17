@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect';
 import { get } from 'lodash';
 
-const getRawTerm = (state: Object) => get(state, 'searchTerms.terms.data', {});
 const getRawConnections = (state: Object) => ({
  "name": "flare",
  "children": [
@@ -383,46 +382,11 @@ const getRawConnections = (state: Object) => ({
  ]
 });
 
-const getTermDetails = createSelector(
-    getRawTerm,
-    rawResult => ([
-      {
-         name: 'Domain ID',
-         value:  get(rawResult, 'domain.id', ''),
-      },
-      {
-         name: 'Concept Class ID',
-         value:  get(rawResult, 'conceptClassId', ''),
-      },
-      {
-         name: 'Vocabulary ID',
-         value:  get(rawResult, 'vocabulary.id', ''),
-      },
-      {
-         name: 'Concept ID',
-         value:  get(rawResult, 'id', ''),
-      },
-      {
-         name: 'Concept code',
-         value:  get(rawResult, 'conceptCode', ''),
-      },
-      {
-         name: 'Invalid reason',
-         value:  get(rawResult, 'invalidReason', ''),
-      },
-      {
-         name: 'Standard concept',
-         value:  get(rawResult, 'standardConcept', ''),
-      },
-    ]),
-  );
-
 const getConnections = createSelector(
   getRawConnections,
   connections => connections
   );
 
 export default {
-  getTermDetails,
   getConnections,
 };

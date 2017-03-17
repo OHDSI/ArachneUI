@@ -68,7 +68,7 @@ function mergeProps(
       const currentAddress = new URI(`${stateProps.searchLocation.pathname}${stateProps.searchLocation.search}`);
       currentAddress.setSearch('sort', selectors.getConceptFieldId(sortParams.sortBy));
       currentAddress.setSearch('order', stateProps.sorting.sortAsc ? 'desc' : 'asc');
-      dispatchProps.search(currentAddress.resource());
+      dispatchProps.search(currentAddress.href());
     },
 	};
 }

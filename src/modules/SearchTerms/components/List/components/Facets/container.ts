@@ -76,7 +76,7 @@ function mergeProps(stateProps: IFacetStateProps, dispatchProps: IFacetDispatchP
         query: stateProps.query,
       });
 
-      dispatchProps.search(query.resource());
+      dispatchProps.search(query.href());
     },
     clearFilter: () => {
       const currentAddress = new URI(stateProps.currentAddress.pathname);
@@ -86,7 +86,7 @@ function mergeProps(stateProps: IFacetStateProps, dispatchProps: IFacetDispatchP
         currentAddress.addSearch('query', stateProps.query);
       }
 
-      dispatchProps.search(currentAddress.resource());
+      dispatchProps.search(currentAddress.href());
       dispatchProps.resetForm();
     },
     doUpdateFacets: (newFilterState: { filter: { [key: number]: string; } }) => {      

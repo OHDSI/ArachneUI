@@ -80,7 +80,7 @@ function mergeProps(
       dispatchProps.changePageSize(pageSize);
       currentAddress.setSearch('pageSize', pageSize);
       currentAddress.setSearch('page', 1);
-      return dispatchProps.search(currentAddress.resource());
+      return dispatchProps.search(currentAddress.href());
     },
   };
 }
