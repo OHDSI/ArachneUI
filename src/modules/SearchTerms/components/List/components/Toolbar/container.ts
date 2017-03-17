@@ -5,6 +5,7 @@ import { reduxForm } from 'redux-form';
 import { forms } from 'modules/SearchTerms/const';
 import * as URI from 'urijs';
 import { get } from 'lodash';
+import actions from 'modules/SearchTerms/actions';
 import presenter from './presenter';
 
 import { IToolbarProps, IToolbarStateProps, IToolbarDispatchProps } from './presenter';
@@ -23,17 +24,20 @@ function mapStateToProps(state: Object): IToolbarStateProps {
   		query: '',
   	},
   });
+  const filterParams = get(state, 'form.filter.values.filter', { page: 0, pageSize: 1 });
 
   return {
   	initialValues: {
   		searchString: get(locationSearch, 'query.query') || '',
   	},
   	locationSearch,
+    filterParams,
   };
 }
 
 const mapDispatchToProps = {
   search: (address: string) => goToPage(address),
+  updateFacets: actions.facets.updateFacets,
 };
 
 function mergeProps(
@@ -48,7 +52,14 @@ function mergeProps(
 		filter: (data: { searchString: string }) => {
 			const currentAddress = new URI(`${stateProps.locationSearch.pathname}${stateProps.locationSearch.search}`);
       currentAddress.setSearch('query', data.searchString);
-      dispatchProps.search(currentAddress.resource());
+      const search = currentAddress.href();
+      dispatchProps.search(search);
+      const filterParams = {
+        ...stateProps.filterParams,
+        query: data.searchString,
+      };
+
+      dispatchProps.updateFacets(filterParams);
 		},
 	};
 }

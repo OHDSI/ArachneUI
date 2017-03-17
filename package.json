@@ -9,7 +9,7 @@
   "author": "Odysseus Team",
   "devDependencies": {
     "@types/classnames": "^0.0.32",
-    "@types/core-js": "^0.9.35",
+    "@types/core-js": "0.9.35",
     "@types/node": "^7.0.4",
     "@types/react": "^15.0.6",
     "@types/react-dom": "^0.14.22",

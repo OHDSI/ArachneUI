@@ -33,7 +33,7 @@ function SearchTermsList(props: ISearchTermProps) {
         </div>
       </div>
       <div {...classes({ element: 'content', extra: 'row'})}>
-        <div {...classes({ element: 'facets-wrapper', extra: 'col-xs-3 col-md-3' })}>
+        <div {...classes({ element: 'facets-wrapper', extra: 'col-md-3' })}>
           <Facets />
         </div>
         <div {...classes({ element: 'results-wrapper', extra: 'col-xs-9 col-md-9' } )}>

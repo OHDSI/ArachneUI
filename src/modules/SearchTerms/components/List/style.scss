@@ -11,10 +11,13 @@
     &__facets-wrapper {
         display: flex;
         padding-right: 0;
+        max-width: 300px;
     }
 
     &__results-wrapper {
       overflow-y: scroll;
+      max-width: calc(100% - 300px);
+      flex-basis: 90%;
     }
 
     &__content {

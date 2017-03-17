@@ -7,16 +7,19 @@ import {
 } from 'arachne-components';
 import { push } from 'react-router-redux';
 import { locationDescriptor } from 'modules/SearchTerms/components/List/presenter';
+import { searchParams } from 'modules/SearchTerms/actions/termList';
 
 require('./style.scss');
 
 interface IToolbarStateProps {
   initialValues: { [key: string]: Object };
   locationSearch: locationDescriptor;
+  filterParams: searchParams,
 }
 
 interface IToolbarDispatchProps {
   search: (address: string) => typeof push;
+  updateFacets: (params: searchParams) => (dispatch: Function) => any;
 }
 
 interface IToolbarProps extends IToolbarStateProps, IToolbarDispatchProps {
