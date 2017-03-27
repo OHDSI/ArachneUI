@@ -61,6 +61,9 @@ function Facets(props: IFacets) {
     clearFilter,
   } = props;
   const classes = BEMHelper('search-facets');
+  const submitBtn = {
+    label: 'Search',
+  };
 
   return (
     <div {...classes()}>
@@ -71,6 +74,8 @@ function Facets(props: IFacets) {
         sortingEnabled={false}
         doSubmit={filter}
         doClear={clearFilter}
+        submitBtnConfig={submitBtn}
+        emptyOptionsDisabled={false}
         {...props}
       />
     </div>

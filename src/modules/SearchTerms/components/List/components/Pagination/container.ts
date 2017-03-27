@@ -33,7 +33,8 @@ function mapStateToProps(state: Object, ownProps: IPaginationOwnProps): IPaginat
     pathname: paths.termsList(),
     search: '',
   });
-  const totalCount = get(state, 'searchTerms.terms.queryResult.totalElements', 0);
+  const totalCount = numeral(get(state, 'searchTerms.terms.queryResult.totalElements', 0))
+    .format('0,0');
   const pageSizeSelectOptions: Array<IPageSizeSelectOption> = [
     {
       label: 15,

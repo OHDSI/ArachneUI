@@ -6,7 +6,7 @@
     "moduleResolution": "node",
     "baseUrl": "src",
     "allowSyntheticDefaultImports": true,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "sourceMap": true,
     "outDir": "ts-build",
     "jsx": "react"

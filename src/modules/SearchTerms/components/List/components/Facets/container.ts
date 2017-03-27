@@ -37,7 +37,7 @@ function mapStateToProps(state: Object): IFacetStateProps {
     search: '',
   });
   const pageSize = get(state, 'searchTerms.termList.data.pageSize', resultsPageSize);
-  const query = get(state, 'routing.locationBeforeTransitions.query.query', '');
+  const query = get(state, 'form.toolbar.values.searchString', '');
   const initialValues = selectors.getFilterInitialValues(state);
 
   return {
