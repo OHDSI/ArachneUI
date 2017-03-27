@@ -10,11 +10,11 @@ import { NavigateAction } from 'react-router-redux';
 import BEMHelper from 'services/BemHelper';
 import { paths } from 'modules/SearchTerms/const';
 import { get } from 'lodash';
+import TermConnections from './components/Connections';
 
 require('./style.scss');
 
 interface ITermStateProps {
-  connections: any;
   details: any;
   isLoading: boolean;
   name: string;
@@ -32,7 +32,6 @@ interface ITermProps extends ITermStateProps, ITermDispatchProps {
 
 function Term(props: ITermProps) {
   const {
-    connections,
     details,
     goBack,
     isLoading,
@@ -46,7 +45,7 @@ function Term(props: ITermProps) {
         <Link onClick={goBack} {...classes('back-button')}>keyboard_backspace</Link>
         <span>{name}</span>
       </div>
-      <div className='row'>
+      <div {...classes({ element: 'content', extra: 'row' })}>
         <Panel
           {...classes({ element: 'details-wrapper', extra: 'col-xs-12 col-md-4' })}
           title='Details'
@@ -82,12 +81,12 @@ function Term(props: ITermProps) {
             </ListItem>
           </ul>
         </Panel>
-        {/* <Panel
+        <Panel
           {...classes({ element: 'connections-wrapper', extra: 'col-xs-12 col-md-7'})}
           title='Term connections'
          >
-          
-        </Panel> */}
+           <TermConnections />
+        </Panel>
       </div>
       <LoadingPanel active={isLoading} />
     </div>

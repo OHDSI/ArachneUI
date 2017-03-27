@@ -4,7 +4,6 @@ import actions from 'modules/SearchTerms/actions';
 import { goBack } from 'react-router-redux';
 import { get } from 'lodash';
 import presenter from './presenter';
-import selectors from './selectors';
 import {
 	ITermProps,
 	ITermStateProps,
@@ -32,10 +31,8 @@ function mapStateToProps(state: Object, ownProps: ITermRoute): ITermStateProps {
 	const termId = parseInt(ownProps.routeParams.termId, 0);
 	const name = get(state, 'searchTerms.terms.data.name', 'Term');
 	const details = get(state, 'searchTerms.terms.data', {});
-	const connections = selectors.getConnections(state);
 
 	return {
-		connections,
 		details,
 		isLoading,
 		name,
@@ -45,7 +42,7 @@ function mapStateToProps(state: Object, ownProps: ITermRoute): ITermStateProps {
 
 const mapDispatchToProps = {
 	fetch: actions.termList.fetch,
-	goBack: goBack,
+	goBack,
 };
 
 export default connect<ITermStateProps, ITermDispatchProps, {}>(
