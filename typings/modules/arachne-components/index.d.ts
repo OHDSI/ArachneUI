@@ -20,9 +20,13 @@ declare module 'arachne-components' {
 		class Table extends React.Component<any, any> {}
 		class TableCellLink extends React.Component<any, any> {}
 		class TableCellText extends React.Component<any, any> {}
+		class Checkbox extends React.Component<any, any> {}
+		class Modal extends React.Component<any, any> {}
 		module ModalUtils {			
 			const connect: Function;
-			const actions: Object;
+			const actions: {
+				toggle: Function;
+			};
 			const reducer: Reducer<any>;
 		}
 	}

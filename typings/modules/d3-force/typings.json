@@ -1,0 +1,8 @@
+{
+  "resolution": "main",
+  "tree": {
+    "src": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/c633e6b9b78b5a4dfd8c0716b3be654999cc0045/d3-force/index.d.ts",
+    "raw": "registry:dt/d3-force#1.0.0+20161203032801",
+    "typings": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/c633e6b9b78b5a4dfd8c0716b3be654999cc0045/d3-force/index.d.ts"
+  }
+}
