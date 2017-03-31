@@ -8,7 +8,7 @@ interface Vocabulary {
   name: string;
   required: boolean;
   update: string;
-  index: string;
+  index: number;
 
   isCheckable: boolean;
   isChecked: boolean;

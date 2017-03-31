@@ -47,7 +47,7 @@ function DownloadCheckbox(props: IDownloadCheckboxProps) {
   const { options, /*redux-form*/ input } = props;
   return (<Checkbox
       className={options.className}
-      isChecked={input.value === 'on'}
+      isChecked={input.value}
       onChange={input.onChange}
     />);
 }
@@ -65,10 +65,10 @@ function Results(props: IResultsProps & Form<{}, {}, {}>) {
     vocabularies,
     sorting,
     setSorting,
-    toggleAll,
+    toggleAllCheckboxes,
   } = props;
   const classes = BEMHelper('vocabularies');
-  const selectAllButton = <Checkbox onChange={toggleAll} isChecked={areAllRowsChecked} />;
+  const selectAllButton = <Checkbox onChange={toggleAllCheckboxes} isChecked={areAllRowsChecked} />;
 
   return (
     <div {...classes()}>
