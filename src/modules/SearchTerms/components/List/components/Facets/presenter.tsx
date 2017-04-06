@@ -1,7 +1,7 @@
 import * as React from 'react';
 import BEMHelper from 'services/BemHelper';
 import { Action } from 'redux';
-import { FormProps } from 'redux-form';
+import { FormProps, DataShape } from 'redux-form';
 import {
   FacetedSearchPanel,
 } from 'arachne-components';
@@ -36,7 +36,7 @@ type IFacet = {
 interface IFacetStateProps {
   facets: IFacet[];
   filterFormState: initialFormState;
-  initialValues: initialFormState;
+  initialValues: DataShape;
   pageSize: number;
   currentAddress: locationDescriptor;
   query: string;
@@ -50,14 +50,14 @@ interface IFacetDispatchProps {
 
 interface IFacets extends FormProps<{}, {}, {}>, IFacetStateProps, IFacetDispatchProps {
   clearFilter: Function;
-  filter: Function;
+  doFilter: Function;
   doUpdateFacets: Function;
 }
 
 function Facets(props: IFacets) {
   const {
     facets,
-    filter,
+    doFilter,
     clearFilter,
   } = props;
   const classes = BEMHelper('search-facets');
@@ -72,7 +72,7 @@ function Facets(props: IFacets) {
         showRefineSearch={false}
         fullTextSearchEnabled={false}
         sortingEnabled={false}
-        doSubmit={filter}
+        doSubmit={doFilter}
         doClear={clearFilter}
         submitBtnConfig={submitBtn}
         emptyOptionsDisabled={false}

@@ -5,7 +5,7 @@ import {
   Select,
 } from 'arachne-components';
 import { cdmVersions } from 'modules/Vocabulary/const';
-import { Field, Form } from 'redux-form';
+import { Field, FormProps } from 'redux-form';
 import { DownloadParams } from 'modules/Vocabulary/actions/download';
 
 require('./style.scss');
@@ -62,7 +62,7 @@ function selection(props: IReduxFieldProps) {
     />);
 }
 
-function ControlPanel(props: IPanelProps & Form<{}, {}, {}>) {
+function ControlPanel(props: IPanelProps & FormProps<{}, {}, {}>) {
   const {
     cdmVersion,
     download,

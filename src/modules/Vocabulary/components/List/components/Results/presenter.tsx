@@ -7,7 +7,7 @@ import {
   Checkbox,
 } from 'arachne-components';
 import { push } from 'react-router-redux';
-import { Field, Form } from 'redux-form';
+import { Field, FormProps } from 'redux-form';
 import { Vocabulary } from './selectors';
 
 require('./style.scss');
@@ -58,7 +58,7 @@ function CellChecked(props: any) {
     : <span className={`${className}--disabled`}>vpn_key</span>;
 }
 
-function Results(props: IResultsProps & Form<{}, {}, {}>) {
+function Results(props: IResultsProps & FormProps<{}, {}, {}>) {
   const {
     areAllRowsChecked,
     vocabularies,
