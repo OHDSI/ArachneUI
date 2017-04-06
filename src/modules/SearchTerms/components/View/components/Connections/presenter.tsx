@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as d3 from 'd3-force';
 import * as d3select from 'd3-selection';
-import * as d3transition from 'd3-transition';
 import BEMHelper from 'services/BemHelper';
 
 require('./style.scss');
@@ -25,18 +24,19 @@ type GraphLink = {
 
 interface ITermConnectionsProps {
   terms: Array<GraphNode>;
-  links: Array<GraphConnection | GraphLink>;
+  links: Array<GraphConnection>;
 };
 
 interface IGraph extends ITermConnectionsProps {
   container: SVGElement;
+  connections: Array<GraphLink>;
 };
 
 function updateGraph(graph: IGraph) {
   const {
     container,
     terms,
-    links,
+    connections,
   } = graph;
   // Update the nodes…
   let node = d3select.select(container).selectAll("circle")
@@ -44,7 +44,7 @@ function updateGraph(graph: IGraph) {
 
   // Update the links…
   let link = d3select.select(container).selectAll("line")
-      .data(links, (d: GraphLink) => d.target.x);
+      .data(connections, (d: GraphLink) => d.target.x);
 
   // Enter any new links.
   link.enter().insert("svg:line", ".node")
@@ -78,7 +78,7 @@ function printGraph(container: SVGElement, terms: Array<GraphNode>, links: Array
     .on("tick", updateGraph.bind(null, {
       container,
       terms,
-      links,
+      connections: links,
     }))
     .force('link', d3.forceLink(links).id((d: GraphNode) => d.id))
     .force('center', d3.forceCenter(width/2, height/2))

@@ -21,7 +21,7 @@ interface IPaginationStateProps {
   pageSizeSelectOptions: IPageSizeSelectOption[];
   pageSize: number;
   locationSearch: locationDescriptor;
-  totalCount: number;
+  totalCount: string;
 };
 
 interface IPaginationDispatchProps {

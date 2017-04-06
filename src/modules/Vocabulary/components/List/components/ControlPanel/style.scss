@@ -1,0 +1,38 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+  &vocabulary-control-panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: $grey-light;
+    padding: 1rem 1.5rem;
+
+    &__cdm-version-select {
+      width: 15rem;
+      margin-left: 1rem;
+      font-weight: $font-weight-bold;
+    }
+
+    &__download {
+      display: flex;
+    }
+
+    &__selection {
+      margin-right: 2rem;
+      width: 15rem;
+      
+      & .ac-select-control__arrow-wrapper {
+        background: $purple-darker;
+      }
+    }
+
+    &__download-button {
+      background: $purple-darker;
+
+      &:hover {
+        background: $purple;
+      }
+    }
+  }
+}
