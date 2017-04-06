@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import { ModalUtils } from 'arachne-components';
 import { modal } from 'modules/Vocabulary/const';
 import presenter from './presenter';
+import { IModalProps } from './presenter';
 
-class ModalConfirmDownload extends Component<{}, {}> {
+class ModalConfirmDownload extends Component<IModalProps, {}> {
   render() {
     return presenter(this.props);
   }
@@ -17,7 +18,7 @@ function mapStateToProps(state) {
 const mapDispatchToProps = {
 };
 
-function mergeProps(stateProps, dispatchProps, ownProps) {
+function mergeProps(stateProps, dispatchProps, ownProps): IModalProps {
   return {
     ...stateProps,
     ...ownProps,
@@ -27,7 +28,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
 
 const ReduxModalWindow = ModalUtils.connect({ name: modal.download })(ModalConfirmDownload);
 
-export default connect(
+export default connect<{}, {}, {}>(
 	mapStateToProps,
 	mapDispatchToProps,
 	mergeProps
