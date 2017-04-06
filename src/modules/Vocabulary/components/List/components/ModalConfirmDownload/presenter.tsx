@@ -2,7 +2,11 @@ import * as React from 'react';
 import BEMHelper from 'services/BemHelper';
 import { Modal } from 'arachne-components';
 
-function ModalConfirmDownload(props: Modal) {
+interface IModalProps {
+	modal: string;
+};
+
+function ModalConfirmDownload(props: IModalProps) {
   const {
     modal,
   } = props;
@@ -14,3 +18,4 @@ function ModalConfirmDownload(props: Modal) {
 }
 
 export default ModalConfirmDownload;
+export { IModalProps };

@@ -27,9 +27,10 @@ interface ITermConnectionsProps {
   links: Array<GraphConnection>;
 };
 
-interface IGraph extends ITermConnectionsProps {
+interface IGraph {
   container: SVGElement;
-  connections: Array<GraphLink>;
+  terms: any;
+  connections: any;
 };
 
 function updateGraph(graph: IGraph) {
@@ -40,11 +41,11 @@ function updateGraph(graph: IGraph) {
   } = graph;
   // Update the nodes…
   let node = d3select.select(container).selectAll("circle")
-    .data(terms, (d: GraphNode) => d.x);
+    .data(terms, (d: GraphNode) => d.x.toString());
 
   // Update the links…
   let link = d3select.select(container).selectAll("line")
-      .data(connections, (d: GraphLink) => d.target.x);
+      .data(connections, (d: GraphLink) => d.target.x.toString());
 
   // Enter any new links.
   link.enter().insert("svg:line", ".node")
@@ -68,7 +69,7 @@ function updateGraph(graph: IGraph) {
   node.exit().remove();
 }
 
-function printGraph(container: SVGElement, terms: Array<GraphNode>, links: Array<GraphLink>) {
+function printGraph(container: SVGElement, terms: Array<GraphNode>, links: Array<GraphConnection>) {
   let width: number, height: number;
   width = container.getBoundingClientRect().width,
   height = container.getBoundingClientRect().height;

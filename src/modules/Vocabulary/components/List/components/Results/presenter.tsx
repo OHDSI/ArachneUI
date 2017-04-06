@@ -23,7 +23,6 @@ interface ICellProps {
   className: string;
   isCheckable: boolean;
   name: string;
-  onChange: Function;
 };
 
 interface IResultsStateProps {
@@ -52,10 +51,10 @@ function DownloadCheckbox(props: IDownloadCheckboxProps) {
     />);
 }
 
-function CellChecked(props: ICellProps) {
-  const { className, isCheckable, name, onChange } = props;
+function CellChecked(props: any) {
+  const { className, isCheckable, name } = props;
   return isCheckable
-    ? <Field component={DownloadCheckbox} options={{ className, onChange }} name={name} />
+    ? <Field component={DownloadCheckbox} options={{ className }} name={name} />
     : <span className={`${className}--disabled`}>vpn_key</span>;
 }
 
