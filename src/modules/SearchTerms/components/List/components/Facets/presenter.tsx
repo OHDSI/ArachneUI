@@ -48,7 +48,7 @@ interface IFacetDispatchProps {
   updateFacets: (params: searchParams) => (dispatch: Function) => any;
 }
 
-interface IFacets extends FormProps<{}, {}, {}>, IFacetStateProps, IFacetDispatchProps {
+interface IFacets extends IFacetStateProps, IFacetDispatchProps {
   clearFilter: Function;
   doFilter: Function;
   doUpdateFacets: Function;
