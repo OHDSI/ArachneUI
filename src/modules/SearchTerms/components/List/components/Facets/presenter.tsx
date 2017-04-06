@@ -36,7 +36,7 @@ type IFacet = {
 interface IFacetStateProps {
   facets: IFacet[];
   filterFormState: initialFormState;
-  initialValues: DataShape;
+  initialValues?: DataShape;
   pageSize: number;
   currentAddress: locationDescriptor;
   query: string;
