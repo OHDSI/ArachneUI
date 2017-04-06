@@ -63,7 +63,7 @@ function mergeProps(stateProps: IFacetStateProps, dispatchProps: IFacetDispatchP
     ...stateProps,
     ...dispatchProps,
     ...ownProps,
-    filter: (data: { filter: { [key: number]: string; } }) => {
+    doFilter: (data: { filter: { [key: number]: string; } }) => {
       if (!data.filter) {
         return;
       }

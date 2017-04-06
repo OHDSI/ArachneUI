@@ -4,7 +4,7 @@ import actions from 'modules/Vocabulary/actions';
 import { apiPaths, forms } from 'modules/Vocabulary/const';
 import { get } from 'lodash';
 import { push as goToPage } from 'react-router-redux';
-import { reduxForm, reset, Form } from 'redux-form';
+import { reduxForm, reset, FormProps } from 'redux-form';
 import presenter from './presenter';
 import selectors from './selectors';
 
@@ -17,7 +17,7 @@ import {
 	Vocabulary,
 } from './selectors';
 
-class Results extends Component<IResultsProps & Form<{}, {}, {}>, void> {
+class Results extends Component<IResultsProps & FormProps<{}, {}, {}>, void> {
 	render() {
 		return presenter(this.props);
 	}
