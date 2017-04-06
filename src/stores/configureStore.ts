@@ -3,7 +3,7 @@ import { browserHistory } from 'react-router';
 import { routerMiddleware } from 'react-router-redux';
 import thunk from 'redux-thunk';
 import reduxPromiseMiddleware from 'redux-promise-middleware'; // for feathersjs
-import * as createLogger from 'redux-logger';
+import createLogger from 'redux-logger';
 import createAppReducer from 'reducers';
 
 const logger = createLogger();
