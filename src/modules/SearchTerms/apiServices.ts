@@ -10,6 +10,6 @@ export default <ISearchTermsServices> reduxifyServices(
 	API,
 	{
 		'concepts': 'terms',
-		'concepts/': 'facets',
+		'concepts/facets': 'facets',
 	}
 );
