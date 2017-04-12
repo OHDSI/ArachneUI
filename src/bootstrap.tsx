@@ -64,8 +64,8 @@ function initModule(module: IModule): RouteConfig {
 	return moduleRoute;
 }
 
-function initializeApi() {
-	configureApi();
+function initializeApi(): Promise<any> {
+	return configureApi();
 }
 
 function buildStore() {
@@ -73,18 +73,18 @@ function buildStore() {
 }
 
 function bootstrap() {
-	initializeApi();
+	return initializeApi().then(() => {
+		const store = globalStore = buildStore();
+		const history = syncHistoryWithStore(browserHistory, store);
+		const modulesRoutes: PlainRoute[] = modules.map(initModule);
+		const appRoutes: RouteConfig = buildRoutes(AppContainer, modulesIndexRoute, modulesRoutes);
 
-	const store = globalStore = buildStore();
-	const history = syncHistoryWithStore(browserHistory, store);
-	const modulesRoutes: PlainRoute[] = modules.map(initModule);
-	const appRoutes: RouteConfig = buildRoutes(AppContainer, modulesIndexRoute, modulesRoutes);
-
-	return (
-		<Provider store={store}>
-	    <Router routes={appRoutes} history={history} />
-	  </Provider>
-	);
+		return (
+			<Provider store={store}>
+		    <Router routes={appRoutes} history={history} />
+		  </Provider>
+		);
+	});	
 }
 
 export default bootstrap;
