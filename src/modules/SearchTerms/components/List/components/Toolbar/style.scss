@@ -4,6 +4,7 @@
 
   &search-toolbar {
     background: $black;
+    display: flex;
     margin: 0;
     padding: 1rem 0;
     position: relative;
@@ -14,22 +15,24 @@
 	    align-items: center;
   		color: $white;
   		display: flex;
+      min-width: 255px;
   	}
 
   	&__title {
   		width: 100%;
-  		margin-left: 1.5rem;
+  		margin-left: 2rem;
   	}
 
   	&__search-string {
-      margin: 0 0.5rem 0 -0.5rem;
-      padding-right: 1.5rem;
+      margin-right: 4rem;
+      flex-grow: 1;
+      position: relative;
   	}
 
     &__search-button-wrapper {
-      margin-top: 11px;
+      margin-top: 0px;
       position: absolute;
-      right: 3rem;
+      right: 0.5rem;
       top: 0;
     }
 
