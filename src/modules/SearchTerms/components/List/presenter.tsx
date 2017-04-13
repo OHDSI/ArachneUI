@@ -27,16 +27,12 @@ function SearchTermsList(props: ISearchTermProps) {
 
   return (    
     <div {...classes()}>
-      <div className='row'>
-        <div {...classes({ element: 'toolbar-wrapper', extra: 'col-xs-12 col-md-12' })}>
-          <Toolbar />
-        </div>
-      </div>
-      <div {...classes({ element: 'content', extra: 'row'})}>
-        <div {...classes({ element: 'facets-wrapper', extra: 'col-md-3' })}>
+      <Toolbar />
+      <div {...classes({ element: 'content'})}>
+        <div {...classes({ element: 'facets-wrapper' })}>
           <Facets />
         </div>
-        <div {...classes({ element: 'results-wrapper', extra: 'col-xs-9 col-md-9' } )}>
+        <div {...classes({ element: 'results-wrapper' } )}>
           <Results />
         </div>
       </div>

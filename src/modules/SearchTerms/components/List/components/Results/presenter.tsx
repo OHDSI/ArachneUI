@@ -90,23 +90,23 @@ function Results(props: IResultProps) {
       <Table
         {...classes('table')}
         data={searchResults}
-        mods={['hover', 'padded', 'selectable']}
+        mods={['hover', 'selectable']}
         onRowClick={showResult}
         sorting={sorting}
         setSorting={setSorting}
       >
         <Cell
-          {...classes('th-id')}
+          {...classes('id')}
           header='ID'
           field='id'
         />
         <Cell
-          {...classes('th-code')}
+          {...classes('code')}
           header='CODE'
           field='code'
         />
         <CellLink
-          {...classes('th-name')}
+          {...classes('name')}
           header='NAME'
           field='name'
           props={(result: { [key: string]: string }) => {
@@ -120,28 +120,28 @@ function Results(props: IResultProps) {
           }}
         />
         <Cell
-          {...classes('th-class')}
+          {...classes('class')}
           header='CLASS'
           field='className'
         />
         <Cell
-          {...classes('th-standard')}
-          header='Standard concept'
+          {...classes('concept')}
+          header='Concept'
           field='standardConcept'
         />
         <Cell
-          {...classes('th-invalid')}
-          header='Invalid reason'
+          {...classes('invalid')}
+          header='Validity'
           field='invalidReason'
         />
         <Cell
-          {...classes('th-domain')}
+          {...classes('domain')}
           header='DOMAIN'
           field='domain'
         />
         <Cell
-          {...classes('th-vocabulary')}
-          header='VOCABULARY'
+          {...classes('vocabulary')}
+          header='Vocab'
           field='vocabulary'
         />
       </Table>

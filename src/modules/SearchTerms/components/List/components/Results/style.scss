@@ -2,8 +2,6 @@
 
 .#{$namespace} {
   &search-results {
-  	margin: 0 -0.5rem;
-
 		&__management-panel {
   		display: flex;
   		padding: 1rem 1.5rem;
@@ -26,32 +24,52 @@
   	}
 
     &__table {
+      font-size: 1.3rem;
       table-layout: fixed;
     }
 
-    &__th-id-th {
-      width: 8%;
+    &__id-th,
+    &__id-td,
+    &__code-th,
+    &__code-td,
+    &__name-th,
+    &__name-td,
+    &__class-th,
+    &__class-td,
+    &__concept-th,
+    &__concept-td,
+    &__invalid-th,
+    &__invalid-td,
+    &__domain-th,
+    &__domain-td,
+    &__vocabulary-th,
+    &__vocabulary-td {
+      padding: 10px;
     }
-    &__th-code-th {
-      width: 8%;
+
+    &__id-th {
+      width: 7.5%;
     }
-    &__th-name-th {
-      width: 18%;
-    }
-    &__th-class-th {
-      width: 8%;
-    }
-    &__th-standard-th {
-      width: 20%;
-    }
-    &__th-invalid-th {
-      width: 17%;
-    }
-    &__th-domain-th {
+    &__code-th {
       width: 10%;
     }
-    &__th-vocabulary-th {
-      width: 15%;
+    &__name-th {
+      width: 30%;
+    }
+    &__class-th {
+      width: 10%;
+    }
+    &__concept-th {
+      width: 10%;
+    }
+    &__invalid-th {
+      width: 10%;
+    }
+    &__domain-th {
+      width: 10%;
+    }
+    &__vocabulary-th {
+      width: 10%;
     }
 
   }
