@@ -40,10 +40,15 @@ function fetch(id: number) {
   return services.terms.get(id);
 }
 
+function fetchRelations(conceptId: number) {
+  return services.relations.get(conceptId);
+}
+
 export default {
   changePageSize,
   load,
   fetch,
+  fetchRelations,
 };
 
 export { searchParams };

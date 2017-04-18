@@ -15,6 +15,8 @@ type GraphNode = {
   fx?: number;
   fy?: number;
   weight?: number;
+  isCurrent?: boolean;
+  name: string;
 };
 
 type GraphConnection = {
@@ -27,9 +29,16 @@ type GraphLink = {
   target: GraphNode;
 };
 
-interface ITermConnectionsProps {
+interface ITermConnectionsStateProps {
   terms: Array<GraphNode>;
   links: Array<GraphConnection>;
+};
+
+interface ITermConnectionsDispatchProps {
+  goToTerm: (id: number) => any;
+};
+
+interface ITermConnectionsProps extends ITermConnectionsStateProps, ITermConnectionsDispatchProps {
 };
 
 interface IGraph {
@@ -64,18 +73,22 @@ function updateGraph(graph: IGraph) {
     connections,
   } = graph;
   connections
-      .attr("x1", (d: GraphLink) => d.source.x)
-      .attr("y1", (d: GraphLink) => d.source.y)
-      .attr("x2", (d: GraphLink) => d.target.x)
-      .attr("y2", (d: GraphLink) => d.target.y);
+    .attr("x1", (d: GraphLink) => d.source.x)
+    .attr("y1", (d: GraphLink) => d.source.y)
+    .attr("x2", (d: GraphLink) => d.target.x)
+    .attr("y2", (d: GraphLink) => d.target.y);
 
   terms
-      .attr("cx", (d: GraphNode) => d.x)
-      .attr("cy", (d: GraphNode) => d.y);
+    .attr("transform", (d: GraphNode) => `translate(${d.x}, ${d.y})`);
 
 }
 
-function printGraph(container: SVGElement, terms: Array<GraphNode>, links: Array<GraphConnection>) {
+function printGraph(
+  container: SVGElement,
+  terms: Array<GraphNode>,
+  links: Array<GraphConnection>,
+  redirect: Function,
+ ) {
   let width: number, height: number;
   width = container.getBoundingClientRect().width,
   height = container.getBoundingClientRect().height;
@@ -92,17 +105,25 @@ function printGraph(container: SVGElement, terms: Array<GraphNode>, links: Array
     .force('center', d3.forceCenter(width/2, height/2))
     .force('charge', d3.forceManyBody());
 
-  let nodes = d3select.select(container).selectAll("circle")
-    .data(terms, (d: GraphNode) => d.x.toString())
+  let nodes = d3select.select(container).selectAll("g")
+    .data(terms)
     .enter()
-    .insert("svg:circle", ".node")
-    .attr("class", "node")
-    .attr("r", (d: GraphNode) => d.weight || 4.5)
+    .insert("svg:g");
+
+  nodes.append("svg:circle")
+    .attr("class", (d: GraphNode) => d.isCurrent ? 'node current' : 'node')
+    .attr("r", (d: GraphNode) => 10)
+    .on('click', (d: GraphNode) => redirect(d.id))
     .call(drag);
+
+  nodes.append("svg:text")
+    .attr("x", 12)
+    .attr("y", ".35em")
+    .text((d: GraphNode) => d.name);
 
   let connections = d3select.select(container).selectAll("line")
     .data(links)
-    .enter().insert("svg:line", ".node")
+    .enter().append("svg:line")
     .attr("class", "link");
 
   simulation.on("tick", updateGraph.bind(null, {
@@ -113,14 +134,14 @@ function printGraph(container: SVGElement, terms: Array<GraphNode>, links: Array
 }
 
 function TermConnections(props: ITermConnectionsProps) {
-  const { terms, links } = props;
+  const { terms, links, goToTerm } = props;
   const classes = BEMHelper('term-connections');
 
   return <svg
     {...classes()}
     ref={element => {
       if (element) {
-        printGraph(element, terms, links);
+        printGraph(element, terms, links, goToTerm);
       }
     }}
   ></svg>;
@@ -128,6 +149,8 @@ function TermConnections(props: ITermConnectionsProps) {
 
 export default TermConnections;
 export {
+  ITermConnectionsStateProps,
+  ITermConnectionsDispatchProps,
   ITermConnectionsProps,
   GraphNode,
   GraphConnection,

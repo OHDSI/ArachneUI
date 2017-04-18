@@ -1,11 +1,13 @@
 import { connect } from 'react-redux';
 import { Component } from 'react';
-import actions from 'modules/SearchTerms/actions';
-import { goBack } from 'react-router-redux';
+import { goBack, push as goToPage } from 'react-router-redux';
+import { paths } from 'modules/SearchTerms/const';
 import { get } from 'lodash';
 import presenter from './presenter';
 import selectors from './selectors';
 import {
+  ITermConnectionsStateProps,
+  ITermConnectionsDispatchProps,
   ITermConnectionsProps,
 } from './presenter';
 
@@ -15,7 +17,7 @@ class TermConnections extends Component<ITermConnectionsProps, {}> {
   }
 }
 
-function mapStateToProps(state: Object): ITermConnectionsProps {
+function mapStateToProps(state: Object, ownProps: Object): ITermConnectionsStateProps {
   const connections = selectors.getConnections(state);
 
   return {
@@ -25,9 +27,10 @@ function mapStateToProps(state: Object): ITermConnectionsProps {
 }
 
 const mapDispatchToProps = {
+  goToTerm: (id: number) => goToPage(paths.term(id)),
 };
 
-export default connect<ITermConnectionsProps, {}, {}>(
+export default connect<ITermConnectionsStateProps, ITermConnectionsDispatchProps, {}>(
   mapStateToProps,
   mapDispatchToProps
 )(TermConnections);
