@@ -22,6 +22,13 @@ class Term extends Component<ITermProps, {}> {
 		this.props.fetchRelations(this.props.termId);
 	}
 
+  componentWillReceiveProps(props: ITermProps) {
+    if (this.props.termId !== props.termId) {
+			this.props.fetch(props.termId);
+      this.props.fetchRelations(props.termId);
+    }
+  }
+
 	render() {
 		return presenter(this.props);
 	}
