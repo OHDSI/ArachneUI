@@ -19,6 +19,7 @@ interface ITermRoute {
 class Term extends Component<ITermProps, {}> {
 	componentWillMount() {
 		this.props.fetch(this.props.termId);
+		this.props.fetchRelations(this.props.termId);
 	}
 
 	render() {
@@ -42,6 +43,7 @@ function mapStateToProps(state: Object, ownProps: ITermRoute): ITermStateProps {
 
 const mapDispatchToProps = {
 	fetch: actions.termList.fetch,
+	fetchRelations: actions.termList.fetchRelations,
 	goBack,
 };
 
