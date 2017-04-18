@@ -16,6 +16,7 @@ const actionTypes = keyMirror({
 
 const paths = {
   vocabsList: () => '/vocabulary/list',
+  history: () => '/vocabulary/download-history',
 };
 
 const apiPaths = {

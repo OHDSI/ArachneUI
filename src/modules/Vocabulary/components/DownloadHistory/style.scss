@@ -1,0 +1,17 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+  &download-history {
+  	display: flex;
+  	flex-direction: column;
+    
+    &__download-button {
+    	background: $purple-darker;
+    	color: $white;
+
+    	&:hover {
+    		background: $purple;
+    	}
+    }
+  }
+}

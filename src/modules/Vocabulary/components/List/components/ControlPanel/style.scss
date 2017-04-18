@@ -29,9 +29,14 @@
 
     &__download-button {
       background: $purple-darker;
+      margin-left: 2rem;
 
       &:hover {
         background: $purple;
+      }
+
+      &--disabled {
+        background: $grey;
       }
     }
   }

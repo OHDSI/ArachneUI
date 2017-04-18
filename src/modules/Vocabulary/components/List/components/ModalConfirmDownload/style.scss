@@ -1,0 +1,25 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+  &confirm-download {
+    min-width: 500px;
+
+    &__actions {
+      padding: 2rem;
+      padding-bottom: 1rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__download-button {
+      margin-bottom: 0.5rem;
+    }
+
+    &__remove-button {
+      color: $blue;
+      font-weight: initial;
+      margin-left: auto;
+      text-transform: initial;
+    }
+  }
+}

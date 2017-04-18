@@ -5,8 +5,8 @@ import { actionTypes } from 'modules/Vocabulary/const';
 import { IAppAction } from 'actions';
 
 type DownloadParams = {
-	cdm_version: string;
-	ids: Array<string>;
+	cdmVersion: string;
+	ids: Array<number>;
 };
 
 function toggleVocabsList(value: boolean): IAppAction<{ allChecked: boolean }> {
