@@ -26,9 +26,7 @@ interface IDownloadRequest {
 interface IHistoryItem extends IVocabulary {
   date?: string;
   link?: string;
-  tableRowMods: {
-    selected: boolean
-  };
+  tableRowClass: string;
 };
 
 interface IDownloadHistoryStateProps {

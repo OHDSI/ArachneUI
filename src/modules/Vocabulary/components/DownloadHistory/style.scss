@@ -13,5 +13,11 @@
     		background: $purple;
     	}
     }
+
+    &__row {
+      &--selected {
+        background: $grey-light;
+      }
+    }
   }
 }
