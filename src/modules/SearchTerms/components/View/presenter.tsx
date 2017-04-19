@@ -24,6 +24,7 @@ interface ITermStateProps {
 interface ITermDispatchProps {
   fetch: (termId: number) => (dispatch: Function) => any;
   goBack: () => NavigateAction;
+  fetchRelations: (termId: number) => (dispatch: Function) => any;
 };
 
 interface ITermProps extends ITermStateProps, ITermDispatchProps {

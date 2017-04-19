@@ -10,6 +10,10 @@
 		  stroke: $black;
 		  fill: #fd8c3c;
 		  stroke-width: .5px;
+
+		  &.current {
+		  	fill: $red;
+		  }
 		}
 
 		& line.link {
