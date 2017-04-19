@@ -12,6 +12,6 @@ export default <ISearchTermsServices> reduxifyServices(
 	{
 		'vocabularies': 'vocabularies',
 		'vocabularies/save': 'download',
-		'vocabularies/history': 'history',
+		'vocabularies/downloads': 'history',
 	}
 );

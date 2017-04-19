@@ -66,8 +66,6 @@ function VocabsList(props: IDownloadHistoryProps) {
         {...classes('table')}
         data={history}
         mods={['hover', 'padded', 'selectable']}
-        sorting={'asc'}
-        setSorting={()=>{}}
        >
           <TableCellText
             header=''

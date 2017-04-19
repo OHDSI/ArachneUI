@@ -75,23 +75,21 @@ function ControlPanel(props: IPanelProps & FormProps<{}, {}, {}>) {
         options={{...classes('cdm-version-select')}}
         name='cdmVersion'
       />
-      <div {...classes('download')}>
-        <Field
-          component={selection}
-          options={{...classes('selection')}}
-          name='selection'
-        />
-        <Button
-          mods={['submit', 'rounded']}
-          link={paths.history()}
-        >Show History</Button>
-        <Button
-          {...classes({ element: 'download-button', modifiers: { disabled: !selectedVocabularies.length } })}
-          mods={['submit', 'rounded']}
-          onClick={download}
-          disabled={!selectedVocabularies.length}
-        >Download vocabularies</Button>
-      </div>
+      <Field
+        component={selection}
+        options={{...classes('selection')}}
+        name='selection'
+      />
+      <Button
+        mods={['submit', 'rounded']}
+        link={paths.history()}
+      >Show History</Button>
+      <Button
+        {...classes({ element: 'download-button', modifiers: { disabled: !selectedVocabularies.length } })}
+        mods={['submit', 'rounded']}
+        onClick={download}
+        disabled={!selectedVocabularies.length}
+      >Download vocabularies</Button>
     </div>
     );
 }

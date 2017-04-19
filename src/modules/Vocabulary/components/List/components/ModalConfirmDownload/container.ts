@@ -26,7 +26,7 @@ function mapStateToProps(state: any): IModalStateProps {
   });
   const vocabs = selectors.getVocabs(state);
   const selectedVocabs = vocabs.filter(voc => selectedVocabIds.includes(voc.id));
-  const cdmVersion = get(state, `form.${forms.downloadSettings}.values.cdmVersion`, '4.5');
+  const cdmVersion = get(state, `form.${forms.downloadSettings}.values.cdmVersion`, '4.5') || '4.5';
 
 	return {
     selectedVocabs,
@@ -60,8 +60,8 @@ function mergeProps(
     download: () => {
       dispatchProps.requestDownload({
         cdmVersion: stateProps.cdmVersion,
-        ids: stateProps.selectedVocabIds,
-      }).then(() => dispatchProps.showHistory()()).catch(() => {});
+        ids: stateProps.selectedVocabIds.join(','),
+      }).then(() => dispatchProps.showHistory()).catch(() => {});
     },
   };
 }

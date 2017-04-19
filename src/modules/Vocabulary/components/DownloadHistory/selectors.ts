@@ -3,11 +3,11 @@ import { get } from 'lodash';
 import * as moment from 'moment';
 import { IDownloadRequest, IVocabulary, IHistoryItem } from './presenter';
 
-const getRawHistory = (state: Object) => get(state, 'vocabulary.history.queryResult.content', []);
+const getRawHistory = (state: Object) => get(state, 'vocabulary.history.queryResult') || [];
 
 const getHistory = createSelector(
     getRawHistory,
-    (rawResults) => {
+    (rawResults: Array<IDownloadRequest>) => {
       const history = [];
       let isHighlighted = false;
       rawResults.map((item: IDownloadRequest) => {

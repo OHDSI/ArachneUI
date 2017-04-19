@@ -43,7 +43,7 @@ function ModalConfirmDownload(props: IModalProps) {
     <Modal modal={modal} title='Download summary' mods={['no-padding']}>
     	<div {...classes()}>
 	      {selectedVocabs && selectedVocabs.map((voc: IVocab, index: number) =>
-	      	<ListItem>
+	      	<ListItem key={index}>
 	      		{voc.name}
 	      		<Button {...classes('remove-button')} onClick={() => removeVocabulary(voc.id)}>
 	      			Remove
