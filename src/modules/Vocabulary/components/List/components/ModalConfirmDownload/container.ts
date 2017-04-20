@@ -61,7 +61,9 @@ function mergeProps(
       dispatchProps.requestDownload({
         cdmVersion: stateProps.cdmVersion,
         ids: stateProps.selectedVocabIds.join(','),
-      }).then(() => dispatchProps.showHistory()).catch(() => {});
+      })
+      .then(() => dispatchProps.showHistory())
+      .catch(() => {});
     },
   };
 }
