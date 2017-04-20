@@ -84,7 +84,7 @@ function Results(props: IResultsProps & FormProps<{}, {}, {}>) {
           field='isChecked'
           props={(vocab: Vocabulary) => ({
             isCheckable: vocab.isCheckable,
-            name: `vocabulary[${vocab.index}]`,
+            name: `vocabulary[${vocab.id}]`,
             className: classes({
               element: 'cell',
               modifiers: {

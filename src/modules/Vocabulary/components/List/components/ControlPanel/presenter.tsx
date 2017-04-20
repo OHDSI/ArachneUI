@@ -4,9 +4,8 @@ import {
   Button,
   Select,
 } from 'arachne-components';
-import { cdmVersions } from 'modules/Vocabulary/const';
+import { cdmVersions, paths } from 'modules/Vocabulary/const';
 import { Field, FormProps } from 'redux-form';
-import { DownloadParams } from 'modules/Vocabulary/actions/download';
 
 require('./style.scss');
 
@@ -26,7 +25,6 @@ interface IPanelStateProps {
 
 interface IPanelDispatchProps {
   showConfirmation: () => (dispatch: Function) => any;
-  requestDownload: (params: DownloadParams) => any;
 };
 
 interface IPanelProps extends IPanelStateProps, IPanelDispatchProps {
@@ -66,6 +64,7 @@ function ControlPanel(props: IPanelProps & FormProps<{}, {}, {}>) {
   const {
     cdmVersion,
     download,
+    selectedVocabularies,
   } = props;
   const classes = BEMHelper('vocabulary-control-panel');
 
@@ -76,18 +75,21 @@ function ControlPanel(props: IPanelProps & FormProps<{}, {}, {}>) {
         options={{...classes('cdm-version-select')}}
         name='cdmVersion'
       />
-      <div {...classes('download')}>
-        <Field
-          component={selection}
-          options={{...classes('selection')}}
-          name='selection'
-        />
-        <Button
-          {...classes('download-button')}
-          mods={['submit', 'rounded']}
-          onClick={download}
-        >Download vocabularies</Button>
-      </div>
+      <Field
+        component={selection}
+        options={{...classes('selection')}}
+        name='selection'
+      />
+      <Button
+        mods={['submit', 'rounded']}
+        link={paths.history()}
+      >Show History</Button>
+      <Button
+        {...classes({ element: 'download-button', modifiers: { disabled: !selectedVocabularies.length } })}
+        mods={['submit', 'rounded']}
+        onClick={download}
+        disabled={!selectedVocabularies.length}
+      >Download vocabularies</Button>
     </div>
     );
 }

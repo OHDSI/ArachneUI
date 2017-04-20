@@ -17,11 +17,11 @@ interface Vocabulary {
   };
 };
 
-const getRawVocabs = (state: Object) => get(state, 'vocabulary.vocabularies.queryResult.content', []);
+const getRawVocabs = (state: Object) => get(state, 'vocabulary.vocabularies.queryResult') || [];
 
 const getVocabs = createSelector(
     getRawVocabs,
-    (rawResults) => rawResults.map((vocabulary: Vocabulary, index: number) => ({
+    (rawResults: Array<Vocabulary>) => rawResults.map((vocabulary: Vocabulary, index: number) => ({
       ...vocabulary,
       update: vocabulary.update ? moment(vocabulary.update).format('DD-MMM-YYYY') : '',
       isChecked: false,

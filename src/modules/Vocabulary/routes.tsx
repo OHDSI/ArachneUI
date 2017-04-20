@@ -15,6 +15,10 @@ function rootRoute(path: string): PlainRoute {
         path: 'list',
         component: require('./components/List').default,
       },
+      {
+        path: 'download-history',
+        component: require('./components/DownloadHistory').default,
+      },
     ],
   };
 }

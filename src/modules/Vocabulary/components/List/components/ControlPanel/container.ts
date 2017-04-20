@@ -24,8 +24,8 @@ class ControlPanel extends Component<IPanelProps & FormProps<{}, {}, {}>, void> 
 }
 
 function mapStateToProps(state: Object): IPanelStateProps {
-  const cdmVersion = get(state, `form.${forms.downloadSettings}.values.cdmVersion`, '');
   const selectedVocabularies = Object.keys(get(state, `form.${forms.download}.values.vocabulary`, {}));
+  const cdmVersion = get(state, `form.${forms.downloadSettings}.values.cdmVersion`, '4.5');
 
   return {
     cdmVersion,
@@ -39,7 +39,6 @@ function mapStateToProps(state: Object): IPanelStateProps {
 
 const mapDispatchToProps = {
   showConfirmation: () => ModalUtils.actions.toggle(modal.download, true),
-  requestDownload: actions.download.requestDownload,
 };
 
 function mergeProps(
@@ -49,10 +48,7 @@ function mergeProps(
   return {
     ...stateProps,
     ...dispatchProps,
-    download: () => dispatchProps.requestDownload({
-        cdm_version: stateProps.cdmVersion,
-        ids: stateProps.selectedVocabularies,
-      }).then(() => dispatchProps.showConfirmation()),
+    download: () => dispatchProps.showConfirmation(),
   };
 }
 

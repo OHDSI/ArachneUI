@@ -5,4 +5,5 @@ import download from './download';
 export default combineReducers({
 	download,
 	vocabularies: services.vocabularies.reducer,
+	history: services.history.reducer,
 });
