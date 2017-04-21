@@ -8,7 +8,7 @@ import { get } from 'lodash';
 import { ModalUtils } from 'arachne-components';
 import { paths } from 'modules/Vocabulary/const';
 import { push as goToPage } from 'react-router-redux';
-import { reduxForm, FormProps } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import presenter from './presenter';
 import {
   IPanelStateProps,
@@ -17,7 +17,7 @@ import {
 } from './presenter';
 
 
-class ControlPanel extends Component<IPanelProps & FormProps<{}, {}, {}>, void> {
+class ControlPanel extends Component<IPanelProps, void> {
   render() {
     return presenter(this.props);
   }

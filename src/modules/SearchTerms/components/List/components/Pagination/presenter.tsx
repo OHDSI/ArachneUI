@@ -33,8 +33,8 @@ interface IPaginationOwnProps {
   resultsCount: number;
 };
 
-interface IPaginationProps extends IPaginationStateProps, IPaginationDispatchProps {
-}
+interface IPaginationProps
+  extends IPaginationStateProps, IPaginationDispatchProps, IPaginationOwnProps {}
 
 function Pages(props: IPaginationProps) {
   const {
