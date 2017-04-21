@@ -6,7 +6,7 @@ import {
   Link,
   ListItem,
 } from 'arachne-components';
-import { NavigateAction } from 'react-router-redux';
+import { RouterAction } from 'react-router-redux';
 import BEMHelper from 'services/BemHelper';
 import { paths } from 'modules/SearchTerms/const';
 import { get } from 'lodash';
@@ -23,7 +23,7 @@ interface ITermStateProps {
 
 interface ITermDispatchProps {
   fetch: (termId: number) => (dispatch: Function) => any;
-  goBack: () => NavigateAction;
+  goBack: () => RouterAction;
   fetchRelations: (termId: number) => (dispatch: Function) => any;
 };
 

@@ -17,7 +17,7 @@ import {
 } from './presenter';
 
 
-class Pagination extends Component<IPaginationStateProps & IPaginationDispatchProps, void> {
+class Pagination extends Component<IPaginationProps, void> {
   render() {
     return presenter(this.props);
   }
