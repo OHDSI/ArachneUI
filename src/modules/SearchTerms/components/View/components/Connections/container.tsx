@@ -18,7 +18,30 @@ class TermConnections extends Component<ITermConnectionsProps, {}> {
 }
 
 function mapStateToProps(state: Object, ownProps: Object): ITermConnectionsStateProps {
-  const connections = selectors.getConnections(state);
+  let connections = selectors.getConnections(state);
+  connections = {
+    terms: [],
+    links: [],
+  };
+
+  // mock data
+  const n = parseInt(get(state, 'routing.locationBeforeTransitions.query.n', 1));
+  for(let i=0; i<n; i++) {
+    connections.terms.push({
+      id: i,
+      name: `Concept ${i}`,
+    });
+  }
+  for(let i=1; i<n/2; i++) {
+    connections.terms[i].parent = 0;
+  }
+  for(let i=n/2-1; i<n; i++) {
+    connections.terms[i].parent = i%3 === 0 ? i-3 : (i%2 === 0 ? i-1 : i-2);
+  }
+  try {
+    connections.terms[5].parent = 3;
+    connections.terms[10].parent = 5;
+  } catch(er) {}
 
   return {
     terms: connections.terms, 
@@ -27,7 +50,7 @@ function mapStateToProps(state: Object, ownProps: Object): ITermConnectionsState
 }
 
 const mapDispatchToProps = {
-  goToTerm: (id: number) => goToPage(paths.term(id)),
+  goToTerm: (id: number) => goToPage(paths.term(id)+`?n=${id * 2}`),
 };
 
 export default connect<ITermConnectionsStateProps, ITermConnectionsDispatchProps, {}>(
