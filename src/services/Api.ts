@@ -4,12 +4,17 @@ import * as hooks from 'feathers-hooks';
 import * as rest from 'feathers-rest-arachne/client';
 import * as superagent from 'superagent';
 
-const authTokenName = 'Athena-Auth-Token';
-const ssoLoginUrl = '/auth/login';
+import { authTokenName } from 'const';
+
 
 let API = feathers();
 
-function configure() {
+interface ApiConfig {
+  getAuthToken: Function;
+  onAccessDenied: Function;
+};
+
+function configure(props: ApiConfig): Promise<any> {
   /*const auth = authentication({
     header: authTokenName,
     storage: window.localStorage,
@@ -18,6 +23,10 @@ function configure() {
     localEndpoint: '/auth/login',
     tokenEndpoint: '/auth/token',
   });*/
+  const {
+    getAuthToken,
+    onAccessDenied
+  } = props;
 
   API = API
     .configure(rest('/api/v1').superagent(superagent))
@@ -26,7 +35,7 @@ function configure() {
 
   API.hooks({
     before(hook) {
-      const token = window.localStorage.getItem(authTokenName);
+      const token = getAuthToken(authTokenName);
       if (token) {
         hook.params.headers = {
           ...hook.params.headers,
@@ -37,16 +46,7 @@ function configure() {
 
     error(hook) {
       if (hook.error.status === 401) {
-        //window.localStorage.removeItem(authTokenName);
-        // alert('Open login iframe');
-
-        window.location.href = ssoLoginUrl;
-
-        /*window.open(
-          ssoLoginUrl,
-          '_blank',
-          'height=600,width=800'
-        );*/
+        onAccessDenied();
       }
     }
   });

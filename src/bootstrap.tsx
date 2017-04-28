@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as get from 'lodash/get';
 import { ReactElement } from 'react';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
@@ -14,6 +15,13 @@ import { injectAction } from 'actions';
 import modulesActions from 'actions/modules';
 import { IModuleMetadata } from 'actions/modules';
 import { indexRoute as modulesIndexRoute, modules } from './modules';
+
+import { authTokenName } from 'const';
+import authActions from 'modules/Auth/actions';
+
+
+import { push as goToPage } from 'react-router-redux';
+const ssoLoginUrl = '/auth/login';
 
 let globalStore: IStoreAsync;
 
@@ -46,9 +54,13 @@ function setActiveModule(activeModulePath: string) {
 
 function initModule(module: IModule): RouteConfig {
 	// Inject module's action creators
-	injectAction(module.namespace, module.actions());
+	if (module.actions) {
+		injectAction(module.namespace, module.actions());
+	}
 	// Inject module's reducer
-	injectReducer(globalStore, module.namespace, module.reducer());
+	if (module.reducer) {
+		injectReducer(globalStore, module.namespace, module.reducer());
+	}
 	// TODO: Inject reducer together with reducers
 	//
 	// Fire action when module is activated
@@ -64,20 +76,36 @@ function initModule(module: IModule): RouteConfig {
 	return moduleRoute;
 }
 
-function initializeApi(): Promise<any> {
-	return configureApi();
-}
-
 function buildStore() {
 	return configureStore({});
 }
 
 function bootstrap() {
-	return initializeApi().then(() => {
-		const store = globalStore = buildStore();
-		const history = syncHistoryWithStore(browserHistory, store);
+	const store = globalStore = buildStore();
+	const history = syncHistoryWithStore(browserHistory, store);
+
+	const getAuthToken = function() {
+		return get(store.getState(), 'auth.core.token');
+	};
+
+	const onAccessDenied = function() {
+		const backUrl = window.location.href;
+		store.dispatch(
+			authActions.core.setBackUrl(backUrl)
+		);
+		store.dispatch(
+      goToPage(ssoLoginUrl)
+    );
+	};
+
+	return configureApi({ getAuthToken, onAccessDenied }).then(() => {
 		const modulesRoutes: PlainRoute[] = modules.map(initModule);
 		const appRoutes: RouteConfig = buildRoutes(AppContainer, modulesIndexRoute, modulesRoutes);
+		const cachedAuthToken = window.localStorage.getItem(authTokenName);
+
+		if (cachedAuthToken) {
+			store.dispatch(authActions.core.setToken(cachedAuthToken));
+		}
 
 		return (
 			<Provider store={store}>

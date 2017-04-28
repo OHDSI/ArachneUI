@@ -1,0 +1,45 @@
+import { connect } from 'react-redux';
+import * as get from 'lodash/get';
+import Login from './presenter';
+import {
+  ILoginProps,
+  ILoginStateProps,
+  ILoginDispatchProps,
+  ILoginOwnProps,
+} from './presenter';
+
+function mapStateToProps(state: Object): ILoginStateProps {
+	return <ILoginStateProps> {
+		backUrl: get(state, 'auth.core.backUrl', '/'),
+	};
+}
+
+const mapDispatchToProps = function(dispatch) {
+	return {
+		goToSSO: function(backUrl) {
+			window.open('/auth/sso', 'SSO login', "width=600,height=700,scrollbars=no");
+			window.onAuthDone = () => { window.location.href = backUrl }
+		}
+	}
+};
+
+function mergeProps(
+    stateProps: ILoginStateProps,
+    dispatchProps: ILoginDispatchProps,
+    ownProps: ILoginOwnProps
+  ): ILoginProps {
+  return {
+    ...stateProps,
+    ...dispatchProps,
+    ...ownProps,
+    goToSSO: () => {
+      dispatchProps.goToSSO(stateProps.backUrl);
+    },
+  };
+}
+
+export default connect<ILoginStateProps, ILoginDispatchProps, ILoginOwnProps>(
+	mapStateToProps,
+	mapDispatchToProps,
+	mergeProps
+)(Login);
