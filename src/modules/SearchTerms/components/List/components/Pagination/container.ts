@@ -17,7 +17,7 @@ import {
 } from './presenter';
 
 
-class Pagination extends Component<IPaginationStateProps & IPaginationDispatchProps, void> {
+class Pagination extends Component<IPaginationProps, void> {
   render() {
     return presenter(this.props);
   }
@@ -33,16 +33,22 @@ function mapStateToProps(state: Object, ownProps: IPaginationOwnProps): IPaginat
     pathname: paths.termsList(),
     search: '',
   });
-  const pageSizeSelectOptions = new Array<IPageSizeSelectOption>();
-  for(
-    let label = resultsPageSize;
-    label <= maxResultsPageSize;
-    label+=5) {
-    pageSizeSelectOptions.push({
-      value: label,
-      label,
-    });
-  }
+  const totalCount = numeral(get(state, 'searchTerms.terms.queryResult.totalElements', 0))
+    .format('0,0');
+  const pageSizeSelectOptions: Array<IPageSizeSelectOption> = [
+    {
+      label: 15,
+      value: 15
+    },
+    {
+      label: 30,
+      value: 30
+    },
+    {
+      label: 50,
+      value: 50
+    },
+  ];
 
   return {
     currentPage,
@@ -52,6 +58,7 @@ function mapStateToProps(state: Object, ownProps: IPaginationOwnProps): IPaginat
     pageSize: parseInt(pageSize.toString(), 0),
     // to be used in changePageSize
     locationSearch: path,
+    totalCount,
   };
 }
 
@@ -74,7 +81,7 @@ function mergeProps(
       dispatchProps.changePageSize(pageSize);
       currentAddress.setSearch('pageSize', pageSize);
       currentAddress.setSearch('page', 1);
-      return dispatchProps.search(currentAddress.resource());
+      return dispatchProps.search(currentAddress.href());
     },
   };
 }

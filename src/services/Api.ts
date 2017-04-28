@@ -1,7 +1,7 @@
 import * as authentication from 'feathers-authentication/client';
 import * as feathers from 'feathers/client';
 import * as hooks from 'feathers-hooks';
-import * as rest from 'feathers-rest/client';
+import * as rest from 'feathers-rest-arachne/client';
 import * as superagent from 'superagent';
 
 const authTokenName = 'Athena-Auth-Token';

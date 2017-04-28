@@ -36,9 +36,19 @@ function load(params: searchParams) {
 	return services.terms.find({ query: params });
 }
 
+function fetch(id: number) {
+  return services.terms.get(id);
+}
+
+function fetchRelations(conceptId: number) {
+  return services.relations.get(conceptId);
+}
+
 export default {
   changePageSize,
   load,
+  fetch,
+  fetchRelations,
 };
 
 export { searchParams };

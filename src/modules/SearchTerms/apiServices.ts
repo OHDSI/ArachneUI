@@ -4,12 +4,14 @@ import API from 'services/Api';
 interface ISearchTermsServices {
 	terms: any,
 	facets: any,
+	relations: any,
 }
 
 export default <ISearchTermsServices> reduxifyServices(
 	API,
 	{
 		'concepts': 'terms',
-		'concepts/': 'facets',
+		'concepts/facets': 'facets',
+		'concepts/:id/relations': 'relations',
 	}
 );

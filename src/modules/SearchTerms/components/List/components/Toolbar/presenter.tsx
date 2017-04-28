@@ -7,16 +7,19 @@ import {
 } from 'arachne-components';
 import { push } from 'react-router-redux';
 import { locationDescriptor } from 'modules/SearchTerms/components/List/presenter';
+import { searchParams } from 'modules/SearchTerms/actions/termList';
 
 require('./style.scss');
 
 interface IToolbarStateProps {
   initialValues: { [key: string]: Object };
   locationSearch: locationDescriptor;
+  filterParams: searchParams,
 }
 
 interface IToolbarDispatchProps {
   search: (address: string) => typeof push;
+  updateFacets: (params: searchParams) => (dispatch: Function) => any;
 }
 
 interface IToolbarProps extends IToolbarStateProps, IToolbarDispatchProps {
@@ -44,11 +47,11 @@ function Toolbar(props: IToolbarProps) {
   };
 
   return (
-    <div {...classes({ extra: 'row' })}>
-    	<div {...classes({ element: 'title-wrapper', extra: 'col-xs-3 col-md-3' })}>
+    <div {...classes()}>
+    	<div {...classes({ element: 'title-wrapper' })}>
     		<span {...classes('title')}>Search by keyword</span>
     	</div>
-    	<div {...classes({ element: 'search-string', extra: 'col-xs-9 col-md-9' })}>
+    	<div {...classes({ element: 'search-string' })}>
         <Form
           fields={fields}
           onSubmit={props.filter}

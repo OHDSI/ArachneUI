@@ -37,7 +37,7 @@ function mapStateToProps(state: Object): IFacetStateProps {
     search: '',
   });
   const pageSize = get(state, 'searchTerms.termList.data.pageSize', resultsPageSize);
-  const query = get(state, 'routing.locationBeforeTransitions.query.query', '');
+  const query = get(state, 'form.toolbar.values.searchString', '');
   const initialValues = selectors.getFilterInitialValues(state);
 
   return {
@@ -63,7 +63,7 @@ function mergeProps(stateProps: IFacetStateProps, dispatchProps: IFacetDispatchP
     ...stateProps,
     ...dispatchProps,
     ...ownProps,
-    filter: (data: { filter: { [key: number]: string; } }) => {
+    doFilter: (data: { filter: { [key: number]: string; } }) => {
       if (!data.filter) {
         return;
       }
@@ -76,7 +76,7 @@ function mergeProps(stateProps: IFacetStateProps, dispatchProps: IFacetDispatchP
         query: stateProps.query,
       });
 
-      dispatchProps.search(query.resource());
+      dispatchProps.search(query.href());
     },
     clearFilter: () => {
       const currentAddress = new URI(stateProps.currentAddress.pathname);
@@ -86,7 +86,7 @@ function mergeProps(stateProps: IFacetStateProps, dispatchProps: IFacetDispatchP
         currentAddress.addSearch('query', stateProps.query);
       }
 
-      dispatchProps.search(currentAddress.resource());
+      dispatchProps.search(currentAddress.href());
       dispatchProps.resetForm();
     },
     doUpdateFacets: (newFilterState: { filter: { [key: number]: string; } }) => {      

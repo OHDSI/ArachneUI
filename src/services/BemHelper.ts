@@ -5,6 +5,7 @@ function AppBEMHelper(params: string | ConstructorOptions, usePrefix: boolean = 
   let constructorOptions: ConstructorOptions = {
   	name: null,
   	prefix: usePrefix ? 'at-' : null,
+    outputIsString: false,
   };
 
   if (typeof params === 'string') {

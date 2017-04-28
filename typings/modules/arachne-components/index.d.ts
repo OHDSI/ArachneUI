@@ -11,16 +11,23 @@ declare module 'arachne-components' {
 		class FormInput extends React.Component<any, any> {}
 		class Header extends React.Component<any, any> {}
 		class Link extends React.Component<any, any> {}
+		class ListItem extends React.Component<any, any> {}
 		class LoadingPanel extends React.Component<any, any> {}
+		class Panel extends React.Component<any, any> {}
 		class PageContent extends React.Component<any, any> {}
 		class Pagination extends React.Component<any, any> {}
 		class Select extends React.Component<any, any> {}
 		class Table extends React.Component<any, any> {}
 		class TableCellLink extends React.Component<any, any> {}
 		class TableCellText extends React.Component<any, any> {}
+		class Checkbox extends React.Component<any, any> {}
+		class Modal extends React.Component<any, any> {}
+		class Toolbar extends React.Component<any, any> {}
 		module ModalUtils {			
 			const connect: Function;
-			const actions: Object;
+			const actions: {
+				toggle: Function;
+			};
 			const reducer: Reducer<any>;
 		}
 	}

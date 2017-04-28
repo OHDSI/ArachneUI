@@ -1,0 +1,59 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+  &term {
+    flex-direction: column;
+    flex-grow: 1;
+    display: flex;
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+
+    &__subheader-wrapper {
+      background: $black;
+      color: $white;
+    }
+
+    &__subheader {
+      align-items: center;
+      display: flex;
+      padding: 1.5rem 3rem;
+    }
+
+    &__subheader-back-btn {
+      @include material-icon();
+      background: $blue;
+      border-radius: $input-border-radius;
+      color: $white;
+      font-size: 2.5rem;
+      height: 3rem;
+      line-height: 3rem;
+      margin-right: 1.5rem;
+      min-width: 3rem;
+      text-align: center;
+    }
+
+    &__subheader-title {
+      @include title();
+    }
+
+    &__content {
+      flex-grow: 1;
+      padding: 2.5rem 3rem;
+    }
+
+    &__connections-wrapper {
+      height: 100%;
+
+      & .ac-panel {
+        &__content {
+          height: calc(100% - 40px);
+        }
+      }
+    }
+
+    &__attribute-name {
+      width: 50%;
+      font-weight: $font-weight-bold;
+    }
+  }
+}

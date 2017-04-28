@@ -14,6 +14,10 @@ function rootRoute(path: string): PlainRoute {
       {
         path: 'terms',
         component: require('./components/List').default,
+      },
+      {
+        path: 'terms/:termId',
+        component: require('./components/View').default,
       }
     ],
   };

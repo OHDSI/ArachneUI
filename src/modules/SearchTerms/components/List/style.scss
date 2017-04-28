@@ -9,18 +9,20 @@
     width: 100%;
 
     &__facets-wrapper {
-        display: flex;
-        padding-right: 0;
+      display: flex;
+      min-width: 255px;
     }
 
     &__results-wrapper {
       overflow-y: scroll;
+      flex-grow: 1;
     }
 
     &__content {
-        flex-grow: 1;
-        height: 1px;
-        padding: 0;
+      display: flex;
+      flex-grow: 1;
+      height: 1px;
+      padding: 0;
     }
 
   }
