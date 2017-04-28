@@ -25,7 +25,7 @@ function mapStateToProps(state: Object, ownProps: Object): ITermConnectionsState
   };
 
   // mock data
-  const n = parseInt(get(state, 'routing.locationBeforeTransitions.query.n', 1));
+  const n = parseInt(get(state, 'routing.locationBeforeTransitions.query.n', 10));
   for(let i=0; i<n; i++) {
     connections.terms.push({
       id: i,
