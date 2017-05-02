@@ -1,0 +1,13 @@
+@import 'styles/vars-and-mixins.scss';
+@import 'react-simple-dropdown/styles/Dropdown';
+
+.#{$namespace} {
+  &login {
+    display: flex;
+    justify-content: center;
+    &__link {
+      margin-top: 3rem;
+    }
+  }
+  
+}

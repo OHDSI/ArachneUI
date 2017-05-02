@@ -5,9 +5,9 @@ import SearchTerms from './SearchTerms';
 import Vocabulary  from './Vocabulary';
 
 const modules: IModule[] = [
-	Auth,
   SearchTerms,
   Vocabulary,
+	Auth,
 ];
 
 const indexRoute: PlainRoute = {

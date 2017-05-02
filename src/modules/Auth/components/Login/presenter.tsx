@@ -6,7 +6,7 @@ import BEMHelper from 'services/BemHelper';
 import { paths } from 'modules/Auth/const';
 import { get } from 'lodash';
 
-// require('./style.scss');
+require('./style.scss');
 
 interface ILoginStateProps {
   backUrl: string;
@@ -29,7 +29,10 @@ function Login(props: ILoginProps) {
 
   return (    
     <div {...classes()}>
-      <Button onClick={goToSSO}>
+      <Button
+        {...classes('link')}
+        onClick={goToSSO}
+      >
         Login via SSO
       </Button>
     </div>

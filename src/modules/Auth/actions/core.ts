@@ -3,7 +3,11 @@ import { push as goToPage } from 'react-router-redux';
 import { authTokenName } from 'const';
 
 function setToken(token: string) {
-  window.localStorage.setItem(authTokenName, token);
+  if (token) {
+    window.localStorage.setItem(authTokenName, token);
+  } else {
+    window.localStorage.removeItem(authTokenName);    
+  }
   return {
     type: actionTypes.SET_AUTH_TOKEN,
     token,
@@ -19,7 +23,6 @@ function setBackUrl(url: string) {
 
 function logout() {
   return dispatch => {
-    window.localStorage.removeItem(authTokenName);
     dispatch(setToken(null));
     dispatch(goToPage('/'));
   };

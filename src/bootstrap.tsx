@@ -19,11 +19,24 @@ import { indexRoute as modulesIndexRoute, modules } from './modules';
 import { authTokenName } from 'const';
 import authActions from 'modules/Auth/actions';
 
-
 import { push as goToPage } from 'react-router-redux';
 const ssoLoginUrl = '/auth/login';
 
+interface IInitedModule {
+	moduleRoute: RouteConfig,
+	navbarElement: Array<ReactElement<any>>
+}
+
 let globalStore: IStoreAsync;
+
+function getAppContainer(menuItems) {
+  return props => (
+    <AppContainer
+      {...props}
+      navItems={menuItems}
+    />
+  );
+}
 
 function buildRoutes(
 	container: RouteComponent,
@@ -52,7 +65,7 @@ function setActiveModule(activeModulePath: string) {
 	);
 }
 
-function initModule(module: IModule): RouteConfig {
+function initModule(module: IModule): IInitedModule {
 	// Inject module's action creators
 	if (module.actions) {
 		injectAction(module.namespace, module.actions());
@@ -60,6 +73,11 @@ function initModule(module: IModule): RouteConfig {
 	// Inject module's reducer
 	if (module.reducer) {
 		injectReducer(globalStore, module.namespace, module.reducer());
+	}
+
+	let navbarElement = null;
+	if (module.navbarElement) {
+		navbarElement = module.navbarElement();
 	}
 	// TODO: Inject reducer together with reducers
 	//
@@ -69,11 +87,13 @@ function initModule(module: IModule): RouteConfig {
 	// Register module in store
 	registerModule({
 		path: moduleRoute.path,
-		navbarElement: module.navbarElement,
 		sidebarElement: module.sidebarElement,
 	});
 	// Return module's Route
-	return moduleRoute;
+	return {
+		moduleRoute,
+		navbarElement,
+	};
 }
 
 function buildStore() {
@@ -99,8 +119,22 @@ function bootstrap() {
 	};
 
 	return configureApi({ getAuthToken, onAccessDenied }).then(() => {
-		const modulesRoutes: PlainRoute[] = modules.map(initModule);
-		const appRoutes: RouteConfig = buildRoutes(AppContainer, modulesIndexRoute, modulesRoutes);
+		const modulesRoutes: PlainRoute[] = [];
+		let navbarElements: Array<ReactElement<any>> = [];
+
+		modules.forEach(module => {
+			const { moduleRoute, navbarElement } = initModule(module);
+			modulesRoutes.push(moduleRoute);
+			if (navbarElement) {
+				navbarElements = navbarElements.concat(navbarElement);
+			}
+		});
+
+		const appRoutes: RouteConfig = buildRoutes(
+			getAppContainer(navbarElements),
+			modulesIndexRoute,
+			modulesRoutes
+		);
 		const cachedAuthToken = window.localStorage.getItem(authTokenName);
 
 		if (cachedAuthToken) {

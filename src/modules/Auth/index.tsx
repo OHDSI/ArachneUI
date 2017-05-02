@@ -8,12 +8,12 @@ const module: IModule = {
   rootRoute: () => rootRoute('auth'),
 	actions: () => require('./actions').default,
 	reducer: () => require('./reducers').default,
-	sidebarElement: [
-		{
-			name: 'Login',
-			path: '/auth/login' //paths.vocabsList(),
-		},
-	],
+	navbarElement: () => {
+		const UserMenu = require('./components/UserMenu').default;
+		return [
+			<UserMenu/>,
+		]
+	}
 };
 
 export default module;

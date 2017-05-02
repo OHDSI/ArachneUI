@@ -6,9 +6,11 @@ const actionTypes = keyMirror({
 });
 
 const paths = {
+	login: () => `/auth/login`,
 };
 
 const apiPaths = {
+  myUserpic: hash => `/api/v1/user-management/users/avatar/${hash ? `?${hash}` : ''}`,
 };
 
 export {

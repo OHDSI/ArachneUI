@@ -14,7 +14,7 @@ interface IModule {
   rootRoute: () => PlainRoute;
   actions: () => IAppActionCreatorTree,
   reducer: () => Reducer<any>;
-  navbarElement?: Array<ReactElement<any>>;
+  navbarElement?: () => Array<ReactElement<any>>;
   sidebarElement?: Array<SideItem>;
 }
 
