@@ -1,4 +1,4 @@
-import numeral from 'numeral';
+import * as numeral from 'numeral';
 import keyMirror = require('keymirror');
 
 numeral.register('locale', 'arachne', {

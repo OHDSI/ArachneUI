@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { PlainRoute } from 'react-router';
-import Auth from 'services/Auth';
 
 function rootRoute(path: string): PlainRoute {
   return {
@@ -8,19 +7,17 @@ function rootRoute(path: string): PlainRoute {
     component: ({ children }) => children,
     indexRoute: {
       onEnter: (nextState, replace) => {
-        replace(path + '/list');
+        replace(path + '/login');
       }
     },
     childRoutes: [
       {
-        path: 'list',
-        component: require('./components/List').default,
-        onEnter: Auth.requireOnPathEnter,
+        path: 'login',
+        component: require('./components/Login').default,
       },
       {
-        path: 'download-history',
-        component: require('./components/DownloadHistory').default,
-        onEnter: Auth.requireOnPathEnter,
+        path: 'complete',
+        component: require('./components/LoginComplete').default,
       },
     ],
   };
