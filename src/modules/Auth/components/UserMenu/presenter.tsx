@@ -8,9 +8,7 @@ import { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
 require('./style.scss');
 
 interface IUserMenuState {
-  id: number,
   isLoggedIn: boolean,
-  hash: string,
   fullname: string,
 }
 
@@ -37,8 +35,8 @@ function UserMenu(props) {
         {...classes()}
       >
         <DropdownTrigger {...classes('header')}>
-          <div {...classes('user-pic')}>
-            <Avatar img={apiPaths.myUserpic(hash)} />
+          <div {...classes('user-pic-container')}>
+            <i {...classes('user-pic')}>person</i>
           </div>
           <div {...classes('user-name')}>
             {fullname}

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { PlainRoute } from 'react-router';
+import Auth from 'services/Auth';
 
 function rootRoute(path: string): PlainRoute {
   return {
@@ -14,10 +15,12 @@ function rootRoute(path: string): PlainRoute {
       {
         path: 'list',
         component: require('./components/List').default,
+        onEnter: Auth.requireOnPathEnter,
       },
       {
         path: 'download-history',
         component: require('./components/DownloadHistory').default,
+        onEnter: Auth.requireOnPathEnter,
       },
     ],
   };

@@ -1,12 +1,24 @@
+import * as React from 'react';
+import { Component } from 'react';
 import { connect } from 'react-redux';
 import * as get from 'lodash/get';
-import Login from './presenter';
+import presenter from './presenter';
 import {
   ILoginProps,
   ILoginStateProps,
   ILoginDispatchProps,
   ILoginOwnProps,
 } from './presenter';
+
+class Login extends Component<ILoginProps, {}> {
+  componentWillMount() {
+    this.props.goToSSO();
+  }
+
+  render() {
+    return presenter(this.props);
+  }
+}
 
 function mapStateToProps(state: Object): ILoginStateProps {
 	return <ILoginStateProps> {

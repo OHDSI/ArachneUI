@@ -30,19 +30,26 @@
     &__user-name {
     	cursor: pointer;
     	color: $white;
+      margin-right: 0.5rem;
     }
 
     &__user-name-part {
     	margin-right: 0.5rem;
     }
 
-    &__user-pic {
+    &__user-pic-container {
     	width: 3rem;
     	height: 3rem;
-    	margin-right: 1.5rem;
+    	margin-right: 1.25rem;
     	border-radius: 50%;
     	border: 2px solid $grey-light;
     	overflow: hidden;
+    }
+
+    &__user-pic {
+      @include material-icon();
+      font-size: 2.4rem;
+      padding-left: 1px;
     }
 
     &__arrow {

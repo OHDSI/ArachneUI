@@ -16,11 +16,7 @@ import modulesActions from 'actions/modules';
 import { IModuleMetadata } from 'actions/modules';
 import { indexRoute as modulesIndexRoute, modules } from './modules';
 
-import { authTokenName } from 'const';
-import authActions from 'modules/Auth/actions';
-
-import { push as goToPage } from 'react-router-redux';
-const ssoLoginUrl = '/auth/login';
+import Auth from 'services/Auth';
 
 interface IInitedModule {
 	moduleRoute: RouteConfig,
@@ -104,21 +100,9 @@ function bootstrap() {
 	const store = globalStore = buildStore();
 	const history = syncHistoryWithStore(browserHistory, store);
 
-	const getAuthToken = function() {
-		return get(store.getState(), 'auth.core.token');
-	};
+	Auth.setStore(store);
 
-	const onAccessDenied = function() {
-		const backUrl = window.location.href;
-		store.dispatch(
-			authActions.core.setBackUrl(backUrl)
-		);
-		store.dispatch(
-      goToPage(ssoLoginUrl)
-    );
-	};
-
-	return configureApi({ getAuthToken, onAccessDenied }).then(() => {
+	return configureApi({ getAuthToken: Auth.getAuthToken, onAccessDenied: Auth.onAccessDenied }).then(() => {
 		const modulesRoutes: PlainRoute[] = [];
 		let navbarElements: Array<ReactElement<any>> = [];
 
@@ -135,11 +119,8 @@ function bootstrap() {
 			modulesIndexRoute,
 			modulesRoutes
 		);
-		const cachedAuthToken = window.localStorage.getItem(authTokenName);
 
-		if (cachedAuthToken) {
-			store.dispatch(authActions.core.setToken(cachedAuthToken));
-		}
+		Auth.loadAuthTokenFromLS();
 
 		return (
 			<Provider store={store}>
