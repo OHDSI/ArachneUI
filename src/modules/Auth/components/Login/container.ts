@@ -30,7 +30,7 @@ const mapDispatchToProps = function(dispatch) {
 	return {
 		goToSSO: function(backUrl) {
 			window.open('/auth/sso', 'SSO login', "width=600,height=700,scrollbars=no");
-			window.onAuthDone = () => { window.location.href = backUrl }
+			(<any>window).onAuthDone = () => { window.location.href = backUrl }
 		}
 	}
 };
