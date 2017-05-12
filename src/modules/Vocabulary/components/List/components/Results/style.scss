@@ -36,6 +36,9 @@
         color: $blue;
         font-size: $font-size-header;
       }
+      &--unclickable {
+        pointer-events: none;
+      }
     }
 
     & .ac {

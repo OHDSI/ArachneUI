@@ -35,6 +35,7 @@ interface IResultsStateProps {
 
 interface IResultsDispatchProps {
   toggleAll: (on: boolean) => (dispatch: Function) => any;
+  toggle: (id: number, on: boolean) => (dispatch: Function) => any;
 };
 
 interface IResultsProps extends IResultsStateProps, IResultsDispatchProps {
@@ -47,7 +48,6 @@ function DownloadCheckbox(props: IDownloadCheckboxProps) {
   return (<Checkbox
       className={options.className}
       isChecked={input.value}
-      onChange={input.onChange}
     />);
 }
 
@@ -65,6 +65,7 @@ function Results(props: IResultsProps & FormProps<{}, {}, {}>) {
     sorting,
     setSorting,
     toggleAllCheckboxes,
+    toggle,
   } = props;
   const classes = BEMHelper('vocabularies');
   const selectAllButton = <Checkbox onChange={toggleAllCheckboxes} isChecked={areAllRowsChecked} />;
@@ -77,6 +78,12 @@ function Results(props: IResultsProps & FormProps<{}, {}, {}>) {
         mods={['hover', 'padded', 'selectable']}
         sorting={sorting}
         setSorting={setSorting}
+        onRowClick={(vocab: Vocabulary) => {
+            if(vocab.isCheckable) {
+              toggle(vocab.id, !vocab.isChecked);
+            }
+          }
+        }
       >
         <CellChecked
           {...classes('selection')}
@@ -87,9 +94,7 @@ function Results(props: IResultsProps & FormProps<{}, {}, {}>) {
             name: `vocabulary[${vocab.id}]`,
             className: classes({
               element: 'cell',
-              modifiers: {
-                selected: vocab.isChecked,
-              },
+              modifiers: { unclickable: vocab.isCheckable },
             }).className,
           })}
          />
