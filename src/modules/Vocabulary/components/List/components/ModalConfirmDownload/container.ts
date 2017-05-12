@@ -1,10 +1,9 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { push as goToPage } from 'react-router-redux';
 import actions from 'modules/Vocabulary/actions';
 import { change as reduxFormChange } from 'redux-form';
 import { ModalUtils } from 'arachne-components';
-import { modal, forms, paths } from 'modules/Vocabulary/const';
+import { modal, forms } from 'modules/Vocabulary/const';
 import { get } from 'lodash';
 import selectors from 'modules/Vocabulary/components/List/components/Results/selectors';
 import presenter from './presenter';
@@ -39,7 +38,7 @@ const mapDispatchToProps = {
   requestDownload: actions.download.requestDownload,
   remove: (id: number) => reduxFormChange(forms.download, `vocabulary[${id}]`, false),
   close: () => ModalUtils.actions.toggle(modal.download, false),
-  showHistory: () => goToPage(paths.history()),
+  showResult: () => ModalUtils.actions.toggle(modal.downloadResult, true),
 };
 
 function mergeProps(
@@ -62,7 +61,8 @@ function mergeProps(
         cdmVersion: stateProps.cdmVersion,
         ids: stateProps.selectedVocabIds.join(','),
       })
-      .then(() => dispatchProps.showHistory())
+      .then(() => dispatchProps.close())
+      .then(() => dispatchProps.showResult())
       .catch(() => {});
     },
   };

@@ -7,6 +7,7 @@ import BEMHelper from 'services/BemHelper';
 import ControlPanel from './components/ControlPanel';
 import Results  from './components/Results';
 import ModalConfirmDownload from './components/ModalConfirmDownload';
+import ModalDownloadResult from './components/ModalDownloadResult';
 
 require('./style.scss');
 
@@ -27,6 +28,7 @@ function VocabsList(props: IListProps) {
       <ControlPanel />
       <Results />
       <ModalConfirmDownload />
+      <ModalDownloadResult />
       <LoadingPanel active={isLoading} />
     </div>
   );
