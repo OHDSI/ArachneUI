@@ -3,6 +3,7 @@ import BEMHelper from 'services/BemHelper';
 import {
   Button,
   Select,
+  Link,
 } from 'arachne-components';
 import { cdmVersions, paths } from 'modules/Vocabulary/const';
 import { Field, FormProps } from 'redux-form';
@@ -80,10 +81,10 @@ function ControlPanel(props: IPanelProps & FormProps<{}, {}, {}>) {
         options={{...classes('selection')}}
         name='selection'
       />
-      <Button
-        mods={['submit', 'rounded']}
-        link={paths.history()}
-      >Show History</Button>
+      <Link
+        {...classes('history-link')}
+        to={paths.history()}
+      >Show History</Link>
       <Button
         {...classes({ element: 'download-button', modifiers: { disabled: !selectedVocabularies.length } })}
         mods={['submit', 'rounded']}
