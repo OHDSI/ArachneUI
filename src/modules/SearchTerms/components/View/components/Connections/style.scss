@@ -23,11 +23,16 @@
 		  }
 		}
 
-		& .link {
+		& .link, & .additional-link {
 			/* colors are temporary */
 		  fill: transparent;
 		  stroke: #9ecae1;
 		  stroke-width: 1.5px;
+
+		  &:hover, &.hover {
+		  	stroke: $black;
+		  }
 		}
+
   }
 }

@@ -76,7 +76,7 @@ module.exports = {
       warnings: false
     },
     proxy: {
-      '/api': 'http://localhost:8080',
+      '/api': 'http://localhost:8089',
     }
   },
   plugins: [
