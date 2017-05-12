@@ -16,24 +16,32 @@ import imgs from 'const/images';
 
 require('./styles/appContainer.scss');
 
-interface AppProps extends Props<App> {
+interface IAppState extends Props<App> {
   isUserAuthed: boolean;
-  navItems: Array<ReactElement<any>>;
 };
 
-interface AppState {
+interface IAppDispatch {
   /* empty */
 }
 
-class App extends Component<AppProps, AppState>{
+interface IAppOwnProps {
+  navItems: Array<ReactElement<any>>;
+}
+
+interface IAppProps extends IAppState, IAppDispatch, IAppOwnProps {};
+
+class App extends Component<IAppProps, {}> {
 
   render() {
     const classes = BEMHelper('root');
 
     return (
-      <div {...classes()}>        
+      <div {...classes()}>
         <Header
-          {...classes({ element: 'header', modifiers: { empty: this.props.navItems.length === 0 } })}
+          {...classes({
+            element: 'header',
+            modifiers: { empty: this.props.navItems.length === 0 }
+          })}
           isUserAuthed={this.props.isUserAuthed}
           logo={imgs.header.logo}
           navItems={this.props.navItems}
@@ -44,9 +52,9 @@ class App extends Component<AppProps, AppState>{
   }
 }
 
-function mapStateToProps(state: any): AppProps {
+function mapStateToProps(state: any): IAppState {
   const isUserAuthed = true;
-  let navItems: Array<ReactElement<any>> = [];
+  /*let navItems: Array<ReactElement<any>> = [];
   state.modules.list
     .filter((module: IModule) => module.sidebarElement)
     .map((module: IModule) => {
@@ -58,20 +66,20 @@ function mapStateToProps(state: any): AppProps {
     .filter((module: IModule) => module.navbarElement)
     .map((module: IModule) => {
       navItems = navItems.concat(module.navbarElement)
-    });
+    });*/
 
   return {
     isUserAuthed,
-    navItems,
+    // navItems,
   };
 }
 
-function mapDispatchToProps(dispatch: Function) {
+function mapDispatchToProps(dispatch: Function): IAppDispatch {
   return {
   };
 }
 
-export default connect(
+export default connect<IAppState, IAppDispatch, IAppOwnProps>(
   mapStateToProps,
   mapDispatchToProps
 )(App);

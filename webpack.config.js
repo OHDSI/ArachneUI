@@ -76,7 +76,8 @@ module.exports = {
       warnings: false
     },
     proxy: {
-      '/api': 'http://localhost:8089',
+      '/api': 'http://localhost:8080',
+      '/auth/sso': 'http://localhost:8080',
     }
   },
   plugins: [

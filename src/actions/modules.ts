@@ -5,7 +5,6 @@ import { IAppAction } from './index';
 
 interface IModuleMetadata {
   path: string;
-  navbarElement: Array<ReactElement<any>>;
   sidebarElement: Array<SideItem>;
 };
 
