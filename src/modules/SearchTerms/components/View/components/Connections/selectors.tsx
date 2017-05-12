@@ -10,10 +10,10 @@ const getConnections = createSelector(
   	const terms = connections;
   	const links: Array<GraphConnection> = [];
   	terms.forEach((node: GraphNode) => {
-  		if(node.parents && node.parents.length > 1) {
-  			for(let i=1; i<node.parents.length; i++) {
+  		if(node.parentIds && node.parentIds.length > 1) {
+  			for(let i=1; i<node.parentIds.length; i++) {
   				links.push({
-	  				source: node.parents[i],
+	  				source: node.parentIds[i],
 	  				target: node.id,
 	  			});
   			}

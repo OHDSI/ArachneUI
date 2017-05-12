@@ -21,7 +21,7 @@ type GraphNode = {
   y: number;
   isCurrent?: boolean;
   name: string;
-  parents?: Array<number>;
+  parentIds?: Array<number>;
 };
 
 type GraphConnection = {
@@ -238,7 +238,7 @@ function printGraph(
 
   // width of the container
   let levels = new Set();
-  terms.forEach(term => term.parents ? levels.add(term.parents[0]) : null);
+  terms.forEach(term => term.parentIds ? levels.add(term.parentIds[0]) : null);
 
   const svg = d3select
     .select(container);   
@@ -274,7 +274,7 @@ function printGraph(
 
   const structure: any = d3hierarchy.stratify()
     .id((d: GraphNode) => d.id.toString())
-    .parentId((d: GraphNode) => d.parents ? d.parents[0].toString() : null)(terms);
+    .parentId((d: GraphNode) => d.parentIds ? d.parentIds[0].toString() : null)(terms);
   // initial left padding 
   structure.XDisplace = 50;
 
@@ -291,7 +291,7 @@ function TermConnections(props: ITermConnectionsProps) {
   return <svg
     {...classes()}
     ref={element => {
-      if (element) {
+      if (element && terms.length) {
         printGraph(element, terms, links, goToTerm);
       }
     }}
