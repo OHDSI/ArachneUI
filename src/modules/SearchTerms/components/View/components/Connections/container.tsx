@@ -18,7 +18,7 @@ class TermConnections extends Component<ITermConnectionsProps, {}> {
 }
 
 function mapStateToProps(state: Object, ownProps: Object): ITermConnectionsStateProps {
-  const connections = selectors.getConnections(state);
+  let connections = selectors.getConnections(state);
 
   return {
     terms: connections.terms, 
