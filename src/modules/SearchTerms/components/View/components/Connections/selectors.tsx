@@ -6,25 +6,7 @@ const getRawConnections = (state: Object) => get(state, 'searchTerms.relations.d
 
 const getConnections = createSelector(
   getRawConnections,
-  (connections) => {
-  	const terms = connections;
-  	const links: Array<GraphConnection> = [];
-  	terms.forEach((node: GraphNode) => {
-  		if(node.parentIds && node.parentIds.length > 0) {
-  			node.parentIds.forEach(id => {
-          links.push({
-            source: id,
-            target: node.id,
-          });
-        });
-      }
-  	});
-
-  	return {
-  		terms,
-  		links,
-  	};
-  }
+  connections => connections
   );
 
 export default {
