@@ -32,6 +32,10 @@
 		  fill: transparent;
 		  stroke: #9ecae1;
 		  stroke-width: 1.5px;
+
+		  &:hover {
+		  	stroke: $black;
+		  }
 		}
 
   }
