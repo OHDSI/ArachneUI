@@ -61,6 +61,7 @@ interface ITermConnectionsProps extends ITermConnectionsStateProps, ITermConnect
 
 // Creates a curved (diagonal) path from parent to the child nodes
 function diagonal(startPoint: Point, endPoint: Point, isDirectedBack: boolean) {
+  // we should add bias to bezier points to make the arrow look accordingly (if it points backwards)
   const bezierYDisplace = isDirectedBack ? 300 : 0;
   const path = `M ${startPoint.x} ${startPoint.y}
           C ${(startPoint.x + endPoint.x) / 2 + bezierYDisplace} ${startPoint.y},
