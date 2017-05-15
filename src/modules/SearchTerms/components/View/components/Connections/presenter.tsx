@@ -60,10 +60,11 @@ interface ITermConnectionsProps extends ITermConnectionsStateProps, ITermConnect
 };
 
 // Creates a curved (diagonal) path from parent to the child nodes
-function diagonal(startPoint: Point, endPoint: Point) {
+function diagonal(startPoint: Point, endPoint: Point, isDirectedBack: boolean) {
+  const bezierYDisplace = isDirectedBack ? 300 : 0;
   const path = `M ${startPoint.x} ${startPoint.y}
-          C ${(startPoint.x + endPoint.x) / 2} ${startPoint.y},
-            ${(startPoint.x + endPoint.x) / 2} ${endPoint.y},
+          C ${(startPoint.x + endPoint.x) / 2 + bezierYDisplace} ${startPoint.y},
+            ${(startPoint.x + endPoint.x) / 2 - bezierYDisplace} ${endPoint.y},
             ${endPoint.x} ${endPoint.y}`
 
   return path;
@@ -136,7 +137,7 @@ function updateSimulation(
         x: containerCenter - c.target.depth * (nodeWidth + gap),
         y: c.target.y + nodeHeight/2
       };
-      return diagonal(from, to);
+      return diagonal(from, to, c.source.depth <= c.target.depth);
     });
 
   concepts
