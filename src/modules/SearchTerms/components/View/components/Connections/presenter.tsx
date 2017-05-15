@@ -284,7 +284,7 @@ function TermConnections(props: ITermConnectionsProps) {
   return <svg
     {...classes()}
     ref={element => {
-      if (element && terms.length) {
+      if (element && terms) {
         printGraph(element, terms, links, goToTerm);
       }
     }}
