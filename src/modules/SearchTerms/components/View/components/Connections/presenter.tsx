@@ -98,7 +98,9 @@ function dragended(canvas: ICanvas) {
 }
 
 function zoomed(canvas: ICanvas) {
-  if (event.transform.k > 3 || event.transform.k < 0.25) {
+  const maxZoom = 3;
+  const minZoom = 0.25;
+  if (event.transform.k > maxZoom || event.transform.k < minZoom) {
     return false;
   }
   const x = canvas.fixedX;
@@ -155,7 +157,13 @@ function printGraph(
   const gapWidth = 100;
   const rectHeight = 25;
   const rectWidth = 250;
+  const conceptNameHeight = 40;
   const maxNameLength = 30;
+  const conceptNameLeftPadding = 10;
+  const conceptNameTopPadding = 25;
+  const conceptBorderRadius = 7.5;
+  const conceptLeftPadding = 10;
+  const conceptTopPadding = 16;
 
   const svg = d3select
     .select(container);   
@@ -167,15 +175,15 @@ function printGraph(
 
   // hint with the concept name
   svg.selectAll('g#concept-name')
-    .attr('transform', `translate(0, ${height-40})`)
+    .attr('transform', `translate(0, ${height-conceptNameHeight})`)
     .append('svg:rect')
     .attr('class', 'wrapper')
     .attr('width', width)
-    .attr('height', 40);
+    .attr('height', conceptNameHeight);
   const conceptName = svg.selectAll('g#concept-name')
     .append('svg:text')
-    .attr('x', 10)
-    .attr('y', 25);
+    .attr('x', conceptNameLeftPadding)
+    .attr('y', conceptNameTopPadding);
 
   // interactivity
   const drag = d3drag.drag()
@@ -227,14 +235,14 @@ function printGraph(
     .attr('class', (d: GraphNode) => d.isCurrent ? 'nodeWrapper current' : 'nodeWrapper')
     .attr('height', rectHeight)
     .attr('width', rectWidth)
-    .attr('rx', 7.5)
-    .attr('ry', 7.5);
+    .attr('rx', conceptBorderRadius)
+    .attr('ry', conceptBorderRadius);
   wrappers.append('svg:text')
     .text((d: GraphNode) => `${d.name.substr(0, maxNameLength)}...`)
     .attr('height', rectHeight)
     .attr('width', rectWidth)
-    .attr('x', 10)
-    .attr('y', 16);
+    .attr('x', conceptLeftPadding)
+    .attr('y', conceptTopPadding);
 
   const connections = treeWrapper.selectAll('path.link')
     .data(links);
