@@ -9,6 +9,10 @@
     	transform-origin: center;
     }
 
+    & #concept-name .wrapper {
+    	fill: $grey-lighter;
+    }
+
     & .node {
 		  cursor: pointer;    	
     }
@@ -28,10 +32,6 @@
 		  fill: transparent;
 		  stroke: #9ecae1;
 		  stroke-width: 1.5px;
-
-		  &:hover, &.hover {
-		  	stroke: $black;
-		  }
 		}
 
   }

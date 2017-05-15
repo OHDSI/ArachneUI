@@ -27,7 +27,7 @@ function mapStateToProps(state: Object, ownProps: Object): ITermConnectionsState
 }
 
 const mapDispatchToProps = {
-  goToTerm: (id: number) => goToPage(paths.term(id)+`?n=${id * 2}`),
+  goToTerm: (id: number) => goToPage(paths.term(id)),
 };
 
 export default connect<ITermConnectionsStateProps, ITermConnectionsDispatchProps, {}>(
