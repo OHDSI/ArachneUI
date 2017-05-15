@@ -167,15 +167,15 @@ function printGraph(
 
   // hint with the concept name
   svg.selectAll('g#concept-name')
-    .attr('transform', `translate(0, ${height-rectHeight})`)
+    .attr('transform', `translate(0, ${height-40})`)
     .append('svg:rect')
     .attr('class', 'wrapper')
     .attr('width', width)
-    .attr('height', rectHeight);
+    .attr('height', 40);
   const conceptName = svg.selectAll('g#concept-name')
     .append('svg:text')
     .attr('x', 10)
-    .attr('y', 18);
+    .attr('y', 25);
 
   // interactivity
   const drag = d3drag.drag()
@@ -211,6 +211,8 @@ function printGraph(
     .exit()
     .remove();
 
+  let captionTransitionTimeout;
+
   const wrappers = concepts
     .enter()
     .append('svg:g')
@@ -218,8 +220,8 @@ function printGraph(
     .attr('height', rectHeight)
     .attr('width', rectWidth)
     .on('click', (d: GraphNode) => redirect(d.id))
-    .on('mouseover', (d: GraphNode) => { conceptName.text(d.name); })
-    .on('mouseout', (d: GraphNode) => { conceptName.text(''); });
+    .on('mouseover', (d: GraphNode) => { clearTimeout(captionTransitionTimeout); conceptName.text(d.name); })
+    .on('mouseout', (d: GraphNode) => { captionTransitionTimeout = setTimeout(() => conceptName.text(''), 300) });
 
   wrappers.append('svg:rect')    
     .attr('class', (d: GraphNode) => d.isCurrent ? 'nodeWrapper current' : 'nodeWrapper')
