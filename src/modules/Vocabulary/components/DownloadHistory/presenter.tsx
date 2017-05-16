@@ -101,30 +101,23 @@ function VocabsList(props: IDownloadHistoryProps) {
               mods={['hover', 'padded', 'selectable']}
               key={`table${index}`}
              >
-                {/* <TableCellText
-                  header=''
-                  field='date'
-                />
-                <CellButton
-                  header=''
-                  field='link'
-                  props={() => ({
-                    ...classes('download-button')
-                  })}
-                /> */}
                 <TableCellText
+                  {...classes('id')}
                   header='ID'
                   field='id'
                 />
                 <TableCellText
+                  {...classes('cdm')}
                   header='CDM'
                   field='cdmVersion'
                 />
                 <TableCellText
+                  {...classes('code')}
                   header='Code (cdm v5)'
                   field='code'
                 />
                 <TableCellText
+                  {...classes('name')}
                   header='Name'
                   field='name'
                 />
