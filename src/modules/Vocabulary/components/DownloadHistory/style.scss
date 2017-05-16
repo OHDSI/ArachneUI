@@ -24,6 +24,11 @@
       color: $blue-dark;
     }
 
+    &__status {
+      font-weight: $font-weight-bold;
+      padding-right: 15px;
+    }
+
     & > .ac-toolbar {
       background-color: $grey-light;
     }

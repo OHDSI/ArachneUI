@@ -75,8 +75,8 @@ function VocabsList(props: IDownloadHistoryProps) {
               <Toolbar
                 caption={<BundleName {...bundle} />}
               >
-                {[bundleStatuses.READY].includes(bundle.status) &&
-                  <div>
+                {[bundleStatuses.READY].includes(bundle.status)
+                  ? <div>
                     <Button
                       {...classes('download-button')}
                       link={bundle.link}
@@ -91,6 +91,7 @@ function VocabsList(props: IDownloadHistoryProps) {
                       Remove
                   </Button>
                   </div>
+                 : <span {...classes('status')}>{bundle.status}</span>
                 }
               </Toolbar>
              </div>,
