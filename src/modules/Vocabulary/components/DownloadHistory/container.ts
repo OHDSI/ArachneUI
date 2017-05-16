@@ -32,9 +32,26 @@ function mapStateToProps(state: Object): IDownloadHistoryStateProps {
 
 const mapDispatchToProps = {
 	load: actions.history.load,
+	remove: actions.history.remove,
 };
+
+function mergeProps(
+	stateProps: IDownloadHistoryStateProps,
+	dispatchProps: IDownloadHistoryDispatchProps
+): IDownloadHistoryProps {
+	return {
+		...stateProps,
+		...dispatchProps,
+		removeBundle: (id: number) => {
+			dispatchProps
+				.remove(id)
+				.then(dispatchProps.load);
+		},
+	};
+}
 
 export default connect<IDownloadHistoryStateProps, IDownloadHistoryDispatchProps, void>(
 	mapStateToProps,
-	mapDispatchToProps
+	mapDispatchToProps,
+	mergeProps,
 )(DownloadHistory);
