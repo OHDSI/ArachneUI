@@ -3,6 +3,7 @@ import BEMHelper from 'services/BemHelper';
 import {
   Table,
   Link,
+  TableCellText,
 } from 'arachne-components';
 import {} from 'redux-form';
 import { paths } from 'modules/SearchTerms/const';
@@ -31,7 +32,6 @@ interface ITermConnectionsTableStateProps {
 };
 
 interface ITermConnectionsTableDispatchProps {
-  goToTerm: (id: number) => any;
 };
 
 interface ITermConnectionsTableProps extends ITermConnectionsTableStateProps, ITermConnectionsTableDispatchProps {
@@ -58,13 +58,17 @@ function TermConnectionsTable(props: ITermConnectionsTableProps) {
         data={connections}
         mods={['hover', 'padded',]}
        >
-          <TableCellTerm
-            header='Concept'
-            field='source'
+          <TableCellText
+            header='Relationship'
+            field='relationshipName'
           />
           <TableCellTerm
             header='Relates to'
-            field='target'
+            field='targetConcept'
+          />
+          <TableCellText
+            header='Vocabulary'
+            field='targetVocabularyId'
           />
       </Table>
   </div>;

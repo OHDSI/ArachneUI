@@ -2,7 +2,13 @@
 
 .#{$namespace} {
   &term-connections-table {
-    
+    & .ac {
+    	&-table {
+	    	&__header-row {
+	    		background-color: $grey;
+	    	}
+	    }
+    }
   	
   }
 }

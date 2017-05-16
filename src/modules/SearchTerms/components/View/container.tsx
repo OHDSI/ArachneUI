@@ -21,12 +21,14 @@ class Term extends Component<ITermProps, {}> {
 	componentWillMount() {
 		this.props.fetch(this.props.termId);
 		this.props.fetchRelations(this.props.termId);
+		this.props.fetchRelationships(this.props.termId);
 	}
 
   componentWillReceiveProps(props: ITermProps) {
     if (this.props.termId !== props.termId) {
 			this.props.fetch(props.termId);
       this.props.fetchRelations(props.termId);
+		this.props.fetchRelationships(props.termId);
     }
   }
 
@@ -57,6 +59,7 @@ const mapDispatchToProps = {
 	fetch: actions.termList.fetch,
 	fetchRelations: actions.termList.fetchRelations,
 	goBack,
+  fetchRelationships: actions.termList.fetchRelationships,
 };
 
 export default connect<ITermStateProps, ITermDispatchProps, {}>(

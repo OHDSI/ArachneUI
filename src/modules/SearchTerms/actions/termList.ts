@@ -44,11 +44,16 @@ function fetchRelations(conceptId: number) {
   return services.relations.get(conceptId);
 }
 
+function fetchRelationships(conceptId: number) {
+  return services.relationships.get(conceptId);
+}
+
 export default {
   changePageSize,
   load,
   fetch,
   fetchRelations,
+  fetchRelationships,
 };
 
 export { searchParams };
