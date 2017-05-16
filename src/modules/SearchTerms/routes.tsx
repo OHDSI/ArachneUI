@@ -18,6 +18,10 @@ function rootRoute(path: string): PlainRoute {
       {
         path: 'terms/:termId',
         component: require('./components/View').default,
+      },
+      {
+        path: 'terms/:termId/:displayMode',
+        component: require('./components/View').default,
       }
     ],
   };

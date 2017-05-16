@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { Component } from 'react';
-import { goBack, push as goToPage } from 'react-router-redux';
+import { push as goToPage } from 'react-router-redux';
 import { paths } from 'modules/SearchTerms/const';
 import { get } from 'lodash';
 import presenter from './presenter';

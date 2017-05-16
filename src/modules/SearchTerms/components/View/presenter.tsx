@@ -11,6 +11,7 @@ import BEMHelper from 'services/BemHelper';
 import { paths } from 'modules/SearchTerms/const';
 import { get } from 'lodash';
 import TermConnections from './components/Connections';
+import TermConnectionsTable from './components/Table';
 
 require('./style.scss');
 
@@ -19,12 +20,15 @@ interface ITermStateProps {
   isLoading: boolean;
   name: string;
   termId: number;
+  isTableMode: boolean;
+  isStandard: boolean;
 };
 
 interface ITermDispatchProps {
   fetch: (termId: number) => (dispatch: Function) => any;
   goBack: () => RouterAction;
   fetchRelations: (termId: number) => (dispatch: Function) => any;
+  fetchRelationships: (termId: number) => (dispatch: Function) => any;
 };
 
 interface ITermProps extends ITermStateProps, ITermDispatchProps {
@@ -37,6 +41,8 @@ function Term(props: ITermProps) {
     goBack,
     isLoading,
     name,
+    isTableMode,
+    isStandard,
   } = props;
   const classes = BEMHelper('term');
 
@@ -87,10 +93,21 @@ function Term(props: ITermProps) {
         </div>
         <div className="col-xs-12 col-md-7">
           <Panel
-            {...classes({ element: 'connections-wrapper' })}
+            {...classes({ element: 'connections-wrapper', modifiers: { stretched: !isStandard || !isTableMode } })}
             title='Term connections'
+            headerBtns={() => {
+                if (details && isStandard) {
+                  return isTableMode
+                    ? <Link to={paths.term(details.id, false)}>Show as graph</Link>
+                    : <Link to={paths.term(details.id, true)}>Show as table</Link>;
+                }
+              }
+            }
           >
-            <TermConnections />
+            {isTableMode || !isStandard
+              ? <TermConnectionsTable />
+              : <TermConnections />
+            }
           </Panel>
         </div>
       </div>
