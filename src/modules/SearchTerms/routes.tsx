@@ -7,7 +7,7 @@ function rootRoute(path: string): PlainRoute {
     component: ({ children }) => children,
     indexRoute: {
       onEnter: (nextState, replace) => {
-        replace(path + '/terms');
+        replace(`/${path}/terms`);
       }
     },
     childRoutes: [
