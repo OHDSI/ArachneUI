@@ -13,6 +13,7 @@ import {
 interface ITermRoute {
 	routeParams: {
 		termId: string;
+		displayMode?: string;
 	};
 }
 
@@ -39,12 +40,16 @@ function mapStateToProps(state: Object, ownProps: ITermRoute): ITermStateProps {
 	const termId = parseInt(ownProps.routeParams.termId, 0);
 	const name = get(state, 'searchTerms.terms.data.name', 'Term');
 	const details = get(state, 'searchTerms.terms.data', {});
+	const isTableMode = ownProps.routeParams.displayMode === 'table';
+	const isStandard = get(details, 'standardConcept') === 'Standard';
 
 	return {
 		details,
 		isLoading,
 		name,
 		termId,
+		isTableMode,
+		isStandard,
 	};
 }
 

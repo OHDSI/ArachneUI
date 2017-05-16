@@ -11,6 +11,7 @@ import BEMHelper from 'services/BemHelper';
 import { paths } from 'modules/SearchTerms/const';
 import { get } from 'lodash';
 import TermConnections from './components/Connections';
+import TermConnectionsTable from './components/Table';
 
 require('./style.scss');
 
@@ -19,6 +20,8 @@ interface ITermStateProps {
   isLoading: boolean;
   name: string;
   termId: number;
+  isTableMode: boolean;
+  isStandard: boolean;
 };
 
 interface ITermDispatchProps {
@@ -37,6 +40,8 @@ function Term(props: ITermProps) {
     goBack,
     isLoading,
     name,
+    isTableMode,
+    isStandard,
   } = props;
   const classes = BEMHelper('term');
 
@@ -89,8 +94,19 @@ function Term(props: ITermProps) {
           <Panel
             {...classes({ element: 'connections-wrapper' })}
             title='Term connections'
+            headerBtns={() => {
+                if (details && isStandard) {
+                  return isTableMode
+                    ? <Link to={paths.term(details.id, false)}>Show as graph</Link>
+                    : <Link to={paths.term(details.id, true)}>Show as table</Link>;
+                }
+              }
+            }
           >
-            <TermConnections />
+            {isTableMode || !isStandard
+              ? <TermConnectionsTable />
+              : <TermConnections />
+            }
           </Panel>
         </div>
       </div>
