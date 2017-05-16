@@ -2,7 +2,7 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import { push as goToPage } from 'react-router-redux';
 import actions from 'modules/Vocabulary/actions';
-import { change as reduxFormChange } from 'redux-form';
+import { reduxForm, change as reduxFormChange, SubmissionError } from 'redux-form';
 import { ModalUtils } from 'arachne-components';
 import { modal, forms, paths } from 'modules/Vocabulary/const';
 import { get } from 'lodash';
@@ -27,11 +27,13 @@ function mapStateToProps(state: any): IModalStateProps {
   const vocabs = selectors.getVocabs(state);
   const selectedVocabs = vocabs.filter(voc => selectedVocabIds.includes(voc.id));
   const cdmVersion = get(state, `form.${forms.downloadSettings}.values.cdmVersion`, '4.5') || '4.5';
+  const bundleName = get(state, 'form.bundle.values.bundleName', '');
 
 	return {
     selectedVocabs,
     selectedVocabIds,
     cdmVersion,
+    bundleName,
   };
 }
 
@@ -58,17 +60,25 @@ function mergeProps(
       }
     },
     download: () => {
-      dispatchProps.requestDownload({
+      const promise = dispatchProps.requestDownload({
         cdmVersion: stateProps.cdmVersion,
         ids: stateProps.selectedVocabIds.join(','),
+        name: stateProps.bundleName,
       })
       .then(() => dispatchProps.showHistory())
-      .catch(() => {});
+      .catch(({ message }) => {
+        throw new SubmissionError({
+          _error: message,
+        });
+      });
+
+      return promise;
     },
   };
 }
 
-const ReduxModalWindow = ModalUtils.connect({ name: modal.download })(ModalConfirmDownload);
+let ReduxModalWindow = reduxForm({ form: forms.bundle })(ModalConfirmDownload);
+ReduxModalWindow = ModalUtils.connect({ name: modal.download })(ReduxModalWindow);
 
 export default connect<IModalStateProps, IModalDispatchProps, {}>(
 	mapStateToProps,

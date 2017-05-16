@@ -7,6 +7,7 @@ import { IAppAction } from 'actions';
 type DownloadParams = {
 	cdmVersion: string;
 	ids: string;
+  name: string;
 };
 
 function toggleVocabsList(value: boolean): IAppAction<{ allChecked: boolean }> {

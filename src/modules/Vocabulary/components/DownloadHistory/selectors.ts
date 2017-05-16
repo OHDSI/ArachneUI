@@ -8,27 +8,13 @@ const getRawHistory = (state: Object) => get(state, 'vocabulary.history.queryRes
 
 const getHistory = createSelector(
     getRawHistory,
-    (rawResults: Array<IDownloadRequest>) => {
-      const classes = BEMHelper('download-history');
-
-      const history = [];
-      let isHighlighted = false;
-      rawResults.map((item: IDownloadRequest) => {
-        item.vocabularies.map((voc: IVocabulary, index: number) => {
-          let row: IHistoryItem = {
-            ...voc,
-            tableRowClass: classes({ element: 'row', modifiers: { selected: isHighlighted } }).className,
-          };
-          if (index === 0) {
-            row.date = moment(item.date).format('DD/MM/YY');
-            row.link = item.link;
-          }
-          history.push(row);
-        });
-        isHighlighted = !isHighlighted;
-      });
-      return history;
-    },
+    (rawResults: Array<IDownloadRequest>) => rawResults.map((bundle: IDownloadRequest) => ({
+      ...bundle,
+      vocabularies: bundle.vocabularies.map((voc: IVocabulary) => ({
+        ...voc,
+        cdmVersion: `CDM ${bundle.cdmVersion}`,
+      }))
+    })),
   );
 
 export default {

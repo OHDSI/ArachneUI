@@ -4,6 +4,7 @@ const forms = keyMirror({
 	download: null,
 	toolbar: null,
   downloadSettings: null,
+  bundle: null,
 });
 
 const modal = keyMirror({
@@ -40,6 +41,13 @@ const cdmVersions = [
   },
 ];
 
+const bundleStatuses: { [key: string]: string } = keyMirror({
+  PENDING: null,
+  READY: null,
+  FAILED: null,
+  DELETED: null,
+});
+
 export {
   actionTypes,
   apiPaths,
@@ -48,4 +56,5 @@ export {
   modal,
   paths,
   resultsPageSize,
+  bundleStatuses,
 };

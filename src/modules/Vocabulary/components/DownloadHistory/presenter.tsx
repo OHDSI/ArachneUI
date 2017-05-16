@@ -7,7 +7,8 @@ import {
   TableCellText,
 } from 'arachne-components';
 import BEMHelper from 'services/BemHelper';
-import { paths } from 'modules/Vocabulary/const';
+import { paths, bundleStatuses } from 'modules/Vocabulary/const';
+import * as moment from 'moment';
 
 require('./style.scss');
 
@@ -15,12 +16,17 @@ interface IVocabulary {
   id: number;
   code: string;
   name: string;
+  cdmVersion: string;
 }
 
 interface IDownloadRequest {
+  id: number;
   date: number;
   link: string;
   vocabularies: Array<IVocabulary>;
+  cdmVersion: number;
+  name: string;
+  status: string;
 };
 
 interface IHistoryItem extends IVocabulary {
@@ -31,64 +37,94 @@ interface IHistoryItem extends IVocabulary {
 
 interface IDownloadHistoryStateProps {
   isLoading: boolean;
-  history: Array<IHistoryItem>,
+  history: Array<IDownloadRequest>,
 };
 
 interface IDownloadHistoryDispatchProps {
   load: () => (dispatch: Function) => any;
+  remove: (id: number) => Promise<void>;
 };
 
-interface IDownloadHistoryProps extends IDownloadHistoryStateProps, IDownloadHistoryDispatchProps {};
+interface IDownloadHistoryProps extends IDownloadHistoryStateProps, IDownloadHistoryDispatchProps {
+  removeBundle: (id: number) => any;
+};
 
-function CellButton(props) {
+function BundleName({ name, date }) {
+  const dateFormat = 'h:mm A | MM/DD/YYYY';
+  const classes = BEMHelper('bundle-caption');
 
-  return props.value
-    ? <Button
-        link={props.value}
-        mods={['rounded']}
-        className={props.className}
-      >
-        Download
-      </Button>
-    : null;
+  return <div {...classes()}>
+    {name}
+    <span {...classes('date')}>{moment(date).format(dateFormat)}</span>
+  </div>;
 }
 
 function VocabsList(props: IDownloadHistoryProps) {
-  const { isLoading, history } = props;
+  const { isLoading, history, removeBundle } = props;
   const classes = BEMHelper('download-history');
 
   return (    
     <div {...classes()}>
       <Toolbar caption='Download history' backUrl={paths.vocabsList()} />
-      <Table
-        {...classes('table')}
-        data={history}
-        mods={['hover', 'padded', 'selectable']}
-       >
-          <TableCellText
-            header=''
-            field='date'
-          />
-          <CellButton
-            header=''
-            field='link'
-            props={() => ({
-              ...classes('download-button')
-            })}
-          />
-          <TableCellText
-            header='ID'
-            field='id'
-          />
-          <TableCellText
-            header='Code (cdm v5)'
-            field='code'
-          />
-          <TableCellText
-            header='Name'
-            field='name'
-          />
-      </Table>
+      <div>
+        {history && history.map((bundle: IDownloadRequest, index: number) => [
+            <div
+              {...classes('bundle-caption')}
+              key={`caption${index}`}
+            >
+              <Toolbar
+                caption={<BundleName {...bundle} />}
+              >
+                {[bundleStatuses.READY].includes(bundle.status)
+                  ? <div>
+                    <Button
+                      {...classes('download-button')}
+                      link={bundle.link}
+                      mods={['rounded']}
+                    >
+                      Download
+                    </Button>
+                    <Button
+                      {...classes('remove-button')}
+                      onClick={() => removeBundle(bundle.id)}
+                    >
+                      Remove
+                  </Button>
+                  </div>
+                 : <span {...classes('status')}>{bundle.status}</span>
+                }
+              </Toolbar>
+             </div>,
+            <Table
+              {...classes('table')}
+              data={bundle.vocabularies}
+              mods={['hover', 'padded', 'selectable']}
+              key={`table${index}`}
+             >
+                <TableCellText
+                  {...classes('id')}
+                  header='ID'
+                  field='id'
+                />
+                <TableCellText
+                  {...classes('cdm')}
+                  header='CDM'
+                  field='cdmVersion'
+                />
+                <TableCellText
+                  {...classes('code')}
+                  header='Code (cdm v5)'
+                  field='code'
+                />
+                <TableCellText
+                  {...classes('name')}
+                  header='Name'
+                  field='name'
+                />
+            </Table>
+          ]
+        )}
+      </div>
       <LoadingPanel active={isLoading} />
     </div>
   );
