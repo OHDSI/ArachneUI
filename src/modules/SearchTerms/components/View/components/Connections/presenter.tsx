@@ -23,6 +23,7 @@ type GraphNode = {
   name: string;
   parentIds?: Array<number>;
   depth: number;
+  yDepth: number;
 };
 
 type GraphConnection = {
@@ -60,10 +61,12 @@ interface ITermConnectionsProps extends ITermConnectionsStateProps, ITermConnect
 };
 
 // Creates a curved (diagonal) path from parent to the child nodes
-function diagonal(startPoint: Point, endPoint: Point) {
+function diagonal(startPoint: Point, endPoint: Point, isDirectedBack: boolean) {
+  // we should add bias to bezier points to make the arrow look accordingly (if it points backwards)
+  const bezierYDisplace = isDirectedBack ? 300 : 0;
   const path = `M ${startPoint.x} ${startPoint.y}
-          C ${(startPoint.x + endPoint.x) / 2} ${startPoint.y},
-            ${(startPoint.x + endPoint.x) / 2} ${endPoint.y},
+          C ${(startPoint.x + endPoint.x) / 2 + bezierYDisplace} ${startPoint.y},
+            ${(startPoint.x + endPoint.x) / 2 - bezierYDisplace} ${endPoint.y},
             ${endPoint.x} ${endPoint.y}`
 
   return path;
@@ -121,7 +124,6 @@ function zoomed(canvas: ICanvas) {
 function updateSimulation(
   concepts,
   connections,
-  containerCenter,
   nodeWidth,
   nodeHeight,
   gap
@@ -129,19 +131,19 @@ function updateSimulation(
   connections
     .attr('d', (c: GraphLink) => {
       const from = {
-        x: containerCenter - c.source.depth * (nodeWidth + gap) + nodeWidth,
+        x: c.source.x + nodeWidth,
         y: c.source.y + nodeHeight/2
       }
       const to = {
-        x: containerCenter - c.target.depth * (nodeWidth + gap),
+        x: c.target.x,
         y: c.target.y + nodeHeight/2
       };
-      return diagonal(from, to);
+      return diagonal(from, to, c.source.depth <= c.target.depth);
     });
 
   concepts
     .attr('transform', (d: GraphNode) => {
-      return `translate(${containerCenter - d.depth * (nodeWidth + gap)}, ${d.y})`;
+      return `translate(${d.x}, ${d.y})`;
     });
 }
 
@@ -164,6 +166,7 @@ function printGraph(
   const conceptBorderRadius = 7.5;
   const conceptLeftPadding = 10;
   const conceptTopPadding = 16;
+  let captionTransitionTimeout;
 
   const svg = d3select
     .select(container);   
@@ -174,14 +177,12 @@ function printGraph(
   treeWrapper.fixedY = 0;
 
   // hint with the concept name
-  svg.selectAll('g#concept-name')
-    .attr('transform', `translate(0, ${height-conceptNameHeight})`)
-    .append('svg:rect')
+  svg.selectAll('g#concept-name').attr('transform', `translate(0, ${height-conceptNameHeight})`);
+  svg.selectAll('rect#concept-name-bg')
     .attr('class', 'wrapper')
     .attr('width', width)
     .attr('height', conceptNameHeight);
-  const conceptName = svg.selectAll('g#concept-name')
-    .append('svg:text')
+  const conceptName = svg.selectAll('text#concept-name-text')
     .attr('x', conceptNameLeftPadding)
     .attr('y', conceptNameTopPadding);
 
@@ -211,15 +212,18 @@ function printGraph(
     .append('svg:path')
       .attr('d', 'M0,-5L15,0L0,5');
 
+  const termsFixed = terms.map((concept: GraphNode) => ({
+    ...concept,
+    fy: (height - rectHeight)/2 + concept.yDepth * gapWidth,
+    fx: (width - rectWidth)/2 - concept.depth * (rectWidth + gapWidth)
+  }));
   const concepts = treeWrapper
     .selectAll('g.node')
-    .data(terms, (d: any) => d.id);
+    .data(termsFixed, (d: any) => d.id);
   // remove all nodes
   concepts
     .exit()
     .remove();
-
-  let captionTransitionTimeout;
 
   const wrappers = concepts
     .enter()
@@ -228,9 +232,13 @@ function printGraph(
     .attr('height', rectHeight)
     .attr('width', rectWidth)
     .on('click', (d: GraphNode) => redirect(d.id))
-    .on('mouseover', (d: GraphNode) => { clearTimeout(captionTransitionTimeout); conceptName.text(d.name); })
-    .on('mouseout', (d: GraphNode) => { captionTransitionTimeout = setTimeout(() => conceptName.text(''), 300) });
-
+    .on('mouseover', (d: GraphNode) => {
+      clearTimeout(captionTransitionTimeout);
+      conceptName.text(d.name);
+    })
+    .on('mouseout', (d: GraphNode) => {
+      captionTransitionTimeout = setTimeout(() => conceptName.text(''), 300) }
+    );
   wrappers.append('svg:rect')    
     .attr('class', (d: GraphNode) => d.isCurrent ? 'nodeWrapper current' : 'nodeWrapper')
     .attr('height', rectHeight)
@@ -258,16 +266,17 @@ function printGraph(
     .attr('data-from', (c: any) => c.source.id)
     .attr('data-to', (c: any) => c.target.id);
 
+  // fix y coordinates for concepts
+
   const simulation = d3force
-    .forceSimulation(terms)
-    .force('collide', d3.forceCollide().radius(d => rectHeight*2).iterations(2))
-    .force('link', d3.forceLink(links).id((d: GraphNode) => d.id.toString()))
+    .forceSimulation(termsFixed)
+    .force('collide', d3.forceCollide().radius(d => rectHeight).iterations(2))
+    .force('link', d3.forceLink(links).id((d: GraphNode) => d.id.toString()).distance(rectWidth).strength(1))
     .force('center', d3.forceCenter(height/2, width/2))
     .on('tick', updateSimulation.bind(
       null,
       wrappers,
       connectors,
-      (width - rectWidth)/2,
       rectWidth,
       rectHeight,
       gapWidth
@@ -282,13 +291,16 @@ function TermConnections(props: ITermConnectionsProps) {
   return <svg
     {...classes()}
     ref={element => {
-      if (element && terms.length) {
+      if (element && terms) {
         printGraph(element, terms, links, goToTerm);
       }
     }}
   >
     <g id='wrapper'></g>
-    <g id='concept-name'></g>
+    <g id='concept-name'>
+      <rect id='concept-name-bg'></rect>
+      <text id='concept-name-text'></text>
+    </g>
   </svg>;
 }
 

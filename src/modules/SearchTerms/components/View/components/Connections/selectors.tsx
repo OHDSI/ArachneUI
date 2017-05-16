@@ -2,29 +2,37 @@ import { createSelector } from 'reselect';
 import { get } from 'lodash';
 import { GraphNode, GraphConnection } from './presenter';
 
-const getRawConnections = (state: Object) => get(state, 'searchTerms.relations.data', []) || [];
+const getRawConnections = (state: Object) => get(state, 'searchTerms.relations.data', {
+  terms: [],
+  links: [],
+}) || {
+  terms: [],
+  links: [],
+};
 
 const getConnections = createSelector(
   getRawConnections,
-  (connections) => {
-  	const terms = connections;
-  	const links: Array<GraphConnection> = [];
-  	terms.forEach((node: GraphNode) => {
-  		if(node.parentIds && node.parentIds.length > 0) {
-  			node.parentIds.forEach(id => {
-          links.push({
-            source: id,
-            target: node.id,
-          });
-        });
+  connections => {
+    const levels = {};
+    // count how much terms are placed on each level
+    connections.terms.forEach((concept) => {
+      if (levels[concept.depth] === undefined) {
+        levels[concept.depth] = {
+          current: 0,
+          total: 1
+        };
+      } else {
+        levels[concept.depth].total += 1;
       }
-  	});
+    });
+    // define depth for y coordinate (0 in the center, negative values above, positive values below it, like x-depth)
+    connections.terms = connections.terms.map((concept) => ({
+      ...concept,
+      yDepth: (levels[concept.depth].current++) - levels[concept.depth].total/2,
+    }));
 
-  	return {
-  		terms,
-  		links,
-  	};
-  }
+    return connections;
+  }//connections
   );
 
 export default {
