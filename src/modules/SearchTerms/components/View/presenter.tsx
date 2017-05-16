@@ -93,7 +93,7 @@ function Term(props: ITermProps) {
         </div>
         <div className="col-xs-12 col-md-7">
           <Panel
-            {...classes({ element: 'connections-wrapper' })}
+            {...classes({ element: 'connections-wrapper', modifiers: { stretched: !isStandard || !isTableMode } })}
             title='Term connections'
             headerBtns={() => {
                 if (details && isStandard) {
