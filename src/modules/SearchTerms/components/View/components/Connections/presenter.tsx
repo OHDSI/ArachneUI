@@ -23,6 +23,7 @@ type GraphNode = {
   name: string;
   parentIds?: Array<number>;
   depth: number;
+  yDepth: number;
 };
 
 type GraphConnection = {
