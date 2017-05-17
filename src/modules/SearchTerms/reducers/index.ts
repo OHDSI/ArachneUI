@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import services from '../apiServices';
 
 import termList from './termList';
+import graph from './graph';
 
 export default combineReducers({
 	termList,
@@ -9,4 +10,5 @@ export default combineReducers({
 	facets: services.facets.reducer,
 	relations: services.relations.reducer,
 	relationships: services.relationships.reducer,
+	graph,
 });

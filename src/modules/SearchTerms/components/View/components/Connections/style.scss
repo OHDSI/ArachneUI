@@ -4,39 +4,45 @@
   &term-connections {
     width: 100%;
     height: 100%;
+    /* for loader */
+    position: relative;
 
-    & #wrapper {
-    	transform-origin: center;
-    }
+    &__graph {
+	    width: 100%;
+	    height: 100%;
 
-    & #concept-name .wrapper {
-    	fill: $grey-disabled;
-    }
+	    & #wrapper {
+	    	transform-origin: center;
+	    }
 
-    & .node {
-		  cursor: pointer;    	
-    }
+	    & #concept-name .wrapper {
+	    	fill: $grey-disabled;
+	    }
 
-    & .nodeWrapper {
-		  stroke: $black;
-		  fill: #fd8c3c;
-		  stroke-width: .5px;
+	    & .node {
+			  cursor: pointer;    	
+	    }
 
-		  &.current {
-		  	fill: $red;
-		  }
+	    & .nodeWrapper {
+			  stroke: $black;
+			  fill: #fd8c3c;
+			  stroke-width: .5px;
+
+			  &.current {
+			  	fill: $red;
+			  }
+			}
+
+			& .link, & .additional-link {
+				/* colors are temporary */
+			  fill: transparent;
+			  stroke: #9ecae1;
+			  stroke-width: 1.5px;
+
+			  &:hover {
+			  	stroke: $black;
+			  }
+			}
 		}
-
-		& .link, & .additional-link {
-			/* colors are temporary */
-		  fill: transparent;
-		  stroke: #9ecae1;
-		  stroke-width: 1.5px;
-
-		  &:hover {
-		  	stroke: $black;
-		  }
-		}
-
   }
 }
