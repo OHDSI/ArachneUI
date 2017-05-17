@@ -7,6 +7,9 @@ import BEMHelper from 'services/BemHelper';
 import * as d3zoom from 'd3-zoom';
 import * as d3transition from 'd3-transition';
 import * as d3force from 'd3-force';
+import {
+  LoadingPanel,
+} from 'arachne-components';
 
 require('./style.scss');
 
@@ -51,10 +54,12 @@ interface ICanvas extends d3select.Selection<d3select.BaseType, {}, SVGElement, 
 interface ITermConnectionsStateProps {
   terms: Array<GraphNode>;
   links: Array<GraphConnection>;
+  isInProgress: boolean;
 };
 
 interface ITermConnectionsDispatchProps {
   goToTerm: (id: number) => any;
+  setLoadingStatus: (status: boolean) => any;
 };
 
 interface ITermConnectionsProps extends ITermConnectionsStateProps, ITermConnectionsDispatchProps {
@@ -152,7 +157,12 @@ function printGraph(
   terms: Array<GraphNode>,
   links: Array<GraphConnection>,
   redirect: Function,
+  setLoadingStatus: Function
  ) {
+  // prevent not nessessary rendering
+  if (!terms.length) {
+    return false;
+  }
   let width: number, height: number;
   width = container.getBoundingClientRect().width,
   height = container.getBoundingClientRect().height;
@@ -237,8 +247,8 @@ function printGraph(
       conceptName.text(d.name);
     })
     .on('mouseout', (d: GraphNode) => {
-      captionTransitionTimeout = setTimeout(() => conceptName.text(''), 300) }
-    );
+      captionTransitionTimeout = setTimeout(() => conceptName.text(''), 300);
+    });
   wrappers.append('svg:rect')    
     .attr('class', (d: GraphNode) => d.isCurrent ? 'nodeWrapper current' : 'nodeWrapper')
     .attr('height', rectHeight)
@@ -282,26 +292,37 @@ function printGraph(
       gapWidth
     ));
   simulation.restart();
+  setLoadingStatus(false);
 }
 
 function TermConnections(props: ITermConnectionsProps) {
-  const { terms, links, goToTerm } = props;
+  const {
+    terms,
+    links,
+    goToTerm,
+    isInProgress,
+    setLoadingStatus,
+  } = props;
   const classes = BEMHelper('term-connections');
 
-  return <svg
-    {...classes()}
-    ref={element => {
-      if (element && terms) {
-        printGraph(element, terms, links, goToTerm);
-      }
-    }}
-  >
-    <g id='wrapper'></g>
-    <g id='concept-name'>
-      <rect id='concept-name-bg'></rect>
-      <text id='concept-name-text'></text>
-    </g>
-  </svg>;
+  return <div
+      {...classes()}>
+    <svg
+      {...classes('graph')}
+      ref={element => {
+        if (element && terms) {
+          printGraph(element, terms, links, goToTerm, setLoadingStatus);
+        }
+      }}
+    >
+      <g id='wrapper'></g>
+      <g id='concept-name'>
+        <rect id='concept-name-bg'></rect>
+        <text id='concept-name-text'></text>
+      </g>
+    </svg>,
+    <LoadingPanel active={isInProgress} />
+  </div>;
 }
 
 export default TermConnections;

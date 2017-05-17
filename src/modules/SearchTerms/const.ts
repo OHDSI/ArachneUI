@@ -10,6 +10,8 @@ const forms = keyMirror({
 
 const actionTypes = keyMirror({
   SEARCH_PAGE_SIZE_UPDATED: null,
+  GRAPH_RENDER_STARTED: null,
+  GRAPH_RENDER_FINISHED: null,
 });
 
 const paths = {
