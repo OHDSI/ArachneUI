@@ -1,6 +1,7 @@
 import * as React from 'react';
 import BEMHelper from 'services/BemHelper';
 import { apiPaths, paths } from 'modules/Auth/const';
+import { paths as VocabularyPaths } from 'modules/Vocabulary/const';
 import { Avatar, Link } from 'arachne-components';
 import Dropdown from 'react-simple-dropdown';
 import { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
@@ -50,6 +51,9 @@ function UserMenu(props) {
               dropdownInstance.hide();
             }}
             >
+            <Link
+              {...classes('dropdown-link')}
+              to={VocabularyPaths.history()}>Downloads</Link>
             <Link
               {...classes('dropdown-link')}
               onClick={logout}>Logout</Link>
