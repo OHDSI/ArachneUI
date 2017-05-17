@@ -37,6 +37,7 @@
   "dependencies": {
     "@types/d3-force": "1.0.7",
     "@types/d3-selection": "1.0.14",
+    "@types/d3-transition": "^1.0.8",
     "@types/keymirror": "0.1.1",
     "@types/lodash": "4.14.54",
     "@types/redux-form": "6.3.2",
@@ -49,6 +50,8 @@
     "d3-drag": "1.0.4",
     "d3-force": "1.0.6",
     "d3-selection": "1.0.5",
+    "d3-transition": "^1.0.4",
+    "d3-zoom": "^1.1.4",
     "es6-promise": "4.0.5",
     "feathers-client": "1.9.0",
     "feathers-reduxify-services": "0.3.0",

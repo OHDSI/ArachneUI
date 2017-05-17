@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { Component } from 'react';
-import { goBack, push as goToPage } from 'react-router-redux';
+import { push as goToPage } from 'react-router-redux';
 import { paths } from 'modules/SearchTerms/const';
 import { get } from 'lodash';
 import presenter from './presenter';
@@ -18,7 +18,7 @@ class TermConnections extends Component<ITermConnectionsProps, {}> {
 }
 
 function mapStateToProps(state: Object, ownProps: Object): ITermConnectionsStateProps {
-  const connections = selectors.getConnections(state);
+  let connections = selectors.getConnections(state);
 
   return {
     terms: connections.terms, 

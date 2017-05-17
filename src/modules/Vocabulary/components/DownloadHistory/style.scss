@@ -19,5 +19,48 @@
         background: $grey-light;
       }
     }
+
+    &__remove-button {
+      color: $blue-dark;
+    }
+
+    &__status {
+      font-weight: $font-weight-bold;
+      padding-right: 15px;
+    }
+
+    & > .ac-toolbar {
+      background-color: $grey-light;
+    }
+
+    &__bundle-caption .ac-toolbar {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+
+    &__id-th {
+      width: 5%;
+    }
+
+    &__cdm-th {
+      width: 10%;
+    }
+
+    &__code-th {
+      width: 15%;
+    }
+
+    &__name-th {
+      width: 70%;
+    }
+  }
+
+  &bundle-caption {
+
+    &__date {
+      display: block;
+      font-size: $font-size-base;
+      font-weight: initial !important;
+    }
   }
 }

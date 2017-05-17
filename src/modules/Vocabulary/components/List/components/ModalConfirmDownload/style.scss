@@ -21,5 +21,24 @@
       margin-left: auto;
       text-transform: initial;
     }
+
+    &__bundle-name {
+      background-color: $grey-lighter;
+      padding: 0.5rem 2rem;
+
+      &-input {
+        @include input();
+        @include input-border();
+      }
+    }
+
+    &__errors {
+      padding: 1rem 2rem 0;
+      text-align: center;
+    }
+
+    &__error {
+      color: $red;
+    }
   }
 }

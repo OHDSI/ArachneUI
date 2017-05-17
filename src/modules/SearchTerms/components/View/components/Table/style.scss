@@ -1,0 +1,14 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+  &term-connections-table {
+    & .ac {
+    	&-table {
+	    	&__header-row {
+	    		background-color: $grey;
+	    	}
+	    }
+    }
+  	
+  }
+}

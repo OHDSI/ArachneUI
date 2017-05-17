@@ -7,7 +7,7 @@ function rootRoute(path: string): PlainRoute {
     component: ({ children }) => children,
     indexRoute: {
       onEnter: (nextState, replace) => {
-        replace(path + '/terms');
+        replace(`/${path}/terms`);
       }
     },
     childRoutes: [
@@ -17,6 +17,10 @@ function rootRoute(path: string): PlainRoute {
       },
       {
         path: 'terms/:termId',
+        component: require('./components/View').default,
+      },
+      {
+        path: 'terms/:termId/:displayMode',
         component: require('./components/View').default,
       }
     ],

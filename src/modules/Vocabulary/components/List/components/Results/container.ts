@@ -4,7 +4,7 @@ import actions from 'modules/Vocabulary/actions';
 import { apiPaths, forms } from 'modules/Vocabulary/const';
 import { get } from 'lodash';
 import { push as goToPage } from 'react-router-redux';
-import { reduxForm, reset, FormProps } from 'redux-form';
+import { reduxForm, reset, FormProps, change as reduxFormChange } from 'redux-form';
 import presenter from './presenter';
 import selectors from './selectors';
 
@@ -53,6 +53,11 @@ function mapStateToProps(state: Object): IResultsStateProps {
 	// every single checkbox is checked
 	const areAllRowsChecked = selectedVocabularies.length === selectableVocabularies.length;
 
+	vocabularies = vocabularies.map((vocabulary: Vocabulary) => ({
+		...vocabulary,
+		isChecked: values[vocabulary.id.toString()] === true,
+	}));
+
 	return {
 		areAllChecked,
 		areAllRowsChecked,
@@ -65,6 +70,7 @@ function mapStateToProps(state: Object): IResultsStateProps {
 const mapDispatchToProps = {
 	unselectAll: () => reset(forms.download),
 	toggleAll: actions.download.toggleAllVocabs,
+  toggle: (id: number, state: boolean) => reduxFormChange(forms.download, `vocabulary[${id}]`, state),
 };
 
 function mergeProps(

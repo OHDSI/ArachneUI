@@ -8,4 +8,5 @@ export default combineReducers({
 	terms: services.terms.reducer,
 	facets: services.facets.reducer,
 	relations: services.relations.reducer,
+	relationships: services.relationships.reducer,
 });
