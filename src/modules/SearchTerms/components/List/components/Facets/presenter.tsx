@@ -4,6 +4,7 @@ import { Action } from 'redux';
 import { FormProps, DataShape } from 'redux-form';
 import {
   FacetedSearchPanel,
+  LoadingPanel,
 } from 'arachne-components';
 import { locationDescriptor } from 'modules/SearchTerms/components/List/presenter';
 import { push } from 'react-router-redux';
@@ -40,6 +41,7 @@ interface IFacetStateProps {
   pageSize: number;
   currentAddress: locationDescriptor;
   query: string;
+  isLoading: boolean;
 }
 
 interface IFacetDispatchProps {
@@ -59,6 +61,7 @@ function Facets(props: IFacets) {
     facets,
     doFilter,
     clearFilter,
+    isLoading,
   } = props;
   const classes = BEMHelper('search-facets');
   const submitBtn = {
@@ -78,6 +81,7 @@ function Facets(props: IFacets) {
         emptyOptionsDisabled={false}
         {...props}
       />
+      <LoadingPanel active={isLoading} />
     </div>
   );
 }
