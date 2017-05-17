@@ -44,6 +44,7 @@ function mapStateToProps(state: Object, ownProps: ITermRoute): ITermStateProps {
 	const details = get(state, 'searchTerms.terms.data', {});
 	const isTableMode = ownProps.routeParams.displayMode === 'table';
 	const isStandard = get(details, 'standardConcept') === 'Standard';
+	const relationships = get(state, 'searchTerms.relationships.data', []) || [];
 
 	return {
 		details,
@@ -52,6 +53,7 @@ function mapStateToProps(state: Object, ownProps: ITermRoute): ITermStateProps {
 		termId,
 		isTableMode,
 		isStandard,
+		relationshipsCount: relationships.length,
 	};
 }
 
