@@ -41,7 +41,7 @@ const mapDispatchToProps = {
   requestDownload: actions.download.requestDownload,
   remove: (id: number) => reduxFormChange(forms.download, `vocabulary[${id}]`, false),
   close: () => ModalUtils.actions.toggle(modal.download, false),
-  showHistory: () => goToPage(paths.history()),
+  showResult: () => ModalUtils.actions.toggle(modal.downloadResult, true),
 };
 
 function mergeProps(
@@ -65,7 +65,8 @@ function mergeProps(
         ids: stateProps.selectedVocabIds.join(','),
         name: stateProps.bundleName,
       })
-      .then(() => dispatchProps.showHistory())
+      .then(() => dispatchProps.close())
+      .then(() => dispatchProps.showResult())
       .catch(({ message }) => {
         throw new SubmissionError({
           _error: message,

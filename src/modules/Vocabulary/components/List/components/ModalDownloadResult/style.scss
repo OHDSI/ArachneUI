@@ -1,0 +1,9 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+  &modal-download-result {
+    &__text {
+      line-height: 1.5;
+    }
+  }
+}

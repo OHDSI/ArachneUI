@@ -36,7 +36,6 @@
   },
   "dependencies": {
     "@types/d3-force": "1.0.7",
-    "@types/d3-hierarchy": "^1.1.0",
     "@types/d3-selection": "1.0.14",
     "@types/d3-transition": "^1.0.8",
     "@types/keymirror": "0.1.1",
@@ -50,7 +49,6 @@
     "css-loader": "0.26.2",
     "d3-drag": "1.0.4",
     "d3-force": "1.0.6",
-    "d3-hierarchy": "^1.1.4",
     "d3-selection": "1.0.5",
     "d3-transition": "^1.0.4",
     "d3-zoom": "^1.1.4",

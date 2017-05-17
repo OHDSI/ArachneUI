@@ -9,6 +9,7 @@ const forms = keyMirror({
 
 const modal = keyMirror({
   download: null,
+  downloadResult: null,
 });
 
 const actionTypes = keyMirror({

@@ -23,7 +23,7 @@ interface IModalDispatchProps {
 	close: () => null;
 	download: () => null;
   requestDownload: (params: DownloadParams) => any;
-  showHistory: () => null;
+	showResult: () => null;
 };
 
 interface IModalProps extends IModalStateProps, IModalDispatchProps {
