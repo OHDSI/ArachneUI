@@ -39,6 +39,7 @@ function mapStateToProps(state: Object): IFacetStateProps {
   const pageSize = get(state, 'searchTerms.termList.data.pageSize', resultsPageSize);
   const query = get(state, 'form.toolbar.values.searchString', '');
   const initialValues = selectors.getFilterInitialValues(state);
+  const isLoading = get(state, 'searchTerms.facets.isLoading', false);
 
   return {
   	facets,
@@ -48,6 +49,7 @@ function mapStateToProps(state: Object): IFacetStateProps {
     pageSize,
     currentAddress,
     query,
+    isLoading,
   };
 }
 
