@@ -3,10 +3,47 @@
 
 .#{$namespace} {
   &login {
+  	align-items: center;
+  	background-color: $grey-lighter;
     display: flex;
+    height: 100%;
     justify-content: center;
-    &__link {
-      margin-top: 3rem;
+    text-align: center;
+
+    & .ac-panel {
+    	position: relative;
+    	top: -100px;
+    }
+
+    &__modal-content {
+    	display: flex;
+    	flex-direction: column;
+    	padding: 2rem;
+    	width: 400px;
+    }
+    
+    &__login {
+    	background-color: $blue;
+    	border-radius: $input-border-radius;
+    	color: $white;
+    	margin-top: 2rem;
+    	padding: 0.75rem;
+
+    	&:hover {
+    		background-color: $blue-light;
+    	}
+    }
+
+    &__register {
+    	background-color: $purple;
+    	border-radius: $input-border-radius;
+    	color: $white;
+    	margin: 1rem 0;
+    	padding: 0.75rem;
+
+    	&:hover {
+    		background-color: $purple-darker;
+    	}
     }
   }
   

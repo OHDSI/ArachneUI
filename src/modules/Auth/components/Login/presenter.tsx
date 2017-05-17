@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {
-  Button
+  Button,
+  Panel
 } from 'arachne-components';
 import BEMHelper from 'services/BemHelper';
 import { paths } from 'modules/Auth/const';
@@ -27,14 +28,27 @@ function Login(props: ILoginProps) {
   } = props;
   const classes = BEMHelper('login');
 
-  return (    
+  return (
     <div {...classes()}>
-      <Button
-        {...classes('link')}
-        onClick={goToSSO}
-      >
-        Login via SSO
-      </Button>
+      <Panel title='Login or register to access'>
+        <div {...classes('modal-content')}>
+          <p {...classes('text')}>
+            This item requires authorization.<br/>
+            Please login or register to access.
+          </p>
+          <Button
+            {...classes('login')}
+            onClick={goToSSO}
+          >
+            Click here to login
+          </Button>
+          {/* <Button
+            {...classes('register')}
+          >
+            Click here to register
+          </Button> */}
+        </div>
+      </Panel>
     </div>
   );
 }
