@@ -43,6 +43,35 @@
 			  	stroke: $black;
 			  }
 			}
+
+			& #zoom-in-container, & #zoom-out-container {
+				width: 40px;
+				height: 40px;
+				cursor: pointer;
+			}
+
+			& #zoom-in-bg, & #zoom-out-bg {
+				rx: 20px;
+				ry: 20px;
+				width: 40px;
+				height: 40px;
+				fill: $grey;
+    		text-anchor: middle;
+    		alignment-baseline: middle;
+    		x: 0px;
+    		y: 0px;
+    		
+    		&:active {
+    			fill: $grey-dark-light;
+    		}
+			}
+			& #zoom-in, & #zoom-out {
+				color: #fff;
+				font-weight: $font-weight-bold;
+				font-size: $font-size-header;
+    		text-anchor: middle;
+    		alignment-baseline: middle;
+			}
 		}
   }
 }

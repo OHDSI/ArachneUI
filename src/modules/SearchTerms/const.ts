@@ -23,6 +23,24 @@ const apiPaths = {
 	downloadCsv: (query: string) => `/api/v1/concepts/download/csv${query}`,
 };
 
+const gapWidth = 100;
+const rectHeight = 25;
+const rectWidth = 250;
+const conceptNameHeight = 40;
+const maxNameLength = 30;
+const conceptNameLeftPadding = 10;
+const conceptNameTopPadding = 25;
+const conceptBorderRadius = 7.5;
+const conceptLeftPadding = 10;
+const conceptTopPadding = 16;
+const maxZoom = 3;
+const minZoom = 0.25;
+
+
+const controlSize = 40;
+const controlsGapSize = 10;
+const zoomStep = 0.25;
+
 export {
   actionTypes,
   apiPaths,
@@ -30,4 +48,19 @@ export {
   maxResultsPageSize,
   paths,
   resultsPageSize,
+  gapWidth,
+  rectHeight,
+  rectWidth,
+  conceptNameHeight,
+  maxNameLength,
+  conceptNameLeftPadding,
+  conceptNameTopPadding,
+  conceptBorderRadius,
+  conceptLeftPadding,
+  conceptTopPadding,
+  maxZoom,
+  minZoom,  
+  controlSize,
+  controlsGapSize,
+  zoomStep,
 };

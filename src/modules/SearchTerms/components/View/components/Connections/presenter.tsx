@@ -10,6 +10,24 @@ import * as d3force from 'd3-force';
 import {
   LoadingPanel,
 } from 'arachne-components';
+import {
+  gapWidth,
+  rectHeight,
+  rectWidth,
+  conceptNameHeight,
+  maxNameLength,
+  conceptNameLeftPadding,
+  conceptNameTopPadding,
+  conceptBorderRadius,
+  conceptLeftPadding,
+  conceptTopPadding,
+  maxZoom,
+  minZoom,
+
+  controlSize,
+  controlsGapSize,
+  zoomStep,
+} from 'modules/SearchTerms/const';
 
 require('./style.scss');
 
@@ -106,42 +124,42 @@ function dragended(canvas: ICanvas) {
 }
 
 function zoomed(canvas: ICanvas) {
-  const maxZoom = 3;
-  const minZoom = 0.25;
-  if (event.transform.k > maxZoom || event.transform.k < minZoom) {
+  setZoom(canvas, event.transform.k);
+}
+
+function setZoom(canvas: ICanvas, factor: number) {
+  // like scaleExtent but for zoom controls
+  if (factor > maxZoom || factor < minZoom) {
     return false;
   }
   const x = canvas.fixedX;
   const y = canvas.fixedY;
-  const scale = event.transform.k;
+  const scale = factor;
   if (isNaN(x) || isNaN(y) || isNaN(scale)) {
     return false;
   }
   canvas.transition(d3transition.transition('zoom').duration(100))
     /*.attr('style',
       `transform-origin:
-      ${event.sourceEvent.offsetX * event.transform.k}px
-      ${event.sourceEvent.offsetY * event.transform.k}px`)*/
+      ${event.sourceEvent.offsetX * factor}px
+      ${event.sourceEvent.offsetY * factor}px`)*/
     .attr('transform', `translate(${x}, ${y}) scale(${scale})`);
   canvas.scaleFactor = scale;
 }
 
 function updateSimulation(
   concepts,
-  connections,
-  nodeWidth,
-  nodeHeight,
-  gap
+  connections
 ) {
   connections
     .attr('d', (c: GraphLink) => {
       const from = {
-        x: c.source.x + nodeWidth,
-        y: c.source.y + nodeHeight/2
+        x: c.source.x + rectWidth,
+        y: c.source.y + rectHeight/2
       }
       const to = {
         x: c.target.x,
-        y: c.target.y + nodeHeight/2
+        y: c.target.y + rectHeight/2
       };
       return diagonal(from, to, c.source.depth <= c.target.depth);
     });
@@ -166,16 +184,6 @@ function printGraph(
   let width: number, height: number;
   width = container.getBoundingClientRect().width,
   height = container.getBoundingClientRect().height;
-  const gapWidth = 100;
-  const rectHeight = 25;
-  const rectWidth = 250;
-  const conceptNameHeight = 40;
-  const maxNameLength = 30;
-  const conceptNameLeftPadding = 10;
-  const conceptNameTopPadding = 25;
-  const conceptBorderRadius = 7.5;
-  const conceptLeftPadding = 10;
-  const conceptTopPadding = 16;
   let captionTransitionTimeout;
 
   const svg = d3select
@@ -203,6 +211,7 @@ function printGraph(
     .on('end', dragended.bind(null, treeWrapper));
   const zoom = d3zoom.zoom()
     .on('zoom', zoomed.bind(null, treeWrapper))
+    .scaleExtent([minZoom, maxZoom]);
 
   svg
     .call(drag)
@@ -286,13 +295,25 @@ function printGraph(
     .on('tick', updateSimulation.bind(
       null,
       wrappers,
-      connectors,
-      rectWidth,
-      rectHeight,
-      gapWidth
+      connectors
     ));
   simulation.restart();
   setLoadingStatus(false);
+
+  // zoom controls
+  const zoomControls = svg.selectAll('g#zoom-controls');
+  zoomControls.attr('transform', () => `translate(${width-controlSize*1.5}, ${controlSize/2})`);
+  zoomControls.selectAll('g#zoom-in-container')
+    .on('click', () => setZoom(treeWrapper, treeWrapper.scaleFactor + zoomStep));
+  zoomControls.selectAll('g#zoom-out-container')
+    .attr('transform', () => `translate(0, ${controlSize + controlsGapSize})`)
+    .on('click', () => setZoom(treeWrapper, treeWrapper.scaleFactor - zoomStep));
+  zoomControls.selectAll('text#zoom-in')
+    .attr('x', () => controlSize/2)
+    .attr('y', () => controlSize/2);
+  zoomControls.selectAll('text#zoom-out')
+    .attr('x', () => controlSize/2)
+    .attr('y', () => controlSize/2);
 }
 
 function TermConnections(props: ITermConnectionsProps) {
@@ -319,6 +340,16 @@ function TermConnections(props: ITermConnectionsProps) {
       <g id='concept-name'>
         <rect id='concept-name-bg'></rect>
         <text id='concept-name-text'></text>
+      </g>
+      <g id='zoom-controls'>
+        <g id='zoom-in-container'>
+          <rect id='zoom-in-bg'></rect>
+          <text id='zoom-in'>+</text>
+        </g>
+        <g id='zoom-out-container'>
+          <rect id='zoom-out-bg'></rect>
+          <text id='zoom-out'>-</text>
+        </g>
       </g>
     </svg>,
     <LoadingPanel active={isInProgress} />
