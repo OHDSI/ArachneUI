@@ -22,6 +22,7 @@ interface ITermStateProps {
   termId: number;
   isTableMode: boolean;
   isStandard: boolean;
+  relationshipsCount: number;
 };
 
 interface ITermDispatchProps {
@@ -43,8 +44,13 @@ function Term(props: ITermProps) {
     name,
     isTableMode,
     isStandard,
+    relationshipsCount,
   } = props;
   const classes = BEMHelper('term');
+  let title = 'Term connections';
+  if (isTableMode && relationshipsCount) {
+    title += ` (${relationshipsCount})`;
+  }
 
   return (    
     <div {...classes()}>
@@ -94,7 +100,7 @@ function Term(props: ITermProps) {
         <div className="col-xs-12 col-md-7">
           <Panel
             {...classes({ element: 'connections-wrapper', modifiers: { stretched: !isStandard || !isTableMode } })}
-            title='Term connections'
+            title={title}
             headerBtns={() => {
                 if (details && isStandard) {
                   return isTableMode
