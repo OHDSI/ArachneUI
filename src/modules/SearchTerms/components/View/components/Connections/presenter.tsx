@@ -216,6 +216,9 @@ function printGraph(
   svg
     .call(drag)
     .call(zoom);
+  // disable double click
+  svg
+    .on('dblclick.zoom', () => {});
 
   // arrow
   treeWrapper.append('svg:defs').selectAll('marker')
