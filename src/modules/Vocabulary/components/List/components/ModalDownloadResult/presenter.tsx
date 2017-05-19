@@ -1,6 +1,7 @@
 import * as React from 'react';
 import BEMHelper from 'services/BemHelper';
-import { Modal } from 'arachne-components';
+import { Modal, Link } from 'arachne-components';
+import { paths } from 'modules/Vocabulary/const';
 
 require('./style.scss');
 
@@ -14,10 +15,11 @@ function ModalDownloadResult(props) {
     <Modal modal={modal} title='Download summary'>
 	    <div {...classes()}>
 	    	<p {...classes('text')}>
-		    	Vocabularies are being prepared now.<br/>
-		    	As soon as they are ready, you will receive an email.<br/>
+		    	Vocabularies are being prepared now.
+		    	As soon as they are ready, you will receive an email.
 		    	Also it will be possible to download vocabularies from the Download History page.
 	    	</p>
+	    	<Link {...classes('history-link')} to={paths.history()}>Show history</Link>
 	    </div>
     </Modal>);
 }
