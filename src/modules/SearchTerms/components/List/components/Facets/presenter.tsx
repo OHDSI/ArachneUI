@@ -78,7 +78,8 @@ function Facets(props: IFacets) {
         doSubmit={doFilter}
         doClear={clearFilter}
         submitBtnConfig={submitBtn}
-        emptyOptionsDisabled={false}
+        emptyOptionsDisabled={true}
+        isAccordion={true}
         {...props}
       />
       <LoadingPanel active={isLoading} />
