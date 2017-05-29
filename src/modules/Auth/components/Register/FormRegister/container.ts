@@ -13,7 +13,12 @@ interface IStateProps {
   professionalTypes: Object[],
 }
 
-interface IRegisterProps extends IStateProps {}
+interface IDispatchProps {
+  doRegister: Function,
+  goToWelcome: Function,
+}
+
+interface IRegisterProps extends IStateProps, IDispatchProps {}
 
 class FormRegister extends Component<IRegisterProps, {}> {
   render() {
@@ -21,16 +26,18 @@ class FormRegister extends Component<IRegisterProps, {}> {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state): IStateProps {
   return {
     isLoading: get(state, 'auth.professionalTypes.isLoading', false),
     professionalTypes: selectors.getProfessionalTypes(state),
   };
 }
 
-const mapDispatchToProps = {
-  doRegister,
-  goToWelcome: () => goToPage(paths.welcome()),
+const mapDispatchToProps = function(): IDispatchProps {
+  return {
+    doRegister,
+    goToWelcome: () => goToPage(paths.welcome()),
+  }
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
@@ -61,7 +68,7 @@ const ReduxFormRegister = reduxForm({
   form: forms.register,
 })(FormRegister);
 
-export default connect<IStateProps, {}, {}>(
+export default connect<IStateProps, IDispatchProps, {}>(
   mapStateToProps,
   mapDispatchToProps,
   mergeProps
