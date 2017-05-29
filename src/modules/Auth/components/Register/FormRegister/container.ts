@@ -33,10 +33,10 @@ function mapStateToProps(state): IStateProps {
   };
 }
 
-const mapDispatchToProps = function(): IDispatchProps {
+const mapDispatchToProps = function(dispatch): IDispatchProps {
   return {
-    doRegister,
-    goToWelcome: () => goToPage(paths.welcome()),
+    doRegister: (data) => dispatch(doRegister(data)),
+    goToWelcome: () => dispatch(goToPage(paths.welcome())),
   }
 };
 
