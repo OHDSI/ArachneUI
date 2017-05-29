@@ -67,6 +67,7 @@ interface ICanvas extends d3select.Selection<d3select.BaseType, {}, SVGElement, 
   tempX: number;
   tempY: number;
   scaleFactor: number;
+  transition: Function;
 };
 
 interface ITermConnectionsStateProps {

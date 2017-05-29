@@ -16,7 +16,7 @@ interface ILoginOwnProps {
   forceSSO: boolean;
 }
 
-interface ILoginProps extends ILoginStateProps, ILoginDispatchProps {};
+interface ILoginProps extends ILoginStateProps, ILoginDispatchProps, ILoginOwnProps {};
 
 class Login extends Component<ILoginProps, {}> {
   componentWillMount() {
