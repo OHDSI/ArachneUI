@@ -3,16 +3,26 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import * as get from 'lodash/get';
 import presenter from './presenter';
-import {
-  ILoginProps,
-  ILoginStateProps,
-  ILoginDispatchProps,
-  ILoginOwnProps,
-} from './presenter';
+
+interface ILoginStateProps {
+  backUrl: string;
+}
+
+interface ILoginDispatchProps {
+  goToSSO: Function;
+}
+
+interface ILoginOwnProps {
+  forceSSO: boolean;
+}
+
+interface ILoginProps extends ILoginStateProps, ILoginDispatchProps {};
 
 class Login extends Component<ILoginProps, {}> {
   componentWillMount() {
-    this.props.goToSSO();
+    if (this.props.forceSSO) {
+      this.props.goToSSO();
+    }
   }
 
   render() {
@@ -20,9 +30,10 @@ class Login extends Component<ILoginProps, {}> {
   }
 }
 
-function mapStateToProps(state: Object): ILoginStateProps {
+function mapStateToProps(state: Object, ownProps: Object): ILoginStateProps {
 	return <ILoginStateProps> {
 		backUrl: get(state, 'auth.core.backUrl', '/'),
+    forceSSO: get(ownProps, 'location.query.forceSSO', false),
 	};
 }
 

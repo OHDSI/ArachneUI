@@ -7,7 +7,13 @@ const actionTypes = keyMirror({
 
 const paths = {
 	login: () => `/auth/login`,
+	register: () => '/auth/register',
+	welcome: () => '/auth/welcome',
 };
+
+const forms = keyMirror({
+	register: null,
+});
 
 const apiPaths = {
   myUserpic: hash => `/api/v1/user-management/users/avatar/${hash ? `?${hash}` : ''}`,
@@ -16,5 +22,6 @@ const apiPaths = {
 export {
   actionTypes,
   apiPaths,
+  forms,
   paths,
 };

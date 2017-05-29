@@ -19,6 +19,14 @@ function rootRoute(path: string): PlainRoute {
         path: 'complete',
         component: require('./components/LoginComplete').default,
       },
+      {
+        path: 'register',
+        component: require('./components/Register').default,
+      },
+      {
+        path: 'welcome',
+        component: require('./components/Welcome').default,
+      },
     ],
   };
 }

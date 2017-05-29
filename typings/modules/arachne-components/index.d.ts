@@ -10,6 +10,7 @@ declare module 'arachne-components' {
 		class FacetedSearchPanel extends React.Component<any, any> {}
 		class Form extends React.Component<any, any> {}
 		class FormInput extends React.Component<any, any> {}
+		class FormSelect extends React.Component<any, any> {}
 		class Header extends React.Component<any, any> {}
 		class Link extends React.Component<any, any> {}
 		class ListItem extends React.Component<any, any> {}
