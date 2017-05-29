@@ -5,4 +5,5 @@ import services from '../apiServices';
 export default combineReducers({
 	core,
 	principal: services.auth_principal.reducer,
+	professionalTypes: services.auth_professionalTypes.reducer,
 });

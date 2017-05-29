@@ -1,0 +1,15 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+
+	&form-register {
+		text-align: left;
+
+		&__login-caption {
+			display: block;
+	    text-align: center;
+	    margin-top: 15px;
+		}
+	}
+
+}

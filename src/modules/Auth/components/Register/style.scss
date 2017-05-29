@@ -1,0 +1,24 @@
+@import 'styles/vars-and-mixins.scss';
+@import 'react-simple-dropdown/styles/Dropdown';
+
+.#{$namespace} {
+  &register {
+  	align-items: center;
+  	background-color: $grey-lighter;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+
+    &__form-panel {
+      position: relative;
+      text-align: center;
+      top: -100px;
+    }
+
+    &__form-container {
+    	padding: 2rem;
+    	width: 400px;
+    }
+  }
+  
+}

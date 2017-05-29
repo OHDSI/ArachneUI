@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {
   Button,
+  Link,
   Panel
 } from 'arachne-components';
 import BEMHelper from 'services/BemHelper';
@@ -9,18 +10,9 @@ import { get } from 'lodash';
 
 require('./style.scss');
 
-interface ILoginStateProps {
-  backUrl: string;
-}
-
-interface ILoginDispatchProps {
+interface ILoginProps {
   goToSSO: Function;
 }
-
-interface ILoginOwnProps {
-}
-
-interface ILoginProps extends ILoginStateProps, ILoginDispatchProps {};
 
 function Login(props: ILoginProps) {
   const {
@@ -42,11 +34,12 @@ function Login(props: ILoginProps) {
           >
             Click here to login
           </Button>
-          {/* <Button
+          <Button
             {...classes('register')}
+            link={paths.register()}
           >
             Click here to register
-          </Button> */}
+          </Button>
         </div>
       </Panel>
     </div>
@@ -54,9 +47,3 @@ function Login(props: ILoginProps) {
 }
 
 export default Login;
-export {
-  ILoginProps,
-  ILoginStateProps,
-  ILoginDispatchProps,
-  ILoginOwnProps,
-};

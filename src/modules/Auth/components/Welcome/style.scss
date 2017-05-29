@@ -1,0 +1,31 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+
+	&welcome {
+  	align-items: center;
+  	background-color: $grey-lighter;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+	}
+
+	&welcome-panel {
+		position: relative;
+		text-align: center;
+		top: -100px;
+
+		&__content {
+			padding: 2rem;
+		}
+
+		&__line {
+			line-height: 1.8rem;
+
+			&:not(:first-child) {
+				margin-top: 15px;
+			}
+		}
+	}
+
+}

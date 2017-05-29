@@ -1,8 +1,10 @@
 import * as get from 'lodash/get';
 import { push as goToPage } from 'react-router-redux';
-import { authTokenName, loginPath } from 'const';
+import { authTokenName, loginPath as rawLoginPath } from 'const';
 import authActions from 'modules/Auth/actions';
 import { IStoreAsync } from 'stores/configureStore';
+
+const loginPath = rawLoginPath + '?forceSSO=true';
 
 class Auth {
 	private store: IStoreAsync;
