@@ -1,0 +1,36 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+
+  &about-info-modal {
+    padding-top: 12px;
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-bottom: 25px;
+
+    &__logo {
+      display: block;
+      margin: 0 auto 2rem;
+      width: 8rem;
+    }
+
+    &__line {
+      text-align: center;      
+
+      &--emphasized {
+        font-weight: $font-weight-bold;
+      }
+
+      &--additional {
+        font-size: $font-size-small;
+        margin-top: 15px;
+      }
+    }
+
+    &__link {
+      font-weight: $font-weight-bold;
+      /* text-decoration-skip: ink; */
+      text-decoration: underline;
+    }
+  }
+}

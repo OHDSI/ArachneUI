@@ -5,6 +5,9 @@ import { paths as VocabularyPaths } from 'modules/Vocabulary/const';
 import { Avatar, Link } from 'arachne-components';
 import Dropdown from 'react-simple-dropdown';
 import { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
+import {
+  NavItem,
+} from 'components';
 
 require('./style.scss');
 
@@ -63,7 +66,7 @@ function UserMenu(props) {
     );
   } else {
     return (
-      <Link to={paths.login()}>Login</Link>
+      <NavItem path={paths.login()} name="Login" />
     )
   }
   

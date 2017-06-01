@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-  SidebarItem,
+  NavItem,
 } from 'components';
 import rootRoute from './routes';
 import IModule from '../IModule';
@@ -12,7 +12,7 @@ const module: IModule = {
 	actions: () => require('./actions').default,
 	reducer: () => require('./reducers').default,
 	navbarElement: () => [
-		<SidebarItem name='Download' path={paths.vocabsList()} />,
+		<NavItem name='Download' path={paths.vocabsList()} />,
 	],
 };
 

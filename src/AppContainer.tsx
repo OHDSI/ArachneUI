@@ -5,13 +5,13 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import BEMHelper from 'services/BemHelper';
 import IModule from 'modules/IModule';
-import { SideItem } from 'modules/IModule';
 import {
   Header,
 } from 'arachne-components';
 import {
-  SidebarItem,
+  NavItem,
 } from 'components';
+import AboutInfo from 'modules/Portal/components/AboutInfo';
 import imgs from 'const/images';
 
 require('./styles/appContainer.scss');
@@ -21,7 +21,6 @@ interface IAppState extends Props<App> {
 };
 
 interface IAppDispatch {
-  /* empty */
 }
 
 interface IAppOwnProps {
@@ -47,6 +46,7 @@ class App extends Component<IAppProps, {}> {
           navItems={this.props.navItems}
         />
         {this.props.children}
+        <AboutInfo />
       </div>
     );
   }
@@ -54,23 +54,9 @@ class App extends Component<IAppProps, {}> {
 
 function mapStateToProps(state: any): IAppState {
   const isUserAuthed = true;
-  /*let navItems: Array<ReactElement<any>> = [];
-  state.modules.list
-    .filter((module: IModule) => module.sidebarElement)
-    .map((module: IModule) => {
-      navItems = navItems.concat(
-        module.sidebarElement.map((item: SideItem) => <SidebarItem {...item} />)
-      );
-    });
-  state.modules.list
-    .filter((module: IModule) => module.navbarElement)
-    .map((module: IModule) => {
-      navItems = navItems.concat(module.navbarElement)
-    });*/
 
   return {
     isUserAuthed,
-    // navItems,
   };
 }
 

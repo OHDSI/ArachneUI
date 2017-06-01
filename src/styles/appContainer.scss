@@ -21,6 +21,7 @@ $namespace: 'at-';
 
     &__header {
       background: $green;
+      min-height: 56px;
 
       &--empty {
         & .ac-header__nav {
@@ -30,28 +31,7 @@ $namespace: 'at-';
     }
 
     & .ac-header__menu-item {
-      align-items: center;
-      border-right: 1px solid rgba(255, 255, 255, 0.3);
-      border-left: 1px solid rgba(0, 0, 0, 0.2);
-      color: #fff;
-      display: flex;
-      // font-weight: $font-weight-bold;
-      height: 100%;
       margin-left: 0;
-      text-transform: uppercase;
-
-      &--selected {
-        background: rgba(255, 255, 255, 0.25);
-      }
-
-      & .ac-link {        
-        align-items: center;
-        color: #fff;
-        display: flex;
-        height: 100%;
-        padding-left: 2rem;
-        padding-right: 2rem;
-      }
     }
   }
 }
