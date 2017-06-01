@@ -10,9 +10,10 @@ interface IAboutInfo {
   isLoading: boolean,
   projectVersion: string,
   buildId: string,
+  modal: Object,
 }
 
-function AboutInfo(props) {
+function AboutInfo(props: IAboutInfo) {
   const classes = BEMHelper('about-info-modal');
   const {
     buildNumber,

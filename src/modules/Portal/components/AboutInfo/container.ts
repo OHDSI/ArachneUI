@@ -18,7 +18,7 @@ interface IDispatchProps {
   hideModal: Function,
 }
 
-class AboutInfo extends Component<IStateProps & IDispatchProps, {}> {
+class AboutInfo extends Component<IStateProps & IDispatchProps & { modal: Object }, {}> {
   componentWillMount() {
     this.props.loadBuildInfo();
   }
