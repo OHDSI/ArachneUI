@@ -12,6 +12,7 @@ import { paths } from 'modules/SearchTerms/const';
 import { get } from 'lodash';
 import TermConnections from './components/Connections';
 import TermConnectionsTable from './components/Table';
+import TermFiltersPanel from './components/Filters';
 
 require('./style.scss');
 
@@ -110,6 +111,7 @@ function Term(props: ITermProps) {
               }
             }
           >
+            <TermFiltersPanel />
             {isTableMode || !isStandard
               ? <TermConnectionsTable />
               : <TermConnections />
