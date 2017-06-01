@@ -1,5 +1,5 @@
-import SidebarItem from './SidebarItem';
+import NavItem from './NavItem';
 
 export {
-  SidebarItem,
+  NavItem,
 };

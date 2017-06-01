@@ -1,0 +1,9 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+
+  &menu-about-info-ico {
+    @include material-icon();
+    font-size: 2.2rem;
+  }
+}

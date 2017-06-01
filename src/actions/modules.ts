@@ -1,11 +1,11 @@
 import { ReactElement } from 'react';
 import actionTypes from 'const/actionTypes';
-import { SideItem } from 'modules/IModule';
+import { NavItem } from 'modules/IModule';
 import { IAppAction } from './index';
 
 interface IModuleMetadata {
   path: string;
-  sidebarElement: Array<SideItem>;
+  sidebarElement?: Array<NavItem>;
 };
 
 function register(module: IModuleMetadata): IAppAction<IModuleMetadata> {

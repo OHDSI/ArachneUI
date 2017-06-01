@@ -10,7 +10,6 @@ import configureStore from 'stores/configureStore';
 import { IStoreAsync, injectReducer } from 'stores/configureStore';
 import { configure as configureApi } from 'services/Api';
 import IModule from './modules/IModule';
-import AppContainer from './AppContainer';
 import { injectAction } from 'actions';
 import modulesActions from 'actions/modules';
 import { IModuleMetadata } from 'actions/modules';
@@ -26,6 +25,7 @@ interface IInitedModule {
 let globalStore: IStoreAsync;
 
 function getAppContainer(menuItems) {
+	const AppContainer = require('./AppContainer').default;
   return props => (
     <AppContainer
       {...props}
@@ -75,16 +75,16 @@ function initModule(module: IModule): IInitedModule {
 	if (module.navbarElement) {
 		navbarElement = module.navbarElement();
 	}
-	// TODO: Inject reducer together with reducers
-	//
-	// Fire action when module is activated
-	const moduleRoute = module.rootRoute();
-	moduleRoute.onEnter = (nextState, replace) => setActiveModule(moduleRoute.path);
-	// Register module in store
-	registerModule({
-		path: moduleRoute.path,
-		sidebarElement: module.sidebarElement,
-	});
+	
+	let moduleRoute = null;
+	if (module.rootRoute) {
+		moduleRoute = module.rootRoute();
+		moduleRoute.onEnter = (nextState, replace) => setActiveModule(moduleRoute.path);
+		// Register module in store
+		registerModule({
+			path: moduleRoute.path,
+		});
+	}
 	// Return module's Route
 	return {
 		moduleRoute,
@@ -108,7 +108,9 @@ function bootstrap() {
 
 		modules.forEach(module => {
 			const { moduleRoute, navbarElement } = initModule(module);
-			modulesRoutes.push(moduleRoute);
+			if (moduleRoute) {
+				modulesRoutes.push(moduleRoute);
+			}
 			if (navbarElement) {
 				navbarElements = navbarElements.concat(navbarElement);
 			}

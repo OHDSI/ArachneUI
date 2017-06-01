@@ -6,6 +6,7 @@ declare module 'arachne-components' {
 
 	module 'arachne-components' {
 		class Avatar extends React.Component<any, any> {}
+		class BadgedIcon extends React.Component<any, any> {}
 		class Button extends React.Component<any, any> {}
 		class FacetedSearchPanel extends React.Component<any, any> {}
 		class Form extends React.Component<any, any> {}
