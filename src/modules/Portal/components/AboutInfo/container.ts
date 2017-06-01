@@ -30,10 +30,10 @@ class AboutInfo extends Component<IStateProps & IDispatchProps & { modal: Object
 
 function mapStateToProps(state) {
   return <IStateProps> {
-    buildNumber: get(state, 'portal.buildInfo.data.buildNumber'),
-    buildId: get(state, 'portal.buildInfo.data.buildId'),
+    buildNumber: get(state, 'portal.buildInfo.queryResult.buildNumber'),
+    buildId: get(state, 'portal.buildInfo.queryResult.buildId'),
     isLoading: get(state, 'portal.buildInfo.isLoading'),
-    projectVersion: get(state, 'portal.buildInfo.data.projectVersion'),
+    projectVersion: get(state, 'portal.buildInfo.queryResult.projectVersion'),
   };
 }
 
