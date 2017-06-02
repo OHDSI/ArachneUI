@@ -1,0 +1,52 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+  &filters-panel {
+    background-color: $grey;
+    margin: 0;
+    padding: 1rem 1rem 1rem 0;
+    display: flex;
+    width: 100%;
+    text-transform: uppercase;
+    align-items: center;
+    font-weight: bold;
+    color: $black;
+
+    div {
+      display: flex;
+      align-items: center;
+    }
+
+    div, span {
+      margin-right: 1rem;
+    }
+
+    &__first {
+      margin-left: auto;
+    }
+
+    &__levels-label {
+    }
+
+    &__btn {
+      @include material-icon();
+      margin-right: 4rem;
+    }
+
+    &__standards-label {
+    }
+  }
+
+  &levels {
+    &--input {
+      width: 4rem;
+      text-align: right;
+    }
+  }
+
+  &standards-only {
+    span {
+      background-color: $white;
+    }
+  }
+}

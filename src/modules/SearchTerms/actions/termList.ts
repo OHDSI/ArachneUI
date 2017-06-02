@@ -28,6 +28,14 @@ function pageSizeUpdated(pageSize: number): IAppAction<{ pageSize: number }> {
   };
 }
 
+function termFiltersChanged(termFilters: {}): IAppAction<{}> {
+  return {
+    type: actionTypes.SET_TERM_FILTERS,
+    payload: termFilters,
+
+  };
+}
+
 function changePageSize(pageSize: number) {
   return pageSizeUpdated(pageSize);
 }
@@ -40,12 +48,17 @@ function fetch(id: number) {
   return services.terms.get(id);
 }
 
-function fetchRelations(conceptId: number) {
-  return services.relations.get(conceptId);
+function fetchRelations(conceptId: number, levels = 10) {
+  return services.relations.get(conceptId, {query: {depth: levels}});
 }
 
-function fetchRelationships(conceptId: number) {
-  return services.relationships.get(conceptId);
+function fetchRelationships(conceptId: number, standards = false) {
+  return services.relationships.get(conceptId, {query: {std: standards}});
+}
+
+function setTermFilters(termFilters: Object) {
+  console.log('setTermFilters', termFilters);
+  return termFiltersChanged(termFilters);
 }
 
 export default {
@@ -54,6 +67,7 @@ export default {
   fetch,
   fetchRelations,
   fetchRelationships,
+  setTermFilters,
 };
 
 export { searchParams };

@@ -24,13 +24,14 @@ interface ITermStateProps {
   isTableMode: boolean;
   isStandard: boolean;
   relationshipsCount: number;
+  termFilters: any;
 };
 
 interface ITermDispatchProps {
   fetch: (termId: number) => (dispatch: Function) => any;
   goBack: () => RouterAction;
-  fetchRelations: (termId: number) => (dispatch: Function) => any;
-  fetchRelationships: (termId: number) => (dispatch: Function) => any;
+  fetchRelations: (termId: number, levels) => (dispatch: Function) => any;
+  fetchRelationships: (termId: number, standards) => (dispatch: Function) => any;
 };
 
 interface ITermProps extends ITermStateProps, ITermDispatchProps {
@@ -46,6 +47,7 @@ function Term(props: ITermProps) {
     isTableMode,
     isStandard,
     relationshipsCount,
+    termId,
   } = props;
   const classes = BEMHelper('term');
   let title = 'Term connections';
@@ -111,7 +113,7 @@ function Term(props: ITermProps) {
               }
             }
           >
-            <TermFiltersPanel />
+            <TermFiltersPanel termId={termId} />
             {isTableMode || !isStandard
               ? <TermConnectionsTable />
               : <TermConnections />
