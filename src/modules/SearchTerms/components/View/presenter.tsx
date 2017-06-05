@@ -30,8 +30,8 @@ interface ITermStateProps {
 interface ITermDispatchProps {
   fetch: (termId: number) => (dispatch: Function) => any;
   goBack: () => RouterAction;
-  fetchRelations: (termId: number, levels) => (dispatch: Function) => any;
-  fetchRelationships: (termId: number, standards) => (dispatch: Function) => any;
+  fetchRelations: (termId: number, levels: number) => (dispatch: Function) => any;
+  fetchRelationships: (termId: number, standards: boolean) => (dispatch: Function) => any;
 };
 
 interface ITermProps extends ITermStateProps, ITermDispatchProps {
