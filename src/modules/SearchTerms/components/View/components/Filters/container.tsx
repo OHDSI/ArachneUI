@@ -14,7 +14,7 @@ class TermFilterPanel extends Component<IFiltersPanelProps, {}> {
 }
 
 function mapStateToProps(state: Object, ownProps: any): IFiltersPanelStateProps {
-  const filterParams = extend(get(state, 'searchTerms.termFilters.data'), {levels: 10, standardsOnly: false});
+  const filterParams = get(state, 'searchTerms.termFilters.data') || {levels: 10, standardsOnly: false};
   console.log('Filters/container', state, filterParams);
 
   return {
