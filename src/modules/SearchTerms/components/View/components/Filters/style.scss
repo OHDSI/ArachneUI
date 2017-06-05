@@ -12,20 +12,17 @@
     font-weight: bold;
     color: $black;
 
-    div {
+    &__item {
       display: flex;
       align-items: center;
     }
 
-    div, span {
-      margin-right: 1rem;
-    }
-
-    &__first {
+    :first-child {
       margin-left: auto;
     }
 
     &__levels-label {
+      margin-right: 1rem;
     }
 
     &__btn {
@@ -34,6 +31,7 @@
     }
 
     &__standards-label {
+      margin-right: 1rem;
     }
   }
 

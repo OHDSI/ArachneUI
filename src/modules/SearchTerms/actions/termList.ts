@@ -57,7 +57,6 @@ function fetchRelationships(conceptId: number, standards = false) {
 }
 
 function setTermFilters(termFilters: Object) {
-  console.log('setTermFilters', termFilters);
   return termFiltersChanged(termFilters);
 }
 

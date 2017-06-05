@@ -51,9 +51,9 @@ function FiltersPanel(props: IFiltersPanelProps) {
   const classes = BEMHelper('filters-panel');
   const {handleSubmit} = props;
   return (
-    <form ref={(f) => this.filtersForm = f} onSubmit={handleSubmit(props.doFilter)}>
+    <form onSubmit={handleSubmit(props.doFilter)}>
       <div {...classes()}>
-        <div {...classes('first')}>
+        <div {...classes('item')}>
           <span {...classes('levels-label')}>Number of parent levels</span>
           <Field
             component={NumberOfLevels}
@@ -65,7 +65,7 @@ function FiltersPanel(props: IFiltersPanelProps) {
                 mods={['success']}
                 type="submit"
                 ico="done">done</Button>
-        <div {...classes('standards')}>
+        <div {...classes('item')}>
           <span {...classes('standards-label')}>Standard concepts</span>
           <Field
             component={StandardsOnly}

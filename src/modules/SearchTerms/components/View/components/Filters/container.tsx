@@ -15,7 +15,6 @@ class TermFilterPanel extends Component<IFiltersPanelProps, {}> {
 
 function mapStateToProps(state: Object, ownProps: any): IFiltersPanelStateProps {
   const filterParams = get(state, 'searchTerms.termFilters.data') || {levels: 10, standardsOnly: false};
-  console.log('Filters/container', state, filterParams);
 
   return {
     initialValues: filterParams,
@@ -36,10 +35,9 @@ function mergeProps(stateProps: IFiltersPanelStateProps,
     ...dispatchProps,
     ...ownProps,
     doFilter: function (data) {
-      console.log('TermFilters.doFilter', data, ownProps);
       dispatchProps.setTermFilters(data);
-      // dispatchProps.fetchRelations(ownProps.termId, data.levels);
-      // dispatchProps.fetchRelationships(ownProps.termId, data.standardsOnly);
+      dispatchProps.fetchRelations(ownProps.termId, data.levels);
+       dispatchProps.fetchRelationships(ownProps.termId, data.standardsOnly);
     }
   };
 }
