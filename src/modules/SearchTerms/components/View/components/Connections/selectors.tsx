@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect';
-import { get, has } from 'lodash';
+import { get } from 'lodash';
 import { GraphNode, GraphConnection } from './presenter';
-import { defaultLevels, defaultStandardsOnly } from 'modules/SearchTerms/const';
 
 const getRawConnections = (state: Object) => get(state, 'searchTerms.relations.data', {
   terms: [],
@@ -10,11 +9,6 @@ const getRawConnections = (state: Object) => get(state, 'searchTerms.relations.d
   terms: [],
   links: [],
 };
-
-const getRawLocation = (state: Object) => get(state, 'routing.locationBeforeTransitions', {
-  pathname: '',
-  query: null,
-});
 
 const getConnections = createSelector(
   getRawConnections,
@@ -41,17 +35,6 @@ const getConnections = createSelector(
   }//connections
   );
 
-const getTermFilters = createSelector(
-  getRawLocation,
-  location => {
-    return {
-      levels: has(location.query, 'levels') ? location.query.levels : defaultLevels,
-      standardsOnly: has(location.query, 'standardsOnly') ? location.query.standardsOnly === 'true' : defaultStandardsOnly,
-    };
-  }
-);
-
 export default {
   getConnections,
-  getTermFilters,
 };

@@ -1,13 +1,12 @@
-import { connect } from 'react-redux';
-import { Component } from 'react';
-import presenter from './presenter';
-import { IFiltersPanelProps, IFiltersPanelDispatchProps, IFiltersPanelStateProps } from './presenter';
-import { reduxForm } from 'redux-form';
-import { forms } from 'modules/SearchTerms/const';
-import actions from 'modules/SearchTerms/actions';
-import { get, has } from 'lodash';
-import { push as goToPage } from 'react-router-redux';
-import * as URI from 'urijs';
+import { connect } from "react-redux";
+import { Component } from "react";
+import presenter, { IFiltersPanelDispatchProps, IFiltersPanelProps, IFiltersPanelStateProps } from "./presenter";
+import { reduxForm } from "redux-form";
+import { forms, paths } from "modules/SearchTerms/const";
+import actions from "modules/SearchTerms/actions";
+import { push as goToPage } from "react-router-redux";
+import * as URI from "urijs";
+import { getTermFilters } from "modules/SearchTerms/selectors";
 
 class TermFilterPanel extends Component<IFiltersPanelProps, {}> {
   render() {
@@ -16,18 +15,10 @@ class TermFilterPanel extends Component<IFiltersPanelProps, {}> {
 }
 
 function mapStateToProps(state: Object, ownProps: any): IFiltersPanelStateProps {
-  const location = get(state, 'routing.locationBeforeTransitions', {
-    pathname: '',
-    query: null,
-  });
-  const filterParams = {
-    levels: has(location.query, 'levels') ? location.query.levels : 10,
-    standardsOnly: has(location.query, 'standardsOnly') ? location.query.standardsOnly === 'true' : false,
-  };
+  const termFilters = getTermFilters(state);
 
   return {
-    initialValues: filterParams,
-    location: location,
+    initialValues: termFilters,
   };
 }
 
@@ -45,7 +36,7 @@ function mergeProps(stateProps: IFiltersPanelStateProps,
     ...dispatchProps,
     ...ownProps,
     doFilter: function (data) {
-      const address = new URI(`${stateProps.location.pathname}`);
+      const address = new URI(paths.term(ownProps.termId));
       address.search(data);
       dispatchProps.filter(address.href());
     }

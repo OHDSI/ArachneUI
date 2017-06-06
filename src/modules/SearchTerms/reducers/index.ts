@@ -3,7 +3,6 @@ import services from '../apiServices';
 
 import termList from './termList';
 import graph from './graph';
-import termFilters from './termFilters';
 
 export default combineReducers({
 	termList,
@@ -12,5 +11,4 @@ export default combineReducers({
 	relations: services.relations.reducer,
 	relationships: services.relationships.reducer,
 	graph,
-  termFilters,
 });

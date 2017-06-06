@@ -12,6 +12,7 @@ import {
   ITermConnectionsProps,
 } from './presenter';
 import * as URI from 'urijs';
+import { getTermFilters } from 'modules/SearchTerms/selectors';
 
 class TermConnections extends Component<ITermConnectionsProps, {}> {
   componentWillMount() {
@@ -26,7 +27,7 @@ class TermConnections extends Component<ITermConnectionsProps, {}> {
 function mapStateToProps(state: Object, ownProps: Object): ITermConnectionsStateProps {
   let connections = selectors.getConnections(state);
   const isInProgress = get(state, 'searchTerms.graph.isLoading', true);
-  const termFilters = selectors.getTermFilters(state);
+  const termFilters = getTermFilters(state);
 
   return {
     terms: connections.terms, 
@@ -58,5 +59,6 @@ function mergeProps(stateProps: ITermConnectionsStateProps,
 
 export default connect<ITermConnectionsStateProps, ITermConnectionsDispatchProps, {}>(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
+  mergeProps
 )(TermConnections);

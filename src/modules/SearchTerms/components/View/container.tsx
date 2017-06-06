@@ -9,6 +9,7 @@ import {
   ITermStateProps,
   ITermDispatchProps,
 } from './presenter';
+import {getTermFilters} from 'modules/SearchTerms/selectors';
 
 interface ITermRoute {
   routeParams: {
@@ -29,12 +30,8 @@ class Term extends Component<ITermProps, {}> {
       this.props.fetch(props.termId);
       this.props.fetchRelationships(props.termId, this.props.termFilters.standardsOnly);
       this.props.fetchConceptAncestors(props.termId, this.props.termFilters.levels);
-    }
-    if (this.props.termFilters.levels !== props.termFilters.levels) {
+    } else if (this.props.termFilters.levels !== props.termFilters.levels) {
       this.props.fetchConceptAncestors(props.termId, props.termFilters.levels);
-    }
-    if (this.props.termFilters.standardsOnly !== props.termFilters.standardsOnly) {
-      this.props.fetchRelationships(props.termId, props.termFilters.standardsOnly);
     }
   }
 
@@ -51,14 +48,7 @@ function mapStateToProps(state: Object, ownProps: ITermRoute): ITermStateProps {
   const isTableMode = ownProps.routeParams.displayMode === 'table';
   const isStandard = get(details, 'standardConcept') === 'Standard';
   const relationships = get(state, 'searchTerms.relationships.data', []) || [];
-  const location = get(state, 'routing.locationBeforeTransitions', {
-    pathname: '',
-    query: null,
-  });
-  const termFilters = {
-    levels: has(location.query, 'levels') ? location.query.levels : 10,
-    standardsOnly: has(location.query, 'standardsOnly') ? location.query.standardsOnly === 'true' : false,
-  };
+  const termFilters = getTermFilters(state);
 
   return {
     details,

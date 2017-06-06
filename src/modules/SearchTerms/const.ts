@@ -13,7 +13,6 @@ const actionTypes = keyMirror({
   SEARCH_PAGE_SIZE_UPDATED: null,
   GRAPH_RENDER_STARTED: null,
   GRAPH_RENDER_FINISHED: null,
-  SET_TERM_FILTERS: null,
 });
 
 const paths = {

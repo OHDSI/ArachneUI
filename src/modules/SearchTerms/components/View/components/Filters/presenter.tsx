@@ -7,7 +7,6 @@ require('./style.scss');
 
 interface IFiltersPanelStateProps {
   initialValues: any,
-  location: any,
 }
 
 interface IFiltersPanelDispatchProps {
@@ -42,9 +41,9 @@ function NumberOfLevels({options, input}) {
   const classes = BEMHelper('levels');
 
   return (
-    <div {...classes({modifiers: 'pane'})}>
+    <div {...classes()}>
       <input
-        {...classes({modifiers: 'input'})}
+        {...classes('input')}
         type="number"
         min="1"
         value={input.value}
@@ -73,6 +72,7 @@ function FiltersPanel(props: IFiltersPanelProps) {
             options={{}}
           />
         </div>
+{/*
         <div {...classes('item')}>
           <span {...classes('standards-label')}>Standard concepts</span>
           <Field
@@ -81,6 +81,7 @@ function FiltersPanel(props: IFiltersPanelProps) {
             options={{handleSubmit: handleSubmit(doFilter)}}
           />
         </div>
+*/}
       </div>
     </form>
   );

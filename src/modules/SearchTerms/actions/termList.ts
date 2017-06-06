@@ -28,14 +28,6 @@ function pageSizeUpdated(pageSize: number): IAppAction<{ pageSize: number }> {
   };
 }
 
-function termFiltersChanged(termFilters: {}): IAppAction<{}> {
-  return {
-    type: actionTypes.SET_TERM_FILTERS,
-    payload: termFilters,
-
-  };
-}
-
 function changePageSize(pageSize: number) {
   return pageSizeUpdated(pageSize);
 }
@@ -56,17 +48,12 @@ function fetchRelationships(conceptId: number, standards = false) {
   return services.relationships.get(conceptId, {query: {std: standards}});
 }
 
-function setTermFilters(termFilters: Object) {
-  return termFiltersChanged(termFilters);
-}
-
 export default {
   changePageSize,
   load,
   fetch,
   fetchConceptAncestors,
   fetchRelationships,
-  setTermFilters,
 };
 
 export { searchParams };
