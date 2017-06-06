@@ -48,7 +48,7 @@ function fetch(id: number) {
   return services.terms.get(id);
 }
 
-function fetchRelations(conceptId: number, levels = 10) {
+function fetchConceptAncestors(conceptId: number, levels = 10) {
   return services.relations.get(conceptId, {query: {depth: levels}});
 }
 
@@ -64,7 +64,7 @@ export default {
   changePageSize,
   load,
   fetch,
-  fetchRelations,
+  fetchConceptAncestors,
   fetchRelationships,
   setTermFilters,
 };

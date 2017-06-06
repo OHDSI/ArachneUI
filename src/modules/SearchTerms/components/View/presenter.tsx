@@ -30,7 +30,7 @@ interface ITermStateProps {
 interface ITermDispatchProps {
   fetch: (termId: number) => (dispatch: Function) => any;
   goBack: () => RouterAction;
-  fetchRelations: (termId: number, levels: number) => (dispatch: Function) => any;
+  fetchConceptAncestors: (termId: number, levels: number) => (dispatch: Function) => any;
   fetchRelationships: (termId: number, standards: boolean) => (dispatch: Function) => any;
 };
 
@@ -113,7 +113,10 @@ function Term(props: ITermProps) {
               }
             }
           >
-            <TermFiltersPanel termId={termId} />
+            {isTableMode || isStandard
+              ? <TermFiltersPanel termId={termId} />
+              : null
+            }
             {isTableMode || !isStandard
               ? <TermConnectionsTable />
               : <TermConnections />

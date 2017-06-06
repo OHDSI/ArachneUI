@@ -5,7 +5,9 @@ import { IFiltersPanelProps, IFiltersPanelDispatchProps, IFiltersPanelStateProps
 import { reduxForm } from 'redux-form';
 import { forms } from 'modules/SearchTerms/const';
 import actions from 'modules/SearchTerms/actions';
-import { get, extend } from 'lodash';
+import { get, has } from 'lodash';
+import { push as goToPage } from 'react-router-redux';
+import * as URI from 'urijs';
 
 class TermFilterPanel extends Component<IFiltersPanelProps, {}> {
   render() {
@@ -14,17 +16,25 @@ class TermFilterPanel extends Component<IFiltersPanelProps, {}> {
 }
 
 function mapStateToProps(state: Object, ownProps: any): IFiltersPanelStateProps {
-  const filterParams = get(state, 'searchTerms.termFilters.data') || {levels: 10, standardsOnly: false};
+  const location = get(state, 'routing.locationBeforeTransitions', {
+    pathname: '',
+    query: null,
+  });
+  const filterParams = {
+    levels: has(location.query, 'levels') ? location.query.levels : 10,
+    standardsOnly: has(location.query, 'standardsOnly') ? location.query.standardsOnly === 'true' : false,
+  };
 
   return {
     initialValues: filterParams,
+    location: location,
   };
 }
 
 const mapDispatchToProps = {
-  fetchRelations: actions.termList.fetchRelations,
+  fetchConceptAncestors: actions.termList.fetchConceptAncestors,
   fetchRelationships: actions.termList.fetchRelationships,
-  setTermFilters: actions.termList.setTermFilters,
+  filter: (address: string) => goToPage(address),
 };
 
 function mergeProps(stateProps: IFiltersPanelStateProps,
@@ -35,9 +45,9 @@ function mergeProps(stateProps: IFiltersPanelStateProps,
     ...dispatchProps,
     ...ownProps,
     doFilter: function (data) {
-      dispatchProps.setTermFilters(data);
-      dispatchProps.fetchRelations(ownProps.termId, data.levels);
-       dispatchProps.fetchRelationships(ownProps.termId, data.standardsOnly);
+      const address = new URI(`${stateProps.location.pathname}`);
+      address.search(data);
+      dispatchProps.filter(address.href());
     }
   };
 }

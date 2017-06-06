@@ -1,19 +1,20 @@
-import * as React from 'react';
-import BEMHelper from 'services/BemHelper';
-import { FormInput, Checkbox, Button } from 'arachne-components';
-import { reduxForm, Field } from 'redux-form';
-import { FormEventHandler } from "react";
+import * as React from "react";
+import BEMHelper from "services/BemHelper";
+import { Button, Checkbox } from "arachne-components";
+import { Field } from "redux-form";
+import { push } from "react-router-redux";
 require('./style.scss');
 
 interface IFiltersPanelStateProps {
   initialValues: any,
+  location: any,
 }
 
 interface IFiltersPanelDispatchProps {
-  fetchRelations: Function,
-  fetchRelationships: Function,
-  setTermFilters: Function,
-  handleSubmit: Function,
+  fetchRelations: Function;
+  fetchRelationships: Function;
+  handleSubmit: Function;
+  filter: (address: string) => typeof push;
 }
 
 interface IFiltersPanelProps extends IFiltersPanelStateProps, IFiltersPanelDispatchProps {
@@ -23,12 +24,16 @@ interface IFiltersPanelProps extends IFiltersPanelStateProps, IFiltersPanelDispa
 
 function StandardsOnly({options, input}) {
   const classes = BEMHelper('standards-only');
-
+  let t;
   return (
     <Checkbox
       {...classes()}
       isChecked={input.value}
-      onChange={input.onChange}
+      onChange={(val) => {
+        input.onChange(val);
+        clearTimeout(t);
+        t = setTimeout(() => options.handleSubmit(val), 100);
+      }}
     />
   );
 }
@@ -37,21 +42,28 @@ function NumberOfLevels({options, input}) {
   const classes = BEMHelper('levels');
 
   return (
-    <input
-      {...classes({modifiers: 'input'})}
-      type="number"
-      min="1"
-      value={input.value}
-      onChange={input.onChange}
-    />
+    <div {...classes({modifiers: 'pane'})}>
+      <input
+        {...classes({modifiers: 'input'})}
+        type="number"
+        min="1"
+        value={input.value}
+        onChange={input.onChange}
+      />
+      <Button {...classes('btn')}
+              mods={['success']}
+              type="submit"
+              ico="done">done</Button>
+    </div>
   );
 }
 
 function FiltersPanel(props: IFiltersPanelProps) {
   const classes = BEMHelper('filters-panel');
-  const {handleSubmit} = props;
+  const {handleSubmit, doFilter} = props;
+
   return (
-    <form onSubmit={handleSubmit(props.doFilter)}>
+    <form onSubmit={handleSubmit(doFilter)}>
       <div {...classes()}>
         <div {...classes('item')}>
           <span {...classes('levels-label')}>Number of parent levels</span>
@@ -61,15 +73,12 @@ function FiltersPanel(props: IFiltersPanelProps) {
             options={{}}
           />
         </div>
-        <Button {...classes('btn')}
-                mods={['success']}
-                type="submit"
-                ico="done">done</Button>
         <div {...classes('item')}>
           <span {...classes('standards-label')}>Standard concepts</span>
           <Field
             component={StandardsOnly}
             name="standardsOnly"
+            options={{handleSubmit: handleSubmit(doFilter)}}
           />
         </div>
       </div>
