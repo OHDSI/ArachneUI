@@ -3,6 +3,7 @@ import BEMHelper from "services/BemHelper";
 import { Button, Checkbox } from "arachne-components";
 import { Field } from "redux-form";
 import { push } from "react-router-redux";
+import { debounce } from 'lodash';
 require('./style.scss');
 
 interface IFiltersPanelStateProps {
@@ -10,7 +11,7 @@ interface IFiltersPanelStateProps {
 }
 
 interface IFiltersPanelDispatchProps {
-  fetchRelations: Function;
+  fetchConceptAncestors: Function;
   fetchRelationships: Function;
   handleSubmit: Function;
   filter: (address: string) => typeof push;
@@ -23,15 +24,13 @@ interface IFiltersPanelProps extends IFiltersPanelStateProps, IFiltersPanelDispa
 
 function StandardsOnly({options, input}) {
   const classes = BEMHelper('standards-only');
-  let t;
   return (
     <Checkbox
       {...classes()}
       isChecked={input.value}
       onChange={(val) => {
         input.onChange(val);
-        clearTimeout(t);
-        t = setTimeout(() => options.handleSubmit(val), 100);
+        options.handleSubmit(val);
       }}
     />
   );
@@ -73,14 +72,16 @@ function FiltersPanel(props: IFiltersPanelProps) {
           />
         </div>
 {/*
-        <div {...classes('item')}>
-          <span {...classes('standards-label')}>Standard concepts</span>
-          <Field
-            component={StandardsOnly}
-            name="standardsOnly"
-            options={{handleSubmit: handleSubmit(doFilter)}}
-          />
-        </div>
+        {
+          <div {...classes('item')}>
+            <span {...classes('standards-label')}>Standard concepts</span>
+            <Field
+              component={StandardsOnly}
+              name="standardsOnly"
+              options={{handleSubmit: debounce(handleSubmit(doFilter), 100)}}
+            />
+          </div>
+        }
 */}
       </div>
     </form>
