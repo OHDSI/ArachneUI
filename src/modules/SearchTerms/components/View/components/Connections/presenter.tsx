@@ -73,9 +73,11 @@ interface ITermConnectionsStateProps {
   terms: Array<GraphNode>;
   links: Array<GraphConnection>;
   isInProgress: boolean;
+  termFilters: any;
 };
 
 interface ITermConnectionsDispatchProps {
+  goToAddress: (address: string) => any;
   goToTerm: (id: number) => any;
   setLoadingStatus: (status: boolean) => any;
 };

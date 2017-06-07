@@ -40,19 +40,19 @@ function fetch(id: number) {
   return services.terms.get(id);
 }
 
-function fetchRelations(conceptId: number) {
-  return services.relations.get(conceptId);
+function fetchConceptAncestors(conceptId: number, levels = 10) {
+  return services.relations.get(conceptId, {query: {depth: levels}});
 }
 
-function fetchRelationships(conceptId: number) {
-  return services.relationships.get(conceptId);
+function fetchRelationships(conceptId: number, standards = false) {
+  return services.relationships.get(conceptId, {query: {std: standards}});
 }
 
 export default {
   changePageSize,
   load,
   fetch,
-  fetchRelations,
+  fetchConceptAncestors,
   fetchRelationships,
 };
 

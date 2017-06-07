@@ -12,6 +12,7 @@ import { paths } from 'modules/SearchTerms/const';
 import { get } from 'lodash';
 import TermConnections from './components/Connections';
 import TermConnectionsTable from './components/Table';
+import TermFiltersPanel from './components/Filters';
 
 require('./style.scss');
 
@@ -23,13 +24,14 @@ interface ITermStateProps {
   isTableMode: boolean;
   isStandard: boolean;
   relationshipsCount: number;
+  termFilters: any;
 };
 
 interface ITermDispatchProps {
   fetch: (termId: number) => (dispatch: Function) => any;
   goBack: () => RouterAction;
-  fetchRelations: (termId: number) => (dispatch: Function) => any;
-  fetchRelationships: (termId: number) => (dispatch: Function) => any;
+  fetchConceptAncestors: (termId: number, levels: number) => (dispatch: Function) => any;
+  fetchRelationships: (termId: number, standards: boolean) => (dispatch: Function) => any;
 };
 
 interface ITermProps extends ITermStateProps, ITermDispatchProps {
@@ -45,6 +47,7 @@ function Term(props: ITermProps) {
     isTableMode,
     isStandard,
     relationshipsCount,
+    termId,
   } = props;
   const classes = BEMHelper('term');
   let title = 'Term connections';
@@ -110,6 +113,10 @@ function Term(props: ITermProps) {
               }
             }
           >
+            {isTableMode || isStandard
+              ? <TermFiltersPanel termId={termId} />
+              : null
+            }
             {isTableMode || !isStandard
               ? <TermConnectionsTable />
               : <TermConnections />

@@ -6,6 +6,7 @@ const maxResultsPageSize = 30;
 const forms = keyMirror({
   filter: null,
   toolbar: null,
+  termFilters: null,
 });
 
 const actionTypes = keyMirror({
@@ -41,6 +42,9 @@ const controlSize = 40;
 const controlsGapSize = 10;
 const zoomStep = 0.25;
 
+const defaultLevels = 10;
+const defaultStandardsOnly = false;
+
 export {
   actionTypes,
   apiPaths,
@@ -63,4 +67,6 @@ export {
   controlSize,
   controlsGapSize,
   zoomStep,
+  defaultLevels,
+  defaultStandardsOnly,
 };
