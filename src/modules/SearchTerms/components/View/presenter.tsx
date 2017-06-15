@@ -5,10 +5,10 @@ import {
   LoadingPanel,
   Link,
   ListItem,
+  Tabs,
 } from 'arachne-components';
 import { RouterAction } from 'react-router-redux';
 import BEMHelper from 'services/BemHelper';
-import { paths } from 'modules/SearchTerms/const';
 import { get } from 'lodash';
 import TermConnections from './components/Connections';
 import TermConnectionsTable from './components/Table';
@@ -32,10 +32,11 @@ interface ITermDispatchProps {
   goBack: () => RouterAction;
   fetchConceptAncestors: (termId: number, levels: number) => (dispatch: Function) => any;
   fetchRelationships: (termId: number, standards: boolean) => (dispatch: Function) => any;
+  redirect: (address: string) => (dispatch: Function) => any;
 };
 
 interface ITermProps extends ITermStateProps, ITermDispatchProps {
-
+  changeTab: (tab: string) => any;
 };
 
 function Term(props: ITermProps) {
@@ -48,12 +49,25 @@ function Term(props: ITermProps) {
     isStandard,
     relationshipsCount,
     termId,
+    changeTab,
   } = props;
   const classes = BEMHelper('term');
   let title = 'Term connections';
   if (isTableMode && relationshipsCount) {
     title += ` (${relationshipsCount})`;
   }
+  const tabs = [
+    {
+      label: <span {...classes('tab')}>Concept relationships</span>,
+      value: 'graph',
+      mods: ['purple'],
+    },
+    {
+      label: <span {...classes('tab')}>Concept ancestors</span>,
+      value: 'table',
+      mods: ['purple'],
+    },
+  ];
 
   return (    
     <div {...classes()}>
@@ -106,15 +120,17 @@ function Term(props: ITermProps) {
             title={title}
             headerBtns={() => {
                 if (details && isStandard) {
-                  return isTableMode
-                    ? <Link to={paths.term(details.id, false)}>Show as graph</Link>
-                    : <Link to={paths.term(details.id, true)}>Show as table</Link>;
+                  return <Tabs
+                    options={tabs}
+                    onChange={changeTab}
+                    value={isTableMode ? tabs[1].value : tabs[0].value}
+                  />;
                 }
               }
             }
           >
             {isTableMode || isStandard
-              ? <TermFiltersPanel termId={termId} />
+              ? <TermFiltersPanel termId={termId} isTableMode={isTableMode} />
               : null
             }
             {isTableMode || !isStandard

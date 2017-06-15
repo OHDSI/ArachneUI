@@ -1,15 +1,17 @@
 import { connect } from 'react-redux';
 import { Component } from 'react';
 import actions from 'modules/SearchTerms/actions';
-import { goBack } from 'react-router-redux';
+import { goBack, push } from 'react-router-redux';
 import { get, has } from 'lodash';
-import presenter from './presenter';
+import { paths } from 'modules/SearchTerms/const';
 import {
   ITermProps,
   ITermStateProps,
   ITermDispatchProps,
 } from './presenter';
-import {getTermFilters} from 'modules/SearchTerms/selectors';
+import { getTermFilters } from 'modules/SearchTerms/selectors';
+import * as URI from 'urijs';
+import presenter from './presenter';
 
 interface ITermRoute {
   routeParams: {
@@ -67,9 +69,28 @@ const mapDispatchToProps = {
   fetchConceptAncestors: actions.termList.fetchConceptAncestors,
   goBack,
   fetchRelationships: actions.termList.fetchRelationships,
+  redirect: address => push(address),
 };
+
+function mergeProps(
+  stateProps: ITermStateProps,
+  dispatchProps: ITermDispatchProps,
+  ownProps: ITermRoute,
+ ): ITermProps {
+  return {
+    ...stateProps,
+    ...dispatchProps,
+    ...ownProps,
+    changeTab: (tab) => {
+      const address = new URI(paths.term(stateProps.details.id, tab === 'table'));
+      address.search(stateProps.termFilters);
+      return dispatchProps.redirect(address.href());
+    },
+  };
+}
 
 export default connect<ITermStateProps, ITermDispatchProps, {}>(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
+  mergeProps,
 )(Term);

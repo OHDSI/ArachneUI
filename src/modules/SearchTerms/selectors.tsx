@@ -12,7 +12,9 @@ const getTermFilters = createSelector(
   location => {
     return {
       levels: has(location.query, 'levels') ? location.query.levels : defaultLevels,
-      standardsOnly: has(location.query, 'standardsOnly') ? location.query.standardsOnly === 'true' : defaultStandardsOnly,
+      standardsOnly: has(location.query, 'standardsOnly')
+        ? location.query.standardsOnly === 'true'
+        : defaultStandardsOnly,
     };
   }
 );
