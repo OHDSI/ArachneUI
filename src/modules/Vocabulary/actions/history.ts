@@ -9,7 +9,16 @@ function remove(id: number) {
   return services.history.remove(id);
 }
 
+function restore(id: number) {
+	return services.history.find({
+		query: {
+			id,
+		},
+	});
+}
+
 export default {
   load,
   remove,
+  restore,
 };

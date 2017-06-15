@@ -43,10 +43,12 @@ interface IDownloadHistoryStateProps {
 interface IDownloadHistoryDispatchProps {
   load: () => (dispatch: Function) => any;
   remove: (id: number) => Promise<void>;
+  restore: (id: number) => Promise<void>;
 };
 
 interface IDownloadHistoryProps extends IDownloadHistoryStateProps, IDownloadHistoryDispatchProps {
   removeBundle: (id: number) => any;
+  restoreBundle: (id: number) => any;
 };
 
 function BundleName({ name, date }) {
@@ -60,7 +62,7 @@ function BundleName({ name, date }) {
 }
 
 function VocabsList(props: IDownloadHistoryProps) {
-  const { isLoading, history, removeBundle } = props;
+  const { isLoading, history, removeBundle, restoreBundle } = props;
   const classes = BEMHelper('download-history');
 
   return (    
@@ -77,21 +79,30 @@ function VocabsList(props: IDownloadHistoryProps) {
               >
                 {[bundleStatuses.READY].includes(bundle.status)
                   ? <div>
-                    <Button
-                      {...classes('download-button')}
-                      link={bundle.link}
-                      mods={['rounded']}
-                    >
-                      Download
+                      <Button
+                        {...classes('download-button')}
+                        link={bundle.link}
+                        mods={['rounded']}
+                      >
+                        Download
+                      </Button>
+                      <Button
+                        {...classes('remove-button')}
+                        onClick={() => removeBundle(bundle.id)}
+                      >
+                        Archive
                     </Button>
-                    <Button
-                      {...classes('remove-button')}
-                      onClick={() => removeBundle(bundle.id)}
-                    >
-                      Remove
-                  </Button>
                   </div>
-                 : <span {...classes('status')}>{bundle.status}</span>
+                 : <div>
+                     <Button
+                       {...classes('restore-button')}
+                       mods={['success', 'rounded']}
+                       onClick={() => restoreBundle(bundle.id)}
+                     >
+                       Restore
+                     </Button>
+                     <span {...classes('status')}>{bundle.status}</span>
+                   </div>
                 }
               </Toolbar>
              </div>,
