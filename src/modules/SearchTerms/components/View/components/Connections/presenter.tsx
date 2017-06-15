@@ -121,8 +121,8 @@ function dragged(canvas: ICanvas) {
 }
 
 function dragended(canvas: ICanvas) {
-  canvas.fixedX = canvas.tempX;
-  canvas.fixedY = canvas.tempY;
+  canvas.fixedX = canvas.tempX || 0;
+  canvas.fixedY = canvas.tempY || 0;
 }
 
 function zoomed(canvas: ICanvas) {
@@ -134,8 +134,8 @@ function setZoom(canvas: ICanvas, factor: number) {
   if (factor > maxZoom || factor < minZoom) {
     return false;
   }
-  const x = canvas.fixedX;
-  const y = canvas.fixedY;
+  const x = canvas.fixedX || 0;
+  const y = canvas.fixedY || 0;
   const scale = factor;
   if (isNaN(x) || isNaN(y) || isNaN(scale)) {
     return false;
