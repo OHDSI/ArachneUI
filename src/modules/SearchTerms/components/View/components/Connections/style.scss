@@ -20,23 +20,26 @@
 	    }
 
 	    & .node {
-			  cursor: pointer;    	
+			  cursor: pointer;
+			  fill: $white;
+			  stroke: transparent;
 	    }
 
 	    & .nodeWrapper {
-			  stroke: $black;
-			  fill: #fd8c3c;
+			  stroke: $blue;
+			  fill: $blue;
 			  stroke-width: .5px;
 
 			  &.current {
-			  	fill: $red;
+			  	stroke: $blue-dark;
+			  	fill: $blue-dark;
 			  }
 			}
 
 			& .link, & .additional-link {
 				/* colors are temporary */
 			  fill: transparent;
-			  stroke: #9ecae1;
+			  stroke: $blue-light;
 			  stroke-width: 1.5px;
 
 			  &:hover {
