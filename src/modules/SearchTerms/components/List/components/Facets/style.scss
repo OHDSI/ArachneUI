@@ -15,5 +15,42 @@
 	    }
 	  }
 
+    &__current-state {
+      padding: 1rem 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      max-height: 25%;
+      overflow-y: auto;
+    }
+
+    &__selected-facet {
+      @include input-border();
+      background: $blue;
+      color: $white;
+      margin: 0.25rem 2rem 0.25rem 0;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+
+      &-title {
+        padding: 0.6rem 1rem;
+        font-size: 1.3rem;
+        font-weight: 500;
+      }
+    }
+
+    &__remove-button {
+      @include material-icon();
+      align-items: center;
+      background: $blue;
+      color: $white;
+      cursor: pointer;
+      display: flex;
+      font-size: 1.3rem;
+      font-weight: $font-weight-bold;
+      height: 100%;
+      padding: 0 0.8rem;
+    }
+
   }
 }

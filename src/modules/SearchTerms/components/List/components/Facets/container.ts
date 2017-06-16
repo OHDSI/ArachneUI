@@ -1,11 +1,11 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { reduxForm, reset } from 'redux-form';
+import { reduxForm, reset, change as reduxFormChange } from 'redux-form';
 import { forms, paths, resultsPageSize } from 'modules/SearchTerms/const';
 import actions from 'modules/SearchTerms/actions';
 import { push as goToPage } from 'react-router-redux';
 import * as URI from 'urijs';
-import { get } from 'lodash';
+import { get, clone } from 'lodash';
 import presenter from './presenter';
 import selectors from './selectors';
 
@@ -57,6 +57,7 @@ const mapDispatchToProps = {
   search: (address: string) => goToPage(address),
   resetForm: () => reset(forms.filter),
   updateFacets: actions.facets.updateFacets,
+  changeFacets: (fieldName: string, value: Array<string>) => reduxFormChange(forms.filter, fieldName, value),
 };
 
 function mergeProps(stateProps: IFacetStateProps, dispatchProps: IFacetDispatchProps, ownProps: Object): IFacets
@@ -99,6 +100,11 @@ function mergeProps(stateProps: IFacetStateProps, dispatchProps: IFacetDispatchP
         query: stateProps.query,
       };
       dispatchProps.updateFacets(requestParams);
+    },
+    removeFacetValue: (facet: string, index: number) => {
+      const facets = clone(stateProps.filterFormState.filter[facet]);
+      facets.splice(index, 1);
+      dispatchProps.changeFacets(`filter[${facet}]`, facets);
     },
   };
 
