@@ -15,5 +15,40 @@
 	    }
 	  }
 
+    &__current-state {
+      padding: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      max-height: 25%;
+      overflow-y: auto;
+    }
+
+    &__selected-facet {
+      @include input-border();
+      background: $blue;
+      color: $white;
+      margin: 0.5rem 2rem 0.5rem 0;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+
+      &-title {
+        padding: 0.8rem 1rem;
+      }
+    }
+
+    &__remove-button {
+      @include material-icon();
+      align-items: center;
+      background: $blue;
+      color: $white;
+      cursor: pointer;
+      display: flex;
+      font-size: 1.3rem;
+      font-weight: $font-weight-bold;
+      height: 100%;
+      padding: 0 0.8rem;
+    }
+
   }
 }

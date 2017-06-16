@@ -44,6 +44,13 @@ const zoomStep = 0.25;
 
 const defaultLevels = 10;
 const defaultStandardsOnly = false;
+const facetKeys = keyMirror({
+  domain: null,
+  standardConcept: null,
+  conceptClass: null,
+  vocabulary: null,
+  invalidReason: null,
+});
 
 export {
   actionTypes,
@@ -69,4 +76,5 @@ export {
   zoomStep,
   defaultLevels,
   defaultStandardsOnly,
+  facetKeys,
 };
