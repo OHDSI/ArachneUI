@@ -21,6 +21,7 @@
       flex-wrap: wrap;
       max-height: 25%;
       overflow-y: auto;
+      flex-shrink: 0;
     }
 
     &__selected-facet {
