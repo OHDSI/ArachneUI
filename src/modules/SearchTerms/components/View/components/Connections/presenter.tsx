@@ -356,7 +356,7 @@ function TermConnections(props: ITermConnectionsProps) {
           <text id='zoom-out'>-</text>
         </g>
       </g>
-    </svg>,
+    </svg>
     <LoadingPanel active={isInProgress} />
   </div>;
 }

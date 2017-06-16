@@ -129,9 +129,8 @@ function Term(props: ITermProps) {
               }
             }
           >
-            {isTableMode || isStandard
-              ? <TermFiltersPanel termId={termId} isTableMode={isTableMode} />
-              : null
+            {!isTableMode &&
+              <TermFiltersPanel termId={termId} isTableMode={isTableMode} />
             }
             {isTableMode || !isStandard
               ? <TermConnectionsTable />
