@@ -1,7 +1,7 @@
 import * as React from 'react';
 import BEMHelper from 'services/BemHelper';
 import { Action } from 'redux';
-import { FormProps, DataShape } from 'redux-form';
+import { FormProps, DataShape, change as reduxFormChange } from 'redux-form';
 import {
   FacetedSearchPanel,
   LoadingPanel,
@@ -48,12 +48,14 @@ interface IFacetDispatchProps {
   search: (address: string) => typeof push;
   resetForm: () => Action;
   updateFacets: (params: searchParams) => (dispatch: Function) => any;
+  changeFacets: (fieldName: string, value: Array<string>) => typeof reduxFormChange;
 }
 
 interface IFacets extends IFacetStateProps, IFacetDispatchProps {
   clearFilter: Function;
   doFilter: Function;
   doUpdateFacets: Function;
+  removeFacetValue: (name: string, index: number) => any;
 }
 
 function Facets(props: IFacets) {
@@ -62,14 +64,38 @@ function Facets(props: IFacets) {
     doFilter,
     clearFilter,
     isLoading,
+    filterFormState,
+    removeFacetValue,
   } = props;
   const classes = BEMHelper('search-facets');
   const submitBtn = {
     label: 'Search',
   };
+  const selectedFacets = filterFormState.filter ? Object.keys(filterFormState.filter) : [];
+  const tags = [];
+  // count real length of the selected facet values
+  selectedFacets.forEach((facet) => {
+    filterFormState.filter[facet].forEach((value, index) => {
+      tags.push(<div {...classes('selected-facet')}>
+        <span {...classes('selected-facet-title')}>{value}</span>
+        <span
+          {...classes('remove-button')}
+          onClick={() => removeFacetValue(facet, index)}
+         >
+          clear
+        </span>
+      </div>);
+    })
+  });
 
   return (
     <div {...classes()}>
+      {tags.length
+        ? <div {...classes('current-state')}>
+            {tags}
+          </div>
+        : null
+      }
       <FacetedSearchPanel
         dynamicFields={facets}
         showRefineSearch={false}

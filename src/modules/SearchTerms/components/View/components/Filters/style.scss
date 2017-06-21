@@ -6,6 +6,7 @@
     margin: 0;
     padding: 1rem 1rem 1rem 0;
     display: flex;
+    flex-direction: row-reverse;
     width: 100%;
     text-transform: uppercase;
     align-items: center;
@@ -18,10 +19,6 @@
       margin-right: 2rem;
     }
 
-    :first-child {
-      margin-left: auto;
-    }
-
     &__levels-label {
       margin-right: 1rem;
     }
@@ -32,18 +29,8 @@
   }
 
   &levels {
-    display: flex;
     margin-right: 1rem;
-
-    &__input {
-      width: 4rem;
-      text-align: right;
-    }
-    &__btn {
-      @include material-icon();
-      margin-left: 0.5rem;
-      padding: 0.5rem;
-    }
+    width: 7rem;
   }
 
   &standards-only {

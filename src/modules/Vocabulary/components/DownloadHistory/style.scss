@@ -44,6 +44,14 @@
       padding-bottom: 0.5rem;
     }
 
+    &__bundle-caption {
+      overflow-y: hidden;
+
+      &:not(.react-sanfona-item-expanded) {
+        border-bottom: 1px solid lighten($grey-dark-light, 30%);
+      }
+    }
+
     &__id-th {
       width: 5%;
     }
@@ -62,11 +70,34 @@
   }
 
   &bundle-caption {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
 
     &__date {
       display: block;
       font-size: $font-size-base;
       font-weight: initial !important;
+    }
+
+    &__title-wrapper {
+      display: flex;
+      flex-direction: column;
+      font-size: 1.8rem;
+      margin-left: 2.5rem;
+    }
+
+    &__opener {
+      @include material-icon;
+      font-size: $font-size-header;
+      line-height: 1rem;
+      transform-origin: center;
+      transition: transform 0.2s ease;
+      width: 2rem;
+
+      &--opened {
+        transform: rotateZ(90deg);
+      }
     }
   }
 }

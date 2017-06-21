@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 import { get } from 'lodash';
 import * as URI from 'urijs';
 import types from 'const/metadataTypes';
+import { facetKeys } from 'modules/SearchTerms/const';
 
 type map = {
   [key: string]: any;
@@ -23,11 +24,11 @@ function getFacetTitle(facetId: string): string {
 function getFacetKey(facetId: string): string {
   let key = facetId;
   switch(facetId.toLowerCase()) {
-    case 'domain_id': key = 'domain'; break;
-    case 'standard_concept': key = 'standardConcept'; break;
-    case 'concept_class_id': key = 'conceptClass'; break;
-    case 'vocabulary_id': key = 'vocabulary'; break;
-    case 'invalid_reason': key = 'invalidReason'; break;
+    case 'domain_id': key = facetKeys.domain; break;
+    case 'standard_concept': key = facetKeys.standardConcept; break;
+    case 'concept_class_id': key = facetKeys.conceptClass; break;
+    case 'vocabulary_id': key = facetKeys.vocabulary; break;
+    case 'invalid_reason': key = facetKeys.invalidReason; break;
   }
 
   return key;
@@ -55,10 +56,11 @@ const getFilterInitialValues = createSelector(
   getRawInitialValues,
   (rawValues: map) => {
       let filter: map = {};
-      Object.keys(rawValues)
-        .map((facetKey: string) => {
-          filter[`${facetKey}`] = Array.isArray(rawValues[facetKey]) ? rawValues[facetKey] : [rawValues[facetKey]];
-        })
+      // filter out pageSize etc
+      const facets = Object.keys(rawValues).filter(facetName => facetName in facetKeys);
+      facets.map((facetKey: string) => {
+        filter[`${facetKey}`] = Array.isArray(rawValues[facetKey]) ? rawValues[facetKey] : [rawValues[facetKey]];
+      });
 
       return {
         filter
