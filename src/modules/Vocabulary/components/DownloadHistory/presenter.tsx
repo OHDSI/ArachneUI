@@ -47,10 +47,12 @@ interface IDownloadHistoryStateProps {
 interface IDownloadHistoryDispatchProps {
   load: () => (dispatch: Function) => any;
   remove: (id: number) => Promise<void>;
+  restore: (id: number) => Promise<void>;
 };
 
 interface IDownloadHistoryProps extends IDownloadHistoryStateProps, IDownloadHistoryDispatchProps {
   removeBundle: (id: number) => any;
+  restoreBundle: (id: number) => any;
 };
 
 interface IDownloadHistoryStatefulProps {
@@ -71,7 +73,7 @@ function BundleName({ name, date, onClick, isOpened }) {
   </div>;
 }
 
-function BundleTitle({ bundle, removeBundle, expand, isExpanded }) {
+function BundleTitle({ bundle, removeBundle, expand, isExpanded, restore }) {
   const classes = BEMHelper('download-history');
 
   return <Toolbar
@@ -90,16 +92,25 @@ function BundleTitle({ bundle, removeBundle, expand, isExpanded }) {
             {...classes('remove-button')}
             onClick={() => removeBundle(bundle.id)}
           >
-            Remove
+            Archive
         </Button>
       </div>
-     : <span {...classes('status')}>{bundle.status}</span>
+     : <div>
+         <span {...classes('status')}>{bundle.status}</span>
+         <Button
+           {...classes('restore-button')}
+           mods={['success', 'rounded']}
+           onClick={() => restore(bundle.id)}
+         >
+           Restore
+         </Button>
+       </div>
     }
   </Toolbar>;
 }
 
 function VocabsList(props: IDownloadHistoryProps & IDownloadHistoryStatefulProps) {
-  const { isLoading, history, removeBundle, expand, expandedBundleId } = props;
+  const { isLoading, history, removeBundle, expand, expandedBundleId, restoreBundle } = props;
   const classes = BEMHelper('download-history');
 
   return (    
@@ -113,6 +124,7 @@ function VocabsList(props: IDownloadHistoryProps & IDownloadHistoryStatefulProps
                 removeBundle={removeBundle}
                 expand={expand}
                 isExpanded={bundle.id === expandedBundleId}
+                restore={restoreBundle}
                />}
               {...classes('bundle-caption')}
               key={`caption${index}`}

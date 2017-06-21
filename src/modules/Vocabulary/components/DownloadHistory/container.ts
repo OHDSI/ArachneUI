@@ -43,7 +43,8 @@ function mapStateToProps(state: Object): IDownloadHistoryStateProps {
 	const history = selectors.getHistory(state);
 
 	return {
-		isLoading: get(state, 'vocabulary.history.isLoading', false),
+		isLoading: get(state, 'vocabulary.history.isLoading', false)
+			|| get(state, 'vocabulary.restore.isSaving', false),
 		history,
 	};
 }
@@ -51,6 +52,7 @@ function mapStateToProps(state: Object): IDownloadHistoryStateProps {
 const mapDispatchToProps = {
 	load: actions.history.load,
 	remove: actions.history.remove,
+	restore: actions.history.restore,
 };
 
 function mergeProps(
@@ -63,6 +65,11 @@ function mergeProps(
 		removeBundle: (id: number) => {
 			dispatchProps
 				.remove(id)
+				.then(dispatchProps.load);
+		},
+		restoreBundle: (id) => {
+			dispatchProps
+				.restore(id)
 				.then(dispatchProps.load);
 		},
 	};
