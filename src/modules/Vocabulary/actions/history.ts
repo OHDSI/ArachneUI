@@ -10,11 +10,7 @@ function remove(id: number) {
 }
 
 function restore(id: number) {
-	return services.history.find({
-		query: {
-			id,
-		},
-	});
+	return services.restore.update(id, {});
 }
 
 export default {

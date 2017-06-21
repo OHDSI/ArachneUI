@@ -43,7 +43,8 @@ function mapStateToProps(state: Object): IDownloadHistoryStateProps {
 	const history = selectors.getHistory(state);
 
 	return {
-		isLoading: get(state, 'vocabulary.history.isLoading', false),
+		isLoading: get(state, 'vocabulary.history.isLoading', false)
+			|| get(state, 'vocabulary.restore.isSaving', false),
 		history,
 	};
 }
