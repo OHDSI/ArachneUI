@@ -1,0 +1,10 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+  &edit-permissions {
+    min-width: 500px;
+    border-bottom-left-radius: $input-border-radius;
+    border-bottom-right-radius: $input-border-radius;
+    overflow: hidden;
+  }
+}
