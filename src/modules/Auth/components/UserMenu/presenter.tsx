@@ -2,6 +2,7 @@ import * as React from 'react';
 import BEMHelper from 'services/BemHelper';
 import { apiPaths, paths } from 'modules/Auth/const';
 import { paths as VocabularyPaths } from 'modules/Vocabulary/const';
+import { paths as AdminPaths } from 'modules/Admin/const';
 import { Avatar, Link } from 'arachne-components';
 import Dropdown from 'react-simple-dropdown';
 import { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
@@ -14,6 +15,7 @@ require('./style.scss');
 interface IUserMenuState {
   isLoggedIn: boolean,
   fullname: string,
+  isAdmin: boolean,
 }
 
 interface IUserMenuDispatch {
@@ -29,6 +31,7 @@ function UserMenu(props) {
     hash,
     fullname,
     logout,
+    isAdmin,
   } = props;
   let dropdownInstance;
 
@@ -57,6 +60,11 @@ function UserMenu(props) {
             <Link
               {...classes('dropdown-link')}
               to={VocabularyPaths.history()}>Downloads</Link>
+            {isAdmin &&
+              <Link
+                {...classes('dropdown-link')}
+                to={AdminPaths.licenses()}>Licenses</Link>
+            }
             <Link
               {...classes('dropdown-link')}
               onClick={logout}>Logout</Link>

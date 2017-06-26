@@ -27,6 +27,9 @@ declare module 'arachne-components' {
 		class Modal extends React.Component<any, any> {}
 		class Toolbar extends React.Component<any, any> {}
 		class Tabs extends React.Component<any, any> {}
+		class FormAutocomplete extends React.Component<any, any> {}
+		class FormCheckboxList extends React.Component<any, any> {}
+		class FormCheckboxListFilterable extends React.Component<any, any> {}
 		module ModalUtils {			
 			const connect: Function;
 			const actions: {

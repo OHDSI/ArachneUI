@@ -1,0 +1,14 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+  &licenses {
+  	
+    &__add-button {
+    	background: $purple-darker;
+
+    	&:hover {
+    		background: $purple;
+    	}
+		}
+  }
+}

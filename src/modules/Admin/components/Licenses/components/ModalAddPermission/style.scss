@@ -1,0 +1,15 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+  &modal-add-permission {
+  	min-width: 600px;
+  	
+    & .ac-form-checkbox-list-filterable {
+
+      &__list-wrapper {
+        overflow-y: scroll;
+        max-height: 300px;      
+      }
+    }
+  }
+}
