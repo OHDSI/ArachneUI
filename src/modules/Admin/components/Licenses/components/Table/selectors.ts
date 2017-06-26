@@ -9,7 +9,7 @@ const getLicenses = createSelector(
     (rawResults: Array<any>): Array<License> => rawResults.map((license: any) => ({
       	user: {
       		id: license.user.id,
-      		name: [license.user.lastName, license.user.firstName, license.user.middleName].join(' '),
+      		name: [license.user.firstName, license.user.middleName, license.user.lastName].filter(n => n).join(' '),
       	},
       	vocabularies: license.vocabularyDTOs,
     })),

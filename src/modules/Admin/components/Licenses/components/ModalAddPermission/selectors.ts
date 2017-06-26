@@ -21,7 +21,7 @@ const getVocabularies = createSelector(
 const getUsers = createSelector(
 	getRawUsers,
 	(rawUsers: Array<any>): Array<UserOption> => rawUsers.map(user => ({
-		label: [user.lastName, user.firstName, user.middleName].join(' '),
+		label: [user.firstName, user.middleName, user.lastName].filter(n => n).join(' '),
 		value: user.id,
 	}))
 );

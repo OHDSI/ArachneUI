@@ -8,7 +8,7 @@ function getUsers(params: { query: string }) {
 	return services.users.find({ query: params });
 }
 
-function getVocabularies(userId) {
+function getAvailableVocabularies(userId) {
 	return services.vocabularies.find({
 		query: {
 			userId,
@@ -34,7 +34,7 @@ function create(userId: number, vocabularyV4Ids: Array<number>) {
 export default {
   create,
   getUsers,
-  getVocabularies,
+  getAvailableVocabularies,
   load,
   remove,
 };

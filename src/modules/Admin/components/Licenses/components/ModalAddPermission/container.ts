@@ -57,7 +57,7 @@ function mapStateToProps(state: any): IModalStateProps {
 const mapDispatchToProps = {
   close: () => ModalUtils.actions.toggle(modal.addPermission, false),
   getUsers: actions.licenses.getUsers,
-	getVocabularies: actions.licenses.getVocabularies,
+	getVocabularies: actions.licenses.getAvailableVocabularies,
 	create: actions.licenses.create,
 	resetForm: () => reset(forms.addPermission),
 	loadLicenses: actions.licenses.load,
