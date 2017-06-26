@@ -6,7 +6,7 @@ interface Vocabulary {
   code: string;
   id: number;
   name: string;
-  required: boolean;
+  available: boolean;
   update: string;
   index: number;
 
@@ -25,7 +25,7 @@ const getVocabs = createSelector(
       ...vocabulary,
       update: vocabulary.update ? moment(vocabulary.update).format('DD-MMM-YYYY') : '',
       isChecked: false,
-      isCheckable: vocabulary.required === null,
+      isCheckable: vocabulary.available === true,
       // for redux-form
       index,
     })),
