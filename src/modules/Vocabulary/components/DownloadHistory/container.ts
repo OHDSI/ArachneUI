@@ -17,16 +17,16 @@ class DownloadHistory extends Component<IDownloadHistoryProps, { expandedBundleI
 		this.state = {
 			expandedBundleId: 0,
 		};
-		this.expand = this.expand.bind(this);
+		this.toggle = this.toggle.bind(this);
 	}
 
 	componentWillMount() {
 		this.props.load();
 	}
 
-	expand(bundleId) {
+	toggle(bundleId) {
 		this.setState({
-			expandedBundleId: bundleId,
+			expandedBundleId: this.state.expandedBundleId !== bundleId ? bundleId : -1,
 		});
 	}
 
@@ -34,7 +34,7 @@ class DownloadHistory extends Component<IDownloadHistoryProps, { expandedBundleI
 		return presenter({
 			...this.props,
 			expandedBundleId: this.state.expandedBundleId,
-			expand: this.expand,
+			toggle: this.toggle,
 		});
 	}
 }

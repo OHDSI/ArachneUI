@@ -44,13 +44,6 @@
       padding-bottom: 0.5rem;
     }
 
-    &__bundle-caption {
-      overflow-y: hidden;
-
-      &:not(.react-sanfona-item-expanded) {
-        border-bottom: 1px solid lighten($grey-dark-light, 30%);
-      }
-    }
 
     &__id-th {
       width: 5%;
@@ -67,12 +60,31 @@
     &__name-th {
       width: 70%;
     }
+
+    &__bundle-caption {
+      overflow-y: hidden;
+
+      &:not(.react-sanfona-item-expanded) {
+        border-bottom: 1px solid lighten($grey-dark-light, 30%);
+      }
+      
+      & .ac {
+        &-toolbar {
+          &__content {
+            flex-grow: 1;
+            cursor: pointer;          
+          }
+          &__header {
+            flex-grow: 1;
+          }
+        }
+      }
+    }
   }
 
   &bundle-caption {
     display: flex;
     align-items: center;
-    cursor: pointer;
 
     &__date {
       display: block;
