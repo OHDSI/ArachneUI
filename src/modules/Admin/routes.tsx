@@ -16,12 +16,7 @@ function rootRoute(path: string): PlainRoute {
         path: 'licenses',
         component: require('./components/Licenses').default,
         onEnter: Auth.requireOnPathEnter,
-      },/*
-      {
-        path: 'download-history',
-        component: require('./components/DownloadHistory').default,
-        onEnter: Auth.requireOnPathEnter,
-      },*/
+      },
     ],
   };
 }

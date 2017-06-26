@@ -11,7 +11,6 @@ const module: IModule = {
   rootRoute: () => rootRoute('admin'),
 	actions: () => require('./actions').default,
 	reducer: () => require('./reducers').default,
-	isAdminOnly: true,
 };
 
 export default module;

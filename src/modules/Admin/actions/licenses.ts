@@ -1,11 +1,10 @@
 import API from 'services/Api';
 import services from '../apiServices';
 
-function load() {
-  return services.licenses.find();
-}
+import { actionTypes } from 'modules/Admin/const';
+import { IAppAction } from 'actions';
 
-function getUsers(params) {
+function getUsers(params: { query: string }) {
 	return services.users.find({ query: params });
 }
 
@@ -17,11 +16,15 @@ function getVocabularies(userId) {
 	});
 }
 
-function remove(vocabId) {
-	return services.vocabularies.remove(vocabId);
+function load() {
+  return services.licenses.find();
 }
 
-function create(userId, vocabularyV4Ids) {
+function remove(vocabId: number) {
+	return services.licenses.remove(vocabId);
+}
+
+function create(userId: number, vocabularyV4Ids: Array<number>) {
 	return services.licenses.create({
 		userId,
 		vocabularyV4Ids,

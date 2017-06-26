@@ -6,15 +6,32 @@ import { get } from 'lodash';
 import { reduxForm, reset } from 'redux-form';
 import actions from 'modules/Admin/actions';
 import presenter from './presenter';
-import selectors from './selectors';
+import selectors, { UserOption } from './selectors';
+import { Vocabulary } from 'modules/Admin/components/Licenses/types';
 
-class ModalAddPermission extends Component<{}, {}> {
+interface IModalStateProps {
+  vocabularies: Array<Vocabulary>;
+	users: Array<UserOption>;
+	userId: number;
+	isOpened: boolean;
+};
+interface IModalDispatchProps {
+  close: () => (dispatch: Function) => any;
+  remove: (id: string) => (dispatch: Function) => any;
+  getUsers: () => (dispatch: Function) => any;
+	getVocabularies: (userId: number) => (dispatch: Function) => any;
+	create: (user: number, vocabulary: Vocabulary) => (dispatch: Function) => any;
+	resetForm: () => (dispatch: Function) => any;
+	loadLicenses: () => (dispatch: Function) => any;
+};
+interface IModalProps extends IModalStateProps, IModalDispatchProps {
+  doSubmit: (vocabs: Array<Vocabulary>) => Promise<any>;
+};
+
+class ModalAddPermission extends Component<IModalProps, {}> {
 	componentWillReceiveProps(nextProps) {
 		if (this.props.userId !== nextProps.userId && nextProps.userId) {
 			this.props.getVocabularies(nextProps.userId);
-		}
-		if (this.props.isOpened === false && nextProps.isOpened === true) {
-			this.props.resetForm();
 		}
 	}
 
@@ -23,11 +40,11 @@ class ModalAddPermission extends Component<{}, {}> {
 	}
 }
 
-function mapStateToProps(state: any) {
-	const vocabularies = selectors.getVocabularies(state);
+function mapStateToProps(state: any): IModalStateProps {
 	const users = selectors.getUsers(state);
-	const userId = get(state, 'form.addPermission.values.user');
-	const isOpened = get(state, 'modal.addPermission.isOpened');
+	const userId = get(state, 'form.addPermission.values.user', -1);
+	const vocabularies = userId > -1 ? selectors.getVocabularies(state) : [];
+	const isOpened = get(state, 'modal.addPermission.isOpened', false);
   
 	return {
 		vocabularies,
@@ -56,6 +73,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
 			const promise = dispatchProps.create(user, vocabulary);
 			promise
 				.then(() => dispatchProps.close())
+				.then(() => dispatchProps.resetForm())
 				.then(() => dispatchProps.loadLicenses())
 				.catch(() => {});
 
@@ -69,7 +87,7 @@ let ReduxModalWindow = reduxForm({
 })(ModalAddPermission);
 ReduxModalWindow = ModalUtils.connect({ name: modal.addPermission })(ReduxModalWindow);
 
-export default connect<{}, {}, {}>(
+export default connect<IModalStateProps, IModalDispatchProps, {}>(
 	mapStateToProps,
 	mapDispatchToProps,
 	mergeProps,

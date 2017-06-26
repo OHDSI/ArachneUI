@@ -13,11 +13,11 @@ require('./style.scss');
 
 function ModalAddPermission(props) {
 	const {
-		modal,
 		doSubmit,
 		getUsers,
-		vocabularies,
+		modal,
 		users,
+		vocabularies,
 	} = props;
 	const classes = BEMHelper('modal-add-permission');
 	const fields = [
@@ -29,7 +29,6 @@ function ModalAddPermission(props) {
 					placeholder: 'User',
 					mods: ['bordered'],
 					autocomplete: true,
-					options: [],
 					fetchOptions: getUsers,
 					options: users,
 				},

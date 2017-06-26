@@ -19,9 +19,15 @@ const apiPaths = {
   myUserpic: hash => `/api/v1/user-management/users/avatar/${hash ? `?${hash}` : ''}`,
 };
 
+const roles = keyMirror({
+  ROLE_USER: null,
+  ROLE_ADMIN: null,
+});
+
 export {
   actionTypes,
   apiPaths,
   forms,
   paths,
+  roles,
 };

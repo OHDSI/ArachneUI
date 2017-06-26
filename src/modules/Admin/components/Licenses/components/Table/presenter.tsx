@@ -6,26 +6,31 @@ import {
   TableCellText,
   Link,
 } from 'arachne-components';
+import { License, Vocabulary } from 'modules/Admin/components/Licenses/types';
 
 require('./style.scss');
 
-interface IListProps {
-  licenses: Array<any>;
-};
-
-function CellRemove() {
-  return <Button>Remove</Button>;
+function CellRemove(props: any) {
+  const { remove } = props;
+  return <Button onClick={remove}>Remove</Button>;
 }
 
-
-function CellVocabs({ value, openEditModal }) {
+function CellVocabs(props: any) {
+  const { value, openEditModal } = props;
   return <Link onClick={openEditModal}>{`${value.length} vocabularies`}</Link>;
 }
+
+interface IListProps {
+  licenses: Array<License>;
+  openEditModal: Function;
+  removeAll: Function;
+};
 
 function Results(props: IListProps) {
   const {
     licenses,
     openEditModal,
+    removeAll,
   } = props;
   const classes = BEMHelper('licenses-list');
 
@@ -44,12 +49,15 @@ function Results(props: IListProps) {
           {...classes('voc')}
           header='Vocabularies'
           field='vocabularies'
-          props={(entity) => ({
+          props={(entity: License) => ({
             value: entity.vocabularies,
             openEditModal: () => openEditModal(entity),
           })}
         />
         <CellRemove
+          props={(entity: License) => ({
+            remove: () => removeAll(entity),
+          })}
         />
       </Table>
      </div>

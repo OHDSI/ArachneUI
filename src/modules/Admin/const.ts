@@ -14,6 +14,7 @@ const actionTypes = keyMirror({
 });
 
 const paths = {
+	licenses: () => '/admin/licenses',
 };
 
 const apiPaths = {
