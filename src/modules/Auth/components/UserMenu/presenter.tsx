@@ -60,14 +60,14 @@ function UserMenu(props) {
             <Link
               {...classes('dropdown-link')}
               to={VocabularyPaths.history()}>Downloads</Link>
-            <Link
-              {...classes('dropdown-link')}
-              onClick={logout}>Logout</Link>
             {isAdmin &&
               <Link
                 {...classes('dropdown-link')}
                 to={AdminPaths.licenses()}>Licenses</Link>
             }
+            <Link
+              {...classes('dropdown-link')}
+              onClick={logout}>Logout</Link>
           </div>
         </DropdownContent>
       </Dropdown>

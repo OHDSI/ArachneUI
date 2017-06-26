@@ -1,6 +1,8 @@
 import * as React from 'react';
 import {
+  Button,
   LoadingPanel,
+  Toolbar,
 } from 'arachne-components';
 import BEMHelper from 'services/BemHelper';
 import Table from './components/Table';
@@ -22,11 +24,12 @@ function Licenses(props: ILicensesProps) {
 
   return (
     <div {...classes()}>
+      <Toolbar caption='Licenses'>      
+        <Button {...classes('add-button')} onClick={openModal} mods={['submit', 'rounded']}>
+          Add permission
+        </Button>
+      </Toolbar>
       <Table />
-      <div {...classes('add')} onClick={openModal}>
-        <span {...classes('add-icon')}>add_circle_outline</span>
-        <span {...classes('add-label')}>Add permission</span>
-      </div>
       <ModalAddPermission />
       <ModalEditPermissions />
       <LoadingPanel active={isLoading} />

@@ -3,25 +3,12 @@
 .#{$namespace} {
   &licenses {
   	
-    &__add {
-      align-items: center;
-			cursor: pointer;
-      display: flex;
-      padding: 15px 27px;
-			width: 100%;
-		}
+    &__add-button {
+    	background: $purple-darker;
 
-		&__add-icon {
-		  @include material-icon();
-		  color: $green;
-		  display: inline-block;
-		  margin-right: 1rem;
-		  font-size: 2.5rem;
-		}
-
-		&__add-label {
-		  @include title();
-		  color: $grey-dark-light;
+    	&:hover {
+    		background: $purple;
+    	}
 		}
   }
 }

@@ -8,8 +8,8 @@ import presenter from './presenter';
 
 interface ILicensesStateProps {};
 interface ILicensesDispatchProps {
-	load: () => (dispatch: Function) => {};
-	openModal: () => {};
+	load: () => (dispatch: Function) => any;
+	openModal: () => (dispatch: Function) => any;
 };
 interface ILicensesProps extends ILicensesStateProps, ILicensesDispatchProps {
 	isLoading: boolean;
