@@ -40,7 +40,7 @@ function mapStateToProps(state: Object, ownProps: Object): ILoginStateProps {
 const mapDispatchToProps = function(dispatch) {
 	return {
     goToSSO: function(backUrl) {
-  		window.open('/auth/sso', 'SSO login', "width=600,height=700,scrollbars=no");
+  		window.open('/auth/sso', 'SSO login', "width=600,height=450,scrollbars=no");
   		(<any>window).onAuthDone = () => { window.location.href = backUrl }
   	}
   }
