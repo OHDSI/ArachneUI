@@ -9,8 +9,8 @@ import Admin  from './Admin';
 const modules: IModule[] = [
   SearchTerms,
   Vocabulary,
-	Portal,
 	Auth,
+	Portal,
 	Admin,
 ];
 
