@@ -1,7 +1,7 @@
 @import 'styles/vars-and-mixins.scss';
 
 .#{$namespace} {
-  &search-facets {
+  &search-facet-panel {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
@@ -25,43 +25,37 @@
     }
 
     &__selected-facet {
-      @include input-border();
+      margin: 0.25rem 2rem 0.25rem 0;
+    }
+  }
+
+  &facet-tag {
+    @include input-border();
+    background: $blue;
+    color: $white;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+
+    &--facet {
       background: $blue;
-      color: $white;
-      margin: 0.25rem 2rem 0.25rem 0;
-      display: flex;
-      align-items: center;
-      overflow: hidden;
-
-      &-title {
-        padding: 0.6rem 1rem;
-        font-size: 1.3rem;
-        font-weight: 500;
-      }
     }
 
-    &__query {
-      @include input-border();
+    &--fts {
       background: $purple;
-      color: $white;
-      margin: 0.25rem 2rem 0.25rem 0;
-      display: flex;
-      align-items: center;
-      overflow: hidden;
-
-      &-title {
-        @include text-ellipsis();
-        max-width: 235px;
-        padding: 0.6rem 1rem;
-        font-size: 1.3rem;
-        font-weight: 500;
-      }
     }
 
-    &__selected-facet-remove-button {
+    &__title {
+      @include text-ellipsis();
+      padding: 0.6rem 1rem;
+      font-size: 1.3rem;
+      font-weight: 500;
+      // max-width: 235px;
+    }
+
+    &__remove-button {
       @include material-icon();
       align-items: center;
-      background: $blue;
       color: $white;
       cursor: pointer;
       display: flex;
@@ -70,19 +64,5 @@
       height: 100%;
       padding: 0 0.8rem;
     }
-
-    &__query-remove-button {
-      @include material-icon();
-      align-items: center;
-      background: $purple;
-      color: $white;
-      cursor: pointer;
-      display: flex;
-      font-size: 1.3rem;
-      font-weight: $font-weight-bold;
-      height: 100%;
-      padding: 0 0.8rem;
-    }
-
   }
 }

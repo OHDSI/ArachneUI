@@ -42,6 +42,7 @@ interface IFacetStateProps {
   currentAddress: locationDescriptor;
   query: string;
   isLoading: boolean;
+  submittedQuery: string;
 }
 
 interface IFacetDispatchProps {
@@ -57,16 +58,16 @@ interface IFacets extends IFacetStateProps, IFacetDispatchProps {
   doFilter: Function;
   doUpdateFacets: Function;
   removeFacetValue: (name: string, index: number) => any;
-  resetQuery: Function;
+  resetQuery: () => void;
 }
 
-function generateElement(text: string, classesName: string, onClick) {
-  const classes = BEMHelper('search-facets');
+function generateElement(className: string, type: string, text: string, onClick: () => void) {
+  const classes = BEMHelper('facet-tag');
   return (
-      <div {...classes(`${classesName}`)}>
-        <span {...classes(`${classesName}-title`)}>{text}</span>
+      <div {...classes({ modifiers: type, extra: className })}>
+        <span {...classes(`title`)}>{text}</span>
         <span
-            {...classes(`${classesName}-remove-button`)}
+            {...classes(`remove-button`)}
             onClick={onClick}
         >
               clear
@@ -83,9 +84,10 @@ function Facets(props: IFacets) {
     filterFormState,
     removeFacetValue,
     query,
+    submittedQuery,
     resetQuery,
   } = props;
-  const classes = BEMHelper('search-facets');
+  const classes = BEMHelper('search-facet-panel');
   const submitBtn = {
     label: 'Search',
   };
@@ -93,14 +95,14 @@ function Facets(props: IFacets) {
 
   const tags = [];
 
-  if (!!query) {
-    tags.push(generateElement(query, 'query', resetQuery));
+  if (!!submittedQuery) {
+    tags.push(generateElement(classes('selected-facet').className, 'fts', query, resetQuery));
   }
   // count real length of the selected facet values
 
   selectedFacets.forEach((facet) => {
     filterFormState.filter[facet].forEach((value, index) => {
-      tags.push(generateElement(value, 'selected-facet', () => removeFacetValue(facet, index)));
+      tags.push(generateElement(classes('selected-facet').className, 'facet', value, () : void => {removeFacetValue(facet, index)}));
     })
   });
 

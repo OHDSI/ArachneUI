@@ -38,6 +38,7 @@ function mapStateToProps(state: Object): IFacetStateProps {
   });
   const pageSize = get(state, 'searchTerms.termList.data.pageSize', resultsPageSize);
   const query = get(state, 'form.toolbar.values.searchString', '');
+  const submittedQuery = get(currentAddress, 'query.query', '');
   const initialValues = selectors.getFilterInitialValues(state);
   const isLoading = get(state, 'searchTerms.facets.isLoading', false);
 
@@ -49,6 +50,7 @@ function mapStateToProps(state: Object): IFacetStateProps {
     pageSize,
     currentAddress,
     query,
+    submittedQuery,
     isLoading,
   };
 }
@@ -107,7 +109,7 @@ function mergeProps(stateProps: IFacetStateProps, dispatchProps: IFacetDispatchP
       facets.splice(index, 1);
       dispatchProps.changeFacets(`filter[${facet}]`, facets);
     },
-    resetQuery: () => {
+    resetQuery: () : void => {
       const currentAddress = stateProps.currentAddress;
       const uri = new URI(currentAddress.pathname+currentAddress.search);
       uri.setSearch('query','');
