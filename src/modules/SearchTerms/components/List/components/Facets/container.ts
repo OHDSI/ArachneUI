@@ -56,6 +56,7 @@ function mapStateToProps(state: Object): IFacetStateProps {
 const mapDispatchToProps = {
   search: (address: string) => goToPage(address),
   resetForm: () => reset(forms.filter),
+  resetToolbar: () => reset(forms.toolbar),
   updateFacets: actions.facets.updateFacets,
   changeFacets: (fieldName: string, value: Array<string>) => reduxFormChange(forms.filter, fieldName, value),
 };
@@ -105,6 +106,13 @@ function mergeProps(stateProps: IFacetStateProps, dispatchProps: IFacetDispatchP
       const facets = clone(stateProps.filterFormState.filter[facet]);
       facets.splice(index, 1);
       dispatchProps.changeFacets(`filter[${facet}]`, facets);
+    },
+    resetQuery: () => {
+      const currentAddress = stateProps.currentAddress;
+      const uri = new URI(currentAddress.pathname+currentAddress.search);
+      uri.setSearch('query','');
+      dispatchProps.search(uri.href());
+      dispatchProps.resetToolbar();
     },
   };
 

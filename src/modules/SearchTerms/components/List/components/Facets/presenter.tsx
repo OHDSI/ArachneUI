@@ -47,6 +47,7 @@ interface IFacetStateProps {
 interface IFacetDispatchProps {
   search: (address: string) => typeof push;
   resetForm: () => Action;
+  resetToolbar: () => Action;
   updateFacets: (params: searchParams) => (dispatch: Function) => any;
   changeFacets: (fieldName: string, value: Array<string>) => typeof reduxFormChange;
 }
@@ -56,6 +57,21 @@ interface IFacets extends IFacetStateProps, IFacetDispatchProps {
   doFilter: Function;
   doUpdateFacets: Function;
   removeFacetValue: (name: string, index: number) => any;
+  resetQuery: Function;
+}
+
+function generateElement(text: string, classesName: string, onClick) {
+  const classes = BEMHelper('search-facets');
+  return (
+      <div {...classes(`${classesName}`)}>
+        <span {...classes(`${classesName}-title`)}>{text}</span>
+        <span
+            {...classes(`${classesName}-remove-button`)}
+            onClick={onClick}
+        >
+              clear
+          </span>
+      </div>);
 }
 
 function Facets(props: IFacets) {
@@ -66,25 +82,25 @@ function Facets(props: IFacets) {
     isLoading,
     filterFormState,
     removeFacetValue,
+    query,
+    resetQuery,
   } = props;
   const classes = BEMHelper('search-facets');
   const submitBtn = {
     label: 'Search',
   };
   const selectedFacets = filterFormState.filter ? Object.keys(filterFormState.filter) : [];
+
   const tags = [];
+
+  if (!!query) {
+    tags.push(generateElement(query, 'query', resetQuery));
+  }
   // count real length of the selected facet values
+
   selectedFacets.forEach((facet) => {
     filterFormState.filter[facet].forEach((value, index) => {
-      tags.push(<div {...classes('selected-facet')}>
-        <span {...classes('selected-facet-title')}>{value}</span>
-        <span
-          {...classes('remove-button')}
-          onClick={() => removeFacetValue(facet, index)}
-         >
-          clear
-        </span>
-      </div>);
+      tags.push(generateElement(value, 'selected-facet', () => removeFacetValue(facet, index)));
     })
   });
 
