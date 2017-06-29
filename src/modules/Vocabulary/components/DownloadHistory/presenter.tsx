@@ -97,13 +97,15 @@ function BundleTitle({ bundle, removeBundle, toggle, isExpanded, restore }) {
       </div>
      : <div>
          <span {...classes('status')}>{bundle.status}</span>
-         <Button
-           {...classes('restore-button')}
-           mods={['success', 'rounded']}
-           onClick={() => restore(bundle.id)}
-         >
-           Restore
-         </Button>
+         {bundle.status === bundleStatuses.ARCHIVED &&
+           <Button
+             {...classes('restore-button')}
+             mods={['success', 'rounded']}
+             onClick={() => restore(bundle.id)}
+           >
+             Restore
+           </Button>
+         }
        </div>
     }
   </Toolbar>;

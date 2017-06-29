@@ -46,7 +46,7 @@ const bundleStatuses: { [key: string]: string } = keyMirror({
   PENDING: null,
   READY: null,
   FAILED: null,
-  DELETED: null,
+  ARCHIVED: null,
 });
 
 export {
