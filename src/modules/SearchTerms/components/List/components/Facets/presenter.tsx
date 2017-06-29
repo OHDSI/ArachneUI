@@ -96,7 +96,7 @@ function Facets(props: IFacets) {
   const tags = [];
 
   if (!!submittedQuery) {
-    tags.push(generateElement(classes('selected-facet').className, 'fts', query, resetQuery));
+    tags.push(generateElement(classes('selected-facet').className, 'purple', query, resetQuery));
   }
   // count real length of the selected facet values
 
