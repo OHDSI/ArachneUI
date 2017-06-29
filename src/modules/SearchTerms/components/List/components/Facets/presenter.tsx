@@ -42,11 +42,13 @@ interface IFacetStateProps {
   currentAddress: locationDescriptor;
   query: string;
   isLoading: boolean;
+  submittedQuery: string;
 }
 
 interface IFacetDispatchProps {
   search: (address: string) => typeof push;
   resetForm: () => Action;
+  resetToolbar: () => Action;
   updateFacets: (params: searchParams) => (dispatch: Function) => any;
   changeFacets: (fieldName: string, value: Array<string>) => typeof reduxFormChange;
 }
@@ -56,6 +58,21 @@ interface IFacets extends IFacetStateProps, IFacetDispatchProps {
   doFilter: Function;
   doUpdateFacets: Function;
   removeFacetValue: (name: string, index: number) => any;
+  resetQuery: () => void;
+}
+
+function generateElement(className: string, type: string, text: string, onClick: () => void) {
+  const classes = BEMHelper('facet-tag');
+  return (
+      <div {...classes({ modifiers: type, extra: className })}>
+        <span {...classes(`title`)}>{text}</span>
+        <span
+            {...classes(`remove-button`)}
+            onClick={onClick}
+        >
+              clear
+          </span>
+      </div>);
 }
 
 function Facets(props: IFacets) {
@@ -66,25 +83,26 @@ function Facets(props: IFacets) {
     isLoading,
     filterFormState,
     removeFacetValue,
+    query,
+    submittedQuery,
+    resetQuery,
   } = props;
-  const classes = BEMHelper('search-facets');
+  const classes = BEMHelper('search-facet-panel');
   const submitBtn = {
     label: 'Search',
   };
   const selectedFacets = filterFormState.filter ? Object.keys(filterFormState.filter) : [];
+
   const tags = [];
+
+  if (!!submittedQuery) {
+    tags.push(generateElement(classes('selected-facet').className, 'purple', query, resetQuery));
+  }
   // count real length of the selected facet values
+
   selectedFacets.forEach((facet) => {
     filterFormState.filter[facet].forEach((value, index) => {
-      tags.push(<div {...classes('selected-facet')}>
-        <span {...classes('selected-facet-title')}>{value}</span>
-        <span
-          {...classes('remove-button')}
-          onClick={() => removeFacetValue(facet, index)}
-         >
-          clear
-        </span>
-      </div>);
+      tags.push(generateElement(classes('selected-facet').className, 'facet', value, () : void => {removeFacetValue(facet, index)}));
     })
   });
 
