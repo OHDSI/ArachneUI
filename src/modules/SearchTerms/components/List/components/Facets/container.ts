@@ -70,7 +70,7 @@ function mergeProps(stateProps: IFacetStateProps, dispatchProps: IFacetDispatchP
       ...newFilterState.filter,
       page: 1,
       pageSize: 1,
-      query: query == null ? query : stateProps.query,
+      query: query == undefined || query == null ?  stateProps.query : query,
     };
     dispatchProps.updateFacets(requestParams);
   };
@@ -93,6 +93,9 @@ function mergeProps(stateProps: IFacetStateProps, dispatchProps: IFacetDispatchP
       });
 
       dispatchProps.search(query.href());
+
+      const filter = clone(stateProps.filterFormState);
+      doUpdateFacets(filter);
     },
     doUpdateFacets,
     clearFilter: () => {
@@ -117,6 +120,7 @@ function mergeProps(stateProps: IFacetStateProps, dispatchProps: IFacetDispatchP
       uri.setSearch('query','');
       dispatchProps.search(uri.href());
       dispatchProps.resetToolbar();
+
       const filter = clone(stateProps.filterFormState);
       doUpdateFacets(filter, '');
     },
