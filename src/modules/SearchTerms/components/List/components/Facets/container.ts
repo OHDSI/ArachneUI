@@ -65,6 +65,16 @@ const mapDispatchToProps = {
 
 function mergeProps(stateProps: IFacetStateProps, dispatchProps: IFacetDispatchProps, ownProps: Object): IFacets
 {
+  const doUpdateFacets = (newFilterState: { filter: { [key: number]: any; } }, query?: string) => {
+    const requestParams = {
+      ...newFilterState.filter,
+      page: 1,
+      pageSize: 1,
+      query: query == undefined || query == null ?  stateProps.query : query,
+    };
+    dispatchProps.updateFacets(requestParams);
+  };
+
   return {
     ...stateProps,
     ...dispatchProps,
@@ -83,7 +93,11 @@ function mergeProps(stateProps: IFacetStateProps, dispatchProps: IFacetDispatchP
       });
 
       dispatchProps.search(query.href());
+
+      const filter = clone(stateProps.filterFormState);
+      doUpdateFacets(filter);
     },
+    doUpdateFacets,
     clearFilter: () => {
       const currentAddress = new URI(stateProps.currentAddress.pathname);
       currentAddress.addSearch('pageSize', stateProps.pageSize);
@@ -94,15 +108,6 @@ function mergeProps(stateProps: IFacetStateProps, dispatchProps: IFacetDispatchP
 
       dispatchProps.search(currentAddress.href());
       dispatchProps.resetForm();
-    },
-    doUpdateFacets: (newFilterState: { filter: { [key: number]: string; } }) => {      
-      const requestParams = {
-        ...newFilterState.filter,
-        page: 1,
-        pageSize: 1,
-        query: stateProps.query,
-      };
-      dispatchProps.updateFacets(requestParams);
     },
     removeFacetValue: (facet: string, index: number) => {
       const facets = clone(stateProps.filterFormState.filter[facet]);
@@ -115,6 +120,9 @@ function mergeProps(stateProps: IFacetStateProps, dispatchProps: IFacetDispatchP
       uri.setSearch('query','');
       dispatchProps.search(uri.href());
       dispatchProps.resetToolbar();
+
+      const filter = clone(stateProps.filterFormState);
+      doUpdateFacets(filter, '');
     },
   };
 
