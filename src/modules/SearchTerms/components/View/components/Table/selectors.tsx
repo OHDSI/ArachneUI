@@ -3,7 +3,15 @@ import { get } from 'lodash';
 import { ITerm, ITermConnection } from './presenter';
 import { GraphConnection } from '../Connections/presenter';
 
-const getRawConnections = (state: Object) => get(state, 'searchTerms.relationships.data', []) || [];
+const getRawConnections = (state: Object) => {
+    const data = get(state, 'searchTerms.relationships.data', []);
+    if (data instanceof Array) {
+        return data;
+    } else {
+        return [];
+    }
+}
+
 
 const getConnections = createSelector(
   getRawConnections,
