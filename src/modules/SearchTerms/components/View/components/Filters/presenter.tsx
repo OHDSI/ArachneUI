@@ -9,39 +9,16 @@ require('./style.scss');
 
 interface IFiltersPanelStateProps {
   initialValues: any,
-  currentValues: {
-    levels: number;
-    standardsOnly: boolean;
-  };
+  path: any,
 }
 
 interface IFiltersPanelDispatchProps {
-  fetchConceptAncestors: Function;
-  fetchRelationships: Function;
   filter: (address: string) => typeof push;
 }
 
 interface IFiltersPanelProps extends IFiltersPanelStateProps, IFiltersPanelDispatchProps {
-  doFilter: (param: { string }) => typeof push;
+  doFilter: (param: { levels: string }) => typeof push;
   termId: number;
-  isTableMode: boolean;
-}
-
-function StandardsOnly({options, input}) {
-  const classes = BEMHelper('standards-only');
-  return (
-    <Checkbox
-      {...classes()}
-      isChecked={input.value}
-      onChange={(val) => {
-        input.onChange(val);
-        // will use the previous state
-        options.doFilter({
-          standardsOnly: !input.value,
-        });
-      }}
-    />
-  );
 }
 
 function NumberOfLevels({options, input}) {
@@ -65,7 +42,6 @@ function NumberOfLevels({options, input}) {
           });
         }
       }
-      // initially value is string (taken from url)
       value={parseInt(input.value, 0)}
     />
   );
@@ -76,19 +52,7 @@ function FiltersPanel(props: IFiltersPanelProps) {
   const { doFilter } = props;
 
   return (
-    <div {...classes()}>        
-      {/*
-        <div {...classes('item')}>
-          <span {...classes('standards-label')}>Standard concepts</span>
-          <Field
-            component={StandardsOnly}
-            name="standardsOnly"
-            options={{
-              doFilter,
-            }}
-          />
-        </div>
-      */}
+    <div {...classes()}>
       <div {...classes('item')}>
         <span {...classes('levels-label')}>Number of parent levels</span>
         <Field

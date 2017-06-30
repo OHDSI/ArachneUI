@@ -58,12 +58,12 @@ function Term(props: ITermProps) {
   }
   const tabs = [
     {
-      label: <span {...classes('tab')}>Concept relationships</span>,
+      label: <span {...classes('tab')}>Hierarchy</span>,
       value: 'graph',
       mods: ['purple'],
     },
     {
-      label: <span {...classes('tab')}>Concept ancestors</span>,
+      label: <span {...classes('tab')}>Related Concepts</span>,
       value: 'table',
       mods: ['purple'],
     },
@@ -129,12 +129,9 @@ function Term(props: ITermProps) {
               }
             }
           >
-            {!isTableMode &&
-              <TermFiltersPanel termId={termId} isTableMode={isTableMode} />
-            }
             {isTableMode || !isStandard
               ? <TermConnectionsTable />
-              : <TermConnections />
+              : [<TermFiltersPanel termId={termId} key="1" />, <TermConnections key="2" />]
             }
           </Panel>
         </div>

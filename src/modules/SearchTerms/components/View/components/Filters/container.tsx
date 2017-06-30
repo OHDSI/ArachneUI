@@ -11,7 +11,6 @@ import { get } from 'lodash';
 
 interface IFiltersOwnProps {
   termId: number;
-  isTableMode: boolean;
 };
 
 class TermFilterPanel extends Component<IFiltersPanelProps, {}> {
@@ -20,24 +19,20 @@ class TermFilterPanel extends Component<IFiltersPanelProps, {}> {
   }
 }
 
-function mapStateToProps(state: Object, ownProps: IFiltersOwnProps): IFiltersPanelStateProps {
+function mapStateToProps(state: Object): IFiltersPanelStateProps {
   const termFilters = getTermFilters(state);
-  const levels = get(state, 'form.termFilters.values.levels', defaultLevels);
-  const standardsOnly = get(state, 'form.termFilters.values.standardsOnly', defaultStandardsOnly);
-  const currentValues = {
-    levels,
-    standardsOnly,
-  };
+  const path = get(state, 'routing.locationBeforeTransitions', {
+    pathname: '',
+    search: '',
+  });
 
   return {
     initialValues: termFilters,
-    currentValues,
+    path,
   };
 }
 
 const mapDispatchToProps = {
-  fetchConceptAncestors: actions.termList.fetchConceptAncestors,
-  fetchRelationships: actions.termList.fetchRelationships,
   filter: (address: string) => goToPage(address),
 };
 
@@ -49,12 +44,9 @@ function mergeProps(stateProps: IFiltersPanelStateProps,
     ...dispatchProps,
     ...ownProps,
     doFilter: (param) => {
-      const address = new URI(paths.term(ownProps.termId, ownProps.isTableMode));
-      address.search({
-        ...stateProps.currentValues,
-        ...param,
-      });
-      return dispatchProps.filter(address.href());
+      const url = new URI(stateProps.path.pathname  + stateProps.path.search);
+      url.setSearch('levels', param.levels);
+      return dispatchProps.filter(url.href());
     },
   };
 }
