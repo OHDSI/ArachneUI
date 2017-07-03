@@ -10,6 +10,8 @@ const forms = keyMirror({
 const modal = keyMirror({
   download: null,
   downloadResult: null,
+  requestLicense: null,
+  confirmLicense: null,
 });
 
 const actionTypes = keyMirror({

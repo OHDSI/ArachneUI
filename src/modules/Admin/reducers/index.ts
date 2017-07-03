@@ -5,4 +5,5 @@ export default combineReducers({
 	vocabularies: services.vocabularies.reducer,
 	licenses: services.licenses.reducer,
 	users: services.users.reducer,
+	licenseAccept: services.licenseAccept.reducer,
 });

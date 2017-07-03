@@ -1,0 +1,8 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+  &modal-confirm-license {
+  	max-width: 400px;
+  	
+  }
+}

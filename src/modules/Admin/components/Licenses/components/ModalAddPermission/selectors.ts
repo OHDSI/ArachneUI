@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 import { get } from 'lodash';
-import { Vocabulary } from 'modules/Admin/components/Licenses/types';
+import { VocabularyOption } from 'modules/Admin/components/Licenses/types';
 
 type UserOption = {
 	label: string;
@@ -12,7 +12,7 @@ const getRawUsers = (state: Object) => get(state, 'admin.users.queryResult', [])
 
 const getVocabularies = createSelector(
     getRawVocs,
-    (rawResults: Array<any>): Array<Vocabulary> => rawResults.filter(voc => voc.required).map((voc) => ({
+    (rawResults: Array<any>): Array<VocabularyOption> => rawResults.filter(voc => voc.required).map((voc) => ({
       label: voc.name,
       value: voc.id,
     })),

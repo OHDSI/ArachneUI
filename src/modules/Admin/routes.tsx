@@ -17,6 +17,11 @@ function rootRoute(path: string): PlainRoute {
         component: require('./components/Licenses').default,
         onEnter: Auth.requireOnPathEnter,
       },
+      {
+        path: 'licenses/:pending',
+        component: require('./components/Licenses').default,
+        onEnter: Auth.requireOnPathEnter,
+      }
     ],
   };
 }

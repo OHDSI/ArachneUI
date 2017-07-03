@@ -7,10 +7,10 @@ import { reduxForm, reset } from 'redux-form';
 import actions from 'modules/Admin/actions';
 import presenter from './presenter';
 import selectors, { UserOption } from './selectors';
-import { Vocabulary } from 'modules/Admin/components/Licenses/types';
+import { VocabularyOption } from 'modules/Admin/components/Licenses/types';
 
 interface IModalStateProps {
-  vocabularies: Array<Vocabulary>;
+  vocabularies: Array<VocabularyOption>;
 	users: Array<UserOption>;
 	userId: number;
 	isOpened: boolean;
@@ -20,12 +20,12 @@ interface IModalDispatchProps {
   remove: (id: string) => (dispatch: Function) => any;
   getUsers: () => (dispatch: Function) => any;
 	getVocabularies: (userId: number) => (dispatch: Function) => any;
-	create: (user: number, vocabulary: Vocabulary) => (dispatch: Function) => any;
+	create: (user: number, vocabulary: VocabularyOption) => (dispatch: Function) => any;
 	resetForm: () => (dispatch: Function) => any;
 	loadLicenses: () => (dispatch: Function) => any;
 };
 interface IModalProps extends IModalStateProps, IModalDispatchProps {
-  doSubmit: (vocabs: Array<Vocabulary>) => Promise<any>;
+  doSubmit: (vocabs: Array<VocabularyOption>) => Promise<any>;
 };
 
 class ModalAddPermission extends Component<IModalProps, {}> {

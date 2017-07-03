@@ -1,6 +1,12 @@
-type Vocabulary = {
+type VocabularyOption = {
   label: string;
   value: number | string;
+};
+
+type Vocabulary = {
+  id: number;
+  name: string;
+  licenseId: number;
 };
 
 type User = {
@@ -10,11 +16,13 @@ type User = {
 
 type License = {
   user: User;
-  vocabularies: Array<Vocabulary>;
+  vocabularies: Array<VocabularyOption>;
+  pendingCount: number;
 };
 
 export {
   License,
-  Vocabulary,
+  VocabularyOption,
   User,
+  Vocabulary,
 };
