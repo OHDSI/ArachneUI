@@ -6,6 +6,7 @@ interface ISearchTermsServices {
 	download: any;
 	history: any;
 	vocabLicenses: any;
+	restore: any;
 }
 
 export default <ISearchTermsServices> reduxifyServices(
@@ -15,5 +16,6 @@ export default <ISearchTermsServices> reduxifyServices(
 		'vocabularies/save': 'download',
 		'vocabularies/downloads': 'history',
 		'vocabularies/licenses/request': 'vocabLicenses',
+		'vocabularies/restore': 'restore',
 	}
 );

@@ -17,16 +17,16 @@ class DownloadHistory extends Component<IDownloadHistoryProps, { expandedBundleI
 		this.state = {
 			expandedBundleId: 0,
 		};
-		this.expand = this.expand.bind(this);
+		this.toggle = this.toggle.bind(this);
 	}
 
 	componentWillMount() {
 		this.props.load();
 	}
 
-	expand(bundleId) {
+	toggle(bundleId) {
 		this.setState({
-			expandedBundleId: bundleId,
+			expandedBundleId: this.state.expandedBundleId !== bundleId ? bundleId : -1,
 		});
 	}
 
@@ -34,7 +34,7 @@ class DownloadHistory extends Component<IDownloadHistoryProps, { expandedBundleI
 		return presenter({
 			...this.props,
 			expandedBundleId: this.state.expandedBundleId,
-			expand: this.expand,
+			toggle: this.toggle,
 		});
 	}
 }
@@ -43,7 +43,8 @@ function mapStateToProps(state: Object): IDownloadHistoryStateProps {
 	const history = selectors.getHistory(state);
 
 	return {
-		isLoading: get(state, 'vocabulary.history.isLoading', false),
+		isLoading: get(state, 'vocabulary.history.isLoading', false)
+			|| get(state, 'vocabulary.restore.isSaving', false),
 		history,
 	};
 }
@@ -51,6 +52,7 @@ function mapStateToProps(state: Object): IDownloadHistoryStateProps {
 const mapDispatchToProps = {
 	load: actions.history.load,
 	remove: actions.history.remove,
+	restore: actions.history.restore,
 };
 
 function mergeProps(
@@ -63,6 +65,11 @@ function mergeProps(
 		removeBundle: (id: number) => {
 			dispatchProps
 				.remove(id)
+				.then(dispatchProps.load);
+		},
+		restoreBundle: (id) => {
+			dispatchProps
+				.restore(id)
 				.then(dispatchProps.load);
 		},
 	};

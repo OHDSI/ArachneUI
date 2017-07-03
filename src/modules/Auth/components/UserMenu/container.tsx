@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { Component } from 'react';
 import * as get from 'lodash/get';
 import coreActions from 'modules/Auth/actions/core';
+import logoutActions from 'modules/Auth/actions/logout';
 import principalActions from 'modules/Auth/actions/principal';
 import { roles } from 'modules/Auth/const';
 import presenter from './presenter';
@@ -52,6 +53,7 @@ function mapStateToProps(state): IUserMenuState {
 const mapDispatchToProps = {
   loadPrincipal: principalActions.load,
   logout: coreActions.logout,
+  doLogout: logoutActions.logout,
 };
 
 export default connect<IUserMenuState, IUserMenuDispatch, void>(

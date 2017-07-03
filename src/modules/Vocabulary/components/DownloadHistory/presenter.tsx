@@ -47,14 +47,16 @@ interface IDownloadHistoryStateProps {
 interface IDownloadHistoryDispatchProps {
   load: () => (dispatch: Function) => any;
   remove: (id: number) => Promise<void>;
+  restore: (id: number) => Promise<void>;
 };
 
 interface IDownloadHistoryProps extends IDownloadHistoryStateProps, IDownloadHistoryDispatchProps {
   removeBundle: (id: number) => any;
+  restoreBundle: (id: number) => any;
 };
 
 interface IDownloadHistoryStatefulProps {
-  expand: (id: number) => any;
+  toggle: (id: number) => any;
   expandedBundleId: number;
 };
 
@@ -71,11 +73,11 @@ function BundleName({ name, date, onClick, isOpened }) {
   </div>;
 }
 
-function BundleTitle({ bundle, removeBundle, expand, isExpanded }) {
+function BundleTitle({ bundle, removeBundle, toggle, isExpanded, restore }) {
   const classes = BEMHelper('download-history');
 
   return <Toolbar
-    caption={<BundleName {...bundle} onClick={() => expand(bundle.id)} isOpened={isExpanded} />}
+    caption={<BundleName {...bundle} onClick={() => toggle(bundle.id)} isOpened={isExpanded} />}
   >
     {[bundleStatuses.READY].includes(bundle.status)
       ? <div>
@@ -90,16 +92,27 @@ function BundleTitle({ bundle, removeBundle, expand, isExpanded }) {
             {...classes('remove-button')}
             onClick={() => removeBundle(bundle.id)}
           >
-            Remove
+            Archive
         </Button>
       </div>
-     : <span {...classes('status')}>{bundle.status}</span>
+     : <div>
+         <span {...classes('status')}>{bundle.status}</span>
+         {bundle.status === bundleStatuses.ARCHIVED &&
+           <Button
+             {...classes('restore-button')}
+             mods={['success', 'rounded']}
+             onClick={() => restore(bundle.id)}
+           >
+             Restore
+           </Button>
+         }
+       </div>
     }
   </Toolbar>;
 }
 
 function VocabsList(props: IDownloadHistoryProps & IDownloadHistoryStatefulProps) {
-  const { isLoading, history, removeBundle, expand, expandedBundleId } = props;
+  const { isLoading, history, removeBundle, toggle, expandedBundleId, restoreBundle } = props;
   const classes = BEMHelper('download-history');
 
   return (    
@@ -111,8 +124,9 @@ function VocabsList(props: IDownloadHistoryProps & IDownloadHistoryStatefulProps
               title={<BundleTitle
                 bundle={bundle}
                 removeBundle={removeBundle}
-                expand={expand}
+                toggle={toggle}
                 isExpanded={bundle.id === expandedBundleId}
+                restore={restoreBundle}
                />}
               {...classes('bundle-caption')}
               key={`caption${index}`}

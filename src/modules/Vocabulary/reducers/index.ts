@@ -7,4 +7,5 @@ export default combineReducers({
 	vocabularies: services.vocabularies.reducer,
 	history: services.history.reducer,
 	vocabLicenses: services.vocabLicenses.reducer,
+	restore: services.restore.reducer,
 });

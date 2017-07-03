@@ -20,6 +20,7 @@ interface IUserMenuState {
 
 interface IUserMenuDispatch {
   logout: Function,
+  doLogout: Function,
 };
 
 interface IUserMenuProps extends IUserMenuState, IUserMenuDispatch {};
@@ -32,6 +33,7 @@ function UserMenu(props) {
     fullname,
     logout,
     isAdmin,
+	doLogout,
   } = props;
   let dropdownInstance;
 
@@ -67,7 +69,10 @@ function UserMenu(props) {
             }
             <Link
               {...classes('dropdown-link')}
-              onClick={logout}>Logout</Link>
+              onClick={() => {
+				  doLogout()
+				  .then(() => logout());
+			  }}>Logout</Link>
           </div>
         </DropdownContent>
       </Dropdown>

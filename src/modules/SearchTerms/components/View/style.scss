@@ -33,7 +33,7 @@
     }
 
     &__subheader-title {
-      @include title();
+      font-weight: $font-weight-bold;
     }
 
     &__content {

@@ -50,16 +50,17 @@ function mergeProps(
 		...dispatchProps,
 		...ownProps,
 		filter: (data: { searchString: string }) => {
-			const currentAddress = new URI(`${stateProps.locationSearch.pathname}${stateProps.locationSearch.search}`);
-      currentAddress.setSearch('query', data.searchString);
-      const search = currentAddress.href();
-      dispatchProps.search(search);
-      const filterParams = {
-        ...stateProps.filterParams,
-        query: data.searchString,
-      };
+		  const currentAddress = new URI(`${stateProps.locationSearch.pathname}${stateProps.locationSearch.search}`);
+		  currentAddress.setSearch('query', data.searchString);
+			currentAddress.setSearch('page', 1);
+		  const search = currentAddress.href();
+		  dispatchProps.search(search);
+		  const filterParams = {
+			...stateProps.filterParams,
+			query: data.searchString,
+		  };
 
-      dispatchProps.updateFacets(filterParams);
+		  dispatchProps.updateFacets(filterParams);
 		},
 	};
 }
