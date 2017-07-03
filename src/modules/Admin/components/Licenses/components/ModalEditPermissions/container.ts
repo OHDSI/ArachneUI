@@ -7,22 +7,24 @@ import { modal, forms } from 'modules/Admin/const';
 import { get, difference } from 'lodash';
 import presenter from './presenter';
 import selectors from './selectors';
-import { Vocabulary, User } from 'modules/Admin/components/Licenses/types';
+import { VocabularyOption, User, Vocabulary } from 'modules/Admin/components/Licenses/types';
 
 interface IModalStateProps {
-  vocabularies: Array<Vocabulary>;
+  vocabularies: Array<VocabularyOption>;
   initialValues: {
     vocabularies: Array<string>;
   };
   user: User;
+  pendingVocabularies: Array<Vocabulary>;
 };
 interface IModalDispatchProps {
   close: () => (dispatch: Function) => any;
   remove: (id: string) => (dispatch: Function) => any;
   loadLicenses: () => (dispatch: Function) => any;
+  resolveLicense: (id: number, allow: boolean) => (dispatch: Function) => any;
 };
 interface IModalProps extends IModalStateProps, IModalDispatchProps {
-  doSubmit: (vocabs: Array<Vocabulary>) => Promise<any>;
+  doSubmit: (vocabs: Array<VocabularyOption>) => Promise<any>;
 };
 
 class ModalEditPermissions extends Component<IModalProps, {}> {
@@ -33,9 +35,10 @@ class ModalEditPermissions extends Component<IModalProps, {}> {
 
 function mapStateToProps(state: any): IModalStateProps {
   const vocabularies = selectors.getVocabularies(state);
+  const pendingVocabularies = selectors.getPendingVocabularies(state);
   const user = get(state, 'modal.editPermission.data.user.name', {
     id: -1,
-    name: 'Anonymous'
+    name: 'Anonymous',
   });
 
 	return {
@@ -44,6 +47,7 @@ function mapStateToProps(state: any): IModalStateProps {
       vocabularies: vocabularies.map(v => v.value.toString()),
     },
     user,
+    pendingVocabularies,
   };
 }
 
@@ -51,6 +55,7 @@ const mapDispatchToProps = {
   close: () => ModalUtils.actions.toggle(modal.editPermission, false),
   remove: actions.licenses.remove,
   loadLicenses: actions.licenses.load,
+  resolveLicense: actions.licenses.resolve,
 };
 
 function mergeProps(
@@ -62,10 +67,13 @@ function mergeProps(
     ...stateProps,
     ...ownProps,
     ...dispatchProps,
-    doSubmit: ({ vocabularies }) => {
+    doSubmit: ({ vocabularies, pendingVocabs }) => {
       const promises = [];
       difference(stateProps.initialValues.vocabularies, vocabularies).forEach((licenseId) => {
         promises.push(dispatchProps.remove(licenseId));
+      });
+      pendingVocabs.forEach((isAllowed: boolean, licenseId: number) => {
+        promises.push(dispatchProps.resolveLicense(licenseId, isAllowed));
       });
       const promise = Promise.all(promises);
       promise

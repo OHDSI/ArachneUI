@@ -1,10 +1,11 @@
 import { connect } from 'react-redux';
 import { Component } from 'react';
 import actions from 'modules/Vocabulary/actions';
-import { apiPaths, forms } from 'modules/Vocabulary/const';
+import { apiPaths, forms, modal } from 'modules/Vocabulary/const';
 import { get } from 'lodash';
 import { push as goToPage } from 'react-router-redux';
 import { reduxForm, reset, FormProps, change as reduxFormChange } from 'redux-form';
+import { ModalUtils } from 'arachne-components';
 import presenter from './presenter';
 import selectors from './selectors';
 
@@ -73,6 +74,7 @@ const mapDispatchToProps = {
 	unselectAll: () => reset(forms.download),
 	toggleAll: actions.download.toggleAllVocabs,
   toggle: (id: number, state: boolean) => reduxFormChange(forms.download, `vocabulary[${id}]`, state),
+  openRequestModal: (vocab: Vocabulary) => ModalUtils.actions.toggle(modal.requestLicense, true, vocab),
 };
 
 function mergeProps(

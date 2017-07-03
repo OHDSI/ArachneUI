@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import { get } from 'lodash';
 import { License, Vocabulary } from 'modules/Admin/components/Licenses/types';
+import { licenseStatuses } from 'const/vocabulary';
 
 const getRawData = (state: Object) => get(state, 'admin.licenses.queryResult.content', []) || [];
 
@@ -12,6 +13,7 @@ const getLicenses = createSelector(
       		name: [license.user.firstName, license.user.middleName, license.user.lastName].filter(n => n).join(' '),
       	},
       	vocabularies: license.vocabularyDTOs,
+        pendingCount: license.vocabularyDTOs.filter(voc => voc.status === licenseStatuses.PENDING).length,
     })),
   );
 

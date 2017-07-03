@@ -14,7 +14,7 @@ const actionTypes = keyMirror({
 });
 
 const paths = {
-	licenses: () => '/admin/licenses',
+	licenses: (pendingOnly: boolean) => `/admin/licenses${pendingOnly ? '/pending' : ''}`,
 };
 
 const apiPaths = {
