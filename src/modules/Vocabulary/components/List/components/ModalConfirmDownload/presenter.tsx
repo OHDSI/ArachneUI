@@ -15,11 +15,6 @@ interface IVocab {
 interface IModalStateProps {
 	selectedVocabs: Array<IVocab>;
 	selectedVocabIds: Array<number>;
-	cdmVersion: string;
-	bundleName: string;
-	initialValues: {
-		cdmVersion: string;
-	};
 	isOpened: boolean;
 };
 

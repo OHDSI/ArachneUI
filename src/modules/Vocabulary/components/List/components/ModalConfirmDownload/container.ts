@@ -8,7 +8,6 @@ import { modal, forms, paths } from 'modules/Vocabulary/const';
 import { get } from 'lodash';
 import selectors from 'modules/Vocabulary/components/List/components/Results/selectors';
 import presenter from './presenter';
-import { cdmVersions } from 'modules/Vocabulary/const';
 import { IModalProps, IModalStateProps, IModalDispatchProps } from './presenter';
 
 class ModalConfirmDownload extends Component<IModalProps, {}> {
@@ -33,18 +32,11 @@ function mapStateToProps(state: any): IModalStateProps {
   });
   const vocabs = selectors.getVocabs(state);
   const selectedVocabs = vocabs.filter(voc => selectedVocabIds.includes(voc.id));
-  const cdmVersion = get(state, `form.${forms.bundle}.values.cdmVersion`, '4.5') || '4.5';
-  const bundleName = get(state, `form.${forms.bundle}.values.bundleName`, '');
   const isOpened = get(state, `modal.${modal.download}.isOpened`, false);
 
 	return {
     selectedVocabs,
     selectedVocabIds,
-    cdmVersion,
-    bundleName,
-    initialValues: {
-      cdmVersion: cdmVersions[0].value,
-    },
     isOpened,
   };
 }
@@ -72,11 +64,11 @@ function mergeProps(
         dispatchProps.close();
       }
     },
-    download: () => {
+    download: ({ bundleName, cdmVersion }) => {
       const promise = dispatchProps.requestDownload({
-        cdmVersion: stateProps.cdmVersion,
+        cdmVersion: cdmVersion,
         ids: stateProps.selectedVocabIds.join(','),
-        name: stateProps.bundleName,
+        name: bundleName,
       })
       .then(() => dispatchProps.close())
       .then(() => dispatchProps.showResult())
