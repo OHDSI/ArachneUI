@@ -55,7 +55,7 @@ function Term(props: ITermProps) {
   } = props;
   const classes = BEMHelper('term');
   let title = 'Term connections';
-  if (isTableMode && relationshipsCount) {
+  if (relationshipsCount) {
     title += ` (${relationshipsCount})`;
   }
   const tabs = [
