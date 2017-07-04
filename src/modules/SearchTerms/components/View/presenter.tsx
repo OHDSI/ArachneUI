@@ -119,7 +119,7 @@ function Term(props: ITermProps) {
               {synonyms.length
                 ? <ListItem>
                     <span {...classes('attribute-name')}>Synonyms</span>
-                    <span>{synonyms.join('; ')}</span>
+                    <span>{synonyms.map(synonym => synonym.name).join('; ')}</span>
                   </ListItem>
                 : null
               }
