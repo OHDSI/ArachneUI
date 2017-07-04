@@ -18,7 +18,7 @@
     "@types/react-router-redux": "4.0.39",
     "@types/webpack": "2.2.4",
     "@types/webpack-env": "1.13.0",
-    "arachne-components": "git+https://Odysseus:A0Ol60zeF4gdnnNSlotOqsr0Eytogz3A@bitbucket.org/Odysseus/arachnefrontcomponents.git#a76c265",
+    "arachne-components": "git+https://Odysseus:A0Ol60zeF4gdnnNSlotOqsr0Eytogz3A@bitbucket.org/Odysseus/arachnefrontcomponents.git#f5f1709",
     "awesome-typescript-loader": "3.0.8",
     "babel-core": "6.23.1",
     "babel-loader": "6.3.2",

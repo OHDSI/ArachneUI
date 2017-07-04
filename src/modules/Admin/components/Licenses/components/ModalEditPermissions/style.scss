@@ -2,25 +2,12 @@
 
 .#{$namespace} {
   &edit-permissions {
-  	& .ac-tabbed-pane {
-  		&__content {
-  			margin-top: 0;
-  			box-shadow: none;
-  		}
+  	@include tabbed-modal();
 
-  		&__tabs {
-  			border-radius: 0;
-  			box-shadow: none;
-  		}
-  	}
-
-  	&__tab-content {
+    &__tab-content {
+	    padding: 2rem;
 	    min-width: 500px;
 	    min-height: 200px;
-	    border-bottom-left-radius: $input-border-radius;
-	    border-bottom-right-radius: $input-border-radius;
-	    overflow: hidden;
-	    padding: 2rem;
 	  }
 
     &__pending-voc {
