@@ -1,7 +1,8 @@
 import * as React from 'react';
 import BEMHelper from 'services/BemHelper';
-import { Modal, ListItem, Button } from 'arachne-components';
+import { Modal, ListItem, Button, Select } from 'arachne-components';
 import { DownloadParams } from 'modules/Vocabulary/actions/download';
+import { cdmVersions } from 'modules/Vocabulary/const';
 import { Field } from 'redux-form';
 
 require('./style.scss');
@@ -16,6 +17,10 @@ interface IModalStateProps {
 	selectedVocabIds: Array<number>;
 	cdmVersion: string;
 	bundleName: string;
+	initialValues: {
+		cdmVersion: string;
+	};
+	isOpened: boolean;
 };
 
 interface IModalDispatchProps {
@@ -24,6 +29,7 @@ interface IModalDispatchProps {
 	download: () => null;
   requestDownload: (params: DownloadParams) => any;
 	showResult: () => null;
+	reset: Function;
 };
 
 interface IModalProps extends IModalStateProps, IModalDispatchProps {
@@ -33,13 +39,29 @@ interface IModalProps extends IModalStateProps, IModalDispatchProps {
 	error: string;
 };
 
-function BundleName({ options, input }) {
+interface IReduxFieldProps {
+  options: any;
+  input: any;
+};
+
+function BundleName(props: IReduxFieldProps) {
+	const { options, input } = props;
 	return <input
 		className={options.className}
 		value={input.value}
 		onChange={input.onChange}
 		placeholder='name bundle'
 	/>;
+}
+
+function cdmVersionSelect(props: IReduxFieldProps) {
+  const { options, input } = props;
+  return (<Select
+    className={options.className}
+    options={cdmVersions}
+    value={input.value}
+    onChange={input.onChange}
+   />);
 }
 
 function ModalConfirmDownload(props: IModalProps) {
@@ -62,6 +84,11 @@ function ModalConfirmDownload(props: IModalProps) {
 	    			<Field component={BundleName} name='bundleName' options={{
 	    				className: classes('bundle-name-input').className
 	    			}} />
+			      <Field
+			        component={cdmVersionSelect}
+			        options={{...classes('cdm-version-select')}}
+			        name='cdmVersion'
+			      />
 	    		</div>
 		      {selectedVocabs && selectedVocabs.map((voc: IVocab, index: number) =>
 		      	<ListItem key={index}>

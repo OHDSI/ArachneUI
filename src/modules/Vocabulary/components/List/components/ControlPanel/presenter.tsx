@@ -5,7 +5,7 @@ import {
   Select,
   Link,
 } from 'arachne-components';
-import { cdmVersions, paths } from 'modules/Vocabulary/const';
+import { paths } from 'modules/Vocabulary/const';
 import { Field, FormProps } from 'redux-form';
 
 require('./style.scss');
@@ -16,10 +16,8 @@ interface IReduxFieldProps {
 };
 
 interface IPanelStateProps {
-  cdmVersion: string,
   selectedVocabularies: Array<string>,
   initialValues: {
-    cdmVersion: string;
     selection: string;
   }
 };
@@ -31,16 +29,6 @@ interface IPanelDispatchProps {
 interface IPanelProps extends IPanelStateProps, IPanelDispatchProps {
   download: Function;
 };
-
-function cdmVersionSelect(props: IReduxFieldProps) {
-  const { options, input } = props;
-  return (<Select
-    className={options.className}
-    options={cdmVersions}
-    value={input.value}
-    onChange={input.onChange}
-   />);
-}
 
 function selection(props: IReduxFieldProps) {
   const { options, input } = props;
@@ -63,7 +51,6 @@ function selection(props: IReduxFieldProps) {
 
 function ControlPanel(props: IPanelProps & FormProps<{}, {}, {}>) {
   const {
-    cdmVersion,
     download,
     selectedVocabularies,
   } = props;
@@ -71,11 +58,6 @@ function ControlPanel(props: IPanelProps & FormProps<{}, {}, {}>) {
 
   return (
     <div {...classes()}>
-      <Field
-        component={cdmVersionSelect}
-        options={{...classes('cdm-version-select')}}
-        name='cdmVersion'
-      />
       <Field
         component={selection}
         options={{...classes('selection')}}

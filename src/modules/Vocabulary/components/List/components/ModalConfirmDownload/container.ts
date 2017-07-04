@@ -2,15 +2,22 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import { push as goToPage } from 'react-router-redux';
 import actions from 'modules/Vocabulary/actions';
-import { reduxForm, change as reduxFormChange, SubmissionError } from 'redux-form';
+import { reduxForm, change as reduxFormChange, SubmissionError, reset } from 'redux-form';
 import { ModalUtils } from 'arachne-components';
 import { modal, forms, paths } from 'modules/Vocabulary/const';
 import { get } from 'lodash';
 import selectors from 'modules/Vocabulary/components/List/components/Results/selectors';
 import presenter from './presenter';
+import { cdmVersions } from 'modules/Vocabulary/const';
 import { IModalProps, IModalStateProps, IModalDispatchProps } from './presenter';
 
 class ModalConfirmDownload extends Component<IModalProps, {}> {
+  componentWillReceiveProps(nextProps) {
+    if (this.props.isOpened !== nextProps.isOpened && nextProps.isOpened === true) {
+      this.props.reset();
+    }
+  }
+
   render() {
     return presenter(this.props);
   }
@@ -26,14 +33,19 @@ function mapStateToProps(state: any): IModalStateProps {
   });
   const vocabs = selectors.getVocabs(state);
   const selectedVocabs = vocabs.filter(voc => selectedVocabIds.includes(voc.id));
-  const cdmVersion = get(state, `form.${forms.downloadSettings}.values.cdmVersion`, '4.5') || '4.5';
-  const bundleName = get(state, 'form.bundle.values.bundleName', '');
+  const cdmVersion = get(state, `form.${forms.bundle}.values.cdmVersion`, '4.5') || '4.5';
+  const bundleName = get(state, `form.${forms.bundle}.values.bundleName`, '');
+  const isOpened = get(state, `modal.${modal.download}.isOpened`, false);
 
 	return {
     selectedVocabs,
     selectedVocabIds,
     cdmVersion,
     bundleName,
+    initialValues: {
+      cdmVersion: cdmVersions[0].value,
+    },
+    isOpened,
   };
 }
 
@@ -42,6 +54,7 @@ const mapDispatchToProps = {
   remove: (id: number) => reduxFormChange(forms.download, `vocabulary[${id}]`, false),
   close: () => ModalUtils.actions.toggle(modal.download, false),
   showResult: () => ModalUtils.actions.toggle(modal.downloadResult, true),
+  reset: () => reset(forms.bundle),
 };
 
 function mergeProps(

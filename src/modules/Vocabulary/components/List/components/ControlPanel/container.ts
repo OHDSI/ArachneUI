@@ -25,13 +25,10 @@ class ControlPanel extends Component<IPanelProps, void> {
 
 function mapStateToProps(state: Object): IPanelStateProps {
   const selectedVocabularies = Object.keys(get(state, `form.${forms.download}.values.vocabulary`, {}));
-  const cdmVersion = get(state, `form.${forms.downloadSettings}.values.cdmVersion`, '4.5');
 
   return {
-    cdmVersion,
     selectedVocabularies,
     initialValues: {
-      cdmVersion: cdmVersions[0].value,
       selection: 'all',
     }
   };
