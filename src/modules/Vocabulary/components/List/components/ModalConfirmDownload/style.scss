@@ -20,16 +20,24 @@
       font-weight: initial;
       margin-left: auto;
       text-transform: initial;
+      padding-right: 0;
     }
 
     &__bundle-name {
       background-color: $grey-lighter;
       padding: 0.5rem 2rem;
+      display: flex;
 
       &-input {
         @include input();
         @include input-border();
       }
+    }
+
+    &__cdm-version-select {
+      @include input-border();
+      width: 25rem;
+      margin-left: 1rem;
     }
 
     &__errors {
