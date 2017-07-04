@@ -55,7 +55,7 @@ function DownloadCheckbox(props: IDownloadCheckboxProps) {
 
 function CellChecked(props: any) {
   const { className, isCheckable, name, openRequestModal, isPending } = props;
-  const tooltipClass = BEMHelper('ac-tooltip', false);
+  
   return isCheckable
     ? <Field component={DownloadCheckbox} options={{ className }} name={name} />
     : 
