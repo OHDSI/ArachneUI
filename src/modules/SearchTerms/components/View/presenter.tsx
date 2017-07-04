@@ -10,6 +10,8 @@ import {
 import { RouterAction } from 'react-router-redux';
 import BEMHelper from 'services/BemHelper';
 import { get } from 'lodash';
+import * as moment from 'moment';
+import { commonDateFormat } from 'const/formats';
 import TermConnections from './components/Connections';
 import TermConnectionsTable from './components/Table';
 import TermFiltersPanel from './components/Filters';
@@ -68,6 +70,9 @@ function Term(props: ITermProps) {
       mods: ['purple'],
     },
   ];
+  const synonyms = get(details, 'synonyms', []);
+  const validStart = get(details, 'validStart');
+  const validEnd = get(details, 'validEnd');
 
   return (    
     <div {...classes()}>
@@ -111,6 +116,25 @@ function Term(props: ITermProps) {
                 <span {...classes('attribute-name')}>Standard concept</span>
                 <span>{get(details, 'standardConcept', '')}</span>
               </ListItem>
+              {synonyms.length
+                ? <ListItem>
+                    <span {...classes('attribute-name')}>Synonyms</span>
+                    <span>{synonyms.map(synonym => synonym.name).join('; ')}</span>
+                  </ListItem>
+                : null
+              }
+              {validStart &&
+                <ListItem>
+                  <span {...classes('attribute-name')}>Valid start</span>
+                  <span>{ moment(validStart).format()}</span>
+                </ListItem>
+              }
+              {validEnd && 
+                <ListItem>
+                  <span {...classes('attribute-name')}>Valid end</span>
+                  <span>{moment(validEnd).format()}</span>
+                </ListItem>
+              }
             </ul>
           </Panel>
         </div>
