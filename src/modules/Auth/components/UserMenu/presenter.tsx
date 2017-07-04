@@ -65,7 +65,7 @@ function UserMenu(props) {
             {isAdmin &&
               <Link
                 {...classes('dropdown-link')}
-                to={AdminPaths.licenses()}>Licenses</Link>
+                to={AdminPaths.licenses(false)}>Licenses</Link>
             }
             <Link
               {...classes('dropdown-link')}

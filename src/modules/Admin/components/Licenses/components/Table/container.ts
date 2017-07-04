@@ -20,14 +20,17 @@ interface IListDispatchProps {
 interface IListProps extends IListStateProps, IListDispatchProps {
 };
 
-class LicensesList extends Component<IListProps, void> {
+class LicensesList extends Component<IListProps, { pendingOnly: boolean }> {
 	render() {
 		return presenter(this.props);
 	}
 }
 
-function mapStateToProps(state: Object): IListStateProps {
-	const licenses = selectors.getLicenses(state);
+function mapStateToProps(state: Object, ownProps: { pendingOnly: boolean }): IListStateProps {
+	let licenses = selectors.getLicenses(state);
+  if (ownProps.pendingOnly) {
+    licenses = licenses.filter(license => license.pendingCount > 0);
+  }
 
 	return {
 		licenses,
@@ -65,7 +68,7 @@ function mergeProps(
   };
 }
 
-export default connect<IListStateProps, IListDispatchProps, {}>(
+export default connect<IListStateProps, IListDispatchProps, { pendingOnly: boolean }>(
 	mapStateToProps,
 	mapDispatchToProps,
 	mergeProps,

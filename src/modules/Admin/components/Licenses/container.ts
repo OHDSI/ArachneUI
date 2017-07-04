@@ -3,16 +3,22 @@ import { Component } from 'react';
 import actions from 'modules/Admin/actions';
 import { get } from 'lodash';
 import { ModalUtils } from 'arachne-components';
-import { modal } from 'modules/Admin/const';
+import { modal, paths } from 'modules/Admin/const';
+import { push } from 'react-router-redux';
 import presenter from './presenter';
 
-interface ILicensesStateProps {};
+interface ILicensesStateProps {
+	isLoading: boolean;
+	pendingOnly: boolean;
+};
 interface ILicensesDispatchProps {
 	load: () => (dispatch: Function) => any;
 	openModal: () => (dispatch: Function) => any;
+	goToPage: (address: string) => (dispatch: Function) => any;
 };
 interface ILicensesProps extends ILicensesStateProps, ILicensesDispatchProps {
 	isLoading: boolean;
+	filter: Function;
 };
 
 class Licenses extends Component<ILicensesProps, void> {
@@ -25,19 +31,36 @@ class Licenses extends Component<ILicensesProps, void> {
 	}
 }
 
-function mapStateToProps(state: Object): ILicensesStateProps {
+function mapStateToProps(state: Object, ownProps: any): ILicensesStateProps {
+	const pendingOnly = get(ownProps, 'routeParams.pending') === 'pending';
 
 	return {
 		isLoading: get(state, 'vocabulary.vocabularies.isLoading', false),
+		pendingOnly,
 	};
 }
 
 const mapDispatchToProps = {
 	load: actions.licenses.load,
 	openModal: () => ModalUtils.actions.toggle(modal.addPermission, true),
+	goToPage: (address: string) => push(address),
 };
+
+function mergeProps(
+  stateProps: ILicensesStateProps,
+  dispatchProps: ILicensesDispatchProps,
+  ownProps
+  ) {
+  return {
+    ...stateProps,
+    ...ownProps,
+    ...dispatchProps,
+    filter: (pendingOnly: boolean) => dispatchProps.goToPage(paths.licenses(pendingOnly)),
+  };
+}
 
 export default connect<ILicensesStateProps, ILicensesDispatchProps, void>(
 	mapStateToProps,
-	mapDispatchToProps
+	mapDispatchToProps,
+	mergeProps
 )(Licenses);

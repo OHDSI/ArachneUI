@@ -15,6 +15,7 @@ interface Vocabulary {
   tableRowMods: {
     selected: boolean;
   };
+  status: string;
 };
 
 const getRawVocabs = (state: Object) => get(state, 'vocabulary.vocabularies.queryResult') || [];

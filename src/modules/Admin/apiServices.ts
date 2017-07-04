@@ -5,6 +5,7 @@ interface IAdminServices {
 	vocabularies: any;
 	licenses: any;
 	users: any;
+	licenseAccept: any;
 }
 
 export default <IAdminServices> reduxifyServices(
@@ -13,5 +14,6 @@ export default <IAdminServices> reduxifyServices(
 		'vocabularies/licenses/suggest': 'vocabularies',
 		'vocabularies/licenses': 'licenses',
 		'users/suggest': 'users',
+		'vocabularies/licenses/accept': 'licenseAccept',
 	}
 );
