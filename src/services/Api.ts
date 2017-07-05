@@ -29,7 +29,7 @@ function configure(props: ApiConfig): Promise<any> {
   } = props;
 
   API = API
-    .configure(rest('/api/v1').superagent(superagent))
+    .configure(rest('/api/v1').superagent(superagent, {withCredentials: true}))
     .configure(hooks());
     //.configure(auth);
 
