@@ -1,6 +1,7 @@
 import { actionTypes } from 'modules/Auth/const';
 import { push as goToPage } from 'react-router-redux';
 import { authTokenName } from 'const';
+import * as _ from 'lodash';
 
 function setToken(token: string) {
   if (token) {
@@ -23,9 +24,11 @@ function setBackUrl(url: string) {
 
 function logout() {
   return dispatch => {
-    window.open('https://localhost:8443/cas/logout', 'SSO logout', "width=600,height=450,scrollbars=no");
-    dispatch(setToken(null));
-    dispatch(goToPage('/'));
+    window.open('/auth/slo', 'SSO logout', "width=600,height=450,scrollbars=no");
+    _.defer(() => {
+      dispatch(setToken(null));
+      dispatch(goToPage('/'));
+    });
   };
 }
 
