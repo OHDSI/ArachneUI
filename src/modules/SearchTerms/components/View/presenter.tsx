@@ -70,7 +70,7 @@ function Term(props: ITermProps) {
       mods: ['purple'],
     },
   ];
-  const synonyms = [{ name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, { name: 'test' }, ];//get(details, 'synonyms', []);
+  const synonyms = get(details, 'synonyms', []);
   const validStart = get(details, 'validStart');
   const validEnd = get(details, 'validEnd');
 
