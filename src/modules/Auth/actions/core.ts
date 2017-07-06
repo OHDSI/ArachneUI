@@ -23,6 +23,7 @@ function setBackUrl(url: string) {
 
 function logout() {
   return dispatch => {
+    window.open('https://localhost:8443/cas/logout', 'SSO logout', "width=600,height=450,scrollbars=no");
     dispatch(setToken(null));
     dispatch(goToPage('/'));
   };
