@@ -27,10 +27,11 @@
       width: 12.5%;
     }
 
+    &__selected-row {
+      background: $grey-light;
+    }
+      
     &__cell {
-      &--selected {
-        background: $grey-light;
-      }
       &--disabled {
         @include material-icon();
         color: $blue;

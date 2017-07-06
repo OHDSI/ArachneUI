@@ -12,9 +12,7 @@ interface Vocabulary {
 
   isCheckable: boolean;
   isChecked: boolean;
-  tableRowMods: {
-    selected: boolean;
-  };
+  tableRowClass: string;
   status: string;
 };
 

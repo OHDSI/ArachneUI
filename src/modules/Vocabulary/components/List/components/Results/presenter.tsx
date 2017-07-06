@@ -87,6 +87,12 @@ function Results(props: IResultsProps & FormProps<{}, {}, {}>) {
   } = props;
   const classes = BEMHelper('vocabularies');
   const selectAllButton = <Checkbox onChange={toggleAllCheckboxes} isChecked={areAllRowsChecked} />;
+  // add modifiers for Table component
+  vocabularies.map((vocabulary) => {
+    if (vocabulary.isChecked) {
+    vocabulary.tableRowClass = classes('selected-row').className;
+    }
+  });
 
   return (
     <div {...classes()}>

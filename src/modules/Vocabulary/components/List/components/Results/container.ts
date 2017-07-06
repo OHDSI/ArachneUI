@@ -44,13 +44,6 @@ function mapStateToProps(state: Object): IResultsStateProps {
 		vocabularies = vocabularies.filter((v: Vocabulary) => get(values, `${v.id}`, false));
 	}
 
-	// add modifiers for Table component
-	vocabularies.map((vocabulary) => {
-		vocabulary.tableRowMods = {
-			selected: get(values, `${vocabulary.id}`, false),
-		};	
-	});
-
 	const selectedVocabularies = values.filter((vocabulary) => vocabulary === true);
 	const selectableVocabularies = vocabularies.filter((vocabulary) => vocabulary.isCheckable === true);
 	// every single checkbox is checked
