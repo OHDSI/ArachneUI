@@ -117,23 +117,25 @@ function Term(props: ITermProps) {
                 <span>{get(details, 'standardConcept', '')}</span>
               </ListItem>
               {synonyms.length
-                ? <ListItem>
+                ? <ListItem {...classes('synonyms')}>
                     <span {...classes('attribute-name')}>Synonyms</span>
                     <span>{synonyms.map(synonym => synonym.name).join('; ')}</span>
                   </ListItem>
                 : null
               }
-              {validStart &&
-                <ListItem>
-                  <span {...classes('attribute-name')}>Valid start</span>
-                  <span>{ moment(validStart).format()}</span>
-                </ListItem>
+              {validStart
+                ? <ListItem>
+                    <span {...classes('attribute-name')}>Valid start</span>
+                    <span>{moment(validStart).format(commonDateFormat)}</span>
+                  </ListItem>
+                : null
               }
-              {validEnd && 
-                <ListItem>
-                  <span {...classes('attribute-name')}>Valid end</span>
-                  <span>{moment(validEnd).format()}</span>
-                </ListItem>
+              {validEnd 
+                ? <ListItem>
+                    <span {...classes('attribute-name')}>Valid end</span>
+                    <span>{moment(validEnd).format(commonDateFormat)}</span>
+                  </ListItem>
+                : null
               }
             </ul>
           </Panel>

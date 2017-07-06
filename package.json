@@ -55,7 +55,7 @@
     "es6-promise": "4.0.5",
     "feathers-client": "1.9.0",
     "feathers-reduxify-services": "0.3.0",
-    "feathers-rest-arachne": "git+https://github.com/pavgra/feathers-rest.git#417de37",
+    "feathers-rest-arachne": "1.7.3",
     "jquery-param": "0.2.0",
     "lodash": "4.17.4",
     "node-sass": "4.5.0",

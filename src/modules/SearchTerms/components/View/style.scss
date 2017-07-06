@@ -57,11 +57,20 @@
     &__attribute-name {
       width: 50%;
       font-weight: $font-weight-bold;
+      flex-shrink: 0;
     }
 
     &__tab {
       width: 17rem;
       text-align: center;
+    }
+
+    &__synonyms .ac-list-item {
+      &__content {
+        height: auto;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+      }
     }
   }
 }
