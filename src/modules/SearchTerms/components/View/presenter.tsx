@@ -90,7 +90,7 @@ function Term(props: ITermProps) {
             <ul>
               <ListItem>
                 <span {...classes('attribute-name')}>Domain ID</span>
-                <span>{get(details, 'domain.id', '')}</span>
+                <span>{get(details, 'domainId', '')}</span>
               </ListItem>
               <ListItem>
                 <span {...classes('attribute-name')}>Concept Class ID</span>
@@ -98,7 +98,7 @@ function Term(props: ITermProps) {
               </ListItem>
               <ListItem>
                 <span {...classes('attribute-name')}>Vocabulary ID</span>
-                <span>{get(details, 'vocabulary.id', '')}</span>
+                <span>{get(details, 'vocabularyId', '')}</span>
               </ListItem>
               <ListItem>
                 <span {...classes('attribute-name')}>Concept ID</span>
@@ -119,7 +119,7 @@ function Term(props: ITermProps) {
               {synonyms.length
                 ? <ListItem {...classes('synonyms')}>
                     <span {...classes('attribute-name')}>Synonyms</span>
-                    <span>{synonyms.map(synonym => synonym.name).join('; ')}</span>
+                    <span>{synonyms.join('; ')}</span>
                   </ListItem>
                 : null
               }

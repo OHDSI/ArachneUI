@@ -16,7 +16,7 @@ interface IReduxFieldProps {
 };
 
 interface IPanelStateProps {
-  selectedVocabularies: Array<string>,
+  vocabulariesSelected: boolean,
   initialValues: {
     selection: string;
   }
@@ -52,7 +52,7 @@ function selection(props: IReduxFieldProps) {
 function ControlPanel(props: IPanelProps & FormProps<{}, {}, {}>) {
   const {
     download,
-    selectedVocabularies,
+    vocabulariesSelected,
   } = props;
   const classes = BEMHelper('vocabulary-control-panel');
 
@@ -68,10 +68,10 @@ function ControlPanel(props: IPanelProps & FormProps<{}, {}, {}>) {
         to={paths.history()}
       >Show History</Link>
       <Button
-        {...classes({ element: 'download-button', modifiers: { disabled: !selectedVocabularies.length } })}
+        {...classes({ element: 'download-button', modifiers: { disabled: !vocabulariesSelected } })}
         mods={['submit', 'rounded']}
         onClick={download}
-        disabled={!selectedVocabularies.length}
+        disabled={!vocabulariesSelected}
       >Download vocabularies</Button>
     </div>
     );
