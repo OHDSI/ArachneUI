@@ -22,18 +22,7 @@ function setBackUrl(url: string) {
   };
 }
 
-function logout() {
-  return dispatch => {
-    window.open('/auth/slo', 'SSO logout', "width=600,height=450,scrollbars=no");
-    _.defer(() => {
-      dispatch(setToken(null));
-      dispatch(goToPage('/'));
-    });
-  };
-}
-
 export default {
-  logout,
   setToken,
   setBackUrl,
 };
