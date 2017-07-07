@@ -25,7 +25,10 @@ class UserMenu extends Component<IUserMenuProps & IUserMenuStatefulDispatch, {}>
 
   componentWillReceiveProps(props: IUserMenuProps) {
     if (this.props.isLoggedIn !== props.isLoggedIn) {
-      this.props.loadPrincipal();
+      if (props.isLoggedIn)
+        this.props.loadPrincipal();
+      else
+        this.props.resetPrincipal();
     }
   }
 
@@ -54,6 +57,7 @@ const mapDispatchToProps = {
   loadPrincipal: principalActions.load,
   logout: coreActions.logout,
   doLogout: logoutActions.logout,
+  resetPrincipal: principalActions.reset,
 };
 
 export default connect<IUserMenuState, IUserMenuDispatch, void>(

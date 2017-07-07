@@ -21,6 +21,7 @@ interface IUserMenuState {
 interface IUserMenuDispatch {
   logout: Function,
   doLogout: Function,
+  resetPrincipal: Function,
 };
 
 interface IUserMenuProps extends IUserMenuState, IUserMenuDispatch {};
