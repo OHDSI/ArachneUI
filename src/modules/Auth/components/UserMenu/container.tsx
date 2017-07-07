@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import { Component } from 'react';
 import * as get from 'lodash/get';
+import { push as goToPage } from 'react-router-redux';
 import coreActions from 'modules/Auth/actions/core';
 import logoutActions from 'modules/Auth/actions/logout';
 import principalActions from 'modules/Auth/actions/principal';
@@ -53,14 +54,36 @@ function mapStateToProps(state): IUserMenuState {
   };
 }
 
-const mapDispatchToProps = {
-  loadPrincipal: principalActions.load,
-  logout: coreActions.logout,
-  doLogout: logoutActions.logout,
-  resetPrincipal: principalActions.reset,
+const mapDispatchToProps = function(dispatch) {
+  return {
+    loadPrincipal: () => dispatch(principalActions.load()),
+    resetPrincipal: () => dispatch(principalActions.reset),
+    logoutLocal: () => {
+      dispatch(logoutActions.logout())
+        .then(() => {
+          dispatch(coreActions.setToken(null));
+          dispatch(goToPage('/'));
+        });
+    },
+    logoutSLO: (dispatch) => {
+      window.open('/auth/slo', 'SSO logout', "width=600,height=450,scrollbars=no");
+    }
+  }
 };
 
-export default connect<IUserMenuState, IUserMenuDispatch, void>(
+function mergeProps(stateProps, dispatchProps, ownProps) {
+  return {
+    ...stateProps,
+    ...dispatchProps,
+    ...ownProps,
+    logout: ({ user, vocabulary }) => {
+      dispatchProps.logoutSLO();
+      dispatchProps.logoutLocal();
+    },
+  };
+}
+export default connect<IUserMenuState, IUserMenuDispatch, {}>(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
+  mergeProps
 )(UserMenu);
