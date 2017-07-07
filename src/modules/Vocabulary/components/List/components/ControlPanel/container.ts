@@ -24,7 +24,6 @@ class ControlPanel extends Component<IPanelProps, void> {
 }
 
 function mapStateToProps(state: Object): IPanelStateProps {
-  const vocabulariesSelected = true;
   const vocs = get(state, `form.${forms.download}.values.vocabulary`, []);
 
   return {
