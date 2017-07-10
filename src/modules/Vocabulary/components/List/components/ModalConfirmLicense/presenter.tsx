@@ -12,7 +12,7 @@ function ModalConfirmLicense(props) {
 	const classes = BEMHelper('modal-confirm-license');
 
   return (
-    <Modal modal={modal} title='Request license'>
+    <Modal modal={modal} title='Request access'>
 	    <div {...classes()}>
 	    	Your request will be reviewed soon. After that you will receive a notification 
 	    </div>

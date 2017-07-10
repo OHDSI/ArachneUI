@@ -24,7 +24,7 @@ function ModalConfirmDownload(props: IModalProps) {
   const classes = BEMHelper('request-license');
 
   return (
-    <Modal modal={modal} title='Request license'>
+    <Modal modal={modal} title='Request access'>
     	<div {...classes()}>
 		    Vocabulary '{vocab.name}' requires a license <br />
 		    <Button
