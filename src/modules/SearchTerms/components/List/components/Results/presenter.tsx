@@ -81,7 +81,7 @@ function Results(props: IResultProps) {
           })}
           mods={['rounded']}
           link={downloadLink}
-          target='self'
+          target='_self'
         >
           Download results
         </Button>
