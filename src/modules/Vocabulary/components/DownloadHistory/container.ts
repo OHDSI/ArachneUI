@@ -11,17 +11,39 @@ import {
 	IDownloadHistoryProps,
 } from './presenter';
 
-class DownloadHistory extends Component<IDownloadHistoryProps, { expandedBundleId: number }> {
+interface IDownloadHistory {
+	refreshInterval: number;
+};
+
+class DownloadHistory
+extends Component<IDownloadHistoryProps, { expandedBundleId: number }>
+implements IDownloadHistory {
+	public refreshInterval;
+
 	constructor() {
 		super();
 		this.state = {
 			expandedBundleId: 0,
 		};
 		this.toggle = this.toggle.bind(this);
+		this.refreshInterval = null;
+	}
+
+	startPolling() {
+		this.refreshInterval = setInterval(this.props.load, 5000);
+	}
+
+	stopPolling() {
+		clearInterval(this.refreshInterval);
 	}
 
 	componentWillMount() {
 		this.props.load();
+		this.startPolling();
+	}
+
+	componentWillUnmount() {
+		this.stopPolling();
 	}
 
 	toggle(bundleId) {
