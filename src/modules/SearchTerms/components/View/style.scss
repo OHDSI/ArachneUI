@@ -39,6 +39,31 @@
     &__content {
       flex-grow: 1 !important;
       padding: 2.5rem 3rem;
+
+      & .ac-list-item {
+        &__content {
+          align-items: flex-start;
+          padding-top: 15px;
+          padding-bottom: 15px;
+          min-height: initial;
+          height: auto;
+        }
+      }
+    }
+
+    &__description {
+      align-content: space-between;
+      align-items: center;
+      display: flex;
+      width: 100%;
+    }
+
+    &__vocid {
+      flex-grow: 1;
+    }
+
+    &__description-tooltip {
+      @include material-icon();
     }
 
     &__connections-wrapper {
@@ -63,14 +88,6 @@
     &__tab {
       width: 17rem;
       text-align: center;
-    }
-
-    &__synonyms .ac-list-item {
-      &__content {
-        height: auto;
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-      }
     }
   }
 }

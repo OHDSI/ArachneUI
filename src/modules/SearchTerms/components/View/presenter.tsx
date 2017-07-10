@@ -15,6 +15,7 @@ import { commonDateFormat } from 'const/formats';
 import TermConnections from './components/Connections';
 import TermConnectionsTable from './components/Table';
 import TermFiltersPanel from './components/Filters';
+import { paths } from 'modules/SearchTerms/const';
 
 require('./style.scss');
 
@@ -73,6 +74,12 @@ function Term(props: ITermProps) {
   const synonyms = get(details, 'synonyms', []);
   const validStart = get(details, 'validStart');
   const validEnd = get(details, 'validEnd');
+  const invalidReason: string = get(details, 'invalidReason', '');
+  const validTerm = get(details, 'validTerm', {
+    id: -1,
+    name: '',
+  });
+  const description = get(details, 'description', '');
 
   return (    
     <div {...classes()}>
@@ -98,7 +105,18 @@ function Term(props: ITermProps) {
               </ListItem>
               <ListItem>
                 <span {...classes('attribute-name')}>Vocabulary ID</span>
-                <span>{get(details, 'vocabularyId', '')}</span>
+                <div {...classes('description')}>
+                  <span {...classes('vocid')}>{get(details, 'vocabularyId', '')}</span>
+                  {description &&
+                    <div
+                      {...classes({ element: 'description-tooltip', extra: 'ac-tooltip' })}
+                      aria-label={description}
+                      data-tootik-conf='right multiline'
+                    >
+                      help_outline
+                    </div>
+                  }
+                </div>
               </ListItem>
               <ListItem>
                 <span {...classes('attribute-name')}>Concept ID</span>
@@ -110,30 +128,39 @@ function Term(props: ITermProps) {
               </ListItem>
               <ListItem>
                 <span {...classes('attribute-name')}>Invalid reason</span>
-                <span>{get(details, 'invalidReason', '')}</span>
+                <span>
+                  {invalidReason}
+                  {invalidReason !== 'Valid' && validTerm.id !== -1 &&
+                    <div>
+                      Remapped to <Link to={paths.term(validTerm.id)}>{validTerm.name}</Link>
+                    </div>
+                  }
+                </span>
               </ListItem>
               <ListItem>
                 <span {...classes('attribute-name')}>Standard concept</span>
                 <span>{get(details, 'standardConcept', '')}</span>
               </ListItem>
               {synonyms.length
-                ? <ListItem {...classes('synonyms')}>
+                ? <ListItem>
                     <span {...classes('attribute-name')}>Synonyms</span>
-                    <span>{synonyms.join('<br />')}</span>
+                    <div>{synonyms.map(synonym => <div>
+                      <span>{synonym}</span>
+                    </div>)}</div>
                   </ListItem>
                 : null
               }
-              {validStart
+              {invalidReason !== 'Valid' && validStart
                 ? <ListItem>
                     <span {...classes('attribute-name')}>Valid start</span>
                     <span>{moment(validStart).format(commonDateFormat)}</span>
                   </ListItem>
                 : null
               }
-              {validEnd 
+              {invalidReason !== 'Valid' && validEnd
                 ? <ListItem>
                     <span {...classes('attribute-name')}>Valid end</span>
-                    <span>{moment(validEnd).format(commonDateFormat)}</span>
+                    <span>{validEnd}</span>
                   </ListItem>
                 : null
               }
