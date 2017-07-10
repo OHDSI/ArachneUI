@@ -16,6 +16,9 @@ interface IModalStateProps {
 	selectedVocabs: Array<IVocab>;
 	selectedVocabIds: Array<number>;
 	isOpened: boolean;
+	initialValues: {
+		[key: string]: any;
+	};
 };
 
 interface IModalDispatchProps {

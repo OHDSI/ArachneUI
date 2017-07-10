@@ -4,7 +4,7 @@ import { push as goToPage } from 'react-router-redux';
 import actions from 'modules/Vocabulary/actions';
 import { reduxForm, change as reduxFormChange, SubmissionError, reset } from 'redux-form';
 import { ModalUtils } from 'arachne-components';
-import { modal, forms, paths } from 'modules/Vocabulary/const';
+import { modal, forms, paths, cdmVersions } from 'modules/Vocabulary/const';
 import { get } from 'lodash';
 import selectors from 'modules/Vocabulary/components/List/components/Results/selectors';
 import presenter from './presenter';
@@ -38,6 +38,9 @@ function mapStateToProps(state: any): IModalStateProps {
     selectedVocabs,
     selectedVocabIds,
     isOpened,
+    initialValues: {
+      cdmVersion: cdmVersions[cdmVersions.length - 1].value,
+    },
   };
 }
 
