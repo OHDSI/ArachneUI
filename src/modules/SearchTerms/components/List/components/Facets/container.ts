@@ -102,12 +102,11 @@ function mergeProps(stateProps: IFacetStateProps, dispatchProps: IFacetDispatchP
       const currentAddress = new URI(stateProps.currentAddress.pathname);
       currentAddress.addSearch('pageSize', stateProps.pageSize);
       currentAddress.addSearch('page', 1);
-      if (stateProps.query) {
-        currentAddress.addSearch('query', stateProps.query);
-      }
+      currentAddress.addSearch('query', '');
 
       dispatchProps.search(currentAddress.href());
       dispatchProps.resetForm();
+      dispatchProps.resetToolbar();
     },
     removeFacetValue: (facet: string, index: number) => {
       const facets = clone(stateProps.filterFormState.filter[facet]);
@@ -117,7 +116,7 @@ function mergeProps(stateProps: IFacetStateProps, dispatchProps: IFacetDispatchP
     resetQuery: () : void => {
       const currentAddress = stateProps.currentAddress;
       const uri = new URI(currentAddress.pathname+currentAddress.search);
-      uri.setSearch('query','');
+      uri.setSearch('query', '');
       dispatchProps.search(uri.href());
       dispatchProps.resetToolbar();
 
