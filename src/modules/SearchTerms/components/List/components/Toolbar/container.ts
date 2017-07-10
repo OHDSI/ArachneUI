@@ -67,6 +67,7 @@ function mergeProps(
 
 const FormToolbar = reduxForm({
   form: forms.toolbar,
+  enableReinitialize: true,
 })(Toolbar);
 
 export default connect
