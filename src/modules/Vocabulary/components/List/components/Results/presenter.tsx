@@ -67,7 +67,7 @@ function CellChecked(props: any) {
         </span>  
        : <span
           className={`${className}--disabled ac-tooltip`}
-          aria-label='Click to request a license'
+          aria-label='Click to request access'
           data-tootik-conf='right'
           onClick={openRequestModal}
         >
