@@ -9,14 +9,18 @@ const getVocabularies = createSelector(
     (rawResults: Array<any>) => rawResults
 	    .filter(voc => voc.status === licenseStatuses.APPROVED)
 	    .map((voc) => ({
-	      label: voc.name,
+	      label: voc.code,
 	      value: voc.licenseId,
 	    })),
   );
 const getPendingVocabularies = createSelector(
 	getRawVocs,
 	(rawResults: Array<any>) => rawResults
-		.filter(voc => voc.status === licenseStatuses.PENDING),
+		.filter(voc => voc.status === licenseStatuses.PENDING)
+    .map((voc) => ({
+    	...voc,
+      name: voc.code,
+    })),
 );
 
 export default {
