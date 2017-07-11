@@ -17,7 +17,10 @@ interface ILoginCompleteProps extends ILoginCompleteState, ILoginCompleteDispatc
 class LoginComplete extends Component<ILoginCompleteProps, {}> {
 	componentWillMount() {
 		this.props.setAuthToken(this.props.authToken);
-		window.opener.onAuthDone();
+		window.opener.postMessage({
+			data: this.props.authToken,
+			type: 'loginResult',
+		}, get(window, 'origin'));
 		window.close();
 	}
 
