@@ -2,6 +2,8 @@ import { connect } from 'react-redux';
 import { Component } from 'react';
 import actions from 'modules/Vocabulary/actions';
 import { get } from 'lodash';
+import { modal } from 'modules/Vocabulary/const';
+import { ModalUtils } from 'arachne-components';
 import presenter from './presenter';
 import selectors from './selectors';
 
@@ -75,6 +77,7 @@ const mapDispatchToProps = {
 	load: actions.history.load,
 	remove: actions.history.remove,
 	restore: actions.history.restore,
+	showNotifications: () => ModalUtils.actions.toggle(modal.notifications, true),
 };
 
 function mergeProps(

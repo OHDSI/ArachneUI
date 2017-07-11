@@ -1,0 +1,28 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+  &modal-notifications {
+    min-width: 500px;
+    z-index: $z-index-loading + $z-index-modal-window;
+
+    &__actions {
+      padding: 2rem;
+      padding-bottom: 1rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__remove-button {
+      color: $blue;
+      font-weight: initial;
+      margin-left: auto;
+      text-transform: initial;
+      padding-right: 0;
+    }
+
+    &__empty-state {
+      text-align: center;
+      border: none;
+    }
+  }
+}

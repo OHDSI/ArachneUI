@@ -48,5 +48,10 @@
     &__error {
       color: $red;
     }
+
+    &__notify {
+      border-bottom: none;
+      font-weight: $font-weight-bold;
+    }
   }
 }
