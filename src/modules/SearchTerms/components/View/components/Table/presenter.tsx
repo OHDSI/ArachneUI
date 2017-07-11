@@ -4,8 +4,8 @@ import {
   Table,
   Link,
   TableCellText,
+  LoadingPanel
 } from 'arachne-components';
-import {} from 'redux-form';
 import { paths } from 'modules/SearchTerms/const';
 
 require('./style.scss');
@@ -29,6 +29,7 @@ interface ITermCell {
 
 interface ITermConnectionsTableStateProps {
   connections: Array<ITermConnection>;
+  isLoading: boolean;
 };
 
 interface ITermConnectionsTableDispatchProps {
@@ -49,28 +50,29 @@ function TableCellTerm(term: any) {
 }
 
 function TermConnectionsTable(props: ITermConnectionsTableProps) {
-  const { connections } = props;
+  const { connections, isLoading } = props;
   const classes = BEMHelper('term-connections-table');
 
   return <div>
     <Table
-        {...classes()}
-        data={connections}
-        mods={['hover', 'padded',]}
-       >
-          <TableCellText
-            header='Relationship'
-            field='relationshipName'
-          />
-          <TableCellTerm
-            header='Relates to'
-            field='targetConcept'
-          />
-          <TableCellText
-            header='Vocabulary'
-            field='targetVocabularyId'
-          />
-      </Table>
+      {...classes()}
+      data={connections}
+      mods={['hover', 'padded',]}
+     >
+        <TableCellText
+          header='Relationship'
+          field='relationshipName'
+        />
+        <TableCellTerm
+          header='Relates to'
+          field='targetConcept'
+        />
+        <TableCellText
+          header='Vocabulary'
+          field='targetVocabularyId'
+        />
+    </Table>
+    <LoadingPanel active={isLoading} />
   </div>;
 }
 
