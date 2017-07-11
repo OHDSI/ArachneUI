@@ -27,7 +27,7 @@ interface ICellProps {
 };
 
 interface IResultsStateProps {
-  areAllChecked: boolean;
+  areAllChecked: boolean | Object;
   areAllRowsChecked: boolean;
   sorting: string;
   vocabularies: Array<Vocabulary>;
