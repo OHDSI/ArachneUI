@@ -270,7 +270,10 @@ function printGraph(
     .attr('rx', conceptBorderRadius)
     .attr('ry', conceptBorderRadius);
   wrappers.append('svg:text')
-    .text((d: GraphNode) => `${d.name.substr(0, maxNameLength)}...`)
+    .text((d: GraphNode) => `${d.name.length > maxNameLength
+      ? d.name.substr(0, maxNameLength) + '...'
+      : d.name
+    }`)
     .attr('height', rectHeight)
     .attr('width', rectWidth)
     .attr('x', conceptLeftPadding)
