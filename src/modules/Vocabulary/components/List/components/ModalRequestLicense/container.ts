@@ -44,6 +44,7 @@ function mapStateToProps(state: any): IModalStateProps {
     isChecked: false,
     tableRowClass: '',
     status: licenseStatuses.APPROVED,
+    clickDefault: false,
   });
   const isLoading = get(state, 'vocabulary.vocabLicenses.isSaving', false);
 

@@ -14,6 +14,7 @@ interface Vocabulary {
   isChecked: boolean;
   tableRowClass: string;
   status: string;
+  clickDefault: boolean;
 };
 
 const getRawVocabs = (state: Object) => get(state, 'vocabulary.vocabularies.queryResult') || [];
