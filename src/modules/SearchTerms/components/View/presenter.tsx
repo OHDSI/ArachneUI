@@ -79,7 +79,9 @@ function Term(props: ITermProps) {
     id: -1,
     name: '',
   });
-  const description = get(details, 'description', '');
+  const description = `${get(details, 'vocabularyName', '')};
+    ${get(details, 'vocabularyVersion', '')};
+    ${get(details, 'vocabularyReference', '')}`;
 
   return (    
     <div {...classes()}>
@@ -130,7 +132,7 @@ function Term(props: ITermProps) {
                 <span {...classes('attribute-name')}>Invalid reason</span>
                 <span>
                   {invalidReason}
-                  {invalidReason !== 'Valid' && validTerm.id !== -1 &&
+                  {invalidReason !== 'Valid' && get(validTerm, 'id', -1) !== -1 &&
                     <div>
                       Remapped to <Link to={paths.term(validTerm.id)}>{validTerm.name}</Link>
                     </div>
