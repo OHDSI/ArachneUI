@@ -7,18 +7,18 @@ const getRawVocs = (state: Object) => get(state, 'modal.editPermission.data.voca
 const getVocabularies = createSelector(
     getRawVocs,
     (rawResults: Array<any>) => rawResults
-	    .filter(voc => voc.status === licenseStatuses.APPROVED)
-	    .map((voc) => ({
-	      label: voc.code,
-	      value: voc.licenseId,
-	    })),
+      .filter(voc => voc.status === licenseStatuses.APPROVED)
+      .map((voc) => ({
+        label: voc.code,
+        value: voc.licenseId,
+      })),
   );
 const getPendingVocabularies = createSelector(
-	getRawVocs,
-	(rawResults: Array<any>) => rawResults
-		.filter(voc => voc.status === licenseStatuses.PENDING)
+  getRawVocs,
+  (rawResults: Array<any>) => rawResults
+    .filter(voc => voc.status === licenseStatuses.PENDING)
     .map((voc) => ({
-    	...voc,
+      ...voc,
       name: voc.code,
     })),
 );
