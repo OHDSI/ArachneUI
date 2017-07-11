@@ -32,12 +32,12 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        exclude: /(node_modules|ArachneFrontComponents)/,
+        exclude: /(node_modules|arachnefrontcomponents)/,
         loaders: ['react-hot-loader', 'awesome-typescript-loader']
       },
       {
         test: /\.jsx?$/,
-        exclude: /(node_modules|ArachneFrontComponents)/,
+        exclude: /(node_modules|arachnefrontcomponents)/,
         loaders: ['react-hot-loader', 'babel-loader']
       },
       {
