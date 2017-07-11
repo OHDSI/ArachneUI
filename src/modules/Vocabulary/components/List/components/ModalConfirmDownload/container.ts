@@ -33,6 +33,8 @@ function mapStateToProps(state: any): IModalStateProps {
   const vocabs = selectors.getVocabs(state);
   const selectedVocabs = vocabs.filter(voc => selectedVocabIds.includes(voc.id));
   const isOpened = get(state, `modal.${modal.download}.isOpened`, false);
+  const isLoading = get(state, 'vocabulary.download.isSaving', false)
+    || get(state, 'vocabulary.notifications.isSaving', false);
 
 	return {
     selectedVocabs,
@@ -41,6 +43,7 @@ function mapStateToProps(state: any): IModalStateProps {
     initialValues: {
       cdmVersion: cdmVersions[cdmVersions.length - 1].value,
     },
+    isLoading,
   };
 }
 
@@ -50,6 +53,7 @@ const mapDispatchToProps = {
   close: () => ModalUtils.actions.toggle(modal.download, false),
   showResult: () => ModalUtils.actions.toggle(modal.downloadResult, true),
   reset: () => reset(forms.bundle),
+  notify: actions.download.requestNotification,
 };
 
 function mergeProps(
@@ -67,19 +71,30 @@ function mergeProps(
         dispatchProps.close();
       }
     },
-    download: ({ bundleName, cdmVersion }) => {
-      const promise = dispatchProps.requestDownload({
-        cdmVersion: cdmVersion,
-        ids: stateProps.selectedVocabIds.join(','),
-        name: bundleName,
-      })
-      .then(() => dispatchProps.close())
-      .then(() => dispatchProps.showResult())
-      .catch(({ message }) => {
-        throw new SubmissionError({
-          _error: message,
+    download: ({ bundleName, cdmVersion, notify }) => {
+      const promises = [];
+      promises.push(dispatchProps.requestDownload({
+          cdmVersion: cdmVersion,
+          ids: stateProps.selectedVocabIds.join(','),
+          name: bundleName,
+        })
+       );
+      if (notify) {
+        stateProps.selectedVocabIds.forEach(vocabularyV4Id =>
+          promises.push(dispatchProps.notify({
+            notify: true,
+            vocabularyV4Id,
+          })
+        ));
+      }
+      const promise = Promise.all(promises)
+        .then(() => dispatchProps.close())
+        .then(() => dispatchProps.showResult())        
+        .catch(({ message }) => {
+          throw new SubmissionError({
+            _error: message,
+          });
         });
-      });
 
       return promise;
     },

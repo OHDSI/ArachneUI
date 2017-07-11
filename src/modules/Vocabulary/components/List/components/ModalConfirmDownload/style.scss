@@ -48,5 +48,9 @@
     &__error {
       color: $red;
     }
+
+    &__notify {
+      border-bottom: none;
+    }
   }
 }

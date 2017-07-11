@@ -1,6 +1,6 @@
 import * as React from 'react';
 import BEMHelper from 'services/BemHelper';
-import { Modal, ListItem, Button, Select } from 'arachne-components';
+import { Modal, ListItem, Button, Select, Checkbox, LoadingPanel } from 'arachne-components';
 import { DownloadParams } from 'modules/Vocabulary/actions/download';
 import { cdmVersions } from 'modules/Vocabulary/const';
 import { Field } from 'redux-form';
@@ -19,6 +19,7 @@ interface IModalStateProps {
 	initialValues: {
 		[key: string]: any;
 	};
+	isLoading: boolean;
 };
 
 interface IModalDispatchProps {
@@ -28,6 +29,7 @@ interface IModalDispatchProps {
   requestDownload: (params: DownloadParams) => any;
 	showResult: () => null;
 	reset: Function;
+	notify: Function;
 };
 
 interface IModalProps extends IModalStateProps, IModalDispatchProps {
@@ -62,6 +64,15 @@ function cdmVersionSelect(props: IReduxFieldProps) {
    />);
 }
 
+function Notify(props: IReduxFieldProps) {
+	const { options, input } = props;
+	return (<Checkbox
+		isChecked={input.value === true}
+		onChange={input.onChange}
+		label='Notify me about changes in these vocabularies'
+	/>);
+}
+
 function ModalConfirmDownload(props: IModalProps) {
   const {
     close,
@@ -71,6 +82,7 @@ function ModalConfirmDownload(props: IModalProps) {
     selectedVocabs,
     handleSubmit,
     error,
+    isLoading,
   } = props;
   const classes = BEMHelper('confirm-download');
 
@@ -97,6 +109,13 @@ function ModalConfirmDownload(props: IModalProps) {
 		      	</ListItem>
 		      	)
 		      }
+		      <ListItem {...classes('notify')}>
+			      <Field
+			        component={Notify}
+			        options={{...classes('notify')}}
+			        name='notify'
+			      />
+		      </ListItem>
 		      {error &&
 		      	<div {...classes('errors')}>
 			      	<span {...classes('error')}>{error}</span>
@@ -108,6 +127,7 @@ function ModalConfirmDownload(props: IModalProps) {
 		      </div>
 	      </div>
 	    </form>
+	    <LoadingPanel active={isLoading} />
     </Modal>);
 }
 

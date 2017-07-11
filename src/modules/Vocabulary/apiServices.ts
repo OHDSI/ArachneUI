@@ -7,6 +7,7 @@ interface ISearchTermsServices {
 	history: any;
 	vocabLicenses: any;
 	restore: any;
+	notifications: any;
 }
 
 export default <ISearchTermsServices> reduxifyServices(
@@ -17,5 +18,6 @@ export default <ISearchTermsServices> reduxifyServices(
 		'vocabularies/downloads': 'history',
 		'vocabularies/licenses/request': 'vocabLicenses',
 		'vocabularies/restore': 'restore',
+		'vocabularies/notifications': 'notifications',
 	}
 );
