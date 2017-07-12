@@ -16,15 +16,15 @@ interface ITermConnection {
 };
 
 interface ITerm {
-  id: number;
-  isCurrent: boolean;
-  name: string;
+  targetConceptId: number;
+  targetConceptName: string;
+  targetVocabularyId: number;
 };
 
 interface ITermCell {
   header: string;
   field: string;
-  value: ITerm;
+  value: Array<ITerm>;
 };
 
 interface ITermConnectionsTableStateProps {
@@ -39,13 +39,35 @@ interface ITermConnectionsTableProps extends ITermConnectionsTableStateProps, IT
 };
 
 function TableCellTerm(term: any) {
+  const classes = BEMHelper('term-connections-table');
+  if (!term.value.id) {
+    return null;
+  }
+  return (
+    <div {...classes('target-cell')}>
+      <Link to={paths.term(term.value.id, true)}>{term.value.name}</Link>
+    </div>
+  );
+}
+
+function TableCellVoc(term: any) {
+  const classes = BEMHelper('term-connections-table');
   if (!term.value) {
     return null;
   }
   return (
-    term.value.isCurrent
-      ? <span>{term.value.name}</span>
-      : <Link to={paths.term(term.value.id, true)}>{term.value.name}</Link>
+    <div {...classes('vocabulary-cell')}>
+      {term.value}
+    </div>
+  );
+}
+
+function TableCellRelation(term: any) {
+  const classes = BEMHelper('term-connections-table');
+  return (
+    <div {...classes({ element: 'relation-cell', modifiers: { empty: !term.value } })}>
+      {term.value}
+    </div>
   );
 }
 
@@ -59,7 +81,7 @@ function TermConnectionsTable(props: ITermConnectionsTableProps) {
       data={connections}
       mods={['hover', 'padded',]}
      >
-        <TableCellText
+        <TableCellRelation
           header='Relationship'
           field='relationshipName'
         />
@@ -67,9 +89,9 @@ function TermConnectionsTable(props: ITermConnectionsTableProps) {
           header='Relates to'
           field='targetConcept'
         />
-        <TableCellText
+        <TableCellVoc
           header='Vocabulary'
-          field='targetVocabularyId'
+          field='targetConceptVoc'
         />
     </Table>
     <LoadingPanel active={isLoading} />

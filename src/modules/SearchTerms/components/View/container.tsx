@@ -61,6 +61,7 @@ function mapStateToProps(state: Object, ownProps: ITermRoute): ITermStateProps {
     isTableMode,
     isStandard,
     termFilters,
+    connectionsCount,
     relationshipsCount: isTableMode ? relationships.length : connectionsCount,
   };
 }
