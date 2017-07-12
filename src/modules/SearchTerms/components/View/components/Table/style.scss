@@ -7,7 +7,55 @@
 	    	&__header-row {
 	    		background-color: $grey;
 	    	}
+
+        &__cell {
+          border: none;
+          position: relative;
+          padding: 0;
+
+          &:first-child {
+            padding-left: 0;
+          }
+        }
+
+        &__row:hover {
+          & .#{$namespace} {
+            &term-connections-table {
+              &__relation-cell {
+                &--empty {
+                  background: $white;
+                }
+              }
+            }
+          }
+        }
 	    }
+    }
+
+    &__vocabulary-cell,
+    &__target-cell,
+    &__relation-cell {
+      align-items: center;
+      border-top: 1px solid $grey;
+      display: flex;
+      height: 100%;
+      padding: 1rem;
+    }
+
+    &__vocabulary-cell,
+    &__relation-cell {
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
+
+    &__relation-cell {
+      align-items: flex-start;
+      padding: 1rem 1rem 1rem 3rem;
+
+      &--empty {
+        border-top: none;
+      }
     }
   	
   }

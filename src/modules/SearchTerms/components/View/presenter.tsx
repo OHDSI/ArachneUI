@@ -28,6 +28,7 @@ interface ITermStateProps {
   isStandard: boolean;
   relationshipsCount: number;
   termFilters: any;
+  connectionsCount: number;
 };
 
 interface ITermDispatchProps {
@@ -53,6 +54,7 @@ function Term(props: ITermProps) {
     relationshipsCount,
     termId,
     changeTab,
+    connectionsCount,
   } = props;
   const classes = BEMHelper('term');
   let title = 'Term connections';
@@ -82,6 +84,7 @@ function Term(props: ITermProps) {
   const description = `${get(details, 'vocabularyName', '')};
     ${get(details, 'vocabularyVersion', '')};
     ${get(details, 'vocabularyReference', '')}`;
+  const onlyTable = !isStandard || connectionsCount === 0;
 
   return (    
     <div {...classes()}>
@@ -174,7 +177,7 @@ function Term(props: ITermProps) {
             {...classes({ element: 'connections-wrapper', modifiers: { stretched: !isStandard || !isTableMode } })}
             title={title}
             headerBtns={() => {
-                if (details && isStandard) {
+                if (details && !onlyTable) {
                   return <Tabs
                     options={tabs}
                     onChange={changeTab}
@@ -184,7 +187,7 @@ function Term(props: ITermProps) {
               }
             }
           >
-            {isTableMode || !isStandard
+            {isTableMode || onlyTable
               ? <TermConnectionsTable />
               : [<TermFiltersPanel termId={termId} key="1" />, <TermConnections key="2" />]
             }

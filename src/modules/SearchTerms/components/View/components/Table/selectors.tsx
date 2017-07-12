@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 import { get } from 'lodash';
 import { ITerm, ITermConnection } from './presenter';
 import { GraphConnection } from '../Connections/presenter';
+import { flattenDeep } from 'lodash';
 
 const getRawConnections = (state: Object) => {
     const data = get(state, 'searchTerms.relationships.data', []);
@@ -12,16 +13,19 @@ const getRawConnections = (state: Object) => {
     }
 }
 
-
 const getConnections = createSelector(
   getRawConnections,
-  connections => connections.map(concept => ({
-    ...concept,
-    targetConcept: {
-      id: concept.targetConceptId,
-      name: concept.targetConceptName,
-    },
-  }))
+  connections => flattenDeep(connections.map(concept =>
+    concept.relationships.map((rel, i) => ({
+        relationshipName: i === 0 ? concept.relationshipName : null,
+        targetConcept: {
+          id: rel.targetConceptId,
+          name: rel.targetConceptName,
+        },
+        targetConceptVoc: rel.targetVocabularyId,
+      }))
+    )
+  )
   );
 
 export default {
