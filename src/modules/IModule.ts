@@ -8,6 +8,8 @@ type NavItem = {
   name?: string;
   path?: string;
   onClick?: any;
+  module?: string;
+  isActive?: boolean;
 }
 
 interface IModule {
