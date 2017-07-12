@@ -20,7 +20,7 @@ class LoginComplete extends Component<ILoginCompleteProps, {}> {
 		window.opener.postMessage({
 			data: this.props.authToken,
 			type: 'loginResult',
-		}, get(window, 'origin'));
+		}, get(window, 'location.origin'));
 		window.close();
 	}
 
