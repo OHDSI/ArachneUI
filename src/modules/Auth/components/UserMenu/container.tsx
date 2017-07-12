@@ -59,11 +59,8 @@ const mapDispatchToProps = function(dispatch) {
     loadPrincipal: () => dispatch(principalActions.load()),
     resetPrincipal: () => dispatch(principalActions.reset),
     logoutLocal: () => {
-      dispatch(logoutActions.logout())
-        .then(() => {
-          dispatch(coreActions.setToken(null));
-          dispatch(goToPage('/'));
-        });
+        dispatch(coreActions.setToken(null));
+        dispatch(goToPage('/'));
     },
     logoutSLO: (dispatch) => {
       window.open('/auth/slo', 'SSO logout', "width=600,height=450,scrollbars=no");
