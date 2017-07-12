@@ -25,16 +25,21 @@ class Results extends Component<IResultsProps & FormProps<{}, {}, {}>, void> {
 }
 
 function mapStateToProps(state: Object): IResultsStateProps {
-	let vocabularies: Array<Vocabulary> = selectors.getVocabs(state);
+	let vocabularies = selectors.getVocabs(state);
 	let initialValues = {
 		vocabulary: [],
 	};
 	// top checkbox is checked
-	let areAllChecked = get(state, 'vocabulary.download.data.allChecked', false);
-	vocabularies.forEach((vocabulary: Vocabulary) => {
-		initialValues.vocabulary[`${vocabulary.id}`] = areAllChecked
-			? vocabulary.isCheckable
-			: vocabulary.clickDefault;
+	let areAllChecked = get(state, 'vocabulary.download.data.allChecked');
+	vocabularies.forEach((vocabulary) => {
+		if (areAllChecked === true) {
+			initialValues.vocabulary[`${vocabulary.id}`] = vocabulary.isCheckable;
+		} else if (areAllChecked === false) {
+			initialValues.vocabulary[`${vocabulary.id}`] = false;
+		} else {
+			// undefined
+			initialValues.vocabulary[`${vocabulary.id}`] = vocabulary.clickDefault;
+		}
 	});
 
 	const values = get(state, `form.${forms.download}.values.vocabulary`, []) || [];
