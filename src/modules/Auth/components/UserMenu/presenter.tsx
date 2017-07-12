@@ -80,7 +80,7 @@ function UserMenu(props) {
     );
   } else {
     return (
-      <NavItem path={paths.login()} name="Login" />
+      <NavItem module='auth' path={paths.login()} name="Login" />
     )
   }
   

@@ -13,15 +13,16 @@ function NavItem(props: INavItem) {
     name,
     onClick,
     path,
+    isActive,
   } = props;
   const classes = BEMHelper('nav-item');
 
   return path ?
-    <Link to={path} {...classes()}>
+    <Link to={path} {...classes({ modifiers: { selected: isActive } })}>
       {name}
     </Link>
     :
-    <div {...classes({ modifiers: 'no-link' })} onClick={onClick}>
+    <div {...classes({ modifiers: { 'no-link': true, selected: isActive } })} onClick={onClick}>
       {children}
     </div>
 }

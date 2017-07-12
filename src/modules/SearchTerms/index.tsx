@@ -15,7 +15,7 @@ const module: IModule = {
 	actions: () => require('./actions').default,
 	reducer: () => require('./reducers').default,
 	navbarElement: () => [
-		<NavItem name='Search' path={paths.termsList()} />,
+		<NavItem module='search-terms' name='Search' path={paths.termsList()} />,
 	],
 };
 
