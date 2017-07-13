@@ -3,6 +3,7 @@ import keyMirror = require('keymirror');
 const forms = keyMirror({
 	addPermission: null,
 	editPermission: null,
+	licenseFilter: null,
 });
 
 const modal = keyMirror({
@@ -20,10 +21,13 @@ const paths = {
 const apiPaths = {
 };
 
+const pageSize = 12;
+
 export {
   actionTypes,
   apiPaths,
   forms,
   modal,
   paths,
+  pageSize,
 };
