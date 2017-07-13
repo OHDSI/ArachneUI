@@ -18,7 +18,8 @@ interface ILicensesStateProps {
 	username: string;
 };
 interface ILicensesDispatchProps {
-	load: (page: number, pageSize: number, username?: string) => (dispatch: Function) => any;
+	load: (page: number, pageSize: number, username?: string, pendindOnly?: boolean) =>
+		(dispatch: Function) => any;
 	openModal: () => (dispatch: Function) => any;
 	goToPage: (address: string) => (dispatch: Function) => any;
 };
@@ -36,17 +37,20 @@ class Licenses extends Component<ILicensesProps, void> {
 	}
 
 	componentWillMount() {
-		this.props.load(this.props.page, pageSize);
+		this.props.load(this.props.page, pageSize, this.props.username, this.props.pendingOnly);
 	}
 
 	componentWillReceiveProps(nextProps: ILicensesStateProps) {
+		if (this.props.pendingOnly !== nextProps.pendingOnly) {
+			this.props.load(this.props.page, pageSize, this.props.username, nextProps.pendingOnly);
+		}
 		if (this.props.username !== nextProps.username) {
-			this.filterByName();
+			this.filterByName(nextProps.username);
 		}
 	}
 
-	doFilter() {
-		this.props.load(1, pageSize, this.props.username);
+	doFilter(name: string) {
+		this.props.load(1, pageSize, name, this.props.pendingOnly);
 		// go to first page
 		this.props.filter(this.props.pendingOnly);
 	}
