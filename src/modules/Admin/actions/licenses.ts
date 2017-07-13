@@ -16,8 +16,14 @@ function getAvailableVocabularies(userId) {
 	});
 }
 
-function load() {
-  return services.licenses.find();
+function load(page: number, pageSize: number, queryUser: string) {
+  return services.licenses.find({
+  	query: {
+  		page,
+  		pageSize,
+  		queryUser,
+  	}
+  });
 }
 
 function remove(vocabId: number) {
