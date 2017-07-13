@@ -21,7 +21,7 @@ class Facets extends Component<IFacets, void> {
       // or updated
       this.props.filterFormState !== props.filterFormState
     ) {
-      this.props.doUpdateFacets(props.filterFormState);
+      this.props.doFilter(props.filterFormState);
     }
   }
 
