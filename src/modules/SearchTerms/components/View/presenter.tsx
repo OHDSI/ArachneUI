@@ -172,7 +172,7 @@ function Term(props: ITermProps) {
             </ul>
           </Panel>
         </div>
-        <div className="col-xs-12 col-md-7">
+        <div {...classes({element: 'connections-container', extra: 'col-xs-12 col-md-7'})}>
           <Panel
             {...classes({ element: 'connections-wrapper', modifiers: { stretched: !isStandard || !isTableMode } })}
             title={title}
