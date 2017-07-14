@@ -17,9 +17,11 @@ function CellRemove(props: any) {
 
 function CellVocabs(props: any) {
   const { value, openEditModal } = props;
+  const classes = BEMHelper('licenses-list');
+  
   return <Link onClick={openEditModal}>
     {`${value.count} vocabularies`} {value.pendingCount > 0
-      ? `(${value.pendingCount} pending)`
+      ? <span {...classes('pending')}>({value.pendingCount} pending)</span>
       : ''
     }
   </Link>;
