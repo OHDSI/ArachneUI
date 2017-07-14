@@ -34,7 +34,7 @@ function getFacetKey(facetId: string): string {
   return key;
 }
 
-const getRawFacets = (state: Object) => get(state, 'searchTerms.facets.queryResult.facets') || [];
+const getRawFacets = (state: Object) => get(state, 'searchTerms.terms.queryResult.facets') || [];
 const getRawInitialValues = (state: Object) => get(state, 'routing.locationBeforeTransitions.query') || {};
 
 const getFacets = createSelector(
