@@ -180,7 +180,7 @@ function Results(props: IResultsProps & FormProps<{}, {}, {}>) {
         />
         <Cell
           {...classes('update')}
-          header='Update'
+          header='Latest Update'
           field='update'
           props={(vocab: Vocabulary) => ({              
             className: classes({
