@@ -2,6 +2,8 @@
 
 .#{$namespace} {
   &term-connections-table {
+    position: relative;
+    
     & .ac {
     	&-table {
 	    	&__header-row {
