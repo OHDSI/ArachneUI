@@ -75,9 +75,9 @@ function TermConnectionsTable(props: ITermConnectionsTableProps) {
   const { connections, isLoading } = props;
   const classes = BEMHelper('term-connections-table');
 
-  return <div>
+  return <div
+      {...classes()}>
     <Table
-      {...classes()}
       data={connections}
       mods={['hover', 'padded',]}
      >

@@ -17,7 +17,7 @@ class TermConnectionsTable extends Component<ITermConnectionsTableProps, {}> {
 
 function mapStateToProps(state: Object, ownProps: Object): ITermConnectionsTableStateProps {
   const connections = selectors.getConnections(state);
-  const isLoading = get(state, 'relationships.isLoading', false);
+  const isLoading = get(state, 'searchTerms.relationships.isLoading', false);
 
   return {
     connections,
