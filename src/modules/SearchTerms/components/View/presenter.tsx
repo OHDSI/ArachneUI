@@ -29,12 +29,13 @@ interface ITermStateProps {
   relationshipsCount: number;
   termFilters: any;
   connectionsCount: number;
+  zoomLevel?: number;
 };
 
 interface ITermDispatchProps {
   fetch: (termId: number) => (dispatch: Function) => any;
   goBack: () => RouterAction;
-  fetchConceptAncestors: (termId: number, levels: number) => (dispatch: Function) => any;
+  fetchConceptAncestors: (termId: number, levels: number, zoomLevel: number) => (dispatch: Function) => any;
   fetchRelationships: (termId: number, standards: boolean) => (dispatch: Function) => any;
   redirect: (address: string) => (dispatch: Function) => any;
 };
@@ -172,7 +173,7 @@ function Term(props: ITermProps) {
             </ul>
           </Panel>
         </div>
-        <div {...classes({element: 'connections-container', extra: 'col-xs-12 col-md-7'})}>
+        <div {...classes({ element: 'connections-container', extra: 'col-xs-12 col-md-7' })}>
           <Panel
             {...classes({ element: 'connections-wrapper', modifiers: { stretched: !isStandard || !isTableMode } })}
             title={title}

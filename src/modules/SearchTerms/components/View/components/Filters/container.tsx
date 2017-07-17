@@ -25,10 +25,13 @@ function mapStateToProps(state: Object): IFiltersPanelStateProps {
     pathname: '',
     search: '',
   });
+  const levels = parseInt(get(state, 'form.termFilters.value.levels', defaultLevels.toString()), 0);
 
   return {
     initialValues: termFilters,
     path,
+    zoomLevel: termFilters.zoomLevel,
+    levels,
   };
 }
 
@@ -45,7 +48,12 @@ function mergeProps(stateProps: IFiltersPanelStateProps,
     ...ownProps,
     doFilter: (param) => {
       const url = new URI(stateProps.path.pathname  + stateProps.path.search);
-      url.setSearch('levels', param.levels);
+      url.setSearch('levels', param.levels !== undefined
+        ? param.levels
+        : stateProps.levels);
+      url.setSearch('zoomLevel', param.zoomLevel !== undefined
+        ? param.zoomLevel
+        : stateProps.zoomLevel);
       return dispatchProps.filter(url.href());
     },
   };

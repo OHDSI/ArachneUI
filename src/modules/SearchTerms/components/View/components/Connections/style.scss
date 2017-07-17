@@ -24,9 +24,12 @@
 	    }
 
 	    & .node {
-			  cursor: pointer;
 			  fill: $white;
 			  stroke: transparent;
+	    }
+
+	    & .clickable {
+			  cursor: pointer;	    	
 	    }
 
 	    & .nodeWrapper {
@@ -79,6 +82,11 @@
     		text-anchor: middle;
     		alignment-baseline: middle;
 			}
+		}
+
+		& .bold-text {
+			font-size: 2rem;
+			font-weight: $font-weight-bold;
 		}
   }
 }

@@ -27,6 +27,10 @@ import {
   controlSize,
   controlsGapSize,
   zoomStep,
+
+  circleHeight,
+  circleWidth,
+  circleBorderRadius,
 } from 'modules/SearchTerms/const';
 
 require('./style.scss');
@@ -40,11 +44,14 @@ type GraphNode = {
   id: number;
   x: number;
   y: number;
+  fx?: number;
+  fy?: number;
   isCurrent?: boolean;
   name: string;
   parentIds?: Array<number>;
   depth: number;
   yDepth: number;
+  count?: number;
 };
 
 type GraphConnection = {
@@ -149,19 +156,123 @@ function setZoom(canvas: ICanvas, factor: number) {
   canvas.scaleFactor = scale;
 }
 
+function getWidth(d, zoomLevel) {
+  switch (zoomLevel) {
+    case 1:
+      // minimum
+      return d.depth === 0 ? rectWidth : circleWidth;
+    case 2: case 3:
+      // vocabularies, conceptClasses
+      return [1, -1].includes(d.depth) ? circleWidth : rectWidth;
+    default:
+      // maximum
+      return rectWidth;
+  }
+}
+
+function getHeight(d, zoomLevel) {
+  switch (zoomLevel) {
+    case 1:
+      // minimum
+      return d.depth === 0 ? rectHeight : circleHeight;
+    case 2: case 3:
+      // vocabularies, conceptClasses
+      return [1, -1].includes(d.depth) ? circleHeight : rectHeight;
+    default:
+      // maximum
+      return rectHeight;
+  }     
+}
+
+function getBorderRadius(d, zoomLevel) {
+  switch (zoomLevel) {
+    case 1:
+      // minimum
+      return d.depth === 0 ? conceptBorderRadius : circleBorderRadius;
+    case 2: case 3:
+      // vocabularies, conceptClasses
+      return [1, -1].includes(d.depth) ? circleBorderRadius : conceptBorderRadius;
+    default:
+      // maximum
+      return conceptBorderRadius;
+  }
+}
+
+function getLeftPadding(svgElement, d, zoomLevel) {
+  const textWidth = Math.ceil(svgElement.getBBox().width);
+  switch (zoomLevel) {
+    case 1:
+      // minimum
+      return d.depth === 0 ? conceptLeftPadding : (circleWidth - textWidth) / 2;
+    case 2: case 3:
+      // vocabularies, conceptClasses
+      return [1, -1].includes(d.depth) ? (circleWidth - textWidth) / 2 : conceptLeftPadding;
+    default:
+      // maximum
+      return conceptLeftPadding;
+  }     
+}
+
+function getTopPadding(svgElement, d, zoomLevel) {
+  const textHeight = svgElement.getBBox().height;
+  switch (zoomLevel) {
+    case 1:
+      // minimum
+      return d.depth === 0 ? conceptTopPadding : (circleHeight + textHeight) / 2 - 5;
+    case 2: case 3:
+      // vocabularies, conceptClasses
+      return [1, -1].includes(d.depth) ? (circleHeight + textHeight) / 2 - 5 : conceptTopPadding;
+    default:
+      // maximum
+      return conceptTopPadding;
+  }
+}
+
+function getFontSizeClass(d, zoomLevel) {
+  switch (zoomLevel) {
+    case 1:
+      // minimum
+      return d.depth !== 0 ? 'bold-text' : '';
+    default:
+      // maximum
+      return '';
+  }
+}
+
+function getHint(d, zoomLevel) {
+  switch (zoomLevel) {
+    case 1:
+      // minimum
+      return d.depth === 0 ? d.name : `${d.count} vocabularies`;
+    case 2: case 3:
+      // vocabularies
+      if ([1, -1].includes(d.depth)) {
+        return `Vocabulary '${d.name}' (${d.count} concept classes)`;
+      } else if ([2, -2].includes(d.depth)) {
+        return `'${d.name}' concept class (${d.count} concepts)`;
+      } else {
+        return d.name;
+      }
+    default:
+      // maximum
+      return d.name;
+  }
+}
+
 function updateSimulation(
   concepts,
-  connections
+  connections,
+  zoomLevel
 ) {
   connections
     .attr('d', (c: GraphLink) => {
       const from = {
-        x: c.source.x + rectWidth,
-        y: c.source.y + rectHeight/2
+        x: c.source.fx + getWidth(c.source, zoomLevel),
+        y: c.source.fy + getHeight(c.source, zoomLevel)/2
       }
       const to = {
-        x: c.target.x,
-        y: c.target.y + rectHeight/2
+        x: c.target.fx,
+        y: c.target.fy + getHeight(c.target, zoomLevel)/2
       };
       return diagonal(from, to, c.source.depth <= c.target.depth);
     });
@@ -177,7 +288,8 @@ function printGraph(
   terms: Array<GraphNode>,
   links: Array<GraphConnection>,
   redirect: Function,
-  setLoadingStatus: Function
+  setLoadingStatus: Function,
+  zoomLevel: number
  ) {
   // prevent not nessessary rendering
   if (!terms.length) {
@@ -192,7 +304,14 @@ function printGraph(
     .select(container);   
 
   const treeWrapper: any = svg.selectAll('g#wrapper');
-  treeWrapper.scaleFactor = 1;
+  let initialZoom = 0.75;
+  if (zoomLevel === 3) {
+    // concept classes
+    initialZoom = 0.35;
+  } else if (zoomLevel === 4) {
+    initialZoom = 0.6;
+  }
+  treeWrapper.scaleFactor = initialZoom;
   treeWrapper.fixedX = 0;
   treeWrapper.fixedY = 0;
 
@@ -220,7 +339,9 @@ function printGraph(
     .call(zoom);
   // disable double click
   svg
-    .on('dblclick.zoom', () => {});
+    .on('dblclick.zoom', () => {})
+    // set initial event.transform.k value
+    .call(zoom.scaleTo, initialZoom);
 
   // arrow
   treeWrapper.append('svg:defs').selectAll('marker')
@@ -234,12 +355,12 @@ function printGraph(
       .attr('markerHeight', 8)
       .attr('orient', 'auto')
     .append('svg:path')
-      .attr('d', 'M0,-5L15,0L0,5');
+      .attr('d', 'M0,-5L15,0L0,5');  
 
   const termsFixed = terms.map((concept: GraphNode) => ({
     ...concept,
-    fy: (height - rectHeight)/2 + concept.yDepth * gapWidth,
-    fx: (width - rectWidth)/2 - concept.depth * (rectWidth + gapWidth)
+    fy: (height - getHeight(concept, zoomLevel))/2 + concept.yDepth * gapWidth,
+    fx: (width - getWidth(concept, zoomLevel))/2 - concept.depth * (rectWidth + gapWidth)
   }));
   const concepts = treeWrapper
     .selectAll('g.node')
@@ -253,31 +374,94 @@ function printGraph(
     .enter()
     .append('svg:g')
     .attr('class', 'node')
-    .attr('height', rectHeight)
-    .attr('width', rectWidth)
-    .on('click', (d: GraphNode) => redirect(d.id))
+    .attr('height', d => getHeight(d, zoomLevel))
+    .attr('width', d => getWidth(d, zoomLevel))
+    .classed('clickable', zoomLevel === 4)
+    .on('click', (d: GraphNode) => {
+      if (zoomLevel === 4) {
+        redirect(d.id);
+      }
+    })
     .on('mouseover', (d: GraphNode) => {
       clearTimeout(captionTransitionTimeout);
-      conceptName.text(d.name);
+      conceptName.text(getHint(d, zoomLevel));
     })
     .on('mouseout', (d: GraphNode) => {
       captionTransitionTimeout = setTimeout(() => conceptName.text(''), 300);
     });
   wrappers.append('svg:rect')    
     .attr('class', (d: GraphNode) => d.isCurrent ? 'nodeWrapper current' : 'nodeWrapper')
-    .attr('height', rectHeight)
-    .attr('width', rectWidth)
-    .attr('rx', conceptBorderRadius)
-    .attr('ry', conceptBorderRadius);
+    .attr('height', d => getHeight(d, zoomLevel))
+    .attr('width', d => getWidth(d, zoomLevel))
+    .attr('rx', d => getBorderRadius(d, zoomLevel))
+    .attr('ry', d => getBorderRadius(d, zoomLevel));
+
+  // first line
   wrappers.append('svg:text')
     .text((d: GraphNode) => `${d.name.length > maxNameLength
       ? d.name.substr(0, maxNameLength) + '...'
       : d.name
     }`)
-    .attr('height', rectHeight)
-    .attr('width', rectWidth)
-    .attr('x', conceptLeftPadding)
-    .attr('y', conceptTopPadding);
+    .attr('class', d => getFontSizeClass(d, zoomLevel))
+    .attr('x', function (d) { return getLeftPadding(this, d, zoomLevel) })
+    .attr('y', function (d) { return getTopPadding(this, d, zoomLevel) });
+  
+  // second line
+  wrappers.append('svg:text')
+    .text((d: GraphNode) => {
+      let text = '';
+      if (zoomLevel > 1
+        && zoomLevel < 4
+        && d.depth !== 0
+        && d.count
+      ) {
+        text = d.count.toString();
+      } else if (d.depth === 0) {
+        text = '';
+      }
+
+      if (zoomLevel === 1 && d.depth !== 0) {
+        text = d.depth === -1 ? 'Descendant' : 'Ancestor';
+      }
+
+      return text;
+    })
+    .attr('x', function (d) {
+      let padding = getLeftPadding(this, d, zoomLevel);
+      if (
+        zoomLevel !== 4 &&
+        ![1, -1].includes(d.depth)
+      ) {
+        // if it's not max zoom, then for rect(!)-shaped nodes add label on the righthands
+        padding = getWidth(d, zoomLevel) - (padding + this.getBBox().width);
+      }
+      return padding;
+    })
+    .attr('y', function (d) {
+      let padding = getTopPadding(this, d, zoomLevel);
+      if (
+        zoomLevel !== 4 &&
+        [1, -1].includes(d.depth)
+      ) {
+        // if it's not max zoom, then for circe(!)-shaped nodes add second line
+        padding += this.getBBox().height + 2;
+      }
+      return padding;
+    });
+
+  // conditionally, third line
+  if (zoomLevel === 1) {
+    wrappers.append('svg:text')
+      .text((d: GraphNode) => {
+        if (d.depth !== 0) {
+          return 'vocabs';
+        }
+      })
+      .attr('x', function (d) { return getLeftPadding(this, d, zoomLevel) })
+      .attr('y', function (d) {
+        return getTopPadding(this, d, zoomLevel) + this.getBBox().height * 2;
+      });
+  }
 
   const connections = treeWrapper.selectAll('path.link')
     .data(links);
@@ -303,7 +487,8 @@ function printGraph(
     .on('tick', updateSimulation.bind(
       null,
       wrappers,
-      connectors
+      connectors,
+      zoomLevel
     ));
   simulation.restart();
   setLoadingStatus(false);
@@ -312,16 +497,18 @@ function printGraph(
   const zoomControls = svg.selectAll('g#zoom-controls');
   zoomControls.attr('transform', () => `translate(${width-controlSize*1.5}, ${controlSize/2})`);
   zoomControls.selectAll('g#zoom-in-container')
-    .on('click', () => setZoom(treeWrapper, treeWrapper.scaleFactor + zoomStep));
+    .on('mousedown', () => setZoom(treeWrapper, treeWrapper.scaleFactor + zoomStep));
   zoomControls.selectAll('g#zoom-out-container')
     .attr('transform', () => `translate(0, ${controlSize + controlsGapSize})`)
-    .on('click', () => setZoom(treeWrapper, treeWrapper.scaleFactor - zoomStep));
+    .on('mousedown', () => setZoom(treeWrapper, treeWrapper.scaleFactor - zoomStep));
   zoomControls.selectAll('text#zoom-in')
     .attr('x', () => controlSize/2)
     .attr('y', () => controlSize/2);
   zoomControls.selectAll('text#zoom-out')
     .attr('x', () => controlSize/2)
     .attr('y', () => controlSize/2);
+
+  setZoom(treeWrapper, initialZoom);
 }
 
 function TermConnections(props: ITermConnectionsProps) {
@@ -331,6 +518,7 @@ function TermConnections(props: ITermConnectionsProps) {
     goToTerm,
     isInProgress,
     setLoadingStatus,
+    termFilters,
   } = props;
   const classes = BEMHelper('term-connections');
 
@@ -340,7 +528,7 @@ function TermConnections(props: ITermConnectionsProps) {
       {...classes('graph')}
       ref={element => {
         if (element && terms) {
-          printGraph(element, terms, links, goToTerm, setLoadingStatus);
+          printGraph(element, terms, links, goToTerm, setLoadingStatus, termFilters.zoomLevel);
         }
       }}
     >

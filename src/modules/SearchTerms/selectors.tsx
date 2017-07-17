@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 import { get, has } from 'lodash';
-import { defaultLevels, defaultStandardsOnly } from 'modules/SearchTerms/const';
+import { defaultLevels, defaultStandardsOnly, defaultZoomLevel } from 'modules/SearchTerms/const';
 
 const getRawLocation = (state: Object) => get(state, 'routing.locationBeforeTransitions', {
   pathname: '',
@@ -15,6 +15,9 @@ const getTermFilters = createSelector(
       standardsOnly: has(location.query, 'standardsOnly')
         ? location.query.standardsOnly === 'true'
         : defaultStandardsOnly,
+      zoomLevel: has(location.query, 'zoomLevel')
+      ? parseInt(location.query.zoomLevel, 0)
+      : defaultZoomLevel,
     };
   }
 );

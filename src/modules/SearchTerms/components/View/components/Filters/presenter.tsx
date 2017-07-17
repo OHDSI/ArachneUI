@@ -4,12 +4,14 @@ import { Button, Checkbox, Select } from "arachne-components";
 import { Field } from "redux-form";
 import { push } from "react-router-redux";
 import { debounce } from 'lodash';
-import { defaultLevels } from "modules/SearchTerms/const";
+import { defaultLevels, zoomLevels } from "modules/SearchTerms/const";
 require('./style.scss');
 
 interface IFiltersPanelStateProps {
   initialValues: any,
   path: any,
+  zoomLevel: number;
+  levels: number;
 }
 
 interface IFiltersPanelDispatchProps {
@@ -17,11 +19,11 @@ interface IFiltersPanelDispatchProps {
 }
 
 interface IFiltersPanelProps extends IFiltersPanelStateProps, IFiltersPanelDispatchProps {
-  doFilter: (param: { levels: string }) => typeof push;
+  doFilter: (param: { levels?: string, zoomLevel?: string }) => typeof push;
   termId: number;
 }
 
-function NumberOfLevels({options, input}) {
+function NumberOfLevels({ options, input }) {
   const classes = BEMHelper('levels');
   const conceptLayers = [];
   for (let i=1; i <= defaultLevels; i++) {
@@ -47,22 +49,53 @@ function NumberOfLevels({options, input}) {
   );
 }
 
+function ZoomLevel({ options, input }) {
+  const classes = BEMHelper('zoom-levels');
+
+  return (
+    <Select {...classes()}
+      options={zoomLevels}
+      onChange={(val) => {
+          input.onChange(val);
+          // will use the previous state
+          options.doFilter({
+            zoomLevel: val,
+          });
+        }
+      }
+      value={parseInt(input.value, 0)}
+    />
+  );
+}
+
 function FiltersPanel(props: IFiltersPanelProps) {
   const classes = BEMHelper('filters-panel');
-  const { doFilter } = props;
+  const { doFilter, zoomLevel } = props;
 
   return (
     <div {...classes()}>
       <div {...classes('item')}>
-        <span {...classes('levels-label')}>Number of parent levels</span>
+        <span {...classes('select-label')}>Level of details</span>
         <Field
-          component={NumberOfLevels}
-          name="levels"
+          component={ZoomLevel}
+          name="zoomLevel"
           options={{
             doFilter,
           }}
         />
       </div>
+      {zoomLevel === 4 &&
+        <div {...classes('item')}>
+          <span {...classes('select-label')}>Number of parent levels</span>
+          <Field
+            component={NumberOfLevels}
+            name="levels"
+            options={{
+              doFilter,
+            }}
+          />
+        </div>
+      }
     </div>
   );
 }
