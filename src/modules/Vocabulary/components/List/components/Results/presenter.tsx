@@ -54,25 +54,39 @@ function DownloadCheckbox(props: IDownloadCheckboxProps) {
 }
 
 function CellChecked(props: any) {
-  const { className, isCheckable, name, openRequestModal, isPending } = props;
+  const { className, isCheckable, name } = props;
   
   return isCheckable
     ? <Field component={DownloadCheckbox} options={{ className }} name={name} />
-    : 
-    isPending
-      ? <span
-          className={`${className}--disabled`}
-        >
+    : null;
+}
+
+function CellLicense(props: any) {
+  const { className, value, openRequestModal, isPending, isCheckable } = props;
+  const classes = BEMHelper('cell-license');
+  if (!value) {
+    return null;
+  }
+  if (isCheckable) {
+    return <span>{value}</span>;
+  } else if (isPending) {
+    return <div {...classes()}>
+        <span {...classes({ element: 'icon', extra: `${className}--disabled` })}>
           timer
-        </span>  
-       : <span
-          className={`${className}--disabled ac-tooltip`}
+        </span> {value}
+      </div>;
+  } else {
+    return <div {...classes({ extra: 'ac-tooltip' })}
           aria-label='Click to request access'
           data-tootik-conf='right'
-          onClick={openRequestModal}
-        >
+          onClick={openRequestModal}>
+        <span {...classes({ element: 'icon', extra: `${className}--disabled` })}>
           vpn_key
         </span>
+        {value}
+      </div>;
+  }
+
 }
 
 function Results(props: IResultsProps & FormProps<{}, {}, {}>) {
@@ -122,8 +136,6 @@ function Results(props: IResultsProps & FormProps<{}, {}, {}>) {
                 unclickable: vocab.isCheckable,
               },
             }).className,
-            isPending: vocab.status === licenseStatuses.PENDING,
-            openRequestModal: () => openRequestModal(vocab),
           })}
          />
         <Cell
@@ -165,7 +177,7 @@ function Results(props: IResultsProps & FormProps<{}, {}, {}>) {
             }).className,
           })}
         />
-        <Cell
+        <CellLicense
           {...classes('required')}
           header='Required'
           field='required'
@@ -176,6 +188,9 @@ function Results(props: IResultsProps & FormProps<{}, {}, {}>) {
                 selected: vocab.isChecked,
               },
             }).className,
+            isPending: vocab.status === licenseStatuses.PENDING,
+            openRequestModal: () => openRequestModal(vocab),
+            isCheckable: vocab.isCheckable,
           })}
         />
         <Cell
