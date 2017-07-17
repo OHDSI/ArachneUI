@@ -5,6 +5,7 @@ import {
   Table,
   TableCellText as Cell,
   Checkbox,
+  Link,
 } from 'arachne-components';
 import { push } from 'react-router-redux';
 import { Field, FormProps } from 'redux-form';
@@ -70,13 +71,13 @@ function CellLicense(props: any) {
   if (isCheckable) {
     return <span>{value}</span>;
   } else if (isPending) {
-    return <div {...classes()}>
+    return <Link {...classes()}>
         <span {...classes({ element: 'icon', extra: `${className}--disabled` })}>
           timer
         </span> {value}
-      </div>;
+      </Link>;
   } else {
-    return <div {...classes({ extra: 'ac-tooltip' })}
+    return <Link {...classes({ extra: 'ac-tooltip' })}
           aria-label='Click to request access'
           data-tootik-conf='right'
           onClick={openRequestModal}>
@@ -84,7 +85,7 @@ function CellLicense(props: any) {
           vpn_key
         </span>
         {value}
-      </div>;
+      </Link>;
   }
 
 }
