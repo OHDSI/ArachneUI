@@ -29,18 +29,21 @@ interface ITermStateProps {
   relationshipsCount: number;
   termFilters: any;
   connectionsCount: number;
+  zoomLevel?: number;
+  isFullscreen?: boolean;
 };
 
 interface ITermDispatchProps {
   fetch: (termId: number) => (dispatch: Function) => any;
   goBack: () => RouterAction;
-  fetchConceptAncestors: (termId: number, levels: number) => (dispatch: Function) => any;
+  fetchConceptAncestors: (termId: number, levels: number, zoomLevel: number) => (dispatch: Function) => any;
   fetchRelationships: (termId: number, standards: boolean) => (dispatch: Function) => any;
   redirect: (address: string) => (dispatch: Function) => any;
 };
 
 interface ITermProps extends ITermStateProps, ITermDispatchProps {
   changeTab: (tab: string) => any;
+  toggleFullscreen?: Function;
 };
 
 function Term(props: ITermProps) {
@@ -55,6 +58,8 @@ function Term(props: ITermProps) {
     termId,
     changeTab,
     connectionsCount,
+    isFullscreen,
+    toggleFullscreen,
   } = props;
   const classes = BEMHelper('term');
   let title = 'Term connections';
@@ -96,8 +101,12 @@ function Term(props: ITermProps) {
           </div>
         </div>
       </div>
-      <div {...classes({ element: 'content', extra: 'row' })}>
-        <div className="col-xs-12 col-md-5">
+      <div {...classes({ element: 'content', extra: 'row', modifiers: { fullscreen: isFullscreen } })}>
+        <div {...classes({
+          element: 'details',
+          extra: `col-xs-12 col-md-5`,
+          modifiers: { fullscreen: isFullscreen }
+        })}>
           <Panel title='Details'>
             <ul>
               <ListItem>
@@ -172,17 +181,29 @@ function Term(props: ITermProps) {
             </ul>
           </Panel>
         </div>
-        <div {...classes({element: 'connections-container', extra: 'col-xs-12 col-md-7'})}>
+        <div {...classes({
+          element: 'connections-container',
+          extra: `col-xs-12 col-md-${isFullscreen? '12' : '7'}`,
+          modifiers: { fullscreen: isFullscreen }
+        })}>
           <Panel
             {...classes({ element: 'connections-wrapper', modifiers: { stretched: !isStandard || !isTableMode } })}
             title={title}
             headerBtns={() => {
                 if (details && !onlyTable) {
-                  return <Tabs
-                    options={tabs}
-                    onChange={changeTab}
-                    value={isTableMode ? tabs[1].value : tabs[0].value}
-                  />;
+                  return <div {...classes('header-buttons')}>
+                    <Link
+                      onClick={toggleFullscreen}
+                      {...classes('fullscreen')}
+                    >
+                      {`${isFullscreen ? 'fullscreen_exit' : 'fullscreen'}`}
+                    </Link>
+                    <Tabs
+                      options={tabs}
+                      onChange={changeTab}
+                      value={isTableMode ? tabs[1].value : tabs[0].value}
+                    />
+                  </div>;
                 }
               }
             }

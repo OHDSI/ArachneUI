@@ -16,21 +16,22 @@
     &__item {
       display: flex;
       align-items: center;
-      margin-right: 2rem;
-    }
-
-    &__levels-label {
       margin-right: 1rem;
     }
 
-    &__standards-label {
+    &__select-label {
       margin-right: 1rem;
     }
+
   }
 
   &levels {
     margin-right: 1rem;
     width: 7rem;
+  }
+
+  &zoom-levels {
+    width: 20rem;
   }
 
   &standards-only {

@@ -24,7 +24,7 @@ const apiPaths = {
 	downloadCsv: (query: string) => `/api/v1/concepts/download/csv${query}`,
 };
 
-const gapWidth = 100;
+const gapWidth = 140;
 const rectHeight = 25;
 const rectWidth = 250;
 const conceptNameHeight = 40;
@@ -37,10 +37,13 @@ const conceptTopPadding = 16;
 const maxZoom = 3;
 const minZoom = 0.25;
 
-
 const controlSize = 40;
 const controlsGapSize = 10;
 const zoomStep = 0.25;
+
+const circleHeight = 120;
+const circleWidth = 120;
+const circleBorderRadius = 60;
 
 const defaultLevels = 10;
 const defaultStandardsOnly = false;
@@ -51,6 +54,25 @@ const facetKeys = keyMirror({
   vocabulary: null,
   invalidReason: null,
 });
+const zoomLevels = [
+  {
+    label: 'Minimum',
+    value: 1,
+  },
+  {
+    label: 'Vocabularies',
+    value: 2,
+  },
+  {
+    label: 'Concept Classes',
+    value: 3,
+  },
+  {
+    label: 'Maximum',
+    value: 4,
+  },
+];
+const defaultZoomLevel = 4;
 
 export {
   actionTypes,
@@ -77,4 +99,9 @@ export {
   defaultLevels,
   defaultStandardsOnly,
   facetKeys,
+  zoomLevels,
+  defaultZoomLevel,
+  circleHeight,
+  circleWidth,
+  circleBorderRadius,
 };

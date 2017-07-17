@@ -20,10 +20,22 @@ interface ITermRoute {
   };
 }
 
-class Term extends Component<ITermProps, {}> {
+class Term extends Component<ITermProps, { isFullscreen: boolean }> {
+  constructor() {
+    super();
+    this.state = {
+      isFullscreen: false,
+    };
+    this.toggleFullscreen = this.toggleFullscreen.bind(this);
+  }
+
   componentWillMount() {
     this.props.fetch(this.props.termId);
-    this.props.fetchConceptAncestors(this.props.termId, this.props.termFilters.levels);
+    this.props.fetchConceptAncestors(
+      this.props.termId,
+      this.props.termFilters.levels,
+      this.props.termFilters.zoomLevel
+    );
     this.props.fetchRelationships(this.props.termId, this.props.termFilters.standardsOnly);
   }
 
@@ -31,14 +43,38 @@ class Term extends Component<ITermProps, {}> {
     if (this.props.termId !== props.termId) {
       this.props.fetch(props.termId);
       this.props.fetchRelationships(props.termId, this.props.termFilters.standardsOnly);
-      this.props.fetchConceptAncestors(props.termId, this.props.termFilters.levels);
+      this.props.fetchConceptAncestors(
+        props.termId,
+        this.props.termFilters.levels,
+        this.props.termFilters.zoomLevels
+        );
     } else if (this.props.termFilters.levels !== props.termFilters.levels) {
-      this.props.fetchConceptAncestors(props.termId, props.termFilters.levels);
+      this.props.fetchConceptAncestors(
+        props.termId,
+        props.termFilters.levels,
+        props.termFilters.zoomLevel
+      );
+    } else if (this.props.termFilters.zoomLevel !== props.termFilters.zoomLevel) {
+      this.props.fetchConceptAncestors(
+        props.termId,
+        props.termFilters.levels,
+        props.termFilters.zoomLevel
+      );
     }
   }
 
+  toggleFullscreen() {
+    this.setState({
+      isFullscreen: !this.state.isFullscreen,
+    });
+  }
+
   render() {
-    return presenter(this.props);
+    return presenter({
+      ...this.props,
+      isFullscreen: this.state.isFullscreen,
+      toggleFullscreen: this.toggleFullscreen,
+    });
   }
 }
 
@@ -85,7 +121,10 @@ function mergeProps(
     ...ownProps,
     changeTab: (tab) => {
       const address = new URI(paths.term(stateProps.details.id, tab === 'table'));
-      address.search(stateProps.termFilters);
+      address.search({
+        fullscreen: stateProps.isFullscreen ? 'true' : 'false',
+        ...stateProps.termFilters
+      });
       return dispatchProps.redirect(address.href());
     },
   };

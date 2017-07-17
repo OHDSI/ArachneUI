@@ -49,6 +49,15 @@
           height: auto;
         }
       }
+
+      &--fullscreen {
+      }
+    }
+
+    &__details {
+      &--fullscreen {
+        display: none;
+      }
     }
 
     &__description {
@@ -96,10 +105,23 @@
       text-align: center;
     }
 
-    &__connections-container {      
+    &__connections-container {
       display: flex;
       flex-direction: column;
       flex-grow: 1;
+    }
+
+    &__header-buttons {
+      align-items: center;
+      display: flex;
+      height: 3rem;
+    }
+
+    &__fullscreen {
+      @include material-icon();
+      font-size: 3rem;
+      margin-right: 1rem;
+      user-select: none;
     }
   }
 }

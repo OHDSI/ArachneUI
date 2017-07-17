@@ -40,8 +40,8 @@ function fetch(id: number) {
   return services.terms.get(id);
 }
 
-function fetchConceptAncestors(conceptId: number, levels = 10) {
-  return services.relations.get(conceptId, {query: {depth: levels}});
+function fetchConceptAncestors(conceptId: number, levels: number = 10, zoomLevel: number = 4) {
+  return services.relations.get(conceptId, {query: {depth: levels, zoomLevel}});
 }
 
 function fetchRelationships(conceptId: number, standards = false) {
