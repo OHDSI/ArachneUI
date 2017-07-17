@@ -27,8 +27,19 @@ function requestDownload(downloadParams: DownloadParams) {
 	return services.download.find({ query: downloadParams });
 }
 
+function requestNotification(props: { notify: boolean, vocabularyV4Id: number }) {
+  const { notify, vocabularyV4Id } = props;
+  return services.notifications.create({ notify, vocabularyV4Id });
+}
+
+function getNotifications() {
+  return services.notifications.find();
+}
+
 export default {
   toggleAllVocabs,
   requestDownload,
+  requestNotification,
+  getNotifications,
 };
 export { DownloadParams };

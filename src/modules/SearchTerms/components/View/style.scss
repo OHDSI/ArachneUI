@@ -39,6 +39,31 @@
     &__content {
       flex-grow: 1 !important;
       padding: 2.5rem 3rem;
+
+      & .ac-list-item {
+        &__content {
+          align-items: flex-start;
+          padding-top: 15px;
+          padding-bottom: 15px;
+          min-height: initial;
+          height: auto;
+        }
+      }
+    }
+
+    &__description {
+      align-content: space-between;
+      align-items: center;
+      display: flex;
+      width: 100%;
+    }
+
+    &__vocid {
+      flex-grow: 1;
+    }
+
+    &__description-tooltip {
+      @include material-icon();
     }
 
     &__connections-wrapper {
@@ -46,22 +71,35 @@
       & .ac-panel {
         &__content {
           height: calc(100% - 80px);
+          flex-grow: 1;
+          display: flex;
+          flex-direction: column;
         }
       }
 
       &--stretched {
-        height: 100%;        
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
       }
     }
 
     &__attribute-name {
       width: 50%;
       font-weight: $font-weight-bold;
+      flex-shrink: 0;
     }
 
     &__tab {
       width: 17rem;
       text-align: center;
+    }
+
+    &__connections-container {      
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
     }
   }
 }

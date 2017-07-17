@@ -13,6 +13,8 @@ import {
   Accordion,
   AccordionItem,
 } from 'react-sanfona';
+import { commonDateFormat } from 'const/formats';
+import ModalEditNotifications from './components/ModalEditNotifications';
 
 require('./style.scss');
 
@@ -48,6 +50,7 @@ interface IDownloadHistoryDispatchProps {
   load: () => (dispatch: Function) => any;
   remove: (id: number) => Promise<void>;
   restore: (id: number) => Promise<void>;
+  showNotifications: Function;
 };
 
 interface IDownloadHistoryProps extends IDownloadHistoryStateProps, IDownloadHistoryDispatchProps {
@@ -61,7 +64,7 @@ interface IDownloadHistoryStatefulProps {
 };
 
 function BundleName({ name, date, onClick, isOpened }) {
-  const dateFormat = 'h:mm A | MM/DD/YYYY';
+  const dateFormat = commonDateFormat;
   const classes = BEMHelper('bundle-caption');
 
   return <div {...classes()} onClick={onClick}>
@@ -112,56 +115,70 @@ function BundleTitle({ bundle, removeBundle, toggle, isExpanded, restore }) {
 }
 
 function VocabsList(props: IDownloadHistoryProps & IDownloadHistoryStatefulProps) {
-  const { isLoading, history, removeBundle, toggle, expandedBundleId, restoreBundle } = props;
+  const {
+    isLoading,
+    history,
+    removeBundle,
+    toggle,
+    expandedBundleId,
+    restoreBundle,
+    showNotifications,
+  } = props;
   const classes = BEMHelper('download-history');
 
   return (    
     <div {...classes()}>
-      <Toolbar caption='Download history' backUrl={paths.vocabsList()} />
-        <Accordion activeItems={[expandedBundleId]}>
-          {history && history.map((bundle: IDownloadRequest, index: number) =>
-            <AccordionItem
-              title={<BundleTitle
-                bundle={bundle}
-                removeBundle={removeBundle}
-                toggle={toggle}
-                isExpanded={bundle.id === expandedBundleId}
-                restore={restoreBundle}
-               />}
-              {...classes('bundle-caption')}
-              key={`caption${index}`}
-              slug={bundle.id}
-            >
-              <Table
-                {...classes('table')}
-                data={bundle.vocabularies}
-                mods={['hover', 'padded', 'selectable']}
-               >
-                  <TableCellText
-                    {...classes('id')}
-                    header='ID'
-                    field='id'
-                  />
-                  <TableCellText
-                    {...classes('cdm')}
-                    header='CDM'
-                    field='cdmVersion'
-                  />
-                  <TableCellText
-                    {...classes('code')}
-                    header='Code (cdm v5)'
-                    field='code'
-                  />
-                  <TableCellText
-                    {...classes('name')}
-                    header='Name'
-                    field='name'
-                  />
-              </Table>          
-            </AccordionItem>
+      <Toolbar
+        caption='Download history'
+        backUrl={paths.vocabsList()}
+      >
+        <Button onClick={showNotifications} mods={['submit', 'rounded']}>Notifications</Button>
+      </Toolbar>
+      <Accordion activeItems={[expandedBundleId]}>
+        {history && history.map((bundle: IDownloadRequest, index: number) =>
+          <AccordionItem
+            title={<BundleTitle
+              bundle={bundle}
+              removeBundle={removeBundle}
+              toggle={toggle}
+              isExpanded={bundle.id === expandedBundleId}
+              restore={restoreBundle}
+             />}
+            {...classes('bundle-caption')}
+            key={`caption${index}`}
+            slug={bundle.id}
+          >
+            <Table
+              {...classes('table')}
+              data={bundle.vocabularies}
+              mods={['hover', 'padded', 'selectable']}
+             >
+                <TableCellText
+                  {...classes('id')}
+                  header='ID'
+                  field='id'
+                />
+                <TableCellText
+                  {...classes('cdm')}
+                  header='CDM'
+                  field='cdmVersion'
+                />
+                <TableCellText
+                  {...classes('code')}
+                  header='Code (cdm v5)'
+                  field='code'
+                />
+                <TableCellText
+                  {...classes('name')}
+                  header='Name'
+                  field='name'
+                />
+            </Table>          
+          </AccordionItem>
         )}
       </Accordion>
       <LoadingPanel active={isLoading} />
+      <ModalEditNotifications />
     </div>
   );
 }

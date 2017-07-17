@@ -27,7 +27,7 @@ class LicensesList extends Component<IListProps, void> {
 }
 
 function mapStateToProps(state: Object): IListStateProps {
-	const licenses = selectors.getLicenses(state);
+	let licenses = selectors.getLicenses(state);
 
 	return {
 		licenses,
@@ -65,7 +65,7 @@ function mergeProps(
   };
 }
 
-export default connect<IListStateProps, IListDispatchProps, {}>(
+export default connect<IListStateProps, IListDispatchProps, void>(
 	mapStateToProps,
 	mapDispatchToProps,
 	mergeProps,

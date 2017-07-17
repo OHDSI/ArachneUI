@@ -16,8 +16,15 @@ function getAvailableVocabularies(userId) {
 	});
 }
 
-function load() {
-  return services.licenses.find();
+function load(page: number, pageSize: number, queryUser?: string, pendingOnly?: boolean) {
+  return services.licenses.find({
+  	query: {
+  		page,
+  		pageSize,
+  		queryUser,
+  		pendingOnly,
+  	}
+  });
 }
 
 function remove(vocabId: number) {
@@ -31,10 +38,18 @@ function create(userId: number, vocabularyV4Ids: Array<number>) {
 	});
 }
 
+function resolve(id: number, accepted: boolean) {
+	return services.licenseAccept.create({
+		id,
+		accepted,
+	});
+}
+
 export default {
   create,
   getUsers,
   getAvailableVocabularies,
   load,
   remove,
+  resolve,
 };

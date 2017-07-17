@@ -12,7 +12,7 @@ const module: IModule = {
 	actions: () => require('./actions').default,
 	reducer: () => require('./reducers').default,
 	navbarElement: () => [
-		<NavItem name='Download' path={paths.vocabsList()} />,
+		<NavItem module='vocabulary' name='Download' path={paths.vocabsList()} />,
 	],
 };
 

@@ -10,9 +10,12 @@ import {
 import { RouterAction } from 'react-router-redux';
 import BEMHelper from 'services/BemHelper';
 import { get } from 'lodash';
+import * as moment from 'moment';
+import { commonDateFormat } from 'const/formats';
 import TermConnections from './components/Connections';
 import TermConnectionsTable from './components/Table';
 import TermFiltersPanel from './components/Filters';
+import { paths } from 'modules/SearchTerms/const';
 
 require('./style.scss');
 
@@ -25,6 +28,7 @@ interface ITermStateProps {
   isStandard: boolean;
   relationshipsCount: number;
   termFilters: any;
+  connectionsCount: number;
 };
 
 interface ITermDispatchProps {
@@ -50,10 +54,11 @@ function Term(props: ITermProps) {
     relationshipsCount,
     termId,
     changeTab,
+    connectionsCount,
   } = props;
   const classes = BEMHelper('term');
   let title = 'Term connections';
-  if (isTableMode && relationshipsCount) {
+  if (relationshipsCount) {
     title += ` (${relationshipsCount})`;
   }
   const tabs = [
@@ -68,6 +73,18 @@ function Term(props: ITermProps) {
       mods: ['purple'],
     },
   ];
+  const synonyms = get(details, 'synonyms', []);
+  const validStart = get(details, 'validStart');
+  const validEnd = get(details, 'validEnd');
+  const invalidReason: string = get(details, 'invalidReason', '');
+  const validTerm = get(details, 'validTerm', {
+    id: -1,
+    name: '',
+  });
+  const description = `${get(details, 'vocabularyName', '')};
+    ${get(details, 'vocabularyVersion', '')};
+    ${get(details, 'vocabularyReference', '')}`;
+  const onlyTable = !isStandard || connectionsCount === 0;
 
   return (    
     <div {...classes()}>
@@ -85,7 +102,7 @@ function Term(props: ITermProps) {
             <ul>
               <ListItem>
                 <span {...classes('attribute-name')}>Domain ID</span>
-                <span>{get(details, 'domain.id', '')}</span>
+                <span>{get(details, 'domainId', '')}</span>
               </ListItem>
               <ListItem>
                 <span {...classes('attribute-name')}>Concept Class ID</span>
@@ -93,7 +110,18 @@ function Term(props: ITermProps) {
               </ListItem>
               <ListItem>
                 <span {...classes('attribute-name')}>Vocabulary ID</span>
-                <span>{get(details, 'vocabulary.id', '')}</span>
+                <div {...classes('description')}>
+                  <span {...classes('vocid')}>{get(details, 'vocabularyId', '')}</span>
+                  {description &&
+                    <div
+                      {...classes({ element: 'description-tooltip', extra: 'ac-tooltip' })}
+                      aria-label={description}
+                      data-tootik-conf='right multiline'
+                    >
+                      help_outline
+                    </div>
+                  }
+                </div>
               </ListItem>
               <ListItem>
                 <span {...classes('attribute-name')}>Concept ID</span>
@@ -105,21 +133,51 @@ function Term(props: ITermProps) {
               </ListItem>
               <ListItem>
                 <span {...classes('attribute-name')}>Invalid reason</span>
-                <span>{get(details, 'invalidReason', '')}</span>
+                <span>
+                  {invalidReason}
+                  {invalidReason !== 'Valid' && get(validTerm, 'id', -1) !== -1 &&
+                    <div>
+                      Remapped to <Link to={paths.term(validTerm.id)}>{validTerm.name}</Link>
+                    </div>
+                  }
+                </span>
               </ListItem>
               <ListItem>
                 <span {...classes('attribute-name')}>Standard concept</span>
                 <span>{get(details, 'standardConcept', '')}</span>
               </ListItem>
+              {synonyms.length
+                ? <ListItem>
+                    <span {...classes('attribute-name')}>Synonyms</span>
+                    <div>{synonyms.map(synonym => <div>
+                      <span>{synonym}</span>
+                    </div>)}</div>
+                  </ListItem>
+                : null
+              }
+              {invalidReason !== 'Valid' && validStart
+                ? <ListItem>
+                    <span {...classes('attribute-name')}>Valid start</span>
+                    <span>{moment(validStart).format(commonDateFormat)}</span>
+                  </ListItem>
+                : null
+              }
+              {invalidReason !== 'Valid' && validEnd
+                ? <ListItem>
+                    <span {...classes('attribute-name')}>Valid end</span>
+                    <span>{validEnd}</span>
+                  </ListItem>
+                : null
+              }
             </ul>
           </Panel>
         </div>
-        <div className="col-xs-12 col-md-7">
+        <div {...classes({element: 'connections-container', extra: 'col-xs-12 col-md-7'})}>
           <Panel
             {...classes({ element: 'connections-wrapper', modifiers: { stretched: !isStandard || !isTableMode } })}
             title={title}
             headerBtns={() => {
-                if (details && isStandard) {
+                if (details && !onlyTable) {
                   return <Tabs
                     options={tabs}
                     onChange={changeTab}
@@ -129,7 +187,7 @@ function Term(props: ITermProps) {
               }
             }
           >
-            {isTableMode || !isStandard
+            {isTableMode || onlyTable
               ? <TermConnectionsTable />
               : [<TermFiltersPanel termId={termId} key="1" />, <TermConnections key="2" />]
             }

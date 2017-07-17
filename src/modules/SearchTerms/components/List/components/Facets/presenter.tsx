@@ -4,7 +4,6 @@ import { Action } from 'redux';
 import { FormProps, DataShape, change as reduxFormChange } from 'redux-form';
 import {
   FacetedSearchPanel,
-  LoadingPanel,
 } from 'arachne-components';
 import { locationDescriptor } from 'modules/SearchTerms/components/List/presenter';
 import { push } from 'react-router-redux';
@@ -41,7 +40,6 @@ interface IFacetStateProps {
   pageSize: number;
   currentAddress: locationDescriptor;
   query: string;
-  isLoading: boolean;
   submittedQuery: string;
 }
 
@@ -49,14 +47,12 @@ interface IFacetDispatchProps {
   search: (address: string) => typeof push;
   resetForm: () => Action;
   resetToolbar: () => Action;
-  updateFacets: (params: searchParams) => (dispatch: Function) => any;
   changeFacets: (fieldName: string, value: Array<string>) => typeof reduxFormChange;
 }
 
 interface IFacets extends IFacetStateProps, IFacetDispatchProps {
   clearFilter: Function;
   doFilter: Function;
-  doUpdateFacets: Function;
   removeFacetValue: (name: string, index: number) => any;
   resetQuery: () => void;
 }
@@ -80,7 +76,6 @@ function Facets(props: IFacets) {
     facets,
     doFilter,
     clearFilter,
-    isLoading,
     filterFormState,
     removeFacetValue,
     query,
@@ -126,7 +121,6 @@ function Facets(props: IFacets) {
         isAccordion={true}
         {...props}
       />
-      <LoadingPanel active={isLoading} />
     </div>
   );
 }

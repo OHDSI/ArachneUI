@@ -8,6 +8,8 @@ import ControlPanel from './components/ControlPanel';
 import Results  from './components/Results';
 import ModalConfirmDownload from './components/ModalConfirmDownload';
 import ModalDownloadResult from './components/ModalDownloadResult';
+import ModalRequestLicense from './components/ModalRequestLicense';
+import ModalConfirmLicense from './components/ModalConfirmLicense';
 
 require('./style.scss');
 
@@ -29,6 +31,8 @@ function VocabsList(props: IListProps) {
       <Results />
       <ModalConfirmDownload />
       <ModalDownloadResult />
+      <ModalRequestLicense />
+      <ModalConfirmLicense />
       <LoadingPanel active={isLoading} />
     </div>
   );

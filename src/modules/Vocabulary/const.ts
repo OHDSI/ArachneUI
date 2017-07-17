@@ -5,11 +5,15 @@ const forms = keyMirror({
 	toolbar: null,
   downloadSettings: null,
   bundle: null,
+  notifications: null,
 });
 
 const modal = keyMirror({
   download: null,
   downloadResult: null,
+  requestLicense: null,
+  confirmLicense: null,
+  notifications: null,
 });
 
 const actionTypes = keyMirror({

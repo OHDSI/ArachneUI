@@ -14,6 +14,16 @@
     &__voc-th {
       width: 40%;
     }
+
+    &__voc-td {
+      & .ac-link {
+        font-weight: normal;
+      }
+    }
+
+    &__pending {
+      font-weight: 600; /*$font-weight-middle*/
+    }
   }
 
   &vocab {

@@ -8,6 +8,7 @@ import {
 } from 'arachne-components';
 import { push } from 'react-router-redux';
 import { Field, FormProps } from 'redux-form';
+import { licenseStatuses } from 'const/vocabulary';
 import { Vocabulary } from './selectors';
 
 require('./style.scss');
@@ -26,7 +27,7 @@ interface ICellProps {
 };
 
 interface IResultsStateProps {
-  areAllChecked: boolean;
+  areAllChecked: boolean | Object;
   areAllRowsChecked: boolean;
   sorting: string;
   vocabularies: Array<Vocabulary>;
@@ -36,6 +37,7 @@ interface IResultsStateProps {
 interface IResultsDispatchProps {
   toggleAll: (on: boolean) => (dispatch: Function) => any;
   toggle: (id: number, on: boolean) => (dispatch: Function) => any;
+  openRequestModal: Function;
 };
 
 interface IResultsProps extends IResultsStateProps, IResultsDispatchProps {
@@ -52,10 +54,25 @@ function DownloadCheckbox(props: IDownloadCheckboxProps) {
 }
 
 function CellChecked(props: any) {
-  const { className, isCheckable, name } = props;
+  const { className, isCheckable, name, openRequestModal, isPending } = props;
+  
   return isCheckable
     ? <Field component={DownloadCheckbox} options={{ className }} name={name} />
-    : <span className={`${className}--disabled`}>vpn_key</span>;
+    : 
+    isPending
+      ? <span
+          className={`${className}--disabled`}
+        >
+          timer
+        </span>  
+       : <span
+          className={`${className}--disabled ac-tooltip`}
+          aria-label='Click to request access'
+          data-tootik-conf='right'
+          onClick={openRequestModal}
+        >
+          vpn_key
+        </span>
 }
 
 function Results(props: IResultsProps & FormProps<{}, {}, {}>) {
@@ -66,9 +83,16 @@ function Results(props: IResultsProps & FormProps<{}, {}, {}>) {
     setSorting,
     toggleAllCheckboxes,
     toggle,
+    openRequestModal,
   } = props;
   const classes = BEMHelper('vocabularies');
   const selectAllButton = <Checkbox onChange={toggleAllCheckboxes} isChecked={areAllRowsChecked} />;
+  // add modifiers for Table component
+  vocabularies.map((vocabulary) => {
+    if (vocabulary.isChecked) {
+    vocabulary.tableRowClass = classes('selected-row').className;
+    }
+  });
 
   return (
     <div {...classes()}>
@@ -94,8 +118,12 @@ function Results(props: IResultsProps & FormProps<{}, {}, {}>) {
             name: `vocabulary[${vocab.id}]`,
             className: classes({
               element: 'cell',
-              modifiers: { unclickable: vocab.isCheckable },
+              modifiers: {
+                unclickable: vocab.isCheckable,
+              },
             }).className,
+            isPending: vocab.status === licenseStatuses.PENDING,
+            openRequestModal: () => openRequestModal(vocab),
           })}
          />
         <Cell
@@ -152,7 +180,7 @@ function Results(props: IResultsProps & FormProps<{}, {}, {}>) {
         />
         <Cell
           {...classes('update')}
-          header='Update'
+          header='Latest Update'
           field='update'
           props={(vocab: Vocabulary) => ({              
             className: classes({

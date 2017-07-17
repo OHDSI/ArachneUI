@@ -17,7 +17,14 @@ function CellRemove(props: any) {
 
 function CellVocabs(props: any) {
   const { value, openEditModal } = props;
-  return <Link onClick={openEditModal}>{`${value.length} vocabularies`}</Link>;
+  const classes = BEMHelper('licenses-list');
+  
+  return <Link onClick={openEditModal}>
+    {`${value.count} vocabularies`} {value.pendingCount > 0
+      ? <span {...classes('pending')}>({value.pendingCount} pending)</span>
+      : ''
+    }
+  </Link>;
 }
 
 interface IListProps {
@@ -50,7 +57,10 @@ function Results(props: IListProps) {
           header='Vocabularies'
           field='vocabularies'
           props={(entity: License) => ({
-            value: entity.vocabularies,
+            value: {
+              count: entity.vocabularies.length,
+              pendingCount: entity.pendingCount,
+            },
             openEditModal: () => openEditModal(entity),
           })}
         />

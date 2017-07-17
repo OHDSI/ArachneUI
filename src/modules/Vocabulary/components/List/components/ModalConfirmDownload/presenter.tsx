@@ -1,7 +1,8 @@
 import * as React from 'react';
 import BEMHelper from 'services/BemHelper';
-import { Modal, ListItem, Button } from 'arachne-components';
+import { Modal, ListItem, Button, Select, Checkbox, LoadingPanel } from 'arachne-components';
 import { DownloadParams } from 'modules/Vocabulary/actions/download';
+import { cdmVersions } from 'modules/Vocabulary/const';
 import { Field } from 'redux-form';
 
 require('./style.scss');
@@ -14,8 +15,11 @@ interface IVocab {
 interface IModalStateProps {
 	selectedVocabs: Array<IVocab>;
 	selectedVocabIds: Array<number>;
-	cdmVersion: string;
-	bundleName: string;
+	isOpened: boolean;
+	initialValues: {
+		[key: string]: any;
+	};
+	isLoading: boolean;
 };
 
 interface IModalDispatchProps {
@@ -24,6 +28,8 @@ interface IModalDispatchProps {
 	download: () => null;
   requestDownload: (params: DownloadParams) => any;
 	showResult: () => null;
+	reset: Function;
+	notify: Function;
 };
 
 interface IModalProps extends IModalStateProps, IModalDispatchProps {
@@ -33,13 +39,38 @@ interface IModalProps extends IModalStateProps, IModalDispatchProps {
 	error: string;
 };
 
-function BundleName({ options, input }) {
+interface IReduxFieldProps {
+  options: any;
+  input: any;
+};
+
+function BundleName(props: IReduxFieldProps) {
+	const { options, input } = props;
 	return <input
 		className={options.className}
 		value={input.value}
 		onChange={input.onChange}
 		placeholder='name bundle'
 	/>;
+}
+
+function cdmVersionSelect(props: IReduxFieldProps) {
+  const { options, input } = props;
+  return (<Select
+    className={options.className}
+    options={cdmVersions}
+    value={input.value}
+    onChange={input.onChange}
+   />);
+}
+
+function Notify(props: IReduxFieldProps) {
+	const { options, input } = props;
+	return (<Checkbox
+		isChecked={input.value === true}
+		onChange={input.onChange}
+		label='Notify me about changes in these vocabularies'
+	/>);
 }
 
 function ModalConfirmDownload(props: IModalProps) {
@@ -51,6 +82,7 @@ function ModalConfirmDownload(props: IModalProps) {
     selectedVocabs,
     handleSubmit,
     error,
+    isLoading,
   } = props;
   const classes = BEMHelper('confirm-download');
 
@@ -62,6 +94,11 @@ function ModalConfirmDownload(props: IModalProps) {
 	    			<Field component={BundleName} name='bundleName' options={{
 	    				className: classes('bundle-name-input').className
 	    			}} />
+			      <Field
+			        component={cdmVersionSelect}
+			        options={{...classes('cdm-version-select')}}
+			        name='cdmVersion'
+			      />
 	    		</div>
 		      {selectedVocabs && selectedVocabs.map((voc: IVocab, index: number) =>
 		      	<ListItem key={index}>
@@ -72,6 +109,13 @@ function ModalConfirmDownload(props: IModalProps) {
 		      	</ListItem>
 		      	)
 		      }
+		      <ListItem {...classes('notify')}>
+			      <Field
+			        component={Notify}
+			        options={{...classes('notify')}}
+			        name='notify'
+			      />
+		      </ListItem>
 		      {error &&
 		      	<div {...classes('errors')}>
 			      	<span {...classes('error')}>{error}</span>
@@ -83,6 +127,7 @@ function ModalConfirmDownload(props: IModalProps) {
 		      </div>
 	      </div>
 	    </form>
+	    <LoadingPanel active={isLoading} />
     </Modal>);
 }
 

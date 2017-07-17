@@ -1,6 +1,7 @@
 import { actionTypes } from 'modules/Auth/const';
 import { push as goToPage } from 'react-router-redux';
 import { authTokenName } from 'const';
+import * as _ from 'lodash';
 
 function setToken(token: string) {
   if (token) {
@@ -21,15 +22,7 @@ function setBackUrl(url: string) {
   };
 }
 
-function logout() {
-  return dispatch => {
-    dispatch(setToken(null));
-    dispatch(goToPage('/'));
-  };
-}
-
 export default {
-  logout,
   setToken,
   setBackUrl,
 };

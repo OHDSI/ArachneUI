@@ -7,17 +7,20 @@ import BEMHelper from 'services/BemHelper';
 import IModule from 'modules/IModule';
 import {
   Header,
+  LoadingPanel,
 } from 'arachne-components';
 import {
   NavItem,
 } from 'components';
 import AboutInfo from 'modules/Portal/components/AboutInfo';
 import imgs from 'const/images';
+import { get } from 'lodash';
 
 require('./styles/appContainer.scss');
 
 interface IAppState extends Props<App> {
   isUserAuthed: boolean;
+  isLoggingOut: boolean;
 };
 
 interface IAppDispatch {
@@ -46,6 +49,7 @@ class App extends Component<IAppProps, {}> {
           navItems={this.props.navItems}
         />
         {this.props.children}
+        <LoadingPanel active={this.props.isLoggingOut} />
         <AboutInfo />
       </div>
     );
@@ -54,9 +58,11 @@ class App extends Component<IAppProps, {}> {
 
 function mapStateToProps(state: any): IAppState {
   const isUserAuthed = true;
+  const isLoggingOut = get(state, 'auth.logout.isLoading', false);
 
   return {
     isUserAuthed,
+    isLoggingOut,
   };
 }
 

@@ -2,15 +2,21 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import { push as goToPage } from 'react-router-redux';
 import actions from 'modules/Vocabulary/actions';
-import { reduxForm, change as reduxFormChange, SubmissionError } from 'redux-form';
+import { reduxForm, change as reduxFormChange, SubmissionError, reset } from 'redux-form';
 import { ModalUtils } from 'arachne-components';
-import { modal, forms, paths } from 'modules/Vocabulary/const';
+import { modal, forms, paths, cdmVersions } from 'modules/Vocabulary/const';
 import { get } from 'lodash';
 import selectors from 'modules/Vocabulary/components/List/components/Results/selectors';
 import presenter from './presenter';
 import { IModalProps, IModalStateProps, IModalDispatchProps } from './presenter';
 
 class ModalConfirmDownload extends Component<IModalProps, {}> {
+  componentWillReceiveProps(nextProps) {
+    if (this.props.isOpened !== nextProps.isOpened && nextProps.isOpened === true) {
+      this.props.reset();
+    }
+  }
+
   render() {
     return presenter(this.props);
   }
@@ -26,14 +32,18 @@ function mapStateToProps(state: any): IModalStateProps {
   });
   const vocabs = selectors.getVocabs(state);
   const selectedVocabs = vocabs.filter(voc => selectedVocabIds.includes(voc.id));
-  const cdmVersion = get(state, `form.${forms.downloadSettings}.values.cdmVersion`, '4.5') || '4.5';
-  const bundleName = get(state, 'form.bundle.values.bundleName', '');
+  const isOpened = get(state, `modal.${modal.download}.isOpened`, false);
+  const isLoading = get(state, 'vocabulary.download.isSaving', false)
+    || get(state, 'vocabulary.notifications.isSaving', false);
 
 	return {
     selectedVocabs,
     selectedVocabIds,
-    cdmVersion,
-    bundleName,
+    isOpened,
+    initialValues: {
+      cdmVersion: cdmVersions[cdmVersions.length - 1].value,
+    },
+    isLoading,
   };
 }
 
@@ -42,6 +52,8 @@ const mapDispatchToProps = {
   remove: (id: number) => reduxFormChange(forms.download, `vocabulary[${id}]`, false),
   close: () => ModalUtils.actions.toggle(modal.download, false),
   showResult: () => ModalUtils.actions.toggle(modal.downloadResult, true),
+  reset: () => reset(forms.bundle),
+  notify: actions.download.requestNotification,
 };
 
 function mergeProps(
@@ -59,19 +71,30 @@ function mergeProps(
         dispatchProps.close();
       }
     },
-    download: () => {
-      const promise = dispatchProps.requestDownload({
-        cdmVersion: stateProps.cdmVersion,
-        ids: stateProps.selectedVocabIds.join(','),
-        name: stateProps.bundleName,
-      })
-      .then(() => dispatchProps.close())
-      .then(() => dispatchProps.showResult())
-      .catch(({ message }) => {
-        throw new SubmissionError({
-          _error: message,
+    download: ({ bundleName, cdmVersion, notify }) => {
+      const promises = [];
+      promises.push(dispatchProps.requestDownload({
+          cdmVersion: cdmVersion,
+          ids: stateProps.selectedVocabIds.join(','),
+          name: bundleName,
+        })
+       );
+      if (notify) {
+        stateProps.selectedVocabIds.forEach(vocabularyV4Id =>
+          promises.push(dispatchProps.notify({
+            notify: true,
+            vocabularyV4Id,
+          })
+        ));
+      }
+      const promise = Promise.all(promises)
+        .then(() => dispatchProps.close())
+        .then(() => dispatchProps.showResult())        
+        .catch(({ message }) => {
+          throw new SubmissionError({
+            _error: message,
+          });
         });
-      });
 
       return promise;
     },

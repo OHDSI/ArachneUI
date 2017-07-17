@@ -19,8 +19,10 @@ interface IUserMenuState {
 }
 
 interface IUserMenuDispatch {
-  logout: Function,
-  doLogout: Function,
+  loadPrincipal: Function,
+  resetPrincipal: Function,
+  logoutLocal: Function,
+  logoutSLO: Function,
 };
 
 interface IUserMenuProps extends IUserMenuState, IUserMenuDispatch {};
@@ -33,7 +35,6 @@ function UserMenu(props) {
     fullname,
     logout,
     isAdmin,
-	doLogout,
   } = props;
   let dropdownInstance;
 
@@ -65,21 +66,21 @@ function UserMenu(props) {
             {isAdmin &&
               <Link
                 {...classes('dropdown-link')}
-                to={AdminPaths.licenses()}>Licenses</Link>
+                to={AdminPaths.licenses(false)}>Licenses</Link>
             }
             <Link
               {...classes('dropdown-link')}
-              onClick={() => {
-				  doLogout()
-				  .then(() => logout());
-			  }}>Logout</Link>
+              onClick={logout}
+            >
+              Logout
+            </Link>
           </div>
         </DropdownContent>
       </Dropdown>
     );
   } else {
     return (
-      <NavItem path={paths.login()} name="Login" />
+      <NavItem module='auth' path={paths.login()} name="Login" />
     )
   }
   

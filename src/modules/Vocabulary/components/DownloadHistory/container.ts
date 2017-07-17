@@ -2,6 +2,8 @@ import { connect } from 'react-redux';
 import { Component } from 'react';
 import actions from 'modules/Vocabulary/actions';
 import { get } from 'lodash';
+import { modal } from 'modules/Vocabulary/const';
+import { ModalUtils } from 'arachne-components';
 import presenter from './presenter';
 import selectors from './selectors';
 
@@ -11,17 +13,39 @@ import {
 	IDownloadHistoryProps,
 } from './presenter';
 
-class DownloadHistory extends Component<IDownloadHistoryProps, { expandedBundleId: number }> {
+interface IDownloadHistory {
+	refreshInterval: number;
+};
+
+class DownloadHistory
+extends Component<IDownloadHistoryProps, { expandedBundleId: number }>
+implements IDownloadHistory {
+	public refreshInterval;
+
 	constructor() {
 		super();
 		this.state = {
 			expandedBundleId: 0,
 		};
 		this.toggle = this.toggle.bind(this);
+		this.refreshInterval = null;
+	}
+
+	startPolling() {
+		this.refreshInterval = setInterval(this.props.load, 5000);
+	}
+
+	stopPolling() {
+		clearInterval(this.refreshInterval);
 	}
 
 	componentWillMount() {
 		this.props.load();
+		this.startPolling();
+	}
+
+	componentWillUnmount() {
+		this.stopPolling();
 	}
 
 	toggle(bundleId) {
@@ -53,6 +77,7 @@ const mapDispatchToProps = {
 	load: actions.history.load,
 	remove: actions.history.remove,
 	restore: actions.history.restore,
+	showNotifications: () => ModalUtils.actions.toggle(modal.notifications, true),
 };
 
 function mergeProps(

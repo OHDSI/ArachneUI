@@ -5,7 +5,7 @@ import {
   Select,
   Link,
 } from 'arachne-components';
-import { cdmVersions, paths } from 'modules/Vocabulary/const';
+import { paths } from 'modules/Vocabulary/const';
 import { Field, FormProps } from 'redux-form';
 
 require('./style.scss');
@@ -16,10 +16,8 @@ interface IReduxFieldProps {
 };
 
 interface IPanelStateProps {
-  cdmVersion: string,
-  selectedVocabularies: Array<string>,
+  vocabulariesSelected: boolean,
   initialValues: {
-    cdmVersion: string;
     selection: string;
   }
 };
@@ -31,16 +29,6 @@ interface IPanelDispatchProps {
 interface IPanelProps extends IPanelStateProps, IPanelDispatchProps {
   download: Function;
 };
-
-function cdmVersionSelect(props: IReduxFieldProps) {
-  const { options, input } = props;
-  return (<Select
-    className={options.className}
-    options={cdmVersions}
-    value={input.value}
-    onChange={input.onChange}
-   />);
-}
 
 function selection(props: IReduxFieldProps) {
   const { options, input } = props;
@@ -63,19 +51,13 @@ function selection(props: IReduxFieldProps) {
 
 function ControlPanel(props: IPanelProps & FormProps<{}, {}, {}>) {
   const {
-    cdmVersion,
     download,
-    selectedVocabularies,
+    vocabulariesSelected,
   } = props;
   const classes = BEMHelper('vocabulary-control-panel');
 
   return (
     <div {...classes()}>
-      <Field
-        component={cdmVersionSelect}
-        options={{...classes('cdm-version-select')}}
-        name='cdmVersion'
-      />
       <Field
         component={selection}
         options={{...classes('selection')}}
@@ -86,10 +68,10 @@ function ControlPanel(props: IPanelProps & FormProps<{}, {}, {}>) {
         to={paths.history()}
       >Show History</Link>
       <Button
-        {...classes({ element: 'download-button', modifiers: { disabled: !selectedVocabularies.length } })}
+        {...classes({ element: 'download-button', modifiers: { disabled: !vocabulariesSelected } })}
         mods={['submit', 'rounded']}
         onClick={download}
-        disabled={!selectedVocabularies.length}
+        disabled={!vocabulariesSelected}
       >Download vocabularies</Button>
     </div>
     );

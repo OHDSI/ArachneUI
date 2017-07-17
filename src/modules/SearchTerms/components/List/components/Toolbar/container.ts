@@ -37,7 +37,6 @@ function mapStateToProps(state: Object): IToolbarStateProps {
 
 const mapDispatchToProps = {
   search: (address: string) => goToPage(address),
-  updateFacets: actions.facets.updateFacets,
 };
 
 function mergeProps(
@@ -60,13 +59,13 @@ function mergeProps(
 			query: data.searchString,
 		  };
 
-		  dispatchProps.updateFacets(filterParams);
 		},
 	};
 }
 
 const FormToolbar = reduxForm({
   form: forms.toolbar,
+  enableReinitialize: true,
 })(Toolbar);
 
 export default connect

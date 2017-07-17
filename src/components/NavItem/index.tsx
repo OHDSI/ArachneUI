@@ -1,3 +1,3 @@
-import NavItem from './presenter';
+import NavItem from './container';
 
 export default NavItem;

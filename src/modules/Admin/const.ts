@@ -3,6 +3,7 @@ import keyMirror = require('keymirror');
 const forms = keyMirror({
 	addPermission: null,
 	editPermission: null,
+	licenseFilter: null,
 });
 
 const modal = keyMirror({
@@ -14,11 +15,13 @@ const actionTypes = keyMirror({
 });
 
 const paths = {
-	licenses: () => '/admin/licenses',
+	licenses: (pendingOnly: boolean) => `/admin/licenses${pendingOnly ? '/pending' : ''}`,
 };
 
 const apiPaths = {
 };
+
+const pageSize = 12;
 
 export {
   actionTypes,
@@ -26,4 +29,5 @@ export {
   forms,
   modal,
   paths,
+  pageSize,
 };

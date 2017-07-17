@@ -3,6 +3,10 @@ import {
   Button,
   LoadingPanel,
   Toolbar,
+  Tabs,
+  Pagination,
+  Form,
+  FormInput,
 } from 'arachne-components';
 import BEMHelper from 'services/BemHelper';
 import Table from './components/Table';
@@ -13,23 +17,63 @@ require('./style.scss');
 
 interface ILicensesProps {
   openModal: any;
-  load: () => (dispatch: Function) => any;
+  load: (page: number, pageSize: number) => (dispatch: Function) => any;
   isLoading: boolean;
+  pendingOnly: boolean;
+  filter: Function;
+  page: number;
+  pages: number;
+  path: string;
 };
 
-
 function Licenses(props: ILicensesProps) {
-  const { isLoading, openModal } = props;
+  const { isLoading, openModal, pendingOnly, filter, page, pages, path } = props;
   const classes = BEMHelper('licenses');
+  const options = [
+    {
+      label: 'All',
+      value: false,
+    },
+    {
+      label: 'Pending',
+      value: true,
+    },
+  ];
+  const fields = [
+    {
+      name: 'username',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          placeholder: 'Filter by name',
+        },
+      },
+    }
+  ];
 
   return (
     <div {...classes()}>
-      <Toolbar caption='Licenses'>      
+      <Toolbar caption='Licenses'>
+        <Form
+          {...props}
+          fields={fields}
+          onSubmit={() => {}}
+        />
+        <Tabs
+          options={options}
+          onChange={(val) => filter(val)}
+          value={pendingOnly}
+        />
         <Button {...classes('add-button')} onClick={openModal} mods={['submit', 'rounded']}>
           Add permission
         </Button>
       </Toolbar>
-      <Table />
+      <div {...classes('table')}>
+        <Table />
+      </div>
+      <div {...classes('pagination')}>
+        <Pagination currentPage={page} pages={pages} path={path} />
+      </div>
       <ModalAddPermission />
       <ModalEditPermissions />
       <LoadingPanel active={isLoading} />
