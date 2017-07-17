@@ -301,7 +301,8 @@ function printGraph(
   let captionTransitionTimeout;
 
   const svg = d3select
-    .select(container);   
+    .select(container)
+    .attr('viewBox', `0 0 ${width} ${height}`);   
 
   const treeWrapper: any = svg.selectAll('g#wrapper');
   let initialZoom = 0.75;
@@ -526,6 +527,7 @@ function TermConnections(props: ITermConnectionsProps) {
       {...classes()}>
     <svg
       {...classes('graph')}
+      preserveAspectRatio='xMinYMax slice'
       ref={element => {
         if (element && terms) {
           printGraph(element, terms, links, goToTerm, setLoadingStatus, termFilters.zoomLevel);

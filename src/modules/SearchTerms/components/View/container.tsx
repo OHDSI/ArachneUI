@@ -20,7 +20,15 @@ interface ITermRoute {
   };
 }
 
-class Term extends Component<ITermProps, {}> {
+class Term extends Component<ITermProps, { isFullscreen: boolean }> {
+  constructor() {
+    super();
+    this.state = {
+      isFullscreen: false,
+    };
+    this.toggleFullscreen = this.toggleFullscreen.bind(this);
+  }
+
   componentWillMount() {
     this.props.fetch(this.props.termId);
     this.props.fetchConceptAncestors(
@@ -55,8 +63,18 @@ class Term extends Component<ITermProps, {}> {
     }
   }
 
+  toggleFullscreen() {
+    this.setState({
+      isFullscreen: !this.state.isFullscreen,
+    });
+  }
+
   render() {
-    return presenter(this.props);
+    return presenter({
+      ...this.props,
+      isFullscreen: this.state.isFullscreen,
+      toggleFullscreen: this.toggleFullscreen,
+    });
   }
 }
 
@@ -103,7 +121,10 @@ function mergeProps(
     ...ownProps,
     changeTab: (tab) => {
       const address = new URI(paths.term(stateProps.details.id, tab === 'table'));
-      address.search(stateProps.termFilters);
+      address.search({
+        fullscreen: stateProps.isFullscreen ? 'true' : 'false',
+        ...stateProps.termFilters
+      });
       return dispatchProps.redirect(address.href());
     },
   };
