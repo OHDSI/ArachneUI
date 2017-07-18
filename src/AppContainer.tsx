@@ -16,8 +16,6 @@ import AboutInfo from 'modules/Portal/components/AboutInfo';
 import imgs from 'const/images';
 import { get } from 'lodash';
 
-require('./styles/appContainer.scss');
-
 interface IAppState extends Props<App> {
   isUserAuthed: boolean;
   isLoggingOut: boolean;

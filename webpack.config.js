@@ -4,10 +4,8 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const sourcePath = path.join(__dirname, './src');
 const outPath = path.join(__dirname, './dist');
-const webapp = path.join(__dirname, '/dist');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
 
 module.exports = {
   context: sourcePath,
@@ -95,16 +93,7 @@ module.exports = {
         from: path.join(__dirname, 'resources/icons'),
         to: path.join(outPath, 'icons')
       },
-      {
-        from: path.join(__dirname, 'node_modules/arachne-components/lib/styles/components.css'),
-        to: path.join(webapp, 'css')
-      },
     ]),
-    new HtmlWebpackIncludeAssetsPlugin({
-      assets: ['css/components.css'],
-      append: false,
-      hash: true
-    })
   ],
   node: {
     // workaround for webpack-dev-server issue 
