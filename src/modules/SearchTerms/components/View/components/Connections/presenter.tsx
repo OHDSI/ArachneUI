@@ -32,6 +32,7 @@ import {
   circleWidth,
   circleBorderRadius,
 } from 'modules/SearchTerms/const';
+import { find } from 'lodash';
 
 require('./style.scss');
 
@@ -62,8 +63,8 @@ type GraphConnection = {
 
 type GraphLink = {
   id?: number;
-  source: GraphNode;
-  target: GraphNode;
+  source: number;
+  target: number;
 };
 
 interface ICanvas extends d3select.Selection<d3select.BaseType, {}, SVGElement, {}> {
@@ -259,30 +260,6 @@ function getHint(d, zoomLevel) {
   }
 }
 
-function updateSimulation(
-  concepts,
-  connections,
-  zoomLevel
-) {
-  connections
-    .attr('d', (c: GraphLink) => {
-      const from = {
-        x: c.source.fx + getWidth(c.source, zoomLevel),
-        y: c.source.fy + getHeight(c.source, zoomLevel)/2
-      }
-      const to = {
-        x: c.target.fx,
-        y: c.target.fy + getHeight(c.target, zoomLevel)/2
-      };
-      return diagonal(from, to, c.source.depth <= c.target.depth);
-    });
-
-  concepts
-    .attr('transform', (d: GraphNode) => {
-      return `translate(${d.x}, ${d.y})`;
-    });
-}
-
 function printGraph(
   container: SVGElement,
   terms: Array<GraphNode>,
@@ -374,7 +351,7 @@ function printGraph(
   const wrappers = concepts
     .enter()
     .append('svg:g')
-    .attr('class', 'node')
+  wrappers.attr('class', 'node')
     .attr('height', d => getHeight(d, zoomLevel))
     .attr('width', d => getWidth(d, zoomLevel))
     .classed('clickable', zoomLevel === 4)
@@ -389,6 +366,9 @@ function printGraph(
     })
     .on('mouseout', (d: GraphNode) => {
       captionTransitionTimeout = setTimeout(() => conceptName.text(''), 300);
+    })
+    .attr('transform', (d: GraphNode) => {
+      return `translate(${d.fx}, ${d.fy})`;
     });
   wrappers.append('svg:rect')    
     .attr('class', (d: GraphNode) => d.isCurrent ? 'nodeWrapper current' : 'nodeWrapper')
@@ -465,7 +445,7 @@ function printGraph(
   }
 
   const connections = treeWrapper.selectAll('path.link')
-    .data(links);
+    .data(links, (d: any) => `${d.source}-${d.target}`);
   // remove all connections
   connections
     .exit()
@@ -475,23 +455,20 @@ function printGraph(
     .insert('path', 'g')
     .attr('class', 'link')
     .attr('marker-end', 'url(#end)')
-    .attr('data-from', (c: any) => c.source.id)
-    .attr('data-to', (c: any) => c.target.id);
-
-  // fix y coordinates for concepts
-
-  const simulation = d3force
-    .forceSimulation(termsFixed)
-    .force('collide', d3.forceCollide().radius(d => rectHeight).iterations(2))
-    .force('link', d3.forceLink(links).id((d: GraphNode) => d.id.toString()).distance(rectWidth).strength(1))
-    .force('center', d3.forceCenter(height/2, width/2))
-    .on('tick', updateSimulation.bind(
-      null,
-      wrappers,
-      connectors,
-      zoomLevel
-    ));
-  simulation.restart();
+    .transition(d3transition.transition('d').duration(100))
+    .attr('d', (c: GraphLink) => {
+      const source = find(termsFixed, (d: GraphNode) => d.id === c.source);
+      const target = find(termsFixed, (d: GraphNode) => d.id === c.target);
+      const from = {
+        x: source.fx + getWidth(source, zoomLevel),
+        y: source.fy + getHeight(source, zoomLevel)/2
+      }
+      const to = {
+        x: target.fx,
+        y: target.fy + getHeight(target, zoomLevel)/2
+      };
+      return diagonal(from, to, source.depth <= target.depth);
+    });
   setLoadingStatus(false);
 
   // zoom controls

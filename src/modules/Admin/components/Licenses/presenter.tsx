@@ -53,21 +53,23 @@ function Licenses(props: ILicensesProps) {
 
   return (
     <div {...classes()}>
-      <Toolbar caption='Licenses'>
-        <Form
-          {...props}
-          fields={fields}
-          onSubmit={() => {}}
-        />
-        <Tabs
-          options={options}
-          onChange={(val) => filter(val)}
-          value={pendingOnly}
-        />
-        <Button {...classes('add-button')} onClick={openModal} mods={['submit', 'rounded']}>
-          Add permission
-        </Button>
-      </Toolbar>
+      <div {...classes('toolbar')}>
+        <Toolbar caption='Licenses'>
+          <Form
+            {...props}
+            fields={fields}
+            onSubmit={() => {}}
+          />
+          <Tabs
+            options={options}
+            onChange={(val) => filter(val)}
+            value={pendingOnly}
+          />
+          <Button {...classes('add-button')} onClick={openModal} mods={['submit', 'rounded']}>
+            Add permission
+          </Button>
+        </Toolbar>
+      </div>
       <div {...classes('table')}>
         <Table />
       </div>

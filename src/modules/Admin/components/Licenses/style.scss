@@ -14,11 +14,13 @@
     	}
 		}
 
-    & .ac-form {
-      &__group {
-        margin-bottom: 0;
-      }
-    }
+    &__toolbar {
+    	& .ac-form {
+	      &__group {
+	      	margin-bottom: 0;
+	      }
+	    }
+	  }
 
     &__table {
     	flex-grow: 1;
