@@ -35,12 +35,12 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        exclude: /(node_modules|arachnefrontcomponents)/,
+        exclude: /(node_modules|ArachneFrontComponents)/,
         loaders: ['react-hot-loader', 'awesome-typescript-loader']
       },
       {
         test: /\.jsx?$/,
-        exclude: /(node_modules|arachnefrontcomponents)/,
+        exclude: /(node_modules|ArachneFrontComponents)/,
         loaders: ['react-hot-loader', 'babel-loader']
       },
       {
