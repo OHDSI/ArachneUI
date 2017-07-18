@@ -19,7 +19,7 @@ class Facets extends Component<IFacets, void> {
         typeof props.filterFormState === 'undefined'
       ) ||
       // or updated
-      this.props.filterFormState !== props.filterFormState
+      JSON.stringify(this.props.filterFormState) !== JSON.stringify(props.filterFormState)
     ) {
       this.props.doFilter(props.filterFormState);
     }

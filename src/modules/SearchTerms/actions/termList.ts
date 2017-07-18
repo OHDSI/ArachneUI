@@ -1,7 +1,7 @@
 import API from 'services/Api';
 import services from '../apiServices';
 
-import { actionTypes } from 'modules/SearchTerms/const';
+import { actionTypes, resultsPageSize } from 'modules/SearchTerms/const';
 import { IAppAction } from 'actions';
 
 type searchParams = {
@@ -33,7 +33,11 @@ function changePageSize(pageSize: number) {
 }
 
 function load(params: searchParams) {
-	return services.terms.find({ query: params });
+	return services.terms.find({ query: {
+      pageSize: resultsPageSize,
+      ...params,
+    }
+  });
 }
 
 function fetch(id: number) {
