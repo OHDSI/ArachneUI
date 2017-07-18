@@ -90,11 +90,14 @@ function Term(props: ITermProps) {
   });
   const vocabularyReference = get(details, 'vocabularyReference', '')
   const description = <div {...classes('description-body')}>
-      <span {...classes('description-line')}>{get(details, 'vocabularyName', '')}</span>
-      <span {...classes('description-line')}>{get(details, 'vocabularyVersion', '')}</span>
-      <br/>
-      <Link to={vocabularyReference}>{vocabularyReference}</Link>
-    </div>;
+    <ul {...classes('description-body-wrapper')}>
+      <li {...classes('description-line')}>{get(details, 'vocabularyName', '')}</li>
+      <li {...classes('description-line')}>{get(details, 'vocabularyVersion', '')}</li>
+      <li {...classes('description-line')}>
+        <Link to={vocabularyReference}>{vocabularyReference}</Link>
+      </li>
+    </ul>
+  </div>;
   const onlyTable = !isStandard || connectionsCount === 0;
 
   return (    

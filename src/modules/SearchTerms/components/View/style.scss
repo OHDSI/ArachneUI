@@ -82,20 +82,44 @@
     }
 
     &__description-line {
-      line-height: 2;
+      @include text-ellipsis();
+      &:not(:last-child) {
+        margin-bottom: 1rem;
+      }
+    }
+
+    & .dropdown__content {
+      @include block-shadow();
+      margin-left: -21rem;
+      margin-top: 1rem;
+      width: 25rem;
     }
 
     &__description-body {
-      @include block-shadow();
-      @include text-ellipsis();
-      background: $white;
-      margin-left: -18rem;
-      margin-top: 5px;
-      min-width: 7rem;
-      white-space: pre-wrap;
-      width: 20rem;
-      z-index: $z-index-modal-window;
-      padding: 7px;
+      &-wrapper {
+        background: $white;
+        min-width: 7rem;
+        white-space: pre-wrap;
+        padding: 7px;
+        list-style: disc;
+        list-style-position: inside;
+        z-index: $z-index-modal-window;
+        position: relative;
+      }
+
+      &:before {
+        border: 1px solid $grey;
+        background: $white;
+        content: '';
+        display: inline-block;
+        height: 2rem;
+        transform: rotateZ(-45deg);
+        width: 2rem;
+        z-index: $z-index-select-outer;
+        position: absolute;
+        right: 2rem;
+        top: -1rem;
+      }
     }
 
     &__connections-wrapper {
