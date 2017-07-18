@@ -71,6 +71,7 @@ class Term extends Component<ITermProps, { isFullscreen: boolean }> {
 
   shouldComponentUpdate(nextProps: ITermStateProps, nextState) {
     return (this.props.isLoading === true && nextProps.isLoading === false)
+      || (this.props.isTableMode !== nextProps.isTableMode)
       || (this.state.isFullscreen !== nextState.isFullscreen);
   }
 
