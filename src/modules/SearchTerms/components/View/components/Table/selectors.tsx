@@ -5,7 +5,7 @@ import { GraphConnection } from '../Connections/presenter';
 import { flattenDeep } from 'lodash';
 
 const getRawConnections = (state: Object) => {
-    const data = get(state, 'searchTerms.relationships.data', []);
+    const data = get(state, 'searchTerms.relationships.data.items', []);
     if (data instanceof Array) {
         return data;
     } else {

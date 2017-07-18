@@ -90,7 +90,7 @@ function mapStateToProps(state: Object, ownProps: ITermRoute): ITermStateProps {
   const name = get(state, 'searchTerms.terms.data.name', 'Term');
   const details = get(state, 'searchTerms.terms.data', {});
   const isStandard = get(details, 'standardConcept') === 'Standard';
-  const relationships = get(state, 'searchTerms.relationships.data', []) || [];
+  const relationshipsCount = get(state, 'searchTerms.relationships.data.count', 0);
   const connectionsCount = get(state, 'searchTerms.relations.data.connectionsCount', 0);
   const isTableMode = ownProps.routeParams.displayMode === 'table' || !connectionsCount;
   const termFilters = getTermFilters(state);
@@ -104,7 +104,7 @@ function mapStateToProps(state: Object, ownProps: ITermRoute): ITermStateProps {
     isStandard,
     termFilters,
     connectionsCount,
-    relationshipsCount: isTableMode ? relationships.length : connectionsCount,
+    relationshipsCount: isTableMode ? relationshipsCount : connectionsCount,
   };
 }
 
