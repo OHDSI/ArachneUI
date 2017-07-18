@@ -1,11 +1,13 @@
-var webpack = require('webpack');
-var path = require('path');
+const webpack = require('webpack');
+const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-var sourcePath = path.join(__dirname, './src');
-var outPath = path.join(__dirname, './dist');
+const sourcePath = path.join(__dirname, './src');
+const outPath = path.join(__dirname, './dist');
+const webapp = path.join(__dirname, '/dist');
 
-var HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
 
 module.exports = {
   context: sourcePath,
@@ -58,16 +60,11 @@ module.exports = {
               ],
               data: "$isAppNode: false;"
             },
-          }
-        ]   
+          },
+        ]
       }
     ]
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: 'index.html'
-    })
-  ],
   devServer: {
     contentBase: outPath,
     historyApiFallback: true,
@@ -82,6 +79,9 @@ module.exports = {
     }
   },
   plugins: [
+    new HtmlWebpackPlugin({
+      template: 'index.html'
+    }),
     new CopyWebpackPlugin([
       {
         from: path.join(__dirname, 'node_modules/arachne-components/lib/resources/fonts'),
@@ -94,8 +94,17 @@ module.exports = {
       {
         from: path.join(__dirname, 'resources/icons'),
         to: path.join(outPath, 'icons')
-      }
-    ])    
+      },
+      {
+        from: path.join(__dirname, 'node_modules/arachne-components/lib/styles/components.css'),
+        to: path.join(webapp, 'css')
+      },
+    ]),
+    new HtmlWebpackIncludeAssetsPlugin({
+      assets: ['css/components.css'],
+      append: false,
+      hash: true
+    })
   ],
   node: {
     // workaround for webpack-dev-server issue 
