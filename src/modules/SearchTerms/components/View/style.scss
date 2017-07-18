@@ -72,7 +72,30 @@
     }
 
     &__description-tooltip {
+      width: 2rem;
+    }
+
+    &__description-trigger {
       @include material-icon();
+      text-decoration: none;
+      color: $grey-dark;
+    }
+
+    &__description-line {
+      line-height: 2;
+    }
+
+    &__description-body {
+      @include block-shadow();
+      @include text-ellipsis();
+      background: $white;
+      margin-left: -18rem;
+      margin-top: 5px;
+      min-width: 7rem;
+      white-space: pre-wrap;
+      width: 20rem;
+      z-index: $z-index-modal-window;
+      padding: 7px;
     }
 
     &__connections-wrapper {
