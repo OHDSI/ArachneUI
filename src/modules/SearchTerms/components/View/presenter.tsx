@@ -16,6 +16,8 @@ import TermConnections from './components/Connections';
 import TermConnectionsTable from './components/Table';
 import TermFiltersPanel from './components/Filters';
 import { paths } from 'modules/SearchTerms/const';
+import Dropdown from 'react-simple-dropdown';
+import { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
 
 require('./style.scss');
 
@@ -86,9 +88,16 @@ function Term(props: ITermProps) {
     id: -1,
     name: '',
   });
-  const description = `${get(details, 'vocabularyName', '')};
-    ${get(details, 'vocabularyVersion', '')};
-    ${get(details, 'vocabularyReference', '')}`;
+  const vocabularyReference = get(details, 'vocabularyReference', '')
+  const description = <div {...classes('description-body')}>
+    <ul {...classes('description-body-wrapper')}>
+      <li {...classes('description-line')}>{get(details, 'vocabularyName', '')}</li>
+      <li {...classes('description-line')}>{get(details, 'vocabularyVersion', '')}</li>
+      <li {...classes('description-line')}>
+        <Link to={vocabularyReference}>{vocabularyReference}</Link>
+      </li>
+    </ul>
+  </div>;
   const onlyTable = !isStandard || connectionsCount === 0;
 
   return (    
@@ -122,13 +131,16 @@ function Term(props: ITermProps) {
                 <div {...classes('description')}>
                   <span {...classes('vocid')}>{get(details, 'vocabularyId', '')}</span>
                   {description &&
-                    <div
-                      {...classes({ element: 'description-tooltip', extra: 'ac-tooltip' })}
-                      aria-label={description}
-                      data-tootik-conf='right multiline'
-                    >
-                      help_outline
-                    </div>
+                    <Dropdown {...classes('description-tooltip')}>
+                      <DropdownTrigger
+                        {...classes('description-trigger')}
+                      >
+                        help_outline
+                      </DropdownTrigger>
+                      <DropdownContent>
+                        {description}
+                      </DropdownContent>
+                    </Dropdown>
                   }
                 </div>
               </ListItem>

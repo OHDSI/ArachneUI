@@ -72,7 +72,54 @@
     }
 
     &__description-tooltip {
+      width: 2rem;
+    }
+
+    &__description-trigger {
       @include material-icon();
+      text-decoration: none;
+      color: $grey-dark;
+    }
+
+    &__description-line {
+      @include text-ellipsis();
+      &:not(:last-child) {
+        margin-bottom: 1rem;
+      }
+    }
+
+    & .dropdown__content {
+      box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.3);
+      margin-left: -17rem;
+      margin-top: 1rem;
+      width: 36rem;
+    }
+
+    &__description-body {
+      &-wrapper {
+        background: $white;
+        min-width: 7rem;
+        white-space: pre-wrap;
+        padding: 1rem;
+        list-style: disc;
+        list-style-position: inside;
+        z-index: $z-index-modal-window;
+        position: relative;
+      }
+
+      &:before {
+        border: 1px solid $grey;
+        background: $white;
+        content: '';
+        display: inline-block;
+        height: 2rem;
+        transform: rotateZ(-45deg);
+        width: 2rem;
+        z-index: $z-index-select-outer;
+        position: absolute;
+        right: 17rem;
+        top: -1rem;
+      }
     }
 
     &__connections-wrapper {
