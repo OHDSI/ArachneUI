@@ -10,23 +10,43 @@ import {
   ITermConnectionsStateProps,
   ITermConnectionsDispatchProps,
   ITermConnectionsProps,
+  GraphConnection,
+  GraphNode,
 } from './presenter';
 import * as URI from 'urijs';
 import { getTermFilters } from 'modules/SearchTerms/selectors';
 
 class TermConnections extends Component<ITermConnectionsProps, {}> {
+  private terms: Array<GraphNode>;
+  private links: Array<GraphConnection>;
+
   componentWillMount() {
     this.props.setLoadingStatus(true);
   }
 
+  shouldComponentUpdate(nextProps: ITermConnectionsStateProps) {
+    return this.props.isInProgress === true && nextProps.isInProgress === false;
+  }
+
+  componentWillReceiveProps(nextProps: ITermConnectionsStateProps) {
+    if (this.props.isInProgress === false && nextProps.isInProgress === true) {
+      this.terms = this.props.terms;
+      this.links = this.props.links;
+    }
+  }
+
   render() {
-    return presenter(this.props);
+    return presenter({
+      ...this.props,
+      terms: this.props.isInProgress ? this.terms : this.props.terms,
+      links: this.props.isInProgress ? this.links : this.props.links,
+    });
   }
 }
 
 function mapStateToProps(state: Object, ownProps: Object): ITermConnectionsStateProps {
   let connections = selectors.getConnections(state);
-  const isInProgress = get(state, 'searchTerms.graph.isLoading', true);
+  const isInProgress = get(state, 'searchTerms.relations.isLoading', true);
   const termFilters = getTermFilters(state);
 
   return {
@@ -60,5 +80,8 @@ function mergeProps(stateProps: ITermConnectionsStateProps,
 export default connect<ITermConnectionsStateProps, ITermConnectionsDispatchProps, {}>(
   mapStateToProps,
   mapDispatchToProps,
-  mergeProps
+  mergeProps,
+  {
+    pure: true,
+  }
 )(TermConnections);

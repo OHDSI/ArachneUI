@@ -5,7 +5,7 @@ import { forms, paths, resultsPageSize } from 'modules/SearchTerms/const';
 import actions from 'modules/SearchTerms/actions';
 import { push as goToPage } from 'react-router-redux';
 import * as URI from 'urijs';
-import { get, clone } from 'lodash';
+import { get, clone, isEqual } from 'lodash';
 import presenter from './presenter';
 import selectors from './selectors';
 
@@ -19,7 +19,7 @@ class Facets extends Component<IFacets, void> {
         typeof props.filterFormState === 'undefined'
       ) ||
       // or updated
-      this.props.filterFormState !== props.filterFormState
+      !isEqual(this.props.filterFormState, props.filterFormState)
     ) {
       this.props.doFilter(props.filterFormState);
     }

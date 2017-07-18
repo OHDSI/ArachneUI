@@ -69,6 +69,11 @@ class Term extends Component<ITermProps, { isFullscreen: boolean }> {
     });
   }
 
+  shouldComponentUpdate(nextProps: ITermStateProps, nextState) {
+    return (this.props.isLoading === true && nextProps.isLoading === false)
+      || (this.state.isFullscreen !== nextState.isFullscreen);
+  }
+
   render() {
     return presenter({
       ...this.props,
@@ -79,7 +84,8 @@ class Term extends Component<ITermProps, { isFullscreen: boolean }> {
 }
 
 function mapStateToProps(state: Object, ownProps: ITermRoute): ITermStateProps {
-  const isLoading = get(state, 'searchTerms.terms.isLoading', false);
+  const isLoading = get(state, 'searchTerms.terms.isLoading', false)
+    || get(state, 'searchTerms.relations.isLoading', false);
   const termId = parseInt(ownProps.routeParams.termId, 0);
   const name = get(state, 'searchTerms.terms.data.name', 'Term');
   const details = get(state, 'searchTerms.terms.data', {});
@@ -134,4 +140,7 @@ export default connect<ITermStateProps, ITermDispatchProps, {}>(
   mapStateToProps,
   mapDispatchToProps,
   mergeProps,
+  {
+    pure: false,
+  }
 )(Term);
