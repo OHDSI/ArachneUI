@@ -8,7 +8,6 @@ const webapp = path.join(__dirname, '/dist');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   context: sourcePath,
@@ -80,7 +79,6 @@ module.exports = {
     }
   },
   plugins: [
-    new ExtractTextPlugin('css/app.css'),
     new HtmlWebpackPlugin({
       template: 'index.html'
     }),
