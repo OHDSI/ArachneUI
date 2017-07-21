@@ -335,11 +335,20 @@ function printGraph(
     .append('svg:path')
       .attr('d', 'M0,-5L15,0L0,5');  
 
-  const termsFixed = terms.map((concept: GraphNode) => ({
-    ...concept,
-    fy: (height - getHeight(concept, zoomLevel))/2 + concept.yDepth * gapWidth,
-    fx: (width - getWidth(concept, zoomLevel))/2 - concept.depth * (rectWidth + gapWidth)
-  }));
+  let selectedConcept: GraphNode;
+  const termsFixed = terms.map((concept: GraphNode) => {
+    const term = {
+      ...concept,
+      fy: (height - getHeight(concept, zoomLevel))/2 + concept.yDepth * gapWidth,
+      fx: (width - getWidth(concept, zoomLevel))/2 - Math.abs(concept.depth) * (rectWidth + gapWidth)
+    };
+
+    if (term.isCurrent) {
+      selectedConcept = term;
+    }
+
+    return term;
+  });
   const concepts = treeWrapper
     .selectAll('g.node')
     .data(termsFixed, (d: any) => d.id);
@@ -352,6 +361,7 @@ function printGraph(
     .enter()
     .append('svg:g')
   wrappers.attr('class', 'node')
+    .classed('current', (d: GraphNode) => d.isCurrent)
     .attr('height', d => getHeight(d, zoomLevel))
     .attr('width', d => getWidth(d, zoomLevel))
     .classed('clickable', zoomLevel === 4)
@@ -486,26 +496,7 @@ function printGraph(
     .attr('x', () => controlSize/2)
     .attr('y', () => controlSize/2);
 
-  // combine intersection center and wrapper center
-  const wrapperBBox = treeWrapper.node().getBoundingClientRect();
-  const svgBBox = svg.node().getBoundingClientRect();
-  const intersection = {
-    top: Math.max(svgBBox.top, wrapperBBox.top),
-    left: Math.max(svgBBox.left, wrapperBBox.left),
-    right: Math.max(svgBBox.right, Math.min(svgBBox.right, wrapperBBox.right)),
-    bottom: Math.max(svgBBox.bottom , Math.min(svgBBox.bottom, wrapperBBox.bottom)),
-  };
-  const wrapperCenter = {
-    x: wrapperBBox.left + wrapperBBox.width / 2,
-    y: wrapperBBox.top + wrapperBBox.height / 2,
-  };
-  const intersectionCenter = {
-    x: intersection.left + (intersection.right - intersection.left) / 2,
-    y: intersection.top + (intersection.bottom - intersection.top) / 2,
-  };
-  treeWrapper.fixedX = intersectionCenter.x - wrapperCenter.x;
-  treeWrapper.fixedY = intersectionCenter.y - wrapperCenter.y;
-
+  treeWrapper.attr('transform-origin', `${selectedConcept.fx}px ${selectedConcept.fy}px`);
   setZoom(treeWrapper, initialZoom);
 }
 
