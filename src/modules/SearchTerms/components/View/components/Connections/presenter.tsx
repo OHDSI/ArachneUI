@@ -340,7 +340,7 @@ function printGraph(
     const term = {
       ...concept,
       fy: (height - getHeight(concept, zoomLevel))/2 + concept.yDepth * gapWidth,
-      fx: (width - getWidth(concept, zoomLevel))/2 - Math.abs(concept.depth) * (rectWidth + gapWidth)
+      fx: (width - getWidth(concept, zoomLevel))/2 - concept.depth * (rectWidth + gapWidth)
     };
 
     if (term.isCurrent) {
