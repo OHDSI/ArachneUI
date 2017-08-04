@@ -45,7 +45,7 @@ function TableCellTerm(term: any) {
   }
   return (
     <div {...classes('target-cell')}>
-      <Link to={paths.term(term.value.id, true)}>{term.value.name}</Link>
+      <Link to={paths.term(term.value.id, true)}>{`${term.value.name} (${term.value.id})`}</Link>
     </div>
   );
 }
