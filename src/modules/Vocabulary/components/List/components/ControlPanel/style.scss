@@ -1,0 +1,48 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+  &vocabulary-control-panel {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    background: $grey-light;
+    padding: 1rem 1.5rem;
+
+    &__selection {
+      margin: 0 2rem;
+      width: 15rem;
+      
+      & .ac-select-control__arrow-wrapper {
+        background: $purple-darker;
+      }
+    }
+
+    &__download-button {
+      background: $purple-darker;
+      margin-left: 2rem;
+
+      &:hover {
+        background: $purple;
+      }
+
+      &--disabled {
+        background: $grey;
+      }
+    }
+
+    &__history-link {
+      background-color: $blue-light;
+      border-radius: $input-border-radius;
+      color: $white;
+      font-family: $font-family-montserrat;
+      font-size: $font-size-base;
+      font-weight: $font-weight-bold;
+      padding: 0.75rem 1.5rem;
+      text-transform: uppercase;
+
+      &:hover {
+        background-color: $blue;
+      }
+    }
+  }
+}

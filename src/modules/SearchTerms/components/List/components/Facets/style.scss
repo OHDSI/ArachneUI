@@ -1,0 +1,68 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+  &search-facet-panel {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    position: relative;
+    overflow-y: hidden;
+
+    & .ac-faceted-search {
+
+	    &__form-fields {
+	    	overflow-y: visible;
+	    }
+	  }
+
+    &__current-state {
+      padding: 1rem 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      max-height: 25%;
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+
+    &__selected-facet {
+      margin: 0.25rem 2rem 0.25rem 0;
+    }
+  }
+
+  &facet-tag {
+    @include input-border();
+    background: $blue;
+    color: $white;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+
+    &--facet {
+      background: $blue;
+    }
+
+    &--purple {
+      background: $purple;
+    }
+
+    &__title {
+      @include text-ellipsis();
+      padding: 0.6rem 1rem;
+      font-size: 1.3rem;
+      font-weight: 500;
+      // max-width: 235px;
+    }
+
+    &__remove-button {
+      @include material-icon();
+      align-items: center;
+      color: $white;
+      cursor: pointer;
+      display: flex;
+      font-size: 1.3rem;
+      font-weight: $font-weight-bold;
+      height: 100%;
+      padding: 0 0.8rem;
+    }
+  }
+}

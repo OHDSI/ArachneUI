@@ -1,0 +1,12 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+  &request-license {
+    min-width: 500px;
+
+    &__request-button {
+      margin-top: 2rem;
+      width: 100%;
+    }
+  }
+}

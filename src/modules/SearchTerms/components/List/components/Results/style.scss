@@ -1,0 +1,83 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+  &search-results {
+		&__management-panel {
+  		display: flex;
+  		padding: 1rem 1.5rem;
+  	}
+
+    &__download-button-wrapper {
+      margin-right: auto;
+      align-items: center;
+      display: flex;
+    }
+
+  	&__download-button {
+      background: $purple-darker;
+      color: $white;
+
+      &--disabled {
+        background: $grey-medium;
+        pointer-events: none;
+      }
+  	}
+
+    &__table {
+      font-size: 1.3rem;
+      table-layout: fixed;
+    }
+
+    &__id-th,
+    &__id-td,
+    &__code-th,
+    &__code-td,
+    &__name-th,
+    &__name-td,
+    &__class-th,
+    &__class-td,
+    &__concept-th,
+    &__concept-td,
+    &__invalid-th,
+    &__invalid-td,
+    &__domain-th,
+    &__domain-td,
+    &__vocabulary-th,
+    &__vocabulary-td {
+      padding: 10px;
+    }
+
+    &__id-th {
+      width: 7.5%;
+    }
+    &__code-th {
+      width: 10%;
+    }
+    &__name-th {
+      width: 30%;
+    }
+    &__class-th {
+      width: 10%;
+    }
+    &__concept-th {
+      width: 10%;
+    }
+    &__invalid-th {
+      width: 10%;
+    }
+    &__domain-th {
+      width: 10%;
+    }
+    &__vocabulary-th {
+      width: 10%;
+    }
+
+    &__id-th, &__id-td {
+      padding-left: 1.5rem;
+    }
+
+    &__code-td {
+      word-wrap: break-word;
+    }
+  }
+}

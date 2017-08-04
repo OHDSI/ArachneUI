@@ -5,3 +5,4 @@ ts-build
 dist
 .idea/
 node_modules/
+target/

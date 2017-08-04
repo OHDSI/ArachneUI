@@ -1,0 +1,30 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+  &modal-download-result {
+  	max-width: 400px;
+  	display: flex;
+    flex-direction: column;
+
+    &__text {
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    &__history-link {
+    	@include title();
+      background-color: $blue-light;
+      border-radius: $input-border-radius;
+      color: $white;
+      font-size: $font-size-base;
+      font-weight: $font-weight-bold;
+      padding: 0.75rem 1.5rem;
+      margin-top: 2rem;
+      text-align: center;
+
+      &:hover {
+        background-color: $blue;
+      }
+    }
+  }
+}

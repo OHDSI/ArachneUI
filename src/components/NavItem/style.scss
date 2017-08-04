@@ -1,0 +1,23 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+  &nav-item {
+    align-items: center;
+    border-right: 1px solid rgba(255, 255, 255, 0.3);
+    border-left: 1px solid rgba(0, 0, 0, 0.2);
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    // font-weight: $font-weight-bold;
+    height: 100%;
+    margin-left: 0;
+    text-transform: uppercase;
+
+    padding: 0 2rem;
+
+    &--selected {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+  }
+}

@@ -1,0 +1,39 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+  &licenses-list {
+
+    &__table {
+      table-layout: fixed;
+    }
+
+    &__name-th {
+      width: 40%;
+    }
+
+    &__voc-th {
+      width: 40%;
+    }
+
+    &__voc-td {
+      & .ac-link {
+        font-weight: normal;
+      }
+    }
+
+    &__pending {
+      font-weight: 600; /*$font-weight-middle*/
+    }
+  }
+
+  &vocab {
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+
+    &__remove-button {
+      @include material-icon();
+      color: $black;
+    }
+  }
+}

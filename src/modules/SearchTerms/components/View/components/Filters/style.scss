@@ -1,0 +1,40 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+  &filters-panel {
+    background-color: $grey;
+    margin: 0;
+    padding: 1rem 1rem 1rem 0;
+    display: flex;
+    flex-direction: row-reverse;
+    width: 100%;
+    text-transform: uppercase;
+    align-items: center;
+    font-weight: bold;
+    color: $black;
+
+    &__item {
+      display: flex;
+      align-items: center;
+      margin-right: 1rem;
+    }
+
+    &__select-label {
+      margin-right: 1rem;
+    }
+
+  }
+
+  &levels {
+    margin-right: 1rem;
+    width: 7rem;
+  }
+
+  &zoom-levels {
+    width: 20rem;
+  }
+
+  &standards-only {
+    background-color: $white;
+  }
+}

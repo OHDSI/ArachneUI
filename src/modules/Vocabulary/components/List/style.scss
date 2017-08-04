@@ -1,0 +1,13 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+  &vocabs {
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    width: 100%;
+
+
+  }
+}

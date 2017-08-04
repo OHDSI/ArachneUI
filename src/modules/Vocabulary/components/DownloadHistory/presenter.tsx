@@ -1,0 +1,194 @@
+import * as React from 'react';
+import {
+  Button,
+  LoadingPanel,
+  Toolbar,
+  Table,
+  TableCellText,
+} from 'arachne-components';
+import BEMHelper from 'services/BemHelper';
+import { paths, bundleStatuses } from 'modules/Vocabulary/const';
+import * as moment from 'moment';
+import {
+  Accordion,
+  AccordionItem,
+} from 'react-sanfona';
+import { commonDateFormat } from 'const/formats';
+import ModalEditNotifications from './components/ModalEditNotifications';
+
+require('./style.scss');
+
+interface IVocabulary {
+  id: number;
+  code: string;
+  name: string;
+  cdmVersion: string;
+}
+
+interface IDownloadRequest {
+  id: number;
+  date: number;
+  link: string;
+  vocabularies: Array<IVocabulary>;
+  cdmVersion: number;
+  name: string;
+  status: string;
+};
+
+interface IHistoryItem extends IVocabulary {
+  date?: string;
+  link?: string;
+  tableRowClass: string;
+};
+
+interface IDownloadHistoryStateProps {
+  isLoading: boolean;
+  history: Array<IDownloadRequest>,
+};
+
+interface IDownloadHistoryDispatchProps {
+  load: () => (dispatch: Function) => any;
+  remove: (id: number) => Promise<void>;
+  restore: (id: number) => Promise<void>;
+  showNotifications: Function;
+};
+
+interface IDownloadHistoryProps extends IDownloadHistoryStateProps, IDownloadHistoryDispatchProps {
+  removeBundle: (id: number) => any;
+  restoreBundle: (id: number) => any;
+};
+
+interface IDownloadHistoryStatefulProps {
+  toggle: (id: number) => any;
+  expandedBundleId: number;
+};
+
+function BundleName({ name, date, onClick, isOpened }) {
+  const dateFormat = commonDateFormat;
+  const classes = BEMHelper('bundle-caption');
+
+  return <div {...classes()} onClick={onClick}>
+    <span {...classes({ element: 'opener', modifiers: { opened: isOpened } })}>keyboard_arrow_right</span>
+    <div {...classes('title-wrapper')}>
+      {name}
+      <span {...classes('date')}>{moment(date).format(dateFormat)}</span>
+     </div>
+  </div>;
+}
+
+function BundleTitle({ bundle, removeBundle, toggle, isExpanded, restore }) {
+  const classes = BEMHelper('download-history');
+
+  return <Toolbar
+    caption={<BundleName {...bundle} onClick={() => toggle(bundle.id)} isOpened={isExpanded} />}
+  >
+    {[bundleStatuses.READY].includes(bundle.status)
+      ? <div>
+          <Button
+            {...classes('download-button')}
+            link={bundle.link}
+            mods={['rounded']}
+          >
+            Download
+          </Button>
+          <Button
+            {...classes('remove-button')}
+            onClick={() => removeBundle(bundle.id)}
+          >
+            Archive
+        </Button>
+      </div>
+     : <div>
+         <span {...classes('status')}>{bundle.status}</span>
+         {bundle.status === bundleStatuses.ARCHIVED &&
+           <Button
+             {...classes('restore-button')}
+             mods={['success', 'rounded']}
+             onClick={() => restore(bundle.id)}
+           >
+             Restore
+           </Button>
+         }
+       </div>
+    }
+  </Toolbar>;
+}
+
+function VocabsList(props: IDownloadHistoryProps & IDownloadHistoryStatefulProps) {
+  const {
+    isLoading,
+    history,
+    removeBundle,
+    toggle,
+    expandedBundleId,
+    restoreBundle,
+    showNotifications,
+  } = props;
+  const classes = BEMHelper('download-history');
+
+  return (    
+    <div {...classes()}>
+      <Toolbar
+        caption='Download history'
+        backUrl={paths.vocabsList()}
+      >
+        <Button onClick={showNotifications} mods={['submit', 'rounded']}>Notifications</Button>
+      </Toolbar>
+      <Accordion activeItems={[expandedBundleId]}>
+        {history && history.map((bundle: IDownloadRequest, index: number) =>
+          <AccordionItem
+            title={<BundleTitle
+              bundle={bundle}
+              removeBundle={removeBundle}
+              toggle={toggle}
+              isExpanded={bundle.id === expandedBundleId}
+              restore={restoreBundle}
+             />}
+            {...classes('bundle-caption')}
+            key={`caption${index}`}
+            slug={bundle.id}
+          >
+            <Table
+              {...classes('table')}
+              data={bundle.vocabularies}
+              mods={['hover', 'padded', 'selectable']}
+             >
+                <TableCellText
+                  {...classes('id')}
+                  header='ID'
+                  field='id'
+                />
+                <TableCellText
+                  {...classes('cdm')}
+                  header='CDM'
+                  field='cdmVersion'
+                />
+                <TableCellText
+                  {...classes('code')}
+                  header='Code (cdm v5)'
+                  field='code'
+                />
+                <TableCellText
+                  {...classes('name')}
+                  header='Name'
+                  field='name'
+                />
+            </Table>          
+          </AccordionItem>
+        )}
+      </Accordion>
+      <LoadingPanel active={isLoading} />
+      <ModalEditNotifications />
+    </div>
+  );
+}
+
+export default VocabsList;
+export {
+  IDownloadHistoryStateProps,
+  IDownloadHistoryDispatchProps,
+  IDownloadHistoryProps,
+  IHistoryItem,
+  IDownloadRequest,
+  IVocabulary,
+};

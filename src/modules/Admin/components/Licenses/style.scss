@@ -1,0 +1,34 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+  &licenses {
+  	display: flex;
+  	flex-direction: column;
+  	height: 100%;
+  	
+    &__add-button {
+    	background: $purple-darker;
+
+    	&:hover {
+    		background: $purple;
+    	}
+		}
+
+    &__toolbar {
+    	& .ac-form {
+	      &__group {
+	      	margin-bottom: 0;
+	      }
+	    }
+	  }
+
+    &__table {
+    	flex-grow: 1;
+    }
+
+    &__pagination {
+    	margin: auto;
+    	height: 3.4rem;
+    }
+  }
+}

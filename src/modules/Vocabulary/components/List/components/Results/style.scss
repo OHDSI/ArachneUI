@@ -1,0 +1,71 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+  &vocabularies {
+  	margin: 0 -0.5rem;
+
+    &__table {
+      table-layout: fixed;
+    }
+
+    &__selection-th {
+      width: 5%;
+    }
+    &__id-th {
+      width: 10%;
+    }
+    &__code-th {
+      width: 10%;
+    }
+    &__name-th {
+      width: 50%;
+    }
+    &__required-th {
+      width: 12.5%;
+    }
+    &__update-th {
+      width: 12.5%;
+    }
+
+    &__selected-row {
+      background: $grey-light;
+    }
+      
+    &__cell {
+      &--disabled {
+        @include material-icon();
+        color: $blue;
+        font-size: $font-size-header;
+      }
+      &--unclickable {
+        pointer-events: none;
+      }
+    }
+
+    & .ac {
+      &-table {
+        &__row {
+          &--selected {
+            background: $grey-light;
+          }
+        }
+      }
+      &-checkbox {
+        &__check {
+          color: $black;
+          font-size: 1rem !important;
+          line-height: 2.35rem;
+          margin-left: 2px;
+        }
+      }
+    }
+  }
+  &cell-license {
+    display: flex;
+    align-items: center;
+
+    &__icon {
+      margin-right: 1rem;
+    }
+  }
+}
