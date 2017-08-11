@@ -3,6 +3,7 @@ import * as feathers from 'feathers/client';
 import * as hooks from 'feathers-hooks';
 import * as rest from 'feathers-rest-arachne/client';
 import * as superagent from 'superagent';
+import { get } from 'lodash';
 
 import { authTokenName } from 'const';
 
@@ -41,6 +42,13 @@ function configure(props: ApiConfig): Promise<any> {
           ...hook.params.headers,
           [authTokenName]: token,
         }
+      }
+    },
+
+    after(hook) {
+      const errorMessage = get(hook, 'result.errorMessage', '');
+      if (errorMessage) {
+        throw new Error(errorMessage);
       }
     },
 
