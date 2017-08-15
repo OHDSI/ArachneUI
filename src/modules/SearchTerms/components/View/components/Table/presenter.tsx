@@ -4,7 +4,6 @@ import {
   Table,
   Link,
   TableCellText,
-  LoadingPanel
 } from 'arachne-components';
 import { paths } from 'modules/SearchTerms/const';
 
@@ -29,7 +28,6 @@ interface ITermCell {
 
 interface ITermConnectionsTableStateProps {
   connections: Array<ITermConnection>;
-  isLoading: boolean;
 };
 
 interface ITermConnectionsTableDispatchProps {
@@ -72,7 +70,7 @@ function TableCellRelation(term: any) {
 }
 
 function TermConnectionsTable(props: ITermConnectionsTableProps) {
-  const { connections, isLoading } = props;
+  const { connections } = props;
   const classes = BEMHelper('term-connections-table');
 
   return <div
@@ -94,7 +92,6 @@ function TermConnectionsTable(props: ITermConnectionsTableProps) {
           field='targetConceptVoc'
         />
     </Table>
-    <LoadingPanel active={isLoading} />
   </div>;
 }
 
