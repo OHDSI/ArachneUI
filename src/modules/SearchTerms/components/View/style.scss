@@ -7,6 +7,11 @@
     display: flex;
     padding-right: 0.5rem;
     padding-left: 0.5rem;
+    height: 500px;
+    
+    &--fullscreen {
+      height: 100%;
+    }
 
     &__subheader-wrapper {
       background: $black;
@@ -48,9 +53,6 @@
           min-height: initial;
           height: auto;
         }
-      }
-
-      &--fullscreen {
       }
     }
 

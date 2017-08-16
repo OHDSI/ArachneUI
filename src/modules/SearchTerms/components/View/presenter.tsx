@@ -101,7 +101,7 @@ function Term(props: ITermProps) {
   const onlyTable = !isStandard || connectionsCount === 0;
 
   return (    
-    <div {...classes()}>
+    <div {...classes({ modifiers: { fullscreen: isFullscreen } })}>
       <div {...classes({ element: 'subheader-wrapper', extra: 'row' })}>
         <div className="col-xs-12">
           <div {...classes('subheader')}>
