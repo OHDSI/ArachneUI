@@ -12,11 +12,13 @@ require('./style.scss');
 
 interface ILoginProps {
   goToSSO: Function;
+  isSuccessfulReset: boolean;
 }
 
 function Login(props: ILoginProps) {
   const {
     goToSSO,
+    isSuccessfulReset,
   } = props;
   const classes = BEMHelper('login');
 
@@ -28,6 +30,14 @@ function Login(props: ILoginProps) {
             This item requires authorization.<br/>
             Please login or register to access.
           </p>
+          {isSuccessfulReset &&
+            <p {...classes('text', 'success')}>
+              <p {...classes('text')}>
+            This item requires authorization.<br/>
+            Please login or register to access.
+          </p>
+            </p>
+          }
           <Button
             {...classes('login')}
             onClick={goToSSO}
@@ -39,6 +49,12 @@ function Login(props: ILoginProps) {
             link={paths.register()}
           >
             Click here to register
+          </Button>
+          <Button
+            {...classes('remind-password')}
+            link={paths.remindPassword()}
+          >
+            Remind password
           </Button>
         </div>
       </Panel>
