@@ -4,7 +4,6 @@ import {
   Table,
   Link,
   TableCellText,
-  LoadingPanel
 } from 'arachne-components';
 import { paths } from 'modules/SearchTerms/const';
 
@@ -29,7 +28,6 @@ interface ITermCell {
 
 interface ITermConnectionsTableStateProps {
   connections: Array<ITermConnection>;
-  isLoading: boolean;
 };
 
 interface ITermConnectionsTableDispatchProps {
@@ -45,7 +43,7 @@ function TableCellTerm(term: any) {
   }
   return (
     <div {...classes('target-cell')}>
-      <Link to={paths.term(term.value.id, true)}>{`${term.value.name} (${term.value.id})`}</Link>
+      <Link to={paths.term(term.value.id, true)}>{term.value.name}</Link>
     </div>
   );
 }
@@ -62,6 +60,18 @@ function TableCellVoc(term: any) {
   );
 }
 
+function TableCellConceptId(term: any) {
+  const classes = BEMHelper('term-connections-table');
+  if (!term.value.id) {
+    return null;
+  }
+  return (
+    <div {...classes('target-cell')}>
+      <span>{term.value.id}</span>
+    </div>
+  );
+}
+
 function TableCellRelation(term: any) {
   const classes = BEMHelper('term-connections-table');
   return (
@@ -72,7 +82,7 @@ function TableCellRelation(term: any) {
 }
 
 function TermConnectionsTable(props: ITermConnectionsTableProps) {
-  const { connections, isLoading } = props;
+  const { connections } = props;
   const classes = BEMHelper('term-connections-table');
 
   return <div
@@ -89,12 +99,15 @@ function TermConnectionsTable(props: ITermConnectionsTableProps) {
           header='Relates to'
           field='targetConcept'
         />
+        <TableCellConceptId
+          header='Concept id'
+          field='targetConcept'
+        />
         <TableCellVoc
           header='Vocabulary'
           field='targetConceptVoc'
         />
     </Table>
-    <LoadingPanel active={isLoading} />
   </div>;
 }
 
