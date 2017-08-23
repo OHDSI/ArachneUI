@@ -70,7 +70,7 @@ class Term extends Component<ITermProps, { isFullscreen: boolean }> {
   }
 
   shouldComponentUpdate(nextProps: ITermStateProps, nextState) {
-    return (this.props.isLoading === true && nextProps.isLoading === false)
+    return (this.props.isLoading !== nextProps.isLoading)
       || (this.props.isTableMode !== nextProps.isTableMode)
       || (this.state.isFullscreen !== nextState.isFullscreen);
   }
@@ -85,8 +85,10 @@ class Term extends Component<ITermProps, { isFullscreen: boolean }> {
 }
 
 function mapStateToProps(state: Object, ownProps: ITermRoute): ITermStateProps {
-  const isLoading = get(state, 'searchTerms.terms.isLoading', false)
-    || get(state, 'searchTerms.relations.isLoading', false);
+  const isLoadingTerm = get(state, 'searchTerms.terms.isLoading', false);
+  const isLoadingRelations = get(state, 'searchTerms.relations.isLoading', false);
+  const isLoadingRelationships = get(state, 'searchTerms.relationships.isLoading', false);
+  const isLoading = isLoadingTerm || isLoadingRelations || isLoadingRelationships;
   const termId = parseInt(ownProps.routeParams.termId, 0);
   const name = get(state, 'searchTerms.terms.data.name', 'Term');
   const details = get(state, 'searchTerms.terms.data', {});
