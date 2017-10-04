@@ -30,6 +30,7 @@ interface IModalDispatchProps {
 	showResult: () => null;
 	reset: Function;
 	notify: Function;
+	loadList: Function;
 };
 
 interface IModalProps extends IModalStateProps, IModalDispatchProps {
