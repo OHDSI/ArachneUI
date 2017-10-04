@@ -15,6 +15,7 @@ const paths = {
 const forms = keyMirror({
   register: null,
   remind: null,
+  reset: null,
 });
 
 const apiPaths = {
