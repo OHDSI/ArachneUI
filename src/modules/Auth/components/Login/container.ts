@@ -2,10 +2,12 @@ import * as React from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import * as get from 'lodash/get';
+import login from 'modules/Auth/actions/login';
 import presenter from './presenter';
 
 interface ILoginStateProps {
   backUrl: string;
+  isSuccessfulReset: boolean;
 }
 
 interface ILoginDispatchProps {
@@ -31,9 +33,12 @@ class Login extends Component<ILoginProps, {}> {
 }
 
 function mapStateToProps(state: Object, ownProps: Object): ILoginStateProps {
+  const isSuccessfulReset = get(state, 'routing.locationBeforeTransitions.query.successful_reset', null) !== null;
+
 	return <ILoginStateProps> {
 		backUrl: get(state, 'auth.core.backUrl', '/'),
     forceSSO: get(ownProps, 'location.query.forceSSO', false),
+    isSuccessfulReset,
 	};
 }
 
@@ -49,7 +54,7 @@ const mapDispatchToProps = function(dispatch) {
     goToSSO: function(backUrl) {
       window.addEventListener('message', handleLoginResult.bind(null, backUrl));
   		window.open('/auth/sso', 'SSO login', "width=600,height=450,scrollbars=no");
-  	}
+    },
   }
 };
 

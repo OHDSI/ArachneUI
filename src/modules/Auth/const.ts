@@ -6,13 +6,16 @@ const actionTypes = keyMirror({
 });
 
 const paths = {
-	login: () => `/auth/login`,
+	login: ({ successfulReset = false } = {}) => `/auth/login${successfulReset ? '?successful_reset' : ''}`,
 	register: () => '/auth/register',
-	welcome: () => '/auth/welcome',
+  welcome: () => '/auth/welcome',
+  remindPassword: () => '/auth/remind-password',
 };
 
 const forms = keyMirror({
-	register: null,
+  register: null,
+  remind: null,
+  reset: null,
 });
 
 const apiPaths = {

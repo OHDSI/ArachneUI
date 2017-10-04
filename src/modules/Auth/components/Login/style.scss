@@ -44,7 +44,13 @@
     	&:hover {
     		background-color: $purple-darker;
     	}
-    }
+		}
+		
+		&__text {
+			&--success {
+				color: $green;
+			}
+		}
   }
   
 }

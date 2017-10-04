@@ -27,6 +27,14 @@ function rootRoute(path: string): PlainRoute {
         path: 'welcome',
         component: require('./components/Welcome').default,
       },
+      {
+        path: 'remind-password',
+        component: require('./components/Remind').default,
+      },
+      {
+        path: 'reset-password',
+        component: require('./components/Reset').default,
+      },
     ],
   };
 }
