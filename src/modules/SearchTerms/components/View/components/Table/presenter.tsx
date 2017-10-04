@@ -43,7 +43,7 @@ function TableCellTerm(term: any) {
   }
   return (
     <div {...classes('target-cell')}>
-      <Link to={paths.term(term.value.id, true)}>{`${term.value.name} (${term.value.id})`}</Link>
+      <Link to={paths.term(term.value.id, true)}>{term.value.name}</Link>
     </div>
   );
 }
@@ -56,6 +56,18 @@ function TableCellVoc(term: any) {
   return (
     <div {...classes('vocabulary-cell')}>
       {term.value}
+    </div>
+  );
+}
+
+function TableCellConceptId(term: any) {
+  const classes = BEMHelper('term-connections-table');
+  if (!term.value.id) {
+    return null;
+  }
+  return (
+    <div {...classes('target-cell')}>
+      <span>{term.value.id}</span>
     </div>
   );
 }
@@ -85,6 +97,10 @@ function TermConnectionsTable(props: ITermConnectionsTableProps) {
         />
         <TableCellTerm
           header='Relates to'
+          field='targetConcept'
+        />
+        <TableCellConceptId
+          header='Concept id'
           field='targetConcept'
         />
         <TableCellVoc
