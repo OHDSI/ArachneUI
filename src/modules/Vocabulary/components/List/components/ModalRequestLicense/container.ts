@@ -19,6 +19,7 @@ interface IModalDispatchProps {
   close: () => null;
   requestLicense: (id: number) => Promise<any>;
   openConfirmModal: Function;
+  loadList: Function;
 };
 
 interface IModalProps extends IModalStateProps, IModalDispatchProps {
@@ -58,6 +59,7 @@ const mapDispatchToProps = {
   close: () => ModalUtils.actions.toggle(modal.requestLicense, false),
   requestLicense: actions.vocabularies.requestLicense,
   openConfirmModal: () => ModalUtils.actions.toggle(modal.confirmLicense, true),
+  loadList: actions.vocabularies.load,
 };
 
 function mergeProps(
@@ -73,6 +75,7 @@ function mergeProps(
       return dispatchProps.requestLicense(stateProps.vocab.id)
         .then(() => dispatchProps.close())
         .then(() => dispatchProps.openConfirmModal())
+        .then(() => dispatchProps.loadList())
         .catch(() => {});
     },
   };

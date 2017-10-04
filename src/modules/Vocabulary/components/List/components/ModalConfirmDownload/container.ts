@@ -54,6 +54,7 @@ const mapDispatchToProps = {
   showResult: () => ModalUtils.actions.toggle(modal.downloadResult, true),
   reset: () => reset(forms.bundle),
   notify: actions.download.requestNotification,
+  loadList: actions.vocabularies.load,
 };
 
 function mergeProps(
@@ -89,7 +90,8 @@ function mergeProps(
       }
       const promise = Promise.all(promises)
         .then(() => dispatchProps.close())
-        .then(() => dispatchProps.showResult())        
+        .then(() => dispatchProps.showResult())
+        .then(() => dispatchProps.loadList())  
         .catch(({ message }) => {
           throw new SubmissionError({
             _error: message,
