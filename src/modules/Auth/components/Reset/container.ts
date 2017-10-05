@@ -4,7 +4,7 @@ import { reduxForm } from 'redux-form';
 import { push } from 'react-router-redux';
 import { get } from 'lodash';
 import login from 'modules/Auth/actions/login';
-import { forms, paths } from 'modules/Auth/const';
+import { forms, paths, messages } from 'modules/Auth/const';
 import presenter from './presenter';
 
 interface IResetStateProps {
@@ -53,7 +53,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  goToLogin: () => push(paths.login({ successfulReset: true })),
+  goToLogin: () => push(paths.login({ message: messages.RESET_SUCCESS })),
 };
 
 function mergeProps(
@@ -75,7 +75,7 @@ function mergeProps(
         .then(() => dispatchProps.goToLogin())
         .catch(() => {});
 
-      return promise;
+      return promise.payload.promise;
     },
   };
 }

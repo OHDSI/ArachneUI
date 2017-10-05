@@ -5,8 +5,13 @@ const actionTypes = keyMirror({
   SET_BACK_URL: null,
 });
 
+const messages = keyMirror({
+  REMIND_SUCCESS: null,
+  RESET_SUCCESS: null,
+});
+
 const paths = {
-	login: ({ successfulReset = false } = {}) => `/auth/login${successfulReset ? '?successful_reset' : ''}`,
+	login: ({ message = '' } = {}) => `/auth/login${message ? `?message=${messages[message]}` : ''}`,
 	register: () => '/auth/register',
   welcome: () => '/auth/welcome',
   remindPassword: () => '/auth/remind-password',
@@ -33,4 +38,5 @@ export {
   forms,
   paths,
   roles,
+  messages,
 };

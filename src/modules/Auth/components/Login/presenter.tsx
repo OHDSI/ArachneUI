@@ -5,20 +5,20 @@ import {
   Panel
 } from 'arachne-components';
 import BEMHelper from 'services/BemHelper';
-import { paths } from 'modules/Auth/const';
+import { paths, messages } from 'modules/Auth/const';
 import { get } from 'lodash';
 
 require('./style.scss');
 
 interface ILoginProps {
   goToSSO: Function;
-  isSuccessfulReset: boolean;
+  message: string;
 }
 
 function Login(props: ILoginProps) {
   const {
     goToSSO,
-    isSuccessfulReset,
+    message,
   } = props;
   const classes = BEMHelper('login');
 
@@ -30,12 +30,18 @@ function Login(props: ILoginProps) {
             This item requires authorization.<br/>
             Please login or register to access.
           </p>
-          {isSuccessfulReset &&
+          {message === messages.REMIND_SUCCESS &&
             <p {...classes('text', 'success')}>
               <p {...classes('text')}>
-            This item requires authorization.<br/>
-            Please login or register to access.
-          </p>
+                Please, check your email for futher instructions.
+              </p>
+            </p>
+          }
+          {message === messages.RESET_SUCCESS &&
+            <p {...classes('text', 'success')}>
+              <p {...classes('text')}>
+                You've successfuly reset your password.
+              </p>
             </p>
           }
           <Button

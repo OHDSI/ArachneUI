@@ -7,7 +7,7 @@ import presenter from './presenter';
 
 interface ILoginStateProps {
   backUrl: string;
-  isSuccessfulReset: boolean;
+  message: string;
 }
 
 interface ILoginDispatchProps {
@@ -33,12 +33,12 @@ class Login extends Component<ILoginProps, {}> {
 }
 
 function mapStateToProps(state: Object, ownProps: Object): ILoginStateProps {
-  const isSuccessfulReset = get(state, 'routing.locationBeforeTransitions.query.successful_reset', null) !== null;
+  const message = get(state, 'routing.locationBeforeTransitions.query.message', '');
 
 	return <ILoginStateProps> {
 		backUrl: get(state, 'auth.core.backUrl', '/'),
     forceSSO: get(ownProps, 'location.query.forceSSO', false),
-    isSuccessfulReset,
+    message,
 	};
 }
 
