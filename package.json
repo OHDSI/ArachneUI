@@ -4,8 +4,7 @@
   "main": "public/index.js",
   "scripts": {
     "build": "webpack -p --progress --colors",
-    "start": "webpack-dev-server --hot --inline",
-    "postinstall": "node helpers/typingsControl"
+    "start": "webpack-dev-server --hot --inline"
   },
   "author": "Odysseus Team",
   "devDependencies": {
