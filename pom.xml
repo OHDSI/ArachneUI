@@ -41,7 +41,7 @@
                         <id>exec-npm-install</id>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <executable>node_modules/.bin/npm</executable>
+                            <executable>npm</executable>
                             <arguments>
                                 <argument>install</argument>
                             </arguments>
@@ -54,7 +54,7 @@
                         <id>exec-rub-build</id>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <executable>node_modules/.bin/npm</executable>
+                            <executable>npm</executable>
                             <arguments>
                                 <argument>run</argument>
 								<argument>build</argument>
