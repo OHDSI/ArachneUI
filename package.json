@@ -4,7 +4,8 @@
   "main": "public/index.js",
   "scripts": {
     "build": "webpack -p --progress --colors",
-    "start": "webpack-dev-server --hot --inline"
+    "start": "webpack-dev-server --hot --inline",
+    "postinstall": "node helpers/typingsControl"
   },
   "author": "Odysseus Team",
   "devDependencies": {
@@ -60,7 +61,6 @@
     "jquery-param": "0.2.0",
     "lodash": "4.17.4",
     "node-sass": "4.5.0",
-    "npm": "4.6.1",
     "numeral": "2.0.4",
     "react": "15.4.2",
     "react-dom": "15.4.2",
