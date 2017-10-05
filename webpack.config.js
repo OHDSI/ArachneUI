@@ -32,7 +32,7 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        exclude: /(node_modules|ArachneFrontComponents)/,
+        exclude: /(node_modules|ArachneFrontComponents|@types)/gi,
         loaders: ['react-hot-loader', 'awesome-typescript-loader']
       },
       {
