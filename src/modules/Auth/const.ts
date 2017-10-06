@@ -5,14 +5,22 @@ const actionTypes = keyMirror({
   SET_BACK_URL: null,
 });
 
+const messages = keyMirror({
+  REMIND_SUCCESS: null,
+  RESET_SUCCESS: null,
+});
+
 const paths = {
-	login: () => `/auth/login`,
+	login: ({ message = '' } = {}) => `/auth/login${message ? `?message=${messages[message]}` : ''}`,
 	register: () => '/auth/register',
-	welcome: () => '/auth/welcome',
+  welcome: () => '/auth/welcome',
+  remindPassword: () => '/auth/remind-password',
 };
 
 const forms = keyMirror({
-	register: null,
+  register: null,
+  remind: null,
+  reset: null,
 });
 
 const apiPaths = {
@@ -30,4 +38,5 @@ export {
   forms,
   paths,
   roles,
+  messages,
 };

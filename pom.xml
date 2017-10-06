@@ -12,21 +12,21 @@
             <id>dev</id>
             <properties>
                 <env>test</env>
-                <webpack.path>webpack</webpack.path>
+                <webpack.path>node_modules/.bin/webpack</webpack.path>
             </properties>
         </profile>
         <profile>
             <id>test</id>
             <properties>
                 <env>test</env>
-                <webpack.path>/usr/local/bin/webpack</webpack.path>
+                <webpack.path>node_modules/.bin/webpack</webpack.path>
             </properties>
         </profile>
         <profile>
             <id>prod</id>
             <properties>
                 <env>test</env>
-                <webpack.path>/usr/local/bin/webpack</webpack.path>
+                <webpack.path>node_modules/.bin/webpack</webpack.path>
             </properties>
         </profile>
     </profiles>

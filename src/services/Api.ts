@@ -4,6 +4,7 @@ import * as hooks from 'feathers-hooks';
 import * as rest from 'feathers-rest-arachne/client';
 import * as superagent from 'superagent';
 import { get } from 'lodash';
+import { SubmissionError } from 'redux-form';
 
 import { authTokenName } from 'const';
 
@@ -55,6 +56,14 @@ function configure(props: ApiConfig): Promise<any> {
     error(hook) {
       if (hook.error.status === 401) {
         onAccessDenied();
+      } else {
+        const validationErrors = get(hook, 'error.validatorErrors');
+        if (validationErrors) {
+          throw new SubmissionError({
+            _error: get(hook, 'error.errorMessage', ''),
+            ...validationErrors,
+          });
+        }
       }
     }
   });
