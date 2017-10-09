@@ -1,0 +1,18 @@
+<code_scheme name="Default1">
+  <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="150" />
+  <option name="NAMES_COUNT_TO_USE_IMPORT_ON_DEMAND" value="30" />
+  <JSCodeStyleSettings>
+    <option name="SPACES_WITHIN_OBJECT_LITERAL_BRACES" value="true" />
+    <option name="SPACES_WITHIN_IMPORTS" value="true" />
+  </JSCodeStyleSettings>
+  <codeStyleSettings language="JAVA">
+    <option name="BLANK_LINES_BEFORE_METHOD_BODY" value="1" />
+  </codeStyleSettings>
+  <codeStyleSettings language="JavaScript">
+    <indentOptions>
+      <option name="INDENT_SIZE" value="2" />
+      <option name="CONTINUATION_INDENT_SIZE" value="2" />
+      <option name="TAB_SIZE" value="2" />
+    </indentOptions>
+  </codeStyleSettings>
+</code_scheme>

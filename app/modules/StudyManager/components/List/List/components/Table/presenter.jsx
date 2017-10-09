@@ -1,0 +1,159 @@
+/**
+ *
+ * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Company: Odysseus Data Services, Inc.
+ * Product Owner/Architecture: Gregory Klebanov
+ * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
+ * Created: August 30, 2017
+ *
+ */
+
+import React, { PropTypes, Component } from 'react';
+import BEMHelper from 'services/BemHelper';
+import {
+  Link,
+  Table,
+  TableCellText as Cell,
+  TableCellStatus as CellStatus,
+} from 'arachne-components';
+import TitleStudy from 'components/TitleStudy';
+
+require('./style.scss');
+
+function LeadList({ userLinkFormatter, value }) {
+  return (
+    <div onClick={(e) => { e.stopPropagation(); }}>
+      {value.map(userLinkFormatter).map((lead, key) => 
+        <span key={key}>
+          {key > 0 ? ', ' : ''}
+          <Link to={lead.link}>{lead.label}</Link>
+        </span>
+      )}
+    </div>
+  );
+}
+
+function CellName(props) {
+  const classes = new BEMHelper('cell-name');
+  return (
+    <div {...classes()}>
+      <TitleStudy
+        {...props}
+      />
+    </div>
+  );
+}
+
+class TableStudies extends Component {
+  constructor() {
+    super();
+    this.tableClasses = new BEMHelper('studies-table');
+  }
+
+  getColumns() {
+    return [
+      <CellName
+        {...this.tableClasses('study')}
+        header="Study"
+        field="title"
+        mods={['bold']}
+        props={study => ({
+          ...study,
+          isFavourite: study.favourite,
+          title: study.title,
+          toggleFavorite: () => this.props.setFavourite(
+            study.id,
+            (!study.favourite).toString()
+            ),
+        })}
+      />,
+      <LeadList
+        {...this.tableClasses('lead')}
+        header="Lead"
+        field="leadList"
+        userLinkFormatter={this.props.userLinkFormatter}
+      />,
+      <Cell
+        {...this.tableClasses('role')}
+        header="Role"
+        field="role"
+      />,
+      <Cell
+        {...this.tableClasses('created')}
+        header="Created"
+        field="created"
+        format={this.props.createdFormatter}
+      />,
+      <Cell
+        {...this.tableClasses('type')}
+        header="Type"
+        field="type"
+        format={this.props.typeFormatter}
+      />,
+      <CellStatus
+        {...this.tableClasses('status')}
+        header="Status"
+        field="status"
+        format={this.props.statusFormatter}
+      />
+    ];
+  }
+
+  render () {
+    const {
+      data,
+      sorting,
+      createdFormatter,
+      typeFormatter,
+      statusFormatter,
+      setSearch,
+      goToStudy,
+      userLinkFormatter,
+      setFavourite,
+    } = this.props;
+
+    return (
+      <div {...this.tableClasses()}>
+        <Table
+          {...this.tableClasses('table')}
+          mods={['hover', 'selectable', 'padded']}
+          data={data}
+          sorting={sorting}
+          setSorting={setSearch}
+          onRowClick={({ id }) => goToStudy(id)}
+        >
+          {this.getColumns()}
+        </Table>
+      </div>
+    );
+  }
+}
+
+TableStudies.propTypes = {
+  createdFormatter: PropTypes.func.isRequired,
+  data: PropTypes.array.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  goToStudy: PropTypes.func.isRequired,
+  linkFormatter: PropTypes.func.isRequired,
+  setSearch: PropTypes.func.isRequired,
+  sorting: PropTypes.object.isRequired,
+  statusFormatter: PropTypes.func.isRequired,
+  typeFormatter: PropTypes.func.isRequired,
+  pages: PropTypes.number,
+  currentPage: PropTypes.currentPage,
+  path: PropTypes.string,
+};
+
+export default TableStudies;

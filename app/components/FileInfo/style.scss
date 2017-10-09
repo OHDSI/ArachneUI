@@ -1,0 +1,115 @@
+/**
+ *
+ * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Company: Odysseus Data Services, Inc.
+ * Product Owner/Architecture: Gregory Klebanov
+ * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
+ * Created: May 11, 2017
+ *
+ */
+
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+
+  &code-file-info {
+    align-items: center;
+    display: flex;
+    flex-grow: 1;
+    min-width: 0;
+
+    &__main-container, &__version-container, &__author-container {
+      flex-basis: 0;
+    }
+
+    &__main-container {
+      align-items: center;
+      display: flex;
+      margin-right: 1rem;
+      // width: 65%;
+      flex-grow: 7;
+      overflow: hidden;
+    }
+
+    &__version-container {
+      // width: 5%;
+      flex-grow: .5;
+      margin-right: .5rem;
+    }
+
+    &__author-container {
+      text-align: right;
+      // width: 30%;
+      flex-grow: 3;
+    }
+
+  	&__ico {
+  		@include background-doc-ico;
+  		height: 25px;
+  		width: 20px;
+      // margin-left: 20px;
+      margin-right: 12px;
+			flex-shrink: 0;
+  	}
+
+    &__datetime {
+      color: $grey-dark;
+      display: block;
+      font-size: 1.2rem;
+      font-weight: 400;
+      margin-top: 7px;
+    }
+
+    &__version {
+      color: $grey-dark;
+    }
+
+    &__author {
+      min-width: 120px;
+      text-align: right;
+    }
+
+    &__main-info {
+      @include text-ellipsis();
+    }
+
+    &__name {
+      flex-shrink: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding-right: 10px;
+    }
+
+    &--horizontal {
+      & .#{$namespace} {
+
+        &code-file-info {
+          &__main-info {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+          }
+          &__datetime {
+            font-size: 1.4rem;
+            font-weight: 500;
+            margin-top: 0;
+          }
+        }
+      }
+    }
+  }
+}

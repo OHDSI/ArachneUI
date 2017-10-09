@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.odysseusinc.arachne</groupId>
+    <artifactId>portal-ssr</artifactId>
+    <version>1.8.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>Shared Resources Bundle</name>
+
+    <properties>
+        <dockerImagePrefix>hub.arachnenetwork.com</dockerImagePrefix>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <app>central</app>
+                <env>test</env>
+                <webpack.path>webpack</webpack.path>
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <app>central</app>
+                <env>test</env>
+                <webpack.path>/usr/local/bin/webpack</webpack.path>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <app>central</app>
+                <env>test</env>
+                <webpack.path>/usr/local/bin/webpack</webpack.path>
+            </properties>
+
+        </profile>
+
+    </profiles>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <executions>
+
+                    <execution>
+                        <id>exec-npm-install</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <executable>npm</executable>
+                            <arguments>
+                                <argument>install</argument>
+                            </arguments>
+                        </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+
+                    <execution>
+                        <id>exec-webpack-server</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <executable>${webpack.path}</executable>
+                            <arguments>
+                                <argument>--app=central</argument>
+                                <argument>--production</argument>
+                                <argument>--config=webpack/ssr-app.config.js</argument>
+                                <argument>--progress</argument>
+                                <argument>--display-modules</argument>
+                            </arguments>
+                        </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+
+                    <execution>
+                        <id>exec-webpack-client</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <executable>${webpack.path}</executable>
+                            <arguments>
+                                <argument>--app=central</argument>
+                                <argument>--env=production</argument>
+                                <argument>--config=webpack/app.config.js</argument>
+                                <argument>--progress</argument>
+                            </arguments>
+                        </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+
+                </executions>
+            </plugin>
+            <!--<plugin>-->    <!-- doesn't want to work-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-assembly-plugin</artifactId>-->
+                <!--&lt;!&ndash;<configuration>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<finalName>portal-resources</finalName>&ndash;&gt;-->
+                <!--&lt;!&ndash;</configuration>&ndash;&gt;-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<id>make shared resources</id>-->
+                        <!--<goals>-->
+                            <!--<goal>single</goal>-->
+                        <!--</goals>-->
+                        <!--<phase>package</phase>-->
+                        <!--<configuration>-->
+                            <!--<descriptors>-->
+                                <!--<descriptor>resources.xml</descriptor>-->
+                            <!--</descriptors>-->
+                            <!--<appendAssemblyId>false</appendAssemblyId>-->
+                        <!--</configuration>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
+
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <configuration>
+                    <imageName>${dockerImagePrefix}/${project.artifactId}</imageName>
+                    <imageTags>
+                        <imageTag>${project.version}</imageTag>
+                        <imageTag>latest</imageTag>
+                    </imageTags>
+                    <dockerDirectory>docker</dockerDirectory>
+                    <resources>
+                        <resource>
+                            <targetPath>public</targetPath>
+                            <directory>public</directory>
+                            <excludes>
+                                <exclude>docker</exclude>
+                            </excludes>
+                        </resource>
+                        <resource>
+                            <targetPath>bin</targetPath>
+                            <directory>bin</directory>
+                        </resource>
+                    </resources>
+                    <serverId>arachne-hub</serverId>
+                    <registryUrl>https://hub.arachnenetwork.com/v2/</registryUrl>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>deploy</id>
+                        <phase>deploy</phase>
+                        <goals><goal>push</goal></goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+     <distributionManagement>
+        <snapshotRepository>
+            <id>artifactory</id>
+            <name>snapshots</name>
+            <url>http://odysseusovh04.odysseusinc.com:8081/artifactory/libs-snapshot-local</url>
+        </snapshotRepository>
+        <repository>
+            <id>artifactory</id>
+            <name>releases</name>
+            <url>http://odysseusovh04.odysseusinc.com:8081/artifactory/libs-release-local</url>
+        </repository>
+    </distributionManagement>
+</project>

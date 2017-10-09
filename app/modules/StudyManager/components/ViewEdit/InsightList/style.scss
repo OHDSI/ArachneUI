@@ -1,0 +1,168 @@
+/**
+ *
+ * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Company: Odysseus Data Services, Inc.
+ * Product Owner/Architecture: Gregory Klebanov
+ * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
+ * Created: July 13, 2017
+ *
+ */
+
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+
+  &study-insight-list {
+
+    &__content {
+
+      &--empty {
+        padding: $default-box-padding;
+        font-style: italic;
+      }
+    }
+
+  }
+
+  &study-insight-summary {
+
+    &:not(:first-child) {
+      border-top: 1px solid $grey-medium;
+    }
+
+    &__main {
+      padding: $default-box-padding;
+    }
+
+    &__heading {
+      display: flex;
+    }
+
+    &__analysis-title, &__insight-title {
+      text-transform: uppercase;
+      font-weight: 600;
+
+      &:not(:first-child) {
+        &:before {
+          content: "|";
+          padding: 0 7px;
+        }
+      }
+    }
+
+    &__date {
+      color: $grey-placeholder;
+      margin-left: auto;
+    }
+
+    &__descr {
+      margin-top: 1.5rem;
+    }
+
+    &__detail-list {
+      margin-top: 1.5rem;
+    }
+
+    &__descr {
+      display: block;
+      text-align: justify;
+    }
+
+    &__detail-list {
+      align-items: center;
+      display: flex;
+    }
+
+    &__detail {
+      align-items: center;
+      display: flex;
+
+      &:not(:first-child) {
+        margin-left: 2rem;
+      }
+
+      &--data-source {
+        flex-grow: 3;
+        flex-shrink: 0;
+      }
+
+      /* &--status {
+        justify-content: center;
+        flex-grow: 1;
+        flex-shrink: 0;
+      } */
+
+      &--results {
+        justify-content: flex-end;
+        flex-grow: 1;
+        flex-shrink: 0;
+      }
+    }
+
+    &__data-source-ico {
+      height: 1.8rem;
+    }
+    
+    &__data-source {
+      margin-left: 0.5rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    &__status-ico, &__results-ico {
+      @include material-icon();
+      color: #6F6F6F;
+    }
+
+    &__status-label {
+      margin-left: 0.25rem;
+    }
+
+    &__results-link {
+      font-weight: 600;
+      margin-left: 0.5rem;
+    }
+
+    &__annotation-block {
+      background: rgba($grey-light, 0.5);
+      padding: 2rem;
+    }
+
+    &__annotation-list {
+    }
+
+    &__annotation {
+      &:not(:first-child) {
+        margin-top: 2rem;
+      }
+    }
+
+    &__annotation-show-all {
+      margin-top: 1.75rem;
+    }
+
+  }
+
+  &comment-details {
+    padding-left: 5px;
+
+    &__entity {
+      font-weight: 500;
+      padding-left: 5px;
+    }
+  }
+
+}

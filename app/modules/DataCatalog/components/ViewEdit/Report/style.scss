@@ -1,0 +1,141 @@
+/**
+ *
+ * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Company: Odysseus Data Services, Inc.
+ * Product Owner/Architecture: Gregory Klebanov
+ * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
+ * Created: May 29, 2017
+ *
+ */
+
+@import 'styles/vars-and-mixins.scss';
+
+.d3-tip {
+	background: rgba(0, 0, 0, 0.3);
+	border-radius: $input-border-radius;
+	color: $white;
+	padding: 3px;
+}
+
+.#{$namespace} {
+	&data-source-report {
+		margin-top: 2rem;
+		margin-bottom: 2rem;
+    width: calc(100% - 4rem);
+    position: absolute;
+
+		&__select {
+			@include input-border();
+		}
+
+		& .donut text {
+			font-size: 1.2rem;
+		}
+
+		& .axislabel {
+			@include title();
+		}
+
+		& .lineplot {
+			& .line {
+				fill: transparent;
+				stroke: $blue;
+			}
+
+			& circle.focus {
+				opacity: 0;
+			}
+		}
+
+		& .bar {
+			fill: $blue;
+		}
+
+		& .boxplot {
+			& .bar, & .whisker, & .box, & .median {
+				stroke: $blue;
+			}
+
+			& .box {
+				fill: lighten($blue, 60%);
+			}
+		}
+		/* trellisline */
+		& .g-trellis {
+			& .y-guide,
+			& .x-guide {
+				& .tick line {
+					stroke: #ccc;
+		    	stroke-width: .6;
+		    }
+
+				& .domain {
+					stroke: none;
+				}
+			}
+			& .g-overlay {
+				fill: none;
+	    	pointer-events: all;
+			}
+		}
+		/* treemap */
+		& .grouper {
+	    fill: none;
+	    stroke: white;
+	    stroke-width: 2px;
+		}
+
+		& .treemap_zoomtarget {
+			padding: 0.5rem 20px;
+		}
+
+		& .#{$namespace} {
+			&panel {
+				&__content {
+					& .#{$namespace} {
+						&tabbed-pane {
+							& .#{$namespace} {
+								&tabs {
+									&__item {
+										background: $grey;
+
+										&--selected {
+											background: $blue-light;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+	}
+
+	&report-empty {
+		display: flex;
+		align-items: center;
+		align-content: center;
+		height: 20rem;
+
+		&__text {
+			@include title();
+			color: $grey-placeholder;
+			margin: auto;
+		}
+	}
+
+}

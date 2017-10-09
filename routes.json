@@ -1,0 +1,5 @@
+{
+	"/api-dev/v1/admin/system-settings": "/system-settings",
+	"/api-dev/v1/admin/admins/suggest": "/suggest-admins",
+	"/api-dev/v1/admin/admins": "/admins"
+}
