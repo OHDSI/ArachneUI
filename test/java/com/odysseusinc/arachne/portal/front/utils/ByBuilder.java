@@ -63,11 +63,11 @@ public class ByBuilder {
     public static By toolbar(String title) {
 
         final String selector = String.format(".//*[(@class='ac-toolbar' " +
-                "or starts-with(@class, 'ac-toolbar ')" +
-                "or contains(@class, ' ac-toolbar ') " +
-                " or substring(@class, string-length(@class) - string-length(' ac-toolbar') +1) = ' ac-toolbar'" +
-                ") and .//*[contains(text(), '%s')]]", title);
-//        String selector = ".//*[contains(@class, 'ac-toolbar__header')" + (title != null ? "and text()='" + title + "'" : "") + "]";
+                        "or starts-with(@class, 'ac-toolbar ')" +
+                        "or contains(@class, ' ac-toolbar ') " +
+                        " or substring(@class, string-length(@class) - string-length(' ac-toolbar') +1) = ' ac-toolbar'" +
+                        ") and .//*[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), '%s')]]",
+                title.toLowerCase());
         return By.xpath(selector);
     }
 
