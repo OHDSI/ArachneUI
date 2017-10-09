@@ -26,7 +26,7 @@ const argv = require('yargs').argv;
 
 const currentDir = path.resolve(__dirname, '..');
 const webapp = path.join(currentDir, 'public');
-const appRoot = path.resolve(currentDir, 'app');
+const appRoot = path.resolve(currentDir, 'src');
 
 const APP_TYPE = {
   CENTRAL: 'central',
@@ -44,7 +44,7 @@ const env = argv.env || ENV_TYPE.PRODUCTION;
 
 const config = {
   entry: [
-    './app/server.js' // Appʼs entry point
+    './src/server.js' // Appʼs entry point
   ],
   resolve: {
     root: appRoot,

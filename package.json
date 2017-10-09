@@ -15,7 +15,7 @@
   "dependencies": {
     "@ohdsi/atlascharts": "git://github.com/odysseusinc/Visualizations.git#verion-1.1.2",
     "@stomp/stompjs": "^3.0.3",
-    "arachne-components": "git+https://Odysseus:A0Ol60zeF4gdnnNSlotOqsr0Eytogz3A@bitbucket.org/Odysseus/arachnefrontcomponents.git#1290d74",
+    "arachne-ui-components": "^1.0.0",
     "autoprefixer": "^6.7.6",
     "babel-core": "^6.25.0",
     "babel-eslint": "^7.2.3",

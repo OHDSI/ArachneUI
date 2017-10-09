@@ -31,7 +31,9 @@ const WebpackDevServer = require('webpack-dev-server');
 
 const currentDir = path.resolve(__dirname, '..');
 const webapp = path.join(currentDir, 'public');
-const appRoot = path.resolve(currentDir, 'app');
+const appRoot = path.resolve(currentDir, 'src');
+
+const entryPoint = path.resolve(appRoot, 'index.js');
 
 
 const APP_TYPE = {
@@ -53,7 +55,7 @@ const preLoaders = [];
 if (!isSilent) {
   preLoaders.push({
       test: /\.js$/,
-      exclude: /(node_modules|ArachneFrontComponents)/,
+      exclude: /(node_modules|ArachneUIComponents)/,
       loader: 'eslint-loader',
     });
 }
@@ -63,7 +65,7 @@ const config = {
     'react-hot-loader/patch',
     'webpack-dev-server/client?http://localhost:8001', // WebpackDevServer host and port
     'webpack/hot/only-dev-server', // "only" prevents reload on syntax errors
-    './app/index.js', // Appʼs entry point
+    entryPoint, // Appʼs entry point
   ],
   resolve: {
     root: appRoot,
@@ -85,11 +87,11 @@ const config = {
     xmlhttprequest: '{XMLHttpRequest:XMLHttpRequest}',
   }],
   module: {
-    preLoaders,
+    // preLoaders,
     loaders: [
       {
         test: /\.jsx?$/,
-        exclude: /(node_modules|ArachneFrontComponents)/,
+        exclude: /(node_modules|ArachneUIComponents)/,
         loader: 'babel',
       },
       {
@@ -151,7 +153,7 @@ const config = {
 };
 
 if (env === ENV_TYPE.PRODUCTION) {
-  config.entry = ['./app/index.js'];
+  config.entry = [entryPoint];
   // minification
   config.output.publicPath = '/';
   config.plugins.push(new webpack.optimize.UglifyJsPlugin({

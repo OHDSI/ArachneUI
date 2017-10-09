@@ -176,7 +176,7 @@
                     </dependency>
                 </dependencies>
                 <configuration>
-                    <testSourceDirectory>src/test/java</testSourceDirectory>
+                    <testSourceDirectory>test/java</testSourceDirectory>
                     <systemPropertyVariables>
                         <webdriver.chrome.driver>${user.home}/selenium/chromedriver</webdriver.chrome.driver>
                     </systemPropertyVariables>
