@@ -44,6 +44,11 @@ public class ByBuilder {
                 + "/div[h3[@class='ac-modal__content-title' and text()='" + title + "']]/..");
     }
 
+    public static By filterButton() {
+
+        return By.xpath(".//*[contains(@class, 'ac-badged-icon__icon') and contains(text(), 'filter_list')]");
+    }
+
     public static By filterPanel(String title) {
 
         return By.xpath(".//*[contains(@class,'ac-panel')]"
