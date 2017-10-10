@@ -40,9 +40,9 @@ export default {
   actions: {
     ...invitation.actions,
     acceptInvitation: urlParams =>
-      invitation.actions.create({ accepted: true, ...urlParams }),
+      invitation.actions.create({}, { accepted: true, ...urlParams }),
     rejectInvitation: urlParams =>
-      invitation.actions.create({ accepted: false, ...urlParams }),
+      invitation.actions.create({}, { accepted: false, ...urlParams }),
     subscribeToInvitations: () => {
       return (dispatch) => {
         dispatch(subscritionChanged());
