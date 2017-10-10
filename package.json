@@ -1,6 +1,21 @@
 {
-  "name": "arachne-community-front",
-  "version": "1.0.0",
+  "name": "arachne-ui",
+  "version": "1.8.0",
+  "licenses": [{
+    "type": "Apache-2.0",
+    "url": "http://www.apache.org/licenses/LICENSE-2.0"
+  }],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/OHDSI/ArachneUI.git"
+  },
+  "author": "Pavel Grafkin <pavgra@gmail.com>",
+  "contributors": [
+    {
+      "name": "Alexander Saltykov",
+      "url": "a_salt@live.ru"
+    }
+  ],
   "description": "",
   "main": "app/app.js",
   "scripts": {
