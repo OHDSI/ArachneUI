@@ -1,5 +1,6 @@
 package com.odysseusinc.arachne.portal.front;
 
+import static com.odysseusinc.arachne.portal.front.BaseStudyTest.createStudy;
 import static com.odysseusinc.arachne.portal.front.ProfileManagerTest.updateName;
 import static com.odysseusinc.arachne.portal.front.utils.Utils.waitFor;
 import static com.odysseusinc.arachne.portal.front.utils.Utils.waitForPageLoad;
@@ -7,10 +8,6 @@ import static com.odysseusinc.arachne.portal.front.utils.Utils.waitForPageLoad;
 import com.google.common.base.Predicate;
 import com.odysseusinc.arachne.portal.front.utils.ByBuilder;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -43,6 +40,14 @@ public class StudyManagerTest extends BaseDataCatalogTest {
     private static final String STUDY_NAME = "TEST Study";
 
     private static final String NAME_DS = "Test Data Source 2";
+    private static final String NAME_FOR_DELETED_STUDY = "Study For Deleting";
+
+    protected static final BaseStudyTest.StudyData STUDY_DATA =
+            new BaseStudyTest.StudyData(BEFORE_UPDATING_STUDY_NAME, "Clinical Trial Design", "Initiate");
+
+    protected static final BaseStudyTest.StudyData STUDY_FOR_DELETING_DATA =
+            new BaseStudyTest.StudyData(NAME_FOR_DELETED_STUDY, "Clinical Trial Design", "Initiate");
+
 
     @BeforeClass
     public static void beforeTest() throws IOException {
@@ -63,45 +68,13 @@ public class StudyManagerTest extends BaseDataCatalogTest {
     @After
     public void afterEach() throws IOException {
 
-        logout();
+        //logout();
     }
 
     @Test
     public void test01CreateStudy() throws Exception {
 
-        loginPortal(ADMIN_LOGIN, ADMIN_PASSWORD);
-        createStudy(BEFORE_UPDATING_STUDY_NAME);
-
-        waitFor(driver, ByBuilder.toolbarHeader(BEFORE_UPDATING_STUDY_NAME));
-    }
-
-    private void createStudy(String studyName) {
-
-        By addBtn = ByBuilder.buttonAddIco();
-        String studyType = "Clinical Trial Design";
-
-        loginPortal(ADMIN_LOGIN, ADMIN_PASSWORD);
-        waitForPageLoad(driver, addBtn);
-
-        WebElement addStudyButton = driver.findElement(addBtn);
-        addStudyButton.click();
-
-        final By modal = ByBuilder.modal(MODAL_TITLE_CREATE_STUDY);
-        waitFor(driver, modal);
-
-        WebElement modalWebElement = driver.findElement(modal);
-        WebElement studyNameInput = modalWebElement.findElement(ByBuilder.input(PLACEHOLDER_STUDY_NAME));
-        WebElement studyTypeSelect = modalWebElement.findElement(ByBuilder.select(PLACEHOLDER_STUDY_TYPE));
-        WebElement studyTypeOption = modalWebElement.findElement(ByBuilder.selectOption(studyType));
-        WebElement studyCreateBtn = modalWebElement.findElement(ByBuilder.button("Create"));
-
-        studyNameInput.sendKeys(studyName);
-
-        Actions actions = new Actions(driver);
-        actions.moveToElement(studyTypeSelect).click().build().perform();
-        actions.moveToElement(studyTypeOption).click().build().perform();
-
-        studyCreateBtn.click();
+        createStudy(STUDY_DATA);
     }
 
     @Test
@@ -301,11 +274,9 @@ public class StudyManagerTest extends BaseDataCatalogTest {
     @Ignore
     public void test19DeleteStudy() throws Exception {
 
+        createStudy(STUDY_FOR_DELETING_DATA);
+
         loginPortal(ADMIN_LOGIN, ADMIN_PASSWORD);
-
-        final String studyName = "Study For Deleting";
-        createStudy(studyName);
-
         waitFor(driver, By.className("ac-study-actions__remove-ico"));
 
         WebElement delete = driver.findElement(By.className("ac-study-actions__remove-ico"));
@@ -315,7 +286,7 @@ public class StudyManagerTest extends BaseDataCatalogTest {
         final By studiesPage = ByBuilder.byClassAndText("ac-toolbar__header", " studies");
         waitFor(driver, studiesPage);
 
-        Assert.assertEquals(0, driver.findElements(ByBuilder.tableRow(studyName)).size());
+        Assert.assertEquals(0, driver.findElements(ByBuilder.tableRow(NAME_FOR_DELETED_STUDY)).size());
     }
 
     private void loginAndOpenStudy() {

@@ -1,5 +1,7 @@
 package com.odysseusinc.arachne.portal.front;
 
+import static com.odysseusinc.arachne.portal.front.utils.Utils.waitFor;
+
 import com.odysseusinc.arachne.portal.front.utils.ByBuilder;
 import com.odysseusinc.arachne.portal.front.utils.Utils;
 import org.openqa.selenium.By;
@@ -15,6 +17,7 @@ public abstract class BaseStudyTest extends BaseUserTest {
         driver.findElement(sideBarTab).click();
         Utils.waitForPageLoad(driver, ByBuilder.toolbar("studies"));
         final By addStudyButton = ByBuilder.buttonAddIco();
+        waitFor(driver, addStudyButton);
         driver.findElement(addStudyButton).click();
 
         final By createStudyModal = ByBuilder.modal("Create study");
