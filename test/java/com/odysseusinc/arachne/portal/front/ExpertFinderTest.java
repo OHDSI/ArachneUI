@@ -18,7 +18,9 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.BasicHttpEntity;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -46,7 +48,7 @@ public class ExpertFinderTest extends BaseUserTest {
     private final static int EXPERT_VIEW_CONTACT_INFO_FIELD_SIZE = 4;
 
     @BeforeClass
-    public static void beforeTest() throws IOException {
+    public static void beforeExpertFinderTests() throws IOException {
 
         reindexSolr();
         showExpertFinderPage();
@@ -60,10 +62,21 @@ public class ExpertFinderTest extends BaseUserTest {
         activateUser();
     }
 
+    @Before
+    public void beforeExpertFinderTest() {
+
+        showExpertFinderPage();
+    }
+
+    @After
+    public void afterExpertFinderTest() {
+
+        logout();
+    }
+
     @Test
     public void test01ExpertListTest() throws InterruptedException {
 
-        showExpertFinderPage();
         assertExpertListSize(EXPERT_FINDER_INITIAL_LIST_SIZE + 1);
     }
 
@@ -71,7 +84,6 @@ public class ExpertFinderTest extends BaseUserTest {
     @Ignore
     public void test02FilteredExpertListTest() throws InterruptedException {
 
-        showExpertFinderPage();
         final By filterButton = ByBuilder.byClassAndText("ac-badged-icon__icon", "filter_list");
         waitForPageLoad(driver, filterButton);
         driver.findElement(filterButton).click();
@@ -91,7 +103,6 @@ public class ExpertFinderTest extends BaseUserTest {
     @Test
     public void test03ViewProfileDetailsTest() throws InterruptedException {
 
-        showExpertFinderPage();
         final String expertFullName = String.format("%s %s %s",
                 REGISTER_FORM_DATA.get(FIRSTNAME_PLACEHOLDER),
                 REGISTER_FORM_DATA.get(MIDDLENAME_PLACEHOLDER),
@@ -181,7 +192,7 @@ public class ExpertFinderTest extends BaseUserTest {
         final By expertFinderTab = ByBuilder.sideBarTab(SIDEBAR_TAB_LABEL);
         waitForPageLoad(driver, expertFinderTab);
         driver.findElement(expertFinderTab).click();
-        waitForPageLoad(driver, ByBuilder.toolbar("Expert Finder"));
+        waitForPageLoad(driver, ByBuilder.toolbar("Expert finder"));
     }
 
 }

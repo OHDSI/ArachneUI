@@ -45,6 +45,7 @@ public class UserManagementTest extends BaseUserTest {
         final By avatar = By.className("ac-avatar");
         waitForPageLoad(driver, avatar);
         Assert.assertTrue(driver.findElement(avatar).isDisplayed());
+        logout();
     }
 
     @Test

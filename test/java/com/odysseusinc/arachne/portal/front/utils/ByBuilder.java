@@ -44,6 +44,11 @@ public class ByBuilder {
                 + "/div[h3[@class='ac-modal__content-title' and text()='" + title + "']]/..");
     }
 
+    public static By filterButton() {
+
+        return By.xpath(".//*[contains(@class, 'ac-badged-icon__icon') and contains(text(), 'filter_list')]");
+    }
+
     public static By filterPanel(String title) {
 
         return By.xpath(".//*[contains(@class,'ac-panel')]"
@@ -63,11 +68,11 @@ public class ByBuilder {
     public static By toolbar(String title) {
 
         final String selector = String.format(".//*[(@class='ac-toolbar' " +
-                "or starts-with(@class, 'ac-toolbar ')" +
-                "or contains(@class, ' ac-toolbar ') " +
-                " or substring(@class, string-length(@class) - string-length(' ac-toolbar') +1) = ' ac-toolbar'" +
-                ") and .//*[contains(text(), '%s')]]", title);
-//        String selector = ".//*[contains(@class, 'ac-toolbar__header')" + (title != null ? "and text()='" + title + "'" : "") + "]";
+                        "or starts-with(@class, 'ac-toolbar ')" +
+                        "or contains(@class, ' ac-toolbar ') " +
+                        " or substring(@class, string-length(@class) - string-length(' ac-toolbar') +1) = ' ac-toolbar'" +
+                        ") and .//*[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), '%s')]]",
+                title.toLowerCase());
         return By.xpath(selector);
     }
 
