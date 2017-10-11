@@ -87,8 +87,6 @@ export default class StudyActionsBuilder {
 
   mergeProps(stateProps, dispatchProps, ownProps) {
 
-    const goToPaper = () => dispatchProps.goToPaper(stateProps.publishedPaperId);
-
     return {
       ...ownProps,
       ...stateProps,
@@ -100,7 +98,7 @@ export default class StudyActionsBuilder {
             studyId: stateProps.studyId,
             accessType: 'PUBLIC',
           }
-        ).then(goToPaper);
+        ).then((result) => dispatchProps.goToPaper(result.id));
       },
       reload: () => {
         dispatchProps.loadStudy(stateProps.studyId);
@@ -114,8 +112,8 @@ export default class StudyActionsBuilder {
               .catch(() => {});
           });
       },
-      goToPaper,
-    };
+      goToPaper: () => dispatchProps.goToPaper(stateProps.publishedPaperId)
+    }
   }
 
   build() {
