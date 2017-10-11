@@ -44,13 +44,13 @@ public abstract class BaseUserTest extends BaseTest {
     protected static final String INITIAL_CONTACTS_STRING = "Office phone, Mobile, Contact email";
 
     @BeforeClass
-    public static void beforeTest() throws IOException {
+    public static void beforeBaseUserTests() throws IOException {
 
         deleteMails();
     }
 
     @AfterClass
-    public static void afterTest() throws IOException {
+    public static void afterBaseUserTests() throws IOException {
 
         deleteMails();
     }
