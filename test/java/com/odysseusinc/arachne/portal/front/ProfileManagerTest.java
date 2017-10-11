@@ -8,6 +8,7 @@ import java.io.IOException;
 import org.apache.commons.lang.StringUtils;
 import org.junit.AfterClass;
 import org.junit.FixMethodOrder;
+import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -19,6 +20,12 @@ public class ProfileManagerTest extends BaseTest {
     public static void afterTest() throws IOException {
 
         shutdown();
+    }
+
+    @Test
+    public void test01UpdateAdminName() throws Exception {
+
+        updateName(ADMIN_LOGIN, ADMIN_PASSWORD, "4");
     }
 
     protected static void updateName(String login, String password, String postfix) {
