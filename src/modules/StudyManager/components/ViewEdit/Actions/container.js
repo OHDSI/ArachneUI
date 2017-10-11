@@ -98,7 +98,7 @@ export default class StudyActionsBuilder {
             studyId: stateProps.studyId,
             accessType: 'PUBLIC',
           }
-        ).then((result) => dispatchProps.goToPaper(result.id));
+        ).then(result => dispatchProps.goToPaper(result.id));
       },
       reload: () => {
         dispatchProps.loadStudy(stateProps.studyId);
