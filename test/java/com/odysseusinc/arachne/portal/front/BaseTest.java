@@ -1,14 +1,24 @@
 package com.odysseusinc.arachne.portal.front;
 
+import static com.odysseusinc.arachne.portal.front.utils.Utils.waitFor;
 import static com.odysseusinc.arachne.portal.front.utils.Utils.waitForPageLoad;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.odysseusinc.arachne.portal.front.utils.ByBuilder;
 import java.io.IOException;
+import java.net.URL;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
@@ -21,9 +31,12 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.Network;
 import org.testcontainers.containers.wait.HttpWaitStrategy;
@@ -97,7 +110,7 @@ public class BaseTest {
 
         final String portalHost = portalContainer.getContainerIpAddress();
         final Integer portalPort = portalContainer.getMappedPort(8080);
-        PORTAL_BASE_URL = String.format("%s://%s:%s", PROTOCOL, portalHost,  portalPort);
+        PORTAL_BASE_URL = String.format("%s://%s:%s", PROTOCOL, portalHost, portalPort);
 
         final InspectContainerResponse portalContainerInfo = portalContainer.getContainerInfo();
 
@@ -173,8 +186,13 @@ public class BaseTest {
     protected static void loginPortal(String username, String password) {
 
         driver.get(portalUrl());
-
         waitForPageLoad(driver, ByBuilder.input(EMAIL_INPUT_PLACEHOLDER));
+        loginWithOpenedForm(username, password);
+    }
+
+    protected static void loginWithOpenedForm(String username, String password) {
+
+        waitFor(driver, ByBuilder.input(EMAIL_INPUT_PLACEHOLDER));
 
         WebElement loginInput = driver.findElement(ByBuilder.input(EMAIL_INPUT_PLACEHOLDER));
         WebElement passwordInput = driver.findElement(ByBuilder.input(PASSWORD_INPUT_PLACEHOLDER));
@@ -232,5 +250,33 @@ public class BaseTest {
         } catch (KeyManagementException | NoSuchAlgorithmException ex) {
         }
         return closeableHttpClient;
+    }
+
+    // todo refactoring
+    protected static List<String> getLinksFromMail() throws IOException {
+
+        final ObjectMapper mapper = new ObjectMapper();
+        TypeReference<ArrayList<LinkedHashMap<String, Object>>> typeRef
+                = new TypeReference<ArrayList<LinkedHashMap<String, Object>>>() {
+        };
+
+        final URL url = new URL(MAIL_SERVER_API_MESSAGES);
+        ArrayList<LinkedHashMap<String, Object>> mails = mapper.readValue(url, typeRef);
+        final LinkedHashMap<String, Object> mail = mails.stream()
+                .findFirst()
+                .orElseThrow(NotFoundException::new);
+
+        final String body = (String) ((LinkedHashMap<String, Object>) mail.get("Content")).get("Body");
+
+        List<String> links = new ArrayList<>();
+        String regexString = Pattern.quote("https://") + "(.*?)" + Pattern.quote("\"");
+        Pattern pattern = Pattern.compile(regexString);
+        Matcher matcher = pattern.matcher(body);
+
+        while (matcher.find()) {
+            String textInBetween = matcher.group(1);
+            links.add(textInBetween);
+        }
+        return links;
     }
 }

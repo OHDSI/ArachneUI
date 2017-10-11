@@ -1,5 +1,6 @@
 package com.odysseusinc.arachne.portal.front;
 
+import static com.odysseusinc.arachne.portal.front.utils.Utils.waitFor;
 import static com.odysseusinc.arachne.portal.front.utils.Utils.waitForPageLoad;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -45,16 +46,16 @@ public abstract class BaseUserTest extends BaseTest {
     @BeforeClass
     public static void beforeTest() throws IOException {
 
-        tearDown();
+        deleteMails();
     }
 
     @AfterClass
     public static void afterTest() throws IOException {
 
-        tearDown();
+        deleteMails();
     }
 
-    protected static void tearDown() throws IOException {
+    protected static void deleteMails() throws IOException {
 
         final HttpDelete httpDeleteMessages = new HttpDelete(MAIL_SERVER_API_MESSAGES);
         HttpClientBuilder.create().build().execute(httpDeleteMessages);
@@ -125,6 +126,7 @@ public abstract class BaseUserTest extends BaseTest {
 
     protected static void logout() {
 
+        waitFor(driver, ByBuilder.link("power_settings_new"));
         driver.findElement(ByBuilder.link("power_settings_new")).click();
         waitLoginPage();
     }

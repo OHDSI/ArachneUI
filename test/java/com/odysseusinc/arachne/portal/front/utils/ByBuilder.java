@@ -106,4 +106,36 @@ public class ByBuilder {
 
         return By.xpath(".//table[.//th[.//*[contains(text(), '" + header + "')]]]");
     }
+
+
+    public static By toolbarEditIco(String title) {
+
+        String selector = ".//*[contains(@class, 'ac-toolbar__edit-ico')" + (title != null ? "and text()='" + title + "'" : "") + "]";
+        return By.xpath(selector);
+    }
+
+
+    public static By tableRow(String placeholder) {
+
+        return By.xpath(".//*[contains(@class, 'ac-title-study__title') and text()='" + placeholder + "']");
+    }
+
+    public static By tab(String title) {
+
+        String selector = ".//*[contains(@class, 'ac-tabs__item')" + (title != null ? "and text()='" + title + "'" : "") + "]";
+        return By.xpath(selector);
+    }
+
+    // todo remove
+    public static By buttonSubmit2(String label) {
+
+        return By.xpath(".//*[contains(@class, 'ac-button ac-button--success ac-button--rounded ac-form__submit') and text()='" + label + "']");
+    }
+
+    public static By toolbarHeader(String title) {
+
+        String selector = ".//*[contains(@class, 'ac-study-toolbar-title__title')" + (title != null ? "and text()='" + title + "'" : "") + "]";
+        return By.xpath(selector);
+    }
+
 }
