@@ -69,8 +69,13 @@ const paths = {
 const apiPaths = {
   analyses: ({ id }) => `/api/v1/analysis-management/analyses${id ? `/${id}` : ''}`,
   analysisTypes: () => '/api/v1/analysis-management/analyses/types',
-  analysisCode: ({ analysisId, analysisCodeId, withContent = false }) =>
-    `/api/v1/analysis-management/analyses/${analysisId}/code-files/${analysisCodeId}?withContent=${withContent}`,
+  analysisCode: ({ analysisId, analysisCodeId, withContent = false }) => {
+    let url = `/api/v1/analysis-management/analyses/${analysisId}/code-files`;
+    if (analysisCodeId) {
+      url += `/${analysisCodeId}?withContent=${withContent}`;
+    }
+    return url;
+  },
   uploadAnalysisCode: ({ analysisId }) => `/api/v1/analysis-management/analyses/${analysisId}/upload`,
   analysisCodeBundle: ({ analysisId, fileUuid }) => `/api/v1/analysis-management/analyses/${analysisId}/packrat-list/${fileUuid}`,
   analysisCodeDownload: ({ analysisId, analysisCodeId }) => `/api/v1/analysis-management/analyses/${analysisId}/code-files/${analysisCodeId}/download`,

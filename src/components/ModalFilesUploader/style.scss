@@ -25,19 +25,8 @@
 .#{$namespace} {
 
   &modal-files-upload {
-    background: $grey-lighter;
-    padding: 1rem 2rem;
+    @include modal-w-form();
     min-height: 250px;
-    display: flex;
-    flex-direction: column;
-
-    & .#{$namespace}form {
-    	flex-grow: 1;
-
-    	&__group {
-    		flex-grow: 1;
-    	}
-    }
   }
   
 }

@@ -20,7 +20,7 @@
  *
  */
 
-import React from 'react';
+import React, { Component } from 'react';
 import get from 'lodash/get';
 import BEMHelper from 'services/BemHelper';
 import { Modal, TabbedPane, LoadingPanel } from 'arachne-ui-components';
@@ -30,33 +30,40 @@ import Import from './Import';
 
 require('./style.scss');
 
-function ModalCreateCode(props) {
-  const classes = new BEMHelper('analysis-form-create-code');
-  const sections = [
-    {
-      label: 'Computer',
-      content: <FilesUpload />,
-    },
-    {
-      label: 'Links',
-      content: <LinksUpload />,
-    },
-    {
-      label: 'Import',
-      content: <Import />,
-    },
-  ];
+export default class ModalCreateCode extends Component {
 
-  return (
-    <div {...classes()}>
-      <Modal modal={props.modal} title="Add code file">
-        <div {...classes('content')}>
-          <TabbedPane sections={sections} />
-          <LoadingPanel isActive={props.isLoading} />
-        </div>
-      </Modal>
-    </div>
-  );
+  getSections() {
+    return [
+      {
+        label: 'Computer',
+        content: <FilesUpload />,
+      },
+      {
+        label: 'Links',
+        content: <LinksUpload />,
+      },
+      {
+        label: 'Import',
+        content: <Import />,
+      },
+    ];
+  }
+
+  render() {
+    const classes = BEMHelper('analysis-form-create-code');
+    const { modal, isLoading } = this.props;
+    const sections = this.getSections();
+
+    return (
+      <div {...classes()}>
+        <Modal modal={modal} title="Add code file">
+          <div {...classes('content')}>
+            <TabbedPane sections={sections} />
+            <LoadingPanel isActive={isLoading} />
+          </div>
+        </Modal>
+      </div>
+    );
+  }
+
 }
-
-export default ModalCreateCode;
