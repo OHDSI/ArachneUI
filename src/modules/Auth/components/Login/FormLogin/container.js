@@ -33,17 +33,15 @@ function mapStateToProps(state) {
   const authMethod = get(state, 'auth.authMethod.data.result.userOrigin', authMethods.NATIVE);
   const isUnactivated = get(state, 'form.login.submitErrors.unactivated', false);
   const userEmail = get(state, 'form.login.values.username', '');
-  const isLoading = get(state, 'auth.auth.isLoading', false);
 
   return {
     authMethod,
     remindPasswordLink: paths.remindPassword(),
     initialValues: {
-      redirectTo: state.auth.backUrlReducer.backUrl,
+      redirectTo: state.auth.authRoutingHistory.backUrl,
     },
     isUnactivated,
     userEmail,
-    isLoading,
   };
 }
 
@@ -59,7 +57,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...stateProps,
     ...dispatchProps,
     ...ownProps,
-    resendEmail: () => dispatchProps.resend({ email: stateProps.userEmail })
+    resendEmail: () => dispatchProps.resend({}, { email: stateProps.userEmail })
       .then(() => dispatchProps.redirect(paths.login(loginMessages.resendDone)))
       .catch(() => {}),
     doSubmit: (data) => dispatchProps.login(data.username, data.password)

@@ -15,7 +15,7 @@ function setBackUrl(state, action) {
   return !isAuthModulePath(action.payload.pathname) ? { ...state, backUrl: action.payload.pathname } : state;
 }
 
-const backUrlReducer = (state = {}, action) => {
+const authRoutingHistory = (state = {}, action) => {
       return action.type === LOCATION_CHANGE ? setBackUrl(state, action) : state;
 };
 
@@ -42,7 +42,7 @@ const reducer = combineReducers({
   remindPassword: remindPassword.reducer,
   resetPassword: resetPassword.reducer,
   resendEmail: resendEmail.reducer,
-  backUrlReducer,
+  authRoutingHistory,
 });
 
 export default {
