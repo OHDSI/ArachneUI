@@ -7,6 +7,7 @@ import static com.odysseusinc.arachne.portal.front.utils.Utils.waitForPageLoad;
 
 import com.google.common.base.Predicate;
 import com.odysseusinc.arachne.portal.front.utils.ByBuilder;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import org.junit.After;
@@ -27,14 +28,14 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class StudyManagerTest extends BaseDataCatalogTest {
 
-    private static final String MODAL_TITLE_CREATE_STUDY = "Create study";
+    public static final String MODAL_TITLE_CREATE_STUDY = "Create study";
     private static final String MODAL_TITLE_CREATE_ANALYSIS = "Create analysis";
     private static final String MODAL_TITLE_UPDATE_STUDY_TITLE = "Update study title";
 
-    private static final String PLACEHOLDER_STUDY_NAME = "Name of study";
-    private static final String PLACEHOLDER_STUDY_TYPE = "Type";
-    private static final String PLACEHOLDER_STUDY_TITLE = "Title of study";
-    private static final String PLACEHOLDER_ANALYSIS_TITLE = "Title";
+    public static final String PLACEHOLDER_STUDY_NAME = "Name of study";
+    public static final String PLACEHOLDER_STUDY_TYPE = "Type";
+    public static final String PLACEHOLDER_STUDY_TITLE = "Title of study";
+    public static final String PLACEHOLDER_ANALYSIS_TITLE = "Title";
 
     private static final String BEFORE_UPDATING_STUDY_NAME = "TEST Stu";
     private static final String STUDY_NAME = "TEST Study";
@@ -48,6 +49,7 @@ public class StudyManagerTest extends BaseDataCatalogTest {
     protected static final BaseStudyTest.StudyData STUDY_FOR_DELETING_DATA =
             new BaseStudyTest.StudyData(NAME_FOR_DELETED_STUDY, "Clinical Trial Design", "Initiate");
 
+    private static File file;
 
     @BeforeClass
     public static void beforeTest() throws IOException {
@@ -56,24 +58,27 @@ public class StudyManagerTest extends BaseDataCatalogTest {
         updateName("mr_lead_investigator@example.com", "password", "1");
         updateName("mr_data_set_owner@example.com", "password", "2");
         updateName("mr_collaborator@example.com", "password", "3");
+
+        file = new File("text.txt");
+        file.createNewFile();
     }
 
     @AfterClass
     public static void afterTest() throws IOException {
 
-        deleteMails();
-        shutdown();
+        file.delete();
     }
 
     @After
     public void afterEach() throws IOException {
 
-        //logout();
+        logout();
     }
 
     @Test
     public void test01CreateStudy() throws Exception {
 
+        loginPortal(ADMIN_LOGIN, ADMIN_PASSWORD);
         createStudy(STUDY_DATA);
     }
 
@@ -148,40 +153,32 @@ public class StudyManagerTest extends BaseDataCatalogTest {
     }
 
     @Test
-    //@Ignore
     public void test05AddStudyDocument() throws Exception {
 
         loginAndOpenStudy();
 
         WebElement studyTypeSelect = driver.findElement(ByBuilder.byClassAndText("ac-study-document-list-add__label", "Add document"));
         studyTypeSelect.click();
-
         waitFor(driver, ByBuilder.byClassAndText("ac-tabs__item ac-tabs__item--selected", "Computer"));
 
         WebElement uploadElement = driver.findElement(By.cssSelector("input[type=file]"));
-        //todo local file
-        uploadElement.sendKeys("D:\\projects\\atlas\\main.js");
-
-        driver.findElement(ByBuilder.buttonSubmit2("Add")).click();
-        //driver.findElement(ByBuilder.buttonIco("Add")).click();
-
-        waitFor(driver, ByBuilder.byClassAndText("ac-link ac-code-file-info__name", "main.js"));
+        uploadElement.sendKeys(file.getAbsolutePath());
+        driver.findElement(ByBuilder.byClassAndText("ac-form__submit", "Add")).click();
+        waitFor(driver, ByBuilder.byClassAndText("ac-link ac-code-file-info__name", "text.txt"));
     }
 
     @Test
-    @Ignore
     public void test06RemoveStudyDocument() throws Exception {
 
         loginAndOpenStudy();
-        waitFor(driver, By.className("ac-list-item__remove-ico ac-material-icons ac-material-icons--bold"));
-        WebElement removeIco = driver.findElement(By.className("ac-list-item__remove-ico ac-material-icons ac-material-icons--bold"));
+        waitFor(driver, By.className("ac-list-item__remove"));
+        WebElement removeIco = driver.findElement(By.className("ac-list-item__remove"));
         removeIco.click();
         acceptAlert();
         waitFor(driver, ByBuilder.byClassAndText("ac-list-item__content", "No documents available"));
     }
 
     @Test
-    @Ignore
     public void test07AddStudyParticipant() throws Exception {
 
         String chosenName = "admin2 admin2";
@@ -191,8 +188,8 @@ public class StudyManagerTest extends BaseDataCatalogTest {
 
         String role = "Lead Investigator";
         Assert.assertTrue(addedRow.findElement(ByBuilder.byClassAndText("ac-select-control__label", role)).isDisplayed());
-        Assert.assertEquals(addedRow.findElement(By.className("ac-study-participants-item__name")).getText(), "admin2 admin2 admin2");
-        Assert.assertEquals(addedRow.findElement(By.className("ac-study-participants-item__status ac-study-participants-item__status--pending")).getText(), "pending");
+        Assert.assertEquals("admin2 admin2 admin2", addedRow.findElement(By.className("ac-study-participants-item__name")).getText());
+        Assert.assertEquals("PENDING", addedRow.findElement(By.className("ac-study-participants-item__status--pending")).getText());
     }
 
     protected void inviteParticipant(String chosenName, int chosenUserId) throws Exception {
@@ -265,9 +262,9 @@ public class StudyManagerTest extends BaseDataCatalogTest {
 
     private void checkParticipantRow(WebElement row, String role, String name, String status) {
 
-        Assert.assertEquals(row.findElement(By.className("ac-study-participants-item__role")).getText(), role);
+        Assert.assertEquals(role, row.findElement(By.className("ac-study-participants-item__role")).getText());
         Assert.assertTrue(row.findElement(ByBuilder.byClassAndText("ac-study-participants-item__status ac-study-participants-item__status--" + status, status)).isDisplayed());
-        Assert.assertEquals(row.findElement(By.className("ac-study-participants-item__name")).getText(), name);
+        Assert.assertEquals(name, row.findElement(By.className("ac-study-participants-item__name")).getText());
     }
 
     @Test

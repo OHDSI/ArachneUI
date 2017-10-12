@@ -131,12 +131,6 @@ public class ByBuilder {
         return By.xpath(selector);
     }
 
-    // todo remove
-    public static By buttonSubmit2(String label) {
-
-        return By.xpath(".//*[contains(@class, 'ac-button ac-button--success ac-button--rounded ac-form__submit') and text()='" + label + "']");
-    }
-
     public static By toolbarHeader(String title) {
 
         String selector = ".//*[contains(@class, 'ac-study-toolbar-title__title')" + (title != null ? "and text()='" + title + "'" : "") + "]";

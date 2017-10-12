@@ -1,6 +1,10 @@
 package com.odysseusinc.arachne.portal.front;
 
+import static com.odysseusinc.arachne.portal.front.StudyManagerTest.MODAL_TITLE_CREATE_STUDY;
+import static com.odysseusinc.arachne.portal.front.StudyManagerTest.PLACEHOLDER_STUDY_NAME;
+import static com.odysseusinc.arachne.portal.front.StudyManagerTest.PLACEHOLDER_STUDY_TYPE;
 import static com.odysseusinc.arachne.portal.front.utils.Utils.waitFor;
+import static com.odysseusinc.arachne.portal.front.utils.Utils.waitForPageLoad;
 
 import com.odysseusinc.arachne.portal.front.utils.ByBuilder;
 import com.odysseusinc.arachne.portal.front.utils.Utils;
@@ -9,15 +13,21 @@ import org.openqa.selenium.WebElement;
 
 public abstract class BaseStudyTest extends BaseUserTest {
 
-    protected static void createStudy(StudyData studyData) {
+    protected static void createAdminStudy(StudyData studyData) {
 
         loginPortal(ADMIN_LOGIN, ADMIN_PASSWORD);
+        createStudy(studyData);
+        logout();
+    }
+
+   protected static void createStudy(StudyData studyData) {
+
         final By sideBarTab = ByBuilder.sideBarTab("Study Notebook");
         Utils.waitForPageLoad(driver, sideBarTab);
         driver.findElement(sideBarTab).click();
-        Utils.waitForPageLoad(driver, ByBuilder.toolbar("studies"));
+        Utils.waitFor(driver, ByBuilder.byClassAndText("ac-toolbar__header"," studies"));
         final By addStudyButton = ByBuilder.buttonAddIco();
-        waitFor(driver, addStudyButton);
+        Utils.waitFor(driver, addStudyButton);
         driver.findElement(addStudyButton).click();
 
         final By createStudyModal = ByBuilder.modal("Create study");
@@ -34,8 +44,7 @@ public abstract class BaseStudyTest extends BaseUserTest {
         final By createButton = ByBuilder.button("Create");
         createStudyModalElement.findElement(createButton).click();
 
-        Utils.waitForPageLoad(driver, ByBuilder.toolbar(studyData.title));
-        logout();
+        Utils.waitForPageLoad(driver, ByBuilder.toolbarHeader(studyData.title));
     }
 
     protected static class StudyData {
