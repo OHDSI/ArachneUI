@@ -40,7 +40,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  resetPassword: actions.auth.auth.resetPassword,
+  resetPassword: actions.auth.resetPassword.create,
   goToPage: push,
 };
 
@@ -56,7 +56,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         token: stateProps.token,
         callbackUrl: stateProps.callbackUrl,
       };
-      const submitPromise = dispatchProps.resetPassword(data);
+      const submitPromise = dispatchProps.resetPassword({}, data);
 
       submitPromise.then(() => {
         const loginUrl = paths.login(loginMessages.resetDone);

@@ -37,7 +37,7 @@ class ResetPassword extends Component {
       leaveIfAuthed(nextProps);
     }
   }
-  
+
   render() {
     return presenter(this.props);
   }
@@ -50,7 +50,7 @@ ResetPassword.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    isUserAuthed: !!get(state, 'auth.principal.data.id'),
+    isUserAuthed: !!get(state, 'auth.principal.queryResult.result.id'),
   };
 }
 

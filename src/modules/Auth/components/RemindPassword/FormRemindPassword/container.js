@@ -34,7 +34,7 @@ function mapStateToProps() {
 }
 
 const mapDispatchToProps = {
-  remindPassword: actions.auth.auth.remindPassword,
+  remindPassword: actions.auth.remindPassword.create,
   goToPage: push,
 };
 
@@ -45,7 +45,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...dispatchProps,
     doSubmit: ({ email }) => {
       const data = { email };
-      const submitPromise = dispatchProps.remindPassword(data);
+      const submitPromise = dispatchProps.remindPassword({}, data);
 
       submitPromise.then(() => {
         const loginUrl = paths.login(loginMessages.remindDone);

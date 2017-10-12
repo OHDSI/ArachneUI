@@ -30,27 +30,33 @@ import get from 'lodash/get';
 import FormLogin from './presenter';
 
 function mapStateToProps(state) {
-  const authMethod = get(state, 'auth.auth.method', authMethods.NATIVE);
+  const authMethod = get(state, 'auth.authMethod.data.result.userOrigin', authMethods.NATIVE);
   const isUnactivated = get(state, 'form.login.submitErrors.unactivated', false);
   const userEmail = get(state, 'form.login.values.username', '');
   const isLoading = get(state, 'auth.auth.isLoading', false);
+  const username = get(state, 'form.login.values.username', '');
+  const password = get(state, 'form.login.values.password', '');
 
   return {
     authMethod,
     remindPasswordLink: paths.remindPassword(),
     initialValues: {
-      redirectTo: state.auth.auth.backUrl,
+      redirectTo: state.auth.backUrlReducer.backUrl,
     },
     isUnactivated,
     userEmail,
     isLoading,
+    username,
+    password
   };
 }
 
 const mapDispatchToProps = {
-  doSubmit: actions.auth.auth.login,
-  resend: actions.auth.auth.resendEmail,
+  login: actions.auth.login,
+  resend: actions.auth.resendEmail,
   redirect: () => push(paths.login(loginMessages.resendDone)),
+  principal: actions.auth.principal.query,
+  redirectToBack: (url) => push(url),
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
@@ -61,6 +67,10 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     resendEmail: () => dispatchProps.resend({ email: stateProps.userEmail })
       .then(() => dispatchProps.redirect())
       .catch(() => {}),
+    doSubmit: () => dispatchProps.login(stateProps.username, stateProps.password)
+      .then(() => dispatchProps.redirectToBack((/\/auth\/logout/i).test(stateProps.initialValues.redirectTo) ? '/'
+        : stateProps.initialValues.redirectTo || '/'))
+      .then(() => dispatchProps.principal()),
   });
 }
 
@@ -69,3 +79,4 @@ const ReduxFormLogin = reduxForm({
 })(FormLogin);
 
 export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(ReduxFormLogin);
+

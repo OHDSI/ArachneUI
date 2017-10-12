@@ -27,9 +27,10 @@ import actions from 'actions/index';
 import { paths } from 'modules/Auth/const';
 import { validators } from 'services/Utils';
 import FormRegister from './presenter';
+import get from "lodash/get";
 
 function mapStateToProps(state) {
-  const professionalTypesList = state.auth.professionalTypes.list || [];
+  const professionalTypesList = get(state, 'auth.professionalTypes.queryResult.result', []);
 
   return {
     isLoading: state.auth.professionalTypes.isLoading,
@@ -41,7 +42,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  doRegister: actions.auth.auth.register,
+  register: actions.auth.register,
   goToWelcome: () => goToPage(paths.welcome()),
 };
 
@@ -51,7 +52,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...stateProps,
     ...dispatchProps,
     doSubmit(data) {
-      const submitPromise = dispatchProps.doRegister(data);
+      const submitPromise = dispatchProps.register({}, data);
       submitPromise
         .then(() => dispatchProps.goToWelcome())
         .catch(() => {});

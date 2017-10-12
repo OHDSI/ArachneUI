@@ -28,7 +28,7 @@ import { ModalUtils } from 'arachne-ui-components';
 import { forms, modal } from 'modules/Admin/const';
 import presenter from './presenter';
 import selectors from './selectors';
-import authActions from 'modules/Auth/actions/index';
+import authActions from 'modules/Auth/ducks/index';
 import { buildFormData, ContainerBuilder } from 'services/Utils';
 
 class ModalAddUser extends Component {
@@ -57,13 +57,10 @@ class ModalPortalUserListBuilder extends ContainerBuilder {
 
   mapStateToProps(state) {
 
-    const { pathname, query } = state.routing.locationBeforeTransitions;
     return {
       isOpened: get(state, `modal.${modal.addUser}.isOpened`, false),
       userOptions: selectors.getUserOptionList(state),
       professionalTypesOptions: selectors.getProfessionalTypes(state),
-      pathname,
-      query,
     };
   }
 
@@ -74,8 +71,7 @@ class ModalPortalUserListBuilder extends ContainerBuilder {
       loadUserList: actions.adminSettings.portalUserList.query,
       closeModal: () => ModalUtils.actions.toggle(modal.addUser, false),
       resetForm: resetForm.bind(null, forms.addUser),
-      loadProfessionalTypes: authActions.professionalTypes.loadList,
-      loadUsersWithCurrentQuery: (query) => actions.adminSettings.portalUserList.query({ query }),
+      loadProfessionalTypes: authActions.actions.professionalTypes.query,
     }
   }
 
@@ -90,7 +86,7 @@ class ModalPortalUserListBuilder extends ContainerBuilder {
         const submitPromise = dispatchProps.addUser({ id: null, query }, data);
 
         submitPromise
-          .then(() => dispatchProps.loadUsersWithCurrentQuery(stateProps.query))
+          .then(dispatchProps.loadUserList.bind(null, { id: null, query }))
           .then(dispatchProps.resetForm)
           .then(dispatchProps.closeModal)
           .catch(() => {
