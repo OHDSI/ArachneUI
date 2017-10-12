@@ -33,7 +33,6 @@ import makeRootReducer from 'reducers/index';
 import { Provider } from 'react-redux';
 import React from 'react';
 import AppContainer from './AppContainer';
-import { isAuthModulePath } from 'modules/Auth/utils';
 
 require('styles/appContainer.scss');
 
@@ -120,7 +119,7 @@ function initializeApi(store) {
   ApiService
     .setUserTokenGetter(() => AuthService.getToken())
     .setUnauthorizedHandler(() => {
-      if (!isAuthModulePath(store.getState().routing.locationBeforeTransitions.pathname) ) {
+      if (!AuthService.getToken()) {
         store.dispatch(actions.auth.logout(store.getState().routing.locationBeforeTransitions.pathname));
       }
     });

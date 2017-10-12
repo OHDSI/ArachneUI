@@ -1,5 +1,5 @@
 import Duck from 'services/Duck';
-import { apiPaths, actionTypes } from 'modules/Auth/const';
+import { apiPaths } from 'modules/Auth/const';
 
 const actionCoreName = 'AU_AUTH_REGISTER';
 

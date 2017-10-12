@@ -15,10 +15,10 @@ const authLogoutDuck = new Duck(
   },
 );
 
-function recievePrincipal(principal) {
+function removePrincipal() {
   return {
     type: actionTypes.AU_PRINCIPAL_QUERY_FULFILLED,
-    payload: principal,
+    payload: null,
   };
 }
 
@@ -31,16 +31,16 @@ export default {
       return (dispatch) => {
         dispatch(actions.create()).then(() => {
           AuthService.clearToken();
+          dispatch(removePrincipal());
+          if (actionsGlobal.studyManager) {
+            actionsGlobal.studyManager.studyList.dropFilter();
+          }
+          // Redirect to auth screen if not already there
+          const uri = new URI(backurl);
+          if (!isAuthModulePath(uri.pathname())) {
+            dispatch(goToPage(paths.login()));
+          }
         });
-        dispatch(recievePrincipal());
-        if (actionsGlobal.studyManager) {
-          actionsGlobal.studyManager.studyList.dropFilter();
-        }
-        // Redirect to auth screen if not already there
-        const uri = new URI(backurl);
-        if (!isAuthModulePath(uri.pathname())) {
-          dispatch(goToPage(paths.login()));
-        }
       }
     },
   },

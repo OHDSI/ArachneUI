@@ -34,8 +34,6 @@ function mapStateToProps(state) {
   const isUnactivated = get(state, 'form.login.submitErrors.unactivated', false);
   const userEmail = get(state, 'form.login.values.username', '');
   const isLoading = get(state, 'auth.auth.isLoading', false);
-  const username = get(state, 'form.login.values.username', '');
-  const password = get(state, 'form.login.values.password', '');
 
   return {
     authMethod,
@@ -46,17 +44,14 @@ function mapStateToProps(state) {
     isUnactivated,
     userEmail,
     isLoading,
-    username,
-    password
   };
 }
 
 const mapDispatchToProps = {
   login: actions.auth.login,
   resend: actions.auth.resendEmail,
-  redirect: () => push(paths.login(loginMessages.resendDone)),
+  redirect: (url) => push(url),
   principal: actions.auth.principal.query,
-  redirectToBack: (url) => push(url),
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
@@ -65,10 +60,10 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...dispatchProps,
     ...ownProps,
     resendEmail: () => dispatchProps.resend({ email: stateProps.userEmail })
-      .then(() => dispatchProps.redirect())
+      .then(() => dispatchProps.redirect(paths.login(loginMessages.resendDone)))
       .catch(() => {}),
-    doSubmit: () => dispatchProps.login(stateProps.username, stateProps.password)
-      .then(() => dispatchProps.redirectToBack((/\/auth\/logout/i).test(stateProps.initialValues.redirectTo) ? '/'
+    doSubmit: (data) => dispatchProps.login(data.username, data.password)
+      .then(() => dispatchProps.redirect((/\/auth\/logout/i).test(stateProps.initialValues.redirectTo) ? '/'
         : stateProps.initialValues.redirectTo || '/'))
       .then(() => dispatchProps.principal()),
   });
