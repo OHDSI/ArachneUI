@@ -22,7 +22,7 @@
 
 // @ts-check
 import { createSelector } from 'reselect';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 
 class selectorsBuilder {
   getRawStudyList(state) {
@@ -35,7 +35,7 @@ class selectorsBuilder {
       favourite: rawStudy.favourite,
       title: rawStudy.title,
       leadList: rawStudy.leadList,
-      role: rawStudy.role,
+      role: get(rawStudy, 'role', 'Reader', 'String'),
       created: rawStudy.created,
       type: rawStudy.type,
       status: rawStudy.status,
