@@ -391,7 +391,6 @@ public class StudyManagerTest extends BaseDataCatalogTest {
     }
 
     @Test
-    @Ignore
     public void test12InvitationMail() throws Exception {
 
         String chosenName = "admin3 admin3";
@@ -617,7 +616,6 @@ public class StudyManagerTest extends BaseDataCatalogTest {
     }
 
     @Test
-    @Ignore
     public void test18RemoveDataSource() throws Exception {
 
         loginAndOpenStudy();
@@ -630,10 +628,9 @@ public class StudyManagerTest extends BaseDataCatalogTest {
 
         acceptAlert();
 
-        waitFor(driver, ByBuilder.byClassAndText("ac-link", NAME_DS));
-
+        waitFor(driver,By.className("ac-study-datasource-item__status--suspended"));
         List<WebElement> datasourceRows = driver.findElements(By.className("ac-list-item__content"));
-        //
+
         Assert.assertTrue(datasourceRows.get(0)
                 .findElement(ByBuilder.byClassAndText("ac-link", NAME_DS)).isDisplayed());
         Assert.assertEquals("SUSPENDED", datasourceRows.get(0)
@@ -641,9 +638,8 @@ public class StudyManagerTest extends BaseDataCatalogTest {
 
         openParticipantsTab();
 
-        List<WebElement> addedRows = driver.findElements(By.className("ac-list-item"));
-
-        WebElement result = addedRows.stream()
+        List<WebElement> rows = driver.findElements(By.className("ac-list-item"));
+        WebElement result = rows.stream()
                 .filter(row -> row.findElement(By.className("ac-study-participants-item__role")).getText().equals("Data Set Owner"))
                 .findAny().get();
 
