@@ -269,12 +269,13 @@ public class BaseTest {
         final String body = (String) ((LinkedHashMap<String, Object>) mail.get("Content")).get("Body");
 
         List<String> links = new ArrayList<>();
-        String regexString = Pattern.quote("https://") + "(.*?)" + Pattern.quote("\"");
+        String regexString = Pattern.quote("http://") + "(.*?)" + Pattern.quote("\"");
         Pattern pattern = Pattern.compile(regexString);
         Matcher matcher = pattern.matcher(body);
 
         while (matcher.find()) {
             String textInBetween = matcher.group(1);
+            textInBetween = textInBetween.replace("portal_host_placeholder:010101", PORTAL_BASE_URL);
             links.add(textInBetween);
         }
         return links;

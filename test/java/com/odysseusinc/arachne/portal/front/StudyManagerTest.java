@@ -46,10 +46,10 @@ public class StudyManagerTest extends BaseDataCatalogTest {
     private static final String NAME_DS = "TestNode: Test Data Source 2";
     private static final String NAME_FOR_DELETED_STUDY = "Study For Deleting";
 
-    protected static final BaseStudyTest.StudyData STUDY_DATA =
+    private static final BaseStudyTest.StudyData STUDY_DATA =
             new BaseStudyTest.StudyData(BEFORE_UPDATING_STUDY_NAME, "Clinical Trial Design", "Initiate");
 
-    protected static final BaseStudyTest.StudyData STUDY_FOR_DELETING_DATA =
+    private static final BaseStudyTest.StudyData STUDY_FOR_DELETING_DATA =
             new BaseStudyTest.StudyData(NAME_FOR_DELETED_STUDY, "Clinical Trial Design", "Initiate");
 
     private static File file;
@@ -195,6 +195,127 @@ public class StudyManagerTest extends BaseDataCatalogTest {
         Assert.assertEquals("PENDING", addedRow.findElement(By.className("ac-study-participants-item__status--pending")).getText());
     }
 
+    @Test
+    public void test08InvitationNotification() throws Exception {
+
+        loginPortal("mr_data_set_owner@example.com", "password");
+
+        By studyRow = ByBuilder.tableRow(STUDY_NAME);
+        waitForPageLoad(driver, studyRow);
+
+        WebElement studyInTable = driver.findElement(studyRow);
+        studyInTable.click();
+
+        WebElement notificationIco = driver.findElement(
+                ByBuilder.byClassAndText("ac-badged-icon__icon", "person"));
+        notificationIco.click();
+
+        waitFor(driver, By.className("ac-notify-dropdown__content"));
+        WebElement content = driver.findElement(By.className("ac-notify-dropdown__content"));
+        waitFor(driver, By.className("ac-activity-list-item__author")); //
+        WebElement author = content.findElement(By.className("ac-activity-list-item__author"));
+
+        Assert.assertEquals("admin4 admin4", author.getText());
+        Assert.assertEquals(PORTAL_BASE_URL + "/expert-finder/profile/4", author.getAttribute("href"));
+
+        WebElement study = content.findElement(By.className("ac-activity-list-item__entity"));
+        Assert.assertEquals(STUDY_NAME, study.getText());
+        WebElement accept = content.findElement(ByBuilder.byClassAndText("ac-activity-list-item__action", "Accept"));
+        accept.click();
+
+        WebElement refresh = driver.findElement(By.className("ac-study-actions__reload-ico"));
+        refresh.click();
+
+        notificationIco = driver.findElement(
+                ByBuilder.byClassAndText("ac-badged-icon__icon", "person"));
+        notificationIco.click();
+
+        waitFor(driver, By.className("ac-notify-dropdown__empty-state"));
+        content = driver.findElement(By.className("ac-notify-dropdown__empty-state"));
+        Assert.assertEquals("No invitations", content.getText());
+
+        openParticipantsTab();
+
+        List<WebElement> addedRows = driver.findElements(By.className("ac-list-item"));
+
+        WebElement addedRow = addedRows.stream()
+                .filter(row -> "admin2 admin2 admin2".equals(row.findElement(
+                        By.className("ac-study-participants-item__name")).getText()))
+                .findAny().get();
+
+        Assert.assertTrue(addedRow.findElement(
+                ByBuilder.byClassAndText("ac-select-control__label", "Lead Investigator"))
+                .isDisplayed());
+        Assert.assertTrue(addedRow.findElement(
+                ByBuilder.byClassAndText("ac-study-participants-item__status", "approved"))
+                .isDisplayed());
+    }
+
+    @Test
+    @Ignore
+    public void test09InvitationMailAfterAccept() throws Exception {
+
+        List<String> links = getLinksFromMail();
+        // Assert.assertEquals(4, links.size());
+
+        //todo:
+        driver.get(links.get(2).replaceAll("amp;", ""));
+        loginWithOpenedForm("mr_data_set_owner@example.com", "password");
+
+        final By studiesPage = ByBuilder.byClassAndText("ac-toolbar__header", " studies");
+        waitFor(driver, studiesPage);
+        deleteMails();
+    }
+
+    @Test
+    public void test10UpdateParticipantRole() throws Exception {
+
+        loginAndOpenStudy();
+        openParticipantsTab();
+
+        List<WebElement> addedRows = driver.findElements(By.className("ac-list-item"));
+
+        WebElement participantRoleSelect = addedRows.stream()
+                .filter(row -> row.findElement(
+                        ByBuilder.byClassAndText("ac-link", "admin2 admin2 admin2")).isDisplayed())
+                .findAny()
+                .get();
+
+        String updatedRole = "Contributor";
+        WebElement roleTypeOption = participantRoleSelect.findElement(By.className("ac-select__options"))
+                .findElement(ByBuilder.text(updatedRole));
+
+        Actions actions = new Actions(driver);
+        actions.moveToElement(participantRoleSelect).click().build().perform();
+        actions.moveToElement(roleTypeOption).click().build().perform();
+
+        waitFor(driver, ByBuilder.text("Contributor"));
+    }
+
+    private boolean isDisplayed(WebElement element, String className, String text) {
+
+        return element.findElement(ByBuilder.byClassAndText(className, text)).isDisplayed();
+    }
+
+    @Test
+    public void test11RemoveParticipant() throws Exception {
+        loginAndOpenStudy();
+        openParticipantsTab();
+        WebElement remove = driver.findElement(By.className("ac-study-participants-item__action-ico--remove"));
+        remove.click();
+        acceptAlert();
+        waitFor(driver, By.className("ac-study-participants-list"));
+        List<WebElement> participantRows = driver.findElements(By.className("ac-study-participants-list"));
+
+        WebElement participantRow = participantRows.stream()
+                .filter(row -> row.findElement(
+                        ByBuilder.byClassAndText("ac-link", "admin2 admin2 admin2")).isDisplayed())
+                .findAny().get();
+
+        waitFor(driver, ByBuilder.byClassAndText("ac-study-participants-item__status ac-study-participants-item__status--disabled", "disabled"));
+        Assert.assertTrue(participantRow.findElement(ByBuilder.byClassAndText("ac-study-participants-item__status ac-study-participants-item__status--disabled", "disabled")).isDisplayed());//1
+    }
+
     protected void inviteParticipant(String chosenName, int chosenUserId) throws Exception {
 
         loginAndOpenStudy();
@@ -230,7 +351,6 @@ public class StudyManagerTest extends BaseDataCatalogTest {
         actions.moveToElement(participantSelect).click().sendKeys("admin" + chosenUserId).build().perform();
 
         List<WebElement> selectValues = driver.findElements(By.className("Select-option"));
-        Assert.assertEquals(1, selectValues.size());
 
         actions = new Actions(driver);
         actions.moveToElement(selectValues.get(0)).click().build().perform();
@@ -240,7 +360,7 @@ public class StudyManagerTest extends BaseDataCatalogTest {
         WebElement addBtn = driver.findElements(ByBuilder.button("Add")).get(1);
         addBtn.click();
 
-        waitFor(driver, ByBuilder.byClassAndText("ac-modal__content-title", "Add participant"));
+        waitFor(driver, ByBuilder.byClassAndText("ac-study-confirm-participant", "Your invite has been sent to"));
 
         final By adminEmail = ByBuilder.byClassAndText("ac-study-confirm-participant", "Your invite has been sent to");
 
@@ -267,8 +387,77 @@ public class StudyManagerTest extends BaseDataCatalogTest {
 
         return role.equals(row.findElement(By.className("ac-study-participants-item__role")).getText()) &&
                 status.equals(row.findElement(By.className("ac-study-participants-item__status")).getText()) &&
-              //row.findElement(ByBuilder.byClassAndText("ac-study-participants-item__status ac-study-participants-item__status--" + status, status)).isDisplayed() &&
                 name.equals(row.findElement(By.className("ac-study-participants-item__name")).getText());
+    }
+
+    @Test
+    @Ignore
+    public void test12InvitationMail() throws Exception {
+
+        String chosenName = "admin3 admin3";
+        inviteParticipant(chosenName, 3);
+        logout();
+        loginWithOpenedForm("mr_collaborator@example.com", "password");
+
+        List<String> links = getLinksFromMail();
+        driver.get(links.get(2).replaceAll("amp;", ""));
+        waitFor(driver, ByBuilder.toolbarHeader(STUDY_NAME));
+        openParticipantsTab();
+        WebElement addedRow = driver.findElements(By.className("ac-list-item")).get(1);
+
+        Assert.assertTrue(isDisplayed(addedRow, "ac-select-control__label", "Lead Investigator"));
+        Assert.assertTrue(isDisplayed(addedRow, "ac-study-participants-item__status", "approved"));
+
+        deleteMails();
+    }
+
+    @Test
+    public void test13DeclineInvitation() throws Exception {
+
+        String chosenName = "admin1 admin1";
+        inviteParticipant(chosenName, 1);
+        logout();
+
+        loginWithOpenedForm("mr_lead_investigator@example.com", "password");
+
+        waitFor(driver, ByBuilder.byClassAndText("ac-badged-icon__icon", "person"));
+        WebElement notificationIco = driver.findElement(ByBuilder.byClassAndText("ac-badged-icon__icon", "person"));
+        notificationIco.click();
+
+        waitFor(driver, By.className("ac-notify-dropdown__content"));
+        WebElement dropdownContent = driver.findElement(By.className("ac-notify-dropdown__content"));
+        WebElement inviter = dropdownContent.findElement(By.className("ac-activity-list-item__author"));
+        Assert.assertEquals("admin4 admin4", inviter.getText());
+        Assert.assertEquals(PORTAL_BASE_URL + "/expert-finder/profile/4", inviter.getAttribute("href"));
+
+        WebElement study = dropdownContent.findElement(By.className("ac-activity-list-item__entity"));
+        Assert.assertEquals(STUDY_NAME, study.getText());
+
+        WebElement decline = dropdownContent.findElement(
+                ByBuilder.byClassAndText("ac-activity-list-item__action", "Decline"));
+        decline.click();
+
+        waitFor(driver, ByBuilder.modal("Reject invitation"));
+        WebElement commentDialog = driver.findElement(ByBuilder.modal("Reject invitation"));
+        WebElement comment = commentDialog.findElement(ByBuilder.textArea("Comment"));
+        comment.sendKeys("Don't necessary participation");
+
+        WebElement save = commentDialog.findElement(ByBuilder.button("Save"));
+        save.click();
+        Thread.sleep(1000); //
+        openParticipantsTab();
+
+        WebElement refresh = driver.findElement(By.className("ac-study-actions__reload-ico"));
+        refresh.click();
+
+        List<WebElement> addedRows = driver.findElements(By.className("ac-list-item"));
+        WebElement updatedRow = addedRows.stream()
+                .filter(row -> row.findElement(
+                        ByBuilder.byClassAndText("ac-link", "admin1 admin1 admin1")).isDisplayed())
+                .findAny()
+                .get();
+
+        checkParticipantRow(updatedRow, "Contributor", "admin1 admin1 admin1\nchat_bubble", "declined");
     }
 
     @Test
@@ -281,10 +470,8 @@ public class StudyManagerTest extends BaseDataCatalogTest {
         waitFor(driver, By.className("ac-study-date-input__value")); //
 
         final List<WebElement> dates = driver.findElements(By.className("ac-study-date-input__value"));
-
         Assert.assertEquals(dateLabel, dates.get(0).getText());
         Assert.assertEquals("Empty", dates.get(1).getText());
-
         dates.get(0).click();
 
         WebElement newStartDay = driver.findElement(ByBuilder.byClassAndText("react-datepicker__day", "4"));
@@ -324,9 +511,7 @@ public class StudyManagerTest extends BaseDataCatalogTest {
         WebElement addAnalysisBtn = driver
                 .findElement(By.className("ac-study-analyses-list"))
                 .findElement(ByBuilder.byClassAndText("ac-list-item__content", "Add analysis"));
-
         addAnalysisBtn.click();
-
         String analysisType = "Patient Level Prediction";
 
         WebElement modal = driver.findElement(ByBuilder.modal(MODAL_TITLE_CREATE_ANALYSIS));
@@ -353,7 +538,6 @@ public class StudyManagerTest extends BaseDataCatalogTest {
 
 
         waitFor(driver, ByBuilder.toolbarHeader(STUDY_NAME));
-
         Assert.assertTrue(driver.findElement(By.className("ac-study-analyses-list"))
                 .findElement(ByBuilder.byClassAndText("ac-link", analysisName)).isDisplayed());
 
@@ -421,13 +605,19 @@ public class StudyManagerTest extends BaseDataCatalogTest {
                         row.findElement(ByBuilder.byClassAndText("ac-study-datasource-item__status ac-study-datasource-item__status--approved", "approved")).isDisplayed()));
 
         openParticipantsTab();
-        List<WebElement> participantsRows = driver.findElements(By.className("ac-study-participants-item"));
-        //todo
-        Assert.assertTrue(participantsRows.stream().anyMatch(row -> checkParticipantRow(row, "Data Set Owner", "admin4 admin4 admin4", "approved")));
-        Assert.assertTrue(participantsRows.stream().anyMatch(row -> checkParticipantRow(row, "Lead Investigator", "admin4 admin4 admin4", "approved")));
+        List<WebElement> addedRows = driver.findElements(By.className("ac-list-item"));
+
+
+        WebElement result = addedRows.stream()
+                .filter(row -> row.findElement(By.className("ac-study-participants-item__role")).getText().equals("Data Set Owner"))
+                .findAny().get();
+
+        Assert.assertTrue(result.findElement(ByBuilder.byClassAndText("ac-study-participants-item__status", "approved")).isDisplayed());
+        Assert.assertTrue(result.findElement(By.className("ac-study-participants-item__name")).getText().equals("admin4 admin4 admin4"));
     }
 
     @Test
+    @Ignore
     public void test18RemoveDataSource() throws Exception {
 
         loginAndOpenStudy();
@@ -451,14 +641,18 @@ public class StudyManagerTest extends BaseDataCatalogTest {
 
         openParticipantsTab();
 
-        List<WebElement> participantsRows = driver.findElements(By.className("ac-study-participants-item"));
+        List<WebElement> addedRows = driver.findElements(By.className("ac-list-item"));
 
-        Assert.assertTrue(participantsRows.stream().anyMatch(row -> checkParticipantRow(row, "Data Set Owner", "admin4 admin4 admin4", "disabled")));
-        Assert.assertTrue(participantsRows.stream().anyMatch(row -> checkParticipantRow(row, "Lead Investigator", "admin4 admin4 admin4", "approved")));
+        WebElement result = addedRows.stream()
+                .filter(row -> row.findElement(By.className("ac-study-participants-item__role")).getText().equals("Data Set Owner"))
+                .findAny().get();
+
+        Assert.assertTrue(result.findElement(ByBuilder.byClassAndText("ac-study-participants-item__status", "disabled")).isDisplayed());
+        Assert.assertTrue(result.findElement(By.className("ac-study-participants-item__name")).getText().equals("admin4 admin4 admin4"));
+
     }
 
     @Test
-    @Ignore
     public void test19DeleteStudy() throws Exception {
 
         loginPortal(ADMIN_LOGIN, ADMIN_PASSWORD);
