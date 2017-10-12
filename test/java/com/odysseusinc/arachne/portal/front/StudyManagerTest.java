@@ -9,6 +9,9 @@ import com.google.common.base.Predicate;
 import com.odysseusinc.arachne.portal.front.utils.ByBuilder;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -40,7 +43,7 @@ public class StudyManagerTest extends BaseDataCatalogTest {
     private static final String BEFORE_UPDATING_STUDY_NAME = "TEST Stu";
     private static final String STUDY_NAME = "TEST Study";
 
-    private static final String NAME_DS = "Test Data Source 2";
+    private static final String NAME_DS = "TestNode: Test Data Source 2";
     private static final String NAME_FOR_DELETED_STUDY = "Study For Deleting";
 
     protected static final BaseStudyTest.StudyData STUDY_DATA =
@@ -260,20 +263,207 @@ public class StudyManagerTest extends BaseDataCatalogTest {
 
     }
 
-    private void checkParticipantRow(WebElement row, String role, String name, String status) {
+    private boolean checkParticipantRow(WebElement row, String role, String name, String status) {
 
-        Assert.assertEquals(role, row.findElement(By.className("ac-study-participants-item__role")).getText());
-        Assert.assertTrue(row.findElement(ByBuilder.byClassAndText("ac-study-participants-item__status ac-study-participants-item__status--" + status, status)).isDisplayed());
-        Assert.assertEquals(name, row.findElement(By.className("ac-study-participants-item__name")).getText());
+        return role.equals(row.findElement(By.className("ac-study-participants-item__role")).getText()) &&
+                status.equals(row.findElement(By.className("ac-study-participants-item__status")).getText()) &&
+              //row.findElement(ByBuilder.byClassAndText("ac-study-participants-item__status ac-study-participants-item__status--" + status, status)).isDisplayed() &&
+                name.equals(row.findElement(By.className("ac-study-participants-item__name")).getText());
+    }
+
+    @Test
+    public void test14UpdateDates() throws Exception {
+
+        loginAndOpenStudy();
+
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/YYYY");
+        String dateLabel = formatter.format(new Date());
+        waitFor(driver, By.className("ac-study-date-input__value")); //
+
+        final List<WebElement> dates = driver.findElements(By.className("ac-study-date-input__value"));
+
+        Assert.assertEquals(dateLabel, dates.get(0).getText());
+        Assert.assertEquals("Empty", dates.get(1).getText());
+
+        dates.get(0).click();
+
+        WebElement newStartDay = driver.findElement(ByBuilder.byClassAndText("react-datepicker__day", "4"));
+        newStartDay.click();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, 4);
+        String newStartDateLabel = formatter.format(calendar.getTime());
+
+        waitFor(driver, ByBuilder.byClassAndText("ac-study-date-input__value", newStartDateLabel));
+        waitFor(driver, ByBuilder.byClassAndText("ac-study-date-input__value", "Empty"));
+        WebElement endDate = driver.findElements(By.className("ac-study-date-input__value")).get(1);
+        endDate.click();
+
+        int lastMonthDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        waitFor(driver, ByBuilder.byClassAndText("react-datepicker__day", String.valueOf(lastMonthDay)));
+
+        WebElement newEndDay = driver.findElement(ByBuilder.byClassAndText("react-datepicker__day", String.valueOf(lastMonthDay)));
+        newEndDay.click();
+
+        calendar.set(Calendar.DAY_OF_MONTH, lastMonthDay);
+
+        waitFor(driver, By.className("ac-study-date-input__value"));
+        String updatedEndDateLabel = formatter.format(calendar.getTime());
+
+        waitFor(driver, ByBuilder.byClassAndText("ac-study-date-input__value", updatedEndDateLabel));
+        final List<WebElement> resultDates = driver.findElements(By.className("ac-study-date-input__value"));
+
+        Assert.assertEquals(newStartDateLabel, resultDates.get(0).getText());
+        Assert.assertEquals(updatedEndDateLabel, resultDates.get(1).getText());
+    }
+
+    @Test
+    public void test15CreateAnalysis() throws Exception {
+
+        loginAndOpenStudy(STUDY_NAME);
+        WebElement addAnalysisBtn = driver
+                .findElement(By.className("ac-study-analyses-list"))
+                .findElement(ByBuilder.byClassAndText("ac-list-item__content", "Add analysis"));
+
+        addAnalysisBtn.click();
+
+        String analysisType = "Patient Level Prediction";
+
+        WebElement modal = driver.findElement(ByBuilder.modal(MODAL_TITLE_CREATE_ANALYSIS));
+        WebElement titleInput = modal.findElement(ByBuilder.input(PLACEHOLDER_ANALYSIS_TITLE));
+        WebElement analysisTypeSelect = modal.findElement(ByBuilder.select(PLACEHOLDER_STUDY_TYPE));
+        WebElement analysisTypeOption = modal.findElement(ByBuilder.selectOption(analysisType));
+
+        WebElement createBtn = modal.findElement(ByBuilder.button("Create"));
+
+        String analysisName = "Test analysis";
+        titleInput.sendKeys(analysisName);
+
+        Actions actions = new Actions(driver);
+        actions.moveToElement(analysisTypeSelect).click().build().perform();
+        actions.moveToElement(analysisTypeOption).click().build().perform();
+
+        createBtn.click();
+        // redirect to analysis page
+        waitFor(driver, ByBuilder.toolbar(analysisName));
+
+        // return on study page -> back button
+        WebElement backToStudyBtn = driver.findElement(By.className("ac-toolbar__back-icon"));
+        backToStudyBtn.click();
+
+
+        waitFor(driver, ByBuilder.toolbarHeader(STUDY_NAME));
+
+        Assert.assertTrue(driver.findElement(By.className("ac-study-analyses-list"))
+                .findElement(ByBuilder.byClassAndText("ac-link", analysisName)).isDisplayed());
+
+    }
+
+    @Test
+    public void test16UpdateStudyStatus() throws Exception {
+
+        loginAndOpenStudy(STUDY_NAME);
+        String studyStatus = "Active";
+
+        WebElement studyStatusSelect = driver.findElement(
+                ByBuilder.byClassAndText("ac-study-status-option__label", studyStatus));
+
+        waitFor(driver, ByBuilder.byClassAndText("ac-study-status-option__label", studyStatus));
+
+        String updatedStudyStatus = "Completed";
+        WebElement studyStatusOption = driver.findElement(
+                ByBuilder.byClassAndText("ac-study-status-option", updatedStudyStatus));
+
+        Actions actions = new Actions(driver);
+        actions.moveToElement(studyStatusSelect).click().build().perform();
+        actions.moveToElement(studyStatusOption).click().build().perform();
+
+        waitFor(driver, ByBuilder.byClassAndText("ac-study-status-option__label", updatedStudyStatus));
+
+    }
+
+    @Test
+    public void test17AddDatasource() throws Exception {
+
+        loginAndOpenStudy(STUDY_NAME);
+        openDatasourcesTab();
+
+        waitFor(driver, ByBuilder.byClassAndText("ac-list-item__content", "No attached data sources"));
+
+        WebElement datasourceAddBtm = driver.findElement(ByBuilder.byClassAndText("ac-list-item__content", "Add Data Source"));
+        datasourceAddBtm.click();
+        waitFor(driver, ByBuilder.byClassAndText("ac-tabs__item--selected", "Data catalog"));
+
+        WebElement dsSelect = driver.findElement(
+                ByBuilder.byClassAndText("Select-placeholder", "Filter by name"));
+        Actions actions = new Actions(driver);
+        actions.moveToElement(dsSelect).click().sendKeys("2").build().perform();
+
+        Thread.sleep(1000);// todo
+        // waitFor(driver, ByBuilder.byClassAndText("ac-label-data-source__name", NAME_DS));
+
+        WebElement dsOption = driver.findElement(
+                ByBuilder.byClassAndText("ac-label-data-source__name", NAME_DS));
+        actions.moveToElement(dsOption).click().build().perform();
+
+        WebElement addDSBtm = driver.findElement(ByBuilder.button("Add data source"));
+        addDSBtm.click();
+
+        waitFor(driver, ByBuilder.byClassAndText("ac-link", NAME_DS));
+        List<WebElement> rows = driver.findElements(By.className("ac-list-item__content"));
+
+
+        Assert.assertTrue(rows.stream()
+                .anyMatch(row ->
+                        row.findElement(ByBuilder.byClassAndText("ac-link", NAME_DS)).isDisplayed()));
+        Assert.assertTrue(rows.stream()
+                .anyMatch(row ->
+                        row.findElement(ByBuilder.byClassAndText("ac-study-datasource-item__status ac-study-datasource-item__status--approved", "approved")).isDisplayed()));
+
+        openParticipantsTab();
+        List<WebElement> participantsRows = driver.findElements(By.className("ac-study-participants-item"));
+        //todo
+        Assert.assertTrue(participantsRows.stream().anyMatch(row -> checkParticipantRow(row, "Data Set Owner", "admin4 admin4 admin4", "approved")));
+        Assert.assertTrue(participantsRows.stream().anyMatch(row -> checkParticipantRow(row, "Lead Investigator", "admin4 admin4 admin4", "approved")));
+    }
+
+    @Test
+    public void test18RemoveDataSource() throws Exception {
+
+        loginAndOpenStudy();
+        openDatasourcesTab();
+
+        waitFor(driver, ByBuilder.byClassAndText("ac-link", NAME_DS));
+
+        WebElement deleteIco = driver.findElement(By.className("ac-study-datasource-item__action"));
+        deleteIco.click();
+
+        acceptAlert();
+
+        waitFor(driver, ByBuilder.byClassAndText("ac-link", NAME_DS));
+
+        List<WebElement> datasourceRows = driver.findElements(By.className("ac-list-item__content"));
+        //
+        Assert.assertTrue(datasourceRows.get(0)
+                .findElement(ByBuilder.byClassAndText("ac-link", NAME_DS)).isDisplayed());
+        Assert.assertEquals("SUSPENDED", datasourceRows.get(0)
+                .findElement(By.className("ac-study-datasource-item__status--suspended")).getText());
+
+        openParticipantsTab();
+
+        List<WebElement> participantsRows = driver.findElements(By.className("ac-study-participants-item"));
+
+        Assert.assertTrue(participantsRows.stream().anyMatch(row -> checkParticipantRow(row, "Data Set Owner", "admin4 admin4 admin4", "disabled")));
+        Assert.assertTrue(participantsRows.stream().anyMatch(row -> checkParticipantRow(row, "Lead Investigator", "admin4 admin4 admin4", "approved")));
     }
 
     @Test
     @Ignore
     public void test19DeleteStudy() throws Exception {
 
+        loginPortal(ADMIN_LOGIN, ADMIN_PASSWORD);
         createStudy(STUDY_FOR_DELETING_DATA);
 
-        loginPortal(ADMIN_LOGIN, ADMIN_PASSWORD);
         waitFor(driver, By.className("ac-study-actions__remove-ico"));
 
         WebElement delete = driver.findElement(By.className("ac-study-actions__remove-ico"));
