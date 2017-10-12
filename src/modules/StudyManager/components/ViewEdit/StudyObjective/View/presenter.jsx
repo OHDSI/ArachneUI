@@ -63,7 +63,7 @@ class StudyObjectiveView extends Component {
 
   render() {
     const classes = BEMHelper('study-objective-view');
-    const {
+    let {
       description = '',
       more = 'Read more',
       less = 'Show less',
@@ -75,8 +75,14 @@ class StudyObjectiveView extends Component {
       truncated,
     } = this.state;
 
+    let modifiers;
+    if (!description) {
+      description = 'No description';
+      modifiers = ['empty'];
+    }
+
     return (
-      <div {...classes()}>
+      <div {...classes({ modifiers })}>
         <div {...classes('content')}>
           <Truncate
             ref={ref => this.truncateRef = ref}
