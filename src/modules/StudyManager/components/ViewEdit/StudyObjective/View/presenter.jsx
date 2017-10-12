@@ -20,32 +20,84 @@
  *
  */
 
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
+import Truncate from 'react-truncate';
+import { Link } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
 
 require('./style.scss');
 
-function StudyObjectiveView({ description }) {
-  const classes = new BEMHelper('study-objective-view');
-  let mods;
+class StudyObjectiveView extends Component {
+  
+  constructor(...args) {
+    super(...args);
 
-  if (description) {
-    description = description.replace(/(?:\r\n|\r|\n)/g, '<br/>');
-  } else {
-    description = 'No description';
-    mods = ['empty'];
+    this.state = {
+      expanded: false,
+      truncated: false,
+    };
+
+    this.handleTruncate = this.handleTruncate.bind(this);
+    this.toggleLines = this.toggleLines.bind(this);
   }
 
-  return (
-    <div
-      {...classes({ modifiers: mods })}
-      dangerouslySetInnerHTML={{ __html: description }}
-    />
-  );
-}
+  componentWillReceiveProps(nextProps) {
+    if (this.props.description !== nextProps.description) {
+      this.truncateRef.onResize();
+    }
+  }
 
-StudyObjectiveView.propTypes = {
-  description: PropTypes.string,
-};
+  handleTruncate(truncated) {
+    if (this.state.truncated !== truncated) {
+      this.setState({
+        truncated,
+      });
+    }
+  }
+
+  toggleLines() {
+    this.setState({
+      expanded: !this.state.expanded,
+    });
+  }
+
+  render() {
+    const classes = BEMHelper('study-objective-view');
+    const {
+      description = '',
+      more = 'Read more',
+      less = 'Show less',
+      lines = 5,
+    } = this.props;
+
+    const {
+      expanded,
+      truncated,
+    } = this.state;
+
+    return (
+      <div {...classes()}>
+        <div {...classes('content')}>
+          <Truncate
+            ref={ref => this.truncateRef = ref}
+            lines={!expanded && lines}
+            ellipsis={(
+              <span>... <Link onClick={this.toggleLines}>{more}</Link></span>
+            )}
+            onTruncate={this.handleTruncate}
+          >
+            {description.split('\n').map((rawLine, i, arr) => {
+              const line = <span key={i}>{rawLine}</span>;
+              return (i === arr.length - 1) ? line : [line, <br key={i + 'br'} />];
+            })}
+          </Truncate>
+          {!truncated && expanded && (
+            <span> <Link onClick={this.toggleLines}>{less}</Link></span>
+          )}
+        </div>
+      </div>
+    );
+  }
+}
 
 export default StudyObjectiveView;

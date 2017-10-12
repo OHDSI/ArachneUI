@@ -26,12 +26,14 @@
 	
 	&study-objective-view {
 		display: block;
-    padding: 15px 20px;
+    padding: 1.5rem 2rem;
 		line-height: 2.1rem;
 
 		&--empty {
 			color: $grey-placeholder;
 		}
+
+		&__content {}
 
 		// ul, ol {
 		// 	list-style: initial;
