@@ -87,7 +87,7 @@ class TableStudies extends Component {
       />,
       <Cell
         {...this.tableClasses('role')}
-        header="Role"
+        header="My role"
         field="role"
       />,
       <Cell
