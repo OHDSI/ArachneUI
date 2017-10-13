@@ -141,7 +141,7 @@ const config = {
         to: path.join(webapp, 'fonts'),
       },
       {
-        from: path.join(currentDir, 'node_modules/arachne-ui-components/lib/material-design-icons/iconfont'),
+        from: path.join(currentDir, 'node_modules/arachne-ui-components/lib/resources/material-design-icons/iconfont'),
         to: path.join(webapp, 'fonts'),
       },
       {
