@@ -111,7 +111,7 @@ const apiPaths = {
 
 const statusesForPublishing = ['PENDING', 'NOT APPROVED', 'IN PROGRESS'];
 
-const refreshTime = 10000 * 36000;
+const refreshTime = 10000;
 
 const statusColors = {
   PENDING: 'orange',
