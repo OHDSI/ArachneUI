@@ -1,0 +1,81 @@
+{
+  "admins": [
+    {
+      "id": 1,
+      "firstname": "Pavel",
+      "middlename": "Sergeevich",
+      "lastname": "Grafkin",
+      "email": "pavgra@gmail.com",
+      "username": "pavel.Grafkin",
+      "roles": [
+        "Admin",
+        "Superadmin"
+      ]
+    },
+    {
+      "id": 2,
+      "firstname": "Another",
+      "middlename": "",
+      "lastname": "Guy",
+      "email": "anon@gmail.com",
+      "username": "",
+      "roles": [
+        "Admin"
+      ]
+    },
+    {
+      "id": 3,
+      "firstname": "Greg",
+      "middlename": "",
+      "lastname": "Klebanov",
+      "email": "pavgra@gmail.com",
+      "username": "",
+      "roles": [
+        "Pain in ..."
+      ]
+    }
+  ],
+  "suggest-admins": [
+    {
+      "id": 5,
+      "firstname": "Alex",
+      "middlename": "",
+      "lastname": "Saltykov"
+    },
+    {
+      "id": 6,
+      "firstname": "Maria",
+      "middlename": "",
+      "lastname": "Pozhidaeva"
+    }
+  ],
+  "system-settings": [
+    {
+      "label": "LDAP",
+      "name": "ldap",
+      "fieldList": [
+        {
+          "label": "LDAP url",
+          "name": "ldap.url",
+          "isRequired": true
+        }
+      ]
+    },  
+    {
+      "label": "Healthcheck",
+      "name": "healthcheck",
+      "fieldList": [
+        {
+          "label": "Message send interval",
+          "name": "period",
+          "value": 30000
+        },
+        {
+          "label": "Lost packets percent treshold",
+          "name": "lostpacketspercenttreshold",
+          "value": 600000
+        }
+      ]
+    }
+  ]
+}

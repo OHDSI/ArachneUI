@@ -1,0 +1,7 @@
+.env.json
+*.iml
+.idea/
+node_modules/
+target
+public/*
+!public/index.html

@@ -1,0 +1,13 @@
+* text=auto eol=lf
+*.png binary
+
+*.eot binary
+
+*.ttf binary
+*.woff binary
+
+*.woff2 binary
+
+*.dfont binary
+
+*.otf binary

@@ -1,0 +1,106 @@
+/**
+ *
+ * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Company: Odysseus Data Services, Inc.
+ * Product Owner/Architecture: Gregory Klebanov
+ * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
+ * Created: June 23, 2017
+ *
+ */
+
+import { createSelector } from 'reselect';
+import get from 'lodash/get';
+import { form } from 'modules/StudyManager/const';
+
+export default class selectorsBuilder {
+  getCurrentUserId(state) {
+    return get(
+      state,
+      'auth.principal.data.id',
+      null
+    );
+  }
+
+  getStudyParticipantList(state) {
+    return get(
+      state,
+      'studyManager.study.data.result.participants',
+      []
+    );
+  }
+
+  getSelectedOwnerList(state) {
+    return get(
+      state,
+      `form.${form.addVirtualSource}.values.ownerList`,
+      []
+    );
+  }
+
+  getCurrentUser(studyParticipantList, currentUserId) {
+    const currentUser = studyParticipantList.filter(u => u.id === currentUserId)[0];
+    return {
+      ...currentUser,
+      isRemovable: false,
+    };
+  }
+
+  buildSelectorForCurrentUser() {
+    return createSelector(
+      [this.getStudyParticipantList, this.getCurrentUserId],
+      this.getCurrentUser
+    );
+  }
+
+  getOwnerOptions(participantList, selectedOwnerList) {
+    // Remove duplicates
+    // (which appear because or diferent roles of the same person)
+    const participantSet = {};
+    participantList.forEach((user) => {
+      if (!participantSet.hasOwnProperty(user.id)) { // eslint-disable-line no-prototype-builtins
+        participantSet[user.id] = user;
+      }
+    });
+
+    // Remove already selected users
+    selectedOwnerList.forEach((user) => {
+      delete participantSet[user.id];
+    });
+
+    return Object.values(participantSet).filter(u => u).map(participant => ({
+      label: participant.fullName,
+      value: {
+        ...participant,
+        isRemovable: true,
+      },
+    }));
+  }
+
+  // For autocomplete
+  buildSelectorForOwnerOptions() {
+    return createSelector(
+      [this.getStudyParticipantList, this.getSelectedOwnerList],
+      this.getOwnerOptions
+    );
+  }
+
+  build() {
+    return {
+      getCurrentUser: this.buildSelectorForCurrentUser(),
+      getOwnerOptions: this.buildSelectorForOwnerOptions(),
+      getSelectedOwnerList: this.getSelectedOwnerList,
+    };
+  }
+}

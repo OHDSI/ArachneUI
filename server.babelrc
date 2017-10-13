@@ -1,0 +1,23 @@
+{
+   "presets": ["latest", "stage-2", "react"],
+  "plugins": [
+    "transform-runtime",
+    "add-module-exports",
+    "transform-es2015-modules-commonjs",
+    ["babel-plugin-transform-require-ignore",
+      {
+        "extensions": [".scss", ".css"]
+      }
+     ]
+  ],
+  "env": {
+    "development": {
+      "plugins": []
+    }
+  },
+  "ignore": [
+      "public",
+      "node_modules",
+      "arachnefrontcomponents"
+  ]
+}

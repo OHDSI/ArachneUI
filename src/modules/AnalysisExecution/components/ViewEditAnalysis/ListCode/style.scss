@@ -1,0 +1,120 @@
+/**
+ *
+ * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Company: Odysseus Data Services, Inc.
+ * Product Owner/Architecture: Gregory Klebanov
+ * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
+ * Created: December 13, 2016
+ *
+ */
+
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+  &analysis-code-list {
+    margin-bottom: 10px;
+    position: relative;
+  }
+
+  &analysis-code-item {
+    min-height: 53px;
+    align-items: center;
+    padding: 0 1.5rem 0 0;
+
+    & > .ac-list-item__content {
+      padding: 0;
+    }
+
+    &__content {
+      display: flex;
+      width: 100%;
+      align-items: center;
+    }
+
+    &__main-info {
+      flex-grow: 1;
+      padding-left: 2rem;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+
+      & .#{$namespace}code-file-info {
+        width: 100%;
+      }
+    }
+
+    &__action {
+      margin-left: 1rem;
+
+      &:first-child {
+        margin-left: 1.5rem;
+      }
+
+      &-ico {
+        @include action-ico();
+
+      }
+    }
+  }
+
+  &analysis-code-actions {
+    display: flex;
+    min-height: 55px;
+    position: relative;
+    align-items: center;
+  }
+
+  &analysis-add-code {
+    height: initial;
+    padding: 0 15px 0 17px;
+    margin-right: auto;
+
+    &--disabled {
+      & .#{$namespace}analysis-add-code {
+        &__ico, &__label {
+          color: $grey;
+        }
+      }
+    }
+
+    &__ico, &__label {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    &__ico {
+      @include material-icon();
+      color: $green;
+      font-size: 2.2rem;
+      padding-right: 17px;      
+    }
+    &__label {
+      color: $grey-dark-light;
+      font-size: 1.2rem;
+    }
+  }
+
+  &analysis-code-list-download-all {
+    @include material-icon();
+    color: $grey-dark-light;
+    font-size: 2.2rem;
+    margin-right: -6px;
+    padding: 0;
+  }
+
+  &analysis-submit-code {
+    margin-right: 17px;
+  }  
+}

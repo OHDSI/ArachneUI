@@ -1,0 +1,18 @@
+{
+	"env": {
+    "browser": true,
+  },
+	"extends": "airbnb",
+	"globals": {
+		"__APP_TYPE_CENTRAL__": true,
+		"__APP_TYPE_NODE__": true,
+	},
+	"settings": {
+		"import/resolver": {
+			"webpack": { "config": "webpack/app.config.js" }
+		}
+	},
+  "rules": {
+      "no-confusing-arrow": ["error", {"allowParens": true}]
+  }
+}
