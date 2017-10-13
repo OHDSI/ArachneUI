@@ -137,11 +137,11 @@ const config = {
     new webpack.HotModuleReplacementPlugin(),
     new CopyWebpackPlugin([
       {
-        from: path.join(currentDir, 'resources/fonts'),
+        from: path.join(currentDir, 'node_modules/arachne-ui-components/lib/resources/fonts'),
         to: path.join(webapp, 'fonts'),
       },
       {
-        from: path.join(currentDir, 'resources/material-design-icons/iconfont'),
+        from: path.join(currentDir, 'node_modules/arachne-ui-components/lib/material-design-icons/iconfont'),
         to: path.join(webapp, 'fonts'),
       },
       {
