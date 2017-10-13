@@ -141,7 +141,7 @@ const config = {
         to: path.join(webapp, 'fonts'),
       },
       {
-        from: path.join(currentDir, 'node_modules/material-design-icons/iconfont'),
+        from: path.join(currentDir, 'resources/material-design-icons/iconfont'),
         to: path.join(webapp, 'fonts'),
       },
       {
