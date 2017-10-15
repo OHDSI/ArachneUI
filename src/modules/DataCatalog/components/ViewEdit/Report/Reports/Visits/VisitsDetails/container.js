@@ -100,7 +100,7 @@ function mapStateToProps(state) {
   return {
     ageAtFirstOccurrence,
     conditionByMonth,
-    conditionPrevalence: conditionPrevalence.length ? conditionPrevalence : null,
+    conditionPrevalence: Array.isArray(conditionPrevalence) ? conditionPrevalence : null,
     durationByType,
   };
 }

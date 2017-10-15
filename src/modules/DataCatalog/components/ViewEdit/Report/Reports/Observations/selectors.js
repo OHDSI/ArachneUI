@@ -23,6 +23,12 @@
 import { createSelector } from 'reselect';
 import get from 'lodash/get';
 import { treemap } from '@ohdsi/atlascharts/dist/atlascharts.umd';
+import treemapDataConverter from 'modules/DataCatalog/converters/treemapDataConverter';
+
+const getReportData = state => {
+  const reportData = get(state, 'dataCatalog.report.data.result', {});
+  return treemapDataConverter(reportData);
+}
 
 const getRawTableData = state => get(state, 'dataCatalog.report.data.result') || [];
 
@@ -71,5 +77,6 @@ const getTableData = createSelector(
 );
 
 export default {
+  getReportData,
   getTableData,
 };
