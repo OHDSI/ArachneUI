@@ -89,7 +89,7 @@ function mapStateToProps(state) {
   return {
     proceduresByType: Utils.prepareChartDataForDonut(proceduresByType),
     conditionByMonth,
-    conditionPrevalence: conditionPrevalence.length ? conditionPrevalence : null,
+    conditionPrevalence: Array.isArray(conditionPrevalence) ? conditionPrevalence : null,
     ageOfFirstOccurrence,
   };
 }

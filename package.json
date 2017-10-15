@@ -28,7 +28,7 @@
     "ssr-server-central-watch": "webpack --config webpack/server.config.js --watch"
   },
   "dependencies": {
-    "@ohdsi/atlascharts": "git://github.com/odysseusinc/Visualizations.git#verion-1.1.2",
+    "@ohdsi/atlascharts": "1.2.0",
     "@stomp/stompjs": "^3.0.3",
     "arachne-ui-components": "^1.0.0",
     "autoprefixer": "^6.7.6",

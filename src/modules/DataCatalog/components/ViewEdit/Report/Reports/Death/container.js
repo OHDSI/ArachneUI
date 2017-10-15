@@ -87,7 +87,7 @@ function mapStateToProps(state) {
   }
 
   return {
-    deathByAge: deathByAge.length ? deathByAge : null,
+    deathByAge: Array.isArray(deathByAge) ? deathByAge : null,
     deathByMonth,
     deathByType: Utils.prepareChartDataForDonut(deathByType),
     ageOfDeath,
