@@ -96,7 +96,7 @@ function mapStateToProps(state) {
   return {
     ageAtFirstOccurrence,
     conditionByMonth,
-    conditionPrevalence: conditionPrevalence.length ? conditionPrevalence : null,
+    conditionPrevalence: (conditionPrevalence && conditionPrevalence.length) ? conditionPrevalence : null,
     observationsByType: Utils.prepareChartDataForDonut(observationsByType),
   };
 }
