@@ -48,7 +48,7 @@ class Observations extends Component {
 }
 
 function mapStateToProps(state) {
-  const reportData = get(state, 'dataCatalog.report.data.result', {});
+  const reportData = selectors.getReportData(state);
   const details = get(state, 'dataCatalog.reportDetails.data.result');
   const tableData = selectors.getTableData(state);
   const tableColumns = {
@@ -71,7 +71,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  loadDetails: params => actions.dataCatalog.reportstDetails.find(params),
+  loadDetails: params => actions.dataCatalog.reportDetails.find(params),
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
