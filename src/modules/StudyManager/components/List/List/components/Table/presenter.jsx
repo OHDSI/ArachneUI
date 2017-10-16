@@ -87,7 +87,7 @@ class TableStudies extends Component {
       />,
       <Cell
         {...this.tableClasses('role')}
-        header="Role"
+        header="My role"
         field="role"
       />,
       <Cell
@@ -118,7 +118,7 @@ class TableStudies extends Component {
       createdFormatter,
       typeFormatter,
       statusFormatter,
-      setSearch,
+      setSorting,
       goToStudy,
       userLinkFormatter,
       setFavourite,
@@ -131,7 +131,7 @@ class TableStudies extends Component {
           mods={['hover', 'selectable', 'padded']}
           data={data}
           sorting={sorting}
-          setSorting={setSearch}
+          setSorting={setSorting}
           onRowClick={({ id }) => goToStudy(id)}
         >
           {this.getColumns()}
@@ -147,7 +147,7 @@ TableStudies.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   goToStudy: PropTypes.func.isRequired,
   linkFormatter: PropTypes.func.isRequired,
-  setSearch: PropTypes.func.isRequired,
+  setSorting: PropTypes.func.isRequired,
   sorting: PropTypes.object.isRequired,
   statusFormatter: PropTypes.func.isRequired,
   typeFormatter: PropTypes.func.isRequired,

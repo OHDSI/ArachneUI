@@ -53,13 +53,13 @@ Register.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    isUserAuthed: !!get(state, 'auth.principal.data.id'),
+    isUserAuthed: !!get(state, 'auth.principal.queryResult.result.id'),
   };
 }
 
 const mapDispatchToProps = {
   goToRoot: goToPage.bind(null, '/'),
-  loadProfessionalTypes: actions.auth.professionalTypes.loadList,
+  loadProfessionalTypes: actions.auth.professionalTypes.query,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Register);

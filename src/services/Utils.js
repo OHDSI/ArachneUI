@@ -159,6 +159,11 @@ const validators = {
           _error: response.errorMessage,
           ...response.validatorErrors,
         });
+      } else if (response.errorCode === errors.UNACTIVATED) {
+        throw new SubmissionError({
+          _error: 'Please verify your account using link in the email that was sent to you.',
+          unactivated: true,
+        });
       } else if (response.errorCode !== errors.NO_ERROR) {
         throw new SubmissionError({
           _error: response.errorMessage,

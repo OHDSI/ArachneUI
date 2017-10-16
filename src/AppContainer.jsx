@@ -80,7 +80,7 @@ AppContainer.propTypes = {
 function mapStateToProps(state) {
   const sidebarTabList = [];
 
-  const isUserAdmin = get(state, 'auth.principal.data.isAdmin');
+  const isUserAdmin = get(state, 'auth.principal.queryResult.result.isAdmin');
   const modules = get(state, 'modules.list');
 
   if (modules) {
@@ -101,7 +101,7 @@ function mapStateToProps(state) {
     });
   }
 
-  const isUserAuthed = !!get(state, 'auth.principal.data.id') || !!get(state, 'auth.principal.data.username');
+  const isUserAuthed = !!get(state, 'auth.principal.queryResult.result.id') || !!get(state, 'auth.principal.queryResult.result.username');
 
   return {
     isUserAuthed,
@@ -118,7 +118,7 @@ export default (navItems) => {
   const connectedAppContainer = connect(mapStateToProps, mapDispatchToProps)(AppContainer);
   return asyncConnect([{
     promise: ({ store: { dispatch } }) => {
-      const result = dispatch(actions.auth.principal.load());
+      const result = dispatch(actions.auth.principal.query());
       return result;
     },
   }])(connectedAppContainer);

@@ -119,8 +119,9 @@ function initializeApi(store) {
   ApiService
     .setUserTokenGetter(() => AuthService.getToken())
     .setUnauthorizedHandler(() => {
-      // TODO
-      store.dispatch(actions.auth.auth.logout(store.getState().routing.locationBeforeTransitions.pathname));
+      if (!AuthService.getToken()) {
+        store.dispatch(actions.auth.logout(store.getState().routing.locationBeforeTransitions.pathname));
+      }
     });
 }
 

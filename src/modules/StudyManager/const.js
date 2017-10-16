@@ -123,9 +123,13 @@ const participantRoles = keyMirror({
   CONTRIBUTOR: null,
 });
 
-const participantStatuses = {
-  DELETED: 'Deleted',
-};
+
+const participantStatuses = keyMirror({
+  DELETED: null,
+  APPROVED: null,
+  PENDING: null,
+  DECLINED: null
+});
 
 const newParticipantRolesOptions = [
   {

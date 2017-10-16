@@ -33,6 +33,7 @@ import moment from 'moment';
 import { humanDate } from 'const/formats';
 import actions from 'actions/index';
 import get from 'lodash/get';
+import URI from 'urijs';
 import viewModes from 'const/viewModes';
 import presenter from './presenter';
 import SelectorsBuilder from './selectors';
@@ -54,9 +55,11 @@ export default class List extends ContainerBuilder {
   mapStateToProps(state) {
     const query = state.routing.locationBeforeTransitions.query;
     const isCardsView = query.view === viewModes.CARDS;
+    const searchQuery = get(state, 'routing.locationBeforeTransitions.query', {}, 'Object');
 
     return {
       sorting: List.getSorting(state.routing.locationBeforeTransitions),
+      searchQuery,
       data: selectors.getStudyList(state),
       userLinkFormatter: data => ({
         link: paths.user(data.id),
@@ -82,6 +85,11 @@ export default class List extends ContainerBuilder {
   */
   getMapDispatchToProps() {
     return {
+      search: (searchParams) => {
+        const url = new URI(paths.studies());
+        url.setSearch(searchParams);
+        return goToPage(url.href());
+      },
       loadStudies: actions.studyManager.studyList.find,
       goToStudy: id => goToPage(paths.studies(id)),
       setFavourite: actions.studyManager.studyList.setFavourite,
@@ -99,7 +107,13 @@ export default class List extends ContainerBuilder {
           pagesize: stateProps.isCardsView ? studyListPageSizeCards : studyListPageSize,
         }))
         .catch(() => {}),
-    };
+      setSorting: (sortParams) => {
+        const searchParams = {
+          ...stateProps.searchQuery,
+          ...sortParams,
+        };
+        dispatchProps.search(searchParams);
+      }
+    }
   }
-
 }
