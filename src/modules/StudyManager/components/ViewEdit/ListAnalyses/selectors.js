@@ -23,6 +23,7 @@
 import { createSelector } from 'reselect';
 import get from 'lodash/get';
 import { paths } from 'modules/StudyManager/const';
+const profilePath = id => `/expert-finder/profile/${id}`;
 
 export default class selectorsBuilder {
   getRawAnalysisList(state){
@@ -35,6 +36,11 @@ export default class selectorsBuilder {
       title: item.title,
       link: paths.analyses(item.id),
       isRemovable: get(item, 'permissions.DELETE_ANALYSIS', false),
+      createdAt: item.created,
+      author: {
+        ...item.author,
+        link: (item.author && item.author.id) ? profilePath(item.author.id) : null,
+      },
     }));
   }
 

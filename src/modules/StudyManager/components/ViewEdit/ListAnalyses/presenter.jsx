@@ -25,6 +25,8 @@ import DraggableList from 'react-draggable-list';
 import { Panel } from 'arachne-ui-components';
 import { ListItem } from 'arachne-ui-components';
 import { Link } from 'arachne-ui-components';
+import { shortDate as dateFormat } from 'const/formats';
+import moment from 'moment-timezone';
 import BEMHelper from 'services/BemHelper';
 
 require('./style.scss');
@@ -40,6 +42,8 @@ class AnalysesItem extends Component {
       title,
       link,
       removeAnalysis,
+      createdAt,
+      author
     } = this.props.item;
 
     const mods = {
@@ -48,9 +52,29 @@ class AnalysesItem extends Component {
       removable: isEditable && isRemovable,
     };
 
+    const classes = new BEMHelper('study-analyses-list');
+
     return (
       <ListItem {...this.props} mods={mods} onRemove={() => removeAnalysis(id)}>
-        <Link to={link}>{title}</Link>
+        <span title={title}>
+          {link &&
+            <Link to={link}>{title}</Link>
+          }
+          {createdAt &&
+          <span {...classes('datetime')}>
+              {moment(createdAt).tz(moment.tz.guess()).format(dateFormat)}
+          </span>
+          }
+        </span>
+        {author && author.id &&
+        <div {...classes('author-container')}>
+          <Link {...classes('author')} to={author.link} target={author.link}>
+            {author.firstname} {author.middlename
+            ? `${author.middlename.substr(0, 1)}.`
+            : ''} {author.lastname}
+          </Link>
+        </div>
+        }
       </ListItem>
     );
   }
