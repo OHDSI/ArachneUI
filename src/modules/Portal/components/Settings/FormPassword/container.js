@@ -45,7 +45,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...stateProps,
     ...dispatchProps,
     doSubmit(data) {
-      const submitPromise = dispatchProps.changePassword({
+      const submitPromise = dispatchProps.changePassword({}, {
         oldPassword: data.oldPassword,
         newPassword: data.password,
       });
