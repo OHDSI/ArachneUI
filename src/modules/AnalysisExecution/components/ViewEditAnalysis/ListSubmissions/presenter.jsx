@@ -266,10 +266,7 @@ function SubmissionLine(props) {
         <CellResults
           filesCount={submission.resultFilesCount}
           showList={showResultFileList.bind(null, submission)}
-          canUploadResult={
-            submission.actions[submissionActionTypes.MANUAL_UPLOAD].available
-            && submission.actions[submissionActionTypes.MANUAL_UPLOAD].hasPermsission
-          }
+          canUploadResult={submission.canUploadResult}
           showUploadForm={showUploadForm.bind(null, submission.id)}
         />
       </div>
