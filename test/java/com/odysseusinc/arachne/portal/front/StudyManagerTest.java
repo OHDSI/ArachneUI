@@ -55,7 +55,7 @@ public class StudyManagerTest extends BaseDataCatalogTest {
     private static File file;
 
     @BeforeClass
-    public static void beforeTest() throws IOException {
+    public static void beforeStudyManagerTests() throws IOException {
 
         updateName(ADMIN_LOGIN, ADMIN_PASSWORD, "4");
         updateName("mr_lead_investigator@example.com", "password", "1");
@@ -67,13 +67,13 @@ public class StudyManagerTest extends BaseDataCatalogTest {
     }
 
     @AfterClass
-    public static void afterTest() throws IOException {
+    public static void afterStudyManagerTests() throws IOException {
 
         file.delete();
     }
 
     @After
-    public void afterEach() throws IOException {
+    public void afterStudyManagerTest() throws IOException {
 
         logout();
     }
@@ -106,7 +106,7 @@ public class StudyManagerTest extends BaseDataCatalogTest {
         String updatedPostfix = "dy";
         studyTitleInput.sendKeys(updatedPostfix);
         studySaveBtn.click();
-        waitFor(driver, ByBuilder.toolbarHeader(STUDY_NAME));
+        waitFor(driver, ByBuilder.toolbar(STUDY_NAME));
     }
 
     @Test
@@ -256,9 +256,7 @@ public class StudyManagerTest extends BaseDataCatalogTest {
     public void test09InvitationMailAfterAccept() throws Exception {
 
         List<String> links = getLinksFromMail();
-        // Assert.assertEquals(4, links.size());
-
-        //todo:
+        //todo pozhidaeva
         driver.get(links.get(2).replaceAll("amp;", ""));
         loginWithOpenedForm("mr_data_set_owner@example.com", "password");
 
@@ -399,8 +397,8 @@ public class StudyManagerTest extends BaseDataCatalogTest {
         loginWithOpenedForm("mr_collaborator@example.com", "password");
 
         List<String> links = getLinksFromMail();
-        driver.get(links.get(2).replaceAll("amp;", ""));
-        waitFor(driver, ByBuilder.toolbarHeader(STUDY_NAME));
+        driver.get(links.get(1).replaceAll("amp;", "")); //todo
+        waitFor(driver, ByBuilder.toolbar(STUDY_NAME));
         openParticipantsTab();
         WebElement addedRow = driver.findElements(By.className("ac-list-item")).get(1);
 
@@ -443,7 +441,7 @@ public class StudyManagerTest extends BaseDataCatalogTest {
 
         WebElement save = commentDialog.findElement(ByBuilder.button("Save"));
         save.click();
-        Thread.sleep(1000); //
+        //Thread.sleep(1000); // todo pozhidaeva
         openParticipantsTab();
 
         WebElement refresh = driver.findElement(By.className("ac-study-actions__reload-ico"));
@@ -466,7 +464,7 @@ public class StudyManagerTest extends BaseDataCatalogTest {
 
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/YYYY");
         String dateLabel = formatter.format(new Date());
-        waitFor(driver, By.className("ac-study-date-input__value")); //
+        waitFor(driver, By.className("ac-study-date-input__value"));
 
         final List<WebElement> dates = driver.findElements(By.className("ac-study-date-input__value"));
         Assert.assertEquals(dateLabel, dates.get(0).getText());
@@ -535,8 +533,7 @@ public class StudyManagerTest extends BaseDataCatalogTest {
         WebElement backToStudyBtn = driver.findElement(By.className("ac-toolbar__back-icon"));
         backToStudyBtn.click();
 
-
-        waitFor(driver, ByBuilder.toolbarHeader(STUDY_NAME));
+        waitFor(driver, ByBuilder.toolbar(STUDY_NAME));
         Assert.assertTrue(driver.findElement(By.className("ac-study-analyses-list"))
                 .findElement(ByBuilder.byClassAndText("ac-link", analysisName)).isDisplayed());
 
@@ -582,8 +579,8 @@ public class StudyManagerTest extends BaseDataCatalogTest {
         Actions actions = new Actions(driver);
         actions.moveToElement(dsSelect).click().sendKeys("2").build().perform();
 
-        Thread.sleep(1000);// todo
-        // waitFor(driver, ByBuilder.byClassAndText("ac-label-data-source__name", NAME_DS));
+        //Thread.sleep(1000);// todo pozhidaeva
+        waitFor(driver, ByBuilder.byClassAndText("ac-label-data-source__name", NAME_DS));
 
         WebElement dsOption = driver.findElement(
                 ByBuilder.byClassAndText("ac-label-data-source__name", NAME_DS));

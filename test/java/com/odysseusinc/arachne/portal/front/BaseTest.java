@@ -186,7 +186,6 @@ public class BaseTest {
     protected static void loginPortal(String username, String password) {
 
         driver.get(portalUrl());
-        waitForPageLoad(driver, ByBuilder.input(EMAIL_INPUT_PLACEHOLDER));
         loginWithOpenedForm(username, password);
     }
 
@@ -252,7 +251,6 @@ public class BaseTest {
         return closeableHttpClient;
     }
 
-    // todo refactoring
     protected static List<String> getLinksFromMail() throws IOException {
 
         final ObjectMapper mapper = new ObjectMapper();
@@ -269,15 +267,20 @@ public class BaseTest {
         final String body = (String) ((LinkedHashMap<String, Object>) mail.get("Content")).get("Body");
 
         List<String> links = new ArrayList<>();
-        String regexString = Pattern.quote("http://") + "(.*?)" + Pattern.quote("\"");
+        String regexString = Pattern.quote("<a href=\"") + "(.*?)" + Pattern.quote("\"");
         Pattern pattern = Pattern.compile(regexString);
         Matcher matcher = pattern.matcher(body);
 
         while (matcher.find()) {
             String textInBetween = matcher.group(1);
-            textInBetween = textInBetween.replace("portal_host_placeholder:010101", PORTAL_BASE_URL);
+            textInBetween = textInBetween.replace(PROTOCOL + "://portal_host_placeholder:010101", PORTAL_BASE_URL);
             links.add(textInBetween);
         }
         return links;
+    }
+
+    protected static String getLinkFromMail() throws IOException {
+
+        return getLinksFromMail().get(0);
     }
 }

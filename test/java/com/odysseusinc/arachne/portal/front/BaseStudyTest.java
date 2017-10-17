@@ -1,8 +1,5 @@
 package com.odysseusinc.arachne.portal.front;
 
-import static com.odysseusinc.arachne.portal.front.StudyManagerTest.MODAL_TITLE_CREATE_STUDY;
-import static com.odysseusinc.arachne.portal.front.StudyManagerTest.PLACEHOLDER_STUDY_NAME;
-import static com.odysseusinc.arachne.portal.front.StudyManagerTest.PLACEHOLDER_STUDY_TYPE;
 import static com.odysseusinc.arachne.portal.front.utils.Utils.waitFor;
 import static com.odysseusinc.arachne.portal.front.utils.Utils.waitForPageLoad;
 
@@ -25,7 +22,8 @@ public abstract class BaseStudyTest extends BaseUserTest {
         final By sideBarTab = ByBuilder.sideBarTab("Study Notebook");
         Utils.waitForPageLoad(driver, sideBarTab);
         driver.findElement(sideBarTab).click();
-        Utils.waitFor(driver, ByBuilder.byClassAndText("ac-toolbar__header"," studies"));
+        Utils.waitFor(driver, ByBuilder.byClassAndText("ac-toolbar__header"," studies")); //todo
+        //Utils.waitFor(driver, ByBuilder.toolbar(" studies"));
         final By addStudyButton = ByBuilder.buttonAddIco();
         Utils.waitFor(driver, addStudyButton);
         driver.findElement(addStudyButton).click();
@@ -44,7 +42,7 @@ public abstract class BaseStudyTest extends BaseUserTest {
         final By createButton = ByBuilder.button("Create");
         createStudyModalElement.findElement(createButton).click();
 
-        Utils.waitForPageLoad(driver, ByBuilder.toolbarHeader(studyData.title));
+        Utils.waitForPageLoad(driver, ByBuilder.toolbar(studyData.title));
     }
 
     protected static class StudyData {

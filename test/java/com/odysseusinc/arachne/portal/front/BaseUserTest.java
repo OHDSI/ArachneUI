@@ -95,24 +95,6 @@ public abstract class BaseUserTest extends BaseTest {
         return welcome;
     }
 
-    protected static String getLinkFromMail() throws IOException {
-
-        final ObjectMapper mapper = new ObjectMapper();
-        TypeReference<ArrayList<LinkedHashMap<String, Object>>> typeRef
-                = new TypeReference<ArrayList<LinkedHashMap<String, Object>>>() {
-        };
-
-        final URL url = new URL(MAIL_SERVER_API_MESSAGES);
-        ArrayList<LinkedHashMap<String, Object>> mails = mapper.readValue(url, typeRef);
-        final LinkedHashMap<String, Object> mail = mails.stream()
-                .findFirst()
-                .orElseThrow(NotFoundException::new);
-
-        final String body = (String) ((LinkedHashMap<String, Object>) mail.get("Content")).get("Body");
-        final String sourceLink = body.substring(body.indexOf("<a href=\"" + PROTOCOL) + "<a href=\"".length(), body.indexOf("\">link</a>"));
-        return sourceLink.replace(PROTOCOL + "://portal_host_placeholder:010101", PORTAL_BASE_URL);
-    }
-
     protected static void activateUser() throws IOException {
 
         final String link = getLinkFromMail();
