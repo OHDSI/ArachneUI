@@ -26,7 +26,16 @@
 
 	&analysis-toolbar {
 		&__created-at {
-		}
+    }
+    &__refresh-ico {
+      @include material-icon();
+      @keyframes spin {
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      animation: spin 1.5s linear infinite;
+    }
 	}
 
 }
