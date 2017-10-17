@@ -84,7 +84,7 @@ function DataSourceItem(props) {
       <div
         {...classes({
           element: 'indicator',
-          modifiers: [dataSource.healthStatus.title],
+          modifiers: [healthStatuses.getColor(dataSource.healthStatus.value)],
           extra: tooltipClasses().className,
         })}
         aria-label={healthStatuses.getTitle(dataSource.healthStatus.value)}
