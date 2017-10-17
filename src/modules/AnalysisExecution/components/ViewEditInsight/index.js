@@ -20,6 +20,6 @@
  *
  */
 
-import ViewEditInsight from './container';
+import ViewEditInsightBuilder from './container';
 
-export default ViewEditInsight;
+export default (new ViewEditInsightBuilder()).build();
