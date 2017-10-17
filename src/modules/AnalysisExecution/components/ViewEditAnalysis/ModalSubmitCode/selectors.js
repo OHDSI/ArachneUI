@@ -22,6 +22,7 @@
 
 import { createSelector } from 'reselect';
 import get from 'lodash/get';
+import { healthStatuses } from 'const/dataSource';
 
 const getRawStudySourceList = state => get(state, 'analysisExecution.studyDataSourceList.queryResult.result') || [];
 
@@ -31,8 +32,8 @@ const getDataSourceOptions = createSelector(
     value: dataSource.id,
     label: `${get(dataSource, 'dataNode.name', '')}: ${dataSource.name}`,
     healthStatus: {
-      title: dataSource.healthStatusTitle,
-      value: dataSource.healthStatus,
+      title: healthStatuses.getTitle(dataSource.healthStatus),
+      value: healthStatuses.getColor(dataSource.healthStatus)
     },
   }))
 );
