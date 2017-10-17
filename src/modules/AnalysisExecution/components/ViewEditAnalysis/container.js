@@ -22,6 +22,7 @@
 
 import React, { Component, PropTypes } from 'react';
 import { Utils, get } from 'services/Utils';
+import { refreshTime } from 'modules/AnalysisExecution/const';
 import actions from 'actions/index';
 import Presenter from './presenter';
 
@@ -35,6 +36,18 @@ class ViewEditAnalysis extends Component {
       studyId: PropTypes.number,
       unloadAnalysis: PropTypes.func.isRequired,
     };
+  }
+
+  componentDidMount() {
+    // TODO: only if window is in focus
+    this.refreshInterval = setInterval(() => {
+      this.isPolledData = true;
+      this.props.loadAnalysis({ id: this.props.id })
+    }, refreshTime);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.refreshInterval);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -53,7 +66,7 @@ class ViewEditAnalysis extends Component {
   }
 
   render() {
-    return <Presenter {...this.props} />;
+    return <Presenter {...this.props} isLoading={this.props.isLoading && !this.isPolledData} />;
   }
 }
 

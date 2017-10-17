@@ -37,6 +37,7 @@ function AnalysisToolbar(props) {
     backUrl,
     breadcrumbList,
     editTitle,
+    isLoading,
     author,
   } = props;
 
@@ -47,6 +48,12 @@ function AnalysisToolbar(props) {
       backUrl={backUrl}
       onEdit={editTitle}
     >
+      <span {...classes('refreshing')}>
+        {isLoading
+          ? <i {...classes('refresh-ico')}>refresh</i>
+          : null
+        }
+      </span>
       <span {...classes('created-at')}>
         Created {moment(createdAt).tz(moment.tz.guess()).format(commonDateFormat)} {author.id &&
           <span>
