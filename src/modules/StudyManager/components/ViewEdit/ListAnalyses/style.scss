@@ -25,5 +25,24 @@
 .#{$namespace} {
   &study-analyses-list {
     margin-bottom: 10px;
+
+    &__author-container {
+      text-align: right;
+      flex-grow: 3;
+      flex-basis: 0;
+    }
+
+    &__author {
+      min-width: 120px;
+      text-align: right;
+    }
+
+    &__datetime {
+      color: $grey-dark;
+      display: block;
+      font-size: 1.2rem;
+      font-weight: 400;
+      margin-top: 7px;
+    }
   }
 }

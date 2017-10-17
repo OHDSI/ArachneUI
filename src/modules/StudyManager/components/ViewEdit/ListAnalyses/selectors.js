@@ -35,6 +35,11 @@ export default class selectorsBuilder {
       title: item.title,
       link: paths.analyses(item.id),
       isRemovable: get(item, 'permissions.DELETE_ANALYSIS', false),
+      createdAt: item.created,
+      author: {
+        ...item.author,
+        link: (item.author && item.author.id) ? paths.user(item.author.id) : null,
+      },
     }));
   }
 
