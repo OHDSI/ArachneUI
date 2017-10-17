@@ -27,6 +27,7 @@ import moment from 'moment-timezone';
 import { get } from 'services/Utils';
 import { commonDate as commonDateFormat } from 'const/formats';
 import { dsConverter } from 'components/LabelDataSource';
+import { submissionActionTypes } from 'modules/AnalysisExecution/const';
 
 class SubmissionListSelectorsBuilder {
 
@@ -43,14 +44,18 @@ class SubmissionListSelectorsBuilder {
         hasPermsission: source.permissions.APPROVE_SUBMISSION,
       }));
 
+    const actions = keyBy(actionsWPermissions, 'name');
+
     const submission = {
       id: source.id,
       dataSource: dsConverter(source.dataSource),
       status: source.status || {},
-      actions: keyBy(actionsWPermissions, 'name'),
+      actions,
       resultFilesCount: source.resultFilesCount,
       insight: source.insight,
       hasInsight: !!source.insight,
+      canUploadResult: actions[submissionActionTypes.MANUAL_UPLOAD].available
+        && actions[submissionActionTypes.MANUAL_UPLOAD].hasPermsission
     };
 
     return submission;

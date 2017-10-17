@@ -40,4 +40,5 @@ export default (file, pathBuilder) => ({
   commentTopicId: file.commentTopicId,
   version: file.version,
   isImported: file.imported,
+  manuallyUploaded: file.manuallyUploaded,
 });
