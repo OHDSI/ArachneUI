@@ -27,11 +27,13 @@ import {
   paths,
 } from 'modules/DataCatalog/const';
 import { push as goToPage } from 'react-router-redux';
+import { get } from 'services/Utils';
 import Actions from './presenter';
 
 function mapStateToProps(state, ownProps) {
   return {
     isProfileSelected: ownProps.isProfileSelected,
+    isVirtual: get(state, 'dataCatalog.dataSource.data.result.dataNode.virtual', false),
   };
 }
 

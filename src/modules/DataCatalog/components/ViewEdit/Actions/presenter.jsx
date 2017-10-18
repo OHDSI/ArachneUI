@@ -33,6 +33,7 @@ function Actions({
 	openAddModal,
   onChangeTab,
   isProfileSelected,
+  isVirtual,
   reportsAvailable,
 }) {
   const classes = new BEMHelper('data-source-actions');
@@ -47,6 +48,10 @@ function Actions({
       value: 'profile',
     },
   ];
+
+  if (isVirtual) {
+    return null;
+  }
 
   return (
     <div  {...classes()}>
