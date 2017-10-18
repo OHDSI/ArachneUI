@@ -15,8 +15,8 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: October 02, 2017
+ * Authors: Pavel Grafkin
+ * Created: October 19, 2017
  *
  */
 
