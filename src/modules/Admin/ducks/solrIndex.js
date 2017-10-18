@@ -15,51 +15,27 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: April 14, 2017
+ * Authors: Pavel Grafkin
+ * Created: October 19, 2017
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+import Duck from 'services/Duck';
+import { apiPaths } from 'modules/Admin/const';
 
-.#{$namespace} {
+const actionCoreName = 'AD_SOLR_INDEX';
 
-	&admin-panel-sys-settings {
+const adminListDuck = new Duck(
+  {
+    name: actionCoreName,
+    urlBuilder: apiPaths.solrIndex,
+  }
+);
 
-		&__action-bar {
-			@include action-bar();
-    }
-    
-    &__action-bar-btn {
-      &:not(:first-child) {
-        margin-left: 1.5rem;
-      }
-    }
+const actions = adminListDuck.actions;
+const reducer = adminListDuck.reducer;
 
-		&__apply-banner {
-			align-items: center;
-			background: $orange;
-			display: flex;
-			padding: 1.5rem 3rem;
-
-			&-hint {
-				flex-grow: 1;
-				font-size: 1.5rem;
-			}
-
-			&-btn {
-				border: 2px solid black;
-				border-radius: $input-border-radius;
-			}
-		}
-
-		&__content {
-			padding: 0 3rem;
-		}
-
-		&__panel {
-			margin-top: 2.5rem;
-		}
-	}
-
-}
+export default {
+  actions,
+  reducer,
+};

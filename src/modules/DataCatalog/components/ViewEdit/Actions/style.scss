@@ -24,10 +24,7 @@
 
 .#{$namespace} {
   &data-source-actions {
-    background: $grey-light;
-    border-bottom: 1px solid $grey;
-    display: flex;
-    padding: 1.3rem 3rem;
+    @include action-bar();
     
     &__invite-button {
 

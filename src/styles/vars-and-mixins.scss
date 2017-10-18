@@ -301,3 +301,10 @@ $default-box-padding: 1.5rem 2rem;
     }
   }
 }
+
+@mixin action-bar() {
+  background: $grey-light;
+  border-bottom: 1px solid $grey;
+  display: flex;
+  padding: 1.3rem 3rem;
+}
