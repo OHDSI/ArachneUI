@@ -49,6 +49,7 @@ const paths = {
   dataSources: id => `/data-catalog/data-sources${id ? `/${id}` : ''}`,
   studies: id => `/study-manager/studies${id ? `/${id}` : ''}`,
   user: id => `/expert-finder/profile/${id}`,
+  studyFile: ({studyId, fileId}) => `/study-manager/studies/${studyId}/documents/${fileId}`,
 };
 
 const apiPaths = {
@@ -69,8 +70,10 @@ const apiPaths = {
   studyParticipants: ({ studyId, userId }) => `/api/v1/study-management/studies/${studyId}/participants${userId ? `/${userId}` : ''}`,
   // Documents
   uploadStudyDocument: ({ studyId }) => `/api/v1/study-management/studies/${studyId}/upload`,
-  studyDocument: ({ studyId, fileId }) => `/api/v1/study-management/studies/${studyId}/files/${fileId}`,
-  studyDocumentAll: ({ studyId }) => `/api/v1/study-management/studies/${studyId}/files/all`,
+  studyDocument: ({ studyId, fileId, withContent }) => `/api/v1/study-management/studies/${studyId}/files/${fileId}?withContent=${withContent}`,
+  studyDocumentDownload: ({ studyId, fileUuid }) => `/api/v1/study-management/studies/${studyId}/files/${fileUuid}/download`,
+  studyDocumentDownloadAll: ({ studyId }) => `/api/v1/study-management/studies/${studyId}/files/all/download`,
+
   // Data Sources
   searchDataSource: () => '/api/v1/data-sources/search-data-source',
   studyDataSources: ({ studyId, dataSourceId }) => `/api/v1/study-management/studies/${studyId}/data-sources${dataSourceId ? `/${dataSourceId}` : ''}`,

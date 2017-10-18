@@ -22,7 +22,7 @@
 
 import { createSelector } from 'reselect';
 import get from 'lodash/get';
-import { apiPaths } from 'modules/StudyManager/const';
+import { paths } from 'modules/StudyManager/const';
 import fileConverter from 'components/FileInfo/converter';
 
 export default class selectorsBuilder {
@@ -36,19 +36,31 @@ export default class selectorsBuilder {
 
   getDocumentList(studyId, documentList) {
     return documentList.map(doc => ({
-      ...fileConverter(
+        ...fileConverter(
           doc,
-          (document) => { // eslint-disable-line arrow-body-style
-            return document.link ? document.link : apiPaths.studyDocument({
-              studyId,
-              fileId: document.uuid,
-            });
-          }
-        ),
-      linkTarget: '_self',
-    })
+          (document) => paths.studyFile({
+            studyId: document.studyId,
+            fileId: document.uuid,
+          }))
+      })
     );
   }
+
+  // getDocumentList(studyId, documentList) {
+  //   return documentList.map(doc => ({
+  //       ...fileConverter(
+  //         doc,
+  //         (document) => { // eslint-disable-line arrow-body-style
+  //           return document.link ? document.link : apiPaths.studyDocumentDownload({
+  //             studyId,
+  //             fileId: document.uuid,
+  //           });
+  //         }
+  //       ),
+  //       linkTarget: '_self',
+  //     })
+  //   );
+  // }
 
   buildselectorForDocumentList() {
     return createSelector(
