@@ -26,6 +26,7 @@ import adminOptionList from './adminOptionList';
 import portalUserConfirmEmail from './portalUserConfirmEmail';
 import portalUserEnable from './portalUserEnable';
 import portalUserList from './portalUserList';
+import solrIndex from './solrIndex';
 import systemSettings from './systemSettings';
 import userOptionList from './userOptionList';
 import userList from './userList';
@@ -36,6 +37,7 @@ const actions = {
   portalUserConfirmEmail: portalUserConfirmEmail.actions,
   portalUserEnable: portalUserEnable.actions,
   portalUserList: portalUserList.actions,
+  solrIndex: solrIndex.actions,
   systemSettings: systemSettings.actions,
   userOptionList: userOptionList.actions,
   userList: userList.actions,
@@ -47,6 +49,7 @@ const reducer = combineReducers({
   portalUserConfirmEmail: portalUserConfirmEmail.reducer,
   portalUserEnable: portalUserEnable.reducer,
   portalUserList: portalUserList.reducer,
+  solrIndex: solrIndex.reducer,
   systemSettings: systemSettings.reducer,
   userOptionList: userOptionList.reducer,
   userList: userList.reducer,

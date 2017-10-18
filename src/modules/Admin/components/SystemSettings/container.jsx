@@ -50,7 +50,7 @@ class SystemSettingsBuilder extends ContainerBuilder {
   mapStateToProps(state) {
     return {
       isApplied: get(state, 'adminSettings.systemSettings.queryResult.result.applied', true),
-      isLoading: state.adminSettings.systemSettings.isLoading,
+      isLoading: state.adminSettings.systemSettings.isLoading || state.adminSettings.solrIndex.isSaving,
       settingGroupList: selectors.getSystemSettings(state),
     };
   }
@@ -60,6 +60,7 @@ class SystemSettingsBuilder extends ContainerBuilder {
       loadSystemSettings: actions.adminSettings.systemSettings.query,
       saveData: actions.adminSettings.systemSettings.create,
       applySettings: applySettings,
+      solrReindex: actions.adminSettings.solrIndex.create,
     };
   }
 
