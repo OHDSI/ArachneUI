@@ -19,7 +19,6 @@
  * Created: December 13, 2016
  *
  */
-
 // @ts-check
 import { Utils } from 'services/Utils';
 import get from 'lodash/get';
@@ -76,6 +75,10 @@ export default class ListDataSourcesBuilder {
               .removeDataSource({ studyId: stateProps.studyId, dataSourceId })
               .then(() => dispatchProps.loadStudy(stateProps.studyId));
           });
+      },
+      editDataSource(dataSourceId) {
+        dispatchProps
+          .openAddModal({ studyId: stateProps.studyId, dataSourceId });
       },
     };
   }

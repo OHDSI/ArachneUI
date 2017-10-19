@@ -23,15 +23,18 @@
 import errors from 'const/errors';
 import {
   get as _get,
-  isEqual,
+  isEqual
 } from 'lodash';
 import { types as fieldTypes } from 'const/modelAttributes';
 import mimeTypes from 'const/mimeTypes';
 import {
   isSql,
-  isText,
+  isText
 } from 'services/MimeTypeUtil';
-import { reduxForm, SubmissionError } from 'redux-form';
+import {
+  reduxForm,
+  SubmissionError
+} from 'redux-form';
 import numeral from 'numeral';
 import keyMirror from 'keymirror';
 import { typeCheck } from 'type-check';
@@ -40,7 +43,6 @@ import { commonDate } from 'const/formats';
 import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-async-connect';
 import { ModalUtils } from 'arachne-ui-components';
-import types from 'const/modelAttributes';
 
 function buildFormData(obj) {
   const formData = new FormData();
@@ -349,14 +351,14 @@ class Utils {
         return false;
       }
       switch (field.type) {
-        case types.enum:
+        case fieldTypes.enum:
           if (field.isMulti) {
             initialValues[field.name] = Array.isArray(paramValue) ? paramValue : [paramValue];
           } else {
             initialValues[field.name] = paramValue;
           }
           break;
-        case types.toggle:
+        case fieldTypes.toggle:
           initialValues[field.name] = !!paramValue;
           break;
         default:
@@ -386,6 +388,24 @@ class Utils {
       }
     });
     return promise;
+  }
+
+  static extendReducer(originalReducer, newReducerMap) {
+    return (state = {}, action) => {
+      let communityState = originalReducer(state, action);
+      let nextState = { ...communityState };
+      let hasChanged = false;
+
+      Object.keys(newReducerMap).forEach(key => {
+        const reducer = newReducerMap[key];
+        const previousStateForKey = state[key];
+        const nextStateForKey = reducer(previousStateForKey, action);
+        nextState[key] = nextStateForKey;
+        hasChanged = hasChanged || nextStateForKey !== previousStateForKey;
+      });
+
+      return hasChanged ? nextState : communityState;
+    }
   }
 
 }

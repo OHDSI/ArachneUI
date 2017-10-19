@@ -32,7 +32,9 @@
 
   	display: flex;
   	&__name {
-  		margin-right: auto;
+      margin-right: auto;
+      display: flex;
+      align-items: center;
   	}
 
     &__status {
@@ -56,6 +58,12 @@
       &--suspended {
         color: $grey-dark-light;
       }
+    }
+
+    &__ico {
+      @include material-icon();
+      margin-left: 1rem;
+      font-size: 1.5rem;
     }
 
     @include list-item-actions();

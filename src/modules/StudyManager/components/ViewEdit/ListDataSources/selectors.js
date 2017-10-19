@@ -74,6 +74,7 @@ export default class selectorsBuilder {
         canBeRemoved: !this.isDeleted(dataSource) && deletePermissions,
         canBeRecreated: this.isDeleted(dataSource) && attachPermissions,
         comment: dataSource.comment,
+        isVirtual: dataSource.dataNode.virtual,
       }));
   }
 

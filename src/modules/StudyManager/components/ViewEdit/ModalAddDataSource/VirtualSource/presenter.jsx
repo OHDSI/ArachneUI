@@ -119,7 +119,7 @@ function VirtualSource(props) {
   ];
 
   const submitBtn = {
-    label: 'Add Data source',
+    label: props.dataSourceId ? 'Update Data source' : 'Add Data source',
     loadingLabel: 'Adding...',
     mods: ['success', 'rounded'],
   }

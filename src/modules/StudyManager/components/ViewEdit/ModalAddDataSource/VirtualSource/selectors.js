@@ -64,6 +64,28 @@ export default class selectorsBuilder {
     );
   }
 
+  getDataSourceOwnerListRawData(state) {
+    return get(state, 'studyManager.study.dataSource.data.dataNode.dataOwners')
+  }
+
+  getDataSourceOwnerList(currentUserId, dataSourceOwners) {
+    return dataSourceOwners
+      ? dataSourceOwners
+      .map(dataOwner => ({
+        id: dataOwner.id,
+        isRemovable: currentUserId !== dataOwner.id,
+        fullName: `${dataOwner.firstname} ${dataOwner.lastname}`,
+      }))
+      : undefined;
+  }
+
+  buildSelectorForOwnerList() {
+    return createSelector(
+      [this.getCurrentUserId, this.getDataSourceOwnerListRawData],
+      this.getDataSourceOwnerList
+    );
+  }
+
   getOwnerOptions(participantList, selectedOwnerList) {
     // Remove duplicates
     // (which appear because or diferent roles of the same person)
@@ -99,6 +121,7 @@ export default class selectorsBuilder {
   build() {
     return {
       getCurrentUser: this.buildSelectorForCurrentUser(),
+      getDataSourceOwnerList: this.buildSelectorForOwnerList(),
       getOwnerOptions: this.buildSelectorForOwnerOptions(),
       getSelectedOwnerList: this.getSelectedOwnerList,
     };

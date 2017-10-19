@@ -20,23 +20,34 @@
  *
  */
 
-import { Utils } from 'services/Utils';
+import {
+  ContainerBuilder,
+  Utils
+} from 'services/Utils';
 import { ModalUtils } from 'arachne-ui-components';
 import { modal } from 'modules/StudyManager/const';
 import presenter from './presenter';
+import get from 'lodash/get';
 
 const ModalAddDataSource = ModalUtils.connect({
   name: modal.addDataSource,
 })(presenter);
 
-export default class ModalAddDataSourceBuilder {
+export default class ModalAddDataSourceBuilder extends ContainerBuilder {
   getComponent() {
     return ModalAddDataSource;
+  }
+
+  mapStateToProps(state) {
+    return {
+      dataSourceId: get(state, 'modal.addDataSource.data.dataSourceId'),
+    }
   }
 
   build() {
     return Utils.buildConnectedComponent({
       Component: this.getComponent(),
+      mapStateToProps: this.mapStateToProps,
     });
   }
 }
