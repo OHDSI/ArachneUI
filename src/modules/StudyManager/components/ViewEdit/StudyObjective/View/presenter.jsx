@@ -21,89 +21,22 @@
  */
 
 import React, { Component, PropTypes } from 'react';
-import Truncate from 'react-truncate';
-import { Link } from 'arachne-ui-components';
+import { ExpandableText } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
 
 require('./style.scss');
 
-class StudyObjectiveView extends Component {
-  
-  constructor(...args) {
-    super(...args);
+export default function StudyObjectiveView(props) {
+  const classes = BEMHelper('study-objective-view');
+  let {
+    description = '',
+  } = props;
 
-    this.state = {
-      expanded: false,
-      truncated: false,
-    };
-
-    this.handleTruncate = this.handleTruncate.bind(this);
-    this.toggleLines = this.toggleLines.bind(this);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.description !== nextProps.description) {
-      this.truncateRef.onResize();
-    }
-  }
-
-  handleTruncate(truncated) {
-    if (this.state.truncated !== truncated) {
-      this.setState({
-        truncated,
-      });
-    }
-  }
-
-  toggleLines() {
-    this.setState({
-      expanded: !this.state.expanded,
-    });
-  }
-
-  render() {
-    const classes = BEMHelper('study-objective-view');
-    let {
-      description = '',
-      more = 'Read more',
-      less = 'Show less',
-      lines = 5,
-    } = this.props;
-
-    const {
-      expanded,
-      truncated,
-    } = this.state;
-
-    let modifiers;
-    if (!description) {
-      description = 'No description';
-      modifiers = ['empty'];
-    }
-
-    return (
-      <div {...classes({ modifiers })}>
-        <div {...classes('content')}>
-          <Truncate
-            ref={ref => this.truncateRef = ref}
-            lines={!expanded && lines}
-            ellipsis={(
-              <span>... <Link onClick={this.toggleLines}>{more}</Link></span>
-            )}
-            onTruncate={this.handleTruncate}
-          >
-            {description.split('\n').map((rawLine, i, arr) => {
-              const line = <span key={i}>{rawLine}</span>;
-              return (i === arr.length - 1) ? line : [line, <br key={i + 'br'} />];
-            })}
-          </Truncate>
-          {!truncated && expanded && (
-            <span> <Link onClick={this.toggleLines}>{less}</Link></span>
-          )}
-        </div>
+  return (
+    <div {...classes()}>
+      <div {...classes('content')}>
+        <ExpandableText text={description} />
       </div>
-    );
-  }
+    </div>
+  );
 }
-
-export default StudyObjectiveView;

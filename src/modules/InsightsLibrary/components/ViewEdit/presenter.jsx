@@ -22,7 +22,13 @@
 
 import React from 'react';
 import BEMHelper from 'services/BemHelper';
-import { ListItem, LoadingPanel, PageContent, Panel } from 'arachne-ui-components';
+import { 
+  ExpandableText,
+  ListItem,
+  LoadingPanel,
+  PageContent,
+  Panel
+} from 'arachne-ui-components';
 import DatePanel from 'components/DatePanel';
 import LabelDataSource from 'components/LabelDataSource';
 import EmptyState from 'components/EmptyState';
@@ -39,7 +45,7 @@ function Objective({ text }) {
   return (
     <Panel title="Study Objective">
       <div {...classes()}>
-        {text}
+        <ExpandableText text={text} />
       </div>
     </Panel>
   );
