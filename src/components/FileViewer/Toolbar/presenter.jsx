@@ -19,6 +19,33 @@
  *
  */
 
-import StudyFileViewer from './container';
+import React, { PropTypes } from 'react';
+import BEMHelper from 'services/BemHelper';
+import { Link, Toolbar } from 'arachne-ui-components';
 
-export default StudyFileViewer;
+require('./style.scss');
+
+function CodeToolbar(props) {
+  const classes = new BEMHelper('file-toolbar');
+  const {
+    title,
+    backUrl,
+    breadcrumbList,
+  } = props;
+
+  return (
+    <Toolbar {...classes()}
+      mods={['sm-block-spacing']}
+      caption={title}
+      breadcrumbList={breadcrumbList}
+      backUrl={backUrl}
+    />
+  );
+}
+
+CodeToolbar.propTypes = {
+  backUrl: PropTypes.string.isRequired,
+  breadcrumbList: PropTypes.array,
+};
+
+export default CodeToolbar;

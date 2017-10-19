@@ -1,4 +1,4 @@
-/*!
+/*
  *  Copyright 2017 Observational Health Data Sciences and Informatics
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,17 +19,6 @@
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+import FileViewer from './container';
 
-.#{$namespace} {
-
-	&document-file-toolbar {
-		&__created, &__updated {
-			&:after {
-			  content: "\2022";
-			  padding-left: 1rem;
-			}
-		}
-	}
-
-}
+export default FileViewer;

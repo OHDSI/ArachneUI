@@ -23,15 +23,15 @@
 import React from 'react';
 import { Route, IndexRedirect } from 'react-router';
 
-import ListStudies from './components/List/index';
-import ViewEditStudy from './components/ViewEdit/index';
-import StudyFileViewer from './components/FileViewer/index';
+import ListStudies from './components/List';
+import ViewEditStudy from './components/ViewEdit';
+import DocumentViewer from './components/DocumentViewer';
 
 function Routes() {
   return [
     <Route path="studies" component={ListStudies} />,
     <Route path="studies/:studyId" component={ViewEditStudy} />,
-    <Route path="studies/:studyId/documents/:fileUuid" component={StudyFileViewer} />,
+    <Route path="studies/:studyId/documents/:fileUuid" component={DocumentViewer} />,
     <IndexRedirect to="studies" />,
   ];
 }

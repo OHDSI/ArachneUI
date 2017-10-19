@@ -20,34 +20,10 @@
  */
 
 import { connect } from 'react-redux';
-import get from 'lodash/get';
 import Toolbar from './presenter';
-import { apiPaths, paths } from 'modules/StudyManager/const';
 
-
-function mapStateToProps(state) {
-  const studyDocumentData = get(state, 'studyManager.studyDocumentFile.data.result');
-
-  const breadcrumbList = [
-    {
-      label: 'Studies',
-      link: paths.studies(),
-    },
-    {
-      label: get(studyDocumentData, 'studyLabel'),
-      link: paths.studies(get(studyDocumentData, 'studyId')),
-    },
-  ];
-
-  const backUrl = paths.studies();
-
-  return {
-    title: get(studyDocumentData, 'label') || get(studyDocumentData, 'name'),
-    backUrl,
-    breadcrumbList,
-  };
+function mapStateToProps(state, ownProps) {
+  return ownProps.params;
 }
 
-const mapDispatchToProps = {};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Toolbar);
+export default connect(mapStateToProps)(Toolbar);

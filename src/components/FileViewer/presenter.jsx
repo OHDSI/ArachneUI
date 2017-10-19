@@ -27,13 +27,14 @@ import Toolbar from './Toolbar/index';
 
 require('./style.scss');
 
-function StudyFileViewer({ language, isLoading, pageTitle, downloadLink, mimeType, content, name, title, createdAt }) {
-  const classes = new BEMHelper('study-file');
+function FileViewer(p) {
+  const { language, isLoading, pageTitle, downloadLink, mimeType, content, name, title, createdAt, toolbarOpts } = p;
+  const classes = new BEMHelper('file');
 
   return (
     <PageContent title={pageTitle}>
       <div {...classes()}>
-        <Toolbar />
+        <Toolbar params={toolbarOpts}/>
         <div {...classes('content')}>
           <MediaViewer
             language={language}
@@ -51,4 +52,4 @@ function StudyFileViewer({ language, isLoading, pageTitle, downloadLink, mimeTyp
   );
 }
 
-export default StudyFileViewer;
+export default FileViewer;

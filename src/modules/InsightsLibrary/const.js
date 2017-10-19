@@ -23,20 +23,23 @@
 import URI from 'urijs';
 import keyMirror from 'keymirror';
 
+function addQueryToLink(link, query) {
+  const uri = new URI(link);
+  if (query) {
+    uri.setSearch(query);
+  }
+  return uri.toString();
+}
+
 const paths = {
-  insights: ({ insightId } = {}) => `/insights-library/insights${insightId ? `/${insightId}` : ''}`,
+  insights: ({insightId} = {}) => `/insights-library/insights${insightId ? `/${insightId}` : ''}`,
+  insightFile: ({insightId, fileUuid, query}) => addQueryToLink(`/insights-library/insights/${insightId}/files${fileUuid ? `/${fileUuid}` : '' }`, query),
 };
 
 const apiPaths = {
   insights: ({ insightId } = {}) => `/api/v1/papers${insightId ? `/${insightId}` : ''}`,
-  insightFiles: ({ insightId, fileUuid, query }) => {
-    const link = `/api/v1/papers/${insightId}/files${fileUuid ? `/${fileUuid}` : '' }`;
-    const uri = new URI(link);
-    if (query) {
-      uri.setSearch(query);
-    }
-    return uri.toString();
-  },
+  insightFiles: ({ insightId, fileUuid, query }) => addQueryToLink(`/api/v1/papers/${insightId}/files${fileUuid ? `/${fileUuid}` : '' }`, query),
+  insightFilesDownload: ({ insightId, fileUuid, query }) => addQueryToLink(`/api/v1/papers/${insightId}/files/${fileUuid}/download`, query),
   insightUsers: ({ insightId, userId } = {}) => `/api/v1/papers/${insightId}/participants${userId ? `/${userId}` : '' }`,
   insightUserOptions: ({ insightId, query } = {}) => `/api/v1/user-management/users/search-user?paperId=${insightId}&query=${query}`,
   setFavourite: insightId => `/api/v1/papers/${insightId}/favourite`,

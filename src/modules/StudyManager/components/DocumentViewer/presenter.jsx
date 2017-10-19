@@ -15,37 +15,19 @@
  *  Company: Odysseus Data Services, Inc.
  *  Product Owner/Architecture: Gregory Klebanov
  *  Authors: Anton Gackovka
- *  Created: October 18, 2017
+ *  Created: October 19, 2017
  *
  */
 
-import React, { PropTypes } from 'react';
-import BEMHelper from 'services/BemHelper';
-import { Link, Toolbar } from 'arachne-ui-components';
+import React from 'react';
+import FileViewer from 'components/FileViewer';
 
-require('./style.scss');
 
-function CodeToolbar(props) {
-  const classes = new BEMHelper('document-file-toolbar');
-  const {
-    title,
-    backUrl,
-    breadcrumbList,
-  } = props;
+function StudyDocumentViewer(props) {
 
   return (
-    <Toolbar {...classes()}
-      mods={['sm-block-spacing']}
-      caption={title}
-      breadcrumbList={breadcrumbList}
-      backUrl={backUrl}
-    />
+    <FileViewer params={props}/>
   );
 }
 
-CodeToolbar.propTypes = {
-  backUrl: PropTypes.string.isRequired,
-  breadcrumbList: PropTypes.array,
-};
-
-export default CodeToolbar;
+export default StudyDocumentViewer;

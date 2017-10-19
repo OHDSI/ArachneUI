@@ -1,4 +1,4 @@
-/*!
+/*
  *  Copyright 2017 Observational Health Data Sciences and Informatics
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,23 +15,10 @@
  *  Company: Odysseus Data Services, Inc.
  *  Product Owner/Architecture: Gregory Klebanov
  *  Authors: Anton Gackovka
- *  Created: October 18, 2017
+ *  Created: October 19, 2017
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+import InsightFileViewer from './container';
 
-.#{$namespace} {
-  &study-file {
-    @include view-edit-page();
-    height: 100%;
-    position: absolute;
-    width: 100%;
-
-    &__content {
-      display: flex;
-      padding: 0;
-      height: 100%;
-    }
-  }
-}
+export default InsightFileViewer;
