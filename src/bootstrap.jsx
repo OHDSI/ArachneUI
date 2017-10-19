@@ -33,6 +33,7 @@ import makeRootReducer from 'reducers/index';
 import { Provider } from 'react-redux';
 import React from 'react';
 import AppContainer from './AppContainer';
+import NotFound from 'components/NotFound';
 
 require('styles/appContainer.scss');
 
@@ -142,6 +143,7 @@ function initRootRoute({ store, routes, indexRedirect, menuItems }) {
           }
         )
       )}
+      <Route path="*" exact={true} component={NotFound} />
       <IndexRedirect to={indexRedirect} />
     </Route>
   );
