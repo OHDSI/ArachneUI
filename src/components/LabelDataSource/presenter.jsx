@@ -73,6 +73,7 @@ function dnConverter(dataNode = {}) {
   }
 
   return {
+    centralId: dataNode.id,
     uuid: dataNode.uuid,
     color,
     statusTitle,
@@ -97,6 +98,7 @@ function dsConverter(dataSource = {}) {
   const fullName = `${name}: ${dsName}`;
 
   return {
+    centralId: dataSource.id,
     uuid: dataSource.uuid,
     color,
     statusTitle,

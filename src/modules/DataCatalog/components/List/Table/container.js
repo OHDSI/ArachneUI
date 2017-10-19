@@ -44,7 +44,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 const mapDispatchToProps = {
-  showDatasource: datasource => goToPage(paths.dataCatalog(datasource.uuid)),
+  showDatasource: datasource => goToPage(paths.dataCatalog(datasource.centralId)),
   search: goToPage,
 };
 
