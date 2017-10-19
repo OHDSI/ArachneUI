@@ -46,10 +46,6 @@ class ViewEditAnalysis extends Component {
     }, refreshTime);
   }
 
-  componentWillUnmount() {
-    clearInterval(this.refreshInterval);
-  }
-
   componentWillReceiveProps(nextProps) {
     // Loading of available Data Sources for Submission modal
     // TODO: rebuilt in a better way
@@ -62,6 +58,7 @@ class ViewEditAnalysis extends Component {
   }
 
   componentWillUnmount() {
+    clearInterval(this.refreshInterval);
     this.props.unloadAnalysis();
   }
 
