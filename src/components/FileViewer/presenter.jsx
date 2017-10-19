@@ -27,8 +27,7 @@ import Toolbar from './Toolbar/index';
 
 require('./style.scss');
 
-function FileViewer(p) {
-  const { language, isLoading, pageTitle, downloadLink, mimeType, content, name, title, createdAt, toolbarOpts } = p;
+function FileViewer({ language, isLoading, pageTitle, downloadLink, mimeType, content, name, title, createdAt, toolbarOpts }) {
   const classes = new BEMHelper('file');
 
   return (

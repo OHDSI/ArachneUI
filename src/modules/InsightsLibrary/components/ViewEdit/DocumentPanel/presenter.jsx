@@ -50,7 +50,6 @@ function DocumentPanel(props) {
           <i {...classes('doctype-ico', file.docType)} />
           <Link
             {...classes('download-link')}
-            target="_self"
             to={file.link}
           >
             {file.label || file.name}

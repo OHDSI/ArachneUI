@@ -21,34 +21,11 @@
  */
 
 import React from 'react';
-import BEMHelper from 'services/BemHelper';
-import { PageContent, LoadingPanel } from 'arachne-ui-components';
-import MediaViewer from 'components/MediaViewer';
-import Toolbar from './Toolbar/index';
+import FileViewer from 'components/FileViewer';
 
-require('./style.scss');
-
-function SubmissionCodeViewer({ language, isLoading, pageTitle, downloadLink, mimeType, content, name, title, createdAt }) {
-  const classes = new BEMHelper('submission-code');
-
+function SubmissionCodeViewer(props) {
   return (
-    <PageContent title={pageTitle}>
-      <div {...classes()}>
-        <Toolbar />
-        <div {...classes('content')}>
-          <MediaViewer
-            language={language}
-            mimeType={mimeType}
-            data={content}
-            downloadLink={downloadLink}
-            name={name}
-            title={title}
-            createdAt={createdAt}
-          />
-        </div>
-        <LoadingPanel active={isLoading} />
-      </div>
-    </PageContent>
+    <FileViewer params={props}/>
   );
 }
 

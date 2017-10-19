@@ -45,7 +45,7 @@ function mapStateToProps(state, ownProps) {
 
   const urlParams = { fileUuid, studyId };
 
-  const backUrl = paths.studies({ studyId: get(studyFile, 'studyId') });
+  const backUrl = paths.studies(get(studyFile, 'studyId'));
   const toolbarOpts = {
     backUrl,
     breadcrumbList: [

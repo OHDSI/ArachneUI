@@ -55,6 +55,10 @@ function mapStateToProps(state, ownProps) {
         link: paths.insights(),
       },
       {
+        label: 'Study',
+        link: paths.studies(get(insightFile, 'studyId', '', 'String')),
+      },
+      {
         label: 'Insight',
         link: backUrl,
       },

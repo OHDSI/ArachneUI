@@ -21,7 +21,7 @@
  */
 
 import keyMirror from 'keymirror';
-import URI from 'urijs';
+import { Utils } from 'services/Utils';
 
 const modal = keyMirror({
   createStudy: null,
@@ -71,14 +71,7 @@ const apiPaths = {
   studyParticipants: ({ studyId, userId }) => `/api/v1/study-management/studies/${studyId}/participants${userId ? `/${userId}` : ''}`,
   // Documents
   uploadStudyDocument: ({ studyId }) => `/api/v1/study-management/studies/${studyId}/upload`,
-  studyDocument: ({ studyId, fileUuid, query }) => {
-    const link = `/api/v1/study-management/studies/${studyId}/files/${fileUuid}`;
-    const uri = new URI(link);
-    if (query) {
-      uri.setSearch(query);
-    }
-    return uri.toString();
-  },
+  studyDocument: ({ studyId, fileUuid, query }) => Utils.setUrlParams(`/api/v1/study-management/studies/${studyId}/files/${fileUuid}`, query),
   studyDocumentDownload: ({ studyId, fileUuid }) => `/api/v1/study-management/studies/${studyId}/files/${fileUuid}/download`,
   studyDocumentDownloadAll: ({ studyId }) => `/api/v1/study-management/studies/${studyId}/files/all/download`,
 
