@@ -7,6 +7,7 @@ import com.odysseusinc.arachne.portal.front.utils.ByBuilder;
 import java.io.IOException;
 import org.apache.commons.lang.StringUtils;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -17,7 +18,7 @@ import org.openqa.selenium.WebElement;
 public class ProfileManagerTest extends BaseTest {
 
     @AfterClass
-    public static void afterTest() throws IOException {
+    public static void afterProfileManagerTests() throws IOException {
 
         shutdown();
     }
@@ -28,17 +29,19 @@ public class ProfileManagerTest extends BaseTest {
         updateName(ADMIN_LOGIN, ADMIN_PASSWORD, "4");
     }
 
-    protected static void updateName(String login, String password, String postfix) {
+    protected static void updateName(String login, String password, String postfix) throws InterruptedException {
 
         loginPortal(login, password);
 
+        Thread.sleep(3000L); // todo pozhidaeva
         By profileMenu = ByBuilder.byClassAndText("ac-profile-menu-item__user-name-part", "admin");
         waitFor(driver, profileMenu);
+
         WebElement profileMenuWebElement = driver.findElement(profileMenu);
         profileMenuWebElement.click();
 
         By userProfile = ByBuilder.text("User Profile");
-        waitFor(driver, userProfile);
+        waitFor(driver, userProfile);//
         WebElement userProfileWebElement = driver.findElement(userProfile);
         userProfileWebElement.click();
 
@@ -59,7 +62,8 @@ public class ProfileManagerTest extends BaseTest {
         lastNameInput.sendKeys(postfix);
 
         saveBtn.click();
-        waitFor(driver, ByBuilder.byClassAndText("ac-profile-view__user-name", StringUtils.repeat("admin" + postfix, " ", 3)));
+        waitFor(driver, ByBuilder.byClassAndText("ac-profile-view__user-name",
+                StringUtils.repeat("admin" + postfix, " ", 3)));
         logout();
     }
 

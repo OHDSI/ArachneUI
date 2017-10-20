@@ -70,8 +70,6 @@ public class ByBuilder {
         final String selector = String.format(".//*[(@class='ac-toolbar' " +
                         "or starts-with(@class, 'ac-toolbar ')" +
                         "or contains(@class, ' ac-toolbar ') " +
-                        "or contains(@class, 'ac-study-toolbar-title__title') " +
-                        "or contains(@class, 'ac-toolbar__header') " +
                         " or substring(@class, string-length(@class) - string-length(' ac-toolbar') +1) = ' ac-toolbar'" +
                         ") and .//*[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), '%s')]]",
                 title.toLowerCase());
@@ -133,4 +131,8 @@ public class ByBuilder {
         return By.xpath(selector);
     }
 
+    public static By studyStatusLabel(String status) {
+
+        return ByBuilder.byClassAndText("ac-study-status-option__label", status);
+    }
 }
