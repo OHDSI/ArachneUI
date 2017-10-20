@@ -117,20 +117,23 @@ function ModalFiles(props) {
             )}
             {!filteredFiles.length &&
               <ListItem mods={['borderless']}>
-                <EmptyState message={'No files that match criteria'} />
+                <EmptyState message={fileList.length > 0 ? 'No files that match criteria' : 'No files'} />
               </ListItem>
             }
           </ul>
         }
         {filesCount !== 0 &&
           <div {...classes('actions')}>
-            <Button
-              {...classes('btn')}
-              mods={['success', 'rounded']}
-              label="Download all"
-              link={downloadAllLink}
-              target="_self"
-            />
+            {fileList.length > 0 
+              ? <Button
+                {...classes('btn')}
+                mods={['success', 'rounded']}
+                label="Download all"
+                link={downloadAllLink}
+                target="_self"
+              />
+              : null
+            }
             <Button
               {...classes('btn')}
               mods={['cancel', 'rounded']}
