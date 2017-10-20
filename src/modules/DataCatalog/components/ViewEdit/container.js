@@ -41,9 +41,9 @@ class StatefulViewEdit extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.dataSourceId !== nextProps.dataSourceId) {
-      this.props.loadDataSource({ uuid: nextProps.dataSourceId });
-      this.props.loadReportsList({ uuid: nextProps.dataSourceId });
-      this.props.loadCharacterization({ uuid: nextProps.dataSourceId });
+      this.props.loadDataSource({ id: nextProps.dataSourceId });
+      this.props.loadReportsList({ id: nextProps.dataSourceId });
+      this.props.loadCharacterization({ id: nextProps.dataSourceId });
     }
   }
 
@@ -83,9 +83,9 @@ class DataCatalogViewEditBuilder {
   getFetchers({ params, state, dispatch }) {
     const id = params.dataSourceId;
     return {
-      loadDataSource: actions.dataCatalog.dataSource.find.bind(null, { uuid: id }),
-      loadReportsList: actions.dataCatalog.report.query.bind(null, { uuid: id }),
-      loadCharacterization: actions.dataCatalog.characterization.find.bind(null, { uuid: id }),
+      loadDataSource: actions.dataCatalog.dataSource.find.bind(null, { id: id }),
+      loadReportsList: actions.dataCatalog.report.query.bind(null, { id: id }),
+      loadCharacterization: actions.dataCatalog.characterization.find.bind(null, { id: id }),
     };
   }
 

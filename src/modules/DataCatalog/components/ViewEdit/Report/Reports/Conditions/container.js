@@ -82,7 +82,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...ownProps,
     loadConditionDetails: (conceptId) => {
       dispatchProps.loadDetails({
-        uuid: ownProps.dataSourceId,
+        id: ownProps.dataSourceId,
         path: 'conditions',
         filename: `condition_${conceptId}.json`,
       });
