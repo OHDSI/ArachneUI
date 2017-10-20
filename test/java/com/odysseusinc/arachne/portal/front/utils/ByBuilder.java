@@ -128,4 +128,28 @@ public class ByBuilder {
 
         return By.xpath(".//table[.//th[.//*[contains(text(), '" + header + "')]]]");
     }
+
+
+    public static By toolbarEditIco(String title) {
+
+        String selector = ".//*[contains(@class, 'ac-toolbar__edit-ico')" + (title != null ? "and text()='" + title + "'" : "") + "]";
+        return By.xpath(selector);
+    }
+
+
+    public static By tableRow(String placeholder) {
+
+        return By.xpath(".//*[contains(@class, 'ac-title-study__title') and text()='" + placeholder + "']");
+    }
+
+    public static By tab(String title) {
+
+        String selector = ".//*[contains(@class, 'ac-tabs__item')" + (title != null ? "and text()='" + title + "'" : "") + "]";
+        return By.xpath(selector);
+    }
+
+    public static By studyStatusLabel(String status) {
+
+        return ByBuilder.byClassAndText("ac-study-status-option__label", status);
+    }
 }
