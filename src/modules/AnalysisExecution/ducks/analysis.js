@@ -28,10 +28,19 @@ const analyses = new Duck({
   urlBuilder: apiPaths.analyses,
 });
 
+function flushAnalysis() {
+  return {
+    type: `${coreName}_QUERY_FULFILLED`,
+    payload: {
+      result: null,
+    },
+  };
+}
+
 export default {
   actions: {
     ...analyses.actions,
-    unload: () => analyses.actions.load(null),
+    unload: flushAnalysis,
   },
   reducer: analyses.reducer,
 };
