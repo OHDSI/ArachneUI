@@ -78,7 +78,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...ownProps,
     loadConditionDetails: (conceptId) => {
       dispatchProps.loadDetails({
-        uuid: ownProps.dataSourceUuid,
+        uuid: ownProps.dataSourceId,
         path: 'visits',
         filename: `visit_${conceptId}.json`,
       });

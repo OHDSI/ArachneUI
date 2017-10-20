@@ -65,7 +65,7 @@ export default class selectorsBuilder {
     return dataSourceList.map(dataSource => ({
         id: dataSource.id,
         name: `${get(dataSource, 'dataNode.name', '')}: ${dataSource.name}`,
-        link: paths.dataSources(dataSource.uuid),
+        link: paths.dataSources(dataSource.id),
         status: this.getStatus(dataSource),
         healthStatus: {
           value: dataSource.healthStatus,

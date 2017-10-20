@@ -32,11 +32,11 @@ function mapStateToProps(state) {
   const isDeleted = !!get(datasourceData, 'deleted', '');
   const isDeletable = get(datasourceData, `permissions[${dataSourcePermissions.delete}]`, false);
   const canDelete = !isDeleted && isDeletable;
-  const dataSourceUuid = get(datasourceData, 'uuid', '');
+  const dataSourceId = get(datasourceData, 'id', '');
 
   return {
     canDelete,
-    dataSourceUuid,
+    dataSourceId,
   };
 }
 
@@ -53,9 +53,9 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     remove: () => {
       Utils.confirmDelete()
         .then(() => {
-          const dataSourceUuid = stateProps.dataSourceUuid;
-          dispatchProps.remove(dataSourceUuid)
-            .then(() => dispatchProps.load(dataSourceUuid))
+          const dataSourceId = stateProps.dataSourceId;
+          dispatchProps.remove(dataSourceId)
+            .then(() => dispatchProps.load(dataSourceId))
             .catch(() => {});
         });
     },
