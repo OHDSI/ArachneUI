@@ -237,7 +237,7 @@ class Utils {
   }
 
   static fetchAll({ fetchers, dispatch }) {
-    return Promise.all(Object.values(fetchers).map(action => dispatch(action())));
+    return Promise.all(Object.values(fetchers).map(fetcher => fetcher.then ? /* promise */ fetcher : /* action */ dispatch(fetcher())));
   }
 
   static buildConnectedComponent({
@@ -270,7 +270,7 @@ class Utils {
       ConnectedComponent = asyncConnect([{
         promise: ({ params, store: { dispatch, getState } }) => {
           const state = getState();
-          const fetchers = getFetchers({ params, state, dispatch });
+          const fetchers = getFetchers({ params, state, dispatch, getState });
           return Utils.fetchAll({ fetchers, dispatch });
         },
       }])(ConnectedComponent);
@@ -391,6 +391,12 @@ class Utils {
 }
 
 class ContainerBuilder {
+  constructor() {
+    if (this.getFetchers) {
+      this.getFetchers = this.getFetchers.bind(this);
+    }
+  }
+
   build() {
     return Utils.buildConnectedComponent({
       Component: this.getComponent(),
