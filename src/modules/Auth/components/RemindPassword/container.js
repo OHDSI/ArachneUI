@@ -50,7 +50,7 @@ RemindPassword.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    isUserAuthed: !!get(state, 'auth.principal.data.id'),
+    isUserAuthed: !!get(state, 'auth.principal.queryResult.result.id'),
   };
 }
 

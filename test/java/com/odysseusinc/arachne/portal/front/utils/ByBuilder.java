@@ -28,6 +28,23 @@ public class ByBuilder {
         return By.xpath(".//input[@placeholder='" + placeholderExpression + "']");
     }
 
+    public static By inputWithAutoComplete(String placholderExpression) {
+
+        final String selector = String.format(
+                ".//*[contains(@class, 'Select-placeholder') and contains(text(), '%s')]/following-sibling::div/input",
+                placholderExpression
+        );
+        return By.xpath(selector);
+    }
+
+    public static By skill(String placeholderExpression) {
+
+        final String selector = String.format(
+                ".//*[contains(@class, 'ac-skill-item')]/*[contains(text(), '%s')]",
+                placeholderExpression);
+        return By.xpath(selector);
+    }
+
     public static By textArea(String placeholderExpression) {
 
         return By.xpath(".//textarea[@placeholder='" + placeholderExpression + "']");

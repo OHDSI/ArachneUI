@@ -53,7 +53,7 @@ export default class SelectorsBuilder {
     return get(state, 'analysisExecution.analysis.data.result.files') || [];
   }
   getLoggedUserId(state) {
-    return get(state, 'auth.principal.data.result.id', -1);
+    return get(state, 'auth.principal.queryResult.result.id', -1);
   }
 
   getCode(analysis, currentUserId, code) {

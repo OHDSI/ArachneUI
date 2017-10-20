@@ -23,29 +23,13 @@
 import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { ModalUtils } from 'arachne-ui-components';
-import { modal, refreshTime } from 'modules/AnalysisExecution/const';
+import { modal } from 'modules/AnalysisExecution/const';
 import get from 'lodash/get';
 import actions from 'actions';
-import presenter from './presenter';
+import ListSubmissions from './presenter';
 import SelectorsBuilder from './selectors';
 
 const selectors = (new SelectorsBuilder()).build();
-
-class ListSubmissions extends Component {
-  componentWillMount() {
-    // TODO: only if window is in focus
-    this.refreshInterval = setInterval(() =>
-      this.props.loadAnalysis({ id: this.props.analysisId }), refreshTime);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.refreshInterval);
-  }
-
-  render() {
-    return presenter(this.props);
-  }
-}
 
 function mapStateToProps(state) {
   const analysisData = get(state, 'analysisExecution.analysis.data.result');

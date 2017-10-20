@@ -33,6 +33,7 @@ import makeRootReducer from 'reducers/index';
 import { Provider } from 'react-redux';
 import React from 'react';
 import AppContainer from './AppContainer';
+import NotFound from 'components/NotFound';
 
 require('styles/appContainer.scss');
 
@@ -119,8 +120,9 @@ function initializeApi(store) {
   ApiService
     .setUserTokenGetter(() => AuthService.getToken())
     .setUnauthorizedHandler(() => {
-      // TODO
-      store.dispatch(actions.auth.auth.logout(store.getState().routing.locationBeforeTransitions.pathname));
+      if (!AuthService.getToken()) {
+        store.dispatch(actions.auth.logout(store.getState().routing.locationBeforeTransitions.pathname));
+      }
     });
 }
 
@@ -141,6 +143,7 @@ function initRootRoute({ store, routes, indexRedirect, menuItems }) {
           }
         )
       )}
+      <Route path="*" exact={true} component={NotFound} />
       <IndexRedirect to={indexRedirect} />
     </Route>
   );

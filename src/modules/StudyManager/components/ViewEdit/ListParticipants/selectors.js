@@ -56,7 +56,11 @@ export default class selectorsBuilder {
   }
 
   isDeleted(participant) {
-    return participant.status.toLowerCase() === participantStatuses.DELETED.toLowerCase();
+    return participant.status === participantStatuses.DELETED;
+  }
+
+  isApproved(participant) {
+    return participant.status === participantStatuses.APPROVED;
   }
 
   canBeRemoved(participant, leadCount) {
@@ -88,9 +92,9 @@ export default class selectorsBuilder {
 
   getParticipantList(participantList, editPermissions, dataSourceList) {
     const leadList = participantList.filter(participant =>
-      participant.role.id === participantRoles.LEAD_INVESTIGATOR && !this.isDeleted(participant)
+      participant.role.id === participantRoles.LEAD_INVESTIGATOR
     );
-    const leadCount = leadList.length;
+    const leadCount = leadList.filter(participant => this.isApproved(participant)).length;
 
     return participantList.map(item => ({
       id: item.id,

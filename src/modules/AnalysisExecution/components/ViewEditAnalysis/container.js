@@ -22,6 +22,7 @@
 
 import React, { Component, PropTypes } from 'react';
 import { Utils, get } from 'services/Utils';
+import { refreshTime } from 'modules/AnalysisExecution/const';
 import actions from 'actions/index';
 import Presenter from './presenter';
 
@@ -37,6 +38,14 @@ class ViewEditAnalysis extends Component {
     };
   }
 
+  componentDidMount() {
+    // TODO: only if window is in focus
+    this.refreshInterval = setInterval(() => {
+      this.isPolledData = true;
+      this.props.loadAnalysis({ id: this.props.id })
+    }, refreshTime);
+  }
+
   componentWillReceiveProps(nextProps) {
     // Loading of available Data Sources for Submission modal
     // TODO: rebuilt in a better way
@@ -49,11 +58,12 @@ class ViewEditAnalysis extends Component {
   }
 
   componentWillUnmount() {
+    clearInterval(this.refreshInterval);
     this.props.unloadAnalysis();
   }
 
   render() {
-    return <Presenter {...this.props} />;
+    return <Presenter {...this.props} isLoading={this.props.isLoading && !this.isPolledData} />;
   }
 }
 

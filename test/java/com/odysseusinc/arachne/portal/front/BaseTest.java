@@ -30,6 +30,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.WebDriver;
@@ -198,6 +199,8 @@ public class BaseTest {
 
         loginInput.sendKeys(username);
         passwordInput.sendKeys(password, Keys.ENTER);
+        final By avatar = By.className("ac-avatar");
+        waitForPageLoad(driver, avatar);
     }
 
     protected static void loginDataNode(String username, String password) {

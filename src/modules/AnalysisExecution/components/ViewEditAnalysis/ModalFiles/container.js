@@ -163,6 +163,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         .then(() => {
           dispatchProps
             .removeResult({ submissionId: stateProps.submissionId, fileId })
+            .then(() => dispatchProps.loadSubmissionFiles(stateProps.submissionId))
             .then(() => dispatchProps.loadAnalysis({ id: stateProps.analysisId }));
         });
     },

@@ -286,3 +286,25 @@ $default-box-padding: 1.5rem 2rem;
 	position: absolute;
 	width: 100%;
 }
+
+@mixin modal-w-form() {
+  background: $grey-lighter;
+  padding: 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+
+  & .#{$namespace}form {
+    flex-grow: 1;
+
+    &__group {
+      flex-grow: 1;
+    }
+  }
+}
+
+@mixin action-bar() {
+  background: $grey-light;
+  border-bottom: 1px solid $grey;
+  display: flex;
+  padding: 1.3rem 3rem;
+}

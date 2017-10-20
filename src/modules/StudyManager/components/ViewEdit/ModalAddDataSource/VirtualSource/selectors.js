@@ -28,7 +28,7 @@ export default class selectorsBuilder {
   getCurrentUserId(state) {
     return get(
       state,
-      'auth.principal.data.id',
+      'auth.principal.queryResult.result.id',
       null
     );
   }

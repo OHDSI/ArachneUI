@@ -20,32 +20,23 @@
  *
  */
 
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { ExpandableText } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
 
 require('./style.scss');
 
-function StudyObjectiveView({ description }) {
-  const classes = new BEMHelper('study-objective-view');
-  let mods;
-
-  if (description) {
-    description = description.replace(/(?:\r\n|\r|\n)/g, '<br/>');
-  } else {
-    description = 'No description';
-    mods = ['empty'];
-  }
+export default function StudyObjectiveView(props) {
+  const classes = BEMHelper('study-objective-view');
+  let {
+    description = '',
+  } = props;
 
   return (
-    <div
-      {...classes({ modifiers: mods })}
-      dangerouslySetInnerHTML={{ __html: description }}
-    />
+    <div {...classes()}>
+      <div {...classes('content')}>
+        <ExpandableText text={description} />
+      </div>
+    </div>
   );
 }
-
-StudyObjectiveView.propTypes = {
-  description: PropTypes.string,
-};
-
-export default StudyObjectiveView;
