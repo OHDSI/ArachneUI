@@ -59,7 +59,7 @@ export default class StudyActionsBuilder {
       get(studyData, 'endDate');
 
     // Check via human-readable status names is temp, until Study workflow is finished
-    const canPublishPaper = ['Completed', 'Archived'].includes(get(studyData, 'status.name'));
+    const canPublishPaper = ['Completed', 'Archived', 'Active'].includes(get(studyData, 'status.name'));
 
     return {
       studyId: get(moduleState, 'study.data.result.id'),

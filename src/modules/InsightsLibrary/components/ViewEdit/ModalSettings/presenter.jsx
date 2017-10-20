@@ -33,6 +33,7 @@ function ModalAccessSettings(props) {
     publishState,
     insightId,
     changePublishState,
+    isStudyActive
   } = props;
 
   return (
@@ -42,7 +43,8 @@ function ModalAccessSettings(props) {
           <div {...classes('setting')}>
             <div {...classes('setting-title')}>Publish state</div>
             <Tabs
-              {...classes('setting-value')}
+              {...classes({element: 'setting-value',
+                modifiers: { disabled: isStudyActive }})}
               onChange={changePublishState}
               options={publishStateOptions}
               value={publishState}

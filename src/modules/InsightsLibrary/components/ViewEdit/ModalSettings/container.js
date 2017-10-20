@@ -42,6 +42,7 @@ export default class ModalSettingsBuilder {
     return {
       publishState: get(state, 'insightsLibrary.insights.data.publishState', 'DRAFT', 'String'),
       insightId: get(state, 'insightsLibrary.insights.data.id'),
+      isStudyActive: get(state, 'insightsLibrary.insights.data.study.status.name', '', 'String') === 'Active',
     };
   }
 
