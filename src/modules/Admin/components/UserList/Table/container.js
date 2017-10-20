@@ -61,6 +61,9 @@ class UserListTableBuilder extends ContainerBuilder {
       ...stateProps,
       ...ownProps,
       ...dispatchProps,
+      enableUser: (id, enabled) => {
+        console.log('enableUser', id, enabled);
+      },
       removeUser: (id) => {
         Utils.confirmDelete()
           .then(() => {
