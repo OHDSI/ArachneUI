@@ -39,9 +39,9 @@ function CellRemove({ id, removeUser }) {
 	);
 }
 
-function CellCheck({ id, value, toggle }) {
+function CellCheck({ login, value, toggle }) {
   return (
-		<Checkbox isChecked={value} onChange={(e) => toggle(id, e.target.checked)} />
+		<Checkbox isChecked={value} onChange={(e) => toggle(login, e.target.checked)} />
   );
 }
 
@@ -80,7 +80,7 @@ function AdminTable(props) {
 					isSortable={false}
 					props={
 						entity => ({
-							id: entity.id,
+							login: entity.email,
 							toggle: enableUser,
 						})
 					}

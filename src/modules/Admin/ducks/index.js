@@ -30,6 +30,7 @@ import solrIndex from './solrIndex';
 import systemSettings from './systemSettings';
 import userOptionList from './userOptionList';
 import userList from './userList';
+import userEnable from './userEnable';
 
 const actions = {
   adminList: adminList.actions,
@@ -41,6 +42,7 @@ const actions = {
   systemSettings: systemSettings.actions,
   userOptionList: userOptionList.actions,
   userList: userList.actions,
+  userEnable: userEnable.actions,
 };
 
 const reducer = combineReducers({
@@ -53,6 +55,7 @@ const reducer = combineReducers({
   systemSettings: systemSettings.reducer,
   userOptionList: userOptionList.reducer,
   userList: userList.reducer,
+  userEnable: userEnable.reducer,
 });
 
 export default {

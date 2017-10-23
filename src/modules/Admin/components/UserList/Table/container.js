@@ -52,6 +52,7 @@ class UserListTableBuilder extends ContainerBuilder {
     return {
       loadList: actions.adminSettings.userList.query,
       removeUser: actions.adminSettings.userList.delete,
+      enableUser: actions.adminSettings.userEnable.create,
       setSearch: actions.router.setSearch,
     };
   }
@@ -61,8 +62,10 @@ class UserListTableBuilder extends ContainerBuilder {
       ...stateProps,
       ...ownProps,
       ...dispatchProps,
-      enableUser: (id, enabled) => {
-        console.log('enableUser', id, enabled);
+      enableUser: (login, enabled) => {
+        dispatchProps.enableUser({ login, enabled })
+          .then(dispatchProps.loadList)
+          .catch(() => {});
       },
       removeUser: (id) => {
         Utils.confirmDelete()
