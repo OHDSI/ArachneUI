@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,18 +23,15 @@
 import errors from 'const/errors';
 import {
   get as _get,
-  isEqual
+  isEqual,
 } from 'lodash';
 import { types as fieldTypes } from 'const/modelAttributes';
 import mimeTypes from 'const/mimeTypes';
 import {
   isSql,
-  isText
+  isText,
 } from 'services/MimeTypeUtil';
-import {
-  reduxForm,
-  SubmissionError
-} from 'redux-form';
+import { reduxForm, SubmissionError } from 'redux-form';
 import numeral from 'numeral';
 import keyMirror from 'keymirror';
 import { typeCheck } from 'type-check';
@@ -43,6 +40,8 @@ import { commonDate } from 'const/formats';
 import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-async-connect';
 import { ModalUtils } from 'arachne-ui-components';
+import types from 'const/modelAttributes';
+import URI from 'urijs';
 
 function buildFormData(obj) {
   const formData = new FormData();
@@ -239,7 +238,7 @@ class Utils {
   }
 
   static fetchAll({ fetchers, dispatch }) {
-    return Promise.all(Object.values(fetchers).map(action => dispatch(action())));
+    return Promise.all(Object.values(fetchers).map(fetcher => fetcher.then ? /* promise */ fetcher : /* action */ dispatch(fetcher())));
   }
 
   static buildConnectedComponent({
@@ -272,7 +271,7 @@ class Utils {
       ConnectedComponent = asyncConnect([{
         promise: ({ params, store: { dispatch, getState } }) => {
           const state = getState();
-          const fetchers = getFetchers({ params, state, dispatch });
+          const fetchers = getFetchers({ params, state, dispatch, getState });
           return Utils.fetchAll({ fetchers, dispatch });
         },
       }])(ConnectedComponent);
@@ -408,9 +407,23 @@ class Utils {
     }
   }
 
+  static setUrlParams(url, query) {
+    const uri = new URI(url);
+    if (query) {
+      uri.setSearch(query);
+    }
+    return uri.toString();
+  }
+
 }
 
 class ContainerBuilder {
+  constructor() {
+    if (this.getFetchers) {
+      this.getFetchers = this.getFetchers.bind(this);
+    }
+  }
+
   build() {
     return Utils.buildConnectedComponent({
       Component: this.getComponent(),

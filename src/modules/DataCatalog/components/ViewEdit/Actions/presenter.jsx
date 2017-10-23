@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,6 +33,7 @@ function Actions({
 	openAddModal,
   onChangeTab,
   isProfileSelected,
+  isVirtual,
   reportsAvailable,
 }) {
   const classes = new BEMHelper('data-source-actions');
@@ -47,6 +48,10 @@ function Actions({
       value: 'profile',
     },
   ];
+
+  if (isVirtual) {
+    return null;
+  }
 
   return (
     <div  {...classes()}>

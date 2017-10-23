@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -65,7 +65,7 @@ export default class selectorsBuilder {
     return dataSourceList.map(dataSource => ({
         id: dataSource.id,
         name: `${get(dataSource, 'dataNode.name', '')}: ${dataSource.name}`,
-        link: paths.dataSources(dataSource.uuid),
+        link: paths.dataSources(dataSource.id),
         status: this.getStatus(dataSource),
         healthStatus: {
           value: dataSource.healthStatus,

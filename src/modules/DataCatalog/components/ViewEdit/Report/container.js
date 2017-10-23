@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -64,7 +64,7 @@ class Report extends Component {
         filename = filePath[0];
       }
       this.props.loadReport({
-        uuid: this.props.dataSourceUuid,
+        id: this.props.dataSourceId,
         filename,
         path,
       });
@@ -94,7 +94,7 @@ Report.propTypes = {
   characterization: PropTypes.arrayOf(PropTypes.string),
   clearReportData: PropTypes.func,
   clearReportDetails: PropTypes.func,
-  dataSourceUuid: PropTypes.string,
+  dataSourceId: PropTypes.string,
   resetPage: PropTypes.func,
   loadReport: PropTypes.func,
 
@@ -109,7 +109,7 @@ function mapStateToProps(state, ownProps) {
 
   return {
     characterization,
-    dataSourceUuid: ownProps.dataSourceUuid,
+    dataSourceId: ownProps.dataSourceId,
     list,
     isLoading,
     initialValues: {
@@ -130,7 +130,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...stateProps,
     ...dispatchProps,
     ...ownProps,
-    resetPage: () => dispatchProps.redirect(`${paths.dataCatalog(stateProps.dataSourceUuid)}/profile`),
+    resetPage: () => dispatchProps.redirect(`${paths.dataCatalog(stateProps.dataSourceId)}/profile`),
   };
 }
 

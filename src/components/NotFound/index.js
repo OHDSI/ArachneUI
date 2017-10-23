@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +15,11 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: June 13, 2017
+ * Authors: Pavel Grafkin
+ * Created: October 19, 2017
  *
  */
 
+import NotFound from './presenter';
+
+export default NotFound;

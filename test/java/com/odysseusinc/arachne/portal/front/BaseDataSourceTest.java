@@ -45,7 +45,9 @@ public abstract class BaseDataSourceTest extends BaseUserTest {
     protected static void createDataSource(DataSourceData dataSource) {
 
         loginDataNode(ADMIN_LOGIN, ADMIN_PASSWORD);
-        driver.findElement(ByBuilder.buttonAddIco()).click();
+        final By addButton = ByBuilder.buttonAddIco();
+        Utils.waitFor(driver, addButton);
+        driver.findElement(addButton).click();
 
         registerDataNodeIfModalIsAppeared();
 

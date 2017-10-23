@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -44,7 +44,7 @@ export default class ListDocumentsBuilder {
       studyId: get(studyData, 'id'),
       documentList: selectors.getDocumentList(state),
       isEditable: get(studyData, `permissions[${studyPermissions.uploadFiles}]`, false),
-      downloadAllLink: apiPaths.studyDocumentAll({ studyId }),
+      downloadAllLink: apiPaths.studyDocumentDownloadAll({ studyId }),
     };
   }
 

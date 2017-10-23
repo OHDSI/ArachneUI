@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -43,11 +43,11 @@ class ImportList extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.selectedSource.uuid !== nextProps.selectedSource.uuid &&
-      !!nextProps.selectedSource.uuid
+    if (this.props.selectedSource.id !== nextProps.selectedSource.id &&
+      !!nextProps.selectedSource.id
     ) {
       this.props.loadList({
-        dataNodeUuid: nextProps.selectedSource.uuid,
+        dataNodeId: nextProps.selectedSource.id,
         type: this.props.analysisType,
       });
     }
@@ -70,7 +70,7 @@ class ImportList extends Component {
 
 ImportList.propTypes = {
   selectedSource: PropTypes.shape({
-    uuid: PropTypes.string,
+    id: PropTypes.number,
   }),
   loadList: PropTypes.func,
   analysisType: PropTypes.string,
@@ -107,7 +107,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...dispatchProps,
     doSubmit({ entities }) {
       // TEMP. TODO!
-      const datanodeSid = stateProps.selectedSource.uuid;
+      const datanodeId = stateProps.selectedSource.id;
       const entityGuid = getFormSelectedCheckboxes(entities)[0];
 
       const submitPromise = dispatchProps.importEntities(
@@ -116,7 +116,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
           type: stateProps.analysisType,
         },
         {
-          datanodeSid,
+          dataNodeId: datanodeId,
           entityGuid,
         }
       );

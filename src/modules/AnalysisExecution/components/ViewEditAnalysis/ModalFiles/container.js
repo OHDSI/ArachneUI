@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -75,6 +75,9 @@ class ModalFiles extends Component {
       }
     } else if (this.props.isOpened === true && nextProps.isOpened === false) {
       this.props.flush();
+      this.setState({
+        filterText: '',
+      });
     }
   }
 

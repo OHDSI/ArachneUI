@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,6 +33,7 @@ function mapStateToProps(state) {
     get(analysisData, 'study.id')
   );
   const author = get(analysisData, 'author', {});
+  const isLoading = get(state, 'analysisExecution.analysis.isLoading', false);
 
   return {
     analysisTitle: get(analysisData, 'title'),
@@ -50,6 +51,7 @@ function mapStateToProps(state) {
     ],
     studyTitle,
     author,
+    isLoading,
   };
 }
 

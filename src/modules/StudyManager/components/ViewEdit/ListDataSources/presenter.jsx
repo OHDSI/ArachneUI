@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -87,7 +87,7 @@ function DataSourceItem(props) {
       <div
         {...classes({
           element: 'indicator',
-          modifiers: [dataSource.healthStatus.title],
+          modifiers: [healthStatuses.getColor(dataSource.healthStatus.value)],
           extra: tooltipClasses().className,
         })}
         aria-label={healthStatuses.getTitle(dataSource.healthStatus.value)}

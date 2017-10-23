@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,11 +27,13 @@ import {
   paths,
 } from 'modules/DataCatalog/const';
 import { push as goToPage } from 'react-router-redux';
+import { get } from 'services/Utils';
 import Actions from './presenter';
 
 function mapStateToProps(state, ownProps) {
   return {
     isProfileSelected: ownProps.isProfileSelected,
+    isVirtual: get(state, 'dataCatalog.dataSource.data.result.dataNode.virtual', false),
   };
 }
 
@@ -45,7 +47,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...stateProps,
     ...dispatchProps,
     ...ownProps,
-    onChangeTab: tab => dispatchProps.changeTab(`${paths.dataCatalog(ownProps.dataSourceUuid)}/${tab}`),
+    onChangeTab: tab => dispatchProps.changeTab(`${paths.dataCatalog(ownProps.dataSourceId)}/${tab}`),
   };
 }
 

@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,9 +23,11 @@
 import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-async-connect';
-import { get } from 'services/Utils';
-import actions from 'actions/index';
+import { get, ContainerBuilder } from 'services/Utils';
+import actions from 'actions';
 import presenter from './presenter';
+
+const moduleActions = actions.analysisExecution;
 
 class ViewEditInsight extends Component {
   componentWillReceiveProps(nextProps) {
@@ -46,39 +48,49 @@ ViewEditInsight.propTypes = {
   submissionId: PropTypes.number.isRequired,
 };
 
-function mapStateToProps(state, ownProps) {
-  const moduleState = get(state, 'analysisExecution');
-  const insightData = get(moduleState, 'insight.data.result');
-  const insightTitle = get(moduleState, 'insight.data.result.name', 'Insight');
-  const analysisTitle = get(insightData, 'analysis.title', 'Analysis');
-  const studyTitle = get(insightData, 'analysis.study.title', 'Study');
-  const pageTitle = [
-    insightTitle,
-    analysisTitle,
-    studyTitle,
-    'Arachne',
-  ];
+export default class ViewEditInsightBuilder extends ContainerBuilder {
 
-  return {
-    isLoading: get(moduleState, 'insight.isLoading', false),
-    submissionId: parseInt(ownProps.routeParams.submissionId, 10),
-    insightTitle: get(moduleState, 'insight.data.result.name', ''),
-    pageTitle: pageTitle.join(' | '),
-  };
-}
+  getComponent() {
+    return ViewEditInsight;
+  }
 
-const mapDispatchToProps = {
-  loadInsight: actions.analysisExecution.insight.find,
-  unloadComments: actions.analysisExecution.insightComments.unload,
-  unloadFile: actions.analysisExecution.insightFile.unload,
-};
+  mapStateToProps(state, ownProps) {
+    const moduleState = get(state, 'analysisExecution');
+    const insightData = get(moduleState, 'insight.data.result');
+    const insightTitle = get(moduleState, 'insight.data.result.name', 'Insight');
+    const analysisTitle = get(insightData, 'analysis.title', 'Analysis');
+    const studyTitle = get(insightData, 'analysis.study.title', 'Study');
+    const pageTitle = [
+      insightTitle,
+      analysisTitle,
+      studyTitle,
+      'Arachne',
+    ];
+  
+    return {
+      isLoading: get(moduleState, 'insight.isLoading', false),
+      submissionId: parseInt(ownProps.routeParams.submissionId, 10),
+      insightTitle: get(moduleState, 'insight.data.result.name', ''),
+      pageTitle: pageTitle.join(' | '),
+    };
+  }
 
-const connectedViewEditInsight = connect(mapStateToProps, mapDispatchToProps)(ViewEditInsight);
+  getMapDispatchToProps() {
+    return {
+      loadInsight: moduleActions.insight.find,
+      unloadComments: moduleActions.insightComments.unload,
+      unloadFile: moduleActions.insightFile.unload,
+    };
+  }
 
-export default asyncConnect([{
-  promise: ({ params, store: { dispatch } }) => {
+  getFetchers({ params }) {
     const submissionId = params.submissionId;
-    const load = actions.analysisExecution.insight.find;
-    return dispatch(load({ submissionId }));
-  },
-}])(connectedViewEditInsight);
+    const load = moduleActions.insight.find;
+    return {
+      loadInsight: load.bind(null, { submissionId }),
+      unloadComments: moduleActions.insightComments.unload,
+      unloadFile: moduleActions.insightFile.unload
+    };
+  }
+
+}

@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,14 +26,20 @@
   &study-analyses-list {
     margin-bottom: 10px;
 
-    &__author-container {
-      text-align: right;
-      flex-grow: 3;
-      flex-basis: 0;
+    & .ac-list-item__content {
+      height: initial;
     }
+  }
+
+  &study-analyses-list-item {
+    align-items: center;
+    display: flex;
+    flex-grow: 1;
+    margin: 1rem 0;
 
     &__author {
       min-width: 120px;
+      margin-left: auto;
       text-align: right;
     }
 

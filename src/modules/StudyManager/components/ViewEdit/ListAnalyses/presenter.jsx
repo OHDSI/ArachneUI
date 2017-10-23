@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -52,29 +52,29 @@ class AnalysesItem extends Component {
       removable: isEditable && isRemovable,
     };
 
-    const classes = new BEMHelper('study-analyses-list');
+    const classes = new BEMHelper('study-analyses-list-item');
 
     return (
       <ListItem {...this.props} mods={mods} onRemove={() => removeAnalysis(id)}>
-        <span title={title}>
-          {link &&
-            <Link to={link}>{title}</Link>
-          }
-          {createdAt &&
-          <span {...classes('datetime')}>
-              {moment(createdAt).tz(moment.tz.guess()).format(dateFormat)}
+        <div {...classes()}>
+          <span title={title}>
+            {link &&
+              <Link to={link}>{title}</Link>
+            }
+            {createdAt &&
+            <span {...classes('datetime')}>
+                {moment(createdAt).tz(moment.tz.guess()).format(dateFormat)}
+            </span>
+            }
           </span>
+          {author && author.id &&
+            <Link {...classes('author')} to={author.link} target={author.link}>
+              {author.firstname} {author.middlename
+              ? `${author.middlename.substr(0, 1)}.`
+              : ''} {author.lastname}
+            </Link>
           }
-        </span>
-        {author && author.id &&
-        <div {...classes('author-container')}>
-          <Link {...classes('author')} to={author.link} target={author.link}>
-            {author.firstname} {author.middlename
-            ? `${author.middlename.substr(0, 1)}.`
-            : ''} {author.lastname}
-          </Link>
         </div>
-        }
       </ListItem>
     );
   }

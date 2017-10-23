@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,18 +34,18 @@ const modal = keyMirror({
 });
 
 const apiPaths = {
-  dataSources: ({ uuid } = {}) => `/api/v1/data-sources${uuid ? `/${uuid}/extended` : ''}`,
-  dataSourceComplete: ({ uuid }) => `/api/v1/data-sources${uuid ? `/${uuid}/complete` : ''}`,
-  dataSourceBase: ({ uuid }) => `/api/v1/data-sources/${uuid}`,
+  dataSources: ({ id } = {}) => `/api/v1/data-sources${id ? `/${id}/extended` : ''}`,
+  dataSourceComplete: ({ id }) => `/api/v1/data-sources${id ? `/${id}/complete` : ''}`,
+  dataSourceBase: ({ id }) => `/api/v1/data-sources/${id}`,
   dataSourcesMetadataAttrs: () => '/api/v1/metadata/data-source/attributes',
   studies: ({ query, dataSourceId }) =>
     `/api/v1/study-management/studies/search?region=DATASOURCE&id=${dataSourceId}&query=${query}`,
   inviteDataSource: ({ studyId, dataSourceId }) =>
     `/api/v1/study-management/studies/${studyId}/data-sources/${dataSourceId}`,
-  reportsList: ({ uuid }) => `/api/v1/achilles/datasource/${uuid}/reports`,
-  latestCharachterization: ({ uuid }) => `/api/v1/achilles/datasource/${uuid}`,
-  report: ({ uuid, filename, path }) =>
-    `/api/v1/achilles/datasource/${uuid}/files/${path ? `${path}/${filename}` : filename}`,
+  reportsList: ({ id }) => `/api/v1/achilles/datasource/${id}/reports`,
+  latestCharachterization: ({ id }) => `/api/v1/achilles/datasource/${id}`,
+  report: ({ id, filename, path }) =>
+    `/api/v1/achilles/datasource/${id}/files/${path ? `${path}/${filename}` : filename}`,
 };
 
 const paths = {

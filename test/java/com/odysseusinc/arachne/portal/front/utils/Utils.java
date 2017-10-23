@@ -42,6 +42,11 @@ public class Utils {
         waitForModal.until((Predicate<WebDriver>) d -> d.findElement(testEl).isDisplayed());
     }
 
+    public static void fillInput(WebDriver driver, String inputPlaceholder, String inputData) {
+
+        driver.findElement(ByBuilder.input(inputPlaceholder)).sendKeys(inputData);
+    }
+
     public static void selectOption(final WebDriver driver, final By select, final By selectOption, final By parent) {
 
         final WebElement selectorWebElement;

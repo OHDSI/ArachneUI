@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,6 +37,7 @@ function AnalysisToolbar(props) {
     backUrl,
     breadcrumbList,
     editTitle,
+    isLoading,
     author,
   } = props;
 
@@ -47,6 +48,12 @@ function AnalysisToolbar(props) {
       backUrl={backUrl}
       onEdit={editTitle}
     >
+      <span {...classes('refreshing')}>
+        {isLoading
+          ? <i {...classes('refresh-ico')}>refresh</i>
+          : null
+        }
+      </span>
       <span {...classes('created-at')}>
         Created {moment(createdAt).tz(moment.tz.guess()).format(commonDateFormat)} {author.id &&
           <span>

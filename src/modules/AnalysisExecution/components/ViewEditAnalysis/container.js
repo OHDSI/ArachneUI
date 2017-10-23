@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,7 +21,8 @@
  */
 
 import React, { Component, PropTypes } from 'react';
-import { Utils, get } from 'services/Utils';
+import { Utils, get, ContainerBuilder } from 'services/Utils';
+import { refreshTime } from 'modules/AnalysisExecution/const';
 import actions from 'actions/index';
 import Presenter from './presenter';
 
@@ -37,27 +38,34 @@ class ViewEditAnalysis extends Component {
     };
   }
 
+  componentDidMount() {
+    // TODO: only if window is in focus
+    this.refreshInterval = setInterval(() => {
+      this.isPolledData = true;
+      this.props.loadAnalysis({ id: this.props.id })
+    }, refreshTime);
+  }
+
   componentWillReceiveProps(nextProps) {
-    // Loading of available Data Sources for Submission modal
-    // TODO: rebuilt in a better way
-    if (nextProps.studyId !== this.props.studyId) {
-      this.props.loadStudyDataSources({ studyId: nextProps.studyId });
-    }
     if (nextProps.id !== this.props.id) {
-      this.props.loadAnalysis({ id: nextProps.id });
+      this.props.loadAnalysis({ id: nextProps.id }).then((analysis) => {
+        const studyId = analysis.result.study.id;
+        this.props.loadStudyDataSources({ studyId });
+      });
     }
   }
 
   componentWillUnmount() {
+    clearInterval(this.refreshInterval);
     this.props.unloadAnalysis();
   }
 
   render() {
-    return <Presenter {...this.props} />;
+    return <Presenter {...this.props} isLoading={this.props.isLoading && !this.isPolledData} />;
   }
 }
 
-export default class ViewEditAnalysisBuilder {
+export default class ViewEditAnalysisBuilder extends ContainerBuilder {
   getComponent() {
     return ViewEditAnalysis;
   }
@@ -87,21 +95,16 @@ export default class ViewEditAnalysisBuilder {
     };
   }
 
-  getFetchers({ params, state, dispatch }) {
+  getFetchers({ params, state, dispatch, getState }) {
+    const componentActions = this.getMapDispatchToProps();
     return {
-      loadAnalysis: actions.analysisExecution.analysis.find.bind(null, { id: params.analysisId }),
-      loadTypeList: actions.analysisExecution.analysisTypes.query,
+      loadAnalysisWDataSources: dispatch(componentActions.loadAnalysis({ id: params.analysisId })).then(() => {
+        const studyId = getState().analysisExecution.analysis.data.result.study.id;
+        return dispatch(componentActions.loadStudyDataSources({ studyId }));
+      }),
+      loadTypeList: componentActions.loadTypeList,
     };
   }
-
-  build() {
-    return Utils.buildConnectedComponent({
-      Component: this.getComponent(),
-      mapStateToProps: this.mapStateToProps,
-      mapDispatchToProps: this.getMapDispatchToProps(),
-      mergeProps: this.mergeProps,
-      getFetchers: this.getFetchers,
-    });
-  }
+  
 }
 

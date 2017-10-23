@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,6 +33,7 @@ import makeRootReducer from 'reducers/index';
 import { Provider } from 'react-redux';
 import React from 'react';
 import AppContainer from './AppContainer';
+import NotFound from 'components/NotFound';
 
 require('styles/appContainer.scss');
 
@@ -142,6 +143,7 @@ function initRootRoute({ store, routes, indexRedirect, menuItems }) {
           }
         )
       )}
+      <Route path="*" exact={true} component={NotFound} />
       <IndexRedirect to={indexRedirect} />
     </Route>
   );
