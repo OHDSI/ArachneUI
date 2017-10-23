@@ -30,16 +30,21 @@ require('./style.scss');
 
 function ModalAddDataSource(props) {
   const classes = new BEMHelper('study-modal-add-source');
-  const sections = [
-    {
+  const {
+    dataSourceId,
+  } = props;
+
+  const sections = [];
+  if (!dataSourceId) {
+    sections.push({
       label: 'Data catalog',
-      content: <DataCatalogSource />,
-    },
-    {
-      label: 'Virtual source',
-      content: <VirtualSource />,
-    }
-  ];
+      content: <DataCatalogSource/>,
+    });
+  }
+  sections.push({
+    label: 'Virtual source',
+    content: <VirtualSource dataSourceId={dataSourceId}/>,
+  });
   return (
     <div {...classes()}>
       <Modal modal={props.modal} title="Add data source">

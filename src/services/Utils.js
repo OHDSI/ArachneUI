@@ -350,14 +350,14 @@ class Utils {
         return false;
       }
       switch (field.type) {
-        case types.enum:
+        case fieldTypes.enum:
           if (field.isMulti) {
             initialValues[field.name] = Array.isArray(paramValue) ? paramValue : [paramValue];
           } else {
             initialValues[field.name] = paramValue;
           }
           break;
-        case types.toggle:
+        case fieldTypes.toggle:
           initialValues[field.name] = !!paramValue;
           break;
         default:
@@ -387,6 +387,24 @@ class Utils {
       }
     });
     return promise;
+  }
+
+  static extendReducer(originalReducer, newReducerMap) {
+    return (state = {}, action) => {
+      let communityState = originalReducer(state, action);
+      let nextState = { ...communityState };
+      let hasChanged = false;
+
+      Object.keys(newReducerMap).forEach(key => {
+        const reducer = newReducerMap[key];
+        const previousStateForKey = state[key];
+        const nextStateForKey = reducer(previousStateForKey, action);
+        nextState[key] = nextStateForKey;
+        hasChanged = hasChanged || nextStateForKey !== previousStateForKey;
+      });
+
+      return hasChanged ? nextState : communityState;
+    }
   }
 
   static setUrlParams(url, query) {
