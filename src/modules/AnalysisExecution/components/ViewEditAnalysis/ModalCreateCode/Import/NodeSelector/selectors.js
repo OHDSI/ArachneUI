@@ -37,7 +37,7 @@ const getDataNodes = createSelector(
       .filter(ds => !!ds.dataNode.atlasVerion)
       .map(ds => dnConverter(ds.dataNode));
 
-    return uniqBy(dnList, 'centralId');
+    return uniqBy(dnList, 'id');
   }
 );
 

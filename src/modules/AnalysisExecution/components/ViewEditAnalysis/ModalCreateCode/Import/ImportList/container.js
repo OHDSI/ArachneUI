@@ -43,11 +43,11 @@ class ImportList extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.selectedSource.centralId !== nextProps.selectedSource.centralId &&
-      !!nextProps.selectedSource.centralId
+    if (this.props.selectedSource.id !== nextProps.selectedSource.id &&
+      !!nextProps.selectedSource.id
     ) {
       this.props.loadList({
-        dataNodeId: nextProps.selectedSource.centralId,
+        dataNodeId: nextProps.selectedSource.id,
         type: this.props.analysisType,
       });
     }
@@ -107,7 +107,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...dispatchProps,
     doSubmit({ entities }) {
       // TEMP. TODO!
-      const datanodeId = stateProps.selectedSource.centralId;
+      const datanodeId = stateProps.selectedSource.id;
       const entityGuid = getFormSelectedCheckboxes(entities)[0];
 
       const submitPromise = dispatchProps.importEntities(
