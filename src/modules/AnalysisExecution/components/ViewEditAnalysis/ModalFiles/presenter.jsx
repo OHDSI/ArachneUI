@@ -38,7 +38,7 @@ import Fuse from 'fuse.js';
 
 require('./style.scss');
 
-function FileItem({ file, isEditable, removeResult }) {
+function FileItem({ file, isEditable, removeResult, isHidden }) {
   const classes = new BEMHelper('analysis-modal-files-item');
   const mods = {
     hover: true,
@@ -46,7 +46,7 @@ function FileItem({ file, isEditable, removeResult }) {
   };
   return (
     <ListItem
-      {...classes()}
+      {...classes({ modifiers: { hidden: isHidden } })}
       mods={mods}
       onRemove={() => removeResult(file.uuid)}
     >
@@ -78,7 +78,7 @@ function ModalFiles(props) {
   } = props;
   const fuseSearch = new Fuse(fileList, {
     shouldSort: true,
-    threshold: 0.6,
+    threshold: 0.1,
     location: 0,
     distance: 100,
     maxPatternLength: 32,
@@ -90,6 +90,10 @@ function ModalFiles(props) {
     ],
   });
   const filteredFiles = filterText ? fuseSearch.search(filterText) : fileList;
+  const filteredFilesIds = {};
+  filteredFiles.forEach((file) => {
+    filteredFilesIds[file.uuid] = true;
+  });
 
   return (
     <Modal modal={props.modal} title={title} mods={['no-padding']}>
@@ -107,12 +111,13 @@ function ModalFiles(props) {
                 onChange={e => filter(e.target.value)}
               />
             </ListItem>
-            {filteredFiles.map((file, key) =>
+            {fileList.map((file, key) =>
               <FileItem
                 file={file}
                 key={key}
                 isEditable={canRemoveFiles && file.manuallyUploaded}
                 removeResult={removeResult}
+                isHidden={!filteredFilesIds[file.uuid]}
               />
             )}
             {!filteredFiles.length &&

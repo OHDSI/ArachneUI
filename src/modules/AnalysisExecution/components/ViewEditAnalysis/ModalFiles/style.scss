@@ -77,6 +77,10 @@
 			margin-right: auto;
 		}
 		&__datetime {}
+
+		&--hidden {
+			display: none;
+		}
 	}
 
 }
