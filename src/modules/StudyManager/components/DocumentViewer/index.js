@@ -19,6 +19,6 @@
  *
  */
 
-import StudyDocumentViewer from './container';
+import StudyDocumentBuilder from './container';
 
-export default StudyDocumentViewer;
+export default (new StudyDocumentBuilder()).build();
