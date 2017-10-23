@@ -44,7 +44,7 @@ export default class ListDocumentsBuilder {
       studyId: get(studyData, 'id'),
       documentList: selectors.getDocumentList(state),
       isEditable: get(studyData, `permissions[${studyPermissions.uploadFiles}]`, false),
-      downloadAllLink: apiPaths.studyDocumentAll({ studyId }),
+      downloadAllLink: apiPaths.studyDocumentDownloadAll({ studyId }),
     };
   }
 
