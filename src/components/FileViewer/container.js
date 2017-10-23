@@ -47,24 +47,44 @@ class FileViewer extends Component {
   }
 }
 
+FileViewer.propTypes = {
+  file: PropTypes.shape({
+    label: PropTypes.string,
+    name: PropTypes.string,
+    docType: PropTypes.string,
+    content: PropTypes.string,
+    created: PropTypes.number,
+  }),
+  isLoading: PropTypes.boolean,
+  loadFile: PropTypes.func,
+  toolbarOpts: PropTypes.object,
+  downloadLink: PropTypes.string,
+  urlParams: PropTypes.object,
+  pageTitle: PropTypes.string,
+  queryParams: PropTypes.object,
+};
+
 function mapStateToProps(state, ownProps) {
 
-  const file = ownProps.params.file;
+  const file = get(ownProps, 'file', {});
+
   const title = get(file, 'label', '');
-  const name = get(file, 'name', '');
   const mimeType = get(file, 'docType');
-  const content = get(file, 'content', null, 'String');
   const createdAt = get(file, 'created');
   const language = detectLanguageByExtension(file);
 
+  const isLoading = get(ownProps, 'isLoading');
+  const content = isLoading ? null : get(file, 'content', null, 'String');
+
+  const loadFile = get(ownProps, 'loadFile');
+
   return {
-    ...ownProps.params,
-    content: ownProps.params.isLoading ? null : content,
+    content,
     mimeType,
     title,
-    name,
     createdAt,
     language,
+    loadFile,
   };
 }
 

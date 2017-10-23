@@ -46,22 +46,6 @@ export default class selectorsBuilder {
     );
   }
 
-  // getDocumentList(studyId, documentList) {
-  //   return documentList.map(doc => ({
-  //       ...fileConverter(
-  //         doc,
-  //         (document) => { // eslint-disable-line arrow-body-style
-  //           return document.link ? document.link : apiPaths.studyDocumentDownload({
-  //             studyId,
-  //             fileId: document.uuid,
-  //           });
-  //         }
-  //       ),
-  //       linkTarget: '_self',
-  //     })
-  //   );
-  // }
-
   buildselectorForDocumentList() {
     return createSelector(
       [this.getStudyId, this.getRawDocumentList],

@@ -23,9 +23,17 @@
 import React from 'react';
 import FileViewer from 'components/FileViewer';
 
-function SubmissionCodeViewer(props) {
+function SubmissionCodeViewer({file, isLoading, loadFile, toolbarOpts, downloadLink, urlParams, pageTitle}) {
   return (
-    <FileViewer params={props}/>
+    <FileViewer
+      file={file}
+      isLoading={isLoading}
+      loadFile={loadFile}
+      toolbarOpts={toolbarOpts}
+      downloadLink={downloadLink}
+      urlParams={urlParams}
+      pageTitle={pageTitle}
+    />
   );
 }
 

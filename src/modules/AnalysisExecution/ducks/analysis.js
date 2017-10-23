@@ -23,8 +23,10 @@
 import Duck from 'services/Duck';
 import { apiPaths } from 'modules/AnalysisExecution/const';
 
+const coreName = 'AE_ANALYSIS';
+
 const analyses = new Duck({
-  name: 'AE_ANALYSIS',
+  name: coreName,
   urlBuilder: apiPaths.analyses,
 });
 

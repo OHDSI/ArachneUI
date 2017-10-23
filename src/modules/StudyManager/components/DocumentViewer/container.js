@@ -19,68 +19,59 @@
  *
  */
 
-import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { get, detectLanguageByExtension } from 'services/Utils';
+import { get, detectLanguageByExtension, ContainerBuilder } from 'services/Utils';
 import actions from 'actions/index';
-import presenter from './presenter';
+import DocumentViewer from './presenter';
 import { apiPaths, paths } from 'modules/StudyManager/const';
 
-class StudyDocument extends Component {
+export default class StudyDocumentBuilder extends ContainerBuilder {
 
-  render() {
-    return presenter(this.props);
+  getComponent() {
+    return DocumentViewer;
+  }
+
+  mapStateToProps(state, ownProps) {
+
+    const fileUuid = ownProps.params.fileUuid;
+    const studyId = ownProps.params.studyId;
+    const isFileLoading = get(state, 'studyManager.studyDocumentFile.isLoading', false);
+
+    const studyFile = get(state, 'studyManager.studyDocumentFile.data');
+
+    const pageTitle = [get(studyFile, 'name', 'Study document file'),'Arachne'];
+
+    const urlParams = { fileUuid, studyId };
+
+    const backUrl = paths.studies(get(studyFile, 'studyId'));
+    const toolbarOpts = {
+      backUrl,
+      breadcrumbList: [
+        {
+          label: 'Studies',
+          link: paths.studies(),
+        },
+        {
+          label: get(studyFile, 'studyLabel'),
+          link: backUrl,
+        },
+      ],
+      title: get(studyFile, 'label') || get(studyFile, 'name'),
+    };
+
+    return {
+      file: studyFile,
+      urlParams,
+      isLoading: isFileLoading,
+      pageTitle: pageTitle.join(' | '),
+      downloadLink: apiPaths.studyDocumentDownload(urlParams),
+      toolbarOpts,
+    };
+  }
+
+  getMapDispatchToProps() {
+    return {
+      loadFile: actions.studyManager.studyDocumentFile.find,
+    };
   }
 }
-
-function mapStateToProps(state, ownProps) {
-
-  const fileUuid = ownProps.params.fileUuid;
-  const studyId = ownProps.params.studyId;
-  const isFileLoading = get(state, 'studyManager.studyDocumentFile.isLoading', false);
-
-  const studyFile = get(state, 'studyManager.studyDocumentFile.data');
-
-  const pageTitle = [get(studyFile, 'name', 'Study document file'),'Arachne'];
-
-  const urlParams = { fileUuid, studyId };
-
-  const backUrl = paths.studies(get(studyFile, 'studyId'));
-  const toolbarOpts = {
-    backUrl,
-    breadcrumbList: [
-      {
-        label: 'Studies',
-        link: paths.studies(),
-      },
-      {
-        label: get(studyFile, 'studyLabel'),
-        link: backUrl,
-      },
-    ],
-    title: get(studyFile, 'label') || get(studyFile, 'name'),
-  };
-
-  return {
-    file: studyFile,
-    urlParams,
-    isLoading: isFileLoading,
-    pageTitle: pageTitle.join(' | '),
-    downloadLink: apiPaths.studyDocumentDownload(urlParams),
-    toolbarOpts,
-  };
-}
-
-const mapDispatchToProps = {
-  loadFile: actions.studyManager.studyDocumentFile.find,
-};
-
-function mergeProps(stateProps, dispatchProps, ownProps) {
-  return {
-    ...stateProps,
-    ...dispatchProps,
-    ...ownProps
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(StudyDocument);

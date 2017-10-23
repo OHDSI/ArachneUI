@@ -19,74 +19,65 @@
  *
  */
 
-import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { get, detectLanguageByExtension } from 'services/Utils';
+import { get, detectLanguageByExtension, ContainerBuilder } from 'services/Utils';
 import actions from 'actions/index';
-import presenter from './presenter';
+import FileViewer from './presenter';
 import { apiPaths, paths } from 'modules/InsightsLibrary/const';
 
-class InsightFileViewer extends Component {
+export default class InsightFileViewerBuilder extends ContainerBuilder {
 
-  render() {
-    return presenter(this.props);
+  getComponent() {
+    return FileViewer;
+  }
+
+  mapStateToProps(state, ownProps) {
+
+    const fileUuid = ownProps.params.fileUuid;
+    const insightId = ownProps.params.insightId;
+    const isFileLoading = get(state, 'insightsLibrary.insightFiles.isLoading', false);
+
+    const insightFile = get(state, 'insightsLibrary.insightFiles.data');
+
+    const pageTitle = [get(insightFile, 'name', 'Insight document file'),'Arachne'];
+
+    const urlParams = {fileUuid, insightId};
+    const queryParams = ownProps.location.query;
+
+    const backUrl = paths.insights({insightId: get(insightFile, 'insightId')});
+    const toolbarOpts = {
+      backUrl,
+      breadcrumbList: [
+        {
+          label: 'Insights',
+          link: paths.insights(),
+        },
+        {
+          label: 'Study',
+          link: paths.studies(get(insightFile, 'studyId', '', 'String')),
+        },
+        {
+          label: 'Insight',
+          link: backUrl,
+        },
+      ],
+      title: get(insightFile, 'label') || get(insightFile, 'name'),
+    };
+
+    return {
+      file: insightFile,
+      urlParams,
+      queryParams,
+      isLoading: isFileLoading,
+      pageTitle: pageTitle.join(' | '),
+      downloadLink: apiPaths.insightFilesDownload({...urlParams, query: queryParams}),
+      toolbarOpts,
+    };
+  }
+
+  getMapDispatchToProps() {
+    return {
+      loadFile: actions.insightsLibrary.insightFiles.find,
+    };
   }
 }
-
-function mapStateToProps(state, ownProps) {
-
-  const fileUuid = ownProps.params.fileUuid;
-  const insightId = ownProps.params.insightId;
-  const isFileLoading = get(state, 'insightsLibrary.insightFiles.isLoading', false);
-
-  const insightFile = get(state, 'insightsLibrary.insightFiles.data');
-
-  const pageTitle = [get(insightFile, 'name', 'Insight document file'),'Arachne'];
-
-  const urlParams = {fileUuid, insightId};
-  const queryParams = ownProps.location.query;
-
-  const backUrl = paths.insights({insightId: get(insightFile, 'insightId')});
-  const toolbarOpts = {
-    backUrl,
-    breadcrumbList: [
-      {
-        label: 'Insights',
-        link: paths.insights(),
-      },
-      {
-        label: 'Study',
-        link: paths.studies(get(insightFile, 'studyId', '', 'String')),
-      },
-      {
-        label: 'Insight',
-        link: backUrl,
-      },
-    ],
-    title: get(insightFile, 'label') || get(insightFile, 'name'),
-  };
-
-  return {
-    file: insightFile,
-    urlParams,
-    queryParams,
-    isLoading: isFileLoading,
-    pageTitle: pageTitle.join(' | '),
-    downloadLink: apiPaths.insightFilesDownload({...urlParams, query: queryParams}),
-    toolbarOpts,
-  };
-}
-
-const mapDispatchToProps = {
-  loadFile: actions.insightsLibrary.insightFiles.find,
-};
-
-function mergeProps(stateProps, dispatchProps, ownProps) {
-  return {
-    ...stateProps,
-    ...dispatchProps,
-    ...ownProps
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(InsightFileViewer);
