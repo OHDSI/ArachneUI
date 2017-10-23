@@ -41,6 +41,7 @@ import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-async-connect';
 import { ModalUtils } from 'arachne-ui-components';
 import types from 'const/modelAttributes';
+import URI from 'urijs';
 
 function buildFormData(obj) {
   const formData = new FormData();
@@ -386,6 +387,14 @@ class Utils {
       }
     });
     return promise;
+  }
+
+  static setUrlParams(url, query) {
+    const uri = new URI(url);
+    if (query) {
+      uri.setSearch(query);
+    }
+    return uri.toString();
   }
 
 }

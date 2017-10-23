@@ -21,6 +21,7 @@
  */
 
 import keyMirror from 'keymirror';
+import { Utils } from 'services/Utils';
 
 const modal = keyMirror({
   analysisFiles: null,
@@ -94,10 +95,10 @@ const apiPaths = {
   submissionById: ({ submissionId }) => `/api/v1/analysis-management/submissions${submissionId ? `/${submissionId}` : ''}`,
   submissionExecute: ({ submissionId }) => `/api/v1/analysis-management/submissions/${submissionId}/approve`,
   submissionPublish: ({ submissionId }) => `/api/v1/analysis-management/submissions/${submissionId}/approveresult`,
-  submissionGroupCode: ({ submissionGroupId, fileId, withContent, downloadFile }) => `/api/v1/analysis-management/submission-groups/${submissionGroupId}/files/${fileId}${downloadFile ? '/download' : ''}?withContent=${withContent}`,
-  submissionGroupCodeBySubmission: ({ submissionId, fileId, withContent, downloadFile }) => `/api/v1/analysis-management/submissions/${submissionId}/files/${fileId}${downloadFile ? '/download' : ''}?withContent=${withContent}`,
+  submissionGroupCode: ({ submissionGroupId, fileId, downloadFile, query }) => Utils.setUrlParams(`/api/v1/analysis-management/submission-groups/${submissionGroupId}/files/${fileId}${downloadFile ? '/download' : ''}`, query),
+  submissionGroupCodeBySubmission: ({ submissionId, fileId, downloadFile, query }) => Utils.setUrlParams(`/api/v1/analysis-management/submissions/${submissionId}/files/${fileId}${downloadFile ? '/download' : ''}`, query),
+  submissionResults: ({ submissionId, fileId, downloadFile, query }) => Utils.setUrlParams(`/api/v1/analysis-management/submissions/${submissionId}/results/${fileId}${downloadFile ? '/download' : ''}`, query),
   submissionGroupCodeAll: ({ submissionGroupId }) => `/api/v1/analysis-management/submission-groups/${submissionGroupId}/files/all`,
-  submissionResults: ({ submissionId, fileId, withContent, downloadFile }) => `/api/v1/analysis-management/submissions/${submissionId}/results/${fileId}${downloadFile ? '/download' : ''}?withContent=${withContent}`,
   submissionResultsDownload: ({ submissionId, fileId }) => `/api/v1/analysis-management/submissions/${submissionId}/results/${fileId}/download`,
   submissionFilesDownload: ({ submissionGroupId, fileId }) => `/api/v1/analysis-management/submission-groups/${submissionGroupId}/files/${fileId}/download`,
   submissionResultAll: ({ submissionId }) => `/api/v1/analysis-management/submissions/${submissionId}/results/all`,

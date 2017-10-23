@@ -25,11 +25,13 @@ import { Route, IndexRedirect } from 'react-router';
 
 import List from './components/List';
 import ViewEdit from './components/ViewEdit';
+import FileViewer from './components/FileViewer';
 
 function Routes() {
   return [
     <Route path="insights" component={List} />,
     <Route path="insights/:insightId" component={ViewEdit} />,
+    <Route path="insights/:insightId/files/:fileUuid" component={FileViewer} />,
     <IndexRedirect to="insights" />,
   ];
 }
