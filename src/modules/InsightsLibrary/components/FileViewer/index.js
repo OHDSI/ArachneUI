@@ -19,6 +19,6 @@
  *
  */
 
-import InsightFileViewer from './container';
+import InsightFileViewerBuilder from './container';
 
-export default InsightFileViewer;
+export default (new InsightFileViewerBuilder()).build();
