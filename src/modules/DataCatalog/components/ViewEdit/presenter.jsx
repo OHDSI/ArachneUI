@@ -48,12 +48,12 @@ function ViewEdit(props) {
         <Toolbar />
         <Actions
           isProfileSelected={props.isProfileSelected}
-          dataSourceUuid={props.dataSourceUuid}
+          dataSourceId={props.dataSourceId}
           reportsAvailable={props.reportsAvailable && props.modelType === modelTypesValues.CDM}
         />
         {props.reportsAvailable && props.isProfileSelected
           ? <div {...classes('content')}>
-              <Report dataSourceUuid={props.dataSourceUuid} />
+              <Report dataSourceId={props.dataSourceId} />
             </div>
           : <div {...classes('content')}>
               <AttributesList />

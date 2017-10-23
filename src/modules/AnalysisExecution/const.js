@@ -83,8 +83,8 @@ const apiPaths = {
   analysisCodeLock: ({ analysisId }) => `/api/v1/analysis-management/analyses/${analysisId}/lock`,
   analysisRequestCodeUnlock: ({ analysisId }) => `/api/v1/analysis-management/analyses/${analysisId}/unlock-request`,
   breadcrumbs: ({ entityType, id }) => `/api/v1/utils/breadcrumbs/${entityType.toUpperCase()}/${id}`,
-  importOptionList: ({ type, dataNodeUuid }) =>
-    `/api/v1/data-nodes/${dataNodeUuid}/${type === 'COHORT' ? 'cohorts' : 'estimations'}`,
+  importOptionList: ({ type, dataNodeId }) =>
+    `/api/v1/data-nodes/${dataNodeId}/${type === 'COHORT' ? 'cohorts' : 'estimations'}`,
   entities: ({ analysisId, fileId, type }) =>
     `/api/v1/analysis-management/analyses/${analysisId}/entities${fileId ? `/${fileId}` : ''}${type ? `?type=${type}` : ''}`,
   comments: ({ commentTopicId, commentId }) => `/api/v1/comments/${commentTopicId}${commentId ? `/${commentId}` : ''}`,

@@ -47,7 +47,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...stateProps,
     ...dispatchProps,
     ...ownProps,
-    onChangeTab: tab => dispatchProps.changeTab(`${paths.dataCatalog(ownProps.dataSourceUuid)}/${tab}`),
+    onChangeTab: tab => dispatchProps.changeTab(`${paths.dataCatalog(ownProps.dataSourceId)}/${tab}`),
   };
 }
 
