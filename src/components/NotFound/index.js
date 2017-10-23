@@ -15,28 +15,11 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 27, 2016
+ * Authors: Pavel Grafkin
+ * Created: October 19, 2017
  *
  */
 
-import React, { Component, PropTypes } from 'react';
-import { ExpandableText } from 'arachne-ui-components';
-import BEMHelper from 'services/BemHelper';
+import NotFound from './presenter';
 
-require('./style.scss');
-
-export default function StudyObjectiveView(props) {
-  const classes = BEMHelper('study-objective-view');
-  let {
-    description = '',
-  } = props;
-
-  return (
-    <div {...classes()}>
-      <div {...classes('content')}>
-        <ExpandableText text={description} />
-      </div>
-    </div>
-  );
-}
+export default NotFound;

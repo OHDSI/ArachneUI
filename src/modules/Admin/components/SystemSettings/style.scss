@@ -26,6 +26,16 @@
 
 	&admin-panel-sys-settings {
 
+		&__action-bar {
+			@include action-bar();
+    }
+    
+    &__action-bar-btn {
+      &:not(:first-child) {
+        margin-left: 1.5rem;
+      }
+    }
+
 		&__apply-banner {
 			align-items: center;
 			background: $orange;

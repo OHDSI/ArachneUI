@@ -15,28 +15,27 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 27, 2016
+ * Authors: Pavel Grafkin
+ * Created: October 19, 2017
  *
  */
 
-import React, { Component, PropTypes } from 'react';
-import { ExpandableText } from 'arachne-ui-components';
-import BEMHelper from 'services/BemHelper';
+import Duck from 'services/Duck';
+import { apiPaths } from 'modules/Admin/const';
 
-require('./style.scss');
+const actionCoreName = 'AD_SOLR_INDEX';
 
-export default function StudyObjectiveView(props) {
-  const classes = BEMHelper('study-objective-view');
-  let {
-    description = '',
-  } = props;
+const adminListDuck = new Duck(
+  {
+    name: actionCoreName,
+    urlBuilder: apiPaths.solrIndex,
+  }
+);
 
-  return (
-    <div {...classes()}>
-      <div {...classes('content')}>
-        <ExpandableText text={description} />
-      </div>
-    </div>
-  );
-}
+const actions = adminListDuck.actions;
+const reducer = adminListDuck.reducer;
+
+export default {
+  actions,
+  reducer,
+};

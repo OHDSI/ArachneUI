@@ -42,7 +42,7 @@ const apiPaths = {
     return uri.toString();
   },
   adminOptions: ({ query }) => `/api/v1/admin/admins/suggest?query=${query}`,
-
+  solrIndex: ({ domain }) => `/api/v1/admin/${domain}/reindex-solr`,
   users: ({id, query}) => {
     const uri = new  URI(`/api/v1/admin/users${id ? `/${id}` : ''}`);
     if (query) {

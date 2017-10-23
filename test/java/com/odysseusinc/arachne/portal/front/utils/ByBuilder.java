@@ -28,6 +28,23 @@ public class ByBuilder {
         return By.xpath(".//input[@placeholder='" + placeholderExpression + "']");
     }
 
+    public static By inputWithAutoComplete(String placholderExpression) {
+
+        final String selector = String.format(
+                ".//*[contains(@class, 'Select-placeholder') and contains(text(), '%s')]/following-sibling::div/input",
+                placholderExpression
+        );
+        return By.xpath(selector);
+    }
+
+    public static By skill(String placeholderExpression) {
+
+        final String selector = String.format(
+                ".//*[contains(@class, 'ac-skill-item')]/*[contains(text(), '%s')]",
+                placeholderExpression);
+        return By.xpath(selector);
+    }
+
     public static By textArea(String placeholderExpression) {
 
         return By.xpath(".//textarea[@placeholder='" + placeholderExpression + "']");
@@ -110,5 +127,29 @@ public class ByBuilder {
     public static By tableWithHeader(String header) {
 
         return By.xpath(".//table[.//th[.//*[contains(text(), '" + header + "')]]]");
+    }
+
+
+    public static By toolbarEditIco(String title) {
+
+        String selector = ".//*[contains(@class, 'ac-toolbar__edit-ico')" + (title != null ? "and text()='" + title + "'" : "") + "]";
+        return By.xpath(selector);
+    }
+
+
+    public static By tableRow(String placeholder) {
+
+        return By.xpath(".//*[contains(@class, 'ac-title-study__title') and text()='" + placeholder + "']");
+    }
+
+    public static By tab(String title) {
+
+        String selector = ".//*[contains(@class, 'ac-tabs__item')" + (title != null ? "and text()='" + title + "'" : "") + "]";
+        return By.xpath(selector);
+    }
+
+    public static By studyStatusLabel(String status) {
+
+        return ByBuilder.byClassAndText("ac-study-status-option__label", status);
     }
 }
