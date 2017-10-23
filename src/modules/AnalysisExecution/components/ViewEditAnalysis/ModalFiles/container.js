@@ -75,6 +75,9 @@ class ModalFiles extends Component {
       }
     } else if (this.props.isOpened === true && nextProps.isOpened === false) {
       this.props.flush();
+      this.setState({
+        filterText: '',
+      });
     }
   }
 
