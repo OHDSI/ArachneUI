@@ -28,7 +28,7 @@ import {
   goBack,
   push as goToPage,
 } from 'react-router-redux';
-import { studyPermissions } from 'modules/StudyManager/const';
+import { studyPermissions, studyActions } from 'modules/StudyManager/const';
 import { paths as paperPaths } from 'modules/InsightsLibrary/const';
 import StudyActions from './presenter';
 
@@ -58,8 +58,7 @@ export default class StudyActionsBuilder {
       get(studyData, 'startDate') &&
       get(studyData, 'endDate');
 
-    // Check via human-readable status names is temp, until Study workflow is finished
-    const canPublishPaper = ['Completed', 'Archived', 'Active'].includes(get(studyData, 'status.name'));
+    const canPublishPaper = get(studyData, `status.availableActions`, []).includes(studyActions.createPaper);
 
     return {
       studyId: get(moduleState, 'study.data.result.id'),
