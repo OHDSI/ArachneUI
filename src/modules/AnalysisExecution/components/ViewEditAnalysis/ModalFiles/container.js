@@ -54,11 +54,21 @@ class ModalFiles extends Component {
   }
 
   componentWillMount() {
-    if (
-      this.props.prevPath.startsWith(paths.submissionCodeFile({ submissionGroupId: this.props.submissionGroupId, fileId: '' })) ||
-      this.props.prevPath.startsWith(paths.submissionResultFile({ submissionId: this.props.submissionId, fileId: '' }))
-    ) {
-      this.props.showModal();
+    const initialModalPayload = {};
+    if (this.props.prevPath.startsWith(paths.submissionCodeFile({ submissionGroupId: this.props.submissionGroupId, fileId: '' }))) {
+      initialModalPayload.submissionGroupId = this.props.submissionGroupId;
+      initialModalPayload.type = 'code';
+      initialModalPayload.canRemoveFiles = this.props.canRemoveFiles;
+      initialModalPayload.queryFilesCount = this.props.filesCount;
+    }
+    if (this.props.prevPath.startsWith(paths.submissionResultFile({ submissionId: this.props.submissionId, fileId: '' }))) {
+      initialModalPayload.submissionId = this.props.submissionId;
+      initialModalPayload.type = 'result';
+      initialModalPayload.canRemoveFiles = this.props.canRemoveFiles;
+      initialModalPayload.resultFilesCount = this.props.filesCount;
+    }
+    if (initialModalPayload.submissionGroupId || initialModalPayload.submissionId) {
+      this.props.showModal(initialModalPayload);
     } else {
       this.props.closeModal();
     }
@@ -139,7 +149,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  showModal: () => ModalUtils.actions.toggle(modal.analysisFiles, true),
+  showModal: data => ModalUtils.actions.toggle(modal.analysisFiles, true, data),
   closeModal: () => ModalUtils.actions.toggle(modal.analysisFiles, false),
   loadAnalysis: actions.analysisExecution.analysis.find,
   removeResult: actions.analysisExecution.resultFile.delete,
