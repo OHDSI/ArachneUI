@@ -50,7 +50,7 @@ const paths = {
   dataSources: id => `/data-catalog/data-sources${id ? `/${id}` : ''}`,
   studies: id => `/study-manager/studies${id ? `/${id}` : ''}`,
   user: id => `/expert-finder/profile/${id}`,
-  studyFile: ({studyId, fileId}) => `/study-manager/studies/${studyId}/documents/${fileId}`,
+  studyFile: ({ studyId, fileId }) => `/study-manager/studies/${studyId}/documents/${fileId}`,
 };
 
 const apiPaths = {

@@ -55,7 +55,7 @@ export class AddVirtualSource extends Component {
   componentWillMount() {
     const dataSourceId = this.props.dataSourceId;
     if (dataSourceId) {
-      this.props.loadDataSource({studyId: this.props.studyId, dataSourceId});
+      this.props.loadDataSource({ studyId: this.props.studyId, dataSourceId });
     }
   }
 

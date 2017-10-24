@@ -24,8 +24,8 @@ import keyMirror from 'keymirror';
 import { Utils } from 'services/Utils';
 
 const paths = {
-  insights: ({insightId} = {}) => `/insights-library/insights${insightId ? `/${insightId}` : ''}`,
-  insightFile: ({insightId, fileUuid, query}) => Utils.setUrlParams(`/insights-library/insights/${insightId}/files${fileUuid ? `/${fileUuid}` : '' }`, query),
+  insights: ({ insightId } = {}) => `/insights-library/insights${insightId ? `/${insightId}` : ''}`,
+  insightFile: ({ insightId, fileUuid, query }) => Utils.setUrlParams(`/insights-library/insights/${insightId}/files${fileUuid ? `/${fileUuid}` : '' }`, query),
   studies: id => `/study-manager/studies/${id}`,
 };
 
