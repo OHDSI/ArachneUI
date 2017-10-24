@@ -1,15 +1,17 @@
 {
   "name": "arachne-ui",
-  "version": "1.8.4",
-  "licenses": [{
-    "type": "Apache-2.0",
-    "url": "http://www.apache.org/licenses/LICENSE-2.0"
-  }],
+  "version": "1.8.5",
+  "licenses": [
+    {
+      "type": "Apache-2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0"
+    }
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/OHDSI/ArachneUI.git"
   },
-  "author": "Pavel Grafkin <pavgra@gmail.com>",
+  "author": "First Line Software",
   "contributors": [
     {
       "name": "Alexander Saltykov",
@@ -109,7 +111,6 @@
     "url-loader": "^0.5.9",
     "whatwg-fetch": "^1.0.0"
   },
-  "author": "First Line Software",
   "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.17.0",
