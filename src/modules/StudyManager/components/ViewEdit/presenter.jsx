@@ -61,7 +61,7 @@ function ViewEditStudy(props) {
                 </div>
               </div>
               <div className="col-xs-12 col-lg-6">
-                <RightColumn />
+                <RightColumn studyId={id}/>
               </div>
             </div>
           </div>,
