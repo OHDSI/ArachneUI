@@ -1,6 +1,6 @@
 {
   "name": "arachne-ui",
-  "version": "1.8.4",
+  "version": "1.8.5",
   "licenses": [{
     "type": "Apache-2.0",
     "url": "http://www.apache.org/licenses/LICENSE-2.0"
@@ -109,8 +109,6 @@
     "url-loader": "^0.5.9",
     "whatwg-fetch": "^1.0.0"
   },
-  "author": "First Line Software",
-  "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.17.0",
     "babel-eslint": "^7.0.0",
