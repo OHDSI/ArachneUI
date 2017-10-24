@@ -114,20 +114,6 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.6.0</version>
                 <executions>
-                    <!-- We do not need built bundle file, so publish just sources -->
-                    <execution>
-                        <id>exec-npm-publish</id>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <executable>npm</executable>
-                            <arguments>
-                                <argument>publish</argument>
-                            </arguments>
-                        </configuration>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                    </execution>
                     <execution>
                         <id>exec-npm-install</id>
                         <phase>generate-sources</phase>
@@ -135,6 +121,20 @@
                             <executable>npm</executable>
                             <arguments>
                                 <argument>install</argument>
+                            </arguments>
+                        </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <!-- We do not need built bundle file, so publish just sources -->
+                    <execution>
+                        <id>exec-npm-publish</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <executable>node</executable>
+                            <arguments>
+                                <argument>helpers/publish</argument>
                             </arguments>
                         </configuration>
                         <goals>
