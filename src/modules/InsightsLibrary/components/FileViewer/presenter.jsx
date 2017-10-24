@@ -23,7 +23,7 @@ import React from 'react';
 import FileViewer from 'components/FileViewer';
 
 
-function InsightFileViewer({file, isLoading, loadFile, toolbarOpts, downloadLink, urlParams, pageTitle, queryParams}) {
+function InsightFileViewer({ file, isLoading, loadFile, toolbarOpts, downloadLink, urlParams, pageTitle, queryParams }) {
   return (
     <FileViewer
       file={file}

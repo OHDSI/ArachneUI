@@ -22,7 +22,7 @@
 import React from 'react';
 import FileViewer from 'components/FileViewer';
 
-function StudyDocumentViewer({file, isLoading, loadFile, toolbarOpts, downloadLink, urlParams, pageTitle, queryParams}) {
+function StudyDocumentViewer({ file, isLoading, loadFile, toolbarOpts, downloadLink, urlParams, pageTitle, queryParams }) {
   return (
     <FileViewer
       file={file}

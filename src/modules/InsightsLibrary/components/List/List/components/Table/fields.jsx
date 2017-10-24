@@ -54,7 +54,7 @@ function CellObjective({ value }) {
     value = value.substring(0, 70) + '...';
   }
   return <div
-    {...classes({extra: tooltip ? 'ac-tooltip' : null})}
+    {...classes({ extra: tooltip ? 'ac-tooltip' : null })}
     aria-label={tooltip}
     data-tootik-conf='multiline right'
   >{value}</div>;
