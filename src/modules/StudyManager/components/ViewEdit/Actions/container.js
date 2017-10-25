@@ -58,7 +58,7 @@ export default class StudyActionsBuilder {
       get(studyData, 'startDate') &&
       get(studyData, 'endDate');
 
-    const canPublishPaper = get(studyData, `status.availableActions`, []).includes(studyActions.createPaper);
+    const canCreatePaper = get(studyData, `status.availableActions`, []).includes(studyActions.createPaper);
 
     return {
       studyId: get(moduleState, 'study.data.result.id'),
@@ -66,7 +66,7 @@ export default class StudyActionsBuilder {
       publishedPaperId,
       isEditable,
       isFilledForPaper,
-      canPublishPaper,
+      canCreatePaper,
     };
   }
 
