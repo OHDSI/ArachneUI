@@ -111,7 +111,6 @@
     "url-loader": "^0.5.9",
     "whatwg-fetch": "^1.0.0"
   },
-  "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.17.0",
     "babel-eslint": "^7.0.0",
