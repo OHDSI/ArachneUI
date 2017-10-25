@@ -11,7 +11,7 @@
     "type": "git",
     "url": "git://github.com/OHDSI/ArachneUI.git"
   },
-  "author": "First Line Software",
+  "author": "Pavel Grafkin <pavgra@gmail.com>",
   "contributors": [
     {
       "name": "Alexander Saltykov",
