@@ -42,7 +42,7 @@ const getInvitations = createSelector(
         entity.path = analysisPaths.analyses(invite.entity.id);
         break;
       case 'PAPER_PARTICIPANT':
-        entity.path = paperPaths.insights({insightId: invite.entity.id});
+        entity.path = paperPaths.insights({ insightId: invite.entity.id });
         break;
       default: entity.path = paths.study(invite.entity.id);
     }

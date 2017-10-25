@@ -66,6 +66,7 @@
     "lodash": "^4.17.2",
     "moment": "^2.16.0",
     "moment-timezone": "^0.5.13",
+    "node-command-line": "^1.0.2",
     "node-fetch": "^1.7.1",
     "node-noop": "^1.0.0",
     "numeral": "^2.0.4",

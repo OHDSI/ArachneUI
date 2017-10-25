@@ -68,7 +68,7 @@ export default class ListDocumentsBuilder {
         Utils.confirmDelete()
           .then(() => {
             dispatchProps
-              .removeDocument({ studyId: stateProps.studyId, fileId, action: 'remove' })
+              .removeDocument({ studyId: stateProps.studyId, fileUuid: fileId, action: 'remove' })
               .then(() => dispatchProps.loadStudy(stateProps.studyId));
           });
       },

@@ -44,7 +44,7 @@ export default class InsightFileViewerBuilder extends ContainerBuilder {
     const urlParams = {fileUuid, insightId};
     const queryParams = ownProps.location.query;
 
-    const backUrl = paths.insights({insightId: get(insightFile, 'insightId')});
+    const backUrl = paths.insights({ insightId: get(insightFile, 'insightId') });
     const toolbarOpts = {
       backUrl,
       breadcrumbList: [
@@ -70,7 +70,7 @@ export default class InsightFileViewerBuilder extends ContainerBuilder {
       queryParams,
       isLoading: isFileLoading,
       pageTitle: pageTitle.join(' | '),
-      downloadLink: apiPaths.insightFilesDownload({...urlParams, query: queryParams}),
+      downloadLink: apiPaths.insightFilesDownload({ ...urlParams, query: queryParams }),
       toolbarOpts,
     };
   }

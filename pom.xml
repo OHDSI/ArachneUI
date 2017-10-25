@@ -127,6 +127,20 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
+                    <!-- We do not need built bundle file, so publish just sources -->
+                    <execution>
+                        <id>exec-npm-publish</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <executable>node</executable>
+                            <arguments>
+                                <argument>helpers/publish</argument>
+                            </arguments>
+                        </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
                     <execution>
                         <id>exec-webpack</id>
                         <phase>generate-sources</phase>

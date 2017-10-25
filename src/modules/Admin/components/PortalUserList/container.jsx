@@ -102,7 +102,7 @@ class UserListBuilder extends ContainerBuilder {
       ...dispatchProps,
       ...ownProps,
       loadUsersWithCurrentQuery: () => {
-        dispatchProps.loadUserList({query: stateProps.query});
+        dispatchProps.loadUserList({ query: stateProps.query });
       },
       applySavedFilters(filters) {
         const url = new Uri(paths.users());
