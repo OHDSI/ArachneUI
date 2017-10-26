@@ -19,41 +19,51 @@
  * Created: August 02, 2017
  *
  */
-
-import React from 'react';
+// @ts-check
+import React, { Component, PropTypes } from 'react';
 import BEMHelper from 'services/BemHelper';
 import { Modal, Tabs } from 'arachne-ui-components';
 import { publishStateOptions } from 'modules/InsightsLibrary/const';
 
-require('./style.scss');
+import './style.scss';
 
-function ModalAccessSettings(props) {
-  const classes = new BEMHelper('insight-modal-settings');
-  const {
-    publishState,
-    insightId,
-    changePublishState,
-    canPublishPaper
-  } = props;
+/** @augments{ Component<any, any>} */
+export default class ModalAccessSettings extends Component {
+  constructor() {
+    super();
+    this.classes = BEMHelper('insight-modal-settings');
+  }
 
-  return (
-    <div {...classes()}>
-      <Modal modal={props.modal} title="Insight settings">
-        <div {...classes('content')}>
-          <div {...classes('setting')}>
-            <div {...classes('setting-title')}>Publish state</div>
-            <Tabs
-              {...classes({ element: 'setting-value',
-                modifiers: { disabled: !canPublishPaper } })}
-              onChange={changePublishState}
-              options={publishStateOptions}
-              value={publishState}
-            />
+  getSettings() {
+    return [
+      <div {...this.classes('setting')}>
+        <div {...this.classes('setting-title')}>Publish state</div>
+        <Tabs
+          {...this.classes({
+            element: 'setting-value',
+            modifiers: { disabled: !this.canPublishPaper }})}
+          onChange={this.changePublishState}
+          options={publishStateOptions}
+          value={this.publishState}
+        />
+      </div>
+    ]
+  }
+
+  render() {
+    this.publishState = this.props.publishState;
+    this.insightId = this.props.insightId;
+    this.changePublishState = this.props.changePublishState;
+    this.canPublishPaper = this.props.canPublishPaper;
+
+    return (
+      <div {...this.classes()}>
+        <Modal modal={this.props.modal} title="Insight settings">
+          <div {...this.classes('content')}>
+            {this.getSettings()}
           </div>
-        </div>
-      </Modal>
-    </div>
-  );
+        </Modal>
+      </div>
+    )
+  }
 }
-
-export default ModalAccessSettings;
