@@ -418,11 +418,6 @@ class Utils {
 }
 
 class ContainerBuilder {
-  constructor() {
-    if (this.getFetchers) {
-      this.getFetchers = this.getFetchers.bind(this);
-    }
-  }
 
   build() {
     return Utils.buildConnectedComponent({
@@ -433,7 +428,9 @@ class ContainerBuilder {
       mergeProps: this.mergeProps,
       getModalParams: this.getModalParams,
       getFormParams: this.getFormParams,
-      getFetchers: this.getFetchers,
+      getFetchers: this.getFetchers
+        ? this.getFetchers.bind(this)
+        : this.getFetchers,
     });
   }
 }
