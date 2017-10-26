@@ -64,7 +64,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     toggleComments: (file) => {
       if (file.isSelected) {
         dispatchProps.unloadComments();
-        dispatchProps.unloadfile();
+        dispatchProps.unloadFile();
       } else {
         dispatchProps
           .loadComments({ commentTopicId: file.commentTopicId })
