@@ -47,7 +47,7 @@ export default {
       return (dispatch) => {
         dispatch(subscritionChanged());
         api.subscribe(apiPaths.invitationsSubscription(), () => {
-          invitation.actions.query();
+          dispatch(invitation.actions.query());
         });
       };
     },
