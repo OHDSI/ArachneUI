@@ -34,7 +34,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  loadList: actions.expertFinder.expertsList.load,
+  loadList: actions.expertFinder.expertsList.query,
   showInviteDialog: user => ModalUtils.actions.toggle(modal.invite, true, { ...user }),
 };
 

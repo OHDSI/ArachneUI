@@ -22,22 +22,38 @@
 
 import expertsList from './expertsList';
 import userProfile from './userProfile';
-import professionalTypes from './professionalTypes';
-import skills from './skills';
+import professionalType from './professionalTypes';
+import skill from './skills';
 import myProfile from './myProfile';
-import invitations from './invitations';
-import studies from './studies';
-import provinces from './provinces';
-import countries from './countries';
+import invitation from './invitations';
+import study from './studies';
+import province from './provinces';
+import country from './countries';
+import facets from './facets';
 
 export default {
-  expertsList,
-  userProfile,
-  professionalTypes,
-  skills,
-  myProfile,
-  invitations,
-  studies,
-  provinces,
-  countries,
+  actions: {
+    expertsList: expertsList.actions,
+    userProfile: userProfile.actions,
+    professionalType: professionalType.actions,
+    skill: skill.actions,
+    myProfile: myProfile.actions,
+    invitation: invitation.actions,
+    study: study.actions,
+    province: province.actions,
+    country: country.actions,
+    facets: facets.actions,
+  },
+  reducer: {
+    expertsList: expertsList.reducer,
+    userProfile: userProfile.reducer,
+    professionalType: professionalType.reducer,
+    skill: skill.reducer,
+    myProfile: myProfile.reducer,
+    invitation: invitation.reducer,
+    study: study.reducer,
+    province: province.reducer,
+    country: country.reducer,
+    facets: facets.reducer,
+  },
 };

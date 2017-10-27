@@ -32,7 +32,7 @@ import selectors from './selectors';
 class ExpertsList extends Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.searchStr !== nextProps.searchStr) {
-      nextProps.loadList(nextProps.searchStr);
+      nextProps.loadList({ searchStr: nextProps.searchStr });
     }
   }
   render() {
@@ -69,16 +69,16 @@ export default class ExpertsListBuilder extends ContainerBuilder {
   */
   getMapDispatchToProps() {
     return {
-      loadList: actions.expertFinder.expertsList.load,
-      loadProfessionalTypes: actions.expertFinder.professionalTypes.getProfessionalTypes,
+      loadList: actions.expertFinder.expertsList.query,
+      loadProfessionalTypes: actions.expertFinder.professionalType.query,
     };
   }
 
   getFetchers({ params, state, dispatch }) {
     const searchStr = state.routing.locationBeforeTransitions.search;
     return {
-      loadList: actions.expertFinder.expertsList.load.bind(null, searchStr),
-      loadProfessionalTypes: actions.expertFinder.professionalTypes.getProfessionalTypes,
+      loadList: actions.expertFinder.expertsList.query.bind(null, { searchStr }),
+      loadProfessionalTypes: actions.expertFinder.professionalType.query,
     };
   }
 

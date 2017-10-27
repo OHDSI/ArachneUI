@@ -22,8 +22,8 @@
 
 import { connect } from 'react-redux';
 import { Component, PropTypes } from 'react';
-import get from 'lodash/get';
-import actions from 'modules/ExpertFinder/actions/index';
+import ducks from 'modules/ExpertFinder/ducks';
+import { Utils, get } from 'services/Utils';
 import presenter from './presenter' ;
 
 class MenuDropdown extends Component {
@@ -40,31 +40,46 @@ MenuDropdown.propTypes = {
   loadMyProfile: PropTypes.func,
 };
 
-function mapStateToProps(state) {
-  const moduleState = state.expertFinder.myProfile;
-  const id = get(moduleState, 'data.id', '');
-  let firstName = get(moduleState, 'data.firstname', '');
-  const lastName = get(moduleState, 'data.lastname', '');
-  let middleName = get(moduleState, 'data.middlename', '');
-  if (!firstName && !middleName && !lastName) {
-    firstName = 'NAME';
-  }
-  if (middleName) {
-    middleName = `${middleName.substring(0, 1)}.`;
-  }
-  const hash = get(state, 'expertFinder.userProfile.data.hash', '');
 
-  return {
-    id,
-    firstName,
-    lastName,
-    middleName,
-    hash,
-  };
+export default class MenuDropdownBuilder {
+  getComponent() {
+    return MenuDropdown;
+  }
+
+  mapStateToProps(state) {
+    const moduleState = state.expertFinder.myProfile;
+    const id = get(moduleState, 'data.result.id', '');
+    let firstName = get(moduleState, 'data.result.firstname', '');
+    const lastName = get(moduleState, 'data.result.lastname', '');
+    let middleName = get(moduleState, 'data.result.middlename', '');
+    if (!firstName && !middleName && !lastName) {
+      firstName = 'NAME';
+    }
+    if (middleName) {
+      middleName = `${middleName.substring(0, 1)}.`;
+    }
+    const hash = get(state, 'expertFinder.userProfile.data.hash', '');
+
+    return {
+      id,
+      firstName,
+      lastName,
+      middleName,
+      hash,
+    };
+  }
+
+  getMapDispatchToProps() {
+    return {
+      loadMyProfile: ducks.actions.myProfile.find,
+    }
+  }
+
+  build() {
+    return Utils.buildConnectedComponent({
+      Component: this.getComponent(),
+      mapStateToProps: this.mapStateToProps,
+      mapDispatchToProps: this.getMapDispatchToProps(),
+    });
+  }
 }
-
-const mapDispatchToProps = {
-  loadMyProfile: actions.myProfile.loadMyProfile,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(MenuDropdown);

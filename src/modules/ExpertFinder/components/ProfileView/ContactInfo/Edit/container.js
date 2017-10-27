@@ -44,7 +44,7 @@ class ContactInfoEdit extends Component {
 
 function mapStateToProps(state) {
   const moduleState = state.expertFinder.userProfile;
-  const data = get(moduleState, 'data.general', {
+  const data = get(moduleState, 'data.result.general', {
     address1: '',
     address2: '',
     city: '',
@@ -56,7 +56,7 @@ function mapStateToProps(state) {
     contactEmail: '',
   });
 
-  const id = get(moduleState, 'data.id', '');
+  const id = get(moduleState, 'data.result.id', '');
   const countryId = get(data, 'country.id', null);
   const stateProvinceId = get(data, 'stateProvince.id', null);
 
@@ -83,10 +83,10 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = {
   resetForm: resetForm.bind(null, forms.contactInfo),
-  updateGeneralInfo: actions.expertFinder.userProfile.updateGeneralInfo,
-  loadInfo: actions.expertFinder.userProfile.loadInfo,
-  searchCountries: actions.expertFinder.countries.search,
-  searchProvinces: actions.expertFinder.provinces.search,
+  updateGeneralInfo: actions.expertFinder.userProfile.generalInfo.update,
+  loadInfo: actions.expertFinder.userProfile.find,
+  searchCountries: actions.expertFinder.country.query,
+  searchProvinces: actions.expertFinder.province.query,
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
@@ -113,10 +113,10 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
       });
     },
     doSubmit: (data) => {
-      const submitPromise = dispatchProps.updateGeneralInfo(data);
+      const submitPromise = dispatchProps.updateGeneralInfo(null, data);
       submitPromise.then(() => dispatchProps.resetForm())
         .then(() => ownProps.setViewMode())
-        .then(() => dispatchProps.loadInfo(stateProps.id))
+        .then(() => dispatchProps.loadInfo({ id: stateProps.id }))
         .catch(() => {});
 
       return submitPromise;
