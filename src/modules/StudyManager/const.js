@@ -108,6 +108,11 @@ const studyPermissions = {
   unlinkDatasource: 'UNLINK_DATASOURCE',
 };
 
+const studyActions = {
+  createPaper: 'CREATE_PAPER',
+  publishPaper: 'PUBLISH_PAPER',
+};
+
 const submissionStatusTitles = {
   NOT_APPROVED: 'rejected',
   IN_PROGRESS: 'approved',
@@ -164,6 +169,7 @@ export {
   studyListPageSize,
   studyListPageSizeCards,
   studyPermissions,
+  studyActions,
   recentActivityPageSize,
   submissionStatusTitles,
 };

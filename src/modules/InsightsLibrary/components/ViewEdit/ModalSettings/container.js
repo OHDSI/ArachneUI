@@ -25,6 +25,7 @@ import { Utils, get } from 'services/Utils';
 import actions from 'actions';
 import { ModalUtils } from 'arachne-ui-components';
 import { modals } from 'modules/InsightsLibrary/const';
+import { studyActions } from 'modules/StudyManager/const';
 import Settings from './presenter';
 
 const ModalSettings = ModalUtils.connect({
@@ -42,6 +43,7 @@ export default class ModalSettingsBuilder {
     return {
       publishState: get(state, 'insightsLibrary.insights.data.publishState', 'DRAFT', 'String'),
       insightId: get(state, 'insightsLibrary.insights.data.id'),
+      canPublishPaper: get(state, 'insightsLibrary.insights.data.study.status.availableActions', []).includes(studyActions.publishPaper),
     };
   }
 
