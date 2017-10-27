@@ -75,6 +75,7 @@ export default class selectorsBuilder {
         canBeRecreated: this.isDeleted(dataSource) && attachPermissions,
         comment: dataSource.comment,
         isVirtual: dataSource.dataNode.virtual,
+        currentUserOwner: dataSource.dataNode.currentUserDataOwner,
       }));
   }
 
