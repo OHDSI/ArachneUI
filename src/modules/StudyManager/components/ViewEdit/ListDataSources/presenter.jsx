@@ -102,7 +102,7 @@ function DataSourceItem(props) {
           <div {...classes('comment-icon')}>chat_bubble</div>
         </Link>
       }
-      {dataSource.isVirtual && dataSource.currentUserOwner
+      {dataSource.isVirtual && dataSource.isCurrentUserOwner
         ? <Link {...classes('name')} onClick={() => editDataSource(dataSource.id)}>{dataSource.name}<span {...classes('ico')}>edit</span></Link>
         : <Link {...classes('name')} to={dataSource.link}>{dataSource.name}</Link>
       }
