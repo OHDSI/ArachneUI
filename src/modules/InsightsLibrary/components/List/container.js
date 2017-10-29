@@ -42,7 +42,7 @@ class InsightsList extends Component {
     };
   }
 
-  componentWillMount() {
+  /* componentWillMount() {
     const preSelectedFilters = Object.values(this.props.searchQuery)
       .filter(param => !Utils.isEmpty(param));
     if (!preSelectedFilters.length) {
@@ -51,7 +51,7 @@ class InsightsList extends Component {
         this.props.applySavedFilters(savedFilter);
       }
     }
-  }
+  } */
 
   componentWillReceiveProps(nextProps) {
     if (this.props.searchQuery !== nextProps.searchQuery) {
@@ -59,7 +59,7 @@ class InsightsList extends Component {
     }
   }
 
-  componentWillUnmount() {
+  /* componentWillUnmount() {
     const filterValues = {};
     for (const filter in this.props.searchQuery) {
       if (!Utils.isEmpty(this.props.searchQuery[filter])) {
@@ -67,7 +67,7 @@ class InsightsList extends Component {
       }
     }
     saveFilter(filterValues);
-  }
+  } */
 
   render() {
     return presenter(this.props);
@@ -89,6 +89,20 @@ export default class InsightsListBuilder extends ContainerBuilder {
       paginationDetails: {
         currentPage: parseInt(get(state, 'insightsLibrary.insights.queryResult.number', 1), 10) + 1,
         totalPages: parseInt(get(state, 'insightsLibrary.insights.queryResult.totalPages', 0), 10),
+      },
+      searchQueryDecode: ({ searchParams = {}, filterFields }) => {
+        return {
+          query: searchParams.query,
+          page: searchParams.page,
+          filter: searchParams,
+        };
+      },
+      searchQueryEncode: ({ searchParams, filterFields }) => {
+        return {
+          ...searchParams.filter,
+          query: searchParams.query,
+          page: searchParams.page,
+        };
       },
     };
   }
@@ -122,7 +136,7 @@ export default class InsightsListBuilder extends ContainerBuilder {
     const load = actions.insightsLibrary.insights.query;
     const query = state.routing.locationBeforeTransitions.query;
     return {
-      load: () => load(query),
+      load: () => load(null, query),
     };
   }
 

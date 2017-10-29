@@ -25,7 +25,7 @@ import actions from 'actions';
 import { Component, PropTypes } from 'react';
 import { get, values } from 'lodash';
 import { push } from 'react-router-redux';
-import { Utils } from 'services/Utils';
+import { Utils, ContainerBuilder } from 'services/Utils';
 import viewModes from 'const/viewModes';
 import { studyListPageSize, studyListPageSizeCards, paths } from 'modules/StudyManager/const';
 import Uri from 'urijs';
@@ -47,7 +47,7 @@ export class List extends Component {
     };
   }
 
-  componentWillMount() {
+  /* componentWillMount() {
     const preSelectedFilters = Object.values(this.props.query)
       .filter(param => !Utils.isEmpty(param));
     if (!preSelectedFilters.length) {
@@ -56,7 +56,7 @@ export class List extends Component {
         this.props.applySavedFilters(savedFilter);
       }
     }
-  }
+  } */
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.query !== this.props.query) {
@@ -67,7 +67,7 @@ export class List extends Component {
     }
   }
 
-  componentWillUnmount() {
+  /* componentWillUnmount() {
     const filterValues = {};
     for (const filter in this.props.query) {
       if (!Utils.isEmpty(this.props.query[filter])) {
@@ -75,14 +75,14 @@ export class List extends Component {
       }
     }
     actions.studyManager.studyList.saveFilter(filterValues);
-  }
+  } */
 
   render() {
     return presenter(this.props);
   }
 }
 
-export default class ListBuilder {
+export default class ListBuilder extends ContainerBuilder {
   getComponent() {
     return List;
   }
@@ -101,6 +101,20 @@ export default class ListBuilder {
         statusOptions: selectors.getStatusOptions(state),
       }),
       paginationDetails: selectors.getPaginationDetails(state),
+      searchQueryDecode: ({ searchParams = {}, filterFields }) => {
+        return {
+          query: searchParams.query,
+          page: searchParams.page,
+          filter: searchParams,
+        };
+      },
+      searchQueryEncode: ({ searchParams, filterFields }) => {
+        return {
+          ...searchParams.filter,
+          query: searchParams.query,
+          page: searchParams.page,
+        };
+      },
     };
   }
 
@@ -141,13 +155,4 @@ export default class ListBuilder {
     };
   }
 
-  build() {
-    return Utils.buildConnectedComponent({
-      Component: this.getComponent(),
-      mapStateToProps: this.mapStateToProps,
-      mapDispatchToProps: this.getMapDispatchToProps(),
-      mergeProps: this.mergeProps,
-      getFetchers: this.getFetchers,
-    });
-  }
 }

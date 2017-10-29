@@ -352,7 +352,7 @@ class Utils {
       switch (field.type) {
         case fieldTypes.enum:
           if (field.isMulti) {
-            initialValues[field.name] = Array.isArray(paramValue) ? paramValue : [paramValue];
+            initialValues[field.name] = Array.isArray(paramValue) ? paramValue : (typeof paramValue === 'object' ? Object.values(paramValue) : [paramValue]);
           } else {
             initialValues[field.name] = paramValue;
           }
