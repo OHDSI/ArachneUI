@@ -57,7 +57,7 @@ function ListCode({ files, onSelect, pageCount, currentPage, pageKey, path }) {
           </li>
         }
       </ul>
-      {files.length &&
+      {files.length !== 0 &&
         <div {...classes('pagination')}>
           <Pagination
             pages={pageCount}
