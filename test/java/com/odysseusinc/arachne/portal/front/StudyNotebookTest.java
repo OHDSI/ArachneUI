@@ -7,6 +7,7 @@ import com.odysseusinc.arachne.portal.front.utils.ByBuilder;
 import com.odysseusinc.arachne.portal.front.utils.Utils;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.junit.After;
 import org.junit.Assert;
@@ -77,7 +78,7 @@ public class StudyNotebookTest extends BaseStudyNotebookTest {
         final List<StudyData> sorted = ALL_STUDIES_TEST_DATA.stream()
                 .sorted(Comparator.comparing(o -> o.title))
                 .collect(Collectors.toList());
-        final List<WebElement> rows = getRows();
+        final List<WebElement> rows = getStudyRows();
         for (int i = 0; i < rows.size(); i++) {
             Assert.assertTrue(rows.get(i).findElement(ByBuilder.text(sorted.get(i).title)).isDisplayed());
         }
@@ -85,7 +86,7 @@ public class StudyNotebookTest extends BaseStudyNotebookTest {
 
     private void compareWithoutOrdering(List<StudyData> data) {
 
-        getRows().forEach(row -> {
+        getStudyRows().forEach(row -> {
             final boolean exists = data.stream()
                     .anyMatch(s -> {
                         try {
@@ -99,10 +100,23 @@ public class StudyNotebookTest extends BaseStudyNotebookTest {
         });
     }
 
-    private List<WebElement> getRows() {
+    protected static List<WebElement> getStudyRows() {
 
         final By studiesTable = ByBuilder.tableWithHeader("Study");
+        waitFor(driver, studiesTable);
         return driver.findElement(studiesTable).findElements(By.xpath(".//tbody/tr"));
+    }
+
+    protected static WebElement getStudyRow(String studyName) {
+
+        return getOptionalStudyRow(studyName).get();
+    }
+
+    protected static Optional<WebElement> getOptionalStudyRow(String studyName) {
+
+        return getStudyRows().stream().filter(r ->
+                studyName.equals(r.findElement(By.className("ac-title-study__title")).getText()))
+                .findFirst();
     }
 
     private static void showStudyListPage() {
