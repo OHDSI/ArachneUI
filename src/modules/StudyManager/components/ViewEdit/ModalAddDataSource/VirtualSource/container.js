@@ -59,10 +59,18 @@ export class AddVirtualSource extends Component {
     }
   }
 
+  componentWillUnmount() {
+      this.props.unloadDataSource();
+  }
+
   componentWillReceiveProps(nextProps) {
     if (this.props.focusedOwner !== nextProps.focusedOwner && !!nextProps.focusedOwner) {
       this.props.addOwner(nextProps.focusedOwner);
       this.props.clearOwnerSelector();
+    }
+    const dataSourceId = nextProps.dataSourceId;
+    if (dataSourceId && this.props.dataSourceId !== dataSourceId) {
+      this.props.loadDataSource({ studyId: this.props.studyId, dataSourceId });
     }
   }
 
@@ -117,6 +125,7 @@ export default class AddVirtualSourceBuilder {
       updateVirtualSource: actions.studyManager.study.dataSource.update,
       loadStudy: actions.studyManager.study.find,
       loadDataSource: actions.studyManager.study.dataSource.find,
+      unloadDataSource: actions.studyManager.study.dataSource.unload,
       closeModal: () => ModalUtils.actions.toggle(modal.addDataSource, false),
       resetForm: resetForm.bind(null, form.addVirtualSource),
     };

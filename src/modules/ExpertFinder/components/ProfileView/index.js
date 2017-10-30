@@ -20,6 +20,6 @@
  *
  */
 
-import ProfileView from './container';
+import ProfileViewBuilder from './container';
 
-export default ProfileView;
+export default new ProfileViewBuilder().build();

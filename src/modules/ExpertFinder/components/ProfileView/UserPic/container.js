@@ -28,12 +28,12 @@ import UserPic from './presenter';
 
 function mapStateToProps(state) {
   const moduleState = state.expertFinder.userProfile;
-  const editable = get(moduleState, 'data.isEditable', false);
-  const id = get(moduleState, 'data.id', 1);
-  const hash = get(moduleState, 'data.hash', '');
+  const editable = get(moduleState, 'data.result.isEditable', false);
+  const id = get(moduleState, 'data.result.id', 1);
+  const hash = get(moduleState, 'data.result.hash', '');
 
   return {
-    userpic: apiPaths.userpic(id, hash),
+    userpic: apiPaths.userpic({ id, hash }),
     editable,
   };
 }
