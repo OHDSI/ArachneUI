@@ -26,6 +26,7 @@ import get from 'lodash/get';
 import { ModalUtils } from 'arachne-ui-components';
 import actions from 'actions/index';
 import { modal, apiPaths, studyPermissions } from 'modules/StudyManager/const';
+import mimeTypes from 'const/mimeTypes';
 import SelectorsBuilder from './selectors';
 import ListDocuments from './presenter';
 
@@ -39,12 +40,16 @@ export default class ListDocumentsBuilder {
   mapStateToProps(state) {
     const studyData = get(state, 'studyManager.study.data.result');
     const studyId = get(studyData, 'id');
+    const documentList = selectors.getDocumentList(state);
+    const filesList = documentList.filter(doc => doc.docType !== mimeTypes.link);
+    const canDownload = filesList.length !== 0;
 
     return {
       studyId: get(studyData, 'id'),
-      documentList: selectors.getDocumentList(state),
+      documentList,
       isEditable: get(studyData, `permissions[${studyPermissions.uploadFiles}]`, false),
       downloadAllLink: apiPaths.studyDocumentDownloadAll({ studyId }),
+      canDownload,
     };
   }
 
