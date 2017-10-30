@@ -103,7 +103,7 @@ export default class List extends ContainerBuilder {
       ...ownProps,
       setFavourite: (studyId, isFavourite) => dispatchProps.setFavourite(studyId, isFavourite)
         .then(() => dispatchProps.loadStudies({
-          ...stateProps.query,
+          ...stateProps.searchQuery,
           pagesize: stateProps.isCardsView ? studyListPageSizeCards : studyListPageSize,
         }))
         .catch(() => {}),
