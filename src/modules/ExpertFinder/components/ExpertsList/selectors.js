@@ -24,8 +24,8 @@ import { createSelector } from 'reselect';
 import { fieldTypes } from 'modules/ExpertFinder/const';
 import { Utils, get } from 'services/Utils';
 
-const getRawProfessionalTypes = state => get(state, 'expertFinder.professionalTypes.data') || [];
-const getFacets = state => get(state, 'expertFinder.expertsList.facets.data') || [];
+const getRawProfessionalTypes = state => get(state, 'expertFinder.professionalTypes.queryResult.result') || [];
+const getFacets = state => get(state, 'expertFinder.expertsList.facets.queryResult.result') || [];
 
 const getFilterList = createSelector(
   [getRawProfessionalTypes, getFacets],
@@ -54,8 +54,8 @@ const getFilterList = createSelector(
 );
 
 const getPaginationDetails = state => ({
-  currentPage: parseInt(get(state, 'expertFinder.expertsList.list.data.number', 1), 10),
-  pages: parseInt(get(state, 'expertFinder.expertsList.list.data.totalPages', 1), 10),
+  currentPage: parseInt(get(state, 'expertFinder.expertsList.queryResult.result.number', 1), 10),
+  pages: parseInt(get(state, 'expertFinder.expertsList.queryResult.result.totalPages', 1), 10),
 });
 
 export default {

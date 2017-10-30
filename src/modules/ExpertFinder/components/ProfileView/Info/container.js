@@ -26,7 +26,7 @@ import Info from './presenter';
 
 function mapStateToProps(state) {
   const moduleState = state.expertFinder.userProfile;
-  const data = get(moduleState, 'data.general', {
+  const data = get(moduleState, 'data.result.general', {
     firstName: '',
     lastName: '',
     middleName: '',
@@ -36,7 +36,7 @@ function mapStateToProps(state) {
       name: '',
     },
   });
-  const editable = get(moduleState, 'data.isEditable', false);
+  const editable = get(moduleState, 'data.result.isEditable', false);
 
   return {
     isLoading: get(moduleState, 'isLoading', false),

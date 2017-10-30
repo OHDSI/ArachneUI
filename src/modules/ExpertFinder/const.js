@@ -53,27 +53,6 @@ const forms = keyMirror({
   nameEdit: null,
 });
 
-const actionTypes = keyMirror({
-  REQUEST_EXPERTS_LIST: null,
-  RECIEVE_EXPERTS_LIST: null,
-  RECIEVE_EL_FACETS: null,
-  REQUEST_DYNAMIC_SECTIONS: null,
-  RECIEVE_DYNAMIC_SECTIONS: null,
-  REQUEST_PROFESSIONAL_TYPES: null,
-  RECIEVE_PROFESSIONAL_TYPES: null,
-  REQUEST_SKILLS: null,
-  RECIEVE_SKILLS: null,
-  REQUEST_USER_PROFILE: null,
-  RECIEVE_USER_PROFILE: null,
-  RECIEVE_MY_PROFILE: null,
-  RECIEVE_STUDIES: null,
-  INVITE_PARTICIPANT: null,
-  REQUEST_EF_COUNTRIES: null,
-  RECIEVE_EF_COUNTRIES: null,
-  REQUEST_EF_PROVINCES: null,
-  RECIEVE_EF_PROVINCES: null,
-});
-
 const modal = keyMirror({
   userPic: null,
   invite: null,
@@ -81,29 +60,35 @@ const modal = keyMirror({
   nameEdit: null,
 });
 
+const autocompleteResultsLimit = 10;
+const maxDescriptionLength = 1024;
+
 const apiPaths = {
-  addSkill: id => `/api/v1/user-management/users/skills/${id}`,
-  addPublication: () => '/api/v1/user-management/users/publications',
-  addLink: () => '/api/v1/user-management/users/links',
-  createSkill: () => '/api/v1/user-management/skills',
-  removeSkill: id => `/api/v1/user-management/users/skills/${id}`,
-  removePublication: id => `/api/v1/user-management/users/publications/${id}`,
-  removeLink: id => `/api/v1/user-management/users/links/${id}`,
+  userSkill: ({ id }) => `/api/v1/user-management/users/skills${id ? `/${id}` : ''}`,
+  userPublication: ({ id } = {}) => `/api/v1/user-management/users/publications${id ? `/${id}` : ''}`,
+  userLink: ({ id } = {}) => `/api/v1/user-management/users/links${id ? `/${id}` : ''}`,
   professionalTypes: () => '/api/v1/user-management/professional-types',
-  skills: (q, limit) => `/api/v1/user-management/skills?query=${q}&limit=${limit}`,
+  skills: ({ q, limit } = {}) => {
+    let url = '/api/v1/user-management/skills';
+    if (q || limit) {
+      url = `${url}?query=${q}&limit=${limit}`;
+    }
+    return url;
+  },
   updateUserProfile: () => '/api/v1/user-management/users/profile',
-  userpic: (id, hash) => `/api/v1/user-management/users/${id}/avatar${hash ? `?${hash}` : ''}`,
-  userProfile: id => `/api/v1/user-management/users/${id}/profile`,
-  updateUserpic: () => '/api/v1/user-management/users/avatar/',
-  myUserpic: hash => `/api/v1/user-management/users/avatar/${hash ? `?${hash}` : ''}`,
+  userpic: ({ id, hash }) => `/api/v1/user-management/users/${id}/avatar${hash ? `?${hash}` : ''}`,
+  userProfile: ({ id }) => `/api/v1/user-management/users/${id}/profile`,
+  myUserpic: ({ hash }) => `/api/v1/user-management/users/avatar${hash ? `?${hash}` : ''}`,
   myProfile: () => '/api/v1/auth/me',
-  inviteParticipant: studyId =>
+  inviteParticipant: ({ studyId }) =>
     `/api/v1/study-management/studies/${studyId}/participants`,
   studies: ({ query, participantId }) =>
     `/api/v1/study-management/studies?region=PARTICIPANT&participantId=${participantId}&query=${query}`,
-  expertList: () => '/api/v1/user-management/users',
-  searchCountry: () => '/api/v1/user-management/countries/search',
-  searchProvince: () => '/api/v1/user-management/state-province/search',
+  expertList: ({ searchStr } = {}) => `/api/v1/user-management/users${searchStr ? searchStr : ''}`,
+  searchCountry: ({ query, includeId } = {}) =>
+    `/api/v1/user-management/countries/search?limit=${autocompleteResultsLimit}&query=${query}${includeId ? `&includeId=${includeId}` : ''}`,
+  searchProvince: ({ countryId, query, includeId } = {}) =>
+    `/api/v1/user-management/state-province/search?limit=${autocompleteResultsLimit}&query=${query}&countryId=${countryId}${includeId ? `&includeId=${includeId}` : ''}`,
   studiesAutocomplete: ({ query, participantId }) =>
     `/api/v1/study-management/studies/search?region=PARTICIPANT&id=${participantId}&query=${query}`,
 };
@@ -115,9 +100,6 @@ const paths = {
   study: id => `/study-manager/studies/${id}`,
   logout: () => '/auth/logout',
 };
-
-const autocompleteResultsLimit = 10;
-const maxDescriptionLength = 1024;
 
 const roles = {
   LEAD_INVESTIGATOR: {
@@ -131,7 +113,6 @@ const roles = {
 };
 
 export {
-  actionTypes,
   apiPaths,
   cancelBtnConfig,
   fieldTypes,

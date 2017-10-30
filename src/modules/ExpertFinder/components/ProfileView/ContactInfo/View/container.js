@@ -25,7 +25,7 @@ import get from 'lodash/get';
 import ContactInfoView from './presenter';
 
 function mapStateToProps(state) {
-  const data = get(state, 'expertFinder.userProfile.data.general', {});
+  const data = get(state, 'expertFinder.userProfile.data.result.general', {});
 
   return {
     address1: get(data, 'address1'),
