@@ -27,9 +27,22 @@ import List from './components/List';
 import ViewEdit from './components/ViewEdit';
 import FileViewer from './components/FileViewer';
 
+import { Utils } from 'services/Utils';
+import { paths } from './const';
+import { getSavedFilter } from './ducks/insights';
+
 function Routes() {
   return [
-    <Route path="insights" component={List} />,
+    <Route
+      path="insights"
+      component={List}
+      onEnter={
+        Utils.getSavedFiltersRestorer({
+          getSavedFilter,
+          basePath: paths.insights(),
+        })
+      }
+    />,
     <Route path="insights/:insightId" component={ViewEdit} />,
     <Route path="insights/:insightId/files/:fileUuid" component={FileViewer} />,
     <IndexRedirect to="insights" />,

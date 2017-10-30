@@ -352,7 +352,7 @@ class Utils {
       switch (field.type) {
         case fieldTypes.enum:
           if (field.isMulti) {
-            initialValues[field.name] = Array.isArray(paramValue) ? paramValue : [paramValue];
+            initialValues[field.name] = Array.isArray(paramValue) ? paramValue : (typeof paramValue === 'object' ? Object.values(paramValue) : [paramValue]);
           } else {
             initialValues[field.name] = paramValue;
           }
@@ -413,6 +413,21 @@ class Utils {
       uri.setSearch(query);
     }
     return uri.toString();
+  }
+
+  static getSavedFiltersRestorer({ getSavedFilter, basePath }) {
+    return (nextState, replace, callback) => {
+      let query = nextState.location.query;
+      if (!query || Object.keys(query).length === 0) {
+        const savedFilter = getSavedFilter();
+        query = {
+          ...savedFilter,
+          page: 1,
+        };
+        replace({ pathname: basePath, query });
+      }
+      callback();
+    };
   }
 
 }

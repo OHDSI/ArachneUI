@@ -23,6 +23,7 @@
 import Duck from 'services/Duck';
 import api from 'services/Api';
 import { apiPaths } from 'modules/StudyManager/const';
+import { Utils } from 'services/Utils';
 import Uri from 'urijs';
 
 const actionCoreName = 'SM_STUDY';
@@ -54,7 +55,14 @@ function saveFilter(values) {
 }
 
 function getSavedFilter() {
-  return JSON.parse(localStorage.getItem('study-list-filter'));
+  const savedFilter = JSON.parse(localStorage.getItem('study-list-filter'));
+  const filter = {};
+  Object.keys(savedFilter).forEach((key) => {
+    if (!Utils.isEmpty(savedFilter[key])) {
+      filter[key] = savedFilter[key];
+    }
+  });
+  return filter;
 }
 
 function dropFilter() {
