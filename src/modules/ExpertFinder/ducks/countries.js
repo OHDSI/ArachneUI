@@ -16,14 +16,21 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: January 26, 2017
+ * Created: February 15, 2017
  *
  */
 
-import ReducerFactory from 'services/ReducerFactory';
-import { actionTypes } from '../const';
+import Duck from 'services/Duck';
+import { apiPaths } from 'modules/ExpertFinder/const';
 
-export default new ReducerFactory()
-  .setReceiveAction(actionTypes.RECIEVE_STUDIES)
-  .setUpdatedAction(actionTypes.INVITE_PARTICIPANT)
-  .build();
+const coreName = 'EF_COUNTRIES';
+
+const countries = new Duck({
+  name: coreName,
+  urlBuilder: apiPaths.searchCountry,
+});
+
+export default {
+  actions: countries.actions,
+  reducer: countries.reducer,
+};

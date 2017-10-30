@@ -30,10 +30,10 @@ import NameEditModal from './presenter';
 
 function mapStateToProps(state) {
   const moduleState = state.expertFinder.userProfile;
-  const firstname = get(moduleState, 'data.general.firstname', '');
-  const lastname = get(moduleState, 'data.general.lastname', '');
-  const middlename = get(moduleState, 'data.general.middlename', '');
-  const id = get(moduleState, 'data.id', -1);
+  const firstname = get(moduleState, 'data.result.general.firstname', '');
+  const lastname = get(moduleState, 'data.result.general.lastname', '');
+  const middlename = get(moduleState, 'data.result.general.middlename', '');
+  const id = get(moduleState, 'data.result.id', -1);
 
   return {
     initialValues: {
@@ -47,9 +47,9 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = {
   hideDialog: () => ModalUtils.actions.toggle(modal.nameEdit, false),
-  updateName: actions.expertFinder.userProfile.updateName,
-  loadMyProfile: actions.expertFinder.myProfile.loadMyProfile,
-  loadInfo: actions.expertFinder.userProfile.loadInfo,
+  updateGeneralInfo: actions.expertFinder.userProfile.generalInfo.update,
+  loadMyProfile: actions.expertFinder.myProfile.find,
+  loadInfo: actions.expertFinder.userProfile.find,
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
@@ -58,9 +58,12 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...ownProps,
     ...dispatchProps,
     edit: ({ firstname, middlename, lastname }) => {
-      const submitPromise = dispatchProps.updateName({ firstname, middlename, lastname });
+      const submitPromise = dispatchProps.updateGeneralInfo(
+        null,
+        { firstname, middlename, lastname }
+      );
       submitPromise.then(() => dispatchProps.hideDialog())
-        .then(() => dispatchProps.loadInfo(stateProps.id))
+        .then(() => dispatchProps.loadInfo({ id: stateProps.id }))
         .then(() => dispatchProps.loadMyProfile())
         .catch(() => {});
 

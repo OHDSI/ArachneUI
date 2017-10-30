@@ -52,7 +52,7 @@ function ExpertCard(props) {
     <div {...classes()}>
       <div {...classes('content')}>
         <div {...classes('avatar')}>
-          <ExpertCardAvatar url={apiPaths.userpic(expert.id)}/>
+          <ExpertCardAvatar url={apiPaths.userpic({ id: expert.id })}/>
         </div>
         <div {...classes('info')}>
           <div {...classes('title')}>

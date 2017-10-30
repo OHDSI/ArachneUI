@@ -31,9 +31,9 @@ import Publications from './presenter';
 
 function mapStateToProps(state) {
   const moduleState = state.expertFinder.userProfile;
-  const data = get(moduleState, 'data.publications', []);
-  const id = get(moduleState, 'data.id', '');
-  const editable = get(moduleState, 'data.isEditable', false);
+  const data = get(moduleState, 'data.result.publications', []);
+  const id = get(moduleState, 'data.result.id', '');
+  const editable = get(moduleState, 'data.result.isEditable', false);
   const selectedDate = get(state, `form.${forms.publications}.values.date`);
 
   return {
@@ -50,10 +50,10 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  addPublication: actions.expertFinder.userProfile.addPublication,
-  removePublication: actions.expertFinder.userProfile.removePublication,
+  addPublication: actions.expertFinder.userProfile.publications.create,
+  removePublication: actions.expertFinder.userProfile.publications.delete,
   resetForm: () => resetForm(forms.publications),
-  loadInfo: actions.expertFinder.userProfile.loadInfo,
+  loadInfo: actions.expertFinder.userProfile.find,
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
@@ -62,9 +62,9 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...stateProps,
     ...dispatchProps,
     doSubmit: (data) => {
-      const submitPromise = dispatchProps.addPublication(data);
+      const submitPromise = dispatchProps.addPublication(null, data);
       submitPromise.then(() => dispatchProps.resetForm())
-        .then(() => dispatchProps.loadInfo(stateProps.id))
+        .then(() => dispatchProps.loadInfo({ id: stateProps.id }))
         .catch(() => {});
 
       return submitPromise;
@@ -72,8 +72,8 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     doRemove: (publicationId) => {
       Utils.confirmDelete()
         .then(() => {
-          dispatchProps.removePublication(
-            publicationId).then(() => dispatchProps.loadInfo(stateProps.id)
+          dispatchProps.removePublication({ id: publicationId })
+            .then(() => dispatchProps.loadInfo({ id: stateProps.id })
           );
         });
     },
