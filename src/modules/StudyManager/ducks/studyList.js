@@ -55,14 +55,7 @@ function saveFilter(values) {
 }
 
 function getSavedFilter() {
-  const savedFilter = JSON.parse(localStorage.getItem('study-list-filter'));
-  const filter = {};
-  Object.keys(savedFilter).forEach((key) => {
-    if (!Utils.isEmpty(savedFilter[key])) {
-      filter[key] = savedFilter[key];
-    }
-  });
-  return filter;
+  return Utils.getFilterFromLS('study-list-filter');
 }
 
 function dropFilter() {
