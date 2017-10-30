@@ -28,9 +28,6 @@
     @include form();
     background: $grey-lighter;
     padding: 1rem 2rem;
-
-    &__links {
-    }
     
     &--single .#{$namespace}list-item {
       &__content {
@@ -48,10 +45,6 @@
 
   &modal-upload-link {
     display: flex;
-
-    &--not-removable {
-
-    }
 
     &__input-wrapper {
       flex-grow: 1;
