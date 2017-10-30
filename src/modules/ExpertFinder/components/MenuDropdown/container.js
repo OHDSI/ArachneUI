@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,11 +20,10 @@
  *
  */
 
-import { connect } from 'react-redux';
 import { Component, PropTypes } from 'react';
-import get from 'lodash/get';
-import actions from 'modules/ExpertFinder/actions/index';
-import presenter from './presenter' ;
+import ducks from 'modules/ExpertFinder/ducks';
+import { get, ContainerBuilder } from 'services/Utils';
+import presenter from './presenter';
 
 class MenuDropdown extends Component {
   componentWillMount() {
@@ -40,31 +39,38 @@ MenuDropdown.propTypes = {
   loadMyProfile: PropTypes.func,
 };
 
-function mapStateToProps(state) {
-  const moduleState = state.expertFinder.myProfile;
-  const id = get(moduleState, 'data.id', '');
-  let firstName = get(moduleState, 'data.firstname', '');
-  const lastName = get(moduleState, 'data.lastname', '');
-  let middleName = get(moduleState, 'data.middlename', '');
-  if (!firstName && !middleName && !lastName) {
-    firstName = 'NAME';
-  }
-  if (middleName) {
-    middleName = `${middleName.substring(0, 1)}.`;
-  }
-  const hash = get(state, 'expertFinder.userProfile.data.hash', '');
 
-  return {
-    id,
-    firstName,
-    lastName,
-    middleName,
-    hash,
-  };
+export default class MenuDropdownBuilder extends ContainerBuilder {
+  getComponent() {
+    return MenuDropdown;
+  }
+
+  mapStateToProps(state) {
+    const moduleState = state.expertFinder.myProfile;
+    const id = get(moduleState, 'data.result.id', '');
+    let firstName = get(moduleState, 'data.result.firstname', '');
+    const lastName = get(moduleState, 'data.result.lastname', '');
+    let middleName = get(moduleState, 'data.result.middlename', '');
+    if (!firstName && !middleName && !lastName) {
+      firstName = 'NAME';
+    }
+    if (middleName) {
+      middleName = `${middleName.substring(0, 1)}.`;
+    }
+    const hash = get(state, 'expertFinder.userProfile.data.hash', '');
+
+    return {
+      id,
+      firstName,
+      lastName,
+      middleName,
+      hash,
+    };
+  }
+
+  getMapDispatchToProps() {
+    return {
+      loadMyProfile: ducks.actions.myProfile.find,
+    }
+  }
 }
-
-const mapDispatchToProps = {
-  loadMyProfile: actions.myProfile.loadMyProfile,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(MenuDropdown);

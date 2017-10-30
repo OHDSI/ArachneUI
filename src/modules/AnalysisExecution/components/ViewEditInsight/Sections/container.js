@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -64,7 +64,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     toggleComments: (file) => {
       if (file.isSelected) {
         dispatchProps.unloadComments();
-        dispatchProps.unloadfile();
+        dispatchProps.unloadFile();
       } else {
         dispatchProps
           .loadComments({ commentTopicId: file.commentTopicId })

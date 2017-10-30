@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,6 +30,7 @@ import {
   FormSelect,
   FormToggle,
   FormSlider,
+  FormInput,
 } from 'arachne-ui-components';
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
 import types from 'const/modelAttributes';
@@ -46,6 +47,8 @@ function getComponentByType(type) {
       return FormToggle;
     case types.integer:
       return FormSlider;
+    case types.string:
+      return FormInput;
     default:
       return null;
   }
@@ -69,6 +72,11 @@ function getOptions(field) {
         min: field.min,
         max: field.max,
       };
+    case types.string:
+      return {
+        placeholder: field.label,
+        mods: ['bordered'],
+      };
     default:
       return null;
   }
@@ -91,7 +99,21 @@ function FacetedFilters({ clear, fields }) {
 }
 
 function DropdownFilters({ classes, fields, clear }) {
-  const dropdownFields = [];
+  const keywordsField = {
+    type: types.string,
+    label: 'Keywords',
+  };
+  const dropdownFields = [
+    {
+      name: 'query',
+      InputComponent: {
+        component: getComponentByType(keywordsField.type),
+        props: {
+          ...getOptions(keywordsField),
+        },
+      },
+    }
+  ];
 
   fields.forEach((field) => {
     dropdownFields.push({

@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,7 +25,7 @@ import get from 'lodash/get';
 import ContactInfoView from './presenter';
 
 function mapStateToProps(state) {
-  const data = get(state, 'expertFinder.userProfile.data.general', {});
+  const data = get(state, 'expertFinder.userProfile.data.result.general', {});
 
   return {
     address1: get(data, 'address1'),

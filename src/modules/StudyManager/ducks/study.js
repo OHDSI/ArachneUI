@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,6 +21,7 @@
  */
 
 import Duck from 'services/Duck';
+import { Utils } from 'services/Utils';
 import { apiPaths } from 'modules/StudyManager/const';
 import { apiPaths as paperApiPaths } from 'modules/InsightsLibrary/const';
 
@@ -29,7 +30,7 @@ const paperCoreName = 'SM_STUDY_PAPER';
 const documentCoreName = 'SM_STUDY_DOCUMENT';
 const participantsCoreName = 'SM_STUDY_PARTICIPANTS';
 const dsCoreName = 'SM_STUDY_DATA_SOURCE';
-const analysisMoveCoreName = 'SM_STUDY_DATA_SOURCE';
+const analysisMoveCoreName = 'SM_ANALYSIS_MOVE';
 
 const ducks = new Duck({
   name: studiesCoreName,
@@ -66,14 +67,27 @@ const analysisMoveDuck = new Duck({
   urlBuilder: apiPaths.moveAnalysis,
 });
 
+function unloadDataSource() {
+  return dispatch => dispatch({
+    type: 'SM_STUDY_DATA_SOURCE_FIND_FULFILLED',
+    payload: null,
+  });
+}
+
 export default {
   actions: {
     ...ducks.actions,
     paper: paperDuck.actions,
     document: documentDuck.actions,
     participants: participantsDuck.actions,
-    dataSource: datasourceDuck.actions,
+    dataSource: {...datasourceDuck.actions, unload: unloadDataSource},
     analysisMove: analysisMoveDuck.actions,
   },
-  reducer: ducks.reducer,
+  reducer: Utils.extendReducer(ducks.reducer, {
+    paper: paperDuck.reducer,
+    document: documentDuck.reducer,
+    participants: participantsDuck.reducer,
+    dataSource: datasourceDuck.reducer,
+    analysisMove: analysisMoveDuck.reducer,
+  }),
 };

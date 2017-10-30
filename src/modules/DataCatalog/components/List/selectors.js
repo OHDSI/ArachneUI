@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,7 +41,7 @@ class DataCatalogListTableSelectorsBuilder extends DsAttrListSelector {
   }
 
   getFacets(state) {
-    return get(state, 'dataCatalog.facets.queryResult.result');
+    return get(state, 'dataCatalog.dataSourceList.queryResult.result.facets');
   }
 
   getPaginationDetails(state) {

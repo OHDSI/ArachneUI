@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,7 +47,7 @@ export default {
       return (dispatch) => {
         dispatch(subscritionChanged());
         api.subscribe(apiPaths.invitationsSubscription(), () => {
-          invitation.actions.query();
+          dispatch(invitation.actions.query());
         });
       };
     },

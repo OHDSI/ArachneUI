@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -59,7 +59,7 @@ function Report(props) {
     selectedReport,
     isLoading,
     selectReport,
-    dataSourceUuid,
+    dataSourceId,
   } = props;
   const classes = new BEMHelper('data-source-report');
 
@@ -90,25 +90,25 @@ function Report(props) {
         <reports.Death />
       }
       {reports.Conditions && selectedReport === reportConst.CONDITIONS &&
-        <reports.Conditions dataSourceUuid={dataSourceUuid} />
+        <reports.Conditions dataSourceId={dataSourceId} />
       }
       {reports.ConditionEra && selectedReport === reportConst.CONDITIONERA &&
-        <reports.ConditionEra dataSourceUuid={dataSourceUuid} />
+        <reports.ConditionEra dataSourceId={dataSourceId} />
       }
       {reports.Observations && selectedReport === reportConst.OBSERVATIONS &&
-        <reports.Observations dataSourceUuid={dataSourceUuid} />
+        <reports.Observations dataSourceId={dataSourceId} />
       }
       {reports.DrugEra && selectedReport === reportConst.DRUGERA &&
-        <reports.DrugEra dataSourceUuid={dataSourceUuid} />
+        <reports.DrugEra dataSourceId={dataSourceId} />
       }
       {reports.Drug && selectedReport === reportConst.DRUG &&
-        <reports.Drug dataSourceUuid={dataSourceUuid} />
+        <reports.Drug dataSourceId={dataSourceId} />
       }
       {reports.Procedures && selectedReport === reportConst.PROCEDURES &&
-        <reports.Procedures dataSourceUuid={dataSourceUuid} />
+        <reports.Procedures dataSourceId={dataSourceId} />
       }
       {reports.Visits && selectedReport === reportConst.VISITS &&
-        <reports.Visits dataSourceUuid={dataSourceUuid} />
+        <reports.Visits dataSourceId={dataSourceId} />
       }
       {reports.Achillesheel && selectedReport === reportConst.ACHILLESHEEL &&
         <reports.Achillesheel />

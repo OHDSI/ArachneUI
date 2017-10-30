@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,7 +23,7 @@
 import { createSelector } from 'reselect';
 import get from 'lodash/get';
 
-const getRawUserList = state => get(state, 'expertFinder.expertsList.list.data.content') || [];
+const getRawUserList = state => get(state, 'expertFinder.expertsList.queryResult.result.content') || [];
 
 const getUserList = createSelector(
   [getRawUserList],

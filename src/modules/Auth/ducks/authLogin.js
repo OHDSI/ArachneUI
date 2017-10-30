@@ -18,7 +18,7 @@ const reducer = authLoginDuck.reducer;
 export default {
   actions: {
     create: (username, password) => {
-      return (dispatch) => dispatch(actions.create({}, {username, password})).then((result) => {
+      return (dispatch) => dispatch(actions.create({}, { username, password })).then((result) => {
           AuthService.setToken(result.result.token);
         });
       }

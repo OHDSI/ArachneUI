@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,6 +30,7 @@ import participantList from './participantList';
 import analysisTypes from './analysisTypes';
 import dataSourceList from './dataSourceList';
 import availableTransitions from './availableTransitions';
+import studyDocumentFile from './studyDocumentFile';
 
 const actions = {
   analyses: analyses.actions,
@@ -42,6 +43,7 @@ const actions = {
   studyInsights: studyInsights.actions,
   studyList: studyList.actions,
   typeList: typeList.actions,
+  studyDocumentFile: studyDocumentFile.actions,
 };
 
 const reducer = {
@@ -55,6 +57,7 @@ const reducer = {
   studyInsights: studyInsights.reducer,
   studyList: studyList.reducer,
   typeList: typeList.reducer,
+  studyDocumentFile: studyDocumentFile.reducer,
 };
 
 export default {

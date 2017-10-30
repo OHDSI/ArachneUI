@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +24,6 @@ import { createStore, compose, applyMiddleware } from 'redux';
 import { browserHistory } from 'react-router';
 import { routerMiddleware } from 'react-router-redux';
 import thunk from 'redux-thunk';
-import createLogger from 'redux-logger';
 
 const enhancers = [];
 
@@ -36,10 +35,9 @@ try {
   //ignore
 }
 export default function configureStore({ rootReducer, middleware = [], initialState = {}, history = browserHistory }) {
-  const logger = createLogger();
 
   const router = routerMiddleware(history);
-  const appMiddleware = [router, thunk, logger];
+  const appMiddleware = [router, thunk];
 
   const store = createStore(
     rootReducer,

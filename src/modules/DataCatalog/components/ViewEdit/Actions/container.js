@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,7 +47,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...stateProps,
     ...dispatchProps,
     ...ownProps,
-    onChangeTab: tab => dispatchProps.changeTab(`${paths.dataCatalog(ownProps.dataSourceUuid)}/${tab}`),
+    onChangeTab: tab => dispatchProps.changeTab(`${paths.dataCatalog(ownProps.dataSourceId)}/${tab}`),
   };
 }
 

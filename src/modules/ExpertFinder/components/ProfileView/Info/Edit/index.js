@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,6 +20,6 @@
  *
  */
 
-import BasicInfoEdit from './container';
+import BasicInfoEditBuilder from './container';
 
-export default BasicInfoEdit;
+export default new BasicInfoEditBuilder().build();

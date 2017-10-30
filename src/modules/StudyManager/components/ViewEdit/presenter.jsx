@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -61,7 +61,7 @@ function ViewEditStudy(props) {
                 </div>
               </div>
               <div className="col-xs-12 col-lg-6">
-                <RightColumn />
+                <RightColumn studyId={id}/>
               </div>
             </div>
           </div>,

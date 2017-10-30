@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -50,7 +50,6 @@ function DocumentPanel(props) {
           <i {...classes('doctype-ico', file.docType)} />
           <Link
             {...classes('download-link')}
-            target="_self"
             to={file.link}
           >
             {file.label || file.name}

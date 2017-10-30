@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,10 +35,11 @@ import { maxFilesCount } from 'modules/AnalysisExecution/const';
 import EmptyState from 'components/EmptyState';
 import { numberFormatter } from 'services/Utils';
 import Fuse from 'fuse.js';
+import searchSettings from 'const/search';
 
 require('./style.scss');
 
-function FileItem({ file, isEditable, removeResult }) {
+function FileItem({ file, isEditable, removeResult, isHidden }) {
   const classes = new BEMHelper('analysis-modal-files-item');
   const mods = {
     hover: true,
@@ -46,7 +47,7 @@ function FileItem({ file, isEditable, removeResult }) {
   };
   return (
     <ListItem
-      {...classes()}
+      {...classes({ modifiers: { hidden: isHidden } })}
       mods={mods}
       onRemove={() => removeResult(file.uuid)}
     >
@@ -77,12 +78,7 @@ function ModalFiles(props) {
     filter,
   } = props;
   const fuseSearch = new Fuse(fileList, {
-    shouldSort: true,
-    threshold: 0.6,
-    location: 0,
-    distance: 100,
-    maxPatternLength: 32,
-    minMatchCharLength: 1,
+    ...searchSettings,
     keys: [
       'name',
       'label',
@@ -90,6 +86,10 @@ function ModalFiles(props) {
     ],
   });
   const filteredFiles = filterText ? fuseSearch.search(filterText) : fileList;
+  const filteredFilesIds = {};
+  filteredFiles.forEach((file) => {
+    filteredFilesIds[file.uuid] = true;
+  });
 
   return (
     <Modal modal={props.modal} title={title} mods={['no-padding']}>
@@ -107,30 +107,34 @@ function ModalFiles(props) {
                 onChange={e => filter(e.target.value)}
               />
             </ListItem>
-            {filteredFiles.map((file, key) =>
+            {fileList.map((file, key) =>
               <FileItem
                 file={file}
                 key={key}
                 isEditable={canRemoveFiles && file.manuallyUploaded}
                 removeResult={removeResult}
+                isHidden={!filteredFilesIds[file.uuid]}
               />
             )}
             {!filteredFiles.length &&
               <ListItem mods={['borderless']}>
-                <EmptyState message={'No files that match criteria'} />
+                <EmptyState message={fileList.length > 0 ? 'No files that match criteria' : 'No files'} />
               </ListItem>
             }
           </ul>
         }
         {filesCount !== 0 &&
           <div {...classes('actions')}>
-            <Button
-              {...classes('btn')}
-              mods={['success', 'rounded']}
-              label="Download all"
-              link={downloadAllLink}
-              target="_self"
-            />
+            {fileList.length > 0 
+              ? <Button
+                {...classes('btn')}
+                mods={['success', 'rounded']}
+                label="Download all"
+                link={downloadAllLink}
+                target="_self"
+              />
+              : null
+            }
             <Button
               {...classes('btn')}
               mods={['cancel', 'rounded']}

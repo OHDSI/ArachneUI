@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,18 +29,18 @@ function linkBuilder({
   submissionId,
   fileId,
   downloadFile = false,
-  withContent = true,
+  query = { withContent: true },
 }) {
   let link;
 
   if (type === 'query') {
     if (!submissionGroupId && submissionId) {
-      link = apiPaths.submissionGroupCodeBySubmission({ submissionId, fileId, withContent, downloadFile });
+      link = apiPaths.submissionGroupCodeBySubmission({ submissionId, fileId, downloadFile, query });
     } else {
-      link = apiPaths.submissionGroupCode({ submissionGroupId, fileId, withContent, downloadFile });
+      link = apiPaths.submissionGroupCode({ submissionGroupId, fileId, downloadFile, query });
     }
   } else if (type === 'result') {
-    link = apiPaths.submissionResults({ submissionId, fileId, withContent, downloadFile });
+    link = apiPaths.submissionResults({ submissionId, fileId, downloadFile, query });
   }
 
   return link;

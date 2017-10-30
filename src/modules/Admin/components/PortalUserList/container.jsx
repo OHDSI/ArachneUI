@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -102,7 +102,7 @@ class UserListBuilder extends ContainerBuilder {
       ...dispatchProps,
       ...ownProps,
       loadUsersWithCurrentQuery: () => {
-        dispatchProps.loadUserList({query: stateProps.query});
+        dispatchProps.loadUserList({ query: stateProps.query });
       },
       applySavedFilters(filters) {
         const url = new Uri(paths.users());
