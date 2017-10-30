@@ -352,7 +352,7 @@ class Utils {
       switch (field.type) {
         case fieldTypes.enum:
           if (field.isMulti) {
-            initialValues[field.name] = Array.isArray(paramValue) ? paramValue : [paramValue];
+            initialValues[field.name] = Array.isArray(paramValue) ? paramValue : (typeof paramValue === 'object' ? Object.values(paramValue) : [paramValue]);
           } else {
             initialValues[field.name] = paramValue;
           }
@@ -413,6 +413,40 @@ class Utils {
       uri.setSearch(query);
     }
     return uri.toString();
+  }
+
+  static getSavedFiltersRestorer({ getSavedFilter, basePath }) {
+    return (nextState, replace, callback) => {
+      let query = nextState.location.query;
+      if (!query || Object.keys(query).length === 0) {
+        const savedFilter = getSavedFilter();
+        query = {
+          ...savedFilter,
+          page: 1,
+        };
+        replace({ pathname: basePath, query });
+      }
+      callback();
+    };
+  }
+
+  static getFilterFromLS(lsKey) {
+    let savedFilter;
+    try {
+      savedFilter = JSON.parse(localStorage.getItem(lsKey));
+      if (!savedFilter || typeof savedFilter !== 'object') {
+        throw new Error();
+      }
+    } catch (e) {
+      savedFilter = {};
+    }
+    const filter = {};
+    Object.keys(savedFilter).forEach((key) => {
+      if (!Utils.isEmpty(savedFilter[key])) {
+        filter[key] = savedFilter[key];
+      }
+    });
+    return filter;
   }
 
 }

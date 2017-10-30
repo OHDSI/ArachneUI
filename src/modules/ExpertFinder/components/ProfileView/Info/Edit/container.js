@@ -20,12 +20,12 @@
  *
  */
 
-import { connect } from 'react-redux';
 import get from 'lodash/get';
-import { reduxForm, reset as resetForm } from 'redux-form';
+import { reset as resetForm } from 'redux-form';
 import { Component, PropTypes } from 'react';
 import actions from 'actions';
 import { forms } from 'modules/ExpertFinder/const';
+import { ContainerBuilder } from 'services/Utils';
 import presenter from './presenter';
 import selectors from './selectors';
 
@@ -39,61 +39,71 @@ class BasicInfoEdit extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  const moduleState = state.expertFinder.userProfile;
-  const generalData = get(moduleState, 'data.general', {
-    affiliation: '',
-    professionalType: {
-      name: '',
-    },
-  });
-  const id = get(moduleState, 'data.id', '');
-
-  return {
-    initialValues: {
-      affiliation: generalData.affiliation,
-      professionalType: generalData.professionalType.id,
-    },
-    id,
-    professionalTypes: selectors.getProfessionalTypes(state.expertFinder.professionalTypes),
-  };
-}
-
-const mapDispatchToProps = {
-  resetForm: resetForm.bind(null, forms.general),
-  updateGeneralInfo: actions.expertFinder.userProfile.updateGeneralInfo,
-  loadInfo: actions.expertFinder.userProfile.loadInfo,
-  getProfessionalTypes: actions.expertFinder.professionalTypes.getProfessionalTypes,
-};
-
-function mergeProps(stateProps, dispatchProps, ownProps) {
-  return {
-    ...ownProps,
-    ...stateProps,
-    ...dispatchProps,
-    cancel: () => ownProps.setViewMode(),
-    doSubmit: ({ affiliation, professionalType }) => {
-      const submitPromise = dispatchProps.updateGeneralInfo({
-        affiliation,
-        professionalType,
-      });
-      submitPromise.then(() => dispatchProps.resetForm())
-        .then(() => ownProps.setViewMode())
-        .then(() => dispatchProps.loadInfo(stateProps.id))
-        .catch(() => {});
-
-      return submitPromise;
-    },
-  };
-}
-
 BasicInfoEdit.propTypes = {
   getProfessionalTypes: PropTypes.func,
 };
 
-const ReduxBasicInfoEdit = reduxForm({
-  form: forms.general,
-  enableReinitialize: true,
-})(BasicInfoEdit);
+export default class BasicInfoEditBuilder extends ContainerBuilder {
+  getFormParams() {
+    return {
+      form: forms.general,
+      enableReinitialize: true,
+    };
+  }
 
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(ReduxBasicInfoEdit);
+  getComponent() {
+    return BasicInfoEdit;
+  }
+
+  mapStateToProps(state) {
+    const moduleState = state.expertFinder.userProfile;
+    const generalData = get(moduleState, 'data.result.general', {
+      affiliation: '',
+      professionalType: {
+        name: '',
+      },
+    });
+    const id = get(moduleState, 'data.result.id', '');
+
+    return {
+      initialValues: {
+        affiliation: generalData.affiliation,
+        professionalType: generalData.professionalType.id,
+      },
+      id,
+      professionalTypes: selectors.getProfessionalTypes(state),
+    };
+  }
+
+  getMapDispatchToProps() {
+    return {
+      resetForm: resetForm.bind(null, forms.general),
+      updateGeneralInfo: actions.expertFinder.userProfile.generalInfo.update,
+      loadInfo: actions.expertFinder.userProfile.find,
+      getProfessionalTypes: actions.expertFinder.professionalTypes.query,
+    };
+  }
+
+  mergeProps(stateProps, dispatchProps, ownProps) {
+    return {
+      ...ownProps,
+      ...stateProps,
+      ...dispatchProps,
+      cancel: () => ownProps.setViewMode(),
+      doSubmit: ({ affiliation, professionalType }) => {
+        const submitPromise = dispatchProps.updateGeneralInfo(null, {
+          affiliation,
+          professionalType: {
+            id: professionalType,
+          },
+        });
+        submitPromise.then(() => dispatchProps.resetForm())
+          .then(() => ownProps.setViewMode())
+          .then(() => dispatchProps.loadInfo({ id: stateProps.id }))
+          .catch(() => {});
+
+        return submitPromise;
+      },
+    };
+  }
+}

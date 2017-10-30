@@ -25,7 +25,7 @@ import get from 'lodash/get';
 import ExpertCard from './presenter';
 
 function mapStateToProps(state, ownProps) {
-  const loggedUserId = get(state, 'expertFinder.myProfile.data.id');
+  const loggedUserId = get(state, 'expertFinder.myProfile.data.result.id');
   const canBeInvited = ownProps.expert.id !== loggedUserId;
 
   return {

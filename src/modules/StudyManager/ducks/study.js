@@ -67,13 +67,20 @@ const analysisMoveDuck = new Duck({
   urlBuilder: apiPaths.moveAnalysis,
 });
 
+function unloadDataSource() {
+  return dispatch => dispatch({
+    type: 'SM_STUDY_DATA_SOURCE_FIND_FULFILLED',
+    payload: null,
+  });
+}
+
 export default {
   actions: {
     ...ducks.actions,
     paper: paperDuck.actions,
     document: documentDuck.actions,
     participants: participantsDuck.actions,
-    dataSource: datasourceDuck.actions,
+    dataSource: {...datasourceDuck.actions, unload: unloadDataSource},
     analysisMove: analysisMoveDuck.actions,
   },
   reducer: Utils.extendReducer(ducks.reducer, {

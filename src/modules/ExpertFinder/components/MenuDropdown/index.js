@@ -20,6 +20,6 @@
  *
  */
 
-import MenuDropdown from './container';
+import MenuDropdownBuilder from './container';
 
-export default MenuDropdown;
+export default new MenuDropdownBuilder().build();

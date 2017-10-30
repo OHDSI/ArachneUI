@@ -26,8 +26,8 @@ import Summary from './presenter';
 
 function mapStateToProps(state) {
   const moduleState = state.expertFinder.userProfile;
-  const data = get(moduleState, 'data.general.personalSummary', '');
-  const editable = get(moduleState, 'data.isEditable', false);
+  const data = get(moduleState, 'data.result.general.personalSummary', '');
+  const editable = get(moduleState, 'data.result.isEditable', false);
 
   return {
     isLoading: get(moduleState, 'isLoading', false),

@@ -35,6 +35,7 @@ import { maxFilesCount } from 'modules/AnalysisExecution/const';
 import EmptyState from 'components/EmptyState';
 import { numberFormatter } from 'services/Utils';
 import Fuse from 'fuse.js';
+import searchSettings from 'const/search';
 
 require('./style.scss');
 
@@ -77,12 +78,7 @@ function ModalFiles(props) {
     filter,
   } = props;
   const fuseSearch = new Fuse(fileList, {
-    shouldSort: true,
-    threshold: 0.1,
-    location: 0,
-    distance: 100,
-    maxPatternLength: 32,
-    minMatchCharLength: 1,
+    ...searchSettings,
     keys: [
       'name',
       'label',

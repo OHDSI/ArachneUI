@@ -16,33 +16,21 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: January 16, 2017
+ * Created: January 23, 2017
  *
  */
 
-import { combineReducers } from 'redux';
-import expertsList from './expertsList';
-import expertsListFacets from './expertsListFacets';
-import userProfile from './userProfile';
-import facetedSearch from './facetedSearch';
-import skills from './skills';
-import professionalTypes from './professionalTypes';
-import myProfile from './myProfile';
-import studies from './studies';
-import provinces from './provinces';
-import countries from './countries';
+import Duck from 'services/Duck';
+import { apiPaths } from 'modules/ExpertFinder/const';
 
-export default combineReducers({
-  expertsList: combineReducers({
-    list: expertsList,
-    facets: expertsListFacets,
-  }),
-  userProfile,
-  facetedSearch,
-  skills,
-  professionalTypes,
-  myProfile,
-  studies,
-  provinces,
-  countries,
+const coreName = 'EF_SKILL';
+
+const province = new Duck({
+  name: coreName,
+  urlBuilder: apiPaths.skills,
 });
+
+export default {
+  actions: province.actions,
+  reducer: province.reducer,
+};

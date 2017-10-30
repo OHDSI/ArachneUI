@@ -22,6 +22,7 @@
 
 import Duck from 'services/Duck';
 import { apiPaths } from 'modules/InsightsLibrary/const';
+import { Utils } from 'services/Utils';
 
 const actionCoreName = 'IL_INSIGHTS';
 
@@ -38,7 +39,7 @@ function saveFilter(filter) {
 }
 
 function getSavedFilter() {
-  return JSON.parse(localStorage.getItem('insights-filter')) || {};
+  return Utils.getFilterFromLS('insights-filter');
 }
 
 function dropFilter() {

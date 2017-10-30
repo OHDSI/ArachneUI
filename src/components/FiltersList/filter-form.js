@@ -43,8 +43,10 @@ class Filter extends Component {
       });
 
       let searchParams = {
-        ...nextProps.selectedFilters,
-        ...valuesToUnsearch,
+        filter: {
+          ...nextProps.selectedFilters,
+          ...valuesToUnsearch,
+        },
         query: nextProps.selectedQuery,
         page: 1,
       };
@@ -97,15 +99,17 @@ export default class FilterBuilder extends ContainerBuilder {
     const queryParams = qs.parse(searchStr, { parseArrays: false }) || {};
     const fields = ownProps.fields;
 
-    let initialValues = {
-      query: queryParams.query || null,
-      filter: queryParams.filter || {},
-    };
+    let initialValues = {};
     if (typeof ownProps.queryDecode === 'function') {
       initialValues = ownProps.queryDecode({
-        searchParams: initialValues,
+        searchParams: queryParams,
         filterFields: fields,
       });
+    } else {
+      initialValues = {
+        query: queryParams.query || null,
+        filter: queryParams.filter || {},
+      };
     }
     // Enforces proper value formats for form's fields
     initialValues.filter = Utils.prepareFilterValues(initialValues.filter, fields);

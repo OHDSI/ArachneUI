@@ -39,6 +39,8 @@ function StudyList(props) {
     isFilteredByMy,
     filterFields,
     paginationDetails,
+    searchQueryDecode,
+    searchQueryEncode,
   } = props;
 
   return (
@@ -50,6 +52,8 @@ function StudyList(props) {
           filterFields={filterFields}
           Actions={<Actions />}
           paginationDetails={paginationDetails}
+          searchQueryDecode={searchQueryDecode}
+          searchQueryEncode={searchQueryEncode}
         >
           <List />
         </Grid>

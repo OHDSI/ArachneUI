@@ -27,9 +27,22 @@ import ListStudies from './components/List';
 import ViewEditStudy from './components/ViewEdit';
 import DocumentViewer from './components/DocumentViewer';
 
+import { Utils } from 'services/Utils';
+import { paths } from './const';
+import studyListDuck from './ducks/studyList';
+
 function Routes() {
   return [
-    <Route path="studies" component={ListStudies} />,
+    <Route
+      path="studies"
+      component={ListStudies}
+      onEnter={
+        Utils.getSavedFiltersRestorer({
+          getSavedFilter: studyListDuck.actions.getSavedFilter,
+          basePath: paths.studies(),
+        })
+      }
+    />,
     <Route path="studies/:studyId" component={ViewEditStudy} />,
     <Route path="studies/:studyId/documents/:fileUuid" component={DocumentViewer} />,
     <IndexRedirect to="studies" />,

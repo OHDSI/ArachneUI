@@ -43,7 +43,8 @@ export default function getFields(props) {
     {
       label: 'Type',
       name: 'type',
-      type: types.enumMulti,
+      type: types.enum,
+      isMulti: true,
       forceOpened: true,
       hasTitle: true,
       options: props.typeOptions,
@@ -51,7 +52,8 @@ export default function getFields(props) {
     {
       label: 'Status',
       name: 'status',
-      type: types.enumMulti,
+      type: types.enum,
+      isMulti: true,
       forceOpened: true,
       hasTitle: true,
       options: props.statusOptions.map(opts => ({
