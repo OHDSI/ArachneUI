@@ -430,6 +430,25 @@ class Utils {
     };
   }
 
+  static getFilterFromLS(lsKey) {
+    let savedFilter;
+    try {
+      savedFilter = JSON.parse(localStorage.getItem(lsKey));
+      if (!savedFilter || typeof savedFilter !== 'object') {
+        throw new Error();
+      }
+    } catch (e) {
+      savedFilter = {};
+    }
+    const filter = {};
+    Object.keys(savedFilter).forEach((key) => {
+      if (!Utils.isEmpty(savedFilter[key])) {
+        filter[key] = savedFilter[key];
+      }
+    });
+    return filter;
+  }
+
 }
 
 class ContainerBuilder {
