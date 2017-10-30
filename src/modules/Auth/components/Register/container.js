@@ -59,7 +59,7 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = {
   goToRoot: goToPage.bind(null, '/'),
-  loadProfessionalTypes: actions.auth.professionalTypes.query,
+  loadProfessionalTypes: actions.auth.professionalType.query,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Register);

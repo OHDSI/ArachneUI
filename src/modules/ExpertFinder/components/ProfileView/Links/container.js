@@ -29,9 +29,9 @@ import Links from './presenter';
 
 function mapStateToProps(state) {
   const moduleState = state.expertFinder.userProfile;
-  const data = get(moduleState, 'data.links', []);
-  const id = get(moduleState, 'data.id', '');
-  const editable = get(moduleState, 'data.isEditable', false);
+  const data = get(moduleState, 'data.result.links', []);
+  const id = get(moduleState, 'data.result.id', '');
+  const editable = get(moduleState, 'data.result.isEditable', false);
 
   return {
     id,
@@ -42,10 +42,10 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  addLink: actions.expertFinder.userProfile.addLink,
-  removeLink: actions.expertFinder.userProfile.removeLink,
+  addLink: actions.expertFinder.userProfile.links.create,
+  removeLink: actions.expertFinder.userProfile.links.delete,
   resetForm: () => resetForm(forms.links),
-  loadInfo: actions.expertFinder.userProfile.loadInfo,
+  loadInfo: actions.expertFinder.userProfile.find,
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
@@ -54,15 +54,16 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...stateProps,
     ...dispatchProps,
     doSubmit: (data) => {
-      const submitPromise = dispatchProps.addLink(data);
+      const submitPromise = dispatchProps.addLink(null, data);
       submitPromise.then(() => dispatchProps.resetForm())
-        .then(() => dispatchProps.loadInfo(stateProps.id))
+        .then(() => dispatchProps.loadInfo({ id: stateProps.id }))
         .catch(() => {});
 
       return submitPromise;
     },
     doRemove: (id) => {
-      dispatchProps.removeLink(id).then(() => dispatchProps.loadInfo(stateProps.id));
+      dispatchProps.removeLink({ id })
+        .then(() => dispatchProps.loadInfo({ id: stateProps.id }));
     },
   };
 }

@@ -20,14 +20,13 @@
  *
  */
 
-import { connect } from 'react-redux';
 import { Component, PropTypes } from 'react';
 import { ModalUtils } from 'arachne-ui-components';
 import get from 'lodash/get';
 import { modal } from 'modules/ExpertFinder/const';
-import actions from 'modules/ExpertFinder/actions/index';
-import { asyncConnect } from 'redux-async-connect';
+import actions from 'actions';
 import { goBack } from 'react-router-redux';
+import { ContainerBuilder } from 'services/Utils';
 import presenter from './presenter';
 
 
@@ -35,7 +34,7 @@ class ProfileView extends Component {
 
   componentWillReceiveProps(props) {
     if (this.props.id !== props.id) {
-      this.props.loadInfo(props.id);
+      this.props.loadInfo({ id: props.id });
     }
   }
 
@@ -49,57 +48,62 @@ ProfileView.propTypes = {
   id: PropTypes.string,
 };
 
-function mapStateToProps(state, ownProps) {
-  const moduleState = state.expertFinder.userProfile;
-  const isLoading = get(moduleState, 'isLoading', false);
-  const isCreatingSkill = get(state.expertFinder, 'skills.isLoading', false);
-  let firstname = get(moduleState, 'data.general.firstname', '');
-  const lastname = get(moduleState, 'data.general.lastname', '');
-  const middlename = get(moduleState, 'data.general.middlename', '');
-  const id = ownProps.routeParams.userId;
-  const editable = get(moduleState, 'data.isEditable', false);
-  if (!firstname && !middlename && !lastname) {
-    firstname = 'an expert';
+export default class ProfileViewBuilder extends ContainerBuilder {
+  getComponent() {
+    return ProfileView;
   }
 
-  return {
-    editable,
-    name: [firstname, middlename, lastname].filter(val => !!val).join(' '),
-    id,
-    isLoading: isLoading || isCreatingSkill,
-  };
+  mapStateToProps(state, ownProps) {
+    const moduleState = state.expertFinder.userProfile;
+    const isLoading = get(moduleState, 'isLoading', false);
+    const isCreatingSkill = get(state.expertFinder, 'skills.isLoading', false);
+    let firstname = get(moduleState, 'data.result.general.firstname', '');
+    const lastname = get(moduleState, 'data.result.general.lastname', '');
+    const middlename = get(moduleState, 'data.result.general.middlename', '');
+    const id = ownProps.routeParams.userId;
+    const editable = get(moduleState, 'data.result.isEditable', false);
+    if (!firstname && !middlename && !lastname) {
+      firstname = 'an expert';
+    }
+
+    return {
+      editable,
+      name: [firstname, middlename, lastname].filter(val => !!val).join(' '),
+      id,
+      isLoading: isLoading || isCreatingSkill,
+    };
+  }
+
+  getMapDispatchToProps() {
+    return {
+      loadInfo: actions.expertFinder.userProfile.find,
+      showNameEditDialog: () => ModalUtils.actions.toggle(modal.nameEdit, true),
+      showInviteDialog: user => ModalUtils.actions.toggle(modal.invite, true, { ...user }),
+      goBack,
+    };
+  }
+
+  mergeProps(stateProps, dispatchProps, ownProps) {
+    return {
+      ...stateProps,
+      ...dispatchProps,
+      ...ownProps,
+      invite: () => {
+        dispatchProps.showInviteDialog({
+          id: stateProps.id,
+          general: {
+            firstname: stateProps.firstname,
+            lastname: stateProps.lastname,
+            middlename: stateProps.middlename,
+          },
+        });
+      },
+    };
+  }
+  getFetchers({ params, state, dispatch }) {
+    return {
+      loadInfo: actions.expertFinder.userProfile.find.bind(null, ({ id: params.userId })),
+    };
+  }
+
 }
-
-const mapDispatchToProps = {
-  loadInfo: actions.userProfile.loadInfo,
-  showNameEditDialog: () => ModalUtils.actions.toggle(modal.nameEdit, true),
-  showInviteDialog: user => ModalUtils.actions.toggle(modal.invite, true, { ...user }),
-  goBack,
-};
-
-function mergeProps(stateProps, dispatchProps, ownProps) {
-  return {
-    ...stateProps,
-    ...dispatchProps,
-    ...ownProps,
-    invite: () => {
-      dispatchProps.showInviteDialog({
-        id: stateProps.id,
-        general: {
-          firstname: stateProps.firstname,
-          lastname: stateProps.lastname,
-          middlename: stateProps.middlename,
-        },
-      });
-    },
-  };
-}
-
-const connectedProfileView = connect(mapStateToProps, mapDispatchToProps, mergeProps)(ProfileView);
-
-export default asyncConnect([{
-  promise: ({ params, store: { dispatch } }) => {
-    const loadInfo = actions.userProfile.loadInfo;
-    return dispatch(loadInfo(params.userId));
-  },
-}])(connectedProfileView);

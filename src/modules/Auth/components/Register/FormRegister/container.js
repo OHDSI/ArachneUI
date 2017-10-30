@@ -30,10 +30,10 @@ import FormRegister from './presenter';
 import get from "lodash/get";
 
 function mapStateToProps(state) {
-  const professionalTypesList = get(state, 'auth.professionalTypes.queryResult.result', []);
+  const professionalTypesList = get(state, 'auth.professionalType.queryResult.result', []);
 
   return {
-    isLoading: state.auth.professionalTypes.isLoading,
+    isLoading: state.auth.professionalType.isLoading,
     professionalTypesOptions: professionalTypesList.map(type => ({
       label: type.name,
       value: type.id,

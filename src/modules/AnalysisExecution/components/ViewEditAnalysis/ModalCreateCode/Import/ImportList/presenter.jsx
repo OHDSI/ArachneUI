@@ -27,6 +27,7 @@ import { Button, FormCheckbox, ListItem } from 'arachne-ui-components';
 import ProgressDots from 'components/ProgressDots';
 import { nameAnalysisType } from 'modules/AnalysisExecution/const';
 import Fuse from 'fuse.js';
+import searchSettings from 'const/search';
 
 require('./style.scss');
 
@@ -48,12 +49,7 @@ function ImportList(props) {
     submitting,
   } = props;
   const fuseSearch = new Fuse(entities, {
-    shouldSort: true,
-    threshold: 0.1,
-    location: 0,
-    distance: 100,
-    maxPatternLength: 32,
-    minMatchCharLength: 1,
+    ...searchSettings,
     keys: [
       'name',
     ],

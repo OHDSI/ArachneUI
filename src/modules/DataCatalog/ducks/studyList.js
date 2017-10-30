@@ -23,12 +23,12 @@
 import Duck from 'services/Duck';
 import { apiPaths } from 'modules/DataCatalog/const';
 
-const studies = new Duck({
+const study = new Duck({
   name: 'DC_DS_STUDY_LIST',
   urlBuilder: apiPaths.studies,
 });
 
 export default {
-  actions: studies.actions,
-  reducer: studies.reducer,
+  actions: study.actions,
+  reducer: study.reducer,
 };

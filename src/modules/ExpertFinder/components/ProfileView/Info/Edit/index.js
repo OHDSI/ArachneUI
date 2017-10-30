@@ -20,6 +20,6 @@
  *
  */
 
-import BasicInfoEdit from './container';
+import BasicInfoEditBuilder from './container';
 
-export default BasicInfoEdit;
+export default new BasicInfoEditBuilder().build();

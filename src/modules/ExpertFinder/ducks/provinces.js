@@ -16,27 +16,21 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: January 23, 2017
+ * Created: February 15, 2017
  *
  */
 
-import api from 'services/Api';
-import { apiPaths, actionTypes } from '../const';
+import Duck from 'services/Duck';
+import { apiPaths } from 'modules/ExpertFinder/const';
 
-function recieveProfessionalTypes(types) {
-  return {
-    type: actionTypes.RECIEVE_PROFESSIONAL_TYPES,
-    payload: types,
-  };
-}
+const coreName = 'EF_PROVINCE';
 
-function getProfessionalTypes() {
-  return dispatch => api.doGet(
-    apiPaths.professionalTypes(),
-    res => dispatch(recieveProfessionalTypes(res.result))
-  );
-}
+const province = new Duck({
+  name: coreName,
+  urlBuilder: apiPaths.searchProvince,
+});
 
 export default {
-  getProfessionalTypes,
+  actions: province.actions,
+  reducer: province.reducer,
 };

@@ -23,7 +23,7 @@
 import { createSelector } from 'reselect';
 import get from 'lodash/get';
 
-const getRawStudies = state => get(state, 'data') || [];
+const getRawStudies = state => get(state, 'queryResult.result') || [];
 
 const getStudies = createSelector(
   [getRawStudies],

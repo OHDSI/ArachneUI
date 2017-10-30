@@ -48,7 +48,7 @@ class InviteModal extends Component {
 function mapStateToProps(state) {
   const name = get(state, 'modal.invite.data.name', '') || 'an expert';
   const userToInvite = get(state, 'modal.invite.data.id', -1);
-  const studies = selectors.getStudies(state.expertFinder.studies);
+  const studies = selectors.getStudies(get(state, 'expertFinder.study'));
 
   return {
     inviteDialogTitle: `Invite ${name}`,
@@ -69,8 +69,8 @@ const mapDispatchToProps = {
     true,
     { study, user }
   ),
-  getStudies: actions.expertFinder.studies.getStudiesAutocomplete,
-  inviteParticipant: actions.expertFinder.studies.inviteParticipant,
+  getStudies: actions.expertFinder.studies.query,
+  inviteParticipant: actions.expertFinder.invitations.create,
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
@@ -79,7 +79,13 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...ownProps,
     ...dispatchProps,
     invite: ({ study, role }) => {
-      const submitPromise = dispatchProps.inviteParticipant(stateProps.userToInvite, study, role);
+      const submitPromise = dispatchProps.inviteParticipant(
+        { studyId: study },
+        {
+          userId: stateProps.userToInvite,
+          role,
+        }
+      );
       submitPromise.then(() => {
         dispatchProps.hideInviteDialog();
         const selectedStudy = stateProps.studies.filter(element => element.value === study)[0];
