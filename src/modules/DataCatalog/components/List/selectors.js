@@ -41,7 +41,7 @@ class DataCatalogListTableSelectorsBuilder extends DsAttrListSelector {
   }
 
   getFacets(state) {
-    return get(state, 'dataCatalog.facets.queryResult.result');
+    return get(state, 'dataCatalog.dataSourceList.queryResult.result.facets');
   }
 
   getPaginationDetails(state) {

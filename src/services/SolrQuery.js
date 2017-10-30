@@ -117,7 +117,10 @@ const filterListEncoderDecoder = {
     ...searchParams,
     filter: parseSolrValues(searchParams.filter || {}, filterFields),
   }),
-  searchQueryEncode: ({ searchParams, filterFields }) => convertToSolrSearchParams({ searchParams, filterFields }),
+  searchQueryEncode: ({ searchParams = {}, filterFields }) => ({
+    ...searchParams,
+    filter: convertToSolrValues(searchParams.filter, filterFields),
+  }),
 };
 
 export {
