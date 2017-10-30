@@ -28,7 +28,7 @@ import actions from 'actions';
 import { push } from 'react-router-redux';
 import Uri from 'urijs';
 import { paths } from 'modules/InsightsLibrary/const';
-import { saveFilter, getSavedFilter } from 'modules/InsightsLibrary/ducks/insights';
+import { saveFilter } from 'modules/InsightsLibrary/ducks/insights';
 import presenter from './presenter';
 
 import getFields from './Filters/fields';
@@ -42,16 +42,15 @@ class InsightsList extends Component {
     };
   }
 
-  /* componentWillMount() {
-    const preSelectedFilters = Object.values(this.props.searchQuery)
-      .filter(param => !Utils.isEmpty(param));
-    if (!preSelectedFilters.length) {
-      const savedFilter = getSavedFilter();
-      if (values(savedFilter).filter(param => !Utils.isEmpty(param))) {
-        this.props.applySavedFilters(savedFilter);
-      }
-    }
-  } */
+  constructor(props, context) {
+    super(props, context);
+
+    this.persistFilters = this.persistFilters.bind(this);
+  }
+
+  componentDidMount() {
+    window.addEventListener('beforeunload', this.persistFilters);
+  }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.searchQuery !== nextProps.searchQuery) {
@@ -59,7 +58,12 @@ class InsightsList extends Component {
     }
   }
 
-  /* componentWillUnmount() {
+  componentWillUnmount() {
+    window.removeEventListener('beforeunload', this.persistFilters);
+    this.persistFilters();
+  }
+
+  persistFilters() {
     const filterValues = {};
     for (const filter in this.props.searchQuery) {
       if (!Utils.isEmpty(this.props.searchQuery[filter])) {
@@ -67,7 +71,7 @@ class InsightsList extends Component {
       }
     }
     saveFilter(filterValues);
-  } */
+  }
 
   render() {
     return presenter(this.props);

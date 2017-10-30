@@ -47,16 +47,15 @@ export class List extends Component {
     };
   }
 
-  /* componentWillMount() {
-    const preSelectedFilters = Object.values(this.props.query)
-      .filter(param => !Utils.isEmpty(param));
-    if (!preSelectedFilters.length) {
-      const savedFilter = actions.studyManager.studyList.getSavedFilter();
-      if (values(savedFilter).filter(param => !Utils.isEmpty(param))) {
-        this.props.applySavedFilters(savedFilter);
-      }
-    }
-  } */
+  constructor(props, context) {
+    super(props, context);
+
+    this.persistFilters = this.persistFilters.bind(this);
+  }
+
+  componentDidMount() {
+    window.addEventListener('beforeunload', this.persistFilters);
+  }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.query !== this.props.query) {
@@ -67,7 +66,12 @@ export class List extends Component {
     }
   }
 
-  /* componentWillUnmount() {
+  componentWillUnmount() {
+    this.persistFilters();
+    window.removeEventListener('beforeunload', this.persistFilters);
+  }
+
+  persistFilters() {
     const filterValues = {};
     for (const filter in this.props.query) {
       if (!Utils.isEmpty(this.props.query[filter])) {
@@ -75,7 +79,7 @@ export class List extends Component {
       }
     }
     actions.studyManager.studyList.saveFilter(filterValues);
-  } */
+  }
 
   render() {
     return presenter(this.props);

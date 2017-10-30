@@ -415,6 +415,21 @@ class Utils {
     return uri.toString();
   }
 
+  static getSavedFiltersRestorer({ getSavedFilter, basePath }) {
+    return (nextState, replace, callback) => {
+      let query = nextState.location.query;
+      if (!query || Object.keys(query).length === 0) {
+        const savedFilter = getSavedFilter();
+        query = {
+          ...savedFilter,
+          page: 1,
+        };
+        replace({ pathname: basePath, query });
+      }
+      callback();
+    };
+  }
+
 }
 
 class ContainerBuilder {
