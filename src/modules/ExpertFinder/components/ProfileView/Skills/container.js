@@ -34,7 +34,7 @@ function mapStateToProps(state) {
   const id = get(moduleState, 'data.result.id', '');
   const editable = get(moduleState, 'data.result.isEditable', false);
   const isCreating = get(moduleState, 'isLoading', false);
-  const skillsDictionary = get(state.expertFinder.skill, 'queryResult.result', []);
+  const skillsDictionary = get(state, 'expertFinder.skills.queryResult.result', []);
 
   return {
     id,
@@ -47,10 +47,10 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  addSkill: actions.expertFinder.userProfile.skill.create,
-  removeSkill: actions.expertFinder.userProfile.skill.delete,
-  getSkills: actions.expertFinder.skill.query,
-  createSkillAction: actions.expertFinder.skill.create,
+  addSkill: actions.expertFinder.userProfile.skills.create,
+  removeSkill: actions.expertFinder.userProfile.skills.delete,
+  getSkills: actions.expertFinder.skills.query,
+  createSkillAction: actions.expertFinder.skills.create,
   resetForm: () => resetForm(forms.skills),
   loadInfo: actions.expertFinder.userProfile.find,
 };

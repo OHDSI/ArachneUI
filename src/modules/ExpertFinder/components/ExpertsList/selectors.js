@@ -24,7 +24,7 @@ import { createSelector } from 'reselect';
 import { fieldTypes } from 'modules/ExpertFinder/const';
 import { Utils, get } from 'services/Utils';
 
-const getRawProfessionalTypes = state => get(state, 'expertFinder.professionalType.queryResult.result') || [];
+const getRawProfessionalTypes = state => get(state, 'expertFinder.professionalTypes.queryResult.result') || [];
 const getFacets = state => get(state, 'expertFinder.expertsList.facets.queryResult.result') || [];
 
 const getFilterList = createSelector(

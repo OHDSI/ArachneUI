@@ -20,11 +20,10 @@
  *
  */
 
-import { connect } from 'react-redux';
 import { Component, PropTypes } from 'react';
 import ducks from 'modules/ExpertFinder/ducks';
-import { Utils, get } from 'services/Utils';
-import presenter from './presenter' ;
+import { get, ContainerBuilder } from 'services/Utils';
+import presenter from './presenter';
 
 class MenuDropdown extends Component {
   componentWillMount() {
@@ -41,7 +40,7 @@ MenuDropdown.propTypes = {
 };
 
 
-export default class MenuDropdownBuilder {
+export default class MenuDropdownBuilder extends ContainerBuilder {
   getComponent() {
     return MenuDropdown;
   }
@@ -73,13 +72,5 @@ export default class MenuDropdownBuilder {
     return {
       loadMyProfile: ducks.actions.myProfile.find,
     }
-  }
-
-  build() {
-    return Utils.buildConnectedComponent({
-      Component: this.getComponent(),
-      mapStateToProps: this.mapStateToProps,
-      mapDispatchToProps: this.getMapDispatchToProps(),
-    });
   }
 }

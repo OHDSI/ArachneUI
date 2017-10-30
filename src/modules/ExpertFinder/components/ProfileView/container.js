@@ -20,15 +20,13 @@
  *
  */
 
-import { connect } from 'react-redux';
 import { Component, PropTypes } from 'react';
 import { ModalUtils } from 'arachne-ui-components';
 import get from 'lodash/get';
 import { modal } from 'modules/ExpertFinder/const';
 import actions from 'actions';
-import { asyncConnect } from 'redux-async-connect';
 import { goBack } from 'react-router-redux';
-import { Utils } from 'services/Utils';
+import { ContainerBuilder } from 'services/Utils';
 import presenter from './presenter';
 
 
@@ -50,7 +48,7 @@ ProfileView.propTypes = {
   id: PropTypes.string,
 };
 
-export default class ProfileViewBuilder {
+export default class ProfileViewBuilder extends ContainerBuilder {
   getComponent() {
     return ProfileView;
   }
@@ -108,13 +106,4 @@ export default class ProfileViewBuilder {
     };
   }
 
-  build() {
-    return Utils.buildConnectedComponent({
-      Component: this.getComponent(),
-      mapStateToProps: this.mapStateToProps,
-      mapDispatchToProps: this.getMapDispatchToProps(),
-      mergeProps: this.mergeProps,
-      getFetchers: this.getFetchers,
-    });
-  }
 }

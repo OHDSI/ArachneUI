@@ -69,8 +69,8 @@ const mapDispatchToProps = {
     true,
     { study, user }
   ),
-  getStudies: actions.expertFinder.study.query,
-  inviteParticipant: actions.expertFinder.invitation.create,
+  getStudies: actions.expertFinder.studies.query,
+  inviteParticipant: actions.expertFinder.invitations.create,
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {

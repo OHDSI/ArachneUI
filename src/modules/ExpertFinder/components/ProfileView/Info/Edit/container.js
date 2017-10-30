@@ -20,13 +20,12 @@
  *
  */
 
-import { connect } from 'react-redux';
 import get from 'lodash/get';
-import { reduxForm, reset as resetForm } from 'redux-form';
+import { reset as resetForm } from 'redux-form';
 import { Component, PropTypes } from 'react';
 import actions from 'actions';
 import { forms } from 'modules/ExpertFinder/const';
-import { Utils } from 'services/Utils';
+import { ContainerBuilder } from 'services/Utils';
 import presenter from './presenter';
 import selectors from './selectors';
 
@@ -44,12 +43,16 @@ BasicInfoEdit.propTypes = {
   getProfessionalTypes: PropTypes.func,
 };
 
-export default class BasicInfoEditBuilder {
-  getComponent() {
-    return reduxForm({
+export default class BasicInfoEditBuilder extends ContainerBuilder {
+  getFormParams() {
+    return {
       form: forms.general,
       enableReinitialize: true,
-    })(BasicInfoEdit);
+    };
+  }
+
+  getComponent() {
+    return BasicInfoEdit;
   }
 
   mapStateToProps(state) {
@@ -77,7 +80,7 @@ export default class BasicInfoEditBuilder {
       resetForm: resetForm.bind(null, forms.general),
       updateGeneralInfo: actions.expertFinder.userProfile.generalInfo.update,
       loadInfo: actions.expertFinder.userProfile.find,
-      getProfessionalTypes: actions.expertFinder.professionalType.query,
+      getProfessionalTypes: actions.expertFinder.professionalTypes.query,
     };
   }
 
@@ -102,14 +105,5 @@ export default class BasicInfoEditBuilder {
         return submitPromise;
       },
     };
-  }
-
-  build() {
-    return Utils.buildConnectedComponent({
-      Component: this.getComponent(),
-      mapStateToProps: this.mapStateToProps,
-      mapDispatchToProps: this.getMapDispatchToProps(),
-      mergeProps: this.mergeProps,
-    });
   }
 }

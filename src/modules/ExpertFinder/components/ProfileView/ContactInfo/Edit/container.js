@@ -85,8 +85,8 @@ const mapDispatchToProps = {
   resetForm: resetForm.bind(null, forms.contactInfo),
   updateGeneralInfo: actions.expertFinder.userProfile.generalInfo.update,
   loadInfo: actions.expertFinder.userProfile.find,
-  searchCountries: actions.expertFinder.country.query,
-  searchProvinces: actions.expertFinder.province.query,
+  searchCountries: actions.expertFinder.countries.query,
+  searchProvinces: actions.expertFinder.provinces.query,
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {

@@ -50,8 +50,8 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  addPublication: actions.expertFinder.userProfile.publication.create,
-  removePublication: actions.expertFinder.userProfile.publication.delete,
+  addPublication: actions.expertFinder.userProfile.publications.create,
+  removePublication: actions.expertFinder.userProfile.publications.delete,
   resetForm: () => resetForm(forms.publications),
   loadInfo: actions.expertFinder.userProfile.find,
 };

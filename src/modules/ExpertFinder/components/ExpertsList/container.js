@@ -70,7 +70,7 @@ export default class ExpertsListBuilder extends ContainerBuilder {
   getMapDispatchToProps() {
     return {
       loadList: actions.expertFinder.expertsList.query,
-      loadProfessionalTypes: actions.expertFinder.professionalType.query,
+      loadProfessionalTypes: actions.expertFinder.professionalTypes.query,
     };
   }
 
@@ -78,7 +78,7 @@ export default class ExpertsListBuilder extends ContainerBuilder {
     const searchStr = state.routing.locationBeforeTransitions.search;
     return {
       loadList: actions.expertFinder.expertsList.query.bind(null, { searchStr }),
-      loadProfessionalTypes: actions.expertFinder.professionalType.query,
+      loadProfessionalTypes: actions.expertFinder.professionalTypes.query,
     };
   }
 

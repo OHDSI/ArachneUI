@@ -22,38 +22,38 @@
 
 import expertsList from './expertsList';
 import userProfile from './userProfile';
-import professionalType from './professionalTypes';
-import skill from './skills';
+import professionalTypes from './professionalTypes';
+import skills from './skills';
 import myProfile from './myProfile';
-import invitation from './invitations';
-import study from './studies';
-import province from './provinces';
-import country from './countries';
+import invitations from './invitations';
+import studies from './studies';
+import provinces from './provinces';
+import countries from './countries';
 import facets from './facets';
 
 export default {
   actions: {
     expertsList: expertsList.actions,
     userProfile: userProfile.actions,
-    professionalType: professionalType.actions,
-    skill: skill.actions,
+    professionalTypes: professionalTypes.actions,
+    skills: skills.actions,
     myProfile: myProfile.actions,
-    invitation: invitation.actions,
-    study: study.actions,
-    province: province.actions,
-    country: country.actions,
+    invitations: invitations.actions,
+    studies: studies.actions,
+    provinces: provinces.actions,
+    countries: countries.actions,
     facets: facets.actions,
   },
   reducer: {
     expertsList: expertsList.reducer,
     userProfile: userProfile.reducer,
-    professionalType: professionalType.reducer,
-    skill: skill.reducer,
+    professionalTypes: professionalTypes.reducer,
+    skills: skills.reducer,
     myProfile: myProfile.reducer,
-    invitation: invitation.reducer,
-    study: study.reducer,
-    province: province.reducer,
-    country: country.reducer,
+    invitations: invitations.reducer,
+    studies: studies.reducer,
+    provinces: provinces.reducer,
+    countries: countries.reducer,
     facets: facets.reducer,
   },
 };

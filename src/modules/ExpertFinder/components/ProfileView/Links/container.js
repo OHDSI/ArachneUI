@@ -42,8 +42,8 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  addLink: actions.expertFinder.userProfile.link.create,
-  removeLink: actions.expertFinder.userProfile.link.delete,
+  addLink: actions.expertFinder.userProfile.links.create,
+  removeLink: actions.expertFinder.userProfile.links.delete,
   resetForm: () => resetForm(forms.links),
   loadInfo: actions.expertFinder.userProfile.find,
 };
