@@ -82,6 +82,7 @@ function ListDocuments(props) {
     openCreateModal,
     documentList,
     removeDocument,
+    canDownload,
   } = props;
 
   return (
@@ -103,7 +104,7 @@ function ListDocuments(props) {
         {isEditable &&
           <AddDocument openCreateModal={openCreateModal} />
         }
-        {documentList.length !== 0 &&
+        {canDownload &&
           <div 
             {...classesLoadAll({ extra: tooltipClass().className })}
               aria-label='Download all documents'
@@ -128,6 +129,7 @@ ListDocuments.propTypes = {
   downloadAllLink: PropTypes.string.isRequired,
   openCreateModal: PropTypes.func.isRequired,
   removeDocument: PropTypes.func.isRequired,
+  canDownload: PropTypes.bool,
 };
 
 export default ListDocuments;
