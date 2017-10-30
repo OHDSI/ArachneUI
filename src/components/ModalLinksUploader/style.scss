@@ -28,18 +28,6 @@
     @include form();
     background: $grey-lighter;
     padding: 1rem 2rem;
-    min-height: 250px;
-    display: flex;
-    flex-direction: column;
-
-    &__group {
-      display: flex;
-      flex-direction: column;
-      flex-grow: 1;
-    }
-
-    &__links {
-    }
     
     &--single .#{$namespace}list-item {
       &__content {
@@ -53,11 +41,36 @@
 			}
 		}
 
+  }
+
+  &modal-upload-link {
+    display: flex;
+
+    &__input-wrapper {
+      flex-grow: 1;
+      margin-right: 5px;
+    }
+
+		&__input {
+			@include input();
+			@include input-border();
+			&:disabled {
+				background: $white;
+			}
+		}
+  }
+
+  &modal-links-upload-actions {
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+
     &__add-button {
       display: flex;
       align-items: center;
       cursor: pointer;
       margin: 1rem 0;
+      margin-bottom: auto;
 		}
 
     &__icon {
@@ -77,28 +90,6 @@
     	margin-top: 1rem;
       width: 100%;
     }
-  }
-
-  &modal-upload-link {
-  	display: flex;
-
-    &--not-removable {
-
-    }
-
-    &__input-wrapper {
-      flex-grow: 1;
-      margin-right: 5px;
-    }
-
-		&__input {
-			@include input();
-			@include input-border();
-			&:disabled {
-				background: $white;
-			}
-		}
-
 
   }
   
