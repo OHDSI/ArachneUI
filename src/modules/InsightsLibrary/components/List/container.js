@@ -28,9 +28,12 @@ import { push } from 'react-router-redux';
 import Uri from 'urijs';
 import { paths } from 'modules/InsightsLibrary/const';
 import { saveFilter } from 'modules/InsightsLibrary/ducks/insights';
-import presenter from './presenter';
 
+import presenter from './presenter';
 import getFields from './Filters/fields';
+import SelectorsBuilder from './selectors';
+
+const selectors = (new SelectorsBuilder()).build();
 
 /** @augments { Component<any, any> } */
 class InsightsList extends Component {
@@ -89,10 +92,7 @@ export default class InsightsListBuilder extends ContainerBuilder {
       searchQuery,
       isLoading: get(state, 'insightsLibrary.insights.isLoading', false),
       filterFields: getFields(),
-      paginationDetails: {
-        currentPage: parseInt(get(state, 'insightsLibrary.insights.queryResult.number', 1), 10) + 1,
-        totalPages: parseInt(get(state, 'insightsLibrary.insights.queryResult.totalPages', 0), 10),
-      },
+      paginationDetails: selectors.getPaginationDetails(state),
       ...Utils.getPlainFiltersEncodeDecoder(),
     };
   }
