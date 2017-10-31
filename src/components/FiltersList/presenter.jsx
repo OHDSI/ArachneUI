@@ -59,8 +59,9 @@ function getOptions(field) {
     case types.enum: case types.enumMulti:
       return {
         mods: ['bordered'],
-        placeholder: field.label,
-        isMulti: field.type === types.enumMulti,
+        title: field.label,
+        placeholder: 'Any',
+        isMulti: field.isMulti,
       };
     case types.toggle:
       return {
@@ -69,11 +70,13 @@ function getOptions(field) {
       };
     case types.integer:
       return {
+        title: field.label,
         min: field.min,
         max: field.max,
       };
     case types.string:
       return {
+        title: field.label,
         placeholder: field.label,
         mods: ['bordered'],
       };
@@ -116,13 +119,20 @@ function DropdownFilters({ classes, fields, clear }) {
   ];
 
   fields.forEach((field) => {
+    let options = field.options;
+    if (!field.isMulti) {
+      options = [{
+        label: 'Any',
+        value: null,
+      }].concat(field.options);
+    }
     dropdownFields.push({
       // assure it's compatable with the form in FacetedSearch component
       name: `filter[${field.name}]`,
       InputComponent: {
         component: getComponentByType(field.type),
         props: {
-          options: field.options,
+          options,
           ...getOptions(field),
         },
       },
