@@ -23,7 +23,6 @@
 // @ts-check
 import { Component, PropTypes } from 'react';
 import { Utils, ContainerBuilder, get } from 'services/Utils';
-import { values } from 'lodash';
 import actions from 'actions';
 import { push } from 'react-router-redux';
 import Uri from 'urijs';
@@ -94,20 +93,7 @@ export default class InsightsListBuilder extends ContainerBuilder {
         currentPage: parseInt(get(state, 'insightsLibrary.insights.queryResult.number', 1), 10) + 1,
         totalPages: parseInt(get(state, 'insightsLibrary.insights.queryResult.totalPages', 0), 10),
       },
-      searchQueryDecode: ({ searchParams = {}, filterFields }) => {
-        return {
-          query: searchParams.query,
-          page: searchParams.page,
-          filter: searchParams,
-        };
-      },
-      searchQueryEncode: ({ searchParams, filterFields }) => {
-        return {
-          ...searchParams.filter,
-          query: searchParams.query,
-          page: searchParams.page,
-        };
-      },
+      ...Utils.getPlainFiltersEncodeDecoder(),
     };
   }
 
