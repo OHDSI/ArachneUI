@@ -15,12 +15,29 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: September 29, 2017
+ * Authors: Pavel Grafkin
+ * Created: October 31, 2017
  *
  */
 
-import GridBuilder, { extractPaginationData } from './container';
+// @ts-check
+import { get } from 'services/Utils';
+import { extractPaginationData } from 'components/Grid';
+import { viewModes, viewModePageSize } from 'const/viewModes';
 
-export default (new GridBuilder()).build();
-export { extractPaginationData };
+export default class SelectorsBuilder {
+
+  getPaginationDetails(state) {
+    const searchResults = get(state, 'insightsLibrary.insights.queryResult');
+    const query = state.routing.locationBeforeTransitions.query;
+    const numOfElsPerPage = viewModePageSize[get(query, 'view') || viewModes.TABLE];
+
+    return extractPaginationData({ searchResults, numOfElsPerPage });
+  }
+
+  build() {
+    return {
+      getPaginationDetails: this.getPaginationDetails,
+    };
+  }
+}

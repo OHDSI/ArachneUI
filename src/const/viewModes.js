@@ -42,8 +42,15 @@ const viewModesOptions = [
   },
 ];
 
+const viewModePageSize = {
+  DEFAULT: 10,
+  CARDS: 8,
+  TABLE: 12,
+};
+
 export default viewModes;
 export {
   viewModes,
   viewModesOptions,
+  viewModePageSize,
 };
