@@ -23,9 +23,8 @@
 // @ts-check
 import actions from 'actions';
 import { Component, PropTypes } from 'react';
-import { get, values } from 'lodash';
 import { push } from 'react-router-redux';
-import { Utils, ContainerBuilder } from 'services/Utils';
+import { Utils, ContainerBuilder, get } from 'services/Utils';
 import viewModes from 'const/viewModes';
 import { studyListPageSize, studyListPageSizeCards, paths } from 'modules/StudyManager/const';
 import Uri from 'urijs';
@@ -105,20 +104,7 @@ export default class ListBuilder extends ContainerBuilder {
         statusOptions: selectors.getStatusOptions(state),
       }),
       paginationDetails: selectors.getPaginationDetails(state),
-      searchQueryDecode: ({ searchParams = {}, filterFields }) => {
-        return {
-          query: searchParams.query,
-          page: searchParams.page,
-          filter: searchParams,
-        };
-      },
-      searchQueryEncode: ({ searchParams, filterFields }) => {
-        return {
-          ...searchParams.filter,
-          query: searchParams.query,
-          page: searchParams.page,
-        };
-      },
+      ...Utils.getPlainFiltersEncodeDecoder(),
     };
   }
 

@@ -36,7 +36,13 @@ import PortalUserListActions from './Actions';
 require('./style.scss');
 
 function UserList(props) {
-  const { isLoading, paginationDetails, filterFields } = props;
+  const {
+    isLoading,
+    paginationDetails,
+    filterFields,
+    searchQueryDecode,
+    searchQueryEncode,
+  } = props;
   return (
     <PageWrapper>
       <Grid
@@ -45,10 +51,12 @@ function UserList(props) {
         paginationDetails={paginationDetails}
         filterFields={filterFields}
         Actions={<PortalUserListActions />}
+        searchQueryDecode={searchQueryDecode}
+        searchQueryEncode={searchQueryEncode}
       >
-        <Table/>
+        <Table />
       </Grid>
-      <ModalAddUser/>
+      <ModalAddUser />
     </PageWrapper>
   );
 }

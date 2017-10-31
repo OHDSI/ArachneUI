@@ -41,6 +41,7 @@ const mapDispatchToProps = {
   loadInsightComments: actions.analysisExecution.insightComments.query,
   loadInsight: actions.analysisExecution.insight.find,
   resetForm: resetForm.bind(null, form.newInsightComment),
+  unloadFile: actions.analysisExecution.insightFile.unload,
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
@@ -63,6 +64,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
           submissionId: stateProps.submissionId,
         });
       }),
+    cancel:() => dispatchProps.unloadFile()
   });
 }
 

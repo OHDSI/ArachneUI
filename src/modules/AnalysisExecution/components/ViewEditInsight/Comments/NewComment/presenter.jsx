@@ -47,6 +47,11 @@ function NewComment(props) {
     mods: ['submit'],
   };
 
+  const cancelBtn = {
+    label: 'Cancel',
+    mods: ['cancel'],
+  };
+
   return (
     <div {...classes()}>
       <Form
@@ -54,6 +59,8 @@ function NewComment(props) {
         fields={fields}
         submitBtn={submitBtn}
         onSubmit={props.onSubmit}
+        cancelBtn={cancelBtn}
+        onCancel={props.cancel}
         {...props}
       />
     </div>
