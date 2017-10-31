@@ -27,7 +27,7 @@ import {
   FacetedSearchPanel as FacetedSearch,
   Panel,
   Form,
-  FormSelect,
+  Select,
   FormToggle,
   FormSlider,
   FormInput,
@@ -36,13 +36,48 @@ import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdow
 import types from 'const/modelAttributes';
 import filterTypes from 'const/filterTypes';
 import uniqBy from 'lodash/uniqBy';
+import difference from 'lodash/difference';
 
 require('./style.scss');
+
+function FilterFormSelect(props) {
+  const {
+    isMulti,
+    mods,
+    placeholder,
+    options,
+    disabled,
+
+    input,
+    meta,
+  } = props;
+
+  return <Select
+    isMulti={isMulti}
+    mods={mods}
+    placeholder={placeholder}
+    options={options}
+    value={input.value}
+    expanded={meta.active}
+    disabled={meta.submitting || disabled}
+    onFocus={() => input.onFocus()}
+    onBlur={() => input.onBlur()}
+    onChange={(val) => {
+      const selectedValue = difference(val, input.value);
+      let newValue = val;
+      // if selected 'Any' option
+      if (isMulti && selectedValue[0] === ' ') {
+        newValue = [];
+      }
+      input.onChange(newValue);
+    }}
+  />;
+}
 
 function getComponentByType(type) {
   switch (type) {
     case types.enum: case types.enumMulti:
-      return FormSelect;
+      return FilterFormSelect;
     case types.toggle:
       return FormToggle;
     case types.integer:
@@ -119,13 +154,10 @@ function DropdownFilters({ classes, fields, clear }) {
   ];
 
   fields.forEach((field) => {
-    let options = field.options;
-    if (!field.isMulti && field.type !== types.enumMulti) {
-      options = [{
-        label: 'Any',
-        value: '',
-      }].concat(field.options);
-    }
+    const options = [{
+      label: 'Any',
+      value: field.isMulti ? ' ' : null,
+    }].concat(field.options);
     dropdownFields.push({
       // assure it's compatable with the form in FacetedSearch component
       name: `filter[${field.name}]`,
