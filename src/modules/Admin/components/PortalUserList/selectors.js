@@ -21,20 +21,23 @@
  */
 
 import { get } from 'services/Utils';
+import { extractPaginationData } from 'components/Grid';
+import { viewModePageSize } from 'const/viewModes';
 
 class UserListSelectorsBuilder {
+
   getPaginationDetails(state) {
-    return {
-      currentPage: parseInt(get(state, 'adminSettings.portalUserList.queryResult.number', 0), 10) + 1,
-      pages: parseInt(get(state, 'adminSettings.portalUserList.queryResult.totalPages', 1), 10),
-      totalResults: parseInt(get(state, 'adminSettings.portalUserList.queryResult.totalElements', 0), 10),
-    }
+    const searchResults = get(state, 'adminSettings.portalUserList.queryResult');
+    return extractPaginationData({
+      searchResults,
+      numOfElsPerPage: viewModePageSize.DEFAULT,
+    });
   }
 
   build() {
     return {
       getPaginationDetails: this.getPaginationDetails,
-    }
+    };
   }
 }
 
