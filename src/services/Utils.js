@@ -449,6 +449,25 @@ class Utils {
     return filter;
   }
 
+  static getPlainFiltersEncodeDecoder() {
+    return {
+      searchQueryDecode({ searchParams = {}, filterFields }) {
+        return {
+          query: searchParams.query,
+          page: searchParams.page,
+          filter: searchParams,
+        };
+      },
+      searchQueryEncode({ searchParams, filterFields }) {
+        return {
+          ...searchParams.filter,
+          query: searchParams.query,
+          page: searchParams.page,
+        };
+      },
+    };
+  }
+
 }
 
 class ContainerBuilder {
