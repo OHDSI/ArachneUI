@@ -35,7 +35,7 @@ import {
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
 import types from 'const/modelAttributes';
 import filterTypes from 'const/filterTypes';
-import { uniqBy } from 'lodash';
+import uniqBy from 'lodash/uniqBy';
 
 require('./style.scss');
 
