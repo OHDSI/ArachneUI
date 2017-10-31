@@ -35,7 +35,7 @@ import {
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
 import types from 'const/modelAttributes';
 import filterTypes from 'const/filterTypes';
-import { isBoolean } from 'lodash';
+import { uniqBy } from 'lodash';
 
 require('./style.scss');
 
@@ -61,7 +61,7 @@ function getOptions(field) {
         mods: ['bordered'],
         title: field.label,
         placeholder: 'Any',
-        isMulti: field.isMulti,
+        isMulti: field.isMulti || field.type === types.enumMulti,
       };
     case types.toggle:
       return {
@@ -120,10 +120,10 @@ function DropdownFilters({ classes, fields, clear }) {
 
   fields.forEach((field) => {
     let options = field.options;
-    if (!field.isMulti) {
+    if (!field.isMulti && field.type !== types.enumMulti) {
       options = [{
         label: 'Any',
-        value: null,
+        value: '',
       }].concat(field.options);
     }
     dropdownFields.push({
@@ -132,7 +132,7 @@ function DropdownFilters({ classes, fields, clear }) {
       InputComponent: {
         component: getComponentByType(field.type),
         props: {
-          options,
+          options: uniqBy(options, 'value'),
           ...getOptions(field),
         },
       },
