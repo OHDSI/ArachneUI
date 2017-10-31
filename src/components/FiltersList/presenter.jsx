@@ -35,7 +35,7 @@ import {
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
 import types from 'const/modelAttributes';
 import filterTypes from 'const/filterTypes';
-import { isBoolean } from 'lodash';
+import uniqBy from 'lodash/uniqBy';
 
 require('./style.scss');
 
@@ -59,8 +59,9 @@ function getOptions(field) {
     case types.enum: case types.enumMulti:
       return {
         mods: ['bordered'],
-        placeholder: field.label,
-        isMulti: field.type === types.enumMulti,
+        title: field.label,
+        placeholder: 'Any',
+        isMulti: field.isMulti || field.type === types.enumMulti,
       };
     case types.toggle:
       return {
@@ -69,11 +70,13 @@ function getOptions(field) {
       };
     case types.integer:
       return {
+        title: field.label,
         min: field.min,
         max: field.max,
       };
     case types.string:
       return {
+        title: field.label,
         placeholder: field.label,
         mods: ['bordered'],
       };
@@ -116,13 +119,20 @@ function DropdownFilters({ classes, fields, clear }) {
   ];
 
   fields.forEach((field) => {
+    let options = field.options;
+    if (!field.isMulti && field.type !== types.enumMulti) {
+      options = [{
+        label: 'Any',
+        value: '',
+      }].concat(field.options);
+    }
     dropdownFields.push({
       // assure it's compatable with the form in FacetedSearch component
       name: `filter[${field.name}]`,
       InputComponent: {
         component: getComponentByType(field.type),
         props: {
-          options: field.options,
+          options: uniqBy(options, 'value'),
           ...getOptions(field),
         },
       },

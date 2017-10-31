@@ -86,7 +86,6 @@ class Duck {
         (state, action) => ({
           ...state,
           isSaving: true,
-          data: null,
         })
       )
       // CREATE_FULFILLED
