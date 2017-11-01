@@ -25,6 +25,23 @@ import { get, ContainerBuilder } from 'services/Utils';
 import Uri from 'urijs';
 import GridPresenter from './presenter';
 
+function extractPaginationData({ searchResults, numOfElsPerPage, startsFromOne = false }) {
+  const pages = get(searchResults, 'totalPages', 1);
+  const currentPage = parseInt(get(searchResults, 'number', 1) + (startsFromOne ? 0 : 1), 10);
+  const totalResults = get(searchResults, 'totalElements', 0);
+  const showing = numOfElsPerPage; // get(searchResults, 'numberOfElements', 0);
+  let pageStart = currentPage - 1;
+  pageStart *= showing;
+
+  return {
+    pages,
+    currentPage,
+    totalResults,
+    showing,
+    pageStart,
+  };
+}
+
 export default class GridBuilder extends ContainerBuilder {
 
   getComponent() {
@@ -44,3 +61,7 @@ export default class GridBuilder extends ContainerBuilder {
   }
 
 }
+
+export {
+  extractPaginationData,
+};
