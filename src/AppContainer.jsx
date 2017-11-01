@@ -34,6 +34,12 @@ import { modal } from 'modules/Portal/const';
 import { asyncConnect } from 'redux-async-connect';
 
 class AppContainer extends Component {
+  componentWillReceiveProps(nextProps) {
+    if (this.props.currentLocation !== nextProps.currentLocation) {
+      this.props.refreshToken();
+    }
+  }
+
   render() {
     const classes = new BEMHelper('root');
     const colorScheme = __APP_TYPE_NODE__ ? 'node' : 'default';
@@ -83,6 +89,8 @@ function mapStateToProps(state) {
   const isUserAdmin = get(state, 'auth.principal.queryResult.result.isAdmin');
   const modules = get(state, 'modules.list');
 
+  const currentLocation = get(state, 'routing.locationBeforeTransitions.pathname', '');
+
   if (modules) {
     const activeModule = modules.filter(m => m.path === state.modules.active)[0] || {};
     modules.forEach((module) => {
@@ -106,11 +114,13 @@ function mapStateToProps(state) {
   return {
     isUserAuthed,
     sidebarTabList,
+    currentLocation,
   };
 }
 
 const mapDispatchToProps = {
   showAboutInfo: () => ModalUtils.actions.toggle(modal.portalAboutInfo, true),
+  refreshToken: () => actions.auth.token.refresh(),
 };
 
 export default (navItems) => {
