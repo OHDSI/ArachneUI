@@ -83,8 +83,7 @@ export default class FilesUploadBuilder {
         const submitPromise = Promise.all(submitPromises)
           .then(() => dispatchProps.reset())
           .then(() => dispatchProps.closeModal())
-          .then(() => dispatchProps.loadStudy(stateProps.studyId))
-          .catch(() => {});
+          .then(() => dispatchProps.loadStudy(stateProps.studyId));
 
         // We have to return a submission promise back to redux-form
         // to allow it update the state
