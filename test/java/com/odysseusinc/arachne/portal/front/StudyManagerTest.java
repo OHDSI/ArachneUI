@@ -24,7 +24,6 @@ import org.junit.FixMethodOrder;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -518,13 +517,17 @@ public class StudyManagerTest extends BaseDataCatalogTest {
 
         createAnalysisFromStudy(ANALYSIS_NAME);
 
-        // return on study page -> back button
-        WebElement backToStudyBtn = driver.findElement(By.className("ac-toolbar__back-icon"));
-        backToStudyBtn.click();
+        returnToStudyPage();
 
-        waitFor(driver, ByBuilder.toolbar(STUDY_NAME));
         Assert.assertTrue(driver.findElement(By.className("ac-study-analyses-list"))
                 .findElement(ByBuilder.link(ANALYSIS_NAME)).isDisplayed());
+    }
+
+    protected static void returnToStudyPage(){
+
+        WebElement backToStudyBtn = driver.findElement(By.className("ac-toolbar__back-icon"));
+        backToStudyBtn.click();
+        waitFor(driver, ByBuilder.toolbar(STUDY_NAME));
     }
 
     @Test
@@ -551,28 +554,8 @@ public class StudyManagerTest extends BaseDataCatalogTest {
     public void test17AddDatasource() throws Exception {
 
         loginAndOpenStudy(STUDY_NAME);
-        openDatasourcesTab();
+        addDataSourceToStudy(NAME_DS, "2");
 
-        waitFor(driver, ByBuilder.byClassAndText("ac-list-item__content", "No attached data sources"));
-
-        WebElement datasourceAddBtm = driver.findElement(ByBuilder.byClassAndText("ac-list-item__content", "Add Data Source"));
-        datasourceAddBtm.click();
-        waitFor(driver, ByBuilder.byClassAndText("ac-tabs__item--selected", "Data catalog"));
-
-        WebElement dsSelect = driver.findElement(ByBuilder.inputWithAutoComplete("Filter by name"));
-        Actions actions = new Actions(driver);
-        actions.moveToElement(dsSelect).click().sendKeys("2").build().perform();
-
-        waitFor(driver, ByBuilder.byClassAndText("ac-label-data-source__name", NAME_DS));
-
-        WebElement dsOption = driver.findElement(
-                ByBuilder.byClassAndText("ac-label-data-source__name", NAME_DS));
-        actions.moveToElement(dsOption).click().build().perform();
-
-        WebElement addDSBtm = driver.findElement(ByBuilder.button("Add data source"));
-        addDSBtm.click();
-
-        waitFor(driver, ByBuilder.link(NAME_DS));
         List<WebElement> rows = driver.findElements(By.className("ac-list-item__content"));
 
 
@@ -593,6 +576,32 @@ public class StudyManagerTest extends BaseDataCatalogTest {
 
         Assert.assertTrue(result.findElement(ByBuilder.byClassAndText("ac-study-participants-item__status", "approved")).isDisplayed());
         Assert.assertTrue(result.findElement(By.className("ac-study-participants-item__name")).getText().equals("admin4 admin4 admin4"));
+    }
+
+    protected static void addDataSourceToStudy(String dataSourceName, String searchKeys){
+
+        openDatasourcesTab();
+
+        waitFor(driver, ByBuilder.byClassAndText("ac-list-item__content", "No attached data sources"));
+
+        WebElement datasourceAddBtm = driver.findElement(ByBuilder.byClassAndText("ac-list-item__content", "Add Data Source"));
+        datasourceAddBtm.click();
+        waitFor(driver, ByBuilder.byClassAndText("ac-tabs__item--selected", "Data catalog"));
+
+        WebElement dsSelect = driver.findElement(ByBuilder.inputWithAutoComplete("Filter by name"));
+        Actions actions = new Actions(driver);
+        actions.moveToElement(dsSelect).click().sendKeys(searchKeys).build().perform();
+
+        waitFor(driver, ByBuilder.byClassAndText("ac-label-data-source__name", dataSourceName));
+
+        WebElement dsOption = driver.findElement(
+                ByBuilder.byClassAndText("ac-label-data-source__name", dataSourceName));
+        actions.moveToElement(dsOption).click().build().perform();
+
+        WebElement addDSBtm = driver.findElement(ByBuilder.button("Add data source"));
+        addDSBtm.click();
+
+        waitFor(driver, ByBuilder.link(dataSourceName));
     }
 
     @Test
@@ -645,23 +654,17 @@ public class StudyManagerTest extends BaseDataCatalogTest {
         Assert.assertFalse(getOptionalStudyRow(NAME_FOR_DELETED_STUDY).isPresent());
     }
 
-    private void loginAndOpenStudy() {
+    protected static void loginAndOpenStudy() {
 
         loginAndOpenStudy(STUDY_NAME);
     }
 
-    private void loginAndOpenStudy(String name) {
+    private static void loginAndOpenStudy(String name) {
 
         loginPortal(ADMIN_LOGIN, ADMIN_PASSWORD);
 
         WebElement studyInTable = getStudyRow(name);
         studyInTable.click();
-    }
-
-    private void acceptAlert() {
-
-        Alert alert = driver.switchTo().alert();
-        alert.accept();
     }
 
     private void openParticipantsTab() {
@@ -671,7 +674,7 @@ public class StudyManagerTest extends BaseDataCatalogTest {
         participantTab.click();
     }
 
-    private void openDatasourcesTab() {
+    private static void openDatasourcesTab() {
 
         WebElement datasourcesTab = driver.findElement(ByBuilder.tab("Data sources"));
         datasourcesTab.click();
