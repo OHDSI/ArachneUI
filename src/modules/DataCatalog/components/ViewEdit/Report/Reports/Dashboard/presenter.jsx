@@ -32,7 +32,7 @@ import {
   histogram,
   line,
 } from '@ohdsi/atlascharts/dist/atlascharts.umd';
-import { numberFormatter } from 'services/Utils';
+import { numberFormatter, get } from 'services/Utils';
 import { chartSettings } from 'modules/DataCatalog/const';
 import moment from 'moment';
 import { commonDate } from 'const/formats';
@@ -55,7 +55,7 @@ function Dashboard(props) {
     <div {...classes({ extra: 'row' })}>
       <div className='col-xs-6'>
         <Panel title='CDM Summary' {...classes('chart')}>
-          {summary 
+          {(summary && Array.isArray(get(summary, 'ATTRIBUTE_NAME')))
             ? [
               <div {...classes('summary-row')}>
                 <span {...classes('summary-col', 'title')}>{summary.ATTRIBUTE_NAME[0]}</span>
