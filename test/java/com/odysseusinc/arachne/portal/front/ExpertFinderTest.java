@@ -30,6 +30,7 @@ import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
+@Ignore
 public class ExpertFinderTest extends BaseUserTest {
 
     private final static ImmutableMap<String, Integer> FILTER_MAP;
