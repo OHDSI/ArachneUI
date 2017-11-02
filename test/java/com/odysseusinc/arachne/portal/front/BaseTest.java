@@ -13,6 +13,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +36,8 @@ import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.Network;
 import org.testcontainers.containers.wait.HttpWaitStrategy;
@@ -73,7 +76,7 @@ public class BaseTest {
 
         final WaitStrategy arachneWaitStrategy = new HttpWaitStrategy()
                 .forPath("/api/v1/build-number")
-                .withStartupTimeout(Duration.ofMinutes(5));
+                .withStartupTimeout(Duration.ofMinutes(15));
 
         mailhogContainer = new GenericContainer("mailhog/mailhog:latest")
                 .withNetwork(network)
@@ -132,7 +135,12 @@ public class BaseTest {
         final Integer datanodePort = datanodeContainer.getMappedPort(8880);
         DATA_NODE_BASE_URL = String.format("%s://%s:%s", PROTOCOL, datanodeHost,  datanodePort);
 
-        driver = new ChromeDriver();
+        System.setProperty("webdriver.chrome.driver", "C:\\Users\\MPozhidaeva\\selenium\\chromedriver");
+        Map<String, Object> chromeOptions = new HashMap<>();
+        chromeOptions.put("binary", "D:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe");
+        DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+        capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
+        driver = new ChromeDriver(capabilities);
     }
 
     @AfterClass
