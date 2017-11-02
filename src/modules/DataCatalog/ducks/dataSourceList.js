@@ -25,7 +25,8 @@ import { apiPaths } from 'modules/DataCatalog/const';
 
 const dsList = new Duck({
   name: 'DC_DATA_SOURCE_LIST',
-  urlBuilder: ({ searchStr }) => {
+  urlBuilder: (props) => {
+    const searchStr = props.searchStr;
     if (!searchStr) {
       return apiPaths.dataSources();
     }

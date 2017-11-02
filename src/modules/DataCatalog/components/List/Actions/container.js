@@ -22,8 +22,9 @@
 
 // @ts-check
 import actions from 'actions';
-import { Utils } from 'services/Utils';
+import { Utils, get } from 'services/Utils';
 import ToolbarActions from './presenter';
+import { push as goToPage } from 'react-router-redux';
 
 class DataCatalogListActionsBuilder {
 
@@ -32,8 +33,10 @@ class DataCatalogListActionsBuilder {
   }
 
   mapStateToProps(state) {
+    const cleanPath = get(state, 'routing.locationBeforeTransitions.pathname');
     return {
-      currentSearchStr: state.routing.locationBeforeTransitions.query,
+      currentQuery: state.routing.locationBeforeTransitions.query,
+      cleanPath
     };
   }
 
@@ -43,6 +46,7 @@ class DataCatalogListActionsBuilder {
   getMapDispatchToProps() {
     return {
       loadDsList: actions.dataCatalog.dataSourceList.query,
+      go: address => goToPage(address),
     };
   }
 
@@ -52,7 +56,7 @@ class DataCatalogListActionsBuilder {
       ...stateProps,
       ...dispatchProps,
       reload: () => {
-        dispatchProps.loadDsList({ searchStr: stateProps.currentSearchStr });
+        dispatchProps.go(Utils.getHref(stateProps.cleanPath, stateProps.currentQuery, true))
       },
     };
   }

@@ -26,7 +26,6 @@ import { Utils, ContainerBuilder, get } from 'services/Utils';
 import actions from 'actions';
 import { ModalUtils } from 'arachne-ui-components';
 import viewModes from 'const/viewModes';
-import Uri from 'urijs';
 import { paths } from 'modules/StudyManager/const';
 import { push as goToPage } from 'react-router-redux';
 import presenter from './presenter';
@@ -64,26 +63,17 @@ export default class StudyViewBuilder extends ContainerBuilder {
   }
 
   mergeProps(stateProps, dispatchProps, ownProps) {
+    const path = stateProps.cleanPath;
+    const currentQuery = stateProps.currentQuery;
     return {
       ...stateProps,
       ...dispatchProps,
       ...ownProps,
       refresh() {
-        const url = new Uri(stateProps.cleanPath);
-        url.setSearch(stateProps.currentQuery);
-        url.setSearch({
-          hash: Math.random().toString(36).substring(7),
-        });
-        dispatchProps.go(url.href());
+        dispatchProps.go(Utils.getHref(path, currentQuery, true));
       },
       setViewMode(view) {
-        const url = new Uri(stateProps.cleanPath);
-        url.setSearch(stateProps.currentQuery);
-        url.setSearch({
-          page: 1,
-          view,
-        });
-        dispatchProps.go(url.href());
+        dispatchProps.go(Utils.getHref(path, { ...currentQuery, page: 1, view }));
       },
     };
   }

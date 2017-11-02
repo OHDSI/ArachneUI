@@ -43,6 +43,7 @@ import { ModalUtils } from 'arachne-ui-components';
 import types from 'const/modelAttributes';
 import URI from 'urijs';
 
+
 function buildFormData(obj) {
   const formData = new FormData();
 
@@ -413,6 +414,14 @@ class Utils {
       uri.setSearch(query);
     }
     return uri.toString();
+  }
+
+  static getHref(stringUrl, params, hashNeeded = false) {
+    const url = new URI(stringUrl).addSearch(params);
+    if (hashNeeded) {
+      url.setSearch({ hash: Math.random().toString(36).substring(7) })
+    }
+    return url.href();
   }
 
   static getSavedFiltersRestorer({ getSavedFilter, basePath }) {
