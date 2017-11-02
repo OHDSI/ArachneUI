@@ -73,7 +73,7 @@ public class BaseTest {
 
         final WaitStrategy arachneWaitStrategy = new HttpWaitStrategy()
                 .forPath("/api/v1/build-number")
-                .withStartupTimeout(Duration.ofMinutes(15));
+                .withStartupTimeout(Duration.ofMinutes(2));
 
         mailhogContainer = new GenericContainer("mailhog/mailhog:latest")
                 .withNetwork(network)
@@ -99,7 +99,7 @@ public class BaseTest {
                 .put("spring.mail.properties.mail.smtp.starttls.required", "false")
                 .build();
 
-        portalContainer = new GenericContainer("hub.arachnenetwork.com/portal:latest")
+        portalContainer = new GenericContainer("hub.arachnenetwork.com/portal:1.8.0-SNAPSHOT")
                 .withEnv(portalEnvs)
                 .withNetwork(network)
                 .withExposedPorts(8080)
