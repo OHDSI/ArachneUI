@@ -1,5 +1,6 @@
 package com.odysseusinc.arachne.portal.front;
 
+import static com.odysseusinc.arachne.portal.front.AnalysisManagerTest.NAME_DS;
 import static com.odysseusinc.arachne.portal.front.AnalysisManagerTest.addCodeFile;
 import static com.odysseusinc.arachne.portal.front.BaseStudyTest.createAnalysisFromStudy;
 import static com.odysseusinc.arachne.portal.front.BaseStudyTest.createStudy;
@@ -39,8 +40,6 @@ public class SubmissionTest extends BaseDataCatalogTest {
 
     private static final String ANALYSIS_NAME = "TEST analysis";
 
-    private static final String NAME_DS = "TestNode: Test Data Source";
-
     private static File fileCode;
     private static File resultFile;
 
@@ -54,7 +53,7 @@ public class SubmissionTest extends BaseDataCatalogTest {
 
         returnToStudyPage();
 
-        addDataSourceToStudy(NAME_DS, "test");
+        addDataSourceToStudy(NAME_DS, "3");
 
         logout();
 

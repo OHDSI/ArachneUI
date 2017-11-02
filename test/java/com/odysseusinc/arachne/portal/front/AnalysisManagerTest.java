@@ -40,7 +40,7 @@ public class AnalysisManagerTest extends BaseDataCatalogTest {
     private static final String ANALYSIS_NAME = "TEST analysis";
 
     private static final String MODAL_TITLE_UPDATE_ANALYSIS_TITLE = "Update analysis title";
-    private static final String NAME_DS = "TestNode: Test Data Source";
+    protected static final String NAME_DS = "TestNode: Test Data Source 3";
 
     private static File fileCode;
 
@@ -50,7 +50,7 @@ public class AnalysisManagerTest extends BaseDataCatalogTest {
         updateName(ADMIN_LOGIN, ADMIN_PASSWORD, "4");
         loginPortal(ADMIN_LOGIN, ADMIN_PASSWORD);
         createStudy(STUDY_DATA);
-        addDataSourceToStudy(NAME_DS, "test");
+        addDataSourceToStudy(NAME_DS, "3");
 
         logout();
 
