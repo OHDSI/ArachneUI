@@ -73,7 +73,7 @@ public class BaseTest {
 
         final WaitStrategy arachneWaitStrategy = new HttpWaitStrategy()
                 .forPath("/api/v1/build-number")
-                .withStartupTimeout(Duration.ofMinutes(2));
+                .withStartupTimeout(Duration.ofMinutes(5));
 
         mailhogContainer = new GenericContainer("mailhog/mailhog:latest")
                 .withNetwork(network)
