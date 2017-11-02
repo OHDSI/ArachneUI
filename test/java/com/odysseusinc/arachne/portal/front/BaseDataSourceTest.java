@@ -117,7 +117,7 @@ public abstract class BaseDataSourceTest extends BaseUserTest {
             createDataNodeModalElement.findElement(ByBuilder.button("Create")).click();
         } catch (TimeoutException ignored) {
         }
-        Utils.waitFor(driver, ByBuilder.modal("Create data source"), 7);
+        Utils.waitFor(driver, ByBuilder.modal("Create data source"), 20);
     }
 
     protected static class DataSourceData {
