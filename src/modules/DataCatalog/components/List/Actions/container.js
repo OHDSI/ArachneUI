@@ -33,7 +33,7 @@ class DataCatalogListActionsBuilder {
 
   mapStateToProps(state) {
     return {
-      currentSearchStr: state.routing.locationBeforeTransitions.search,
+      currentSearchStr: state.routing.locationBeforeTransitions.query,
     };
   }
 
