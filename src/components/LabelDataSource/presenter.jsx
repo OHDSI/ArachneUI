@@ -90,8 +90,8 @@ function dsConverter(dataSource = {}) {
   let statusTitle;
 
   if (healthStatus) {
-    color = healthStatuses[healthStatus].color;
-    statusTitle = healthStatuses[healthStatus].title;
+    color = healthStatuses.getColor(healthStatus);
+    statusTitle = healthStatuses.getTitle(healthStatus);
   }
 
   const dsName = get(dataSource, 'name', '');
