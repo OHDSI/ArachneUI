@@ -1,5 +1,6 @@
 import Duck from 'services/Duck';
 import { apiPaths } from 'modules/Auth/const';
+import AuthService from 'services/Auth';
 
 const actionCoreName = 'AU_TOKEN';
 
@@ -15,7 +16,12 @@ const reducer = token.reducer;
 
 export default {
   actions: {
-    refresh: actions.create,
+    refresh: () => {
+      return (dispatch) => dispatch(actions.create({}))
+        .then((result) => {
+          AuthService.setToken(result.result);
+        });
+      },
   },
   reducer,
 };

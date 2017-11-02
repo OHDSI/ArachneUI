@@ -36,7 +36,8 @@ import { asyncConnect } from 'redux-async-connect';
 class AppContainer extends Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.currentLocation !== nextProps.currentLocation) {
-      this.props.refreshToken();
+      this.props.refreshToken()
+        .catch(() => this.props.logout(`${this.props.currentLocation}${this.props.currentSearch}`));
     }
   }
 
@@ -90,6 +91,7 @@ function mapStateToProps(state) {
   const modules = get(state, 'modules.list');
 
   const currentLocation = get(state, 'routing.locationBeforeTransitions.pathname', '');
+  const currentSearch = get(state, 'routing.locationBeforeTransitions.search', '');
 
   if (modules) {
     const activeModule = modules.filter(m => m.path === state.modules.active)[0] || {};
@@ -115,12 +117,14 @@ function mapStateToProps(state) {
     isUserAuthed,
     sidebarTabList,
     currentLocation,
+    currentSearch,
   };
 }
 
 const mapDispatchToProps = {
   showAboutInfo: () => ModalUtils.actions.toggle(modal.portalAboutInfo, true),
   refreshToken: () => actions.auth.token.refresh(),
+  logout: (backurl) => actions.auth.logout(backurl),
 };
 
 export default (navItems) => {
