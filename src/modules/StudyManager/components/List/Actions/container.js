@@ -27,7 +27,6 @@ import actions from 'actions';
 import { ModalUtils } from 'arachne-ui-components';
 import viewModes from 'const/viewModes';
 import { paths } from 'modules/StudyManager/const';
-import { push as goToPage } from 'react-router-redux';
 import presenter from './presenter';
 
 export class StudyView extends Component {
@@ -58,22 +57,20 @@ export default class StudyViewBuilder extends ContainerBuilder {
   getMapDispatchToProps() {
     return {
       openCreateStudyModal: () => ModalUtils.actions.toggle('createStudy', true),
-      go: address => goToPage(address),
+      setSearch: actions.router.setSearch
     };
   }
 
   mergeProps(stateProps, dispatchProps, ownProps) {
-    const path = stateProps.cleanPath;
-    const currentQuery = stateProps.currentQuery;
     return {
       ...stateProps,
       ...dispatchProps,
       ...ownProps,
       refresh() {
-        dispatchProps.go(Utils.getHref(path, currentQuery, true));
+        dispatchProps.setSearch({ hash: Math.random().toString(36).substring(7) });
       },
       setViewMode(view) {
-        dispatchProps.go(Utils.getHref(path, { ...currentQuery, page: 1, view }));
+        dispatchProps.setSearch({ page: 1, view });
       },
     };
   }

@@ -416,14 +416,6 @@ class Utils {
     return uri.toString();
   }
 
-  static getHref(stringUrl, params, hashNeeded = false) {
-    const url = new URI(stringUrl).addSearch(params);
-    if (hashNeeded) {
-      url.setSearch({ hash: Math.random().toString(36).substring(7) })
-    }
-    return url.href();
-  }
-
   static getSavedFiltersRestorer({ getSavedFilter, basePath }) {
     return (nextState, replace, callback) => {
       let query = nextState.location.query;

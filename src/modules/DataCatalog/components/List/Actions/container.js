@@ -24,7 +24,6 @@
 import actions from 'actions';
 import { Utils, get } from 'services/Utils';
 import ToolbarActions from './presenter';
-import { push as goToPage } from 'react-router-redux';
 
 class DataCatalogListActionsBuilder {
 
@@ -46,7 +45,7 @@ class DataCatalogListActionsBuilder {
   getMapDispatchToProps() {
     return {
       loadDsList: actions.dataCatalog.dataSourceList.query,
-      go: address => goToPage(address),
+      setSearch: actions.router.setSearch
     };
   }
 
@@ -56,7 +55,7 @@ class DataCatalogListActionsBuilder {
       ...stateProps,
       ...dispatchProps,
       reload: () => {
-        dispatchProps.go(Utils.getHref(stateProps.cleanPath, stateProps.currentQuery, true))
+        dispatchProps.setSearch({ hash: Math.random().toString(36).substring(7) })
       },
     };
   }
