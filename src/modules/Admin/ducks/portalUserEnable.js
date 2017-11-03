@@ -16,22 +16,22 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: Oct 23, 2017
+ * Created: Nov 3, 2017
  *
  */
 
 import Duck from 'services/Duck';
 import { apiPaths } from 'modules/Admin/const';
 
-const coreActionName = 'AD_USER_ENABLE';
+const coreActionName = 'AD_PORTAL_USER_ENABLE';
 
-const userEnableDuck = new Duck({
+const portalUserEnableDuck = new Duck({
   name: coreActionName,
-  urlBuilder: apiPaths.userEnable,
+  urlBuilder: apiPaths.portalUsersEnable,
 });
 
-const actions = userEnableDuck.actions;
-const reducer = userEnableDuck.reducer;
+const actions = portalUserEnableDuck.actions;
+const reducer = portalUserEnableDuck.reducer;
 
 export default {
   actions,

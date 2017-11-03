@@ -25,22 +25,22 @@ import adminList from './adminList';
 import adminOptionList from './adminOptionList';
 import portalUserConfirmEmail from './portalUserConfirmEmail';
 import portalUserList from './portalUserList';
+import portalUserEnable from './portalUserEnable';
 import solrIndex from './solrIndex';
 import systemSettings from './systemSettings';
 import userOptionList from './userOptionList';
 import userList from './userList';
-import userEnable from './userEnable';
 
 const actions = {
   adminList: adminList.actions,
   adminOptionList: adminOptionList.actions,
   portalUserConfirmEmail: portalUserConfirmEmail.actions,
   portalUserList: portalUserList.actions,
+  portalUserEnable: portalUserEnable.actions,
   solrIndex: solrIndex.actions,
   systemSettings: systemSettings.actions,
   userOptionList: userOptionList.actions,
   userList: userList.actions,
-  userEnable: userEnable.actions,
 };
 
 const reducer = combineReducers({
@@ -48,11 +48,11 @@ const reducer = combineReducers({
   adminOptionList: adminOptionList.reducer,
   portalUserConfirmEmail: portalUserConfirmEmail.reducer,
   portalUserList: portalUserList.reducer,
+  portalUserEnable: portalUserEnable.reducer,
   solrIndex: solrIndex.reducer,
   systemSettings: systemSettings.reducer,
   userOptionList: userOptionList.reducer,
   userList: userList.reducer,
-  userEnable: userEnable.reducer,
 });
 
 export default {
