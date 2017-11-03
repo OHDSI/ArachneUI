@@ -33,17 +33,7 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = {
   loadList: actions.expertFinder.expertsList.query,
+  reload: actions.router.reload
 };
 
-function mergeProps(stateProps, dispatchProps, ownProps) {
-  return {
-    ...stateProps,
-    ...ownProps,
-    ...dispatchProps,
-    reload: () => {
-      dispatchProps.loadList({ searchStr: stateProps.curentSearchStr });
-    },
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(List);
+export default connect(mapStateToProps, mapDispatchToProps)(List);
