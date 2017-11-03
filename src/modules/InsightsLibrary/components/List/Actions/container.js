@@ -55,7 +55,7 @@ export default class InsightsLibraryListActionsBuilder {
         url.setSearch(queryParams);
         return goToPage(url.href());
       },
-      reload: actions.router.reload
+      reload: actions.router.reload,
     };
   }
 

@@ -169,7 +169,7 @@ export default class FilterBuilder extends ContainerBuilder {
         stateProps.fields.map(f => emptyFilters[f.name] = null);
         const searchParams = buildSearchParams({
           filterFields: stateProps.fields,
-          selectedQuery: null,
+          selectedQuery: '',
           selectedFilters: emptyFilters,
           queryEncode: stateProps.queryEncode,
         });

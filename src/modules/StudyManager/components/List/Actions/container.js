@@ -58,7 +58,7 @@ export default class StudyViewBuilder extends ContainerBuilder {
     return {
       openCreateStudyModal: () => ModalUtils.actions.toggle('createStudy', true),
       setSearch: actions.router.setSearch,
-      refresh: actions.router.reload
+      refresh: actions.router.reload,
     };
   }
 

@@ -37,7 +37,7 @@ export default class DataCatalogListActionsBuilder extends ContainerBuilder {
   getMapDispatchToProps() {
     return {
       loadDsList: actions.dataCatalog.dataSourceList.query,
-      reload: actions.router.reload
+      reload: actions.router.reload,
     };
   }
 }

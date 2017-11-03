@@ -33,7 +33,7 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = {
   loadList: actions.expertFinder.expertsList.query,
-  reload: actions.router.reload
+  reload: actions.router.reload,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(List);

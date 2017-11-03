@@ -48,5 +48,5 @@ function reload() {
 
 export default {
    reload,
-   setSearch
+   setSearch,
 };
