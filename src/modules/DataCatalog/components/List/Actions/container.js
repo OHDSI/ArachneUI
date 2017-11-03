@@ -47,23 +47,11 @@ class DataCatalogListActionsBuilder {
     };
   }
 
-  mergeProps(stateProps, dispatchProps, ownProps) {
-    return {
-      ...ownProps,
-      ...stateProps,
-      ...dispatchProps,
-      reload: () => {
-        dispatchProps.reload()
-      },
-    };
-  }
-
   build() {
     return Utils.buildConnectedComponent({
       Component: this.getComponent(),
       mapStateToProps: this.mapStateToProps,
       mapDispatchToProps: this.getMapDispatchToProps(),
-      mergeProps: this.mergeProps,
     });
   }
 }

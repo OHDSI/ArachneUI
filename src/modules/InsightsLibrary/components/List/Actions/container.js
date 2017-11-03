@@ -55,6 +55,7 @@ export default class InsightsLibraryListActionsBuilder {
         url.setSearch(queryParams);
         return goToPage(url.href());
       },
+      reload: actions.router.reload
     };
   }
 
@@ -63,9 +64,6 @@ export default class InsightsLibraryListActionsBuilder {
       ...ownProps,
       ...stateProps,
       ...dispatchProps,
-      reload: () => {
-        dispatchProps.loadInsights(null, stateProps.queryParams);
-      },
       setViewMode(viewMode) {
         dispatchProps.redirect({
           ...stateProps.queryParams,
