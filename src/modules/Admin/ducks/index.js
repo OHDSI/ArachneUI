@@ -24,7 +24,6 @@ import { combineReducers } from 'redux';
 import adminList from './adminList';
 import adminOptionList from './adminOptionList';
 import portalUserConfirmEmail from './portalUserConfirmEmail';
-import portalUserEnable from './portalUserEnable';
 import portalUserList from './portalUserList';
 import solrIndex from './solrIndex';
 import systemSettings from './systemSettings';
@@ -36,7 +35,6 @@ const actions = {
   adminList: adminList.actions,
   adminOptionList: adminOptionList.actions,
   portalUserConfirmEmail: portalUserConfirmEmail.actions,
-  portalUserEnable: portalUserEnable.actions,
   portalUserList: portalUserList.actions,
   solrIndex: solrIndex.actions,
   systemSettings: systemSettings.actions,
@@ -49,7 +47,6 @@ const reducer = combineReducers({
   adminList: adminList.reducer,
   adminOptionList: adminOptionList.reducer,
   portalUserConfirmEmail: portalUserConfirmEmail.reducer,
-  portalUserEnable: portalUserEnable.reducer,
   portalUserList: portalUserList.reducer,
   solrIndex: solrIndex.reducer,
   systemSettings: systemSettings.reducer,
