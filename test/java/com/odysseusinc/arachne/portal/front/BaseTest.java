@@ -97,9 +97,10 @@ public class BaseTest {
                 .put("spring.mail.properties.mail.smtp.auth", "false")
                 .put("spring.mail.properties.mail.smtp.starttls.enable", "false")
                 .put("spring.mail.properties.mail.smtp.starttls.required", "false")
+                .put("portal.hostsWhiteList", "localhost")
                 .build();
 
-        portalContainer = new GenericContainer("hub.arachnenetwork.com/portal:1.8.0-SNAPSHOT")
+        portalContainer = new GenericContainer("hub.arachnenetwork.com/portal:latest")
                 .withEnv(portalEnvs)
                 .withNetwork(network)
                 .withExposedPorts(8080)
