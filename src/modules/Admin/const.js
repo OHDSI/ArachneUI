@@ -67,7 +67,6 @@ const apiPaths = {
   },
   portalUsersEnable: ({ id, enable }) => `/api/v1/admin/users/${id}/enable/${enable}`,
   portalUsersConfirmEmail: ({ id, confirm }) => `/api/v1/admin/users/${id}/confirm-email/${confirm}`,
-  userEnable: ({ login, enabled }) => `/api/user/${enabled ? 'enable' : 'disable'}/${login}`,
 };
 
 const paths = {
