@@ -22,19 +22,13 @@
 
 // @ts-check
 import actions from 'actions';
-import { Utils, get } from 'services/Utils';
+import { get, ContainerBuilder } from 'services/Utils';
 import ToolbarActions from './presenter';
 
-class DataCatalogListActionsBuilder {
+export default class DataCatalogListActionsBuilder extends ContainerBuilder {
 
   getComponent() {
     return ToolbarActions;
-  }
-
-  mapStateToProps(state) {
-    return {
-      cleanPath: get(state, 'routing.locationBeforeTransitions.pathname')
-    };
   }
 
   /**
@@ -46,14 +40,4 @@ class DataCatalogListActionsBuilder {
       reload: actions.router.reload
     };
   }
-
-  build() {
-    return Utils.buildConnectedComponent({
-      Component: this.getComponent(),
-      mapStateToProps: this.mapStateToProps,
-      mapDispatchToProps: this.getMapDispatchToProps(),
-    });
-  }
 }
-
-export default DataCatalogListActionsBuilder;

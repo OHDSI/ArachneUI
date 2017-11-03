@@ -22,7 +22,7 @@
 
 // @ts-check
 import { Component } from 'react';
-import { Utils, ContainerBuilder, get } from 'services/Utils';
+import { ContainerBuilder, get } from 'services/Utils';
 import actions from 'actions';
 import { ModalUtils } from 'arachne-ui-components';
 import viewModes from 'const/viewModes';
