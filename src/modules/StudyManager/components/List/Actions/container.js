@@ -58,7 +58,7 @@ export default class StudyViewBuilder extends ContainerBuilder {
     return {
       openCreateStudyModal: () => ModalUtils.actions.toggle('createStudy', true),
       setSearch: actions.router.setSearch,
-      reload: actions.router.reload
+      refresh: actions.router.reload
     };
   }
 
@@ -67,9 +67,6 @@ export default class StudyViewBuilder extends ContainerBuilder {
       ...stateProps,
       ...dispatchProps,
       ...ownProps,
-      refresh() {
-        dispatchProps.reload();
-      },
       setViewMode(view) {
         dispatchProps.setSearch({ page: 1, view });
       },
