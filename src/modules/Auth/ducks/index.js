@@ -8,6 +8,7 @@ import professionalType from './professionalTypes';
 import remindPassword from './remindPassword';
 import resetPassword from './resetPassword';
 import resendEmail from  './resendEmail';
+import token from './token';
 import { isAuthModulePath } from 'modules/Auth/utils';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
@@ -29,7 +30,7 @@ const actions = {
   remindPassword: remindPassword.actions,
   resetPassword: resetPassword.actions,
   resendEmail: resendEmail.actions.create,
-
+  token: token.actions,
 };
 
 const reducer = combineReducers({
@@ -43,6 +44,7 @@ const reducer = combineReducers({
   resetPassword: resetPassword.reducer,
   resendEmail: resendEmail.reducer,
   authRoutingHistory,
+  token: token.reducer,
 });
 
 export default {
