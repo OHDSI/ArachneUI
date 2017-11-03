@@ -24,6 +24,7 @@ import actions from 'actions/index';
 import { ContainerBuilder, Utils } from 'services/Utils';
 import UserTable from './presenter';
 import selectors from './selectors';
+import cloneDeep from 'lodash/cloneDeep';
 
 function getSorting(location) {
   return {
@@ -52,7 +53,7 @@ class UserListTableBuilder extends ContainerBuilder {
     return {
       loadList: actions.adminSettings.userList.query,
       removeUser: actions.adminSettings.userList.delete,
-      enableUser: actions.adminSettings.userEnable.create,
+      updateUser: actions.adminSettings.userList.update,
       setSearch: actions.router.setSearch,
     };
   }
@@ -62,8 +63,10 @@ class UserListTableBuilder extends ContainerBuilder {
       ...stateProps,
       ...ownProps,
       ...dispatchProps,
-      enableUser: (login, enabled) => {
-        dispatchProps.enableUser({ login, enabled })
+      updateUser: (id, enabled, entity) => {
+        let entityClone = cloneDeep(entity);
+        entityClone.enabled = enabled;
+        dispatchProps.updateUser({ id }, entityClone)
           .then(dispatchProps.loadList)
           .catch(() => {});
       },
