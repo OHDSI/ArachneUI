@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -57,7 +57,7 @@ function ListCode({ files, onSelect, pageCount, currentPage, pageKey, path }) {
           </li>
         }
       </ul>
-      {files.length &&
+      {files.length !== 0 &&
         <div {...classes('pagination')}>
           <Pagination
             pages={pageCount}

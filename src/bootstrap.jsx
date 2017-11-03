@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -120,7 +120,7 @@ function initializeApi(store) {
   ApiService
     .setUserTokenGetter(() => AuthService.getToken())
     .setUnauthorizedHandler(() => {
-      if (!AuthService.getToken()) {
+      if (store.getState().auth.principal.queryResult !== null) {
         store.dispatch(actions.auth.logout(store.getState().routing.locationBeforeTransitions.pathname));
       }
     });

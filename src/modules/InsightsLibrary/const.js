@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,23 +20,19 @@
  *
  */
 
-import URI from 'urijs';
 import keyMirror from 'keymirror';
+import { Utils } from 'services/Utils';
 
 const paths = {
   insights: ({ insightId } = {}) => `/insights-library/insights${insightId ? `/${insightId}` : ''}`,
+  insightFile: ({ insightId, fileUuid, query }) => Utils.setUrlParams(`/insights-library/insights/${insightId}/files${fileUuid ? `/${fileUuid}` : '' }`, query),
+  studies: id => `/study-manager/studies/${id}`,
 };
 
 const apiPaths = {
   insights: ({ insightId } = {}) => `/api/v1/papers${insightId ? `/${insightId}` : ''}`,
-  insightFiles: ({ insightId, fileUuid, query }) => {
-    const link = `/api/v1/papers/${insightId}/files${fileUuid ? `/${fileUuid}` : '' }`;
-    const uri = new URI(link);
-    if (query) {
-      uri.setSearch(query);
-    }
-    return uri.toString();
-  },
+  insightFiles: ({ insightId, fileUuid, query }) => Utils.setUrlParams(`/api/v1/papers/${insightId}/files${fileUuid ? `/${fileUuid}` : '' }`, query),
+  insightFilesDownload: ({ insightId, fileUuid, query }) => Utils.setUrlParams(`/api/v1/papers/${insightId}/files/${fileUuid}/download`, query),
   insightUsers: ({ insightId, userId } = {}) => `/api/v1/papers/${insightId}/participants${userId ? `/${userId}` : '' }`,
   insightUserOptions: ({ insightId, query } = {}) => `/api/v1/user-management/users/search-user?paperId=${insightId}&query=${query}`,
   setFavourite: insightId => `/api/v1/papers/${insightId}/favourite`,

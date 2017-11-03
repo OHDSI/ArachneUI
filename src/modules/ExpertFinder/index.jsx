@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,14 +22,14 @@
 
 import React from 'react';
 import imgs from 'const/imgs';
-import actions from './actions/index';
-import reducer from './reducers/index';
+import { combineReducers } from 'redux';
+import ducks from './ducks';
 import { paths } from './const';
 import MenuDropdown from './components/MenuDropdown';
 
 export default {
-  actions: () => actions,
-  reducer: () => reducer,
+  actions: () => ducks.actions,
+  reducer: () => combineReducers(ducks.reducer),
   routes: () => require('./routes').default(), // eslint-disable-line global-require,
   sidebarElement: {
     ico: imgs.sidebar.expertFinder,

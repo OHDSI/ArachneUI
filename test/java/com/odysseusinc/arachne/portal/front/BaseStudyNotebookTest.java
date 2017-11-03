@@ -37,6 +37,6 @@ public abstract class BaseStudyNotebookTest extends BaseStudyTest {
 
     private static void createStudySet() {
 
-        STUDIES_TEST_DATA.forEach(BaseStudyTest::createStudy);
+        STUDIES_TEST_DATA.forEach(BaseStudyTest::createAdminStudy);
     }
 }

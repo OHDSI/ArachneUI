@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -64,6 +64,7 @@ const apiPaths = {
   //
   principal: () => '/api/v1/auth/me',
   authMethod: () => '/api/v1/auth/method',
+  refresh: () => '/api/v1/auth/refresh',
 };
 
 const authMethods = keyMirror({

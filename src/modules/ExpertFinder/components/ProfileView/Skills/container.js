@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,11 +30,11 @@ import Skills from './presenter';
 
 function mapStateToProps(state) {
   const moduleState = state.expertFinder.userProfile;
-  const data = get(moduleState, 'data.skills', []);
-  const id = get(moduleState, 'data.id', '');
-  const editable = get(moduleState, 'data.isEditable', false);
+  const data = get(moduleState, 'data.result.skills', []);
+  const id = get(moduleState, 'data.result.id', '');
+  const editable = get(moduleState, 'data.result.isEditable', false);
   const isCreating = get(moduleState, 'isLoading', false);
-  const skillsDictionary = get(state.expertFinder.skills, 'data', []);
+  const skillsDictionary = get(state, 'expertFinder.skills.queryResult.result', []);
 
   return {
     id,
@@ -47,12 +47,12 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  addSkill: actions.expertFinder.userProfile.addSkill,
-  removeSkill: actions.expertFinder.userProfile.removeSkill,
-  getSkills: actions.expertFinder.skills.getSkillsAutocomplete,
-  createSkillAction: actions.expertFinder.skills.createSkill,
+  addSkill: actions.expertFinder.userProfile.skills.create,
+  removeSkill: actions.expertFinder.userProfile.skills.delete,
+  getSkills: actions.expertFinder.skills.query,
+  createSkillAction: actions.expertFinder.skills.create,
   resetForm: () => resetForm(forms.skills),
-  loadInfo: actions.expertFinder.userProfile.loadInfo,
+  loadInfo: actions.expertFinder.userProfile.find,
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
@@ -61,16 +61,20 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...stateProps,
     ...dispatchProps,
     createSkill: function (skill) { // eslint-disable-line object-shorthand
-      const createPromise = dispatchProps.createSkillAction(skill)
+      const createPromise = dispatchProps.createSkillAction(null, {
+        id: null,
+        name: skill.value,
+      })
         .then(res => this.doSubmit({ skill: res.result.id }))
         .catch(() => {});
 
       return createPromise;
     },
     doSubmit: ({ skill }) => {
-      const submitPromise = dispatchProps.addSkill(skill);
+      const submitPromise = dispatchProps.addSkill({ id: skill });
       submitPromise.then(() => dispatchProps.resetForm())
-        .then(() => dispatchProps.loadInfo(stateProps.id))
+        .then(() => dispatchProps.loadInfo({ id: stateProps.id }))
+        .then(() => dispatchProps.getSkills())
         .catch(() => {});
 
       return submitPromise;
@@ -78,7 +82,10 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     doRemove: (skill) => {
       Utils.confirmDelete()
         .then(() => {
-          dispatchProps.removeSkill(skill).then(() => dispatchProps.loadInfo(stateProps.id));
+          dispatchProps
+            .removeSkill({ id: skill })
+            .then(() => dispatchProps.loadInfo({ id: stateProps.id }))
+            .then(() => dispatchProps.getSkills());
         });
     },
   };

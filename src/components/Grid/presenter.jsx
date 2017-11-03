@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -56,8 +56,8 @@ function Grid(props) {
   } = props;
 
   const format = '0,0';
-  const resultsCountMessage = (pageStart !== null && totalResults !== null && pageStart !== null)
-    ? `Showing ${numeral(pageStart + 1).format(format)} - ${numeral(pageStart + showing).format(format)} from ${numeral(totalResults).format(format)} results`
+  const resultsCountMessage = (pageStart !== null && totalResults !== null && showing !== null)
+    ? `Showing ${numeral(pageStart + 1).format(format)} - ${numeral(Math.min(pageStart + showing, totalResults)).format(format)} from ${numeral(totalResults).format(format)} results`
     : '';
 
   const filterProps = {
@@ -82,11 +82,9 @@ function Grid(props) {
               <div {...classes('pagination')}>
                 <Pagination pages={pages} currentPage={currentPage} path={path} />
               </div>
-              {pages > 1 &&
-                <div {...classes('results-count')}>
-                  <span>{resultsCountMessage}</span>
-                </div>
-              }
+              <div {...classes('results-count')}>
+                <span>{resultsCountMessage}</span>
+              </div>
             </div>
           </div>
           <LoadingPanel active={isLoading} />

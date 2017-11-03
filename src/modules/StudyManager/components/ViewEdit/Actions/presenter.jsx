@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,7 +31,7 @@ function StudyActions(props) {
   const classes = new BEMHelper('study-actions');
   const tooltipClass = new BEMHelper('tooltip');
   const {
-    canPublishPaper,
+    canCreatePaper,
     isEditable,
     isFilledForPaper,
     goToPaper,
@@ -58,7 +58,7 @@ function StudyActions(props) {
         </Button>
       </span>
     );
-  } else if (isEditable && canPublishPaper && isFilledForPaper) {
+  } else if (isEditable && canCreatePaper && isFilledForPaper) {
     publishContent = (
       <span
         {...tooltipClass()}
@@ -72,7 +72,7 @@ function StudyActions(props) {
         </Button>
       </span>
     );
-  } else if (isEditable && canPublishPaper) {
+  } else if (isEditable && canCreatePaper) {
     publishContent = (
       <span
         {...classes({ element: 'publish-tooltip', extra: tooltipClass().className })}
@@ -112,7 +112,7 @@ function StudyActions(props) {
 }
 
 StudyActions.propTypes = {
-  canPublishPaper: PropTypes.bool,
+  canCreatePaper: PropTypes.bool,
   isEditable: PropTypes.bool,
   isFilledForPaper: PropTypes.bool,
   goToPaper: PropTypes.func,

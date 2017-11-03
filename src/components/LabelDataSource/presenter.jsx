@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -73,6 +73,7 @@ function dnConverter(dataNode = {}) {
   }
 
   return {
+    id: dataNode.id,
     uuid: dataNode.uuid,
     color,
     statusTitle,
@@ -97,6 +98,7 @@ function dsConverter(dataSource = {}) {
   const fullName = `${name}: ${dsName}`;
 
   return {
+    id: dataSource.id,
     uuid: dataSource.uuid,
     color,
     statusTitle,

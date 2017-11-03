@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -73,8 +73,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
       const submitPromise = Promise.all(submitPromises)
         .then(() => dispatchProps.resetForm())
         .then(() => dispatchProps.closeModal())
-        .then(() => dispatchProps.loadAnalysis({ id: stateProps.analysisId }))
-        .catch(() => {});
+        .then(() => dispatchProps.loadAnalysis({ id: stateProps.analysisId }));
 
       // We have to return a submission promise back to redux-form
       // to allow it update the state

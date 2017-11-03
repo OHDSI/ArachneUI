@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,16 +41,17 @@ class UserPicModal extends Component {
 
 function mapStateToProps(state) {
   const moduleState = state.expertFinder.userProfile;
-  const userId = get(moduleState, 'data.id', '');
+  const userId = get(moduleState, 'data.result.id', '');
   return {
     userId,
   };
 }
 
 const mapDispatchToProps = {
-  updateUserpic: actions.expertFinder.userProfile.updateUserpic,
+  updateUserpic: actions.expertFinder.userProfile.userPic.update,
   resetForm: () => resetForm(forms.userPic),
-  loadInfo: actions.expertFinder.userProfile.loadInfo,
+  loadInfo: actions.expertFinder.userProfile.find,
+  clearInfo: actions.expertFinder.userProfile.clear,
   hideUploadForm: () => ModalUtils.actions.toggle(modal.userPic, false),
 };
 
@@ -60,9 +61,19 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...stateProps,
     ...dispatchProps,
     doSubmit: ({ image }) => {
-      const submitPromise = dispatchProps.updateUserpic(image[0]);
+      const data = new FormData();
+      data.append('file', image[0]);
+
+      const submitPromise = dispatchProps.updateUserpic(
+        { id: stateProps.userId },
+        data
+      );
       submitPromise.then(() => dispatchProps.resetForm())
-        .then(() => dispatchProps.loadInfo(stateProps.userId, Date.now().toString()))
+        .then(() => dispatchProps.clearInfo())
+        .then(() => dispatchProps.loadInfo({
+          id: stateProps.userId,
+          hash: Date.now().toString(),
+        }))
         .then(() => dispatchProps.hideUploadForm())
         .catch(() => {});
 

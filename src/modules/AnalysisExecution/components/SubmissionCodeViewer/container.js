@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,8 +24,8 @@ import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { get, detectLanguageByExtension } from 'services/Utils';
 import actions from 'actions/index';
-import { isFat as isMimeTypeFat } from 'services/MimeTypeUtil';
 import { downloadLinkBuilder } from 'modules/AnalysisExecution/ducks/submissionFile';
+import { buildBreadcrumbList } from 'modules/AnalysisExecution/utils';
 import presenter from './presenter';
 
 class SubmissionCode extends Component {
@@ -35,25 +35,6 @@ class SubmissionCode extends Component {
       entityType: this.props.from,
       id: this.props.submissionGroupId || this.props.submissionId,
     });
-    this.props.loadSubmissionFile({
-      type: this.props.type,
-      submissionGroupId: this.props.submissionGroupId,
-      submissionId: this.props.submissionId,
-      fileId: this.props.fileUuid,
-      withContent: false,
-    });
-  }
-
-  componentWillReceiveProps(props) {
-    if (!props.isLoading && !props.content && props.mimeType && !isMimeTypeFat(props.mimeType)) {
-      this.props.loadSubmissionFile({
-        type: this.props.type,
-        submissionGroupId: this.props.submissionGroupId,
-        submissionId: this.props.submissionId,
-        fileId: this.props.fileUuid,
-        withContent: !isMimeTypeFat(props.mimeType),
-      });
-    }
   }
 
   render() {
@@ -89,36 +70,42 @@ function mapStateToProps(state, ownProps) {
     'Arachne',
   ];
 
-  const downloadLink = downloadLinkBuilder({ type, submissionGroupId, submissionId, fileId: fileUuid });
+  const downloadLink = downloadLinkBuilder({ type, submissionGroupId, submissionId, fileId: fileUuid, downloadFile: true });
 
   const submissionFileData = get(state, 'analysisExecution.submissionFile.data.result');
-  const title = get(submissionFileData, 'label', '');
-  const name = get(submissionFileData, 'name', '');
-  const mimeType = get(submissionFileData, 'docType');
-  const content = get(submissionFileData, 'content', null, 'String');
-  const createdAt = get(submissionFileData, 'created');
-  const language = detectLanguageByExtension(submissionFileData);
-  return {
-    isLoading,
-    from,
+
+  const urlParams = {
     type,
     submissionGroupId,
     submissionId,
-    fileUuid,
+    fileId: fileUuid,
+  };
+
+  const breadcrumbList = buildBreadcrumbList(get(state, 'analysisExecution.breadcrumbs.queryResult.result'));
+  const backUrl = breadcrumbList.length > 0 ? breadcrumbList[breadcrumbList.length - 1].link : null;
+
+  const toolbarOpts = {
+    backUrl,
+    breadcrumbList,
+    title: get(submissionFileData, 'label') || get(submissionFileData, 'name'),
+  };
+
+  return {
+    urlParams,
+    file: submissionFileData,
+    isLoading,
+    toolbarOpts,
     pageTitle: pageTitle.join(' | '),
-    content: isFileLoading ? null : content,
-    mimeType,
     downloadLink,
-    title,
-    name,
-    createdAt,
-    language,
+    from,
+    submissionGroupId,
+    submissionId,
   };
 }
 
 const mapDispatchToProps = {
   loadBreadcrumbs: actions.analysisExecution.breadcrumbs.query,
-  loadSubmissionFile: actions.analysisExecution.submissionFile.find,
+  loadFile: actions.analysisExecution.submissionFile.find,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SubmissionCode);

@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,6 +42,20 @@ const mapDispatchToProps = {
   loadComments: actions.analysisExecution.insightComments.query,
   unloadComments: actions.analysisExecution.insightComments.unload,
   unloadFile: actions.analysisExecution.insightFile.unload,
+  selectFile: actions.analysisExecution.insightFile.select
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Comments);
+function mergeProps(stateProps, dispatchProps, ownProps) {
+  return Object.assign({
+    ...ownProps,
+    ...stateProps,
+    ...dispatchProps,
+    loadComments: (file) => {
+      dispatchProps
+        .loadComments({ commentTopicId: file.commentTopicId })
+        .then(() => dispatchProps.selectFile(file));
+    },
+  });
+}
+
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(Comments);

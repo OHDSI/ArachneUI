@@ -4,10 +4,11 @@ import authLogout from './authLogout';
 import principal from './principal';
 import authMethod from './authMethod';
 import authRegister from './authRegister';
-import professionalTypes from './professionalTypes';
+import professionalType from './professionalTypes';
 import remindPassword from './remindPassword';
 import resetPassword from './resetPassword';
 import resendEmail from  './resendEmail';
+import token from './token';
 import { isAuthModulePath } from 'modules/Auth/utils';
 import { LOCATION_CHANGE } from 'react-router-redux';
 
@@ -25,11 +26,11 @@ const actions = {
   principal: principal.actions,
   authMethod: authMethod.actions,
   register: authRegister.actions.create,
-  professionalTypes: professionalTypes.actions,
+  professionalType: professionalType.actions,
   remindPassword: remindPassword.actions,
   resetPassword: resetPassword.actions,
   resendEmail: resendEmail.actions.create,
-
+  token: token.actions,
 };
 
 const reducer = combineReducers({
@@ -38,11 +39,12 @@ const reducer = combineReducers({
   principal: principal.reducer,
   authMethod: authMethod.reducer,
   authRegister: authRegister.reducer,
-  professionalTypes: professionalTypes.reducer,
+  professionalType: professionalType.reducer,
   remindPassword: remindPassword.reducer,
   resetPassword: resetPassword.reducer,
   resendEmail: resendEmail.reducer,
   authRoutingHistory,
+  token: token.reducer,
 });
 
 export default {

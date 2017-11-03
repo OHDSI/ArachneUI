@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,8 +21,10 @@
  */
 
 import React, { PropTypes } from 'react';
-import { ListItem } from 'arachne-ui-components';
-import { Link } from 'arachne-ui-components';
+import {
+  Link,
+  ListItem
+} from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
 import { healthStatuses } from 'const/dataSource';
 
@@ -35,7 +37,8 @@ function DataSourceItem(props) {
     dataSource,
     hasDeletePermissions,
     addDataSource,
-    removeDataSource
+    removeDataSource,
+    editDataSource,
   } = props;
 
   const mods = {
@@ -99,7 +102,10 @@ function DataSourceItem(props) {
           <div {...classes('comment-icon')}>chat_bubble</div>
         </Link>
       }
-      <Link to={dataSource.link}>{dataSource.name}</Link>
+      {dataSource.isVirtual && dataSource.isCurrentUserOwner
+        ? <Link {...classes('name')} onClick={() => editDataSource(dataSource.id)}>{dataSource.name}<span {...classes('ico')}>edit</span></Link>
+        : <Link {...classes('name')} to={dataSource.link}>{dataSource.name}</Link>
+      }
       <span {...classes({ element: 'status', modifiers: dataSource.status.toLowerCase() })}>{dataSource.status}</span>
     </ListItem>
   );
@@ -119,7 +125,8 @@ function ListDataSources(props) {
     hasDeletePermissions,
     openAddModal,
     addDataSource,
-    removeDataSource
+    removeDataSource,
+    editDataSource,
   } = props;
 
   return (
@@ -131,6 +138,7 @@ function ListDataSources(props) {
           addDataSource={addDataSource}
           removeDataSource={removeDataSource}
           key={key}
+          editDataSource={editDataSource}
         />
       )}
       {dataSourceList.length === 0 &&

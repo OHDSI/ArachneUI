@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,6 +22,7 @@
 
 import Duck from 'services/Duck';
 import { apiPaths } from 'modules/InsightsLibrary/const';
+import { Utils } from 'services/Utils';
 
 const actionCoreName = 'IL_INSIGHTS';
 
@@ -38,7 +39,7 @@ function saveFilter(filter) {
 }
 
 function getSavedFilter() {
-  return JSON.parse(localStorage.getItem('insights-filter')) || {};
+  return Utils.getFilterFromLS('insights-filter');
 }
 
 function dropFilter() {

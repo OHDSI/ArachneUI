@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,37 +24,53 @@
 import { Component, PropTypes } from 'react';
 import { Utils, get, ContainerBuilder } from 'services/Utils';
 import isEqual from 'lodash/isEqual';
-import { reduxForm, reset } from 'redux-form';
-import { push as goToPage } from 'react-router-redux';
 import qs from 'qs';
 import FilterPresenter from './presenter';
 import actions from 'actions';
+
+function buildSearchParams({
+  filterFields,
+  selectedQuery,
+  selectedFilters,
+  queryEncode = null,
+}) {
+  const valuesToUnsearch = {};
+  Object.keys(selectedFilters).forEach((setting) => {
+    if (!selectedFilters[setting]) {
+      valuesToUnsearch[setting] = undefined;
+    }
+  });
+
+  let searchParams = {
+    filter: {
+      ...selectedFilters,
+      ...valuesToUnsearch,
+    },
+    query: selectedQuery,
+    page: 1,
+  };
+
+  if (typeof queryEncode === 'function') {
+    searchParams = queryEncode({
+      searchParams,
+      filterFields,
+    });
+  }
+
+  return searchParams;
+}
 
 /** @augments { Component<any, any> } */
 class Filter extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.dirty && (!isEqual(nextProps.selectedFilters, this.props.selectedFilters) || nextProps.selectedQuery !== this.props.selectedQuery)) {
-      const valuesToUnsearch = {};
-      Object.keys(nextProps.selectedFilters).forEach((setting) => {
-        if (!nextProps.selectedFilters[setting]) {
-          valuesToUnsearch[setting] = undefined;
-        }
+      const searchParams = buildSearchParams({
+        filterFields: nextProps.fields,
+        selectedQuery: nextProps.selectedQuery,
+        selectedFilters: nextProps.selectedFilters,
+        queryEncode: nextProps.queryEncode,
       });
-
-      let searchParams = {
-        ...nextProps.selectedFilters,
-        ...valuesToUnsearch,
-        query: nextProps.selectedQuery,
-        page: 1,
-      };
-
-      if (typeof nextProps.queryEncode === 'function') {
-        searchParams = nextProps.queryEncode({
-          searchParams,
-          filterFields: nextProps.fields,
-        });
-      }
 
       this.props.setSearch(searchParams);
     }
@@ -92,20 +108,21 @@ export default class FilterBuilder extends ContainerBuilder {
   }
 
   mapStateToProps(state, ownProps) {
-    const cleanPath = get(state, 'routing.locationBeforeTransitions.pathname');
     const searchStr = get(state, 'routing.locationBeforeTransitions.search', '', 'String').replace(/^\?/, '');
-    const queryParams = qs.parse(searchStr, { parseArrays: false }) || {};
+    const searchParams = qs.parse(searchStr, { parseArrays: false }) || {};
     const fields = ownProps.fields;
 
-    let initialValues = {
-      query: queryParams.query || null,
-      filter: queryParams.filter || {},
-    };
+    let initialValues = {};
     if (typeof ownProps.queryDecode === 'function') {
       initialValues = ownProps.queryDecode({
-        searchParams: initialValues,
+        searchParams: searchParams,
         filterFields: fields,
       });
+    } else {
+      initialValues = {
+        query: searchParams.query || null,
+        filter: searchParams.filter || {},
+      };
     }
     // Enforces proper value formats for form's fields
     initialValues.filter = Utils.prepareFilterValues(initialValues.filter, fields);
@@ -122,7 +139,6 @@ export default class FilterBuilder extends ContainerBuilder {
     );
 
     return {
-      cleanPath,
       selectedQuery,
       selectedFilters,
       initialValues,
@@ -140,7 +156,6 @@ export default class FilterBuilder extends ContainerBuilder {
   getMapDispatchToProps() {
     return {
       setSearch: actions.router.setSearch,
-      goTo: path => goToPage(path),
     };
   }
 
@@ -149,7 +164,17 @@ export default class FilterBuilder extends ContainerBuilder {
       ...stateProps,
       ...dispatchProps,
       ...ownProps,
-      clear: () => dispatchProps.goTo(stateProps.cleanPath),
+      clear: () => {
+        const emptyFilters = {};
+        stateProps.fields.map(f => emptyFilters[f.name] = null);
+        const searchParams = buildSearchParams({
+          filterFields: stateProps.fields,
+          selectedQuery: null,
+          selectedFilters: emptyFilters,
+          queryEncode: stateProps.queryEncode,
+        });
+        dispatchProps.setSearch(searchParams);
+      },
     };
   }
 

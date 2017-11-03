@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,6 +41,7 @@ const mimeTypes = {
   html: 'html',
   other: 'other',
   text: 'text',
+  link: 'link',
 };
 
 export default mimeTypes;

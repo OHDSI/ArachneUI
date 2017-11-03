@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,6 +39,8 @@ function StudyList(props) {
     isFilteredByMy,
     filterFields,
     paginationDetails,
+    searchQueryDecode,
+    searchQueryEncode,
   } = props;
 
   return (
@@ -50,6 +52,8 @@ function StudyList(props) {
           filterFields={filterFields}
           Actions={<Actions />}
           paginationDetails={paginationDetails}
+          searchQueryDecode={searchQueryDecode}
+          searchQueryEncode={searchQueryEncode}
         >
           <List />
         </Grid>

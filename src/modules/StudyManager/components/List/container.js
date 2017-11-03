@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,9 +23,8 @@
 // @ts-check
 import actions from 'actions';
 import { Component, PropTypes } from 'react';
-import { get, values } from 'lodash';
 import { push } from 'react-router-redux';
-import { Utils } from 'services/Utils';
+import { Utils, ContainerBuilder, get } from 'services/Utils';
 import viewModes from 'const/viewModes';
 import { studyListPageSize, studyListPageSizeCards, paths } from 'modules/StudyManager/const';
 import Uri from 'urijs';
@@ -47,15 +46,14 @@ export class List extends Component {
     };
   }
 
-  componentWillMount() {
-    const preSelectedFilters = Object.values(this.props.query)
-      .filter(param => !Utils.isEmpty(param));
-    if (!preSelectedFilters.length) {
-      const savedFilter = actions.studyManager.studyList.getSavedFilter();
-      if (values(savedFilter).filter(param => !Utils.isEmpty(param))) {
-        this.props.applySavedFilters(savedFilter);
-      }
-    }
+  constructor(props, context) {
+    super(props, context);
+
+    this.persistFilters = this.persistFilters.bind(this);
+  }
+
+  componentDidMount() {
+    window.addEventListener('beforeunload', this.persistFilters);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -68,6 +66,11 @@ export class List extends Component {
   }
 
   componentWillUnmount() {
+    this.persistFilters();
+    window.removeEventListener('beforeunload', this.persistFilters);
+  }
+
+  persistFilters() {
     const filterValues = {};
     for (const filter in this.props.query) {
       if (!Utils.isEmpty(this.props.query[filter])) {
@@ -82,7 +85,7 @@ export class List extends Component {
   }
 }
 
-export default class ListBuilder {
+export default class ListBuilder extends ContainerBuilder {
   getComponent() {
     return List;
   }
@@ -101,6 +104,7 @@ export default class ListBuilder {
         statusOptions: selectors.getStatusOptions(state),
       }),
       paginationDetails: selectors.getPaginationDetails(state),
+      ...Utils.getPlainFiltersEncodeDecoder(),
     };
   }
 
@@ -141,13 +145,4 @@ export default class ListBuilder {
     };
   }
 
-  build() {
-    return Utils.buildConnectedComponent({
-      Component: this.getComponent(),
-      mapStateToProps: this.mapStateToProps,
-      mapDispatchToProps: this.getMapDispatchToProps(),
-      mergeProps: this.mergeProps,
-      getFetchers: this.getFetchers,
-    });
-  }
 }

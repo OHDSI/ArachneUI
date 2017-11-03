@@ -1,10 +1,12 @@
 {
   "name": "arachne-ui",
-  "version": "1.8.4",
-  "licenses": [{
-    "type": "Apache-2.0",
-    "url": "http://www.apache.org/licenses/LICENSE-2.0"
-  }],
+  "version": "1.10.1",
+  "licenses": [
+    {
+      "type": "Apache-2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0"
+    }
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/OHDSI/ArachneUI.git"
@@ -64,6 +66,7 @@
     "lodash": "^4.17.2",
     "moment": "^2.16.0",
     "moment-timezone": "^0.5.13",
+    "node-command-line": "^1.0.2",
     "node-fetch": "^1.7.1",
     "node-noop": "^1.0.0",
     "numeral": "^2.0.4",
@@ -109,8 +112,6 @@
     "url-loader": "^0.5.9",
     "whatwg-fetch": "^1.0.0"
   },
-  "author": "First Line Software",
-  "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.17.0",
     "babel-eslint": "^7.0.0",

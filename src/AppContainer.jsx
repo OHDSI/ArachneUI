@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,6 +34,13 @@ import { modal } from 'modules/Portal/const';
 import { asyncConnect } from 'redux-async-connect';
 
 class AppContainer extends Component {
+  componentWillReceiveProps(nextProps) {
+    if (this.props.currentLocation !== nextProps.currentLocation) {
+      this.props.refreshToken()
+        .catch(() => this.props.logout(`${this.props.currentLocation}${this.props.currentSearch}`));
+    }
+  }
+
   render() {
     const classes = new BEMHelper('root');
     const colorScheme = __APP_TYPE_NODE__ ? 'node' : 'default';
@@ -83,6 +90,9 @@ function mapStateToProps(state) {
   const isUserAdmin = get(state, 'auth.principal.queryResult.result.isAdmin');
   const modules = get(state, 'modules.list');
 
+  const currentLocation = get(state, 'routing.locationBeforeTransitions.pathname', '');
+  const currentSearch = get(state, 'routing.locationBeforeTransitions.search', '');
+
   if (modules) {
     const activeModule = modules.filter(m => m.path === state.modules.active)[0] || {};
     modules.forEach((module) => {
@@ -106,11 +116,15 @@ function mapStateToProps(state) {
   return {
     isUserAuthed,
     sidebarTabList,
+    currentLocation,
+    currentSearch,
   };
 }
 
 const mapDispatchToProps = {
   showAboutInfo: () => ModalUtils.actions.toggle(modal.portalAboutInfo, true),
+  refreshToken: () => actions.auth.token.refresh(),
+  logout: (backurl) => actions.auth.logout(backurl),
 };
 
 export default (navItems) => {
