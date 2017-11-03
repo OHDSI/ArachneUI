@@ -57,7 +57,8 @@ export default class StudyViewBuilder extends ContainerBuilder {
   getMapDispatchToProps() {
     return {
       openCreateStudyModal: () => ModalUtils.actions.toggle('createStudy', true),
-      setSearch: actions.router.setSearch
+      setSearch: actions.router.setSearch,
+      reload: actions.router.reload
     };
   }
 
@@ -67,7 +68,7 @@ export default class StudyViewBuilder extends ContainerBuilder {
       ...dispatchProps,
       ...ownProps,
       refresh() {
-        dispatchProps.setSearch({ hash: Math.random().toString(36).substring(7) });
+        dispatchProps.reload();
       },
       setViewMode(view) {
         dispatchProps.setSearch({ page: 1, view });

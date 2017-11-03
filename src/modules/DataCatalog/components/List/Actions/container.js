@@ -32,10 +32,8 @@ class DataCatalogListActionsBuilder {
   }
 
   mapStateToProps(state) {
-    const cleanPath = get(state, 'routing.locationBeforeTransitions.pathname');
     return {
-      currentQuery: state.routing.locationBeforeTransitions.query,
-      cleanPath
+      cleanPath: get(state, 'routing.locationBeforeTransitions.pathname')
     };
   }
 
@@ -45,7 +43,7 @@ class DataCatalogListActionsBuilder {
   getMapDispatchToProps() {
     return {
       loadDsList: actions.dataCatalog.dataSourceList.query,
-      setSearch: actions.router.setSearch
+      reload: actions.router.reload
     };
   }
 
@@ -55,7 +53,7 @@ class DataCatalogListActionsBuilder {
       ...stateProps,
       ...dispatchProps,
       reload: () => {
-        dispatchProps.setSearch({ hash: Math.random().toString(36).substring(7) })
+        dispatchProps.reload()
       },
     };
   }

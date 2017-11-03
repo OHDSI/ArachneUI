@@ -43,7 +43,6 @@ import { ModalUtils } from 'arachne-ui-components';
 import types from 'const/modelAttributes';
 import URI from 'urijs';
 
-
 function buildFormData(obj) {
   const formData = new FormData();
 
