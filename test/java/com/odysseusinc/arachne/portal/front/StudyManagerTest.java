@@ -134,7 +134,7 @@ public class StudyManagerTest extends BaseDataCatalogTest {
                 .findElement(ByBuilder.byClassAndText("ac-form__submit", "Save"));
 
         studyDescriptionBtn.click();
-
+//
         waitFor(driver, ByBuilder.byClassAndText("ac-study-objective-view", newDescription));
     }
 
@@ -162,10 +162,9 @@ public class StudyManagerTest extends BaseDataCatalogTest {
     public void test05AddStudyDocument() throws Exception {
 
         loginAndOpenStudy();
-
-        WebElement addDocumentButton = driver.findElement(
-                ByBuilder.byClassAndText("ac-study-document-list-add__label", "Add document"));
-        addDocumentButton.click();
+        By addButton = ByBuilder.byClassAndText("ac-study-document-list-add__label", "Add document");
+        waitFor(driver, addButton);
+        driver.findElement(addButton).click();
 
         waitFor(driver, By.className("ac-study-form-create-document"));
 
@@ -184,6 +183,7 @@ public class StudyManagerTest extends BaseDataCatalogTest {
         waitFor(driver, documentList);
         WebElement removeIco = driver.findElement(documentList).findElement(By.className("ac-list-item__remove"));
         removeIco.click();
+        Thread.sleep(2000);
         acceptAlert();
         waitFor(driver, ByBuilder.byClassAndText("ac-list-item__content", "No documents available"));
     }
@@ -382,6 +382,7 @@ public class StudyManagerTest extends BaseDataCatalogTest {
 
         driver.findElement(By.className("ac-modal--active")).findElement(By.className("ac-modal__close-ico")).click();
 
+        Thread.sleep(2000);
         webDriverWait = new WebDriverWait(driver, 3);
         webDriverWait.until((Predicate<WebDriver>) driver -> {
             return driver
@@ -535,7 +536,7 @@ public class StudyManagerTest extends BaseDataCatalogTest {
 
         loginAndOpenStudy(STUDY_NAME);
         String studyStatus = "Active";
-
+        //
         WebElement studyStatusSelector = driver.findElement(ByBuilder.studyStatusLabel(studyStatus));
 
         waitFor(driver, ByBuilder.studyStatusLabel(studyStatus));

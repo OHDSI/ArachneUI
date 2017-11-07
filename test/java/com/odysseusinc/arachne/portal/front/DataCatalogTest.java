@@ -34,6 +34,7 @@ public final class DataCatalogTest extends BaseDataCatalogTest {
 
         final By datasourceTable = ByBuilder.tableWithHeader("Name");
         waitFor(driver, datasourceTable);
+        waitFor(driver, ByBuilder.text(DATANODE_NAME + ": " + DATA_SOURCE_DATA_3.name));
         final List<WebElement> elements = driver.findElement(datasourceTable).findElements(By.xpath(".//tbody/tr"));
         Assert.assertEquals(DATA_SOURCE_DATA_SET.size(), elements.size());
     }
@@ -48,7 +49,9 @@ public final class DataCatalogTest extends BaseDataCatalogTest {
     public void test03ShowDataSourceDetails() {
 
         final DataSourceData dataSourceData = DATA_SOURCE_DATA_SET.get(0);
-        driver.findElement(ByBuilder.text(DATANODE_NAME + ": " + dataSourceData.name)).click();
+        final By datanode = ByBuilder.text(DATANODE_NAME + ": " + dataSourceData.name);
+        waitFor(driver, datanode);
+        driver.findElement(datanode).click();
         final By toolbar = ByBuilder.toolbar(dataSourceData.name);
         Utils.waitForPageLoad(driver, toolbar);
     }

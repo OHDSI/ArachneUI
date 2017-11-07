@@ -35,6 +35,7 @@ import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testcontainers.DockerClientFactory;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.Network;
 import org.testcontainers.containers.wait.HttpWaitStrategy;
@@ -73,7 +74,7 @@ public class BaseTest {
 
         final WaitStrategy arachneWaitStrategy = new HttpWaitStrategy()
                 .forPath("/api/v1/build-number")
-                .withStartupTimeout(Duration.ofMinutes(2));
+                .withStartupTimeout(Duration.ofMinutes(3));
 
         mailhogContainer = new GenericContainer("mailhog/mailhog:latest")
                 .withNetwork(network)
@@ -97,7 +98,7 @@ public class BaseTest {
                 .put("spring.mail.properties.mail.smtp.auth", "false")
                 .put("spring.mail.properties.mail.smtp.starttls.enable", "false")
                 .put("spring.mail.properties.mail.smtp.starttls.required", "false")
-                .put("portal.hostsWhiteList", "localhost")
+                .put("portal.hostsWhiteList", "localhost,seleniumportal")
                 .build();
 
         portalContainer = new GenericContainer("hub.arachnenetwork.com/portal:latest")
@@ -105,7 +106,11 @@ public class BaseTest {
                 .withNetwork(network)
                 .withExposedPorts(8080)
                 .waitingFor(arachneWaitStrategy);
+
         portalContainer.start();
+        String oldName = portalContainer.getContainerName().substring(1);
+
+        DockerClientFactory.instance().client().renameContainerCmd(oldName).withName("seleniumportal").exec();
 
         final String portalHost = portalContainer.getContainerIpAddress();
         final Integer portalPort = portalContainer.getMappedPort(8080);
@@ -116,7 +121,7 @@ public class BaseTest {
         Map<String, String> datanodeEnvs = ImmutableMap.<String, String>builder()
                 .put("jasypt.encryptor.password", "arachne")
                 .put("server.ssl.enabled", String.valueOf(USE_SSL))
-                .put("datanode.arachneCentral.host", "http://" + portalContainerInfo.getConfig().getHostName())
+                .put("datanode.arachneCentral.host", "http://" + "seleniumportal")
                 .put("datanode.arachneCentral.port", "8080")
                 .put("datanode.baseURL", "https://#{systemProperties['HOSTNAME']}")
                 .put("ACHILES_STARTUP", "1")
@@ -216,7 +221,11 @@ public class BaseTest {
 
         loginInput.sendKeys(username);
         passwordInput.sendKeys(password, Keys.ENTER);
-
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace(); // todo
+        }
         waitForPageLoad(driver, ByBuilder.toolbar("CDM Data sources"));
     }
 

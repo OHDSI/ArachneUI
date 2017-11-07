@@ -18,7 +18,7 @@ public abstract class BaseDataCatalogTest extends BaseDataSourceTest {
             "CDM",
             "v5.1"
     );
-    private static final DataSourceData DATA_SOURCE_DATA_3 = new DataSourceData(
+    protected static final DataSourceData DATA_SOURCE_DATA_3 = new DataSourceData(
             "Test Data Source 3",
             "PostgreSQL",
             "jdbc:postgresql://odysseusovh02.odysseusinc.com:5432/cdm_v500_synpuf_v101_110k",

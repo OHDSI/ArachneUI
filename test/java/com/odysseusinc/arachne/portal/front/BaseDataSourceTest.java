@@ -46,6 +46,12 @@ public abstract class BaseDataSourceTest extends BaseUserTest {
 
         loginDataNode(ADMIN_LOGIN, ADMIN_PASSWORD);
         final By addButton = ByBuilder.buttonAddIco();
+        try {
+            Thread.sleep(3000); //todo
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        //Utils.waitFor(driver, By.className("ac-data-source-list-actions__btn-ico"));
         Utils.waitFor(driver, addButton);
         driver.findElement(addButton).click();
 
