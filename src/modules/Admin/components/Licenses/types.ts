@@ -12,6 +12,7 @@ type Vocabulary = {
 type User = {
   id: number;
   name: string;
+  email: string;
 };
 
 type License = {
