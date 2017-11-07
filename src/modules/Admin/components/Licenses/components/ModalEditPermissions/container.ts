@@ -39,6 +39,7 @@ function mapStateToProps(state: any): IModalStateProps {
   const user = get(state, 'modal.editPermission.data.user.name', {
     id: -1,
     name: 'Anonymous',
+    email: '',
   });
 
 	return {

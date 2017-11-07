@@ -27,6 +27,15 @@ function CellVocabs(props: any) {
   </Link>;
 }
 
+function CellEmail(props: any) {
+  return <Link
+    {...props}
+    to={`mailto:${props.value}`}
+  >
+    {props.value}
+  </Link>;
+}
+
 interface IListProps {
   licenses: Array<License>;
   openEditModal: Function;
@@ -51,6 +60,11 @@ function Results(props: IListProps) {
           {...classes('name')}
           header='User'
           field='user.name'
+        />
+        <CellEmail
+          {...classes('email')}
+          header='Email'
+          field='user.email'
         />
         <CellVocabs
           {...classes('voc')}
