@@ -74,6 +74,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
       const submitPromise = dispatchProps.addSkill({ id: skill });
       submitPromise.then(() => dispatchProps.resetForm())
         .then(() => dispatchProps.loadInfo({ id: stateProps.id }))
+        .then(() => dispatchProps.getSkills())
         .catch(() => {});
 
       return submitPromise;
@@ -83,7 +84,8 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         .then(() => {
           dispatchProps
             .removeSkill({ id: skill })
-            .then(() => dispatchProps.loadInfo({ id: stateProps.id }));
+            .then(() => dispatchProps.loadInfo({ id: stateProps.id }))
+            .then(() => dispatchProps.getSkills());
         });
     },
   };
