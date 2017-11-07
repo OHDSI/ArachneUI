@@ -29,8 +29,8 @@ const attributeNames = keyMirror({
   modelType: null,
   cdmVersion: null,
   deleted: null,
-  cohortTargetSchema: null,
-  cohortResultSchema: null,
+  targetSchema: null,
+  resultSchema: null,
   cohortTargetTable: null,
 });
 
@@ -172,8 +172,8 @@ const staticAttrList = [
     isRequired: true,
   },
   {
-    label: 'Cohort Target Schema',
-    name: attributeNames.cohortTargetSchema,
+    label: 'Target Schema',
+    name: attributeNames.targetSchema,
     type: fieldTypes.string,
     faceted: false,
     showInList: true,
@@ -182,8 +182,8 @@ const staticAttrList = [
     cdmSpecific: true,
   },
   {
-    label: 'Cohort Result Schema',
-    name: attributeNames.cohortResultSchema,
+    label: 'Result Schema',
+    name: attributeNames.resultSchema,
     type: fieldTypes.string,
     faceted: false,
     showInList: true,
