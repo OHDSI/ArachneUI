@@ -170,7 +170,7 @@ const submissionActionTypes = keyMirror({
   PUBLISH: null,
 });
 
-const importableAnalysisTypes = ['COHORT', 'ESTIMATION', 'INCIDENCE'];
+const importableAnalysisTypes = ['COHORT', 'ESTIMATION', 'PREDICTION', 'INCIDENCE'];
 const analysisTypeNames = {
   COHORT: 'cohort',
   ESTIMATION: 'estimation',
