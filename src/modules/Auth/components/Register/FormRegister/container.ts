@@ -48,18 +48,11 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     doSubmit(data) {
       const submitPromise = dispatchProps.doRegister(data);
 
-      return submitPromise
+      submitPromise
         .then(() => dispatchProps.goToWelcome())
-        .catch(
-          (res) => {
-            const errorData = Object.assign(
-              {},
-              res.validatorErrors,
-              {_error: res.errorMessage}
-            );
-            throw new SubmissionError(errorData);
-          }
-        );
+        .catch(() => {});
+
+      return submitPromise;
     },
   };
 }
