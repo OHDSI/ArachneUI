@@ -369,17 +369,6 @@ class Utils {
     return initialValues;
   }
 
-  static prepareChartDataForDonut(rawData = { CONCEPT_ID: [], COUNT_VALUE: [], CONCEPT_NAME: [] }) {
-    const values = Array.isArray(rawData.COUNT_VALUE) ? rawData.COUNT_VALUE : [rawData.COUNT_VALUE];
-    const legend = Array.isArray(rawData.CONCEPT_NAME) ? rawData.CONCEPT_NAME : [rawData.CONCEPT_NAME];
-    const ids = Array.isArray(rawData.CONCEPT_ID) ? rawData.CONCEPT_ID : [rawData.CONCEPT_ID];
-    return values.map((value, i) => ({
-      value,
-      label: legend[i],
-      id: ids[i],
-    }));
-  }
-
   static confirmDelete({ message = 'Are you sure?' } = {}) {
     const promise = new Promise((resolve, reject) => {
       if (confirm(message)) {

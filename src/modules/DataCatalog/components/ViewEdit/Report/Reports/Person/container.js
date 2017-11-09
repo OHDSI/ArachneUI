@@ -22,7 +22,6 @@
 
 import { connect } from 'react-redux';
 import get from 'lodash/get';
-import { Utils } from 'services/Utils';
 import Person from './presenter';
 
 function mapStateToProps(state) {
@@ -35,9 +34,9 @@ function mapStateToProps(state) {
 
   return {
     birthYear,
-    etnicity: Utils.prepareChartDataForDonut(etnicity),
-    genderData: Utils.prepareChartDataForDonut(genderData),
-    race: Utils.prepareChartDataForDonut(race),
+    etnicity,
+    genderData,
+    race,
     summary,
   };
 }
