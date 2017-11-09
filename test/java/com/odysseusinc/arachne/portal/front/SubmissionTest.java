@@ -6,9 +6,9 @@ import static com.odysseusinc.arachne.portal.front.BaseStudyTest.createAnalysisF
 import static com.odysseusinc.arachne.portal.front.BaseStudyTest.createStudy;
 import static com.odysseusinc.arachne.portal.front.ProfileManagerTest.updateName;
 import static com.odysseusinc.arachne.portal.front.StudyManagerTest.STUDY_NAME;
-import static com.odysseusinc.arachne.portal.front.StudyManagerTest.addDataSourceToStudy;
 import static com.odysseusinc.arachne.portal.front.StudyManagerTest.loginAndOpenStudy;
 import static com.odysseusinc.arachne.portal.front.StudyManagerTest.returnToStudyPage;
+import static com.odysseusinc.arachne.portal.front.StudyWithDataSourceManagerTest.addDataSourceToStudy;
 import static com.odysseusinc.arachne.portal.front.utils.Utils.waitFor;
 
 import com.google.common.base.Predicate;
