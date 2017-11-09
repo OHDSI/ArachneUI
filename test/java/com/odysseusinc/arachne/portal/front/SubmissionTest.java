@@ -44,7 +44,7 @@ public class SubmissionTest extends BaseDataCatalogTest {
     private static File resultFile;
 
     @BeforeClass
-    public static void beforeAnalysisManagerTests() throws Exception {
+    public static void beforeSubmissionTests() throws Exception {
 
         updateName(ADMIN_LOGIN, ADMIN_PASSWORD, "4");
         loginPortal(ADMIN_LOGIN, ADMIN_PASSWORD);
@@ -66,12 +66,15 @@ public class SubmissionTest extends BaseDataCatalogTest {
     }
 
     @Before
-    public void beforeAnalysisManagerTest() throws IOException {
+    public void beforeSubmissionTest() throws IOException {
 
         loginAndOpenStudy();
     }
 
     private void openAnalysis() {
+
+        waitFor(driver, By.className("ac-study-analyses-list"));
+        waitFor(driver, By.className("ac-study-analyses-list-item"));
 
         WebElement addAnalysisBtn = driver
                 .findElement(By.className("ac-study-analyses-list"))
@@ -82,14 +85,14 @@ public class SubmissionTest extends BaseDataCatalogTest {
     }
 
     @AfterClass
-    public static void afterAnalysisManagersTests() throws IOException {
+    public static void afterSubmissionTests() throws IOException {
 
         fileCode.delete();
         resultFile.delete();
     }
 
     @After
-    public void afterAnalysisManagerTest() throws IOException {
+    public void afterSubmissionTest() throws IOException {
 
         logout();
     }
@@ -182,6 +185,9 @@ public class SubmissionTest extends BaseDataCatalogTest {
     }
 
     private void checkStatus(String status) {
+
+        waitFor(driver, By.className("ac-submission-line"));
+        waitFor(driver, ByBuilder.byClassAndText("ac-label-submissions-status__title", status));
 
         WebDriverWait webDriverWait = new WebDriverWait(driver, 3);
         webDriverWait.until((Predicate<WebDriver>) driver -> {

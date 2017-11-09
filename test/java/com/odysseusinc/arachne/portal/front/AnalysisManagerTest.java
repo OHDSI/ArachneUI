@@ -67,6 +67,8 @@ public class AnalysisManagerTest extends BaseDataCatalogTest {
 
     private void openAnalysis() {
 
+        waitFor(driver, ByBuilder.link(ANALYSIS_NAME));
+
         WebElement addAnalysisBtn = driver
                 .findElement(By.className("ac-study-analyses-list"))
                 .findElement(ByBuilder.link(ANALYSIS_NAME));

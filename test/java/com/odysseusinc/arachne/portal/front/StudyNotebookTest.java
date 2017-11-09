@@ -109,6 +109,7 @@ public class StudyNotebookTest extends BaseStudyNotebookTest {
 
     protected static WebElement getStudyRow(String studyName) {
 
+        waitFor(driver, ByBuilder.byClassAndText("ac-title-study__title",studyName));
         return getOptionalStudyRow(studyName).get();
     }
 

@@ -124,6 +124,7 @@ public class UserManagementTest extends BaseUserTest {
 
         final By addAdminBtn = ByBuilder.buttonAddIco();
         waitForPageLoad(driver, addAdminBtn);
+        Thread.sleep(3000);
         driver.findElement(addAdminBtn).click();
 
         final By modal = ByBuilder.modal("Add Admin user");
@@ -143,13 +144,14 @@ public class UserManagementTest extends BaseUserTest {
     }
 
     @Test
-    public void test06EditUserProfile() {
+    public void test06EditUserProfile() throws Exception{
 
         loginPortal(REGISTER_FORM_DATA.get(EMAIL_PLACEHOLDER), REGISTER_FORM_DATA.get(PASSWORD_PLACEHOLDER));
         final By avatar = By.className("ac-avatar");
         driver.findElement(avatar).click();
         final By userProfile = ByBuilder.text("User Profile");
         waitFor(driver, userProfile);
+        Thread.sleep(2000);
         driver.findElement(userProfile).click();
 
         final String toolbarName = String.format("%s %s %s",
@@ -158,6 +160,8 @@ public class UserManagementTest extends BaseUserTest {
                 REGISTER_FORM_DATA.get(LASTNAME_PLACEHOLDER)
         );
         Utils.waitForPageLoad(driver, ByBuilder.toolbar(toolbarName));
+        //Thread.sleep(3000);
+        waitFor(driver, By.className("ac-profile-view__card"));
         final List<WebElement> viewCards = driver.findElements(By.className("ac-profile-view__card"));
 
         final Consumer<WebElement> generalInformationFunction = webElement -> {
@@ -223,14 +227,17 @@ public class UserManagementTest extends BaseUserTest {
                 }
             });
         });
+        Thread.sleep(3000);
         logout();
     }
 
     @Test
-    public void test07ShowUserProfileThroughExpertFinder() {
+    public void test07ShowUserProfileThroughExpertFinder() throws Exception {
 
+        //Thread.sleep(3000);
         loginPortal(REGISTER_FORM_DATA.get(EMAIL_PLACEHOLDER), REGISTER_FORM_DATA.get(PASSWORD_PLACEHOLDER));
         final By expertFinderToolbar = ByBuilder.sideBarTab("Expert Finder");
+        waitFor(driver,expertFinderToolbar);
         driver.findElement(expertFinderToolbar).click();
         Utils.waitForPageLoad(driver, ByBuilder.toolbar("Expert finder"));
         final String userName = String.format("%s %s %s",
@@ -238,6 +245,7 @@ public class UserManagementTest extends BaseUserTest {
                 REGISTER_FORM_DATA.get(MIDDLENAME_PLACEHOLDER),
                 REGISTER_FORM_DATA.get(LASTNAME_PLACEHOLDER)
         );
+        Thread.sleep(3000);
         driver.findElement(ByBuilder.text(userName)).click();
         Utils.waitForPageLoad(driver, ByBuilder.toolbar(userName));
 

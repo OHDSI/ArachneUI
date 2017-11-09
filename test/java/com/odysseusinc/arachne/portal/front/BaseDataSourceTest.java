@@ -2,7 +2,6 @@ package com.odysseusinc.arachne.portal.front;
 
 import com.odysseusinc.arachne.portal.front.utils.ByBuilder;
 import com.odysseusinc.arachne.portal.front.utils.Utils;
-import java.util.List;
 import org.junit.BeforeClass;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
@@ -44,13 +43,14 @@ public abstract class BaseDataSourceTest extends BaseUserTest {
 
     protected static void createDataSource(DataSourceData dataSource) {
 
-        loginDataNode(ADMIN_LOGIN, ADMIN_PASSWORD);
-        final By addButton = ByBuilder.buttonAddIco();
         try {
+            loginDataNode(ADMIN_LOGIN, ADMIN_PASSWORD);
             Thread.sleep(3000); //todo
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
+
+        final By addButton = ByBuilder.buttonAddIco();
         //Utils.waitFor(driver, By.className("ac-data-source-list-actions__btn-ico"));
         Utils.waitFor(driver, addButton);
         driver.findElement(addButton).click();
@@ -102,10 +102,12 @@ public abstract class BaseDataSourceTest extends BaseUserTest {
         Utils.selectOption(driver, version, versionOption, null);
 
         driver.findElement(registerButton).click();
-        Utils.waitFor(driver, toolbar);
+        //Utils.waitFor(driver, toolbar);
 
         final By datasourceTable = By.className("ac-data-source-list-table");
-        final List<WebElement> elements = driver.findElement(datasourceTable).findElements(By.xpath(".//tbody/tr"));
+        Utils.waitFor(driver, datasourceTable);
+
+       //final List<WebElement> elements = driver.findElement(datasourceTable).findElements(By.xpath(".//tbody/tr"));
 
         logout();
     }
@@ -122,8 +124,8 @@ public abstract class BaseDataSourceTest extends BaseUserTest {
             createDataNodeModalElement.findElement(dataNodeDesc).sendKeys(DATANODE_DESCRIPTION);
             createDataNodeModalElement.findElement(ByBuilder.button("Create")).click();
         } catch (TimeoutException ignored) {
-        }
-        Utils.waitFor(driver, ByBuilder.modal("Create data source"), 20);
+    }
+        Utils.waitFor(driver, ByBuilder.modal("Create data source"), 30);
     }
 
     protected static class DataSourceData {

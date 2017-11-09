@@ -101,7 +101,7 @@ public class BaseTest {
                 .put("portal.hostsWhiteList", "localhost,seleniumportal")
                 .build();
 
-        portalContainer = new GenericContainer("hub.arachnenetwork.com/portal:latest")
+        portalContainer = new GenericContainer("hub.arachnenetwork.com/portal:1.10.0-SNAPSHOT")
                 .withEnv(portalEnvs)
                 .withNetwork(network)
                 .withExposedPorts(8080)
@@ -127,7 +127,7 @@ public class BaseTest {
                 .put("ACHILES_STARTUP", "1")
                 .build();
 
-        datanodeContainer = new GenericContainer("hub.arachnenetwork.com/datanode:latest")
+        datanodeContainer = new GenericContainer("hub.arachnenetwork.com/datanode:1.10.0-SNAPSHOT")
                 .withEnv(datanodeEnvs)
                 .withNetwork(network)
                 .withExposedPorts(8880)
@@ -210,9 +210,10 @@ public class BaseTest {
         */
     }
 
-    protected static void loginDataNode(String username, String password) {
+    protected static void loginDataNode(String username, String password) throws Exception {
 
         driver.get(dataNodeUrl());
+        Thread.sleep(2000);
 
         waitForPageLoad(driver, ByBuilder.input(EMAIL_INPUT_PLACEHOLDER));
 
@@ -221,11 +222,8 @@ public class BaseTest {
 
         loginInput.sendKeys(username);
         passwordInput.sendKeys(password, Keys.ENTER);
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace(); // todo
-        }
+
+        Thread.sleep(3000);
         waitForPageLoad(driver, ByBuilder.toolbar("CDM Data sources"));
     }
 

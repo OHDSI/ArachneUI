@@ -134,8 +134,8 @@ public class StudyManagerTest extends BaseDataCatalogTest {
                 .findElement(ByBuilder.byClassAndText("ac-form__submit", "Save"));
 
         studyDescriptionBtn.click();
-//
-        waitFor(driver, ByBuilder.byClassAndText("ac-study-objective-view", newDescription));
+
+        waitFor(driver, ByBuilder.text(newDescription));
     }
 
     @Test
@@ -144,9 +144,9 @@ public class StudyManagerTest extends BaseDataCatalogTest {
         loginAndOpenStudy();
 
         String studyType = "Clinical Trial Design";
+        waitFor(driver, ByBuilder.select(studyType));
 
         WebElement studyTypeSelect = driver.findElement(ByBuilder.select(studyType));
-        waitFor(driver, ByBuilder.select(studyType));
 
         String updatedStudyType = "Health Economics and Outcomes";
         WebElement studyTypeOption = driver.findElement(ByBuilder.selectOption(updatedStudyType));
@@ -197,11 +197,13 @@ public class StudyManagerTest extends BaseDataCatalogTest {
         By documentList = By.className("ac-study-participants-list");
         waitFor(driver, documentList);
 
+        waitFor(driver, By.className("ac-study-participants-item__status--pending"));
+
         WebElement addedRow = driver.findElement(By.className("ac-study-participants-list"))
                 .findElements(By.className("ac-list-item")).get(0);
 
         String role = "Lead Investigator";
-        Assert.assertTrue(addedRow.findElement(ByBuilder.byClassAndText("ac-select-control__label", role)).isDisplayed());
+        Assert.assertEquals(role, addedRow.findElement(By.className("ac-study-participants-item__role")).getText());
         Assert.assertEquals("admin2 admin2 admin2", addedRow.findElement(By.className("ac-study-participants-item__name")).getText());
         Assert.assertEquals("PENDING", addedRow.findElement(By.className("ac-study-participants-item__status--pending")).getText());
     }
@@ -247,7 +249,7 @@ public class StudyManagerTest extends BaseDataCatalogTest {
         List<WebElement> addedRows = driver.findElements(By.className("ac-list-item"));
 
         WebElement addedRow = addedRows.stream()
-                .filter(row -> "admin2 admin2 admin2".equals(row.findElement(
+                .filter(row -> "admin2 admin2 admin2" .equals(row.findElement(
                         By.className("ac-study-participants-item__name")).getText()))
                 .findAny().get();
 
@@ -280,6 +282,9 @@ public class StudyManagerTest extends BaseDataCatalogTest {
         loginAndOpenStudy();
         openParticipantsTab();
 
+        waitFor(driver, By.className("ac-study-participants-list"));
+        waitFor(driver, ByBuilder.link("admin2 admin2 admin2"));
+
         List<WebElement> addedRows = driver.findElement(By.className("ac-study-participants-list"))
                 .findElements(By.className("ac-list-item"));
 
@@ -309,6 +314,7 @@ public class StudyManagerTest extends BaseDataCatalogTest {
 
         loginAndOpenStudy();
         openParticipantsTab();
+        waitFor(driver, By.className("ac-study-participants-item__action-ico--remove"));
         WebElement remove = driver.findElement(By.className("ac-study-participants-item__action-ico--remove"));
         remove.click();
         acceptAlert();
@@ -361,6 +367,7 @@ public class StudyManagerTest extends BaseDataCatalogTest {
         List<WebElement> selectValues = driver.findElements(By.className("Select-option"));
 
         actions = new Actions(driver);
+        String role = selectValues.get(0).getText();
         actions.moveToElement(selectValues.get(0)).click().build().perform();
 
         waitFor(driver, ByBuilder.byClassAndText("Select-value-label", chosenName));
@@ -385,11 +392,10 @@ public class StudyManagerTest extends BaseDataCatalogTest {
         Thread.sleep(2000);
         webDriverWait = new WebDriverWait(driver, 3);
         webDriverWait.until((Predicate<WebDriver>) driver -> {
-            return driver
-                    .findElements(ByBuilder.byClassAndText("ac-select-control__label", updatedRole)).get(1)
-                    .isDisplayed();
+            return driver.findElement(ByBuilder.text("pending")).isDisplayed();
         });
 
+        Assert.assertEquals(role, driver.findElements(By.className("ac-study-participants-item__role")).get(0).getText());
     }
 
     private boolean checkParticipantRow(WebElement row, String role, String name, String status) {
@@ -520,11 +526,12 @@ public class StudyManagerTest extends BaseDataCatalogTest {
 
         returnToStudyPage();
 
+        waitFor(driver, ByBuilder.link(ANALYSIS_NAME));
         Assert.assertTrue(driver.findElement(By.className("ac-study-analyses-list"))
                 .findElement(ByBuilder.link(ANALYSIS_NAME)).isDisplayed());
     }
 
-    protected static void returnToStudyPage(){
+    protected static void returnToStudyPage() {
 
         WebElement backToStudyBtn = driver.findElement(By.className("ac-toolbar__back-icon"));
         backToStudyBtn.click();
@@ -536,7 +543,7 @@ public class StudyManagerTest extends BaseDataCatalogTest {
 
         loginAndOpenStudy(STUDY_NAME);
         String studyStatus = "Active";
-        //
+        waitFor(driver, ByBuilder.studyStatusLabel(studyStatus));
         WebElement studyStatusSelector = driver.findElement(ByBuilder.studyStatusLabel(studyStatus));
 
         waitFor(driver, ByBuilder.studyStatusLabel(studyStatus));
@@ -579,7 +586,7 @@ public class StudyManagerTest extends BaseDataCatalogTest {
         Assert.assertTrue(result.findElement(By.className("ac-study-participants-item__name")).getText().equals("admin4 admin4 admin4"));
     }
 
-    protected static void addDataSourceToStudy(String dataSourceName, String searchKeys){
+    protected static void addDataSourceToStudy(String dataSourceName, String searchKeys) throws Exception {
 
         openDatasourcesTab();
 
@@ -595,9 +602,8 @@ public class StudyManagerTest extends BaseDataCatalogTest {
 
         waitFor(driver, ByBuilder.byClassAndText("ac-label-data-source__name", dataSourceName));
 
-        WebElement dsOption = driver.findElement(
-                ByBuilder.byClassAndText("ac-label-data-source__name", dataSourceName));
-        actions.moveToElement(dsOption).click().build().perform();
+        actions.moveToElement(driver.findElement(
+                ByBuilder.byClassAndText("ac-label-data-source__name", dataSourceName))).click().build().perform();
 
         WebElement addDSBtm = driver.findElement(ByBuilder.button("Add data source"));
         addDSBtm.click();
@@ -675,8 +681,11 @@ public class StudyManagerTest extends BaseDataCatalogTest {
         participantTab.click();
     }
 
-    private static void openDatasourcesTab() {
+    private static void openDatasourcesTab() throws Exception {
 
+        Thread.sleep(3000);
+
+        waitFor(driver, ByBuilder.tab("Data sources"));
         WebElement datasourcesTab = driver.findElement(ByBuilder.tab("Data sources"));
         datasourcesTab.click();
     }
