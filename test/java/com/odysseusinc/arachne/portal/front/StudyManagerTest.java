@@ -367,7 +367,6 @@ public class StudyManagerTest extends BaseDataCatalogTest {
         List<WebElement> selectValues = driver.findElements(By.className("Select-option"));
 
         actions = new Actions(driver);
-        String role = selectValues.get(0).getText();
         actions.moveToElement(selectValues.get(0)).click().build().perform();
 
         waitFor(driver, ByBuilder.byClassAndText("Select-value-label", chosenName));
@@ -395,7 +394,8 @@ public class StudyManagerTest extends BaseDataCatalogTest {
             return driver.findElement(ByBuilder.text("pending")).isDisplayed();
         });
 
-        Assert.assertEquals(role, driver.findElements(By.className("ac-study-participants-item__role")).get(0).getText());
+        Assert.assertEquals("Lead Investigator",
+                driver.findElements(By.className("ac-study-participants-item__role")).get(0).getText());
     }
 
     private boolean checkParticipantRow(WebElement row, String role, String name, String status) {
@@ -480,7 +480,8 @@ public class StudyManagerTest extends BaseDataCatalogTest {
 
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/YYYY");
         String dateLabel = formatter.format(new Date());
-        waitFor(driver, By.className("ac-study-date-input__value"));
+
+        waitFor(driver, ByBuilder.byClassAndText("ac-study-date-input__value", dateLabel));
 
         final List<WebElement> dates = driver.findElements(By.className("ac-study-date-input__value"));
         Assert.assertEquals(dateLabel, dates.get(0).getText());
@@ -502,19 +503,15 @@ public class StudyManagerTest extends BaseDataCatalogTest {
         int lastMonthDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
         waitFor(driver, ByBuilder.byClassAndText("react-datepicker__day", String.valueOf(lastMonthDay)));
 
-        WebElement newEndDay = driver.findElement(ByBuilder.byClassAndText("react-datepicker__day", String.valueOf(lastMonthDay)));
-        newEndDay.click();
+        List<WebElement> lastMonthDays = driver.findElements(ByBuilder.byClassAndText("react-datepicker__day",
+                String.valueOf(lastMonthDay)));
+        lastMonthDays.get(lastMonthDays.size()-1).click();
 
         calendar.set(Calendar.DAY_OF_MONTH, lastMonthDay);
-
-        waitFor(driver, By.className("ac-study-date-input__value"));
         String updatedEndDateLabel = formatter.format(calendar.getTime());
 
         waitFor(driver, ByBuilder.byClassAndText("ac-study-date-input__value", updatedEndDateLabel));
-        final List<WebElement> resultDates = driver.findElements(By.className("ac-study-date-input__value"));
-
-        Assert.assertEquals(newStartDateLabel, resultDates.get(0).getText());
-        Assert.assertEquals(updatedEndDateLabel, resultDates.get(1).getText());
+        waitFor(driver, ByBuilder.byClassAndText("ac-study-date-input__value", newStartDateLabel));
     }
 
     @Test
