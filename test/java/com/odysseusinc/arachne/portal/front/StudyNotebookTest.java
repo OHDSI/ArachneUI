@@ -86,6 +86,8 @@ public class StudyNotebookTest extends BaseStudyNotebookTest {
 
     private void compareWithoutOrdering(List<StudyData> data) {
 
+        data.forEach(study -> waitFor(driver, ByBuilder.text(study.title)));
+
         getStudyRows().forEach(row -> {
             final boolean exists = data.stream()
                     .anyMatch(s -> {

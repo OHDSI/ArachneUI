@@ -364,6 +364,7 @@ public class StudyManagerTest extends BaseUserTest {
         actions = new Actions(driver);
         actions.moveToElement(participantSelect).click().sendKeys("admin" + chosenUserId).build().perform();
 
+        Thread.sleep(2000);
         List<WebElement> selectValues = driver.findElements(By.className("Select-option"));
 
         actions = new Actions(driver);
@@ -587,6 +588,12 @@ public class StudyManagerTest extends BaseUserTest {
     }
 
     protected static void openParticipantsTab() {
+
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         waitFor(driver, ByBuilder.tab("Participants"));
         WebElement participantTab = driver.findElement(ByBuilder.tab("Participants"));

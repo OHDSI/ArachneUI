@@ -303,6 +303,11 @@ public class UserManagementTest extends BaseUserTest {
 
     private void clickEdit(WebElement webElement) {
 
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         By editButton = ByBuilder.text("edit");
         webElement.findElement(editButton).click();
     }

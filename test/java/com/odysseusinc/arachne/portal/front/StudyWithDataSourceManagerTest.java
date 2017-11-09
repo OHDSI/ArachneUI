@@ -97,6 +97,7 @@ public class StudyWithDataSourceManagerTest extends BaseDataCatalogTest {
         Actions actions = new Actions(driver);
         actions.moveToElement(dsSelect).click().sendKeys(searchKeys).build().perform();
 
+        Thread.sleep(2000);
         waitFor(driver, ByBuilder.byClassAndText("ac-label-data-source__name", dataSourceName));
 
         actions.moveToElement(driver.findElement(
