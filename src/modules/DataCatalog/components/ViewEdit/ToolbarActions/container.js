@@ -21,10 +21,12 @@
  */
 
 import { connect } from 'react-redux';
+import { push as goToPage } from 'react-router-redux';
 import { dataSourcePermissions } from 'modules/DataCatalog/const';
-import actions from 'actions/index';
+import actions from 'actions';
 import get from 'lodash/get';
 import { Utils } from 'services/Utils';
+import { paths } from 'modules/DataCatalog/const';
 import ToolbarActions from './presenter';
 
 function mapStateToProps(state) {
@@ -43,6 +45,7 @@ function mapStateToProps(state) {
 const mapDispatchToProps = {
   load: actions.dataCatalog.dataSource.find,
   remove: actions.dataCatalog.dataSource.delete,
+  goToPage,
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
@@ -54,8 +57,9 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
       Utils.confirmDelete()
         .then(() => {
           const dataSourceId = stateProps.dataSourceId;
-          dispatchProps.remove(dataSourceId)
-            .then(() => dispatchProps.load(dataSourceId))
+          dispatchProps.remove({ id: dataSourceId })
+            .then(() => dispatchProps.load({ id: dataSourceId }))
+            .then(() => dispatchProps.goToPage(paths.dataCatalog()))
             .catch(() => {});
         });
     },
