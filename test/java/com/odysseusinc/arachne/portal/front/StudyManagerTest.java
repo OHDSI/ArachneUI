@@ -25,6 +25,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -568,9 +569,11 @@ public class StudyManagerTest extends BaseUserTest {
         delete.click();
         acceptAlert();
 
-        final By studiesPage = ByBuilder.toolbar("studies");
-        waitFor(driver, studiesPage);
-
+        try {
+            waitFor(driver, ByBuilder.toolbar("studies"));
+        }catch (StaleElementReferenceException ex){
+            waitFor(driver, ByBuilder.toolbar("studies"));
+        }
         Assert.assertFalse(getOptionalStudyRow(NAME_FOR_DELETED_STUDY).isPresent());
     }
 

@@ -160,7 +160,7 @@ public class UserManagementTest extends BaseUserTest {
                 REGISTER_FORM_DATA.get(LASTNAME_PLACEHOLDER)
         );
         Utils.waitForPageLoad(driver, ByBuilder.toolbar(toolbarName));
-        //Thread.sleep(3000);
+        Thread.sleep(3000);
         waitFor(driver, By.className("ac-profile-view__card"));
         final List<WebElement> viewCards = driver.findElements(By.className("ac-profile-view__card"));
 
@@ -234,7 +234,7 @@ public class UserManagementTest extends BaseUserTest {
     @Test
     public void test07ShowUserProfileThroughExpertFinder() throws Exception {
 
-        //Thread.sleep(3000);
+        Thread.sleep(3000);
         loginPortal(REGISTER_FORM_DATA.get(EMAIL_PLACEHOLDER), REGISTER_FORM_DATA.get(PASSWORD_PLACEHOLDER));
         final By expertFinderToolbar = ByBuilder.sideBarTab("Expert Finder");
         waitFor(driver,expertFinderToolbar);
