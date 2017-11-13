@@ -27,7 +27,7 @@ function Person(props) {
   const {
     reportData,
     birthYear,
-    etnicity,
+    ethnicity,
     genderData,
     race,
     summary,

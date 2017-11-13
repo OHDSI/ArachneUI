@@ -27,14 +27,14 @@ import Person from './presenter';
 function mapStateToProps(state) {
   const reportData = get(state, 'dataCatalog.report.data.result', {});
   const birthYear = get(reportData, 'BIRTH_YEAR_HISTOGRAM');
-  const etnicity = get(reportData, 'ETHNICITY_DATA');
+  const ethnicity = get(reportData, 'ETHNICITY_DATA');
   const genderData = get(reportData, 'GENDER_DATA');
   const race = get(reportData, 'RACE_DATA');
   const summary = get(reportData, 'SUMMARY');
 
   return {
     birthYear,
-    etnicity,
+    ethnicity,
     genderData,
     race,
     summary,

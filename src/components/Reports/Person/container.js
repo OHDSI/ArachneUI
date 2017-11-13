@@ -28,7 +28,7 @@ import Person from './presenter';
 function mapStateToProps(state, ownProps) {
   const {
     birthYear,
-    etnicity,
+    ethnicity,
     genderData,
     race,
     summary,
@@ -36,7 +36,7 @@ function mapStateToProps(state, ownProps) {
 
   return {
     birthYear,
-    etnicity: ReportUtils.prepareChartDataForDonut(etnicity),
+    ethnicity: ReportUtils.prepareChartDataForDonut(ethnicity),
     genderData: ReportUtils.prepareChartDataForDonut(genderData),
     race: ReportUtils.prepareChartDataForDonut(race),
     summary,

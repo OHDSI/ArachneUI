@@ -24,7 +24,8 @@ import { Component, PropTypes } from 'react';
 import actions from 'actions/index';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
-import { reports, reportFilenames, paths } from 'modules/DataCatalog/const';
+import { reportFilenames, paths } from 'modules/DataCatalog/const';
+import { reports } from 'const/reports';
 import { push as goToPage } from 'react-router-redux';
 import presenter from './presenter';
 
@@ -32,7 +33,7 @@ class Report extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedReport: 'dashboard',
+      selectedReport: reports.DASHBOARD,
     };
     this.selectReport = this.selectReport.bind(this);
   }

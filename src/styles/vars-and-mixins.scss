@@ -308,3 +308,88 @@ $default-box-padding: 1.5rem 2rem;
   display: flex;
   padding: 1.3rem 3rem;
 }
+
+@mixin report() {
+  & .donut text {
+    font-size: 1.2rem;
+  }
+
+  & .axislabel {
+    @include title();
+  }
+
+  & .lineplot {
+    & .line {
+      fill: transparent;
+      stroke: $blue;
+    }
+
+    & circle.focus {
+      opacity: 0;
+    }
+  }
+
+  & .bar {
+    fill: $blue;
+  }
+
+  & .boxplot {
+    & .bar, & .whisker, & .box, & .median {
+      stroke: $blue;
+    }
+
+    & .box {
+      fill: lighten($blue, 60%);
+    }
+  }
+  /* trellisline */
+  & .g-trellis {
+    & .y-guide,
+    & .x-guide {
+      & .tick line {
+        stroke: #ccc;
+        stroke-width: .6;
+      }
+
+      & .domain {
+        stroke: none;
+      }
+    }
+    & .g-overlay {
+      fill: none;
+      pointer-events: all;
+    }
+  }
+  /* treemap */
+  & .grouper {
+    fill: none;
+    stroke: white;
+    stroke-width: 2px;
+  }
+
+  & .treemap_zoomtarget {
+    padding: 0.5rem 20px;
+  }
+
+  & .#{$namespace} {
+    &panel {
+      &__content {
+        & .#{$namespace} {
+          &tabbed-pane {
+            & .#{$namespace} {
+              &tabs {
+                &__item {
+                  background: $grey;
+
+                  &--selected {
+                    background: $blue-light;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

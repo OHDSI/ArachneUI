@@ -24,6 +24,7 @@
 
 .#{$namespace} {
 	&report-death {
+		width: 100%;
 
 		&__chart {
 			margin-top: 2rem;

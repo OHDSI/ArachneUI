@@ -82,7 +82,9 @@ function mapStateToProps(state, ownProps) {
     cumulativeObservation,
     durationByAgeDecline,
     durationByYear,
-    observationsPerPerson: ReportUtils.prepareChartDataForDonut(observationsPerPerson),
+    observationsPerPerson: observationsPerPerson
+      ? ReportUtils.prepareChartDataForDonut(observationsPerPerson)
+      : null,
     observationsByMonth,
   };
 }

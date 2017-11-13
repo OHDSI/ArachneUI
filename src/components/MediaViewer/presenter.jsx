@@ -32,7 +32,7 @@ import CodeViewer from 'components/CodeViewer';
 
 require('./style.scss');
 
-function ActionBar(props = {}) {
+export function ActionBar(props = {}) {
   const classes = new BEMHelper('action-bar');
   const {
     downloadLink,

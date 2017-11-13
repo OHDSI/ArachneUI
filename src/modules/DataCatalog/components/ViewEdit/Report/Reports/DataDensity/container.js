@@ -26,14 +26,14 @@ import DataDensity from './presenter';
 
 function mapStateToProps(state) {
   const reportData = get(state, 'dataCatalog.report.data.result', {});
-  const rawTotalRecords = get(reportData, 'TOTAL_RECORDS');
-  const rawConceptsPerPerson = get(reportData, 'CONCEPTS_PER_PERSON');
-  const rawRecordsPerPerson = get(reportData, 'RECORDS_PER_PERSON');
+  const totalRecords = get(reportData, 'TOTAL_RECORDS');
+  const conceptsPerPerson = get(reportData, 'CONCEPTS_PER_PERSON');
+  const recordsPerPerson = get(reportData, 'RECORDS_PER_PERSON');
 
   return {
-    rawConceptsPerPerson,
-    rawRecordsPerPerson,
-    rawTotalRecords,
+    conceptsPerPerson,
+    recordsPerPerson,
+    totalRecords,
   };
 }
 

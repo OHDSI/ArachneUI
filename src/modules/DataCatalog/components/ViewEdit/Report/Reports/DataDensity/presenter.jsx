@@ -25,9 +25,9 @@ import DataDensityReport from 'components/Reports/DataDensity';
 
 function DataDensity(props) {
   const {
-    rawConceptsPerPerson,
-    rawRecordsPerPerson,
-    rawTotalRecords,
+    conceptsPerPerson,
+    recordsPerPerson,
+    totalRecords,
   } = props;
 
   return (  

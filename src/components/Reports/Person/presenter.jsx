@@ -39,39 +39,42 @@ function Person(props) {
   const {
     reportData,
     birthYear,
-    etnicity,
+    ethnicity,
     genderData,
     race,
     summary,
+    showSummary = true,
   } = props;
   const classes = new BEMHelper('report-person');
   const emptyClasses = new BEMHelper('report-empty');
 
   return (  
     <div {...classes({ extra: 'row' })}>
-      <div className='col-xs-4'>
-        <Panel title='Person Summary' {...classes('chart')}>
-        {summary
-          ? [
-            <div {...classes('summary-row')}>
-              <span {...classes('summary-col', 'title')}>{summary.ATTRIBUTE_NAME[0]}</span>
-              <span {...classes('summary-col')}>
-                {summary.ATTRIBUTE_VALUE[0]}
-              </span>
-            </div>,
-            <div {...classes('summary-row')}>
-              <span {...classes('summary-col', 'title')}>{summary.ATTRIBUTE_NAME[1]}</span>
-              <span {...classes('summary-col')}>
-                {numberFormatter.format(parseInt(summary.ATTRIBUTE_VALUE[1], 0), 'short')}
-              </span>
-            </div>
-            ]
-          : <div {...emptyClasses()}>
-              <span {...emptyClasses('text')}>No data</span>
-            </div>
-        }
-        </Panel>
-      </div>
+      {showSummary &&
+        <div className='col-xs-4'>
+          <Panel title='Person Summary' {...classes('chart')}>
+          {summary
+            ? [
+              <div {...classes('summary-row')}>
+                <span {...classes('summary-col', 'title')}>{summary.ATTRIBUTE_NAME[0]}</span>
+                <span {...classes('summary-col')}>
+                  {summary.ATTRIBUTE_VALUE[0]}
+                </span>
+              </div>,
+              <div {...classes('summary-row')}>
+                <span {...classes('summary-col', 'title')}>{summary.ATTRIBUTE_NAME[1]}</span>
+                <span {...classes('summary-col')}>
+                  {numberFormatter.format(parseInt(summary.ATTRIBUTE_VALUE[1], 0), 'short')}
+                </span>
+              </div>
+              ]
+            : <div {...emptyClasses()}>
+                <span {...emptyClasses('text')}>No data</span>
+              </div>
+          }
+          </Panel>
+        </div>
+      }
       <div className='col-xs-8'>
         <Panel title='Year of birth' {...classes('chart')}>
           <div ref={(element) => {
@@ -144,10 +147,10 @@ function Person(props) {
       <div className='col-xs-4'>
         <Panel title='Population by Ethnicity' {...classes('chart')}>
           <div ref={(element) => {
-            if (element && etnicity) {
+            if (element && ethnicity) {
               const dimensions = element.getBoundingClientRect();
               new donut().render(
-                etnicity,
+                ethnicity,
                 element,
                 dimensions.width, // Scrollbar width
                 dimensions.width/2,
@@ -155,8 +158,8 @@ function Person(props) {
               );
             }
           }}
-          className={!etnicity ? emptyClasses().className : ''}>
-            {!etnicity &&
+          className={!ethnicity ? emptyClasses().className : ''}>
+            {!ethnicity &&
               <span {...emptyClasses('text')}>No data</span>
             }
           </div>

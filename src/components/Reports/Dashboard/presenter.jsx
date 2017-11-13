@@ -47,43 +47,46 @@ function Dashboard(props) {
     observedByMonth,
     summary,
     characterizationDate,
+    showSummary = true,
   } = props;
   const classes = new BEMHelper('report-dashboard');
   const emptyClasses = new BEMHelper('report-empty');
 
   return (  
     <div {...classes({ extra: 'row' })}>
-      <div className='col-xs-6'>
-        <Panel title='CDM Summary' {...classes('chart')}>
-          {(summary && Array.isArray(get(summary, 'ATTRIBUTE_NAME')))
-            ? [
-              <div {...classes('summary-row')}>
-                <span {...classes('summary-col', 'title')}>{summary.ATTRIBUTE_NAME[0]}</span>
-                <span {...classes('summary-col')}>
-                  {summary.ATTRIBUTE_VALUE[0]}
-                </span>
-              </div>,
-              <div {...classes('summary-row')}>
-                <span {...classes('summary-col', 'title')}>{summary.ATTRIBUTE_NAME[1]}</span>
-                <span {...classes('summary-col')}>
-                  {numberFormatter.format(parseInt(summary.ATTRIBUTE_VALUE[1], 0), 'short')}
-                </span>
-              </div>,
-              <div {...classes('summary-row')}>
-                <span {...classes('summary-col', 'title')}>
-                  Last update
-                </span>
-                <span {...classes('summary-col')}>
-                  {moment(characterizationDate).format(commonDate)}
-                </span>
-              </div>
-              ]
-            : <div {...emptyClasses()}>
-                <span {...emptyClasses('text')}>No data</span>
-              </div>
-          }
-        </Panel>
-      </div>
+      {showSummary &&
+        <div className='col-xs-6'>
+          <Panel title='CDM Summary' {...classes('chart')}>
+            {(summary && Array.isArray(get(summary, 'ATTRIBUTE_NAME')))
+              ? [
+                <div {...classes('summary-row')}>
+                  <span {...classes('summary-col', 'title')}>{summary.ATTRIBUTE_NAME[0]}</span>
+                  <span {...classes('summary-col')}>
+                    {summary.ATTRIBUTE_VALUE[0]}
+                  </span>
+                </div>,
+                <div {...classes('summary-row')}>
+                  <span {...classes('summary-col', 'title')}>{summary.ATTRIBUTE_NAME[1]}</span>
+                  <span {...classes('summary-col')}>
+                    {numberFormatter.format(parseInt(summary.ATTRIBUTE_VALUE[1], 0), 'short')}
+                  </span>
+                </div>,
+                <div {...classes('summary-row')}>
+                  <span {...classes('summary-col', 'title')}>
+                    Last update
+                  </span>
+                  <span {...classes('summary-col')}>
+                    {moment(characterizationDate).format(commonDate)}
+                  </span>
+                </div>
+                ]
+              : <div {...emptyClasses()}>
+                  <span {...emptyClasses('text')}>No data</span>
+                </div>
+            }
+          </Panel>
+        </div>
+      }
       <div className='col-xs-6'>
         <Panel title='Population by Gender' {...classes('chart')}>
           <div ref={(element) => {

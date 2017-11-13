@@ -1,0 +1,22 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+  &report-viewer {
+    @include view-edit-page();
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    flex: 0 1 auto;
+
+    &__content {
+      @include report();
+      display: flex;
+      padding: 0;
+      height: 100%;
+      background: $white;
+      flex: 0 1 auto;
+      padding: 0 2rem;
+    }
+    
+  }
+}

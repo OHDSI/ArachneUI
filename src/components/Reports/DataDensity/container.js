@@ -27,9 +27,9 @@ import DataDensity from './presenter';
 
 function mapStateToProps(state, ownProps) {
   const {
-    rawTotalRecords,
-    rawConceptsPerPerson,
-    rawRecordsPerPerson,
+    totalRecords: rawTotalRecords,
+    conceptsPerPerson: rawConceptsPerPerson,
+    recordsPerPerson: rawRecordsPerPerson,
   } = ownProps;
 
   const {
