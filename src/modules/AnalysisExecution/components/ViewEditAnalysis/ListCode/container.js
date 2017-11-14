@@ -41,6 +41,7 @@ export default class ListCodeBuilder {
   mapStateToProps(state) {
     const analysisData = get(state, 'analysisExecution.analysis.data.result');
     const analysisId = get(analysisData, 'id');
+    const analysisType = get(analysisData, 'type.id');
     const codeList = selectors.getCodeList(state);
     const downloadAllLink = apiPaths.analysisCodeDownloadAll({ analysisId });
     const isSubmittable = get(analysisData, 'permissions.CREATE_SUBMISSION', false);
@@ -50,6 +51,7 @@ export default class ListCodeBuilder {
 
     return {
       analysisId,
+      analysisType,
       codeList,
       downloadAllLink,
       isSubmittable,
@@ -65,7 +67,7 @@ export default class ListCodeBuilder {
       openSubmitModal: ModalUtils.actions.toggle.bind(null, modal.submitCode, true),
       loadAnalysis: actions.analysisExecution.analysis.find,
       removeCode: actions.analysisExecution.code.delete,
-      reimportCode: actions.analysisExecution.importEntity.reimport,
+      reimportCode: actions.analysisExecution.importEntity.update,
     };
   }
 
@@ -76,7 +78,11 @@ export default class ListCodeBuilder {
       ...dispatchProps,
       reimportCode(analysisCodeId) {
         dispatchProps
-          .reimportCode({ analysisId: stateProps.analysisId, fileId: analysisCodeId })
+          .reimportCode({
+            analysisId: stateProps.analysisId,
+            fileId: analysisCodeId,
+            type: stateProps.analysisType,
+          })
           .then(() => dispatchProps.loadAnalysis({ id: stateProps.analysisId }));
       },
       removeCode(analysisCodeId) {
