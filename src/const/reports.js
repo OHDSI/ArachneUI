@@ -102,7 +102,7 @@ const reportFootprints = {
     ]
   }`,
   [reports.OBSERVATION_PERIODS]: `{
-    ageAtDeath: [{ ${chartFootprints[chartTypes.LINE_DATA]} }],
+    ageAtFirst: [{ ${chartFootprints[chartTypes.LINE_DATA]} }],
     observationLengthData: [{ ${chartFootprints[chartTypes.LINE_DATA]} }],
     observationLengthStats: [{ ${chartFootprints[chartTypes.LINE_METADATA]} }],
     observedByYearData: [{ ${chartFootprints[chartTypes.LINE_DATA]} }],
@@ -111,7 +111,8 @@ const reportFootprints = {
     observationLengthByGender: [{ ${chartFootprints[chartTypes.BOXPLOT]} }],
     observationLengthByAge: [{ ${chartFootprints[chartTypes.BOXPLOT]} }],
     cumulativeDuration: [{ ${chartFootprints[chartTypes.LINE]} }],
-    observedByMonth: [{ ${chartFootprints[chartTypes.LINE_DATA_BY_MONTH]} }]
+    observedByMonth: [{ ${chartFootprints[chartTypes.LINE_DATA_BY_MONTH]} }],
+    periodPerPerson: [{ ${chartFootprints[chartTypes.DONUT]} }]
   }`,
   [reports.PERSON]: `{
     yearOfBirthData: [{ ${chartFootprints[chartTypes.LINE_DATA]} }],

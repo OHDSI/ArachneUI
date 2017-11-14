@@ -77,10 +77,10 @@ function ReportViewer(props) {
           {reports.ObservationPeriods && type === reportTypes.OBSERVATION_PERIODS &&
             <reports.ObservationPeriods
               ageAtFirstObservation={{
-                DATA: data.ageAtDeath,
-                INTERVALS: data.ageAtDeath.INTERVAL_INDEX.length - 1,
+                DATA: data.ageAtFirst,
+                INTERVALS: data.ageAtFirst.INTERVAL_INDEX.length - 1,
                 INTERVAL_SIZE: 1,
-                MAX: data.ageAtDeath.INTERVAL_INDEX.length - 1,
+                MAX: data.ageAtFirst.INTERVAL_INDEX.length - 1,
                 MIN: 0,
               }}
               ageByGender={data.ageByGender}
@@ -101,8 +101,8 @@ function ReportViewer(props) {
                 MAX: data.observedByYearData.INTERVAL_INDEX.length - 1,
                 MIN: 0,
               }}
-              observationsPerPerson={null}
-              observationsByMonth={data.observedByMonth}
+              observationsPerPerson={data.periodPerPerson}
+              rawObservationsByMonth={data.observedByMonth}
             />
           }
           {reports.DataDensity && type === reportTypes.DATA_DENSITY &&
