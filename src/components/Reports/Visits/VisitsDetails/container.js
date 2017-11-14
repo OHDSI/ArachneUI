@@ -27,11 +27,6 @@ import ReportUtils from 'components/Reports/Utils';
 import VisitsDetails from './presenter';
 
 function mapStateToProps(state, ownProps) {
-  /*const reportData = get(state, 'dataCatalog.reportDetails.data.result', {});
-  let durationByType = get(reportData, 'VISIT_DURATION_BY_TYPE');
-  let ageAtFirstOccurrence = get(reportData, 'AGE_AT_FIRST_OCCURRENCE');
-  let conditionByMonth = get(reportData, 'PREVALENCE_BY_MONTH');
-  const rawConditionPrevalence = get(reportData, 'PREVALENCE_BY_GENDER_AGE_YEAR');*/
   const {
     conditionPrevalence: rawConditionPrevalence,
   } = ownProps;

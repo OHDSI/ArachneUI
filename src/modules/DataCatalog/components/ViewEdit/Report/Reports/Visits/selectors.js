@@ -20,10 +20,16 @@
  *
  */
 
-import TreemapSelectorsBuilder from 'components/Reports/TreemapSelectorsBuilder';
+import { TreemapSelectorsBuilder } from 'services/Utils';
 import { treemap } from '@ohdsi/atlascharts/dist/atlascharts.umd';
 
 export default class SelectorsBuilder extends TreemapSelectorsBuilder {
+  constructor() {
+    super();
+    this.dataPath = 'dataCatalog.report.data.result';
+    this.detailsPath = 'dataCatalog.reportDetails.data.result';
+  }
+
   extractTableData(data) {
     const normalizedData = treemap.normalizeDataframe(data);
     if (!normalizedData.CONCEPT_PATH || !normalizedData.RECORDS_PER_PERSON) {

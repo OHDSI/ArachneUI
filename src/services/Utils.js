@@ -477,6 +477,59 @@ class ContainerBuilder {
   }
 }
 
+import { createSelector } from 'reselect';
+import convertDataToTreemapData from 'components/Reports/converters/dataToTreemapData';
+
+class TreemapSelectorsBuilder {
+  constructor() {
+    this.dataPath = '';
+    this.detailsPath = '';
+  }
+
+  getReportData(state) {
+    const reportData = get(state, this.dataPath, {});
+    return convertDataToTreemapData(reportData);
+  };
+
+  getRawTableData(state) {
+    return get(state, this.dataPath) || [];
+  }
+
+  getRawDetails(state) {
+    return get(state, this.detailsPath);
+  }
+
+  extractTableData(rawTableData) {
+    return [];
+  }
+
+  extractReportDetails(rawReportDetails) {
+    return {};
+  }
+
+  buildSelectorForTableData() {
+    return createSelector(
+      this.getRawTableData.bind(this),
+      this.extractTableData
+    );
+  }
+
+  buildSelectorForReportDetails() {
+    return createSelector(
+      this.getRawDetails.bind(this),
+      this.extractReportDetails
+    );
+  }
+
+  build() {
+    return {
+      getReportData: this.getReportData.bind(this),
+      getTableData: this.buildSelectorForTableData(),
+      getReportDetails: this.buildSelectorForReportDetails(),
+    };
+  }
+}
+
 export {
   buildFormData,
   get,
@@ -491,4 +544,5 @@ export {
   detectMimeTypeByExtension,
   Utils,
   ContainerBuilder,
+  TreemapSelectorsBuilder,
 };
