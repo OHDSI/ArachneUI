@@ -22,61 +22,18 @@
 
 import { connect } from 'react-redux';
 import get from 'lodash/get';
-import { chart } from '@ohdsi/atlascharts/dist/atlascharts.umd';
-import * as d3 from 'd3';
-import moment from 'moment';
 import DataDensity from './presenter';
-
-function prepareLineData(rawData) {
-  const data = { ...rawData };
-  let normalizedData = {
-    X_CALENDAR_MONTH: [],
-  };
-  let transformedData;
-  if (rawData) {
-    data.X_CALENDAR_MONTH.forEach((d, i, ar) => {
-      ar[i] = moment(d, 'YYYYMM').valueOf(); // eslint-disable-line no-param-reassign
-    });
-    normalizedData = chart.dataframeToArray(data);
-        // nest dataframe data into key->values pair
-    transformedData = d3.nest()
-            .key(d => d.SERIES_NAME)
-            .entries(normalizedData)
-            .map(d => ({ name: d.key, values: d.values }));
-  }
-  return {
-    normalizedData,
-    transformedData,
-  };
-}
 
 function mapStateToProps(state) {
   const reportData = get(state, 'dataCatalog.report.data.result', {});
-  const rawTotalRecords = get(reportData, 'TOTAL_RECORDS');
-  const rawConceptsPerPerson = get(reportData, 'CONCEPTS_PER_PERSON');
-  const rawRecordsPerPerson = get(reportData, 'RECORDS_PER_PERSON');
-
-  const {
-        transformedData: totalRecords,
-        normalizedData: totalRecordsScale,
-    } = prepareLineData(rawTotalRecords);
-
-  const {
-        transformedData: recordsPerPerson,
-        normalizedData: perPersonScale,
-    } = prepareLineData(rawRecordsPerPerson);
-
-  let conceptsPerPerson;
-  if (rawConceptsPerPerson) {
-    conceptsPerPerson = chart.prepareData(rawConceptsPerPerson, chart.chartTypes.BOXPLOT);
-  }
+  const totalRecords = get(reportData, 'TOTAL_RECORDS');
+  const conceptsPerPerson = get(reportData, 'CONCEPTS_PER_PERSON');
+  const recordsPerPerson = get(reportData, 'RECORDS_PER_PERSON');
 
   return {
     conceptsPerPerson,
     recordsPerPerson,
-    recordsPerPersonYears: perPersonScale,
     totalRecords,
-    totalRecordsYears: totalRecordsScale,
   };
 }
 

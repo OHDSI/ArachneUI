@@ -21,27 +21,20 @@
  */
 
 import { connect } from 'react-redux';
-import get from 'lodash/get';
 import * as d3 from 'd3';
 import { chart } from '@ohdsi/atlascharts/dist/atlascharts.umd';
-import { Utils } from 'services/Utils';
+import ReportUtils from 'components/Reports/Utils';
 import ConditionDetails from './presenter';
 
-function seriesInitializer(tName, sName, x, y) {
-  return {
-    TRELLIS_NAME: tName,
-    SERIES_NAME: sName,
-    X_CALENDAR_YEAR: x,
-    Y_PREVALENCE_1000PP: y,
-  };
-}
-
-function mapStateToProps(state) {
-  const reportData = get(state, 'dataCatalog.reportDetails.data.result', {});
-  let ageOfFirstDiagnosis = get(reportData, 'AGE_AT_FIRST_DIAGNOSIS');
-  const conditionByType = get(reportData, 'CONDITIONS_BY_TYPE', { COUNT_VALUE: [], CONCEPT_NAME: [] });
-  let conditionByMonth = get(reportData, 'PREVALENCE_BY_MONTH');
-  const rawConditionPrevalence = get(reportData, 'PREVALENCE_BY_GENDER_AGE_YEAR');
+function mapStateToProps(state, ownProps) {
+  const {
+    conditionPrevalence: rawConditionPrevalence,
+    conditionByType,
+  } = ownProps;
+  let {
+    conditionByMonth,
+    ageOfFirstDiagnosis,
+  } = ownProps;
   let conditionPrevalence;
 
   if (ageOfFirstDiagnosis) {
@@ -78,7 +71,7 @@ function mapStateToProps(state) {
         series.values = yearRange.map((year) => { // eslint-disable-line no-param-reassign
           const yearData = series.values.filter(
             f => f.X_CALENDAR_YEAR == year // eslint-disable-line eqeqeq
-          )[0] || seriesInitializer(trellis.key, series.key, year, 0);
+          )[0] || ReportUtils.seriesInitializer(trellis.key, series.key, year, 0);
           yearData.date = new Date(year, 0, 1);
           return yearData;
         });
@@ -87,7 +80,7 @@ function mapStateToProps(state) {
   }
 
   return {
-    conditionByType: Utils.prepareChartDataForDonut(conditionByType),
+    conditionByType: ReportUtils.prepareChartDataForDonut(conditionByType),
     conditionByMonth,
     conditionPrevalence: conditionPrevalence.length ? conditionPrevalence : null,
     ageOfFirstDiagnosis,

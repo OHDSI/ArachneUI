@@ -20,6 +20,6 @@
  *
  */
 
-import ConditionEra from './container';
+import ConditionEraBuilder from './container';
 
-export default ConditionEra;
+export default new ConditionEraBuilder().build();
