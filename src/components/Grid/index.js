@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,6 +20,7 @@
  *
  */
 
-import GridBuilder from './container';
+import GridBuilder, { extractPaginationData } from './container';
 
 export default (new GridBuilder()).build();
+export { extractPaginationData };

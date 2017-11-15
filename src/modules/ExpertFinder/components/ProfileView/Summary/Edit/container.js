@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,8 +29,8 @@ import SummaryEdit from './presenter';
 
 function mapStateToProps(state) {
   const moduleState = state.expertFinder.userProfile;
-  const id = get(moduleState, 'data.id', '');
-  const text = get(moduleState, 'data.general.personalSummary');
+  const id = get(moduleState, 'data.result.id', '');
+  const text = get(moduleState, 'data.result.general.personalSummary');
 
   return {
     initialValues: {
@@ -41,9 +41,9 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  updateSummary: actions.expertFinder.userProfile.updateSummary,
+  updateGeneralInfo: actions.expertFinder.userProfile.generalInfo.update,
   resetForm: () => resetForm(forms.summary),
-  loadInfo: actions.expertFinder.userProfile.loadInfo,
+  loadInfo: actions.expertFinder.userProfile.find,
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
@@ -53,9 +53,11 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...dispatchProps,
     cancel: () => ownProps.setViewMode(),
     doSubmit: ({ text }) => {
-      const submitPromise = dispatchProps.updateSummary(text);
+      const submitPromise = dispatchProps.updateGeneralInfo(null, {
+        personalSummary: text,
+      });
       submitPromise.then(() => ownProps.setViewMode())
-        .then(() => dispatchProps.loadInfo(stateProps.id))
+        .then(() => dispatchProps.loadInfo({ id: stateProps.id }))
         .catch(() => { });
 
       return submitPromise;

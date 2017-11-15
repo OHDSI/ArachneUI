@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -64,13 +64,11 @@ function mapStateToProps(state) {
   const characterizationSource = get(state, 'cdmSourceList.characterization.data.content[0].source');
   const thisCharacterization = get(state, 'cdmSourceList.characterization.data.content[0].finished', null);
   const prevCharacterization = get(state, 'cdmSourceList.characterization.data.content[1].finished', null);
-  const datasourceUuid = get(state, 'cdmSourceList.dataSourceBusiness.data.uuid');
   const hasResults = get(state, 'cdmSourceList.achillesResults.data');
   const isCharacterizationStarted = characterizationStatus === characterizationStatuses.IN_PROGRESS
     || get(state, 'cdmSourceList.characterization.isLoading', false);
 
   return {
-    datasourceUuid,
     datasourceId,
     isCharacterizationStarted,
     lastCharacterization: thisCharacterization || prevCharacterization,

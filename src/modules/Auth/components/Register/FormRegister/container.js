@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,12 +27,13 @@ import actions from 'actions/index';
 import { paths } from 'modules/Auth/const';
 import { validators } from 'services/Utils';
 import FormRegister from './presenter';
+import get from "lodash/get";
 
 function mapStateToProps(state) {
-  const professionalTypesList = state.auth.professionalTypes.list || [];
+  const professionalTypesList = get(state, 'auth.professionalType.queryResult.result', []);
 
   return {
-    isLoading: state.auth.professionalTypes.isLoading,
+    isLoading: state.auth.professionalType.isLoading,
     professionalTypesOptions: professionalTypesList.map(type => ({
       label: type.name,
       value: type.id,
@@ -41,7 +42,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  doRegister: actions.auth.auth.register,
+  register: actions.auth.register,
   goToWelcome: () => goToPage(paths.welcome()),
 };
 
@@ -51,7 +52,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...stateProps,
     ...dispatchProps,
     doSubmit(data) {
-      const submitPromise = dispatchProps.doRegister(data);
+      const submitPromise = dispatchProps.register({}, data);
       submitPromise
         .then(() => dispatchProps.goToWelcome())
         .catch(() => {});

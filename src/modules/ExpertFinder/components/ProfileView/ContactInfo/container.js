@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,7 +26,7 @@ import ContactInfo from './presenter';
 
 function mapStateToProps(state) {
   const moduleState = state.expertFinder.userProfile;
-  const editable = get(moduleState, 'data.isEditable', false);
+  const editable = get(moduleState, 'data.result.isEditable', false);
 
   return {
     isLoading: get(moduleState, 'isLoading', false),

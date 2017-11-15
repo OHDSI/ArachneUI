@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,6 +23,7 @@
 import Duck from 'services/Duck';
 import api from 'services/Api';
 import { apiPaths } from 'modules/StudyManager/const';
+import { Utils } from 'services/Utils';
 import Uri from 'urijs';
 
 const actionCoreName = 'SM_STUDY';
@@ -54,7 +55,7 @@ function saveFilter(values) {
 }
 
 function getSavedFilter() {
-  return JSON.parse(localStorage.getItem('study-list-filter'));
+  return Utils.getFilterFromLS('study-list-filter');
 }
 
 function dropFilter() {

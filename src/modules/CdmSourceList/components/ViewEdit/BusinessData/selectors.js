@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,7 +28,7 @@ import { modelTypesValues } from '../../../../../const/dataSource';
 class CdmSourceListViewEditSelectorsBuilder {
 
   getAttrList(state) {
-    return staticAttrList.filter(el => !el.calculated).map(el => ({ ...el, isRequired: true }));
+    return staticAttrList.filter(el => !el.calculated);
   }
 
   getValues(state) {
@@ -36,7 +36,7 @@ class CdmSourceListViewEditSelectorsBuilder {
   }
 
   getAttributes(attrList, values) {
-    return (values.modelType === modelTypesValues.CDM) ? attrList : attrList.filter(el => el.label != 'Version');
+    return (values.modelType === modelTypesValues.CDM) ? attrList : attrList.filter(el => !el.cdmSpecific);
   }
 
   buildSelectorForGetAttrList() {

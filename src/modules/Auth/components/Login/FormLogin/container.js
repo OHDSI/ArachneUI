@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,27 +30,26 @@ import get from 'lodash/get';
 import FormLogin from './presenter';
 
 function mapStateToProps(state) {
-  const authMethod = get(state, 'auth.auth.method', authMethods.NATIVE);
+  const authMethod = get(state, 'auth.authMethod.data.result.userOrigin', authMethods.NATIVE);
   const isUnactivated = get(state, 'form.login.submitErrors.unactivated', false);
   const userEmail = get(state, 'form.login.values.username', '');
-  const isLoading = get(state, 'auth.auth.isLoading', false);
 
   return {
     authMethod,
     remindPasswordLink: paths.remindPassword(),
     initialValues: {
-      redirectTo: state.auth.auth.backUrl,
+      redirectTo: state.auth.authRoutingHistory.backUrl,
     },
     isUnactivated,
     userEmail,
-    isLoading,
   };
 }
 
 const mapDispatchToProps = {
-  doSubmit: actions.auth.auth.login,
-  resend: actions.auth.auth.resendEmail,
-  redirect: () => push(paths.login(loginMessages.resendDone)),
+  login: actions.auth.login,
+  resend: actions.auth.resendEmail,
+  redirect: (url) => push(url),
+  principal: actions.auth.principal.query,
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
@@ -58,9 +57,13 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...stateProps,
     ...dispatchProps,
     ...ownProps,
-    resendEmail: () => dispatchProps.resend({ email: stateProps.userEmail })
-      .then(() => dispatchProps.redirect())
+    resendEmail: () => dispatchProps.resend({}, { email: stateProps.userEmail })
+      .then(() => dispatchProps.redirect(paths.login(loginMessages.resendDone)))
       .catch(() => {}),
+    doSubmit: (data) => dispatchProps.login(data.username, data.password)
+      .then(() => dispatchProps.redirect((/\/auth\/logout/i).test(stateProps.initialValues.redirectTo) ? '/'
+        : stateProps.initialValues.redirectTo || '/'))
+      .then(() => dispatchProps.principal()),
   });
 }
 
@@ -69,3 +72,4 @@ const ReduxFormLogin = reduxForm({
 })(FormLogin);
 
 export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(ReduxFormLogin);
+

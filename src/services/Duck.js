@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -86,7 +86,6 @@ class Duck {
         (state, action) => ({
           ...state,
           isSaving: true,
-          data: null,
         })
       )
       // CREATE_FULFILLED

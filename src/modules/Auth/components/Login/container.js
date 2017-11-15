@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -53,7 +53,7 @@ Login.propTypes = {
 function mapStateToProps(state) {
   return {
     message: state.routing.locationBeforeTransitions.query.message,
-    isUserAuthed: !!get(state, 'auth.principal.data.id'),
+    isUserAuthed: !!get(state, 'auth.principal.queryResult.result.id'),
   };
 }
 
@@ -64,5 +64,5 @@ const mapDispatchToProps = {
 const connectedLogin = connect(mapStateToProps, mapDispatchToProps)(Login);
 
 export default asyncConnect([{
-  promise: ({ store: { dispatch } }) => dispatch(actions.auth.auth.getAuthMethod()),
+  promise: ({ store: { dispatch } }) => dispatch(actions.auth.authMethod.find()),
 }])(connectedLogin);

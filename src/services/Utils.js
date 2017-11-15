@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,6 +41,7 @@ import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-async-connect';
 import { ModalUtils } from 'arachne-ui-components';
 import types from 'const/modelAttributes';
+import URI from 'urijs';
 
 function buildFormData(obj) {
   const formData = new FormData();
@@ -159,6 +160,11 @@ const validators = {
           _error: response.errorMessage,
           ...response.validatorErrors,
         });
+      } else if (response.errorCode === errors.UNACTIVATED) {
+        throw new SubmissionError({
+          _error: 'Please verify your account using link in the email that was sent to you.',
+          unactivated: true,
+        });
       } else if (response.errorCode !== errors.NO_ERROR) {
         throw new SubmissionError({
           _error: response.errorMessage,
@@ -232,7 +238,7 @@ class Utils {
   }
 
   static fetchAll({ fetchers, dispatch }) {
-    return Promise.all(Object.values(fetchers).map(action => dispatch(action())));
+    return Promise.all(Object.values(fetchers).map(fetcher => fetcher.then ? /* promise */ fetcher : /* action */ dispatch(fetcher())));
   }
 
   static buildConnectedComponent({
@@ -265,7 +271,7 @@ class Utils {
       ConnectedComponent = asyncConnect([{
         promise: ({ params, store: { dispatch, getState } }) => {
           const state = getState();
-          const fetchers = getFetchers({ params, state, dispatch });
+          const fetchers = getFetchers({ params, state, dispatch, getState });
           return Utils.fetchAll({ fetchers, dispatch });
         },
       }])(ConnectedComponent);
@@ -344,14 +350,14 @@ class Utils {
         return false;
       }
       switch (field.type) {
-        case types.enum:
+        case fieldTypes.enum:
           if (field.isMulti) {
-            initialValues[field.name] = Array.isArray(paramValue) ? paramValue : [paramValue];
+            initialValues[field.name] = Array.isArray(paramValue) ? paramValue : (typeof paramValue === 'object' ? Object.values(paramValue) : [paramValue]);
           } else {
             initialValues[field.name] = paramValue;
           }
           break;
-        case types.toggle:
+        case fieldTypes.toggle:
           initialValues[field.name] = !!paramValue;
           break;
         default:
@@ -383,9 +389,89 @@ class Utils {
     return promise;
   }
 
+  static extendReducer(originalReducer, newReducerMap) {
+    return (state = {}, action) => {
+      let communityState = originalReducer(state, action);
+      let nextState = { ...communityState };
+      let hasChanged = false;
+
+      Object.keys(newReducerMap).forEach(key => {
+        const reducer = newReducerMap[key];
+        const previousStateForKey = state[key];
+        const nextStateForKey = reducer(previousStateForKey, action);
+        nextState[key] = nextStateForKey;
+        hasChanged = hasChanged || nextStateForKey !== previousStateForKey;
+      });
+
+      return hasChanged ? nextState : communityState;
+    }
+  }
+
+  static setUrlParams(url, query) {
+    const uri = new URI(url);
+    if (query) {
+      uri.setSearch(query);
+    }
+    return uri.toString();
+  }
+
+  static getSavedFiltersRestorer({ getSavedFilter, basePath }) {
+    return (nextState, replace, callback) => {
+      let query = nextState.location.query;
+      if (!query || Object.keys(query).length === 0) {
+        const savedFilter = getSavedFilter();
+        query = {
+          ...savedFilter,
+          page: 1,
+        };
+        replace({ pathname: basePath, query });
+      }
+      callback();
+    };
+  }
+
+  static getFilterFromLS(lsKey) {
+    let savedFilter;
+    try {
+      savedFilter = JSON.parse(localStorage.getItem(lsKey));
+      if (!savedFilter || typeof savedFilter !== 'object') {
+        throw new Error();
+      }
+    } catch (e) {
+      savedFilter = {};
+    }
+    const filter = {};
+    Object.keys(savedFilter).forEach((key) => {
+      if (!Utils.isEmpty(savedFilter[key])) {
+        filter[key] = savedFilter[key];
+      }
+    });
+    return filter;
+  }
+
+  static getPlainFiltersEncodeDecoder() {
+    return {
+      searchQueryDecode({ searchParams = {}, filterFields }) {
+        return {
+          query: searchParams.query,
+          page: searchParams.page,
+          filter: searchParams,
+        };
+      },
+      searchQueryEncode({ searchParams, filterFields }) {
+        return {
+          ...searchParams.filter,
+          query: searchParams.query,
+          page: searchParams.page,
+        };
+      },
+    };
+  }
+
 }
 
 class ContainerBuilder {
+
   build() {
     return Utils.buildConnectedComponent({
       Component: this.getComponent(),
@@ -395,7 +481,9 @@ class ContainerBuilder {
       mergeProps: this.mergeProps,
       getModalParams: this.getModalParams,
       getFormParams: this.getFormParams,
-      getFetchers: this.getFetchers,
+      getFetchers: this.getFetchers
+        ? this.getFetchers.bind(this)
+        : this.getFetchers,
     });
   }
 }

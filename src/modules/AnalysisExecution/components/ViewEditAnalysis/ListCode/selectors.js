@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -53,7 +53,7 @@ export default class SelectorsBuilder {
     return get(state, 'analysisExecution.analysis.data.result.files') || [];
   }
   getLoggedUserId(state) {
-    return get(state, 'auth.principal.data.result.id', -1);
+    return get(state, 'auth.principal.queryResult.result.id', -1);
   }
 
   getCode(analysis, currentUserId, code) {
@@ -81,7 +81,7 @@ export default class SelectorsBuilder {
   getIsLoading(state) {
     return get(
       state,
-      'analysisExecution.importEntity.isLoading',
+      'analysisExecution.importEntity.isUpdating',
       false,
       'Boolean'
     );

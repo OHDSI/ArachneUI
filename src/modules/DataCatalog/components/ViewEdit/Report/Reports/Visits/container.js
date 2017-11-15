@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -78,7 +78,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...ownProps,
     loadConditionDetails: (conceptId) => {
       dispatchProps.loadDetails({
-        uuid: ownProps.dataSourceUuid,
+        id: ownProps.dataSourceId,
         path: 'visits',
         filename: `visit_${conceptId}.json`,
       });

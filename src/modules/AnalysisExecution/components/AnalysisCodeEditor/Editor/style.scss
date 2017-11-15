@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -48,7 +48,14 @@
 
   		&:not(:first-child) {
   			margin-left: 7px;
-  		}
+      }
+      
+      &--unlock {
+        background-color: $purple;
+        &:hover {
+          background-color: darken($purple, 10%);
+        }
+      }
   	}
 
     &__request-unlock-tooltip {

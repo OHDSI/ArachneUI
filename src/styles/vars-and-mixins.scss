@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -300,4 +300,11 @@ $default-box-padding: 1.5rem 2rem;
       flex-grow: 1;
     }
   }
+}
+
+@mixin action-bar() {
+  background: $grey-light;
+  border-bottom: 1px solid $grey;
+  display: flex;
+  padding: 1.3rem 3rem;
 }

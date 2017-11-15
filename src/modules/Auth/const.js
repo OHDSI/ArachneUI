@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,15 +29,7 @@ const form = keyMirror({
 });
 
 const actionTypes = keyMirror({
-  //
-  REQUEST_PROFESSIONAL_TYPES: null,
-  RECEIVE_PROFESSIONAL_TYPES: null,
-  //
-  RECIEVE_AUTH_PRINCIPAL: null,
-  //
-  AUTH_REQUEST_EMAIL: null,
-  AUTH_RECEIVE_EMAIL: null,
-  AUTH_RECEIVE_METHOD: null,
+  AU_PRINCIPAL_QUERY_FULFILLED: null,
 });
 
 const loginMessages = {

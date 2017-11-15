@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -43,7 +43,8 @@ export default function getFields(props) {
     {
       label: 'Type',
       name: 'type',
-      type: types.enumMulti,
+      type: types.enum,
+      isMulti: true,
       forceOpened: true,
       hasTitle: true,
       options: props.typeOptions,
@@ -51,7 +52,8 @@ export default function getFields(props) {
     {
       label: 'Status',
       name: 'status',
-      type: types.enumMulti,
+      type: types.enum,
+      isMulti: true,
       forceOpened: true,
       hasTitle: true,
       options: props.statusOptions.map(opts => ({

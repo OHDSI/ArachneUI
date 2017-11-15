@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,6 @@
  * Created: December 13, 2016
  *
  */
-
 // @ts-check
 import { Utils } from 'services/Utils';
 import get from 'lodash/get';
@@ -76,6 +75,10 @@ export default class ListDataSourcesBuilder {
               .removeDataSource({ studyId: stateProps.studyId, dataSourceId })
               .then(() => dispatchProps.loadStudy(stateProps.studyId));
           });
+      },
+      editDataSource(dataSourceId) {
+        dispatchProps
+          .openAddModal({ studyId: stateProps.studyId, dataSourceId });
       },
     };
   }

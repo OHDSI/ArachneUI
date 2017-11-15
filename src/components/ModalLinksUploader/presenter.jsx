@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,6 +29,7 @@ require('./style.scss');
 
 function Links(props) {
   const classes = new BEMHelper('modal-upload-link');
+  const wrapperClasses = new BEMHelper('modal-links-upload-actions');
   const tooltipClasses = new BEMHelper('tooltip');
   const {
     options,
@@ -40,8 +41,14 @@ function Links(props) {
   if (Array.isArray(input.value)) {
     links = links.concat(input.value);
   }
+  let canSubmit = links.length > 0;
+  links.forEach((link) => {
+    if (link.label.length === 0 || link.value.length === 0) {
+      canSubmit = false;
+    }
+  });
 
-  return (
+  return <div {...wrapperClasses()}> 
     <ul className={options.className}>
       {links.map((link, index) =>
         <ListItem
@@ -93,7 +100,27 @@ function Links(props) {
         </ListItem>
       )}
     </ul>
-  );
+    {options.isMultiple ?
+      <Link
+        {...wrapperClasses('add-button')}
+        onClick={options.addLink}
+      >
+        <span {...wrapperClasses('icon')}>add_circle_outline</span>
+        <span {...wrapperClasses('label')}>{options.addButtonTitle}</span>
+      </Link>
+    :
+      null}
+    <div {...wrapperClasses('actions')}>
+      <Button
+        {...wrapperClasses('submit')}
+        mods={['rounded', 'success']}
+        onClick={options.doSubmit}
+        disabled={meta.submitting || !canSubmit}
+      >
+        Add
+      </Button>
+    </div>
+  </div>;
 }
 
 function ModalLinksUploader(props) {
@@ -104,37 +131,20 @@ function ModalLinksUploader(props) {
   };
 
   return <div {...classes({ modifiers })}>
-    <form {...props} {...classes('group')}>
+    <form {...props}>
       <Field
         component={Links}
         options={{
           placeholder: 'Name document',
           isMultiple,
           ...classes('links'),
+          addLink: props.addLink,
+          addButtonTitle: props.addButtonTitle,
+          doSubmit: props.doSubmit,
         }}
         name={props.fieldName}
       />
-      {isMultiple ?
-        <Link
-          {...classes('add-button')}
-          onClick={props.addLink}
-        >
-          <span {...classes('icon')}>add_circle_outline</span>
-          <span {...classes('label')}>{props.addButtonTitle}</span>
-        </Link>
-      :
-        null
-      }
     </form>
-    <div {...classes('actions')}>
-      <Button
-        {...classes('submit')}
-        mods={['rounded', 'success']}
-        onClick={props.doSubmit}
-      >
-        Add
-      </Button>
-    </div>
   </div>;
 }
 

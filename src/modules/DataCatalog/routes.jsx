@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,7 +28,7 @@ import ViewEditDataSource from './components/ViewEdit';
 function Routes() {
   return [
     <Route path="data-sources" component={ListDataSources}/>,
-    <Route path="data-sources/:dataSourceUuid(/:isProfile)" component={ViewEditDataSource}/>,
+    <Route path="data-sources/:dataSourceId(/:isProfile)" component={ViewEditDataSource}/>,
     <IndexRedirect to="data-sources"/>,
   ]
 }

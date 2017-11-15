@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,10 +21,12 @@
  */
 
 import { connect } from 'react-redux';
+import { push as goToPage } from 'react-router-redux';
 import { dataSourcePermissions } from 'modules/DataCatalog/const';
-import actions from 'actions/index';
+import actions from 'actions';
 import get from 'lodash/get';
 import { Utils } from 'services/Utils';
+import { paths } from 'modules/DataCatalog/const';
 import ToolbarActions from './presenter';
 
 function mapStateToProps(state) {
@@ -32,17 +34,18 @@ function mapStateToProps(state) {
   const isDeleted = !!get(datasourceData, 'deleted', '');
   const isDeletable = get(datasourceData, `permissions[${dataSourcePermissions.delete}]`, false);
   const canDelete = !isDeleted && isDeletable;
-  const dataSourceUuid = get(datasourceData, 'uuid', '');
+  const dataSourceId = get(datasourceData, 'id', '');
 
   return {
     canDelete,
-    dataSourceUuid,
+    dataSourceId,
   };
 }
 
 const mapDispatchToProps = {
   load: actions.dataCatalog.dataSource.find,
   remove: actions.dataCatalog.dataSource.delete,
+  goToPage,
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
@@ -53,9 +56,10 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     remove: () => {
       Utils.confirmDelete()
         .then(() => {
-          const dataSourceUuid = stateProps.dataSourceUuid;
-          dispatchProps.remove(dataSourceUuid)
-            .then(() => dispatchProps.load(dataSourceUuid))
+          const dataSourceId = stateProps.dataSourceId;
+          dispatchProps.remove({ id: dataSourceId })
+            .then(() => dispatchProps.load({ id: dataSourceId }))
+            .then(() => dispatchProps.goToPage(paths.dataCatalog()))
             .catch(() => {});
         });
     },

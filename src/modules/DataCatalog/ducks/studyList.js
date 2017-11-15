@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,12 +23,12 @@
 import Duck from 'services/Duck';
 import { apiPaths } from 'modules/DataCatalog/const';
 
-const studies = new Duck({
+const study = new Duck({
   name: 'DC_DS_STUDY_LIST',
   urlBuilder: apiPaths.studies,
 });
 
 export default {
-  actions: studies.actions,
-  reducer: studies.reducer,
+  actions: study.actions,
+  reducer: study.reducer,
 };

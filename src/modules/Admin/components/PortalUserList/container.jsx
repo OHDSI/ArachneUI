@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -80,11 +80,18 @@ class UserListBuilder extends ContainerBuilder {
   }
 
   mapStateToProps(state) {
+    const isLoading = [
+      state.adminSettings.portalUserList.isLoading,
+      state.adminSettings.portalUserEnable.isSaving,
+      state.adminSettings.portalUserConfirmEmail.isSaving,
+    ].reduce((acc, state) => acc || state, false);
+
     return {
-      isLoading: state.adminSettings.portalUserList.isLoading,
+      isLoading,
       query: get(state, 'routing.locationBeforeTransitions.query', {}, 'Object'),
       paginationDetails: selectors.getPaginationDetails(state),
       filterFields: userFilterFields,
+      ...Utils.getPlainFiltersEncodeDecoder(),
     };
   }
 
@@ -102,7 +109,7 @@ class UserListBuilder extends ContainerBuilder {
       ...dispatchProps,
       ...ownProps,
       loadUsersWithCurrentQuery: () => {
-        dispatchProps.loadUserList({query: stateProps.query});
+        dispatchProps.loadUserList({ query: stateProps.query });
       },
       applySavedFilters(filters) {
         const url = new Uri(paths.users());

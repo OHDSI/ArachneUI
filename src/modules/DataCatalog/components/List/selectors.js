@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,6 +27,8 @@ import dsInfoConvert from 'modules/DataCatalog/converters/dsInfoConvertor';
 import { types as fieldTypes } from 'const/modelAttributes';
 import cloneDeep from 'lodash/cloneDeep';
 import DsAttrListSelector from 'modules/DataCatalog/selectors/DsAttrListSelector';
+import { extractPaginationData } from 'components/Grid';
+import { viewModePageSize } from 'const/viewModes';
 
 class DataCatalogListTableSelectorsBuilder extends DsAttrListSelector {
 
@@ -41,14 +43,16 @@ class DataCatalogListTableSelectorsBuilder extends DsAttrListSelector {
   }
 
   getFacets(state) {
-    return get(state, 'dataCatalog.facets.queryResult.result');
+    return get(state, 'dataCatalog.dataSourceList.queryResult.result.facets');
   }
 
   getPaginationDetails(state) {
-    return {
-      currentPage: parseInt(get(state, 'dataCatalog.dataSourceList.queryResult.result.number', 1), 10),
-      pages: parseInt(get(state, 'dataCatalog.dataSourceList.queryResult.result.totalPages', 1), 10),
-    };
+    const searchResults = get(state, 'dataCatalog.dataSourceList.queryResult.result');
+    return extractPaginationData({
+      searchResults,
+      numOfElsPerPage: viewModePageSize.DEFAULT,
+      startsFromOne: true,
+    });
   }
 
   // Columns selector

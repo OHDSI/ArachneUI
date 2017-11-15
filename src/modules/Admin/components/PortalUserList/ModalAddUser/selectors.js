@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +24,7 @@ import { createSelector } from 'reselect';
 import get from 'lodash/get';
 
 const getRawUserOptionList = state => get(state, 'adminSettings.userOptionList.data') || [];
-const getRawProfessionalTypesList = state => get(state, 'auth.professionalTypes.list') || [];
+const getRawProfessionalTypesList = state => get(state, 'auth.professionalType.queryResult.result') || [];
 
 
 const getUserOptionList = createSelector(

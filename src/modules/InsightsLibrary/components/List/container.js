@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,15 +23,17 @@
 // @ts-check
 import { Component, PropTypes } from 'react';
 import { Utils, ContainerBuilder, get } from 'services/Utils';
-import { values } from 'lodash';
 import actions from 'actions';
 import { push } from 'react-router-redux';
 import Uri from 'urijs';
 import { paths } from 'modules/InsightsLibrary/const';
-import { saveFilter, getSavedFilter } from 'modules/InsightsLibrary/ducks/insights';
-import presenter from './presenter';
+import { saveFilter } from 'modules/InsightsLibrary/ducks/insights';
 
+import presenter from './presenter';
 import getFields from './Filters/fields';
+import SelectorsBuilder from './selectors';
+
+const selectors = (new SelectorsBuilder()).build();
 
 /** @augments { Component<any, any> } */
 class InsightsList extends Component {
@@ -42,15 +44,14 @@ class InsightsList extends Component {
     };
   }
 
-  componentWillMount() {
-    const preSelectedFilters = Object.values(this.props.searchQuery)
-      .filter(param => !Utils.isEmpty(param));
-    if (!preSelectedFilters.length) {
-      const savedFilter = getSavedFilter();
-      if (values(savedFilter).filter(param => !Utils.isEmpty(param))) {
-        this.props.applySavedFilters(savedFilter);
-      }
-    }
+  constructor(props, context) {
+    super(props, context);
+
+    this.persistFilters = this.persistFilters.bind(this);
+  }
+
+  componentDidMount() {
+    window.addEventListener('beforeunload', this.persistFilters);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -60,6 +61,11 @@ class InsightsList extends Component {
   }
 
   componentWillUnmount() {
+    window.removeEventListener('beforeunload', this.persistFilters);
+    this.persistFilters();
+  }
+
+  persistFilters() {
     const filterValues = {};
     for (const filter in this.props.searchQuery) {
       if (!Utils.isEmpty(this.props.searchQuery[filter])) {
@@ -86,10 +92,8 @@ export default class InsightsListBuilder extends ContainerBuilder {
       searchQuery,
       isLoading: get(state, 'insightsLibrary.insights.isLoading', false),
       filterFields: getFields(),
-      paginationDetails: {
-        currentPage: parseInt(get(state, 'insightsLibrary.insights.queryResult.number', 1), 10) + 1,
-        totalPages: parseInt(get(state, 'insightsLibrary.insights.queryResult.totalPages', 0), 10),
-      },
+      paginationDetails: selectors.getPaginationDetails(state),
+      ...Utils.getPlainFiltersEncodeDecoder(),
     };
   }
 
@@ -122,7 +126,7 @@ export default class InsightsListBuilder extends ContainerBuilder {
     const load = actions.insightsLibrary.insights.query;
     const query = state.routing.locationBeforeTransitions.query;
     return {
-      load: () => load(query),
+      load: () => load(null, query),
     };
   }
 

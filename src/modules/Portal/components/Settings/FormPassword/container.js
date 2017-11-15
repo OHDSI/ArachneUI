@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -45,7 +45,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...stateProps,
     ...dispatchProps,
     doSubmit(data) {
-      const submitPromise = dispatchProps.changePassword({
+      const submitPromise = dispatchProps.changePassword({}, {
         oldPassword: data.oldPassword,
         newPassword: data.password,
       });

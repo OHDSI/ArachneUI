@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,7 +32,7 @@ import presenter from './presenter';
 class StatefulViewEdit extends Component {
   static propTypes() {
     return {
-      dataSourceUuid: PropTypes.string.isRequired,
+      dataSourceId: PropTypes.string.isRequired,
       loadDataSource: PropTypes.func.isRequired,
       loadReportsList: PropTypes.func.isRequired,
       loadCharacterization: PropTypes.func,
@@ -40,10 +40,10 @@ class StatefulViewEdit extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.dataSourceUuid !== nextProps.dataSourceUuid) {
-      this.props.loadDataSource({ uuid: nextProps.dataSourceUuid });
-      this.props.loadReportsList({ uuid: nextProps.dataSourceUuid });
-      this.props.loadCharacterization({ uuid: nextProps.dataSourceUuid });
+    if (this.props.dataSourceId !== nextProps.dataSourceId) {
+      this.props.loadDataSource({ id: nextProps.dataSourceId });
+      this.props.loadReportsList({ id: nextProps.dataSourceId });
+      this.props.loadCharacterization({ id: nextProps.dataSourceId });
     }
   }
 
@@ -63,7 +63,7 @@ class DataCatalogViewEditBuilder {
     const reportsAvailable = get(state, 'dataCatalog.report.queryResult.result', []) || [];
   
     return {
-      dataSourceUuid: ownProps.routeParams.dataSourceUuid,
+      dataSourceId: ownProps.routeParams.dataSourceId,
       isLoading: moduleState.dataSource.isLoading || false,
       reportsAvailable,
       isProfileSelected: ownProps.routeParams.isProfile === 'profile',
@@ -81,11 +81,11 @@ class DataCatalogViewEditBuilder {
   }
 
   getFetchers({ params, state, dispatch }) {
-    const uuid = params.dataSourceUuid;
+    const id = params.dataSourceId;
     return {
-      loadDataSource: actions.dataCatalog.dataSource.find.bind(null, { uuid }),
-      loadReportsList: actions.dataCatalog.report.query.bind(null, { uuid }),
-      loadCharacterization: actions.dataCatalog.characterization.find.bind(null, { uuid }),
+      loadDataSource: actions.dataCatalog.dataSource.find.bind(null, { id: id }),
+      loadReportsList: actions.dataCatalog.report.query.bind(null, { id: id }),
+      loadCharacterization: actions.dataCatalog.characterization.find.bind(null, { id: id }),
     };
   }
 

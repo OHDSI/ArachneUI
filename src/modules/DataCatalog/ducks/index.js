@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,7 +26,6 @@ import dataSource from './dataSource';
 import studyList from './studyList';
 import report from './report';
 import reportDetails from './reportDetails';
-import facets from './facets';
 import characterization from './characterization';
 
 export default {
@@ -36,7 +35,6 @@ export default {
     dataSource: dataSource.actions,
     studyList: studyList.actions,
     report: report.actions,
-    facets: facets.actions,
     reportDetails: reportDetails.actions,
     characterization: characterization.actions,
   },
@@ -46,7 +44,6 @@ export default {
     dataSource: dataSource.reducer,
     studyList: studyList.reducer,
     report: report.reducer,
-    facets: facets.reducer,
     reportDetails: reportDetails.reducer,
     characterization: characterization.reducer,
   },

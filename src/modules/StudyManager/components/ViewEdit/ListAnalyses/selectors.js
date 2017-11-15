@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,6 +35,11 @@ export default class selectorsBuilder {
       title: item.title,
       link: paths.analyses(item.id),
       isRemovable: get(item, 'permissions.DELETE_ANALYSIS', false),
+      createdAt: item.created,
+      author: {
+        ...item.author,
+        link: (item.author && item.author.id) ? paths.user(item.author.id) : null,
+      },
     }));
   }
 

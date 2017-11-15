@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,19 +19,24 @@
  * Created: June 23, 2017
  *
  */
-
 // @ts-check
-import { Component, PropTypes } from 'react';
+import {
+  Component,
+  PropTypes
+} from 'react';
 import { Utils } from 'services/Utils';
 import {
-  reduxForm,
   change as reduxFormChange,
-  reset as resetForm,
+  reduxForm,
+  reset as resetForm
 } from 'redux-form';
 import get from 'lodash/get';
 import actions from 'actions/index';
 import { ModalUtils } from 'arachne-ui-components';
-import { modal, form } from 'modules/StudyManager/const';
+import {
+  form,
+  modal
+} from 'modules/StudyManager/const';
 import presenter from './presenter';
 import SelectorsBuilder from './selectors';
 
@@ -47,10 +52,25 @@ export class AddVirtualSource extends Component {
     };
   }
 
+  componentWillMount() {
+    const dataSourceId = this.props.dataSourceId;
+    if (dataSourceId) {
+      this.props.loadDataSource({ studyId: this.props.studyId, dataSourceId });
+    }
+  }
+
+  componentWillUnmount() {
+      this.props.unloadDataSource();
+  }
+
   componentWillReceiveProps(nextProps) {
     if (this.props.focusedOwner !== nextProps.focusedOwner && !!nextProps.focusedOwner) {
       this.props.addOwner(nextProps.focusedOwner);
       this.props.clearOwnerSelector();
+    }
+    const dataSourceId = nextProps.dataSourceId;
+    if (dataSourceId && this.props.dataSourceId !== dataSourceId) {
+      this.props.loadDataSource({ studyId: this.props.studyId, dataSourceId });
     }
   }
 
@@ -70,6 +90,8 @@ export default class AddVirtualSourceBuilder {
 
   mapStateToProps(state) {
     const studyData = get(state, 'studyManager.study.data.result');
+    const dataSourceData = get(state, 'studyManager.study.dataSource.data');
+    const ownerList = selectors.getDataSourceOwnerList(state);
 
     return {
       studyId: get(studyData, 'id'),
@@ -77,7 +99,8 @@ export default class AddVirtualSourceBuilder {
       focusedOwner: get(state, `form.${form.addVirtualSource}.values.ownerSelector`),
       ownerList: selectors.getSelectedOwnerList(state),
       initialValues: {
-        ownerList: [selectors.getCurrentUser(state)],
+        ownerList: ownerList ? ownerList : [selectors.getCurrentUser(state)],
+        name: get(dataSourceData, 'name'),
       },
       // dataSourceOptions: selectors.getDataSourceList(state),
     };
@@ -99,7 +122,10 @@ export default class AddVirtualSourceBuilder {
         value
       ),
       addVirtualSource: actions.studyManager.study.dataSource.create,
+      updateVirtualSource: actions.studyManager.study.dataSource.update,
       loadStudy: actions.studyManager.study.find,
+      loadDataSource: actions.studyManager.study.dataSource.find,
+      unloadDataSource: actions.studyManager.study.dataSource.unload,
       closeModal: () => ModalUtils.actions.toggle(modal.addDataSource, false),
       resetForm: resetForm.bind(null, form.addVirtualSource),
     };
@@ -121,7 +147,15 @@ export default class AddVirtualSourceBuilder {
         dispatchProps.setOwnerList(newOwnerList);
       },
       doSubmit({ name, ownerList }) {
-        const submitPromise = dispatchProps.addVirtualSource(
+        const submitPromise = ownProps.dataSourceId
+          ? dispatchProps.updateVirtualSource(
+            { studyId: stateProps.studyId, dataSourceId: ownProps.dataSourceId },
+            {
+              name,
+              dataOwnersIds: ownerList.map(u => u.id),
+            }
+          )
+          : dispatchProps.addVirtualSource(
           { studyId: stateProps.studyId },
           {
             name,

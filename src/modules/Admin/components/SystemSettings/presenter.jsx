@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,7 +39,8 @@ function SystemSettings(props) {
 		applySettings,
 		isLoading,
 		doSubmit,
-		settingGroupList,
+    settingGroupList,
+    solrReindex,
 	} = props;
 
 	const formComponentList = settingGroupList.map((formData, index) => {
@@ -76,6 +77,23 @@ function SystemSettings(props) {
 						/>
 					</div>
 				}
+        <div {...classes('action-bar')}>
+          <div {...classes('action-bar-btn')}>
+            <Button
+              mods={['default']}
+              label="Reindex Expert FInder"
+              onClick={() => solrReindex({ domain: 'users' })}
+            />
+          </div>
+          <div {...classes('action-bar-btn')}>
+            <Button
+              {...classes('reindex-solr')}
+              mods={['default']}
+              label="Reindex Data Catalog"
+              onClick={() => solrReindex({ domain: 'data-sources' })}
+            />
+          </div>
+        </div>
 				<div {...classes('content')}>
 					<div className="row">
 						{formComponentList}

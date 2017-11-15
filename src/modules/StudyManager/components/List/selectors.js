@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,13 +24,11 @@
 import { createSelector } from 'reselect';
 import get from 'lodash/get';
 import { sortOptions } from 'services/Utils';
+import { extractPaginationData } from 'components/Grid';
 import {
-  paths,
   statusColors,
-  studyListPageSize,
-  studyListPageSizeCards,
 } from 'modules/StudyManager/const';
-import viewModes from 'const/viewModes';
+import { viewModes, viewModePageSize } from 'const/viewModes';
 
 export default class SelectorsBuilder {
   // Dummy getters
@@ -46,27 +44,11 @@ export default class SelectorsBuilder {
   // Pagination details
 
   getPaginationDetails(state) {
-    const pages = get(state.studyManager.studyList, 'data.result.totalPages', 1);
-    const path = get(state, 'routing.locationBeforeTransitions', {
-      pathname: paths.studies(),
-      search: '',
-    });
-    const currentPage = parseInt(get(state, 'routing.locationBeforeTransitions.query.page', 1), 0);
-    const totalResults = get(state.studyManager.studyList, 'data.result.totalElements', 0);
-    const showing = get(state.studyManager.studyList, 'data.result.numberOfElements', 0);
+    const searchResults = get(state, 'studyManager.studyList.data.result');
     const query = state.routing.locationBeforeTransitions.query;
-    const isCardsView = query.view === viewModes.CARDS;
-    let pageStart = currentPage - 1;
-    pageStart *= isCardsView ? studyListPageSizeCards : studyListPageSize;
+    const numOfElsPerPage = viewModePageSize[get(query, 'view') || viewModes.TABLE];
 
-    return {
-      path,
-      pages,
-      currentPage,
-      totalResults,
-      showing,
-      pageStart,
-    };
+    return extractPaginationData({ searchResults, numOfElsPerPage });
   }
 
   // Type options

@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,11 +30,12 @@ import {
   FormSelect,
   FormToggle,
   FormSlider,
+  FormInput,
 } from 'arachne-ui-components';
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
 import types from 'const/modelAttributes';
 import filterTypes from 'const/filterTypes';
-import { isBoolean } from 'lodash';
+import uniqBy from 'lodash/uniqBy';
 
 require('./style.scss');
 
@@ -46,6 +47,8 @@ function getComponentByType(type) {
       return FormToggle;
     case types.integer:
       return FormSlider;
+    case types.string:
+      return FormInput;
     default:
       return null;
   }
@@ -56,8 +59,9 @@ function getOptions(field) {
     case types.enum: case types.enumMulti:
       return {
         mods: ['bordered'],
-        placeholder: field.label,
-        isMulti: field.type === types.enumMulti,
+        title: field.label,
+        placeholder: 'Any',
+        isMulti: field.isMulti || field.type === types.enumMulti,
       };
     case types.toggle:
       return {
@@ -66,8 +70,15 @@ function getOptions(field) {
       };
     case types.integer:
       return {
+        title: field.label,
         min: field.min,
         max: field.max,
+      };
+    case types.string:
+      return {
+        title: field.label,
+        placeholder: field.label,
+        mods: ['bordered'],
       };
     default:
       return null;
@@ -91,16 +102,37 @@ function FacetedFilters({ clear, fields }) {
 }
 
 function DropdownFilters({ classes, fields, clear }) {
-  const dropdownFields = [];
+  const keywordsField = {
+    type: types.string,
+    label: 'Keywords',
+  };
+  const dropdownFields = [
+    {
+      name: 'query',
+      InputComponent: {
+        component: getComponentByType(keywordsField.type),
+        props: {
+          ...getOptions(keywordsField),
+        },
+      },
+    }
+  ];
 
   fields.forEach((field) => {
+    let options = field.options;
+    if (!field.isMulti && field.type !== types.enumMulti) {
+      options = [{
+        label: 'Any',
+        value: '',
+      }].concat(field.options);
+    }
     dropdownFields.push({
       // assure it's compatable with the form in FacetedSearch component
       name: `filter[${field.name}]`,
       InputComponent: {
         component: getComponentByType(field.type),
         props: {
-          options: field.options,
+          options: uniqBy(options, 'value'),
           ...getOptions(field),
         },
       },

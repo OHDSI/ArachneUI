@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,15 +23,26 @@
 import Duck from 'services/Duck';
 import { apiPaths } from 'modules/AnalysisExecution/const';
 
+const coreName = 'AE_ANALYSIS';
+
 const analyses = new Duck({
-  name: 'AE_ANALYSIS',
+  name: coreName,
   urlBuilder: apiPaths.analyses,
 });
+
+function flushAnalysis() {
+  return {
+    type: `${coreName}_QUERY_FULFILLED`,
+    payload: {
+      result: null,
+    },
+  };
+}
 
 export default {
   actions: {
     ...analyses.actions,
-    unload: () => analyses.actions.load(null),
+    unload: flushAnalysis,
   },
   reducer: analyses.reducer,
 };

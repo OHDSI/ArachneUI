@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -70,7 +70,7 @@ const mapDispatchToProps = {
   goToAnalysis: id => goToPage.call(null, paths.analyses(id)),
   showConfirmDialog: analysisId =>
     ModalUtils.actions.toggle(modal.confirmDialog, true, { analysisId }),
-  loadAnalysis: actions.analysisExecution.analysis.query,
+  loadAnalysis: actions.analysisExecution.analysis.find,
   lockCode: actions.analysisExecution.codeLock.create,
   openRequestUnlockModal: () => ModalUtils.actions.toggle(modal.requestUnlock, true),
 };
@@ -114,7 +114,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
             { analysisId: stateProps.analysisId },
             { locked: false }
           )
-          .then(() => dispatchProps.loadAnalysis(stateProps.analysisId));
+          .then(() => dispatchProps.loadAnalysis({ id: stateProps.analysisId }));
       } else {
         dispatchProps.openRequestUnlockModal();
       }

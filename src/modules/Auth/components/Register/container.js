@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -53,13 +53,13 @@ Register.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    isUserAuthed: !!get(state, 'auth.principal.data.id'),
+    isUserAuthed: !!get(state, 'auth.principal.queryResult.result.id'),
   };
 }
 
 const mapDispatchToProps = {
   goToRoot: goToPage.bind(null, '/'),
-  loadProfessionalTypes: actions.auth.professionalTypes.loadList,
+  loadProfessionalTypes: actions.auth.professionalType.query,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Register);

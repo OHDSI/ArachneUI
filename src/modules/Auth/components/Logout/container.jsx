@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,7 +22,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import actions from 'modules/Auth/actions';
+import authDucks from 'modules/Auth/ducks';
 import Logout from './presenter';
 
 function mapStateToProps() {
@@ -30,7 +30,7 @@ function mapStateToProps() {
 }
 
 const mapDispatchToProps = {
-  logout: () => actions.auth.logout(),
+  logout: () => authDucks.actions.logout(),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Logout);

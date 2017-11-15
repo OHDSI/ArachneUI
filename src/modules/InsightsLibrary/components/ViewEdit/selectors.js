@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,7 +25,7 @@ import { createSelector } from 'reselect';
 import { get } from 'services/Utils';
 import moment from 'moment-timezone';
 import { humanDate } from 'const/formats';
-import { apiPaths, paperFileType } from 'modules/InsightsLibrary/const';
+import { apiPaths, paperFileType, paths } from 'modules/InsightsLibrary/const';
 import fileConverter from 'components/FileInfo/converter';
 import { dsConverter } from 'components/LabelDataSource';
 
@@ -71,7 +71,7 @@ export default class SelectorsBuilder {
       protocols: entity.protocols
         ? entity.protocols.map(protocol => ({
             ...fileConverter(protocol,
-              ({ uuid }) => apiPaths.insightFiles({
+              ({ uuid }) => paths.insightFile({
                 insightId: entity.id,
                 fileUuid: uuid,
                 query: { type: paperFileType.PROTOCOL },
@@ -82,7 +82,7 @@ export default class SelectorsBuilder {
       papers: entity.papers
         ? entity.papers.map(paper => ({
             ...fileConverter(paper,
-              ({ uuid }) => apiPaths.insightFiles({
+              ({ uuid }) => paths.insightFile({
                 insightId: entity.id,
                 fileUuid: uuid,
                 query: { type: paperFileType.PAPER },

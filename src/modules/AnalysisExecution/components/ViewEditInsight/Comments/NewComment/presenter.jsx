@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,6 +47,11 @@ function NewComment(props) {
     mods: ['submit'],
   };
 
+  const cancelBtn = {
+    label: 'Cancel',
+    mods: ['cancel'],
+  };
+
   return (
     <div {...classes()}>
       <Form
@@ -54,6 +59,8 @@ function NewComment(props) {
         fields={fields}
         submitBtn={submitBtn}
         onSubmit={props.onSubmit}
+        cancelBtn={cancelBtn}
+        onCancel={props.cancel}
         {...props}
       />
     </div>

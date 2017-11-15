@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,7 +28,7 @@ export default class selectorsBuilder {
   getCurrentUserId(state) {
     return get(
       state,
-      'auth.principal.data.id',
+      'auth.principal.queryResult.result.id',
       null
     );
   }
@@ -61,6 +61,28 @@ export default class selectorsBuilder {
     return createSelector(
       [this.getStudyParticipantList, this.getCurrentUserId],
       this.getCurrentUser
+    );
+  }
+
+  getDataSourceOwnerListRawData(state) {
+    return get(state, 'studyManager.study.dataSource.data.dataNode.dataOwners')
+  }
+
+  getDataSourceOwnerList(currentUserId, dataSourceOwners) {
+    return dataSourceOwners
+      ? dataSourceOwners
+      .map(dataOwner => ({
+        id: dataOwner.id,
+        isRemovable: currentUserId !== dataOwner.id,
+        fullName: `${dataOwner.firstname} ${dataOwner.lastname}`,
+      }))
+      : undefined;
+  }
+
+  buildSelectorForOwnerList() {
+    return createSelector(
+      [this.getCurrentUserId, this.getDataSourceOwnerListRawData],
+      this.getDataSourceOwnerList
     );
   }
 
@@ -99,6 +121,7 @@ export default class selectorsBuilder {
   build() {
     return {
       getCurrentUser: this.buildSelectorForCurrentUser(),
+      getDataSourceOwnerList: this.buildSelectorForOwnerList(),
       getOwnerOptions: this.buildSelectorForOwnerOptions(),
       getSelectedOwnerList: this.getSelectedOwnerList,
     };

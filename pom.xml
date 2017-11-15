@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.odysseusinc.arachne</groupId>
     <artifactId>${final.artifactId}</artifactId>
-    <version>1.8.0</version>
+    <version>1.9.0</version>
     <packaging>pom</packaging>
     <name>Frontend Resources Bundle</name>
 
@@ -121,6 +121,20 @@
                             <executable>npm</executable>
                             <arguments>
                                 <argument>install</argument>
+                            </arguments>
+                        </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <!-- We do not need built bundle file, so publish just sources -->
+                    <execution>
+                        <id>exec-npm-publish</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <executable>node</executable>
+                            <arguments>
+                                <argument>helpers/publish</argument>
                             </arguments>
                         </configuration>
                         <goals>

@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -117,7 +117,10 @@ const filterListEncoderDecoder = {
     ...searchParams,
     filter: parseSolrValues(searchParams.filter || {}, filterFields),
   }),
-  searchQueryEncode: ({ searchParams, filterFields }) => convertToSolrSearchParams({ searchParams, filterFields }),
+  searchQueryEncode: ({ searchParams = {}, filterFields }) => ({
+    ...searchParams,
+    filter: convertToSolrValues(searchParams.filter, filterFields),
+  }),
 };
 
 export {

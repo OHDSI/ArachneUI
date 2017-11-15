@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,7 @@ class ResetPassword extends Component {
       leaveIfAuthed(nextProps);
     }
   }
-  
+
   render() {
     return presenter(this.props);
   }
@@ -50,7 +50,7 @@ ResetPassword.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    isUserAuthed: !!get(state, 'auth.principal.data.id'),
+    isUserAuthed: !!get(state, 'auth.principal.queryResult.result.id'),
   };
 }
 

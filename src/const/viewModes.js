@@ -1,4 +1,4 @@
-/**
+/*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,8 +42,15 @@ const viewModesOptions = [
   },
 ];
 
+const viewModePageSize = {
+  DEFAULT: 10,
+  CARDS: 8,
+  TABLE: 12,
+};
+
 export default viewModes;
 export {
   viewModes,
   viewModesOptions,
+  viewModePageSize,
 };
