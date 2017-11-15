@@ -66,7 +66,7 @@ function Visits(props) {
               id: get(data, `CONCEPT_ID[${index}]`),
               path: get(data, `CONCEPT_PATH[${index}]`),
               pct_persons: get(data, `PERCENT_PERSONS[${index}]`),
-              records_per_person : get(data, `RECORDS_PER_PERSON[${index}]`),
+              records_per_person: get(data, `RECORDS_PER_PERSON[${index}]`),
             })),
             element,
             width,
@@ -125,8 +125,8 @@ function Visits(props) {
   const dataPresent = conditions && conditions.PERCENT_PERSONS && conditions.PERCENT_PERSONS.length;
 
   return (
-    <div>
-      <div {...classes({ extra: 'row' })}>
+    <div {...classes()}>
+      <div className='row'>
         <div className='col-xs-12'>
           <Panel title='Visits' {...classes('chart')}>
             {dataPresent

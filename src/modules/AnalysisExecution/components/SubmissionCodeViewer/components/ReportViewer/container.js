@@ -20,11 +20,8 @@
  *
  */
 
-import ReportViewer from './presenter';
-// import SelectorsBuiler from './selectors';
 import { ContainerBuilder } from 'services/Utils';
-
-// const selectors = (new SelectorsBuilder()).build();
+import ReportViewer from './presenter';
 
 export default class ReportViewerBuilder extends ContainerBuilder {
   getComponent() {

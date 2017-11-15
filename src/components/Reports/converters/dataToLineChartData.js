@@ -15,23 +15,17 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: November 09, 2017
+ * Authors: Alexander Saltykov
+ * Created: November 13, 2017
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
-
-.#{$namespace} {
-	&report-drug {
-		flex: 1;
-
-		&__chart {
-			margin-top: 2rem;
-		}
-
-		
-
-	}
-
-}
+export default (data, DTO = { name: 'All series', xValue: 'x', yValue: 'y', yPercent: 'p' }) => {
+  return [{
+    name: DTO.name || '',
+    values: data[DTO.xValue].map((val, i) => ({
+      xValue: data[DTO.xValue][i],
+      yValue: data[DTO.yValue][i],
+    })),
+  }];
+};

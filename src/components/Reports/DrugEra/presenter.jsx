@@ -125,8 +125,8 @@ function DrugEra(props) {
   const dataPresent = conditions && conditions.PERCENT_PERSONS && conditions.PERCENT_PERSONS.length;
 
   return (
-    <div>
-      <div {...classes({ extra: 'row' })}>
+    <div {...classes()}>
+      <div className='row'>
         <div className='col-xs-12'>
           <Panel title='Drug Eras' {...classes('chart')}>
             {dataPresent

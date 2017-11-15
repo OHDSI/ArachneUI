@@ -16,22 +16,10 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: November 09, 2017
+ * Created: June 07, 2017
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+import ConditionsBuilder from './container';
 
-.#{$namespace} {
-	&report-drug {
-		flex: 1;
-
-		&__chart {
-			margin-top: 2rem;
-		}
-
-		
-
-	}
-
-}
+export default new ConditionsBuilder().build();

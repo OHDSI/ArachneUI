@@ -16,7 +16,7 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: November 09, 2017
+ * Created: June 07, 2017
  *
  */
 
@@ -31,13 +31,13 @@ import {
 } from '@ohdsi/atlascharts/dist/atlascharts.umd';
 import Table from 'components/Charts/Table';
 import * as d3 from 'd3';
-import { chartSettings } from 'modules/DataCatalog/const';
+import { chartSettings } from 'const/reports';
 import get from 'lodash/get';
-import ProceduresDetails from './ProceduresDetails';
+import ConditionDetails from './ConditionDetails';
 
 require('./style.scss');
 
-function Procedures(props) {
+function Conditions(props) {
   const {
     conditions,
     loadConditionDetails,
@@ -48,7 +48,7 @@ function Procedures(props) {
     tableColumns,
   } = props;
   const classes = new BEMHelper('report-conditions');
-  const emptyClasses = new BEMHelper('report-empty');  
+  const emptyClasses = new BEMHelper('report-empty');
   const sections = [
     {
       label: 'treemap',
@@ -110,7 +110,7 @@ function Procedures(props) {
       }}
       >
         <div className='treemap_zoomtarget'></div>
-      </div>,
+      </div>
     },
     {
       label: 'Table',
@@ -128,7 +128,7 @@ function Procedures(props) {
     <div {...classes()}>
       <div className='row'>
         <div className='col-xs-12'>
-          <Panel title='Procedures' {...classes('chart')}>
+          <Panel title='Condition Prevalence' {...classes('chart')}>
             {dataPresent
               ? <TabbedPane sections={sections} />
               : <div {...emptyClasses()}>
@@ -138,9 +138,9 @@ function Procedures(props) {
           </Panel>
         </div>
       </div>
-      {details && <ProceduresDetails {...details} />}
+      {details && <ConditionDetails {...details} />}
     </div>
   );
 }
 
-export default Procedures;
+export default Conditions;

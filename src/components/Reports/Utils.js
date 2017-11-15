@@ -25,10 +25,12 @@ import moment from 'moment';
 import { chart } from '@ohdsi/atlascharts/dist/atlascharts.umd';
 import { typeCheck } from 'type-check';
 import cloneDeep from 'lodash/cloneDeep';
+import { get } from 'services/Utils';
 import { reports, reportFootprints } from 'const/reports';
 
 export default class ReportUtils {
   static prepareLineData(rawData) {
+    console.info('DEPRECATED');
     const data = cloneDeep(rawData);
     let normalizedData = {
       X_CALENDAR_MONTH: [],
@@ -72,7 +74,7 @@ export default class ReportUtils {
   }
 
   static arrayToDataframe(ar) {
-    const keys = Object.keys(ar[0]);
+    const keys = Object.keys(get(ar, '[0]', {}));
     const dataframe = {};
     keys.forEach((key) => {
       dataframe[key] = [];
@@ -97,6 +99,14 @@ export default class ReportUtils {
       return reports.PERSON;
     } else if (typeCheck(reportFootprints[reports.DATA_DENSITY], content)) {
       return reports.DATA_DENSITY;
+    } else if (typeCheck(reportFootprints[reports.PROCEDURES], content)) {
+      return reports.PROCEDURES;
+    } else if (typeCheck(reportFootprints[reports.VISITS], content)) {
+      return reports.VISITS;
+    } else if (typeCheck(reportFootprints[reports.CONDITIONS], content)) {
+      return reports.CONDITIONS;
+    } else if (typeCheck(reportFootprints[reports.COHORTPECIFIC], content)) {
+      return reports.COHORTPECIFIC;
     }
 
     return reports.UNKNOWN;

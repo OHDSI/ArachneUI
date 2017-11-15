@@ -5,7 +5,7 @@ const reports = {
   DATA_DENSITY: 'datadensity',
   DEATH: 'death',
   CONDITIONS: 'conditions',
-  CONDITIONERA: 'conditionera',
+  CONDITIONERA: 'conditioneras',
   OBSERVATIONS: 'observations',
   DRUGERA: 'drugeras',
   DRUG: 'drugexposures',
@@ -13,6 +13,8 @@ const reports = {
   VISITS: 'visits',
   ACHILLESHEEL: 'achillesheel',
   UNKNOWN: 'unknown',
+  // Cohort characterization-specific
+  COHORTPECIFIC: 'cohortspecific',
 };
 
 const chartTypes = {
@@ -25,6 +27,7 @@ const chartTypes = {
   LINE_W_LEGEND: 'line_w_legend',
   LINE_DATA_BY_MONTH: 'line_data_by_month',
   TRELLISLINE: 'trellisline',
+  TREEMAP: 'treemap',
 };
 
 const chartFootprints = {
@@ -76,6 +79,13 @@ const chartFootprints = {
     X_CALENDAR_MONTH: String,
     Y_RECORD_COUNT: Float | Number
   `,
+  [chartTypes.TREEMAP]: `
+    CONCEPT_ID: Number,
+    CONCEPT_PATH: String,
+    NUM_PERSONS: Number,
+    PERCENT_PERSONS: Float | Number,
+    RECORDS_PER_PERSON: Float | Number
+  `,
 };
 chartFootprints[chartTypes.HISTOGRAM] = `
   ${chartFootprints[chartTypes.LINE_METADATA]},
@@ -126,13 +136,76 @@ const reportFootprints = {
     totalRecords: [{ ${chartFootprints[chartTypes.LINE_DATA_W_LEGEND]} }],
     conceptsPerPerson: [{ ${chartFootprints[chartTypes.BOXPLOT]} }]
   }`,
+  [reports.PROCEDURES]: `{
+    procedureTreemap: [{ ${chartFootprints[chartTypes.TREEMAP]} }]
+  }`,
+  [reports.VISITS]: `{
+    visitTreemap: [{ ${chartFootprints[chartTypes.TREEMAP]} }]
+  }`,
+  [reports.CONDITIONS]: `{
+    conditions: [{ ${chartFootprints[chartTypes.TREEMAP]} }]
+  }`,
+
+  // Cohort characterization-specific
+  [reports.COHORTPECIFIC]: `{
+    personsByDurationFromStartToEnd: [{
+      COHORT_DEFINITION_ID: Number,
+      DURATION: Number,
+      COUNT_VALUE: Number,
+      PCT_PERSONS: Float | Number
+    }],
+    prevalenceByMonth: [{
+      X_CALENDAR_MONTH: String,
+      NUM_PERSONS: Number,
+      Y_PREVALENCE_1000PP: Float | Number
+    }],
+    ageAtIndexDistribution: [{
+      CATEGORY: String,
+      COUNT_VALUE: Float | Number,
+      MIN_VALUE: Float | Number,
+      MAX_VALUE: Float | Number,
+      AVG_VALUE: Float | Number,
+      STDEV_VALUE: Float | Number,
+      P10_VALUE: Float | Number,
+      P25_VALUE: Float | Number,
+      MEDIAN_VALUE: Float | Number,
+      P75_VALUE: Float | Number,
+      P90_VALUE: Float | Number,
+      CONCEPT_ID: Number
+    }],
+    distributionOfAgeAtCohortStartByCohortStartYear: Array,
+    distributionOfAgeAtCohortStartByGender: [{ ${chartFootprints[chartTypes.BOXPLOT]} }],
+    personsInCohortFromCohortStartToEnd: [{ ${chartFootprints[chartTypes.LINE_DATA_BY_MONTH]} }],
+    prevalenceByYearGenderSex: Array
+  }`,
 };
+
+const chartSettings = {
+  margin: {
+    top: 10,
+    left: 10,
+    right: 10,
+    bottom: 10,
+  },
+};
+
+const treemapReports = [
+  reports.PROCEDURES,
+  reports.DRUG,
+  reports.DRUGERA,
+  reports.OBSERVATIONS,
+  reports.CONDITIONS,
+  reports.CONDITIONERA,
+  reports.VISITS,
+];
 
 export {
   reports,
   chartTypes,
   chartFootprints,
   reportFootprints,
+  chartSettings,
+  treemapReports,
 };
 
 export default {
@@ -140,4 +213,6 @@ export default {
   chartTypes,
   chartFootprints,
   reportFootprints,
+  chartSettings,
+  treemapReports,
 };

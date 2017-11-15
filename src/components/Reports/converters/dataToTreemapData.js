@@ -16,13 +16,34 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin
- * Created: September 06, 2017
+ * Created: November 14, 2017
  *
  */
 
-export default data => {
-  // data.NUM_PERSONS = Array.isArray(data.NUM_PERSONS) ? data.NUM_PERSONS.map(val => parseInt(val, 10)) : [];
-  data.PERCENT_PERSONS = Array.isArray(data.PERCENT_PERSONS) ? data.PERCENT_PERSONS.map(val => parseFloat(val)) : [];
-  // data.RECORDS_PER_PERSON = Array.isArray(data.RECORDS_PER_PERSON) ? data.RECORDS_PER_PERSON.map(val => parseFloat(val)) : [];
-  return data;
-}
+import {
+  treemap,
+} from '@ohdsi/atlascharts/dist/atlascharts.umd';
+import get from 'lodash/get';
+
+export default (
+  data,
+  DTO = {
+    numPersons: 'NUM_PERSONS',
+    id: 'CONCEPT_ID',
+    path: 'CONCEPT_PATH',
+    pctPersons: 'PERCENT_PERSONS',
+    recordsPerPerson: 'RECORDS_PER_PERSON',
+  },
+  threshold = 10
+) => {
+  data[DTO.pctPersons] = Array.isArray(data[DTO.pctPersons]) ? data[DTO.pctPersons].map(val => parseFloat(val)) : [];
+
+  return treemap.buildHierarchyFromJSON(data, threshold, (name, index, datum) => ({
+    name,
+    num_persons: get(datum, `${DTO.numPersons}[${index}]`),
+    id: get(data, `${DTO.id}[${index}]`),
+    path: get(data, `${DTO.path}[${index}]`),
+    pct_persons: get(data, `${DTO.pctPersons}[${index}]`),
+    records_per_person: get(data, `${DTO.recordsPerPerson}[${index}]`),
+  }));
+};

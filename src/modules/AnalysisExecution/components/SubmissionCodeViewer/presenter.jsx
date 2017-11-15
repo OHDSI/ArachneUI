@@ -34,14 +34,22 @@ function SubmissionCodeViewer({
   pageTitle,
   isReport = false,
   reportType,
+  loadTreemapDetails,
+  tableData,
+  tableColumns,
+  details,
 }) {
   return isReport
     ? <ReportViewer
       type={reportType}
       data={file}
+      details={details}
       toolbarOpts={toolbarOpts}
       downloadLink={downloadLink}
       pageTitle={pageTitle}
+      loadTreemapDetails={loadTreemapDetails}
+      tableData={tableData}
+      tableColumns={tableColumns}
     />
     : <FileViewer
       file={file}

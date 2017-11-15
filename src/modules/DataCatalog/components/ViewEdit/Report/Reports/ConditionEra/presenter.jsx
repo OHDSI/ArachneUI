@@ -31,7 +31,7 @@ import {
 } from '@ohdsi/atlascharts/dist/atlascharts.umd';
 import Table from 'components/Charts/Table';
 import * as d3 from 'd3';
-import { chartSettings } from 'modules/DataCatalog/const';
+import { chartSettings } from 'const/reports';
 import get from 'lodash/get';
 import ConditionEraDetails from './ConditionEraDetails';
 

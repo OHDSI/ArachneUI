@@ -22,6 +22,9 @@ if (canUseDom()) {
     Person: require('components/Reports/Person').default,
     Procedures: require('components/Reports/Procedures').default,
     Visits: require('components/Reports/Visits').default,
+    Conditions: require('components/Reports/Conditions').default,
+
+    Cohortspecific: require('./components/Cohortspecific').default,
   };
 }
 
@@ -35,6 +38,11 @@ function ReportViewer(props) {
     downloadLink,
     pageTitle,
     toolbarOpts,
+    // for treemap reports only
+    loadTreemapDetails,
+    tableData,
+    tableColumns,
+    details,
   } = props;
 
   return (
@@ -129,15 +137,50 @@ function ReportViewer(props) {
           {/*reports.Drug && type === reportTypes.DRUG &&
             <reports.Drug />
           */}
-          {/*reports.Procedures && type === reportTypes.PROCEDURES &&
-            <reports.Procedures />
-          */}
-          {/*reports.Visits && type === reportTypes.VISITS &&
-            <reports.Visits />
-          */}
+          {reports.Procedures && type === reportTypes.PROCEDURES &&
+            <reports.Procedures
+              conditions={data}
+              loadDetails={loadTreemapDetails}
+              details={details}
+              onZoom={() => {}}
+              initialZoomedConcept={null}
+              tableData={tableData}
+              tableColumns={tableColumns}
+              getFilename={conceptId => conceptId}
+            />
+          }
+          {reports.Visits && type === reportTypes.VISITS &&
+            <reports.Visits
+              conditions={data}
+              loadDetails={loadTreemapDetails}
+              details={details}
+              onZoom={() => {}}
+              initialZoomedConcept={null}
+              tableData={tableData}
+              tableColumns={tableColumns}
+              getFilename={conceptId => conceptId}
+            />
+          }
+          {reports.Conditions && type === reportTypes.CONDITIONS &&
+            <reports.Conditions
+              conditions={data}
+              loadDetails={loadTreemapDetails}
+              details={details}
+              onZoom={() => {}}
+              initialZoomedConcept={null}
+              tableData={tableData}
+              tableColumns={tableColumns}
+              getFilename={conceptId => conceptId}
+            />
+          }
           {/*reports.Achillesheel && type === reportTypes.ACHILLESHEEL &&
             <reports.Achillesheel />
           */}
+          {reports.Cohortspecific && type === reportTypes.COHORTPECIFIC &&
+            <reports.Cohortspecific
+              {...data}
+            />
+          }
         </div>
       </div>
     </PageContent>

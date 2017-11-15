@@ -27,8 +27,11 @@ import actions from 'actions/index';
 import { downloadLinkBuilder } from 'modules/AnalysisExecution/ducks/submissionFile';
 import { buildBreadcrumbList } from 'modules/AnalysisExecution/utils';
 import ReportUtils from 'components/Reports/Utils';
-import { reports } from 'const/reports';
+import { reports, treemapReports } from 'const/reports';
 import presenter from './presenter';
+import SelectorsBuilder from './selectors';
+
+const selectors = new SelectorsBuilder().build();
 
 class SubmissionCode extends Component {
 
@@ -37,10 +40,17 @@ class SubmissionCode extends Component {
       entityType: this.props.from,
       id: this.props.submissionGroupId || this.props.submissionId,
     });
+    if (!Array.isArray(this.props.submissionResultFiles)) {
+      this.props.loadSubmissionResultFiles({
+        entityId: this.props.submissionId,
+        isSubmissionGroup: false,
+      });
+    }
   }
 
   componentWillUnmount() {
-    this.props.cleanup();
+    this.props.clearFileData();
+    this.props.clearDetailsData();
   }
 
   render() {
@@ -79,6 +89,8 @@ function mapStateToProps(state, ownProps) {
   const downloadLink = downloadLinkBuilder({ type, submissionGroupId, submissionId, fileId: fileUuid, downloadFile: true });
 
   const submissionFileData = get(state, 'analysisExecution.submissionFile.data.result');
+  const submissionFileDetails = get(state, 'analysisExecution.submissionFileDetails.data.result');
+  const submissionResultFiles = get(state, 'analysisExecution.analysisCode.queryResult');
 
   const urlParams = {
     type,
@@ -99,6 +111,9 @@ function mapStateToProps(state, ownProps) {
   let isReport = false;
   let reportType = '';
   let reportDTO = {};
+  let tableData = {};
+  let tableColumns = {};
+  const details = {};
   if (submissionFileData && submissionFileData.content) {
     try {
       const file = JSON.parse(submissionFileData.content);
@@ -106,10 +121,33 @@ function mapStateToProps(state, ownProps) {
       isReport = reportType !== reports.UNKNOWN;
 
       // change key names in JSON and it's structure
-      Object.entries(file).forEach(([key, value]) => {
+      const structure = Object.entries(file);
+      structure.forEach(([key, value]) => {
         reportDTO[key] = ReportUtils.arrayToDataframe(value);
       });
-    } catch(er) {}
+
+      if (treemapReports.includes(reportType)) {
+        reportDTO = Object.entries(reportDTO)[0][1];
+        tableData = selectors.getTableData(reportType, reportDTO);
+        tableColumns = {};
+        Object.entries(tableData[0]).forEach(([key, value]) => {
+          tableColumns[key] = value.columnName;
+        });
+      }
+    } catch (er) {
+      console.error('У Саши склероз', er);
+    }
+  }
+  if (submissionFileDetails && submissionFileDetails.content) {
+    try {
+      const file = JSON.parse(submissionFileDetails.content);
+
+      // change key names in JSON and it's structure
+      const structure = Object.entries(file);
+      structure.forEach(([key, value]) => {
+        details[key] = ReportUtils.arrayToDataframe(value);
+      });
+    } catch (er) {}
   }
 
   return {
@@ -124,15 +162,46 @@ function mapStateToProps(state, ownProps) {
     from,
     submissionGroupId,
     submissionId,
+    submissionResultFiles,
+
     isReport,
     reportType,
+
+    // treemap reports
+    tableData,
+    tableColumns,
+    details,
   };
 }
 
 const mapDispatchToProps = {
   loadBreadcrumbs: actions.analysisExecution.breadcrumbs.query,
   loadFile: actions.analysisExecution.submissionFile.find,
-  cleanup: actions.analysisExecution.submissionFile.clear,
+  loadDetails: actions.analysisExecution.submissionFileDetails.find,
+  loadSubmissionResultFiles: actions.analysisExecution.analysisCode.codeList.query,
+  clearFileData: actions.analysisExecution.submissionFile.clear,
+  clearDetailsData: actions.analysisExecution.submissionFileDetails.clear,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SubmissionCode);
+function mergeProps(stateProps, dispatchProps, ownProps) {
+  return {
+    ...stateProps,
+    ...dispatchProps,
+    ...ownProps,
+    loadTreemapDetails({ filename }) {
+      const detailedFile = stateProps.submissionResultFiles.find(
+        file => file.name === filename
+      );
+      if (detailedFile) {
+        dispatchProps.loadDetails({
+          type: 'result',
+          submissionGroupId: stateProps.submissionGroupId,
+          submissionId: stateProps.submissionId,
+          fileId: detailedFile.uuid,
+        });
+      }
+    },
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(SubmissionCode);

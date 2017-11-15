@@ -24,6 +24,7 @@
 
 .#{$namespace} {
 	&report-drugera {
+		flex: 1;
 
 		&__chart {
 			margin-top: 2rem;

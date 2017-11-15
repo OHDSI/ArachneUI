@@ -15,23 +15,11 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: November 09, 2017
+ * Authors: Alexander Saltykov
+ * Created: November 13, 2017
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+import { chart } from '@ohdsi/atlascharts/dist/atlascharts.umd';
 
-.#{$namespace} {
-	&report-drug {
-		flex: 1;
-
-		&__chart {
-			margin-top: 2rem;
-		}
-
-		
-
-	}
-
-}
+export default (data, DTO) => chart.mapMonthYearDataToSeries(data, DTO);

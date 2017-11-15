@@ -16,22 +16,22 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: November 09, 2017
+ * Created: June 07, 2017
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+import TreemapReportBuilder from 'components/Reports/TreemapReport';
+import presenter from './presenter';
 
-.#{$namespace} {
-	&report-drug {
-		flex: 1;
+export default class Conditions extends TreemapReportBuilder {
+  constructor() {
+    super();
+    this.presenter = presenter;
+    this.filePath = 'conditions';
+  }
 
-		&__chart {
-			margin-top: 2rem;
-		}
-
-		
-
-	}
-
+  getFilename(conceptId) {
+    return `condition_${conceptId}.json`;
+  }
 }
+

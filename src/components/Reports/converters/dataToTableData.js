@@ -15,23 +15,31 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: November 09, 2017
+ * Authors: Pavel Grafkin
+ * Created: November 14, 2017
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+import {
+  treemap,
+} from '@ohdsi/atlascharts/dist/atlascharts.umd';
 
-.#{$namespace} {
-	&report-drug {
-		flex: 1;
+export default (
+  data,
+  tableRowsMapper = (concept, normalData, i) => ({}),
+  DTO = {
+    path: 'CONCEPT_PATH',
+  },
+) => {
+  const normalizedData = treemap.normalizeDataframe(data);
+  if (!normalizedData[DTO.path]) {
+    return [];
+  }
+  const tableData = normalizedData[DTO.path].map((row, i) => {
+    const conceptDetails = row.split('||');
 
-		&__chart {
-			margin-top: 2rem;
-		}
+    return tableRowsMapper(conceptDetails, normalizedData, i);
+  });
 
-		
-
-	}
-
-}
+  return tableData;
+};

@@ -1,0 +1,252 @@
+/*
+ *
+ * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Company: Odysseus Data Services, Inc.
+ * Product Owner/Architecture: Gregory Klebanov
+ * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
+ * Created: November 13, 2017
+ *
+ */
+
+import React from 'react';
+import BEMHelper from 'services/BemHelper';
+import {
+  Panel,
+} from 'arachne-ui-components';
+import {
+  line,
+  trellisline,
+  boxplot,
+} from '@ohdsi/atlascharts';
+import * as d3 from 'd3';
+import { numberFormatter } from 'services/Utils';
+import { chartSettings } from 'const/reports';
+
+import './style.scss';
+
+export default function CohortspecificReport(props) {
+  const {
+    personsByDurationFromStartToEnd,
+    prevalenceByMonth,
+    ageAtIndexDistribution,
+    distributionOfAgeAtCohortStartByCohortStartYear,
+    distributionOfAgeAtCohortStartByGender,
+    personsInCohortFromCohortStartToEnd,
+    prevalenceByYearGenderSex,
+    prevalenceByYearGenderSexSet,
+  } = props;
+  const emptyClasses = BEMHelper('report-empty');
+  const classes = BEMHelper('report-cohortspecific');
+
+  return (
+    <div {...classes()}>
+      <div {...classes('row', null, 'row')}>
+        <div className='col-xs-12'>
+          <Panel title='Prevalence by Month'>
+            <div ref={(element) => {
+              if (element && prevalenceByMonth) {
+                const dimensions = element.getBoundingClientRect();
+                new line().render(
+                  prevalenceByMonth,
+                  element,
+                  dimensions.width, // Scrollbar width
+                  dimensions.width / 4,
+                  {
+                    yLabel: 'Prevalence per 1000 People',
+                    xLabel: 'Date',
+                    xFormat: d3.timeFormat('%m/%Y'),
+                    yFormat: d => numberFormatter.format(d, 'short'),
+                    xScale: d3.scaleTime().domain(d3.extent(prevalenceByMonth[0].values, d => d.xValue)),
+                    tickFormat: d3.timeFormat('%m/%Y'),
+                    showLegend: false,
+                    colors: d3.scaleOrdinal()
+                      .range(d3.schemeCategory10),
+                    ...chartSettings,
+                  }
+                );
+              }
+            }}
+            className={!prevalenceByMonth ? emptyClasses().className : ''}>
+              {!prevalenceByMonth &&
+                <span {...emptyClasses('text')}>No data</span>
+              }
+            </div>
+          </Panel>
+        </div>
+      </div>
+      <div {...classes('row', null, 'row')}>
+        <div className='col-xs-12'>
+          <Panel title='Number of Persons by Cohort Start'>
+            <div ref={(element) => {
+              if (element && prevalenceByYearGenderSex) {
+                const dimensions = element.getBoundingClientRect();
+                new trellisline().render(
+                  prevalenceByYearGenderSex,
+                  element,
+                  dimensions.width,
+                  dimensions.width/3,
+                  {
+                    ...chartSettings,
+                    trellisSet: prevalenceByYearGenderSexSet,
+                    trellisLabel: 'Age Decile',
+                    seriesLabel: 'Year of Observation',
+                    yLabel: 'Prevalence Per 1000 People',
+                    xFormat: d3.timeFormat('%Y'),
+                    yFormat: d3.format('0.2f'),
+                    tickPadding: 20,
+                    colors: d3.scaleOrdinal()
+                      .domain(['MALE', 'FEMALE'])
+                      .range(['#1f77b4', '#ff7f0e'])
+                  }
+                )
+              }
+            }}
+            className={!prevalenceByYearGenderSex ? emptyClasses().className : ''}>
+              {!prevalenceByYearGenderSex &&
+                <span {...emptyClasses('text')}>No data</span>
+              }
+            </div>
+          </Panel>
+        </div>
+      </div>
+      <div {...classes('row', null, 'row')}>
+        <div className='col-xs-12'>
+          <Panel title='Persons in cohort from start to end'>
+            <div ref={(element) => {
+              if (element && personsInCohortFromCohortStartToEnd) {
+                const dimensions = element.getBoundingClientRect();
+                new line().render(
+                  personsInCohortFromCohortStartToEnd,
+                  element,
+                  dimensions.width, // Scrollbar width
+                  dimensions.width / 4,
+                  {
+                    yLabel: 'People',
+                    xLabel: '30 Day Increments',
+                    xFormat: d => numberFormatter.format(d, 'short'),
+                    yFormat: d => numberFormatter.format(d, 'short'),
+                    xScale: d3.scaleLinear().domain(d3.extent(
+                      personsInCohortFromCohortStartToEnd[0].values, d => d.xValue)
+                    ),
+                    tickFormat: d => numberFormatter.format(d, 'short'),
+                    showLegend: false,
+                    colors: d3.scaleOrdinal()
+                      .range(d3.schemeCategory10),
+                    ...chartSettings,
+                  }
+                );
+              }
+            }}
+            className={!personsInCohortFromCohortStartToEnd ? emptyClasses().className : ''}>
+              {!personsInCohortFromCohortStartToEnd &&
+                <span {...emptyClasses('text')}>No data</span>
+              }
+            </div>
+          </Panel>
+        </div>    
+      </div>
+      <div {...classes('row', null, 'row')}>
+        <div className='col-xs-8'>
+          <Panel title='Number of persons by duration from cohort start to cohort end'>
+            <div ref={(element) => {
+              if (element && personsByDurationFromStartToEnd) {
+                const dimensions = element.getBoundingClientRect();
+                new line().render(
+                  personsByDurationFromStartToEnd,
+                  element,
+                  dimensions.width, // Scrollbar width
+                  dimensions.width / 2,
+                  {
+                    yLabel: 'Percent of Population',
+                    xLabel: 'Day',
+                    xFormat: d => numberFormatter.format(d, 'short'),
+                    yFormat: d => `${numberFormatter.format(d/100, 'short')}%`,
+                    xScale: d3.scaleLinear().domain(d3.extent(
+                      personsByDurationFromStartToEnd[0].values, d => d.xValue)
+                    ),
+                    tickFormat: d => numberFormatter.format(d, 'short'),
+                    showLegend: false,
+                    colors: d3.scaleOrdinal()
+                      .range(d3.schemeCategory10),
+                    ...chartSettings,
+                  }
+                );
+              }
+            }}
+            className={!personsByDurationFromStartToEnd ? emptyClasses().className : ''}>
+              {!personsByDurationFromStartToEnd &&
+                <span {...emptyClasses('text')}>No data</span>
+              }
+            </div>
+          </Panel>
+        </div>
+      </div>
+      <div {...classes('row', null, 'row')}>
+        <div className='col-xs-6'>
+          <Panel title='Age at Index'>
+            <div ref={(element) => {
+              if (element && ageAtIndexDistribution) {
+                const dimensions = element.getBoundingClientRect();
+                new boxplot().render(
+                  ageAtIndexDistribution,
+                  element,
+                  dimensions.width, // Scrollbar width
+                  dimensions.width/2,
+                  {
+                    ...chartSettings,
+                    xLabel: 'Gender',
+                    yLabel: 'Age',
+                    yFormat: d => numberFormatter.format(d, 'short')
+                  }
+                );
+              }
+            }}
+            className={!ageAtIndexDistribution ? emptyClasses().className : ''}>
+              {!ageAtIndexDistribution &&
+                <span {...emptyClasses('text')}>No data</span>
+              }
+            </div>
+          </Panel>
+        </div>
+        <div className='col-xs-6'>
+          <Panel title='Distribution of age at cohort start by gender '>
+            <div ref={(element) => {
+              if (element && distributionOfAgeAtCohortStartByGender) {
+                const dimensions = element.getBoundingClientRect();
+                new boxplot().render(
+                  distributionOfAgeAtCohortStartByGender,
+                  element,
+                  dimensions.width, // Scrollbar width
+                  dimensions.width/2,
+                  {
+                    ...chartSettings,
+                    xLabel: 'Gender',
+                    yLabel: 'Age',
+                    yFormat: d => numberFormatter.format(d, 'short')
+                  }
+                );
+              }
+            }}
+            className={!distributionOfAgeAtCohortStartByGender ? emptyClasses().className : ''}>
+              {!distributionOfAgeAtCohortStartByGender &&
+                <span {...emptyClasses('text')}>No data</span>
+              }
+            </div>
+          </Panel>
+        </div>
+      </div>
+    </div>
+  );
+}
