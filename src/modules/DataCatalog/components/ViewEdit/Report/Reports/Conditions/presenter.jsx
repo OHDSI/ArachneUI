@@ -29,7 +29,7 @@ import {
 import {
   treemap,
 } from '@ohdsi/atlascharts/dist/atlascharts.umd';
-import Table from 'modules/DataCatalog/components/ViewEdit/Report/Charts/Table';
+import Table from 'components/Charts/Table';
 import * as d3 from 'd3';
 import { chartSettings } from 'modules/DataCatalog/const';
 import get from 'lodash/get';
@@ -138,7 +138,7 @@ function Conditions(props) {
           </Panel>
         </div>
       </div>
-      {details && <ConditionDetails />}
+      {details && <ConditionDetails {...details} />}
     </div>
   );
 }

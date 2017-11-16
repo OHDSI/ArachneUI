@@ -21,6 +21,7 @@
  */
 
 import keyMirror from 'keymirror';
+import { reports } from 'const/reports';
 
 const forms = keyMirror({
   facetedSearch: null,
@@ -55,22 +56,6 @@ const paths = {
 
 const imgs = {
   sidebarIco: '/img/icons/Universal_Desktop/Navigation/Arachne_Desktop_icon-Data_Catalog.png',
-};
-
-const reports = {
-  DASHBOARD: 'dashboard',
-  PERSON: 'person',
-  OBSERVATION_PERIODS: 'observationperiods',
-  DATA_DENSITY: 'datadensity',
-  DEATH: 'death',
-  CONDITIONS: 'conditions',
-  CONDITIONERA: 'conditionera',
-  OBSERVATIONS: 'observations',
-  DRUGERA: 'drugeras',
-  DRUG: 'drugexposures',
-  PROCEDURES: 'procedures',
-  VISITS: 'visits',
-  ACHILLESHEEL: 'achillesheel',
 };
 
 const reportFilenames = {
@@ -113,7 +98,6 @@ export {
   forms,
   modal,
   paths,
-  reports,
   reportFilenames,
   chartSettings,
   defaultTrellisSet,

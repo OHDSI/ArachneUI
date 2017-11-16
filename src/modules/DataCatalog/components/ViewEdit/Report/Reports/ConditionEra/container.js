@@ -20,74 +20,52 @@
  *
  */
 
-import { Component } from 'react';
+import TreemapReportBuilder from 'components/Reports/TreemapReport';
 import { connect } from 'react-redux';
 import actions from 'actions/index';
-import get from 'lodash/get';
 import presenter from './presenter';
-import selectors from './selectors';
+import SelectorsBuilder from './selectors';
 
-class ConditionEra extends Component {
+const selectors = new SelectorsBuilder().build();
+
+export default class ConditionEra extends TreemapReportBuilder {
   constructor() {
     super();
-    this.initialZoomedConcept = null;
-    this.onZoom = this.onZoom.bind(this);
+    this.presenter = presenter;
+    this.filePath = 'conditioneras';
   }
 
-  onZoom(concept) {
-    this.initialZoomedConcept = concept;
+  getFilename(conceptId) {
+    return `condition_${conceptId}.json`;
   }
 
-  render() {
-    return presenter({
-      ...this.props,
-      onZoom: this.onZoom,
-      initialZoomedConcept: this.initialZoomedConcept,
-    });
+  mapStateToProps(state) {
+    const reportData = selectors.getReportData(state);
+    const details = selectors.getReportDetails(state);
+    const tableData = selectors.getTableData(state);
+    const tableColumns = {
+      id: 'Id',
+      soc: 'SOC',
+      hlt: 'HLT',
+      hlgt: 'HLGT',
+      pt: 'PT',
+      snomed: 'SNOMED',
+      personCount: 'Persons',
+      prevalence: 'Prevalence',
+      lengthOfEra: 'Era length',
+    };
+
+    return {
+      conditions: reportData,
+      details,
+      tableData,
+      tableColumns,
+    };
+  }
+
+  getMapDispatchToProps() {
+    return {
+      loadDetails: params => actions.dataCatalog.reportDetails.find(params),
+    };
   }
 }
-
-function mapStateToProps(state) {
-  const reportData = selectors.getReportData(state);
-  const details = get(state, 'dataCatalog.reportDetails.data.result');
-  const tableData = selectors.getTableData(state);
-  const tableColumns = {
-    id: 'Id',
-    soc: 'SOC',
-    hlt: 'HLT',
-    hlgt: 'HLGT',
-    pt: 'PT',
-    snomed: 'SNOMED',
-    personCount: 'Persons',
-    prevalence: 'Prevalence',
-    lengthOfEra: 'Era length',
-  };
-
-  return {
-    conditions: reportData,
-    details,
-    tableData,
-    tableColumns,
-  };
-}
-
-const mapDispatchToProps = {
-  loadDetails: params => actions.dataCatalog.reportDetails.find(params),
-};
-
-function mergeProps(stateProps, dispatchProps, ownProps) {
-  return {
-    ...stateProps,
-    ...dispatchProps,
-    ...ownProps,
-    loadConditionDetails: (conceptId) => {
-      dispatchProps.loadDetails({
-        id: ownProps.dataSourceId,
-        path: 'conditioneras',
-        filename: `condition_${conceptId}.json`,
-      });
-    },
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(ConditionEra);

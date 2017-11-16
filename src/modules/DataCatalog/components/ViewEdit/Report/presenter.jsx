@@ -29,7 +29,7 @@ import {
   LoadingPanel,
 } from 'arachne-ui-components';
 
-import { reports as reportConst } from 'modules/DataCatalog/const';
+import { reports as reportConst } from 'const/reports';
 
 let reports = {};
 

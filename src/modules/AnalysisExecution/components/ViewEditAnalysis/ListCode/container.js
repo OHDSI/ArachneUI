@@ -48,6 +48,7 @@ export default class ListCodeBuilder {
     const isLocked = get(analysisData, 'locked');
     const isLoading = selectors.getIsLoading(state);
     const canDeleteFiles = get(analysisData, 'permissions.DELETE_ANALYSIS_FILES', false);
+    const canSubmit = codeList.length > 0;
 
     return {
       analysisId,
@@ -58,6 +59,7 @@ export default class ListCodeBuilder {
       isLocked,
       isLoading,
       canDeleteFiles,
+      canSubmit,
     };
   }
 
