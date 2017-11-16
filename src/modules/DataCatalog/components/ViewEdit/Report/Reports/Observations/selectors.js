@@ -20,21 +20,18 @@
  *
  */
 
-import { createSelector } from 'reselect';
-import get from 'lodash/get';
+import { TreemapSelectorsBuilder } from 'services/Utils';
 import { treemap } from '@ohdsi/atlascharts/dist/atlascharts.umd';
-import treemapDataConverter from 'modules/DataCatalog/converters/treemapDataConverter';
+import get from 'lodash/get';
 
-const getReportData = state => {
-  const reportData = get(state, 'dataCatalog.report.data.result', {});
-  return treemapDataConverter(reportData);
-}
+export default class SelectorsBuilder extends TreemapSelectorsBuilder {
+  constructor() {
+    super();
+    this.dataPath = 'dataCatalog.report.data.result';
+    this.detailsPath = 'dataCatalog.reportDetails.data.result';
+  }
 
-const getRawTableData = state => get(state, 'dataCatalog.report.data.result') || [];
-
-const getTableData = createSelector(
-  [getRawTableData],
-  (data) => {
+  extractTableData(data) {
     const normalizedData = treemap.normalizeDataframe(data);
     if (!normalizedData.CONCEPT_PATH || !normalizedData.RECORDS_PER_PERSON) {
       return [];
@@ -74,9 +71,13 @@ const getTableData = createSelector(
 
     return tableData;
   }
-);
 
-export default {
-  getReportData,
-  getTableData,
-};
+  extractReportDetails(details) {
+    return {
+      rawConditionPrevalence: get(details, 'PREVALENCE_BY_GENDER_AGE_YEAR'),
+      observationsByType: get(details, 'OBSERVATIONS_BY_TYPE'),
+      ageAtFirstOccurrence: get(details, 'AGE_AT_FIRST_OCCURRENCE'),
+      conditionByMonth: get(details, 'PREVALENCE_BY_MONTH'),
+    };
+  }
+}

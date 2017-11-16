@@ -42,6 +42,11 @@ function setSearch(query) {
   };
 }
 
+function reload() {
+  return setSearch({ hash: Math.random().toString(36).substring(7) });
+}
+
 export default {
-  setSearch,
+   reload,
+   setSearch,
 };

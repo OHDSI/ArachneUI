@@ -22,66 +22,30 @@
 
 import { connect } from 'react-redux';
 import get from 'lodash/get';
-import { chart } from '@ohdsi/atlascharts/dist/atlascharts.umd';
-import { Utils } from 'services/Utils';
 import ObservationPeriods from './presenter';
 
 function mapStateToProps(state) {
   const reportData = get(state, 'dataCatalog.report.data.result', {});
   const ageAtFirstObservation = get(reportData, 'AGE_AT_FIRST_OBSERVATION_HISTOGRAM');
-  let ageByGender = get(reportData, 'AGE_BY_GENDER');
-  let durationByGender = get(reportData, 'OBSERVATION_PERIOD_LENGTH_BY_GENDER');
+  const ageByGender = get(reportData, 'AGE_BY_GENDER');
+  const durationByGender = get(reportData, 'OBSERVATION_PERIOD_LENGTH_BY_GENDER');
   const observationLength = get(reportData, 'OBSERVATION_LENGTH_HISTOGRAM');
   const rawCumulativeObservation = get(reportData, 'CUMULATIVE_DURATION');
-  let durationByAgeDecline = get(reportData, 'OBSERVATION_PERIOD_LENGTH_BY_AGE');
+  const durationByAgeDecline = get(reportData, 'OBSERVATION_PERIOD_LENGTH_BY_AGE');
   const durationByYear = get(reportData, 'OBSERVED_BY_YEAR_HISTOGRAM');
   const observationsPerPerson = get(reportData, 'PERSON_PERIODS_DATA');
   const rawObservationsByMonth = get(reportData, 'OBSERVED_BY_MONTH');
-
-  const ageData = chart.normalizeDataframe(ageByGender);
-  const durationData = chart.normalizeDataframe(durationByGender);
-  const durationDataDecline = chart.normalizeDataframe(durationByAgeDecline);
-
-  if (ageByGender) {
-    ageByGender = chart.prepareData(ageData, chart.chartTypes.BOXPLOT);
-  }
-  if (durationByGender) {
-    durationByGender = chart.prepareData(durationData, chart.chartTypes.BOXPLOT);
-  }
-  if (durationByAgeDecline) {
-    durationByAgeDecline = chart.prepareData(durationDataDecline, chart.chartTypes.BOXPLOT);
-  }
-
-  let cumulativeObservation = null;
-  if (rawCumulativeObservation) {
-    cumulativeObservation = [{
-      name: '',
-      values: rawCumulativeObservation.SERIES_NAME.map((name, i) => ({
-        Y_PERCENT_PERSONS: rawCumulativeObservation.Y_PERCENT_PERSONS[i],
-        X_LENGTH_OF_OBSERVATION: rawCumulativeObservation.X_LENGTH_OF_OBSERVATION[i],
-      })),
-    }];
-  }
-
-  let observationsByMonth = null;
-  if (rawObservationsByMonth) {
-    observationsByMonth = chart.mapMonthYearDataToSeries(rawObservationsByMonth, {
-      dateField: 'MONTH_YEAR',
-      yValue: 'COUNT_VALUE',
-      yPercent: 'PERCENT_VALUE',
-    });
-  }
 
   return {
     ageAtFirstObservation,
     ageByGender,
     durationByGender,
     observationLength,
-    cumulativeObservation,
+    rawCumulativeObservation,
     durationByAgeDecline,
     durationByYear,
-    observationsPerPerson: Utils.prepareChartDataForDonut(observationsPerPerson),
-    observationsByMonth,
+    observationsPerPerson,
+    rawObservationsByMonth,
   };
 }
 

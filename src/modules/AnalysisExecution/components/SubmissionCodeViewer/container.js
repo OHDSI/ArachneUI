@@ -22,10 +22,12 @@
 
 import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { get, detectLanguageByExtension } from 'services/Utils';
+import { get } from 'services/Utils';
 import actions from 'actions/index';
 import { downloadLinkBuilder } from 'modules/AnalysisExecution/ducks/submissionFile';
 import { buildBreadcrumbList } from 'modules/AnalysisExecution/utils';
+import ReportUtils from 'components/Reports/Utils';
+import { reports } from 'const/reports';
 import presenter from './presenter';
 
 class SubmissionCode extends Component {
@@ -35,6 +37,10 @@ class SubmissionCode extends Component {
       entityType: this.props.from,
       id: this.props.submissionGroupId || this.props.submissionId,
     });
+  }
+
+  componentWillUnmount() {
+    this.props.cleanup();
   }
 
   render() {
@@ -90,9 +96,27 @@ function mapStateToProps(state, ownProps) {
     title: get(submissionFileData, 'label') || get(submissionFileData, 'name'),
   };
 
+  let isReport = false;
+  let reportType = '';
+  let reportDTO = {};
+  if (submissionFileData && submissionFileData.content) {
+    try {
+      const file = JSON.parse(submissionFileData.content);
+      reportType = ReportUtils.detectTypeByStructure(file);
+      isReport = reportType !== reports.UNKNOWN;
+
+      // change key names in JSON and it's structure
+      Object.entries(file).forEach(([key, value]) => {
+        reportDTO[key] = ReportUtils.arrayToDataframe(value);
+      });
+    } catch(er) {}
+  }
+
   return {
     urlParams,
-    file: submissionFileData,
+    file: isReport
+      ? reportDTO
+      : submissionFileData,
     isLoading,
     toolbarOpts,
     pageTitle: pageTitle.join(' | '),
@@ -100,12 +124,15 @@ function mapStateToProps(state, ownProps) {
     from,
     submissionGroupId,
     submissionId,
+    isReport,
+    reportType,
   };
 }
 
 const mapDispatchToProps = {
   loadBreadcrumbs: actions.analysisExecution.breadcrumbs.query,
   loadFile: actions.analysisExecution.submissionFile.find,
+  cleanup: actions.analysisExecution.submissionFile.clear,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SubmissionCode);

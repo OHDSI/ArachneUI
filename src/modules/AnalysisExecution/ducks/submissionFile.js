@@ -48,12 +48,24 @@ function linkBuilder({
 
 export const downloadLinkBuilder = linkBuilder;
 
+const coreName = 'AE_ANALYSIS_SUBMISSION_FILE';
+
 const duck = new Duck({
-  name: 'AE_ANALYSIS_SUBMISSION_FILE',
+  name: coreName,
   urlBuilder: linkBuilder,
 });
 
+const clear = function () {
+  return dispatch => dispatch({
+    type: `${coreName}_FIND_FULFILLED`,
+    payload: null,
+  });
+};
+
 export default {
-  actions: duck.actions,
+  actions: {
+    ...duck.actions,
+    clear,
+  },
   reducer: duck.reducer,
 };
