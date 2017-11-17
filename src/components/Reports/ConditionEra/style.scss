@@ -20,23 +20,20 @@
  *
  */
 
-import React from 'react';
-import ConditionEraReport from 'components/Reports/ConditionEra';
+@import 'styles/vars-and-mixins.scss';
 
-function ConditionEra(props) {
-  const {
-    conditions,
-    loadConditionDetails,
-    details,
-    onZoom,
-    initialZoomedConcept,
-    tableData,
-    tableColumns,
-  } = props;
+.#{$namespace} {
+	&report-conditionera {
+		flex: 1;
 
-  return (
-    <ConditionEraReport {...props} />
-  );
+		&__chart {
+			margin-top: 2rem;
+		}
+
+		& .treemap_zoomtarget {
+			padding: 0.5rem 20px;
+		}
+
+	}
+
 }
-
-export default ConditionEra;

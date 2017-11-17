@@ -28,6 +28,8 @@ import { downloadLinkBuilder } from 'modules/AnalysisExecution/ducks/submissionF
 import { buildBreadcrumbList } from 'modules/AnalysisExecution/utils';
 import ReportUtils from 'components/Reports/Utils';
 import { reports, treemapReports } from 'const/reports';
+import convertDetailsDataToReportData from './components/ReportViewer/converters/reportDetailsToReportData';
+import DTO from './components/ReportViewer/converters/DTO';
 import presenter from './presenter';
 import SelectorsBuilder from './selectors';
 
@@ -113,7 +115,7 @@ function mapStateToProps(state, ownProps) {
   let reportDTO = {};
   let tableData = {};
   let tableColumns = {};
-  const details = {};
+  let details = {};
   if (submissionFileData && submissionFileData.content) {
     try {
       const file = JSON.parse(submissionFileData.content);
@@ -147,6 +149,7 @@ function mapStateToProps(state, ownProps) {
       structure.forEach(([key, value]) => {
         details[key] = ReportUtils.arrayToDataframe(value);
       });
+      details = convertDetailsDataToReportData(details, DTO[reportType]);
     } catch (er) {}
   }
 
@@ -190,7 +193,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...ownProps,
     loadTreemapDetails({ filename }) {
       const detailedFile = stateProps.submissionResultFiles.find(
-        file => file.name === filename
+        file => file.name === `${stateProps.reportType}/${filename}.json`
       );
       if (detailedFile) {
         dispatchProps.loadDetails({

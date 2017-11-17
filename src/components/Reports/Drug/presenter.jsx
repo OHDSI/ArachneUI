@@ -74,21 +74,21 @@ function Drug(props) {
             {
               ...chartSettings,
               onclick: node => loadConditionDetails(node.id),
-              getsizevalue: node => node.num_persons,
-              getcolorvalue: node => node.records_per_person,
+              getsizevalue: node => node.numPersons,
+              getcolorvalue: node => node.recordsPerPerson,
               getcontent: (node) => {
                 let result = '';
                 const steps = node.path.split('||');
                 const i = steps.length - 1;
                 result += `<div class='pathleaf'>${steps[i]}</div>`;
                 result += `<div class='pathleafstat'>
-                  Prevalence: ${new treemap().formatters.format_pct(node.pct_persons)}
+                  Prevalence: ${new treemap().formatters.format_pct(node.pctPersons)}
                 </div>`;
                 result += `<div class='pathleafstat'>
-                  Number of People: ${new treemap().formatters.format_comma(node.num_persons)}
+                  Number of People: ${new treemap().formatters.format_comma(node.numPersons)}
                 </div>`;
                 result += `<div class='pathleafstat'>
-                  Records per person: ${new treemap().formatters.format_fixed(node.records_per_person)}
+                  Records per person: ${new treemap().formatters.format_fixed(node.recordsPerPerson)}
                 </div>`;
                 return result;
               },

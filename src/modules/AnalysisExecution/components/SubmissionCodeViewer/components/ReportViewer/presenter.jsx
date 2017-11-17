@@ -23,6 +23,7 @@ if (canUseDom()) {
     Procedures: require('components/Reports/Procedures').default,
     Visits: require('components/Reports/Visits').default,
     Conditions: require('components/Reports/Conditions').default,
+    ConditionEra: require('components/Reports/ConditionEra').default,
 
     Cohortspecific: require('./components/Cohortspecific').default,
   };
@@ -44,6 +45,17 @@ function ReportViewer(props) {
     tableColumns,
     details,
   } = props;
+
+  const treemapParams = {
+    conditions: data,
+    loadDetails: loadTreemapDetails,
+    details,
+    onZoom: () => {},
+    initialZoomedConcept: null,
+    tableData,
+    tableColumns,
+    getFilename: conceptId => conceptId,
+  };
 
   return (
     <PageContent title={pageTitle}>
@@ -128,58 +140,32 @@ function ReportViewer(props) {
               deathByType={data.deathByType}
             />
           }
-          {/*reports.Observations && type === reportTypes.OBSERVATIONS &&
-            <reports.Observations />
-          */}
-          {/*reports.DrugEra && type === reportTypes.DRUGERA &&
-            <reports.DrugEra />
-          */}
+          {reports.Observations && type === reportTypes.OBSERVATIONS &&
+            <reports.Observations {...treemapParams} />
+          }
+          {reports.DrugEra && type === reportTypes.DRUGERA &&
+            <reports.DrugEra {...treemapParams} />
+          }
+          {reports.ConditionEra && type === reportTypes.CONDITIONERA &&
+            <reports.ConditionEra {...treemapParams} />
+          }
           {/*reports.Drug && type === reportTypes.DRUG &&
             <reports.Drug />
           */}
           {reports.Procedures && type === reportTypes.PROCEDURES &&
-            <reports.Procedures
-              conditions={data}
-              loadDetails={loadTreemapDetails}
-              details={details}
-              onZoom={() => {}}
-              initialZoomedConcept={null}
-              tableData={tableData}
-              tableColumns={tableColumns}
-              getFilename={conceptId => conceptId}
-            />
+            <reports.Procedures {...treemapParams} />
           }
           {reports.Visits && type === reportTypes.VISITS &&
-            <reports.Visits
-              conditions={data}
-              loadDetails={loadTreemapDetails}
-              details={details}
-              onZoom={() => {}}
-              initialZoomedConcept={null}
-              tableData={tableData}
-              tableColumns={tableColumns}
-              getFilename={conceptId => conceptId}
-            />
+            <reports.Visits {...treemapParams} />
           }
           {reports.Conditions && type === reportTypes.CONDITIONS &&
-            <reports.Conditions
-              conditions={data}
-              loadDetails={loadTreemapDetails}
-              details={details}
-              onZoom={() => {}}
-              initialZoomedConcept={null}
-              tableData={tableData}
-              tableColumns={tableColumns}
-              getFilename={conceptId => conceptId}
-            />
+            <reports.Conditions {...treemapParams} />
           }
           {/*reports.Achillesheel && type === reportTypes.ACHILLESHEEL &&
             <reports.Achillesheel />
           */}
           {reports.Cohortspecific && type === reportTypes.COHORTPECIFIC &&
-            <reports.Cohortspecific
-              {...data}
-            />
+            <reports.Cohortspecific {...data} />
           }
         </div>
       </div>

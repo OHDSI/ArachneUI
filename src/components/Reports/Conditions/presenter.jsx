@@ -32,7 +32,7 @@ import {
 import Table from 'components/Charts/Table';
 import * as d3 from 'd3';
 import { chartSettings } from 'const/reports';
-import get from 'lodash/get';
+import { convertDataToTreemapData } from 'components/Reports/converters';
 import ConditionDetails from './ConditionDetails';
 
 require('./style.scss');
@@ -60,35 +60,28 @@ function Conditions(props) {
           const minimum_area = 50;
           const threshold = minimum_area / (width * height);
           new treemap().render(
-            treemap.buildHierarchyFromJSON(conditions, threshold, (name, index, data) => ({
-              name,
-              num_persons: get(data, `NUM_PERSONS[${index}]`),
-              id: get(data, `CONCEPT_ID[${index}]`),
-              path: get(data, `CONCEPT_PATH[${index}]`),
-              pct_persons: get(data, `PERCENT_PERSONS[${index}]`),
-              records_per_person: get(data, `RECORDS_PER_PERSON[${index}]`),
-            })),
+            convertDataToTreemapData(conditions, threshold),
             element,
             width,
             height,
             {
               ...chartSettings,
               onclick: node => loadConditionDetails(node.id),
-              getsizevalue: node => node.num_persons,
-              getcolorvalue: node => node.records_per_person,
+              getsizevalue: node => node.numPersons,
+              getcolorvalue: node => node.recordsPerPerson,
               getcontent: (node) => {
                 let result = '';
                 const steps = node.path.split('||');
                 const i = steps.length - 1;
                 result += `<div class='pathleaf'>${steps[i]}</div>`;
                 result += `<div class='pathleafstat'>
-                  Prevalence: ${new treemap().formatters.format_pct(node.pct_persons)}
+                  Prevalence: ${new treemap().formatters.format_pct(node.pctPersons)}
                 </div>`;
                 result += `<div class='pathleafstat'>
-                  Number of People: ${new treemap().formatters.format_comma(node.num_persons)}
+                  Number of People: ${new treemap().formatters.format_comma(node.numPersons)}
                 </div>`;
                 result += `<div class='pathleafstat'>
-                  Records per Person: ${new treemap().formatters.format_fixed(node.records_per_person)}
+                  Records per Person: ${new treemap().formatters.format_fixed(node.recordsPerPerson)}
                 </div>`;
                 return result;
               },

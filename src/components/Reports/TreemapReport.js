@@ -87,11 +87,11 @@ export default class TreemapReportBuilder extends ContainerBuilder {
 
   mergeProps(stateProps, dispatchProps, ownProps) {
     return {
+      getFilename: this.getFilename,
       ...stateProps,
       ...dispatchProps,
       ...ownProps,
       filePath: this.filePath,
-      getFilename: this.getFilename,
       presenter: this.presenter,
     };
   }

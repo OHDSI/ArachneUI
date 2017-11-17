@@ -30,7 +30,8 @@ import { reports, reportFootprints } from 'const/reports';
 
 export default class ReportUtils {
   static prepareLineData(rawData) {
-    console.info('DEPRECATED');
+    //TODO: remove deprecated method
+    console.info('TODO', 'DEPRECATED');
     const data = cloneDeep(rawData);
     let normalizedData = {
       X_CALENDAR_MONTH: [],
@@ -105,6 +106,12 @@ export default class ReportUtils {
       return reports.VISITS;
     } else if (typeCheck(reportFootprints[reports.CONDITIONS], content)) {
       return reports.CONDITIONS;
+    } else if (typeCheck(reportFootprints[reports.OBSERVATIONS], content)) {
+      return reports.OBSERVATIONS;
+    } else if (typeCheck(reportFootprints[reports.CONDITIONERA], content)) {
+      return reports.CONDITIONERA;
+    } else if (typeCheck(reportFootprints[reports.DRUGERA], content)) {
+      return reports.DRUGERA;
     } else if (typeCheck(reportFootprints[reports.COHORTPECIFIC], content)) {
       return reports.COHORTPECIFIC;
     }

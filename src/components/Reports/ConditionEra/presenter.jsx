@@ -16,7 +16,7 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: November 09, 2017
+ * Created: June 07, 2017
  *
  */
 
@@ -31,14 +31,14 @@ import {
 } from '@ohdsi/atlascharts/dist/atlascharts.umd';
 import Table from 'components/Charts/Table';
 import * as d3 from 'd3';
-import { chartSettings } from 'modules/DataCatalog/const';
+import { chartSettings } from 'const/reports';
 import get from 'lodash/get';
 import { convertDataToTreemapData } from 'components/Reports/converters';
-import DrugEraDetails from './DrugEraDetails';
+import ConditionEraDetails from './ConditionEraDetails';
 
 require('./style.scss');
 
-function DrugEra(props) {
+function ConditionEra(props) {
   const {
     conditions,
     loadConditionDetails,
@@ -48,11 +48,11 @@ function DrugEra(props) {
     tableData,
     tableColumns,
   } = props;
-  const classes = new BEMHelper('report-drugera');
+  const classes = new BEMHelper('report-conditionera');
   const emptyClasses = new BEMHelper('report-empty');
   const sections = [
     {
-      label: 'treemap',
+      label: 'Treemap',
       content: <div ref={(element) => {
         if (element) {
           const dimensions = element.getBoundingClientRect();
@@ -88,7 +88,7 @@ function DrugEra(props) {
                   Number of People: ${new treemap().formatters.format_comma(node.numPersons)}
                 </div>`;
                 result += `<div class='pathleafstat'>
-                  Records per person: ${new treemap().formatters.format_fixed(node.recordsPerPerson)}
+                  Length of era: ${new treemap().formatters.format_fixed(node.recordsPerPerson)}
                 </div>`;
                 return result;
               },
@@ -128,7 +128,7 @@ function DrugEra(props) {
     <div {...classes()}>
       <div className='row'>
         <div className='col-xs-12'>
-          <Panel title='Drug Eras' {...classes('chart')}>
+          <Panel title='Condition eras' {...classes('chart')}>
             {dataPresent
               ? <TabbedPane sections={sections} />
               : <div {...emptyClasses()}>
@@ -138,9 +138,9 @@ function DrugEra(props) {
           </Panel>
         </div>
       </div>
-      {details && <DrugEraDetails {...details} />}
+      {details && <ConditionEraDetails {...details} />}
     </div>
   );
 }
 
-export default DrugEra;
+export default ConditionEra;

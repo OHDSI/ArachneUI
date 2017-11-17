@@ -42,6 +42,7 @@ import { asyncConnect } from 'redux-async-connect';
 import { ModalUtils } from 'arachne-ui-components';
 import types from 'const/modelAttributes';
 import URI from 'urijs';
+import { createSelector } from 'reselect';
 
 function buildFormData(obj) {
   const formData = new FormData();
@@ -477,9 +478,6 @@ class ContainerBuilder {
   }
 }
 
-import { createSelector } from 'reselect';
-import convertDataToTreemapData from 'components/Reports/converters/dataToTreemapData';
-
 class TreemapSelectorsBuilder {
   constructor() {
     this.dataPath = '';
@@ -487,9 +485,8 @@ class TreemapSelectorsBuilder {
   }
 
   getReportData(state) {
-    const reportData = get(state, this.dataPath, {});
-    return convertDataToTreemapData(reportData);
-  };
+    return get(state, this.dataPath, {});
+  }
 
   getRawTableData(state) {
     return get(state, this.dataPath) || [];

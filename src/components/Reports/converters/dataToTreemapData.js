@@ -27,23 +27,23 @@ import get from 'lodash/get';
 
 export default (
   data,
+  threshold = 10,
   DTO = {
     numPersons: 'NUM_PERSONS',
     id: 'CONCEPT_ID',
     path: 'CONCEPT_PATH',
     pctPersons: 'PERCENT_PERSONS',
     recordsPerPerson: 'RECORDS_PER_PERSON',
-  },
-  threshold = 10
+  }
 ) => {
   data[DTO.pctPersons] = Array.isArray(data[DTO.pctPersons]) ? data[DTO.pctPersons].map(val => parseFloat(val)) : [];
 
   return treemap.buildHierarchyFromJSON(data, threshold, (name, index, datum) => ({
     name,
-    num_persons: get(datum, `${DTO.numPersons}[${index}]`),
+    numPersons: get(datum, `${DTO.numPersons}[${index}]`),
     id: get(data, `${DTO.id}[${index}]`),
     path: get(data, `${DTO.path}[${index}]`),
-    pct_persons: get(data, `${DTO.pctPersons}[${index}]`),
-    records_per_person: get(data, `${DTO.recordsPerPerson}[${index}]`),
+    pctPerson: get(data, `${DTO.pctPersons}[${index}]`),
+    recordsPerPerson: get(data, `${DTO.recordsPerPerson}[${index}]`),
   }));
 };

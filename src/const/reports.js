@@ -5,7 +5,7 @@ const reports = {
   DATA_DENSITY: 'datadensity',
   DEATH: 'death',
   CONDITIONS: 'conditions',
-  CONDITIONERA: 'conditioneras',
+  CONDITIONERA: 'conditionera',
   OBSERVATIONS: 'observations',
   DRUGERA: 'drugeras',
   DRUG: 'drugexposures',
@@ -86,6 +86,13 @@ const chartFootprints = {
     PERCENT_PERSONS: Float | Number,
     RECORDS_PER_PERSON: Float | Number
   `,
+  [chartTypes.TREEMAP_ERA]: `
+    CONCEPT_ID: Number,
+    CONCEPT_PATH: String,
+    NUM_PERSONS: Number,
+    PERCENT_PERSONS: Float | Number,
+    LENGTH_OF_ERA: Float | Number
+  `,
 };
 chartFootprints[chartTypes.HISTOGRAM] = `
   ${chartFootprints[chartTypes.LINE_METADATA]},
@@ -143,7 +150,16 @@ const reportFootprints = {
     visitTreemap: [{ ${chartFootprints[chartTypes.TREEMAP]} }]
   }`,
   [reports.CONDITIONS]: `{
-    conditions: [{ ${chartFootprints[chartTypes.TREEMAP]} }]
+    ${reports.CONDITIONS}: [{ ${chartFootprints[chartTypes.TREEMAP]} }]
+  }`,
+  [reports.OBSERVATIONS]: `{
+    ${reports.OBSERVATIONS}: [{ ${chartFootprints[chartTypes.TREEMAP]} }]
+  }`,
+  [reports.CONDITIONERA]: `{
+    ${reports.CONDITIONERA}s: [{ ${chartFootprints[chartTypes.TREEMAP_ERA]} }]
+  }`,
+  [reports.DRUGERA]: `{
+    ${reports.DRUGERA}: [{ ${chartFootprints[chartTypes.TREEMAP_ERA]} }]
   }`,
 
   // Cohort characterization-specific

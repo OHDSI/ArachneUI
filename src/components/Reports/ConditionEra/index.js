@@ -20,23 +20,6 @@
  *
  */
 
-import React from 'react';
-import ConditionEraReport from 'components/Reports/ConditionEra';
+import ConditionEraBuilder from './container';
 
-function ConditionEra(props) {
-  const {
-    conditions,
-    loadConditionDetails,
-    details,
-    onZoom,
-    initialZoomedConcept,
-    tableData,
-    tableColumns,
-  } = props;
-
-  return (
-    <ConditionEraReport {...props} />
-  );
-}
-
-export default ConditionEra;
+export default new ConditionEraBuilder().build();

@@ -16,18 +16,17 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: November 09, 2017
+ * Created: June 07, 2017
  *
  */
 
 import { connect } from 'react-redux';
-import ReportUtils from 'components/Reports/Utils';
 import {
   convertDataToMonthLineChartData,
   convertDataToTrellislineData,
   convertDataToBoxplotData,
 } from 'components/Reports/converters';
-import ConditionDetails from './presenter';
+import ConditionEraDetails from './presenter';
 
 const conditionByMonthDTO = {
   dateField: 'X_CALENDAR_MONTH',
@@ -37,10 +36,10 @@ const conditionByMonthDTO = {
 
 function mapStateToProps(state, ownProps) {
   const {
-    proceduresByType,
-    conditionPrevalence: rawConditionPrevalence,
+    ageOfFirstDiagnosis,
+    lengthOfEra,
     conditionByMonth,
-    ageOfFirstOccurrence,
+    conditionPrevalence: rawConditionPrevalence,
   } = ownProps;
 
   const {
@@ -50,18 +49,19 @@ function mapStateToProps(state, ownProps) {
   );
 
   return {
-    proceduresByType:
-      ReportUtils.prepareChartDataForDonut(
-        proceduresByType
+    lengthOfEra:
+      convertDataToBoxplotData(
+        lengthOfEra
       ),
     conditionByMonth:
       convertDataToMonthLineChartData(
-        conditionByMonth, conditionByMonthDTO
+        conditionByMonth,
+        conditionByMonthDTO
       ),
     conditionPrevalence,
-    ageOfFirstOccurrence:
-    convertDataToBoxplotData(
-        ageOfFirstOccurrence
+    ageOfFirstDiagnosis:
+      convertDataToBoxplotData(
+        ageOfFirstDiagnosis
       ),
   };
 }
@@ -69,4 +69,4 @@ function mapStateToProps(state, ownProps) {
 const mapDispatchToProps = {
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ConditionDetails);
+export default connect(mapStateToProps, mapDispatchToProps)(ConditionEraDetails);

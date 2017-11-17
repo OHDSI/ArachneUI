@@ -20,23 +20,17 @@
  *
  */
 
-import React from 'react';
-import ConditionEraReport from 'components/Reports/ConditionEra';
+import TreemapReportBuilder from 'components/Reports/TreemapReport';
+import presenter from './presenter';
 
-function ConditionEra(props) {
-  const {
-    conditions,
-    loadConditionDetails,
-    details,
-    onZoom,
-    initialZoomedConcept,
-    tableData,
-    tableColumns,
-  } = props;
+export default class ConditionEra extends TreemapReportBuilder {
+  constructor() {
+    super();
+    this.presenter = presenter;
+    this.filePath = 'conditioneras';
+  }
 
-  return (
-    <ConditionEraReport {...props} />
-  );
+  getFilename(conceptId) {
+    return `condition_${conceptId}.json`;
+  }
 }
-
-export default ConditionEra;
