@@ -30,8 +30,6 @@ import { reports, reportFootprints } from 'const/reports';
 
 export default class ReportUtils {
   static prepareLineData(rawData) {
-    //TODO: remove deprecated method
-    console.info('TODO', 'DEPRECATED');
     const data = cloneDeep(rawData);
     let normalizedData = {
       X_CALENDAR_MONTH: [],

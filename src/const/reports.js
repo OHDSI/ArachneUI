@@ -139,8 +139,8 @@ const reportFootprints = {
     ethnicity: [{ ${chartFootprints[chartTypes.DONUT]} }]
   }`,
   [reports.DATA_DENSITY]: `{
-    recordsPerPerson: [{ ${chartFootprints[chartTypes.LINE_DATA_W_LEGEND]} }],
-    totalRecords: [{ ${chartFootprints[chartTypes.LINE_DATA_W_LEGEND]} }],
+    recordsPerPerson: Array,
+    totalRecords: Array,
     conceptsPerPerson: [{ ${chartFootprints[chartTypes.BOXPLOT]} }]
   }`,
   [reports.PROCEDURES]: `{

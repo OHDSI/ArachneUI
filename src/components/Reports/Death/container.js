@@ -21,74 +21,55 @@
  */
 
 import { connect } from 'react-redux';
-import * as d3 from 'd3';
-import { chart } from '@ohdsi/atlascharts/dist/atlascharts.umd';
 import ReportUtils from 'components/Reports/Utils';
+import {
+  convertDataToBoxplotData,
+  convertDataToTrellislineData,
+  convertDataToMonthLineChartData,
+} from 'components/Reports/converters';
 import Death from './presenter';
 
+const deathByMonthDTO = {
+  dateField: 'X_CALENDAR_MONTH',
+  yValue: 'Y_PREVALENCE_1000PP',
+  yPercent: 'Y_PREVALENCE_1000PP',
+};
+
 function mapStateToProps(state, ownProps) {
-  let {
+  const {
     ageOfDeath,
     deathByMonth,
-  } = ownProps;
-  const {
     deathByType,
     deathByAge: rawDeathByAge,
   } = ownProps;
   let deathByAge;
 
-  if (ageOfDeath) {
-    ageOfDeath = chart.prepareData(ageOfDeath, chart.chartTypes.BOXPLOT);
-  }
-
-  if (deathByMonth) {
-    deathByMonth = chart.mapMonthYearDataToSeries(deathByMonth, {
-      dateField: 'X_CALENDAR_MONTH',
-      yValue: 'Y_PREVALENCE_1000PP',
-      yPercent: 'Y_PREVALENCE_1000PP',
-    });
-  }
-
   if (rawDeathByAge) {
-    const minYear = d3.min(rawDeathByAge.X_CALENDAR_YEAR);
-    const maxYear = d3.max(rawDeathByAge.X_CALENDAR_YEAR);
-
-    const nestByDecile = d3.nest()
-            .key(d => d.TRELLIS_NAME)
-            .key(d => d.SERIES_NAME)
-            .sortValues((a, b) =>
-                a.X_CALENDAR_YEAR - b.X_CALENDAR_YEAR
-            );
-
-        // map data into chartable form
-    const normalizedSeries = chart.dataframeToArray(rawDeathByAge);
-    deathByAge = nestByDecile.entries(normalizedSeries);
-        // fill in gaps
-    const yearRange = d3.range(minYear, maxYear, 1);
-
-    deathByAge.forEach((trellis) => {
-      trellis.values.forEach((series) => {
-        series.values = yearRange.map((year) => { // eslint-disable-line no-param-reassign
-          const yearData = series.values.filter(
-                        f => f.X_CALENDAR_YEAR == year // eslint-disable-line eqeqeq
-                    )[0] || ReportUtils.seriesInitializer(trellis.key, series.key, year, 0);
-          yearData.date = new Date(year, 0, 1);
-          return yearData;
-        });
-      });
-    });
+    const { data } = convertDataToTrellislineData(
+      rawDeathByAge
+    );
+    deathByAge = data;
   }
 
   return {
-    deathByAge: Array.isArray(deathByAge) ? deathByAge : null,
-    deathByMonth,
-    deathByType: ReportUtils.prepareChartDataForDonut(deathByType),
-    ageOfDeath,
+    deathByAge,
+    deathByMonth:
+      convertDataToMonthLineChartData(
+        deathByMonth,
+        deathByMonthDTO
+      ),
+    deathByType:
+      ReportUtils.prepareChartDataForDonut(
+        deathByType
+      ),
+    ageOfDeath:
+      convertDataToBoxplotData(
+        ageOfDeath
+      ),
   };
 }
 
 const mapDispatchToProps = {
-
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Death);

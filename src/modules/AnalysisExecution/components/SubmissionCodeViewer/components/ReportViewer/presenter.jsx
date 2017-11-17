@@ -122,7 +122,7 @@ function ReportViewer(props) {
                 MIN: 0,
               }}
               observationsPerPerson={data.periodPerPerson}
-              rawObservationsByMonth={data.observedByMonth}
+              observationsByMonth={data.observedByMonth}
             />
           }
           {reports.DataDensity && type === reportTypes.DATA_DENSITY &&

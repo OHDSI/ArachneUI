@@ -136,9 +136,7 @@ function mapStateToProps(state, ownProps) {
           tableColumns[key] = value.columnName;
         });
       }
-    } catch (er) {
-      console.error('У Саши склероз', er);
-    }
+    } catch (er) {}
   }
   if (submissionFileDetails && submissionFileDetails.content) {
     try {

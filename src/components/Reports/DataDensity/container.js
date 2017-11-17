@@ -21,14 +21,16 @@
  */
 
 import { connect } from 'react-redux';
-import { chart } from '@ohdsi/atlascharts/dist/atlascharts.umd';
 import ReportUtils from 'components/Reports/Utils';
+import {
+  convertDataToBoxplotData,
+} from 'components/Reports/converters';
 import DataDensity from './presenter';
 
 function mapStateToProps(state, ownProps) {
   const {
     totalRecords: rawTotalRecords,
-    conceptsPerPerson: rawConceptsPerPerson,
+    conceptsPerPerson,
     recordsPerPerson: rawRecordsPerPerson,
   } = ownProps;
 
@@ -42,13 +44,12 @@ function mapStateToProps(state, ownProps) {
         normalizedData: perPersonScale,
     } = ReportUtils.prepareLineData(rawRecordsPerPerson);
 
-  let conceptsPerPerson;
-  if (rawConceptsPerPerson) {
-    conceptsPerPerson = chart.prepareData(rawConceptsPerPerson, chart.chartTypes.BOXPLOT);
-  }
 
   return {
-    conceptsPerPerson,
+    conceptsPerPerson:
+      convertDataToBoxplotData(
+        conceptsPerPerson,
+      ),
     recordsPerPerson,
     recordsPerPersonYears: perPersonScale,
     totalRecords,

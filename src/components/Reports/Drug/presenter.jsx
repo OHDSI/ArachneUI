@@ -32,7 +32,7 @@ import {
 import Table from 'components/Charts/Table';
 import * as d3 from 'd3';
 import { chartSettings } from 'modules/DataCatalog/const';
-import get from 'lodash/get';
+import { convertDataToTreemapData } from 'components/Reports/converters';
 import DrugDetails from './DrugDetails';
 
 require('./style.scss');
@@ -60,14 +60,7 @@ function Drug(props) {
           const minimum_area = 50;
           const threshold = minimum_area / (width * height);
           new treemap().render(
-            treemap.buildHierarchyFromJSON(conditions, threshold, (name, index, data) => ({
-              name,
-              num_persons: get(data, `NUM_PERSONS[${index}]`),
-              id: get(data, `CONCEPT_ID[${index}]`),
-              path: get(data, `CONCEPT_PATH[${index}]`),
-              pct_persons: get(data, `PERCENT_PERSONS[${index}]`),
-              records_per_person : get(data, `RECORDS_PER_PERSON[${index}]`),
-            })),
+            convertDataToTreemapData(conditions, threshold),
             element,
             width,
             height,
