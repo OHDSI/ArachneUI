@@ -15,35 +15,38 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: June 13, 2017
+ * Authors: Alexander Saltykov
+ * Created: November 17, 2017
  *
  */
 
-import { connect } from 'react-redux';
-import get from 'lodash/get';
+import { ContainerBuilder, get } from 'services/Utils';
 import { convertDataToHeelData } from 'components/Reports/converters';
-import Achillesheel from './presenter';
+import Heraclesheel from './presenter';
 
-function mapStateToProps(state) {
-  const reportData = get(state, 'dataCatalog.report.data.result', {});
-  const data = reportData.MESSAGES
-        ? convertDataToHeelData(reportData.MESSAGES)
-        : [];
+export default class HeraclesheelBuilder extends ContainerBuilder {
+  getComponent() {
+    return Heraclesheel;
+  }
 
-  const columns = {
-    type: 'Message type',
-    message: 'Message',
-  };
+  mapStateToProps(state, ownProps) {
+    const rawData = get(ownProps, 'reportData.heraclesHeel', []);
+    const data = rawData
+          ? convertDataToHeelData(rawData, { valueField: 'ATTRIBUTE_VALUE' })
+          : [];
 
-  return {
-    data,
-    columns,
-  };
+    const columns = {
+      type: 'Message type',
+      message: 'Message',
+    };
+
+    return {
+      data,
+      columns,
+    };
+  }
+
+  getMapDispatchToProps() {
+    return {};
+  }
 }
-
-const mapDispatchToProps = {
-
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Achillesheel);

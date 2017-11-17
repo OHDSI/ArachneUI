@@ -4,6 +4,7 @@ import convertDataToTreemapData from './dataToTreemapData';
 import convertDataToTrellislineData from './dataToTrellislineData';
 import convertDataToBoxplotData from './dataToBoxplotData';
 import convertDataToTableData from './dataToTableData';
+import convertDataToHeelData from './dataToHeelData';
 
 export {
   convertDataToLineChartData,
@@ -12,4 +13,5 @@ export {
   convertDataToTrellislineData,
   convertDataToBoxplotData,
   convertDataToTableData,
+  convertDataToHeelData,
 };

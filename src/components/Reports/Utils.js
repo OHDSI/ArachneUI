@@ -112,6 +112,8 @@ export default class ReportUtils {
       return reports.DRUGERA;
     } else if (typeCheck(reportFootprints[reports.COHORTPECIFIC], content)) {
       return reports.COHORTPECIFIC;
+    } else if (typeCheck(reportFootprints[reports.HERACLESHEEL], content)) {
+      return reports.HERACLESHEEL;
     }
 
     return reports.UNKNOWN;

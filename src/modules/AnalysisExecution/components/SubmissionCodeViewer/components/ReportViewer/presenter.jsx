@@ -26,6 +26,7 @@ if (canUseDom()) {
     ConditionEra: require('components/Reports/ConditionEra').default,
 
     Cohortspecific: require('./components/Cohortspecific').default,
+    Heraclesheel: require('./components/Heraclesheel').default,
   };
 }
 
@@ -166,6 +167,9 @@ function ReportViewer(props) {
           */}
           {reports.Cohortspecific && type === reportTypes.COHORTPECIFIC &&
             <reports.Cohortspecific {...data} />
+          }
+          {reports.Heraclesheel && type === reportTypes.HERACLESHEEL &&
+            <reports.Heraclesheel reportData={data} />
           }
         </div>
       </div>

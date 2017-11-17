@@ -15,6 +15,7 @@ const reports = {
   UNKNOWN: 'unknown',
   // Cohort characterization-specific
   COHORTPECIFIC: 'cohortspecific',
+  HERACLESHEEL: 'heraclesheel',
 };
 
 const chartTypes = {
@@ -193,6 +194,12 @@ const reportFootprints = {
     distributionOfAgeAtCohortStartByGender: [{ ${chartFootprints[chartTypes.BOXPLOT]} }],
     personsInCohortFromCohortStartToEnd: [{ ${chartFootprints[chartTypes.LINE_DATA_BY_MONTH]} }],
     prevalenceByYearGenderSex: Array
+  }`,
+  [reports.HERACLESHEEL]: `{
+    heraclesHeel: [{
+      ATTRIBUTE_NAME: Number,
+      ATTRIBUTE_VALUE: String
+    }],
   }`,
 };
 
