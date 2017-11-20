@@ -15,12 +15,12 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Alexander Saltykov
+ * Authors: Alexander Saltyko
  * Created: November 20, 2017
  *
  */
 
-import ReportViewerBuilder from './container';
+import ConditionByIndexDetailsBuilder from './container';
 
-export default (new ReportViewerBuilder()).build();
+export default (new ConditionByIndexDetailsBuilder()).build();
 

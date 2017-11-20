@@ -16,6 +16,9 @@ const reports = {
   // Cohort characterization-specific
   COHORTPECIFIC: 'cohortspecific',
   HERACLESHEEL: 'heraclesheel',
+  PROCEDURES_BY_INDEX: 'procbyindex',
+  CONDITIONS_BY_INDEX: 'condbyindex',
+  DATA_COMPLETENESS: 'datacompleteness',
 };
 
 const chartTypes = {
@@ -201,6 +204,49 @@ const reportFootprints = {
       ATTRIBUTE_VALUE: String
     }],
   }`,
+  [reports.PROCEDURES_BY_INDEX]: `{
+    procedureOccurrencePrevalenceOfDrug: [{
+      CONCEPT_ID: Number,
+      CONCEPT_NAME: String,
+      LEVEL2_CONCEPT_NAME: String,
+      LEVEL3_CONCEPT_NAME: String,
+      LEVEL4_CONCEPT_NAME: String,
+      CONCEPT_PATH: String,
+      PERCENT_PERSONS: Float | Number,
+      PERCENT_PERSONS_BEFORE: Float | Number,
+      PERCENT_PERSONS_AFTER: Float | Number,
+      RISK_DIFF_AFTER_BEFORE: Float | Number,
+      LOGRR_AFTER_BEFORE: Float | Number,
+      NUM_PERSONS: Number,
+      COUNT_VALUE: Number
+    }]
+  }`,
+  [reports.CONDITIONS_BY_INDEX]: `{
+    conditionOccurrencePrevalenceOfCondition: [{
+      CONCEPT_ID: Number,
+      SOC_CONCEPT_NAME: String,
+      HLGT_CONCEPT_NAME: String,
+      HLT_CONCEPT_NAME: String,
+      PT_CONCEPT_NAME: String,
+      CONCEPT_NAME: String,
+      CONCEPT_PATH: String,
+      PERCENT_PERSONS: Float | Number,
+      PERCENT_PERSONS_BEFORE: Float | Number,
+      PERCENT_PERSONS_AFTER: Float | Number,
+      RISK_DIFF_AFTER_BEFORE: Float | Number,
+      LOGRR_AFTER_BEFORE: Float | Number,
+      NUM_PERSONS: Number,
+      COUNT_VALUE: Number
+    }]
+  }`,
+  [reports.DATA_COMPLETENESS]: `{
+    recordsPerPerson: [{
+      covariance: String,
+      genderP: String,
+      raceP: String,
+      ethP: String
+    }]
+  }`,
 };
 
 const chartSettings = {
@@ -220,6 +266,8 @@ const treemapReports = [
   reports.CONDITIONS,
   reports.CONDITIONERA,
   reports.VISITS,
+  reports.PROCEDURES_BY_INDEX,
+  reports.CONDITIONS_BY_INDEX,
 ];
 
 export {

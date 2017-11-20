@@ -40,7 +40,7 @@ function Heraclesheel(props) {
   return (  
     <div {...classes({ extra: 'row' })}>
       <div className='col-xs-12'>
-        <Panel title='Achilles Heel' {...classes('chart')}>
+        <Panel title='Heracles Heel' {...classes('chart')}>
           <div className={!data ? emptyClasses().className : ''}>  
             {data
               ? <Table data={data} columns={columns} />

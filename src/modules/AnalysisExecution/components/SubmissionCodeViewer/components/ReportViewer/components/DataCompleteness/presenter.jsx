@@ -20,7 +20,36 @@
  *
  */
 
-import ReportViewerBuilder from './container';
+import React from 'react';
+import BEMHelper from 'services/BemHelper';
+import {
+  Panel,
+} from 'arachne-ui-components';
+import Table from 'components/Charts/Table';
 
-export default (new ReportViewerBuilder()).build();
+import './style.scss';
 
+function DataCompleteness(props) {
+  const classes = new BEMHelper('report-data-completeness');
+  const {
+    tableData,
+    tableColumns,
+  } = props;
+
+  return (
+    <div {...classes()}>
+      <Panel title={'Data completeness'}>
+        <Table
+          data={tableData}
+          columns={tableColumns}
+          pageSize={20}
+        />
+      </Panel>
+    </div>
+  );
+}
+
+DataCompleteness.propTypes = {
+};
+
+export default DataCompleteness;

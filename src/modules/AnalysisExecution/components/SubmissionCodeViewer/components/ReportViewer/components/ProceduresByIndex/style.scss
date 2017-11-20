@@ -15,12 +15,18 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Alexander Saltykov
- * Created: November 20, 2017
+ * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
+ * Created: November 17, 2017
  *
  */
 
-import ReportViewerBuilder from './container';
-
-export default (new ReportViewerBuilder()).build();
-
+ @import 'styles/vars-and-mixins.scss';
+ 
+ .#{$namespace} {
+   &report-proc-by-index {
+     flex: 1;
+     margin: 2rem 0;
+     
+   }
+ 
+ }

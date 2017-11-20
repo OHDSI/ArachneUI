@@ -114,6 +114,12 @@ export default class ReportUtils {
       return reports.COHORTPECIFIC;
     } else if (typeCheck(reportFootprints[reports.HERACLESHEEL], content)) {
       return reports.HERACLESHEEL;
+    } else if (typeCheck(reportFootprints[reports.PROCEDURES_BY_INDEX], content)) {
+      return reports.PROCEDURES_BY_INDEX;
+    } else if (typeCheck(reportFootprints[reports.CONDITIONS_BY_INDEX], content)) {
+      return reports.CONDITIONS_BY_INDEX;
+    } else if (typeCheck(reportFootprints[reports.DATA_COMPLETENESS], content)) {
+      return reports.DATA_COMPLETENESS;
     }
 
     return reports.UNKNOWN;

@@ -36,7 +36,8 @@ export default (
     recordsPerPerson: 'RECORDS_PER_PERSON',
   }
 ) => {
-  data[DTO.pctPersons] = Array.isArray(data[DTO.pctPersons]) ? data[DTO.pctPersons].map(val => parseFloat(val)) : [];
+  data.PERCENT_PERSONS = Array.isArray(data[DTO.pctPersons]) ? data[DTO.pctPersons].map(val => parseFloat(val)) : [];
+  data.CONCEPT_PATH = data[DTO.path];
 
   return treemap.buildHierarchyFromJSON(data, threshold, (name, index, datum) => ({
     name,

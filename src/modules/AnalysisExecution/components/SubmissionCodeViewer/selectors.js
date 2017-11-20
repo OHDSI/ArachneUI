@@ -35,6 +35,9 @@ export default class SelectorsBuilder extends TreemapSelectorsBuilder {
       [reports.CONDITIONS]: this.mapRowForConditions,
       [reports.CONDITIONERA]: this.mapRowForConditionEras,
       [reports.DRUGERA]: this.mapRowForDrugEras,
+      [reports.PROCEDURES_BY_INDEX]: this.mapRowForProceduresByIndex,
+      [reports.CONDITIONS_BY_INDEX]: this.mapRowForConditionsByIndex,
+      [reports.OBSERVATIONS]: this.mapRowForObservations,
     };
   }
 
@@ -215,6 +218,127 @@ export default class SelectorsBuilder extends TreemapSelectorsBuilder {
       lengthOfEra: {
         columnName: 'Length of era',
         value: normalData.LENGTH_OF_ERA[i],
+      },
+    };
+  }
+
+  mapRowForProceduresByIndex(concept, normalData, i) {
+    return {
+      id: {
+        columnName: 'Id',
+        value: normalData.CONCEPT_ID[i],
+      },
+      level4: {
+        columnName: 'Level 4',
+        value: concept[0],
+      },
+      level3: {
+        columnName: 'Level 3',
+        value: concept[1],
+      },
+      level2: {
+        columnName: 'Level 2',
+        value: concept[2],
+      },
+      procedure: {
+        columnName: 'Procedure',
+        value: concept[3],
+      },
+      personCount: {
+        columnName: 'Person count',
+        value: normalData.NUM_PERSONS[i],
+        formatter: new treemap().formatters.format_comma,
+      },
+      prevalence: {
+        columnName: 'Prevalence',
+        value: normalData.PERCENT_PERSONS[i],
+        formatter: new treemap().formatters.format_pct,
+      },
+      riskPerPerson: {
+        columnName: 'Relative Risk per Person',
+        value: normalData.RISK_DIFF_AFTER_BEFORE[i],
+      },
+    };
+  }
+
+  mapRowForConditionsByIndex(concept, normalData, i) {
+    return {
+      id: {
+        columnName: 'Id',
+        value: normalData.CONCEPT_ID[i],
+      },
+      soc: {
+        columnName: 'SOC',
+        value: concept[0],
+      },
+      hlgt: {
+        columnName: 'HLGT',
+        value: concept[1],
+      },
+      hlt: {
+        columnName: 'HLT',
+        value: concept[2],
+      },
+      pt: {
+        columnName: 'PT',
+        value: concept[3],
+      },
+      name: {
+        columnName: 'Concept name',
+        value: concept[4],
+      },
+      personCount: {
+        columnName: 'Person count',
+        value: normalData.NUM_PERSONS[i],
+        formatter: new treemap().formatters.format_comma,
+      },
+      prevalence: {
+        columnName: 'Prevalence',
+        value: normalData.PERCENT_PERSONS[i],
+        formatter: new treemap().formatters.format_pct,
+      },
+      riskPerPerson: {
+        columnName: 'Relative Risk per Person',
+        value: normalData.RISK_DIFF_AFTER_BEFORE[i],
+      },
+    };
+  }
+
+  mapRowForObservations(concept, normalData, i) {
+    return {
+      id: {
+        columnName: 'Concept Id',
+        value: normalData.CONCEPT_ID[i],
+      },
+      level_4: {
+        columnName: 'Level 4',
+        value: concept[0],
+      },
+      level_3: {
+        columnName: 'Level 3',
+        value: concept[1],
+      },
+      level_2: {
+        columnName: 'Level 2',
+        value: concept[2],
+      },
+      observationName: {
+        columnName: 'Observation',
+        value: concept[3],
+      },
+      personCount: {
+        columnName: 'person count',
+        value: normalData.NUM_PERSONS[i],
+        formatter: new treemap().formatters.format_comma,
+      },
+      prevalence: {
+        columnName: 'Prelevance',
+        value: normalData.PERCENT_PERSONS[i],
+        formatter: new treemap().formatters.format_pct,
+      },
+      recordsPerPerson: {
+        columnName: 'Records per person',
+        value: normalData.RECORDS_PER_PERSON[i],
       },
     };
   }

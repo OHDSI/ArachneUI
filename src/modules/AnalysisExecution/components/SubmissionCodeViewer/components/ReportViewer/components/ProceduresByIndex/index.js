@@ -20,7 +20,7 @@
  *
  */
 
-import ReportViewerBuilder from './container';
+import ProceduresByIndexBuilder from './container';
 
-export default (new ReportViewerBuilder()).build();
+export default (new ProceduresByIndexBuilder()).build();
 

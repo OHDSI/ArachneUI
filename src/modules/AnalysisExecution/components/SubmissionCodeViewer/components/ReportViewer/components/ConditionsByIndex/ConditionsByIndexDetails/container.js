@@ -20,7 +20,12 @@
  *
  */
 
-import ReportViewerBuilder from './container';
+import TreemapReport from 'components/Reports/TreemapReport';
+import ConditionByIndexDetails from './presenter';
 
-export default (new ReportViewerBuilder()).build();
-
+export default class ConditionByIndexDetailsBuilder extends TreemapReport {
+  constructor() {
+    super();
+    this.presenter = ConditionByIndexDetails;
+  }
+}

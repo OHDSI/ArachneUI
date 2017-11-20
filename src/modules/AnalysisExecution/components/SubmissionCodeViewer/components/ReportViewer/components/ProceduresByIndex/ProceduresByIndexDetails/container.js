@@ -20,7 +20,12 @@
  *
  */
 
-import ReportViewerBuilder from './container';
+import TreemapReport from 'components/Reports/TreemapReport';
+import ProcedureByIndexDetails from './presenter';
 
-export default (new ReportViewerBuilder()).build();
-
+export default class ProcedureByIndexDetailsBuilder extends TreemapReport {
+  constructor() {
+    super();
+    this.presenter = ProcedureByIndexDetails;
+  }
+}

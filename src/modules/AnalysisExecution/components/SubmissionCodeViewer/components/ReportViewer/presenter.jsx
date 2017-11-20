@@ -1,3 +1,25 @@
+/*
+ *
+ * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Company: Odysseus Data Services, Inc.
+ * Product Owner/Architecture: Gregory Klebanov
+ * Authors: Alexander Saltykov
+ * Created: November 20, 2017
+ *
+ */
+
 import React, { PropTypes } from 'react';
 import { canUseDom } from 'services/Utils';
 import BEMHelper from 'services/BemHelper';
@@ -27,6 +49,9 @@ if (canUseDom()) {
 
     Cohortspecific: require('./components/Cohortspecific').default,
     Heraclesheel: require('./components/Heraclesheel').default,
+    ProceduresByIndex: require('./components/ProceduresByIndex').default,
+    ConditionsByIndex: require('./components/ConditionsByIndex').default,
+    DataCompleteness: require('./components/DataCompleteness').default,
   };
 }
 
@@ -150,9 +175,6 @@ function ReportViewer(props) {
           {reports.ConditionEra && type === reportTypes.CONDITIONERA &&
             <reports.ConditionEra {...treemapParams} />
           }
-          {/*reports.Drug && type === reportTypes.DRUG &&
-            <reports.Drug />
-          */}
           {reports.Procedures && type === reportTypes.PROCEDURES &&
             <reports.Procedures {...treemapParams} />
           }
@@ -162,14 +184,20 @@ function ReportViewer(props) {
           {reports.Conditions && type === reportTypes.CONDITIONS &&
             <reports.Conditions {...treemapParams} />
           }
-          {/*reports.Achillesheel && type === reportTypes.ACHILLESHEEL &&
-            <reports.Achillesheel />
-          */}
           {reports.Cohortspecific && type === reportTypes.COHORTPECIFIC &&
             <reports.Cohortspecific {...data} />
           }
           {reports.Heraclesheel && type === reportTypes.HERACLESHEEL &&
             <reports.Heraclesheel reportData={data} />
+          }
+          {reports.ProceduresByIndex && type === reportTypes.PROCEDURES_BY_INDEX &&
+            <reports.ProceduresByIndex {...treemapParams} />
+          }
+          {reports.ConditionsByIndex && type === reportTypes.CONDITIONS_BY_INDEX &&
+            <reports.ConditionsByIndex {...treemapParams} />
+          }
+          {reports.DataCompleteness && type === reportTypes.DATA_COMPLETENESS &&
+            <reports.DataCompleteness {...data} />
           }
         </div>
       </div>
