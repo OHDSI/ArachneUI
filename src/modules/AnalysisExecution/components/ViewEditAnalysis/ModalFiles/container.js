@@ -117,21 +117,26 @@ function mapStateToProps(state) {
   let downloadAllLink;
   let files;
   const isResults = get(modalState, 'data.type') === 'result';
+  let canDownload = true;
   let filesCount = get(modalState, 'data.resultFilesCount', 0);
   if (isResults) {
     title = 'Results';
     downloadAllLink = apiPaths.submissionResultAll({ submissionId });
     files = selectors.getResultFiles(state);
+    const resultFiles = get(state, 'analysisExecution.analysisCode.queryResult');
+    if (Array.isArray(resultFiles) && resultFiles.length === 0) {
+      canDownload = false;
+    }
   } else {
     title = 'Code files';
     downloadAllLink = apiPaths.submissionGroupCodeAll({ submissionGroupId });
     files = selectors.getQueryFiles(state);
     filesCount = get(modalState, 'data.queryFilesCount');
+    canDownload = filesCount > 0;
   }
   const isOpened = get(modalState, 'isOpened', false);
   const isLoading = get(state, 'analysisExecution.analysisCode.isLoading', false);
   const prevPath = get(state, 'routingHistory.prevLocation.pathname', '');
-  const canDownload = filesCount > 0;
 
   return {
     analysisId: get(analysisData, 'id'),
