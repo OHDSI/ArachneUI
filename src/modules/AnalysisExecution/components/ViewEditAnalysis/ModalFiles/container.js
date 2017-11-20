@@ -131,6 +131,7 @@ function mapStateToProps(state) {
   const isOpened = get(modalState, 'isOpened', false);
   const isLoading = get(state, 'analysisExecution.analysisCode.isLoading', false);
   const prevPath = get(state, 'routingHistory.prevLocation.pathname', '');
+  const canDownload = filesCount > 0;
 
   return {
     analysisId: get(analysisData, 'id'),
@@ -145,6 +146,7 @@ function mapStateToProps(state) {
     isLoading,
     filesCount,
     prevPath,
+    canDownload,
   };
 }
 
