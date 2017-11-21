@@ -28,11 +28,15 @@
 		table-layout: fixed;
 
 		&__name-th {
-			width: 40%;
+			width: 30%;
 		}
 		
 		&__email-th {
-			width: 40%;
+			width: 30%;
+		}
+
+		&__enabled-th {
+			width: 20%;
 		}
 
 		&__remove-th {

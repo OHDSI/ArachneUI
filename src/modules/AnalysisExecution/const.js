@@ -67,6 +67,15 @@ const paths = {
   profile: id => `/expert-finder/profile/${id}`,
 };
 
+function importEntityPathByType(type){
+  switch (type) {
+    case 'COHORT': return 'cohorts';
+    case 'ESTIMATION': return 'estimations';
+    case 'PREDICTION': return 'predictions';
+    default: return '';
+  }
+}
+
 const apiPaths = {
   analyses: ({ id }) => `/api/v1/analysis-management/analyses${id ? `/${id}` : ''}`,
   analysisTypes: () => '/api/v1/analysis-management/analyses/types',
@@ -85,7 +94,7 @@ const apiPaths = {
   analysisRequestCodeUnlock: ({ analysisId }) => `/api/v1/analysis-management/analyses/${analysisId}/unlock-request`,
   breadcrumbs: ({ entityType, id }) => `/api/v1/utils/breadcrumbs/${entityType.toUpperCase()}/${id}`,
   importOptionList: ({ type, dataNodeId }) =>
-    `/api/v1/data-nodes/${dataNodeId}/${type === 'COHORT' ? 'cohorts' : 'estimations'}`,
+    `/api/v1/data-nodes/${dataNodeId}/${importEntityPathByType(type)}`,
   entities: ({ analysisId, fileId, type }) =>
     `/api/v1/analysis-management/analyses/${analysisId}/entities${fileId ? `/${fileId}` : ''}${type ? `?type=${type}` : ''}`,
   comments: ({ commentTopicId, commentId }) => `/api/v1/comments/${commentTopicId}${commentId ? `/${commentId}` : ''}`,
@@ -160,10 +169,11 @@ const submissionActionTypes = keyMirror({
   PUBLISH: null,
 });
 
-const importableAnalysisTypes = ['COHORT', 'ESTIMATION'];
+const importableAnalysisTypes = ['COHORT', 'ESTIMATION', 'PREDICTION'];
 const analysisTypeNames = {
   COHORT: 'cohort',
   ESTIMATION: 'estimation',
+  PREDICTION: 'prediction',
 };
 function nameAnalysisType(analysisType, capitalize = false) {
   if (!(analysisType in analysisTypeNames)) {

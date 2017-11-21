@@ -46,7 +46,7 @@ function LabelUser(props) {
     <div {...classes({ modifiers: mods })}>
       {showAvatar &&
         <div {...classes('userpic')}>
-          <Avatar img={expertApiPaths.userpic(user.id)} mods="round" />
+          <Avatar img={expertApiPaths.userpic({ id: user.id })} mods="round" />
         </div>
       }
       <div {...classes('name')}>

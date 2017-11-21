@@ -127,7 +127,9 @@ export class ActionsLine extends Component {
         {...this.submitClasses()}
         mods={['success']}
         label="Submit"
-        onClick={this.openSubmitModal} />
+        onClick={this.openSubmitModal}
+        disabled={!this.props.canSubmit}
+      />
     );
     const add = (
       <Button
@@ -204,6 +206,7 @@ export default class ListCode extends Component {
       canAddFiles={!this.isLocked}
       openCreateCodeModal={this.openCreateCodeModal}
       openSubmitModal={this.openSubmitModal}
+      canSubmit={this.canSubmit}
     />);
   }
 
@@ -218,6 +221,7 @@ export default class ListCode extends Component {
     this.removeCode = this.props.removeCode;
     this.isLocked = this.props.isLocked;
     this.canDeleteFiles = this.props.canDeleteFiles;
+    this.canSubmit = this.props.canSubmit;
 
     return (
       <Panel
