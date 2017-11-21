@@ -101,7 +101,7 @@ function FacetedFilters({ clear, fields }) {
   );
 }
 
-function DropdownFilters({ classes, fields, clear }) {
+function DropdownFilters({ classes, fields, clear, handleSubmit}) {
   const keywordsField = {
     type: types.string,
     label: 'Keywords',
@@ -148,7 +148,7 @@ function DropdownFilters({ classes, fields, clear }) {
         <Form
           fields={dropdownFields}
           onSubmit={() => {}}
-          handleSubmit={() => {}}
+          handleSubmit={handleSubmit}
           cancelBtn={{
             mods: ['cancel', 'rounded'],
             label: 'Clear',
@@ -169,6 +169,7 @@ function FiltersList(props) {
     clear,
     filteredByList = [],
     type,
+    handleSubmit,
   } = props;
 
   const isDropdown = type === filterTypes.dropdown;
@@ -186,7 +187,7 @@ function FiltersList(props) {
       </DropdownTrigger>
       <DropdownContent>
         <div {...classes('content', null, className)}>
-          <DropdownFilters classes={classes} fields={fields} clear={clear} />
+          <DropdownFilters classes={classes} fields={fields} clear={clear} handleSubmit={handleSubmit}/>
         </div>
       </DropdownContent>
     </Dropdown>
