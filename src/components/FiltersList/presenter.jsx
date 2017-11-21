@@ -101,7 +101,7 @@ function FacetedFilters({ clear, fields }) {
   );
 }
 
-function DropdownFilters({ classes, fields, clear, handleSubmit}) {
+function DropdownFilters({ classes, fields, clear, handleSubmit }) {
   const keywordsField = {
     type: types.string,
     label: 'Keywords',
