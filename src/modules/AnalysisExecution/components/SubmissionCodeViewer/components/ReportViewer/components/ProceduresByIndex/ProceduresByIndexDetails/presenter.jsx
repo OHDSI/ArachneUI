@@ -30,6 +30,7 @@ import {
 import * as d3 from 'd3';
 import { chartSettings } from 'modules/DataCatalog/const';
 import { convertDataToTreemapData } from 'components/Reports/converters';
+import Chart from 'components/Reports/Chart';
 
 function ProceduresByIndex(props) {
   const {
@@ -40,66 +41,61 @@ function ProceduresByIndex(props) {
     <div>
       <div className='row'>
         <div className='col-xs-12'>
-          <Panel title='Procedures'>
-            <div ref={(element) => {
-              if (element) {
-                const dimensions = element.getBoundingClientRect();
-                const width = dimensions.width;
-                const height = width/3;
-                const minimum_area = 50;
-                const threshold = minimum_area / (width * height);
-                new treemap().render(
-                  convertDataToTreemapData(conditions, threshold, {
-                    numPersons: 'COUNT_VALUE',
-                    id: 'CONCEPT_ID',
-                    path: 'CONCEPT_NAME',
-                    pctPersons: 'PCT_PERSONS',
-                    recordsPerPerson: 'DURATION',
-                  }),
-                  element,
-                  width,
-                  height,
-                  {
-                    ...chartSettings,
-                    onclick: () => {},
-                    getsizevalue: node => node.numPersons,
-                    getcolorvalue: node => node.recordsPerPerson,
-                    getcontent: (node) => {
-                      let result = '';
-                      const steps = node.path.split('||');
-                      const i = steps.length - 1;
-                      result += `<div class='pathleaf'>${steps[i]}</div>`;
-                      result += `<div class='pathleafstat'>
-                        Prevalence: ${new treemap().formatters.format_pct(node.pctPerson)}
-                      </div>`;
-                      result += `<div class='pathleafstat'>
-                        Number of People: ${new treemap().formatters.format_comma(node.numPersons)}
-                      </div>`;
-                      result += `<div class='pathleafstat'>
-                        Duration: ${new treemap().formatters.format_fixed(node.recordsPerPerson)}
-                      </div>`;
-                      return result;
-                    },
-                    gettitle: (node) => {
-                      let title = '';
-                      const steps = node.path.split('||');
-                      steps.forEach((step, i) => {
-                        title += ` <div class='pathstep'>${Array(i + 1).join('&nbsp;&nbsp')}${step}</div>`;
-                      });
-                      return title;
-                    },
-                    useTip: true,
-                    getcolorrange: () => d3.schemeCategory20c.slice(1),
-                    onZoom: () => {},
-                    initialZoomedConcept: null,
-                  }
-                )
-              }
+          <Chart
+            title='Procedures'
+            isDataPresent={conditions}
+            render={({ width, element }) => {
+              const height = width/3;
+              const minimum_area = 50;
+              const threshold = minimum_area / (width * height);
+              new treemap().render(
+                convertDataToTreemapData(conditions, threshold, {
+                  numPersons: 'COUNT_VALUE',
+                  id: 'CONCEPT_ID',
+                  path: 'CONCEPT_NAME',
+                  pctPersons: 'PCT_PERSONS',
+                  recordsPerPerson: 'DURATION',
+                }),
+                element,
+                width,
+                height,
+                {
+                  ...chartSettings,
+                  onclick: () => {},
+                  getsizevalue: node => node.numPersons,
+                  getcolorvalue: node => node.recordsPerPerson,
+                  getcontent: (node) => {
+                    let result = '';
+                    const steps = node.path.split('||');
+                    const i = steps.length - 1;
+                    result += `<div class='pathleaf'>${steps[i]}</div>`;
+                    result += `<div class='pathleafstat'>
+                      Prevalence: ${new treemap().formatters.format_pct(node.pctPerson)}
+                    </div>`;
+                    result += `<div class='pathleafstat'>
+                      Number of People: ${new treemap().formatters.format_comma(node.numPersons)}
+                    </div>`;
+                    result += `<div class='pathleafstat'>
+                      Duration: ${new treemap().formatters.format_fixed(node.recordsPerPerson)}
+                    </div>`;
+                    return result;
+                  },
+                  gettitle: (node) => {
+                    let title = '';
+                    const steps = node.path.split('||');
+                    steps.forEach((step, i) => {
+                      title += ` <div class='pathstep'>${Array(i + 1).join('&nbsp;&nbsp')}${step}</div>`;
+                    });
+                    return title;
+                  },
+                  useTip: true,
+                  getcolorrange: () => d3.schemeCategory20c.slice(1),
+                  onZoom: () => {},
+                  initialZoomedConcept: null,
+                }
+              )
             }}
-            >
-              <div className='treemap_zoomtarget'></div>
-            </div>
-          </Panel>
+          />
         </div>
       </div>
     </div>

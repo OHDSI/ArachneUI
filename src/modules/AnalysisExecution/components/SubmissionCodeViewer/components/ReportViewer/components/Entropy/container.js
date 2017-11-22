@@ -16,22 +16,44 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Alexander Saltykov
- * Created: November 13, 2017
+ * Created: November 21, 2017
  *
  */
 
-import { chart } from '@ohdsi/atlascharts/dist/atlascharts.umd';
 
-export default (data, DTO) => {
-  let dataIsNormal = true;
-  Object.values(DTO)
-    .forEach((sourceKey) => {
-      if (!(sourceKey in data)) {
-        dataIsNormal = false;
-      }
-    });
-  if (!dataIsNormal) {
-    return null;
-  }
-  return chart.mapMonthYearDataToSeries(data, DTO);
+import { ContainerBuilder } from 'services/Utils';
+import {
+  convertDataToLineChartData,
+} from 'components/Reports/converters';
+import * as d3 from 'd3';
+import EntropyReport from './presenter';
+
+const entropyDTO = {
+  xValue: 'date',
+  yValue: 'entropy',
+  yPercent: 'entropy',
 };
+
+export default class EntropyReportBuilder extends ContainerBuilder {
+  getComponent() {
+    return EntropyReport;
+  }
+
+  mapStateToProps(state, ownProps) {
+    const {
+      entropy,
+    } = ownProps;
+
+    //entropy.date = entropy.date.map(d => d3.timeFormat('%Y%m')(d));
+    //console.log(entropy);
+
+    const data = convertDataToLineChartData(
+      entropy,
+      entropyDTO
+    );
+
+    return {
+      data,
+    };
+  }
+}

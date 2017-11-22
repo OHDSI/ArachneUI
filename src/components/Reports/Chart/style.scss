@@ -16,22 +16,17 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Alexander Saltykov
- * Created: November 13, 2017
+ * Created: November 21, 2017
  *
  */
 
-import { chart } from '@ohdsi/atlascharts/dist/atlascharts.umd';
+@import 'styles/vars-and-mixins.scss';
 
-export default (data, DTO) => {
-  let dataIsNormal = true;
-  Object.values(DTO)
-    .forEach((sourceKey) => {
-      if (!(sourceKey in data)) {
-        dataIsNormal = false;
-      }
-    });
-  if (!dataIsNormal) {
-    return null;
+.#{$namespace} {
+  &chart {
+    margin-top: 2rem;
+    &__download-btn {
+      @include material-icon();
+    }
   }
-  return chart.mapMonthYearDataToSeries(data, DTO);
-};
+}

@@ -16,22 +16,11 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Alexander Saltykov
- * Created: November 13, 2017
+ * Created: November 21, 2017
  *
  */
 
-import { chart } from '@ohdsi/atlascharts/dist/atlascharts.umd';
+import EntropyBuilder from './container';
 
-export default (data, DTO) => {
-  let dataIsNormal = true;
-  Object.values(DTO)
-    .forEach((sourceKey) => {
-      if (!(sourceKey in data)) {
-        dataIsNormal = false;
-      }
-    });
-  if (!dataIsNormal) {
-    return null;
-  }
-  return chart.mapMonthYearDataToSeries(data, DTO);
-};
+export default (new EntropyBuilder()).build();
+

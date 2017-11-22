@@ -22,14 +22,12 @@
 
 import React from 'react';
 import {
-  Panel,
-} from 'arachne-ui-components';
-import {
   treemap,
 } from '@ohdsi/atlascharts/dist/atlascharts.umd';
 import * as d3 from 'd3';
 import { chartSettings } from 'modules/DataCatalog/const';
 import { convertDataToTreemapData } from 'components/Reports/converters';
+import Chart from 'components/Reports/Chart';
 
 function ConditionByIndexDetails(props) {
   const {
@@ -40,11 +38,10 @@ function ConditionByIndexDetails(props) {
     <div>
       <div className='row'>
         <div className='col-xs-12'>
-          <Panel title='Conditions'>
-            <div ref={(element) => {
-              if (element) {
-                const dimensions = element.getBoundingClientRect();
-                const width = dimensions.width;
+          <Chart
+            title='Conditions'
+            isDataPresent={conditions}
+            render={({ width, element }) => {
                 const height = width/3;
                 const minimum_area = 50;
                 const threshold = minimum_area / (width * height);
@@ -94,12 +91,8 @@ function ConditionByIndexDetails(props) {
                     initialZoomedConcept: null,
                   }
                 )
-              }
             }}
-            >
-              <div className='treemap_zoomtarget'></div>
-            </div>
-          </Panel>
+          />
         </div>
       </div>
     </div>

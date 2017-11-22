@@ -120,6 +120,8 @@ export default class ReportUtils {
       return reports.CONDITIONS_BY_INDEX;
     } else if (typeCheck(reportFootprints[reports.DATA_COMPLETENESS], content)) {
       return reports.DATA_COMPLETENESS;
+    } else if (typeCheck(reportFootprints[reports.ENTROPY], content)) {
+      return reports.ENTROPY;
     }
 
     return reports.UNKNOWN;

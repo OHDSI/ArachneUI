@@ -52,6 +52,7 @@ if (canUseDom()) {
     ProceduresByIndex: require('./components/ProceduresByIndex').default,
     ConditionsByIndex: require('./components/ConditionsByIndex').default,
     DataCompleteness: require('./components/DataCompleteness').default,
+    Entropy: require('./components/Entropy').default,
   };
 }
 
@@ -198,6 +199,9 @@ function ReportViewer(props) {
           }
           {reports.DataCompleteness && type === reportTypes.DATA_COMPLETENESS &&
             <reports.DataCompleteness {...data} />
+          }
+          {reports.Entropy && type === reportTypes.ENTROPY &&
+            <reports.Entropy {...data} />
           }
         </div>
       </div>

@@ -32,6 +32,7 @@ import {
 import { numberFormatter } from 'services/Utils';
 import * as d3 from 'd3';
 import { chartSettings } from 'modules/DataCatalog/const';
+import Chart from 'components/Reports/Chart';
 
 require('./style.scss');
 
@@ -46,7 +47,6 @@ function Person(props) {
     showSummary = true,
   } = props;
   const classes = new BEMHelper('report-person');
-  const emptyClasses = new BEMHelper('report-empty');
 
   return (  
     <div {...classes({ extra: 'row' })}>
@@ -76,94 +76,70 @@ function Person(props) {
         </div>
       }
       <div className='col-xs-8'>
-        <Panel title='Year of birth' {...classes('chart')}>
-          <div ref={(element) => {
-            if (element && birthYear) {
-              const dimensions = element.getBoundingClientRect();
-              new histogram().render(
-                histogram.mapHistogram(birthYear),
-                element,
-                dimensions.width,
-                dimensions.width/3,
-                {
-                  ...chartSettings,
-                  xFormat: d3.timeFormat('%Y'),
-                  xLabel: 'Year',
-                  yLabel: 'People',
-                  yFormat: d => numberFormatter.format(d, 'short')
-                }
-              );
-            }
+        <Chart
+          title='Year of birth'
+          isDataPresent={birthYear}
+          render={({ width, element }) => {
+            new histogram().render(
+              histogram.mapHistogram(birthYear),
+              element,
+              width,
+              width/3,
+              {
+                ...chartSettings,
+                xFormat: d3.timeFormat('%Y'),
+                xLabel: 'Year',
+                yLabel: 'People',
+                yFormat: d => numberFormatter.format(d, 'short')
+              }
+            );
           }}
-          className={!birthYear ? emptyClasses().className : ''}>
-            {!birthYear &&
-              <span {...emptyClasses('text')}>No data</span>
-            }
-          </div>
-        </Panel>
+        />
       </div>
       <div className='col-xs-4'>
-        <Panel title='Population by Gender' {...classes('chart')}>
-          <div ref={(element) => {
-            if (element && genderData) {
-              const dimensions = element.getBoundingClientRect();
-              new donut().render(
-                genderData,
-                element,
-                dimensions.width,
-                dimensions.width/2,
-                chartSettings
-              );
-            }
+        <Chart
+          title='Population by Gender'
+          isDataPresent={genderData}
+          render={({ width, element }) => {
+            new donut().render(
+              genderData,
+              element,
+              width,
+              width/2,
+              chartSettings
+            );
           }}
-          className={!genderData ? emptyClasses().className : ''}>
-            {!genderData &&
-              <span {...emptyClasses('text')}>No data</span>
-            }
-          </div>
-        </Panel>
+        />
       </div>
       <div className='col-xs-4'>
-        <Panel title='Population by Race' {...classes('chart')}>
-          <div ref={(element) => {
-            if (element && race) {
-              const dimensions = element.getBoundingClientRect();
-              new donut().render(
-                race,
-                element,
-                dimensions.width,
-                dimensions.width/2,
-                chartSettings
-              );
-            }
+        <Chart
+          title='Population by Race'
+          isDataPresent={race}
+          render={({ width, element }) => {
+            new donut().render(
+              race,
+              element,
+              width,
+              width/2,
+              chartSettings
+            );
           }}
-          className={!race ? emptyClasses().className : ''}>
-            {!race &&
-              <span {...emptyClasses('text')}>No data</span>
-            }
-          </div>
-        </Panel>
+        />
       </div>
       <div className='col-xs-4'>
-        <Panel title='Population by Ethnicity' {...classes('chart')}>
-          <div ref={(element) => {
-            if (element && ethnicity) {
-              const dimensions = element.getBoundingClientRect();
-              new donut().render(
-                ethnicity,
-                element,
-                dimensions.width, // Scrollbar width
-                dimensions.width/2,
-                chartSettings
-              );
-            }
+        <Chart
+          title='Population by Ethnicity'
+          isDataPresent={ethnicity}
+          render={({ width, element }) => {
+            new donut().render(
+              ethnicity,
+              element,
+              width, // Scrollbar width
+              width/2,
+              chartSettings
+            );
           }}
-          className={!ethnicity ? emptyClasses().className : ''}>
-            {!ethnicity &&
-              <span {...emptyClasses('text')}>No data</span>
-            }
-          </div>
-        </Panel>
+        />
       </div>
 
     </div>

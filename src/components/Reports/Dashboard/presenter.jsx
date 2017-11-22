@@ -36,6 +36,7 @@ import { numberFormatter, get } from 'services/Utils';
 import { chartSettings } from 'components/Reports/const';
 import moment from 'moment';
 import { commonDate } from 'const/formats';
+import Chart from 'components/Reports/Chart';
 
 require('./style.scss');
 
@@ -88,110 +89,86 @@ function Dashboard(props) {
         </div>
       }
       <div className='col-xs-6'>
-        <Panel title='Population by Gender' {...classes('chart')}>
-          <div ref={(element) => {
-            if (element && genderData) {
-              const dimensions = element.getBoundingClientRect();
-              new donut().render(
-                genderData,
-                element,
-                dimensions.width,
-                dimensions.width/3,
-                chartSettings
-              );
-            }
+        <Chart
+          title='Population by Gender'
+          isDataPresent={genderData}
+          render={({ width, element }) => {
+            new donut().render(
+              genderData,
+              element,
+              width,
+              width/3,
+              chartSettings
+            );
           }}
-          className={!genderData ? emptyClasses().className : ''}>
-            {!genderData &&
-              <span {...emptyClasses('text')}>No data</span>
-            }
-          </div>
-        </Panel>
+        />
       </div>
       <div className='col-xs-12'>
-        <Panel title='Age at First Observation' {...classes('chart')}>
-          <div ref={(element) => {
-            if (element && ageAtFirstObservation) {
-              const dimensions = element.getBoundingClientRect();
-              new histogram().render(
-                histogram.mapHistogram(ageAtFirstObservation),
-                element,
-                dimensions.width,
-                dimensions.width/4,
-                {
-                  ...chartSettings,
-                  xLabel: 'Age',
-                  yLabel: 'People',
-                  yFormat: d => numberFormatter.format(d, 'short')
-                }
-              );
-            }
+        <Chart
+          title='Age at First Observation'
+          isDataPresent={ageAtFirstObservation}
+          render={({ width, element }) => {
+            new histogram().render(
+              histogram.mapHistogram(ageAtFirstObservation),
+              element,
+              width,
+              width/4,
+              {
+                ...chartSettings,
+                xLabel: 'Age',
+                yLabel: 'People',
+                yFormat: d => numberFormatter.format(d, 'short')
+              }
+            );
           }}
-          className={!ageAtFirstObservation ? emptyClasses().className : ''}>
-            {!ageAtFirstObservation &&
-              <span {...emptyClasses('text')}>No data</span>
-            }
-          </div>
-        </Panel>
+        />
       </div>
       <div className='col-xs-12'>
-        <Panel title='Persons With Continuous Observation By Month' {...classes('chart')}>
-          <div ref={(element) => {
-            if (element && observedByMonth) {
-              const dimensions = element.getBoundingClientRect();
-              new line().render(
-                observedByMonth,
-                element,
-                dimensions.width,
-                dimensions.width/4,
-                {
-                  ...chartSettings,
-                  xScale: d3scale.scaleLinear().domain(
-                    d3.extent(observedByMonth[0].values, d => d.xValue)
-                  ),
-                  xFormat: d3.timeFormat('%m/%Y'),
-                  tickFormat: d3.timeFormat('%Y'),
-                  ticks: 10,
-                  xLabel: 'Date',
-                  yLabel: 'People',
-                  yFormat: d => numberFormatter.format(d, 'short')
-                }
-              );
-            }
+        <Chart
+          title='Persons With Continuous Observation By Month'
+          isDataPresent={observedByMonth}
+          render={({ width, element }) => {
+            new line().render(
+              observedByMonth,
+              element,
+              width,
+              width/4,
+              {
+                ...chartSettings,
+                xScale: d3scale.scaleLinear().domain(
+                  d3.extent(observedByMonth[0].values, d => d.xValue)
+                ),
+                xFormat: d3.timeFormat('%m/%Y'),
+                tickFormat: d3.timeFormat('%Y'),
+                ticks: 10,
+                xLabel: 'Date',
+                yLabel: 'People',
+                yFormat: d => numberFormatter.format(d, 'short')
+              }
+            );
           }}
-          className={!observedByMonth ? emptyClasses().className : ''}>
-            {!observedByMonth &&
-              <span {...emptyClasses('text')}>No data</span>
-            }
-          </div>
-        </Panel>
+        />
       </div>
       <div className='col-xs-12'>
-        <Panel title='Cumulative Observation' {...classes('chart')}>
-          <div ref={(element) => {
-            if (element && cumulativeDuration) {
-              const dimensions = element.getBoundingClientRect();
-              new line().render(
-                cumulativeDuration,
-                element,
-                dimensions.width,
-                dimensions.width/4,
-                {
-                  ...chartSettings,
-                  yValue: 'Y_PERCENT_PERSONS',
-                  xValue: 'X_LENGTH_OF_OBSERVATION',
-                  yLabel: 'Percent of population',
-                  xLabel: 'Days',
-                }
-              );
-            }
+        <Chart
+          title='Cumulative Observation'
+          isDataPresent={cumulativeDuration}
+          render={({ width, element }) => {
+            new line().render(
+              cumulativeDuration,
+              element,
+              width,
+              width/4,
+              {
+                ...chartSettings,
+                yValue: 'Y_PERCENT_PERSONS',
+                xValue: 'X_LENGTH_OF_OBSERVATION',
+                yLabel: 'Percent of population',
+                xLabel: 'Days',
+              }
+            );
           }}
-          className={!cumulativeDuration ? emptyClasses().className : ''}>
-            {!cumulativeDuration &&
-              <span {...emptyClasses('text')}>No data</span>
-            }
-          </div>
-        </Panel>
+        />
       </div>
     </div>
   );

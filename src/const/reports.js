@@ -19,6 +19,7 @@ const reports = {
   PROCEDURES_BY_INDEX: 'procbyindex',
   CONDITIONS_BY_INDEX: 'condbyindex',
   DATA_COMPLETENESS: 'datacompleteness',
+  ENTROPY: 'entropy',
 };
 
 const chartTypes = {
@@ -245,6 +246,13 @@ const reportFootprints = {
       genderP: String,
       raceP: String,
       ethP: String
+    }]
+  }`,
+  [reports.ENTROPY]: `{
+    entropy: [{
+      date: Number,
+      entropy: Float | Number,
+      insitution: String
     }]
   }`,
 };
