@@ -101,6 +101,13 @@ function update(id, data, showLoader = true) {
   };
 }
 
+function remove(id) {
+  return (dispatch) => {
+    dispatch(requestSource());
+    return api.doDelete(apiPaths.dataSources(id));
+  };
+}
+
 function reset() {
   return receiveSource({});
 }
@@ -123,4 +130,5 @@ export default {
   update,
   reset,
   registerAtCentral,
+  remove,
 };
