@@ -22,7 +22,6 @@
 
 import { connect } from 'react-redux';
 import get from 'lodash/get';
-import actions from 'actions';
 
 import { paths } from 'modules/CdmSourceList/const';
 import Toolbar from './presenter';
@@ -38,7 +37,6 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  delete: actions.cdmSourceList.dataSource.remove,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Toolbar);

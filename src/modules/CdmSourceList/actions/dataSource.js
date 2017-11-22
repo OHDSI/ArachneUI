@@ -104,10 +104,7 @@ function update(id, data, showLoader = true) {
 function remove(id) {
   return (dispatch) => {
     dispatch(requestSource());
-    return api.doDelete(
-      apiPaths.dataSources(id),
-      () => dispatch(updateSource())
-    );
+    return api.doDelete(apiPaths.dataSources(id));
   };
 }
 
