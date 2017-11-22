@@ -72,7 +72,6 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         .then(() => dispatchProps.clearInfo())
         .then(() => dispatchProps.loadInfo({
           id: stateProps.userId,
-          hash: Date.now().toString(),
         }))
         .then(() => dispatchProps.hideUploadForm())
         .catch(() => {});
