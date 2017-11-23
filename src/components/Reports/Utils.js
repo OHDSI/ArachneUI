@@ -26,7 +26,7 @@ import { chart } from '@ohdsi/atlascharts/dist/atlascharts.umd';
 import { typeCheck } from 'type-check';
 import cloneDeep from 'lodash/cloneDeep';
 import { get } from 'services/Utils';
-import { reports, reportFootprints } from 'const/reports';
+import { reports } from 'const/reports';
 
 export default class ReportUtils {
   static prepareLineData(rawData) {
@@ -87,41 +87,13 @@ export default class ReportUtils {
     return dataframe;
   }
 
-  static detectTypeByStructure(content) {
-    if (typeCheck(reportFootprints[reports.DASHBOARD], content)) {
-      return reports.DASHBOARD;
-    } else if (typeCheck(reportFootprints[reports.DEATH], content)) {
-      return reports.DEATH;
-    } else if (typeCheck(reportFootprints[reports.OBSERVATION_PERIODS], content)) {
-      return reports.OBSERVATION_PERIODS;
-    } else if (typeCheck(reportFootprints[reports.PERSON], content)) {
-      return reports.PERSON;
-    } else if (typeCheck(reportFootprints[reports.DATA_DENSITY], content)) {
-      return reports.DATA_DENSITY;
-    } else if (typeCheck(reportFootprints[reports.PROCEDURES], content)) {
-      return reports.PROCEDURES;
-    } else if (typeCheck(reportFootprints[reports.VISITS], content)) {
-      return reports.VISITS;
-    } else if (typeCheck(reportFootprints[reports.CONDITIONS], content)) {
-      return reports.CONDITIONS;
-    } else if (typeCheck(reportFootprints[reports.OBSERVATIONS], content)) {
-      return reports.OBSERVATIONS;
-    } else if (typeCheck(reportFootprints[reports.CONDITIONERA], content)) {
-      return reports.CONDITIONERA;
-    } else if (typeCheck(reportFootprints[reports.DRUGERA], content)) {
-      return reports.DRUGERA;
-    } else if (typeCheck(reportFootprints[reports.COHORTPECIFIC], content)) {
-      return reports.COHORTPECIFIC;
-    } else if (typeCheck(reportFootprints[reports.HERACLESHEEL], content)) {
-      return reports.HERACLESHEEL;
-    } else if (typeCheck(reportFootprints[reports.PROCEDURES_BY_INDEX], content)) {
-      return reports.PROCEDURES_BY_INDEX;
-    } else if (typeCheck(reportFootprints[reports.CONDITIONS_BY_INDEX], content)) {
-      return reports.CONDITIONS_BY_INDEX;
-    } else if (typeCheck(reportFootprints[reports.DATA_COMPLETENESS], content)) {
-      return reports.DATA_COMPLETENESS;
-    } else if (typeCheck(reportFootprints[reports.ENTROPY], content)) {
-      return reports.ENTROPY;
+  static getReportType(docType) {
+    const regexp = /^report\/(\w*)$/;
+    if (regexp.test(docType)) {
+      const rawReportType = docType.split('/')[1];
+      return Object.values(reports).includes(rawReportType)
+        ? rawReportType
+        : reports.UNKNOWN;
     }
 
     return reports.UNKNOWN;

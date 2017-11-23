@@ -110,17 +110,15 @@ function mapStateToProps(state, ownProps) {
     title: get(submissionFileData, 'label') || get(submissionFileData, 'name'),
   };
 
-  let isReport = false;
-  let reportType = '';
+  const reportType = ReportUtils.getReportType(get(submissionFileData, 'docType'));
+  const isReport = reportType !== reports.UNKNOWN;
   let reportDTO = {};
   let tableData = {};
   let tableColumns = {};
   let details = {};
-  if (submissionFileData && submissionFileData.content) {
+  if (submissionFileData && submissionFileData.content && isReport) {
     try {
       const file = JSON.parse(submissionFileData.content);
-      reportType = ReportUtils.detectTypeByStructure(file);
-      isReport = reportType !== reports.UNKNOWN;
 
       // change key names in JSON and it's structure
       const structure = Object.entries(file);
