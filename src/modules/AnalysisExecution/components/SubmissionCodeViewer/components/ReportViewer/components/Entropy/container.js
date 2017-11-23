@@ -25,7 +25,6 @@ import { ContainerBuilder } from 'services/Utils';
 import {
   convertDataToLineChartData,
 } from 'components/Reports/converters';
-import * as d3 from 'd3';
 import EntropyReport from './presenter';
 
 const entropyDTO = {
@@ -43,9 +42,6 @@ export default class EntropyReportBuilder extends ContainerBuilder {
     const {
       entropy,
     } = ownProps;
-
-    //entropy.date = entropy.date.map(d => d3.timeFormat('%Y%m')(d));
-    //console.log(entropy);
 
     const data = convertDataToLineChartData(
       entropy,

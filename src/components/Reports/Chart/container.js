@@ -33,6 +33,52 @@ class Chart extends Component {
     this.downloadAsPng = this.downloadAsPng.bind(this);
     this.width = 0;
     this.height = 0;
+    this.styles = `
+    <![CDATA[
+      svg {
+        background: #fff;
+      }
+      .donut text {
+        font-size: 1.2rem;
+      }            
+      .lineplot .line {
+        fill: transparent;
+        stroke: #50A5BA;
+      }      
+      .lineplot  circle.focus {
+        opacity: 0;
+      }      
+      .bar {
+        fill: #50A5BA;
+      }      
+      .boxplot .bar, .boxplot .whisker, .boxplot .box, .boxplot .median {
+        stroke: #50A5BA;
+      }      
+      .boxplot .box {
+        fill: #50A5BA;
+      }
+      .g-trellis .y-guide .tick line,
+      .g-trellis .x-guide .tick line {
+        stroke: #ccc;
+        stroke-width: .6;
+      }
+      .g-trellis .y-guide .domain,
+      .g-trellis .x-guide .domain {
+        stroke: none;
+      }
+      .g-trellis .g-overlay {
+        fill: none;
+        pointer-events: all;
+      }
+      .grouper {
+        fill: none;
+        stroke: white;
+        stroke-width: 2px;
+      }
+      .treemap_zoomtarget {
+        padding: 0.5rem 20px;
+      }
+    ]]>`;
   }
 
   setContainer(element) {
@@ -51,9 +97,12 @@ class Chart extends Component {
 
   downloadAsPng() {
     if (this.container) {
-      const docType = '<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">';
-      const source = (new XMLSerializer())
-        .serializeToString(d3.select(this.container).select('svg').node());
+        //.toBlob(this.container).then((blob) => window.saveAs(blob, `${this.props.title.replace(/\W/g, '')}.png`));
+      const docType = `<?xml version="1.0" standalone="no"?>      
+      <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">`;
+      const svg = d3.select(this.container).select('svg');
+      svg.append('style').html(this.styles);
+      const source = (new XMLSerializer()).serializeToString(svg.node());
       const blob = new Blob([`${docType}${source}`], { type: 'image/svg+xml;charset=utf-8' });
       const url = window.URL.createObjectURL(blob);
       const img = d3.select(this.container).append('img').node();
@@ -73,13 +122,11 @@ class Chart extends Component {
         a.remove();
         canvas.style.display = 'none';
         img.style.display = 'none';
-        // if you remove those elements before the image is saved, it will be corrupted
-        setTimeout(() => {
-          canvas.remove();
-          img.remove();
-        }, 5000);
+        canvas.remove();
+        img.remove();
       };
       img.src = url;
+
     }
   }
 

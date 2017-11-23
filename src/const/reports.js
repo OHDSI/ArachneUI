@@ -33,6 +33,7 @@ const chartTypes = {
   LINE_DATA_BY_MONTH: 'line_data_by_month',
   TRELLISLINE: 'trellisline',
   TREEMAP: 'treemap',
+  TREEMAP_ERA: 'treemapera',
 };
 
 const chartFootprints = {

@@ -42,6 +42,7 @@ const mimeTypes = {
   other: 'other',
   text: 'text',
   link: 'link',
+  report: 'report',
 };
 
 export default mimeTypes;

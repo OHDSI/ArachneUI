@@ -54,7 +54,9 @@ function Entropy(props) {
               xLabel: 'Date',
               xFormat: d3.timeFormat('%m/%Y'),
               yFormat: d => numberFormatter.format(d, 'short'),
-              xScale: d3.scaleTime().domain(d3.extent(data[0].values, d => d.xValue)),
+              xScale: d3.scaleTime().domain(
+                d3.extent(data[0].values, d => d.xValue)
+              ),
               tickFormat: d3.timeFormat('%m/%Y'),
               showLegend: false,
               colors: d3.scaleOrdinal()
