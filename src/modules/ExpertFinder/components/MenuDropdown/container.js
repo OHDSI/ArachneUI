@@ -57,7 +57,7 @@ export default class MenuDropdownBuilder extends ContainerBuilder {
     if (middleName) {
       middleName = `${middleName.substring(0, 1)}.`;
     }
-    const hash = get(state, 'expertFinder.userProfile.data.hash', '');
+    const hash = get(state, 'expertFinder.userProfile.data.result.updated', '');
 
     return {
       id,
