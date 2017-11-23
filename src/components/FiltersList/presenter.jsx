@@ -85,7 +85,7 @@ function getOptions(field) {
   }
 }
 
-function FacetedFilters({ clear, fields }) {
+function FacetedFilters({ clear, fields, handleSubmit }) {
   return (
     <FacetedSearch
       doSubmit={() => {}}
@@ -95,7 +95,7 @@ function FacetedFilters({ clear, fields }) {
       showRefineSearch
       isAccordion
       doClear={clear}
-      handleSubmit={() => {}}
+      handleSubmit={handleSubmit}
       mods={['no-submit']}
     />
   );
@@ -193,7 +193,7 @@ function FiltersList(props) {
     </Dropdown>
     : <div {...classes(null, 'column')}>
       <div {...classes('filters', null, className)}>
-        <FacetedFilters fields={fields} clear={clear} />
+        <FacetedFilters fields={fields} clear={clear} handleSubmit={handleSubmit}/>
       </div>
     </div>;
 }
