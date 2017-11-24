@@ -88,15 +88,9 @@ export default class ReportUtils {
   }
 
   static getReportType(docType) {
-    const regexp = /^report\/(\w*)$/;
-    if (regexp.test(docType)) {
-      const rawReportType = docType.split('/')[1];
-      return Object.values(reports).includes(rawReportType)
-        ? rawReportType
-        : reports.UNKNOWN;
-    }
-
-    return reports.UNKNOWN;
+    return Object.values(reports).includes(docType)
+    ? docType
+    : reports.UNKNOWN;
   }
 
 }

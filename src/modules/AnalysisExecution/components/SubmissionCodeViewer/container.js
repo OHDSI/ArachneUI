@@ -110,31 +110,35 @@ function mapStateToProps(state, ownProps) {
     title: get(submissionFileData, 'label') || get(submissionFileData, 'name'),
   };
 
-  const reportType = ReportUtils.getReportType(get(submissionFileData, 'docType'));
-  const isReport = reportType !== reports.UNKNOWN;
+  let reportType = reports.UNKNOWN;
+  let isReport = false;
   let reportDTO = {};
   let tableData = {};
   let tableColumns = {};
   let details = {};
-  if (submissionFileData && submissionFileData.content && isReport) {
-    try {
-      const file = JSON.parse(submissionFileData.content);
+  if (submissionFileData && submissionFileData.content) {
+    reportType = ReportUtils.getReportType(get(submissionFileData, 'docType'));
+    isReport = reportType !== reports.UNKNOWN;
+    if (isReport) {
+      try {
+        const file = JSON.parse(submissionFileData.content);
 
-      // change key names in JSON and it's structure
-      const structure = Object.entries(file);
-      structure.forEach(([key, value]) => {
-        reportDTO[key] = ReportUtils.arrayToDataframe(value);
-      });
-
-      if (treemapReports.includes(reportType)) {
-        reportDTO = Object.entries(reportDTO)[0][1];
-        tableData = selectors.getTableData(reportType, reportDTO);
-        tableColumns = {};
-        Object.entries(tableData[0]).forEach(([key, value]) => {
-          tableColumns[key] = value.columnName;
+        // change key names in JSON and it's structure
+        const structure = Object.entries(file);
+        structure.forEach(([key, value]) => {
+          reportDTO[key] = ReportUtils.arrayToDataframe(value);
         });
-      }
-    } catch (er) {}
+
+        if (treemapReports.includes(reportType)) {
+          reportDTO = Object.entries(reportDTO)[0][1];
+          tableData = selectors.getTableData(reportType, reportDTO);
+          tableColumns = {};
+          Object.entries(tableData[0]).forEach(([key, value]) => {
+            tableColumns[key] = value.columnName;
+          });
+        }
+      } catch (er) {}
+    }
   }
   if (submissionFileDetails && submissionFileDetails.content) {
     try {
