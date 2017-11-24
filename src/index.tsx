@@ -4,6 +4,7 @@ import 'whatwg-fetch';
 import 'es6-promise/auto';
 import 'core-js/fn/object/values';
 import 'core-js/fn/object/assign';
+import 'core-js/fn/array/find';
 
 import * as ReactDOM from 'react-dom';
 import bootstrap from './bootstrap';
