@@ -82,12 +82,18 @@ function CellRegister({ isRegistered, onClick }) {
   );
 }
 
-function CellEdit({ editDataSource, value, healthStatus }) {
+function CellEdit({ editDataSource, removeDataSource, value, isRegistered }) {
   const classes = new BEMHelper('data-source-list-cell-edit');
   return (
-    <Link onClick={() => editDataSource(value)}>
-      <i {...classes()}>edit</i>
-    </Link>
+    <div {...classes('btn-block')}>
+      <Button {...classes('btn')} onClick={() => editDataSource(value)}>
+        <i {...classes('btn-ico')}>edit</i>
+      </Button>
+      <Button {...classes('btn')} onClick={() => removeDataSource(value)} disabled={isRegistered}>
+        <i {...classes('btn-ico')}>delete</i>
+      </Button>
+    </div>
+
   );
 }
 
@@ -111,6 +117,7 @@ function DataSourceTable(props) {
   const {
   	dataSourceList,
   	editDataSource,
+    remove,
   	goToDataSource,
 		setSearch,
 		sorting,
@@ -169,6 +176,8 @@ function DataSourceTable(props) {
         {...tableClasses('edit')}
         field="id"
         editDataSource={editDataSource}
+        removeDataSource={remove}
+        props={ entity => ({ isRegistered: entity.isRegistered })}
       />
     </Table>
   );

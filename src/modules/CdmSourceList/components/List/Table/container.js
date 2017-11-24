@@ -36,7 +36,9 @@ function getSorting(location) {
 }
 
 function mapStateToProps(state) {
+  const query = state.routing.locationBeforeTransitions.query;
   return {
+    query,
     dataSourceList: selectors.getDataSourceList(state),
     sorting: getSorting(state.routing.locationBeforeTransitions),
   };
@@ -44,8 +46,24 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = {
   editDataSource: id => ModalUtils.actions.toggle(modal.createDataSource, true, { id }),
+  remove: actions.cdmSourceList.dataSource.remove,
   goToDataSource: id => goToPage(paths.dataSources(id)),
   setSearch: actions.router.setSearch,
+  loadList: actions.cdmSourceList.dataSourceList.load
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Table);
+function mergeProps(state, dispatch, ownProps) {
+
+  return {
+    ...state,
+    ...dispatch,
+    ...ownProps,
+    remove(id) {
+      dispatch.remove(id).then(function () {
+        dispatch.loadList(state.query);
+      })
+    }
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(Table);

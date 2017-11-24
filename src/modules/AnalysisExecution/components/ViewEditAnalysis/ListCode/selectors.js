@@ -81,7 +81,7 @@ export default class SelectorsBuilder {
   getIsLoading(state) {
     return get(
       state,
-      'analysisExecution.importEntity.isLoading',
+      'analysisExecution.importEntity.isUpdating',
       false,
       'Boolean'
     );
