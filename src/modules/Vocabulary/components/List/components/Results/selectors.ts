@@ -9,12 +9,12 @@ interface Vocabulary {
   available: boolean;
   update: string;
   index: number;
-
   isCheckable: boolean;
   isChecked: boolean;
   tableRowClass: string;
   status: string;
   clickDefault: boolean;
+  required?: string;
 };
 
 const getRawVocabs = (state: Object) => get(state, 'vocabulary.vocabularies.queryResult') || [];
