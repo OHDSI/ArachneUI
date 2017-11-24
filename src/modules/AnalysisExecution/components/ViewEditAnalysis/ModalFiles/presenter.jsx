@@ -26,6 +26,7 @@ import moment from 'moment-timezone';
 import {
   Button,
   Modal,
+  Link,
   ListItem,
   LoadingPanel,
 } from 'arachne-ui-components';
@@ -38,6 +39,56 @@ import Fuse from 'fuse.js';
 import searchSettings from 'const/search';
 
 require('./style.scss');
+
+function getBackPath({ path }) {
+  const pathParts = path.split('/');
+  pathParts.pop();
+  return pathParts.join('/') || '/';
+}
+
+function constructAddressBarItems({ path = '', items = [] }) {
+  const cleanPath = path.replace(/^\/$/, '');
+
+  if (cleanPath.length === 0) {
+    return items;
+  } else {
+    const newItems = items.slice();
+
+    const pathParts = path.split('/');
+    const currentPathPart = pathParts.pop();
+    const restPath = pathParts.join('/');
+
+    newItems.unshift({
+      label: currentPathPart,
+      path: `${restPath}${restPath ? '/' : ''}${currentPathPart}`,
+    });
+
+    return constructAddressBarItems({
+      path: restPath,
+      items: newItems,
+    });
+  }
+}
+
+function FileAddressBar({ path = '', loadFolder }) {
+  const classes = new BEMHelper('analysis-modal-files-address-bar');
+  const itemList = constructAddressBarItems({ path });
+
+  itemList.unshift({
+    label: 'Results',
+    path: '/',
+  });
+
+  return (
+    <div {...classes()}>
+      {itemList.map((item) => 
+        <Link {...classes('item')} onClick={() => loadFolder({ path: item.path })}>
+          {item.label}
+        </Link>
+      )}
+    </div>
+  );
+}
 
 function FileItem({ file, isEditable, removeResult, isHidden }) {
   const classes = new BEMHelper('analysis-modal-files-item');
@@ -57,6 +108,7 @@ function FileItem({ file, isEditable, removeResult, isHidden }) {
         label={file.label || file.name}
         createdAt={file.createdAt}
         link={file.link}
+        onClick={file.onClick}
         linkTaret={file.linkTarget}
       />
     </ListItem>
@@ -77,6 +129,9 @@ function ModalFiles(props) {
     filterText,
     filter,
     canDownload,
+
+    filesPath,
+    loadSubmissionFiles,
   } = props;
   const fuseSearch = new Fuse(fileList, {
     ...searchSettings,
@@ -99,30 +154,55 @@ function ModalFiles(props) {
           ? <div {...classes('empty-state')}>
             <EmptyState message={`Output contains ${numberFormatter.format(filesCount)} files and is too big to preview`} />
           </div>
-          : <ul {...classes('list')}>
-            <ListItem>
-              <input
-                {...classes('filter')}
-                value={filterText}
-                placeholder={'Filter by name or type'}
-                onChange={e => filter(e.target.value)}
-              />
-            </ListItem>
-            {fileList.map((file, key) =>
-              <FileItem
-                file={file}
-                key={key}
-                isEditable={canRemoveFiles && file.manuallyUploaded}
-                removeResult={removeResult}
-                isHidden={!filteredFilesIds[file.uuid]}
-              />
-            )}
-            {!filteredFiles.length &&
-              <ListItem mods={['borderless']}>
-                <EmptyState message={fileList.length > 0 ? 'No files that match criteria' : 'No files'} />
+          : 
+          <div>
+            <div {...classes('adress-bar')}>
+              <FileAddressBar path={filesPath} loadFolder={loadSubmissionFiles} />
+            </div>
+            <ul {...classes('list')}>
+              <ListItem {...classes('filter-box')}>
+                <input
+                  {...classes('filter')}
+                  value={filterText}
+                  placeholder={'Filter by name or type'}
+                  onChange={e => filter(e.target.value)}
+                />
               </ListItem>
-            }
-          </ul>
+              {
+                filesPath !== '/'
+                ? <FileItem
+                    file={ {
+                      docType: 'folder',
+                      label: '..',
+                      createdAt: moment(),
+                      onClick: () => loadSubmissionFiles({ path: getBackPath({ path: filesPath }) }),
+                    } }
+                    isEditable={false}
+                  />
+                : null
+              }              
+              {fileList.map((file, key) =>
+                <FileItem
+                  file={
+                    {
+                      ...file,
+                      link: file.docType === 'folder' ? null : file.link,
+                      onClick: file.docType === 'folder' ? () => loadSubmissionFiles({ path:  (filesPath !== '/' ? `${filesPath}/` : '') + file.name }) : null,
+                    }
+                  }
+                  key={key}
+                  isEditable={canRemoveFiles && file.manuallyUploaded}
+                  removeResult={removeResult}
+                  isHidden={!filteredFilesIds[file.uuid]}
+                />
+              )}
+              {!filteredFiles.length &&
+                <ListItem mods={['borderless']}>
+                  <EmptyState message={fileList.length > 0 ? 'No files that match criteria' : 'No files'} />
+                </ListItem>
+              }
+            </ul>
+          </div>
         }
         {filesCount !== 0 &&
           <div {...classes('actions')}>
