@@ -82,7 +82,7 @@ function ImportList(props) {
     <div {...classes()}>
       {filteredEntities && filteredEntities.length
         ? <span {...classes('descr')}>
-            {`Select ${nameAnalysisType(analysisType)} from ${selectedSource.name}`}
+            {`Select ${nameAnalysisType({analysisType})} from ${selectedSource.name}`}
           </span>
         : null
       }
@@ -122,7 +122,7 @@ function ImportList(props) {
         {filteredEntities && filteredEntities.length
           ? null
           : <span {...classes('empty-state')}>
-            {`No ${nameAnalysisType(analysisType, false, true)} found`}
+            {`No ${nameAnalysisType({ analysisType, plural: true })} found`}
           </span>
         }
         <div {...classes('progress')}>

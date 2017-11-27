@@ -180,7 +180,7 @@ const pluralAnalysisTypeNames = {
   ESTIMATION: 'PLE analyses',
   PREDICTION: 'PLP analyses',
 };
-function nameAnalysisType(analysisType, capitalize = false, plural = false) {
+function nameAnalysisType({ analysisType, capitalize = false, plural = false }) {
   const typeNames = plural ? pluralAnalysisTypeNames : analysisTypeNames;
   if (!(analysisType in typeNames)) {
     return '';

@@ -53,7 +53,7 @@ function NodeSelector({ dataNodeList, totalSteps, step, analysisType }) {
     return (
       <div {...classes()}>
         <span {...classes('descr')}>
-          {`Choose data node to import ${nameAnalysisType(analysisType)} from`}
+          {`Choose data node to import ${nameAnalysisType({ analysisType })} from`}
         </span>
         <form>
           <ul {...classes('list')}>
