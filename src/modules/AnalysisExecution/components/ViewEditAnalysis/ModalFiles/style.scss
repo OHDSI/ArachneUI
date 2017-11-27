@@ -59,6 +59,11 @@
 			padding-top: 2rem;
 		}
 
+		&__filter-box {
+			padding-top: .5rem;
+			padding-bottom: .5rem;
+		}
+
 		&__filter {
 			@include input();
 			@include input-border();
@@ -80,6 +85,31 @@
 
 		&--hidden {
 			display: none;
+		}
+	}
+
+	&analysis-modal-files-address-bar {
+		align-items: center;
+		background-color: $grey-light;
+		display: flex;
+		font-family: 'Montserrat';
+		padding: 1.25rem 2rem;
+
+		&__item {
+			align-items: center;
+			display: flex;
+
+			&:not(:first-child) {
+				&:before {
+					@include material-icon();
+					content: "keyboard_arrow_right";
+				}
+			}
+
+			&:last-child {
+				color: $black;
+				pointer-events: none;
+			}
 		}
 	}
 
