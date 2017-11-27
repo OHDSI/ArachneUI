@@ -129,7 +129,10 @@ function Publications(props) {
           addButtonTitle="Add publication"
           formTitle="Add publication"
           onSubmit={props.doSubmit}
-          submitBtnConfig={submitBtnConfig}
+          submitBtnConfig={{
+            ...submitBtnConfig,
+            disabled: props.invalid,
+          }}
           cancelBtnConfig={cancelBtnConfig}
           {...props}
         />
