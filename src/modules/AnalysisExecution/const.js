@@ -70,6 +70,7 @@ const paths = {
 function importEntityPathByType(type){
   switch (type) {
     case 'COHORT': return 'cohorts';
+    case 'COHORT_CHARACTERIZATION': return 'cohorts';
     case 'ESTIMATION': return 'estimations';
     case 'PREDICTION': return 'predictions';
     default: return '';
@@ -169,11 +170,12 @@ const submissionActionTypes = keyMirror({
   PUBLISH: null,
 });
 
-const importableAnalysisTypes = ['COHORT', 'ESTIMATION', 'PREDICTION'];
+const importableAnalysisTypes = ['COHORT', 'ESTIMATION', 'PREDICTION', 'COHORT_CHARACTERIZATION'];
 const analysisTypeNames = {
   COHORT: 'cohort',
   ESTIMATION: 'PLE analysis',
   PREDICTION: 'PLP analysis',
+  COHORT_CHARACTERIZATION: 'cohort characterization',
 };
 const pluralAnalysisTypeNames = {
   COHORT: 'cohorts',
