@@ -1,6 +1,6 @@
 {
   "name": "arachne-ui",
-  "version": "1.10.9",
+  "version": "1.10.10",
   "licenses": [
     {
       "type": "Apache-2.0",
@@ -32,7 +32,7 @@
   "dependencies": {
     "@ohdsi/atlascharts": "1.2.0",
     "@stomp/stompjs": "^3.0.3",
-    "arachne-ui-components": "^1.0.0",
+    "arachne-ui-components": "^1.2.9",
     "autoprefixer": "^6.7.6",
     "babel-core": "^6.25.0",
     "babel-eslint": "^7.2.3",
