@@ -32,6 +32,7 @@ import {
 } from 'arachne-ui-components';
 import FileInfo from 'components/FileInfo';
 import { commonDate as commonDateFormat } from 'const/formats';
+import mimeTypes from 'const/mimeTypes';
 import { maxFilesCount } from 'modules/AnalysisExecution/const';
 import EmptyState from 'components/EmptyState';
 import { numberFormatter } from 'services/Utils';
@@ -39,6 +40,10 @@ import Fuse from 'fuse.js';
 import searchSettings from 'const/search';
 
 require('./style.scss');
+
+function getChildFolderPath({ currentPath, file: { name: folderName } }) {
+  return (currentPath !== '/' ? `${currentPath}/` : '') + folderName;
+}
 
 function getBackPath({ path }) {
   const pathParts = path.split('/');
@@ -88,6 +93,20 @@ function FileAddressBar({ path = '', loadFolder }) {
       )}
     </div>
   );
+}
+
+function BackFolder({ currentPath, loadFiles }) {
+  if (currentPath !== '/') {
+    const backFolderFile = {
+      docType: mimeTypes.folder,
+      label: '..',
+      onClick: () => loadFiles({ path: getBackPath({ path: currentPath }) }),
+    };
+    return (
+      <FileItem file={backFolderFile} isEditable={false} />
+    );
+  }
+  return null;
 }
 
 function FileItem({ file, isEditable, removeResult, isHidden }) {
@@ -168,26 +187,17 @@ function ModalFiles(props) {
                   onChange={e => filter(e.target.value)}
                 />
               </ListItem>
-              {
-                filesPath !== '/'
-                ? <FileItem
-                    file={ {
-                      docType: 'folder',
-                      label: '..',
-                      createdAt: moment(),
-                      onClick: () => loadSubmissionFiles({ path: getBackPath({ path: filesPath }) }),
-                    } }
-                    isEditable={false}
-                  />
-                : null
-              }              
+              <BackFolder
+                currentPath={filesPath}
+                loadFiles={loadSubmissionFiles}
+              />
               {fileList.map((file, key) =>
                 <FileItem
                   file={
                     {
                       ...file,
-                      link: file.docType === 'folder' ? null : file.link,
-                      onClick: file.docType === 'folder' ? () => loadSubmissionFiles({ path:  (filesPath !== '/' ? `${filesPath}/` : '') + file.name }) : null,
+                      link: file.docType === mimeTypes.folder ? null : file.link,
+                      onClick: file.docType === mimeTypes.folder ? () => loadSubmissionFiles({ path: getChildFolderPath({ currentPath: filesPath, file }) }) : null,
                     }
                   }
                   key={key}
