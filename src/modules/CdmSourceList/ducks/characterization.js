@@ -16,27 +16,31 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 20, 2016
+ * Created: November 24, 2017
  *
  */
 
-import { actionTypes } from 'modules/CdmSourceList/const';
+import Duck from 'services/Duck';
+import { apiPaths } from '../const';
 
-function requestList(state) {
-  return { ...state, isLoading: true };
+const coreName = 'CSL_CHARACTERIZATION';
+
+function receiveSource() {
+  return {
+    type: `${coreName}_QUERY_FULFILLED`,
+    payload: null,
+  };
 }
 
-function receiveList(state, action) {
-  return { ...state, data: action.payload, isLoading: false };
-}
+const characterization = new Duck({
+  name: coreName,
+  urlBuilder: apiPaths.characterization,
+});
 
-export default function (state = {}, action) {
-  switch (action.type) {
-    case actionTypes.REQUEST_DATA_SOURCE_LIST:
-      return requestList(state, action);
-    case actionTypes.RECEIVE_DATA_SOURCE_LIST:
-      return receiveList(state, action);
-    default:
-      return state;
-  }
-}
+export default {
+  actions: {
+    ...characterization.actions,
+    reset: (dispatch) => dispatch(receiveSource()),
+  },
+  reducer: characterization.reducer,
+};

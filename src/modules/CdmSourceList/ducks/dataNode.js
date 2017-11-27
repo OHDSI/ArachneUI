@@ -16,25 +16,21 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: June 14, 2017
+ * Created: November 24, 2017
  *
  */
 
-import { apiPaths, actionTypes } from 'modules/CdmSourceList/const';
-import ActionFactory from 'services/ActionFactory';
+import Duck from 'services/Duck';
+import { apiPaths } from '../const';
 
-const actionFactory = new ActionFactory({
-  requestActionType: actionTypes.REQUEST_CDM_CHARACTERIZATION,
-  receiveActionType: actionTypes.RECEIVE_CDM_CHARACTERIZATION,
-  urlBuilder: apiPaths.characterization,
+const coreName = 'CSL_DATA_NODE';
+
+const dataNode = new Duck({
+  name: coreName,
+  urlBuilder: apiPaths.dataNode,
 });
 
-const _load = actionFactory.buildLoadActionCreator();
-const load = params => _load({ ...params, limit: 2 });
-
-const update = actionFactory.buildCreateActionCreator();
-
 export default {
-  load,
-  update,
+  actions: dataNode.actions,
+  reducer: dataNode.reducer,
 };

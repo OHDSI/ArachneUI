@@ -22,7 +22,7 @@
 
 import { Component, PropTypes } from 'react';
 import get from 'lodash/get';
-import actions from 'actions/index';
+import actions from 'actions';
 import { Utils } from 'services/Utils';
 import presenter from './presenter';
 
@@ -39,7 +39,7 @@ class StatefulViewEdit extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.dataSourceId !== nextProps.dataSourceId) {
-      this.props.loadDataSourceBusiness(nextProps.dataSourceId);
+      this.props.loadDataSourceBusiness({ id: nextProps.dataSourceId });
       this.props.loadCharacterization({ datasourceId: nextProps.dataSourceId });
       this.props.loadAchillesResults({ datasourceId: nextProps.dataSourceId });
     }
@@ -62,23 +62,23 @@ class CdmSourceListViewEditBuilder {
     return {
       dataSourceId: parseInt(ownProps.routeParams.dataSourceId, 10),
       isLoading: moduleState.dataSourceBusiness.isLoading || false,
-      dataSourceName: get(moduleState, 'dataSourceBusiness.data.name', ''),
-      modelType: get(moduleState, 'dataSourceBusiness.data.modelType', ''),
+      dataSourceName: get(moduleState, 'dataSourceBusiness.queryResult.result.name', ''),
+      modelType: get(moduleState, 'dataSourceBusiness.queryResult.result.modelType', ''),
     };
   }
 
   getMapDispatchToProps() {
     return {
-      loadDataSourceBusiness: actions.cdmSourceList.dataSourceBusiness.load,
+      loadDataSourceBusiness: actions.cdmSourceList.dataSourceBusiness.query,
     };
   }
 
   getFetchers({ params, state, dispatch }) {
     const datasourceId = parseInt(params.dataSourceId, 10);
     return {
-      loadDataSourceBusiness: actions.cdmSourceList.dataSourceBusiness.load.bind(null, datasourceId),
-      loadCharacterization: actions.cdmSourceList.characterization.load.bind(null, { datasourceId }),
-      loadAchillesResults: actions.cdmSourceList.achillesResults.load.bind(null, { datasourceId }),
+      loadDataSourceBusiness: () => actions.cdmSourceList.dataSourceBusiness.query({ id: datasourceId }),
+      loadCharacterization: () => actions.cdmSourceList.characterization.query({ datasourceId: datasourceId }),
+      loadAchillesResults: () => actions.cdmSourceList.achillesResults.query({ datasourceId: datasourceId }),
     };
   }
 
