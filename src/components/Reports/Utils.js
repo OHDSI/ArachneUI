@@ -25,7 +25,8 @@ import moment from 'moment';
 import { chart } from '@ohdsi/atlascharts/dist/atlascharts.umd';
 import { typeCheck } from 'type-check';
 import cloneDeep from 'lodash/cloneDeep';
-import { reports, reportFootprints } from 'const/reports';
+import { get } from 'services/Utils';
+import { reports } from 'const/reports';
 
 export default class ReportUtils {
   static prepareLineData(rawData) {
@@ -72,7 +73,7 @@ export default class ReportUtils {
   }
 
   static arrayToDataframe(ar) {
-    const keys = Object.keys(ar[0]);
+    const keys = Object.keys(get(ar, '[0]', {}));
     const dataframe = {};
     keys.forEach((key) => {
       dataframe[key] = [];
@@ -86,20 +87,10 @@ export default class ReportUtils {
     return dataframe;
   }
 
-  static detectTypeByStructure(content) {
-    if (typeCheck(reportFootprints[reports.DASHBOARD], content)) {
-      return reports.DASHBOARD;
-    } else if (typeCheck(reportFootprints[reports.DEATH], content)) {
-      return reports.DEATH;
-    } else if (typeCheck(reportFootprints[reports.OBSERVATION_PERIODS], content)) {
-      return reports.OBSERVATION_PERIODS;
-    } else if (typeCheck(reportFootprints[reports.PERSON], content)) {
-      return reports.PERSON;
-    } else if (typeCheck(reportFootprints[reports.DATA_DENSITY], content)) {
-      return reports.DATA_DENSITY;
-    }
-
-    return reports.UNKNOWN;
+  static getReportType(docType) {
+    return reports[docType]
+      ? docType
+      : reports.unknown;
   }
 
 }

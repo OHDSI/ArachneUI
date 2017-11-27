@@ -23,37 +23,31 @@
 import { connect } from 'react-redux';
 import { chart } from '@ohdsi/atlascharts/dist/atlascharts.umd';
 import ReportUtils from 'components/Reports/Utils';
+import {
+  convertDataToBoxplotData,
+  convertDataToTrellislineData,
+  convertDataToMonthLineChartData,
+} from 'components/Reports/converters';
 import ObservationPeriods from './presenter';
 
+const observationsByMonthDTO = {
+  dateField: 'MONTH_YEAR',
+  yValue: 'COUNT_VALUE',
+  yPercent: 'PERCENT_VALUE',
+};
+
 function mapStateToProps(state, ownProps) {
-  let {
+  const {
     ageByGender,
     durationByGender,
     durationByAgeDecline,
-  } = ownProps;
-  const {
     ageAtFirstObservation,
     observationLength,
     rawCumulativeObservation,
     durationByYear,
     observationsPerPerson,
-    rawObservationsByMonth,
+    observationsByMonth,
   } = ownProps;
-
-  const ageData = chart.normalizeDataframe(ageByGender);
-  const durationData = chart.normalizeDataframe(durationByGender);
-  const durationDataDecline = chart.normalizeDataframe(durationByAgeDecline);
-
-  if (ageByGender) {
-    ageByGender = chart.prepareData(ageData, chart.chartTypes.BOXPLOT);
-  }
-  if (durationByGender) {
-    durationByGender = chart.prepareData(durationData, chart.chartTypes.BOXPLOT);
-  }
-  if (durationByAgeDecline) {
-    durationByAgeDecline = chart.prepareData(durationDataDecline, chart.chartTypes.BOXPLOT);
-  }
-
   let cumulativeObservation = null;
   if (rawCumulativeObservation) {
     cumulativeObservation = [{
@@ -64,28 +58,32 @@ function mapStateToProps(state, ownProps) {
       })),
     }];
   }
-
-  let observationsByMonth = null;
-  if (rawObservationsByMonth) {
-    observationsByMonth = chart.mapMonthYearDataToSeries(rawObservationsByMonth, {
-      dateField: 'MONTH_YEAR',
-      yValue: 'COUNT_VALUE',
-      yPercent: 'PERCENT_VALUE',
-    });
-  }
-
+  
   return {
+    ageByGender:
+      convertDataToBoxplotData(
+        ageByGender
+      ),
+    durationByGender:
+      convertDataToBoxplotData(
+        durationByGender
+      ),
+    durationByAgeDecline:
+      convertDataToBoxplotData(
+        durationByAgeDecline
+      ),
     ageAtFirstObservation,
-    ageByGender,
-    durationByGender,
     observationLength,
     cumulativeObservation,
-    durationByAgeDecline,
     durationByYear,
     observationsPerPerson: observationsPerPerson
       ? ReportUtils.prepareChartDataForDonut(observationsPerPerson)
       : null,
-    observationsByMonth,
+    observationsByMonth:
+      convertDataToMonthLineChartData(
+        observationsByMonth,
+        observationsByMonthDTO
+      ),
   };
 }
 

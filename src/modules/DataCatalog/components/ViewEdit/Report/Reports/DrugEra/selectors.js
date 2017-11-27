@@ -73,12 +73,11 @@ export default class SelectorsBuilder extends TreemapSelectorsBuilder {
   }
 
   extractReportDetails(details) {
-console.info('TODO: research DTO for drug era details');
-//TODO: research DTO for drug era details
     return {
       conditionPrevalence: get(details, 'PREVALENCE_BY_GENDER_AGE_YEAR'),
-      ageOfFirstOccurrence: get(details, 'AGE_AT_FIRST_OCCURRENCE'),
-      conditionByMonth: get(details, 'PREVALENCE_BY_MONTH'),
+      ageOfFirstExposure: get(details, 'AGE_AT_FIRST_OCCURRENCE'),
+      prevalenceByMonth: get(details, 'PREVALENCE_BY_MONTH'),
+      lengthOfEra: get(details, 'LENGTH_OF_ERA'),
     };
   }
 }

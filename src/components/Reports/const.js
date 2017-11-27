@@ -19,16 +19,3 @@
  * Created: November 09, 2017
  *
  */
-
- const chartSettings = {
-  margin: {
-    top: 10,
-    left: 10,
-    right: 10,
-    bottom: 10,
-  },
-};
-
-export default {
-  chartSettings,
-};

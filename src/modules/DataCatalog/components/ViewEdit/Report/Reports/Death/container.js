@@ -22,9 +22,6 @@
 
 import { connect } from 'react-redux';
 import get from 'lodash/get';
-import * as d3 from 'd3';
-import { chart } from '@ohdsi/atlascharts/dist/atlascharts.umd';
-import { Utils } from 'services/Utils';
 import Death from './presenter';
 
 function mapStateToProps(state) {
@@ -35,7 +32,7 @@ function mapStateToProps(state) {
   const deathByAge = get(reportData, 'PREVALENCE_BY_GENDER_AGE_YEAR');
 
   return {
-    deathByAge: Array.isArray(deathByAge) ? deathByAge : null,
+    deathByAge,
     deathByMonth,
     deathByType,
     ageOfDeath,

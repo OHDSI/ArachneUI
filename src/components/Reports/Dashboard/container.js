@@ -21,9 +21,15 @@
  */
 
 import { connect } from 'react-redux';
-import { chart } from '@ohdsi/atlascharts/dist/atlascharts.umd';
 import ReportUtils from 'components/Reports/Utils';
+import { convertDataToMonthLineChartData } from 'components/Reports/converters';
 import Dashboard from './presenter';
+
+const observedByMonthDTO = {
+  dateField: 'MONTH_YEAR',
+  yValue: 'COUNT_VALUE',
+  yPercent: 'PERCENT_VALUE',
+};
 
 function mapStateToProps(state, ownProps) {
   const {
@@ -33,14 +39,15 @@ function mapStateToProps(state, ownProps) {
     summary,
     characterizationDate,
   } = ownProps;
-  let observedByMonth = ownProps.observedByMonth;
+  let {
+    observedByMonth,
+  } = ownProps;
 
   if (observedByMonth) {
-    observedByMonth = chart.mapMonthYearDataToSeries(observedByMonth, {
-      dateField: 'MONTH_YEAR',
-      yValue: 'COUNT_VALUE',
-      yPercent: 'PERCENT_VALUE',
-    });
+    observedByMonth = convertDataToMonthLineChartData(
+      observedByMonth,
+      observedByMonthDTO
+    );
   }
 
   return {

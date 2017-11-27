@@ -23,15 +23,13 @@
 import React from 'react';
 import BEMHelper from 'services/BemHelper';
 import {
-  Panel,
-} from 'arachne-ui-components';
-import {
   boxplot,
   line,
 } from '@ohdsi/atlascharts/dist/atlascharts.umd';
 import { numberFormatter } from 'services/Utils';
 import * as d3 from 'd3';
 import { chartSettings } from 'modules/DataCatalog/const';
+import Chart from 'components/Reports/Chart';
 
 require('./style.scss');
 
@@ -44,103 +42,87 @@ function DataDensity(props) {
     totalRecordsYears,
   } = props;
   const classes = new BEMHelper('report-observation-data-density');
-  const emptyClasses = new BEMHelper('report-empty');
 
   return (  
     <div {...classes({ extra: 'row' })}>
       <div className='col-xs-12'>
-        <Panel title='Total Rows' {...classes('chart')}>
-          <div ref={(element) => {
-            if (element && totalRecords) {
-              const dimensions = element.getBoundingClientRect();
-              new line().render(
-                totalRecords,
-                element,
-                dimensions.width, // Scrollbar width
-                dimensions.width/4,
-                {
-                  yValue: 'Y_RECORD_COUNT',
-                  xValue: 'X_CALENDAR_MONTH',
-                  yLabel: '# of records',
-                  xLabel: 'Year',
-                  xFormat: d3.timeFormat('%m/%Y'),
-                  yFormat: d => numberFormatter.format(d, 'short'),
-                  xScale: d3.scaleTime().domain(d3.extent(totalRecordsYears, d => d.X_CALENDAR_MONTH)),
-                  tickFormat: d3.timeFormat('%Y'),
-                  showLegend: true,
-                  colors: d3.scaleOrdinal()
-                    .range(d3.schemeCategory10),
-                  ...chartSettings,
-                }
-              );
-            }
+        <Chart
+          title='Total Rows'
+          {...classes('chart')}
+          isDataPresent={totalRecords && totalRecords.length > 0}
+          render={({ width, element }) => {
+            new line().render(
+              totalRecords,
+              element,
+              width,
+              width / 4,
+              {
+                yValue: 'Y_RECORD_COUNT',
+                xValue: 'X_CALENDAR_MONTH',
+                yLabel: '# of records',
+                xLabel: 'Year',
+                xFormat: d3.timeFormat('%m/%Y'),
+                yFormat: d => numberFormatter.format(d, 'short'),
+                xScale: d3.scaleTime().domain(d3.extent(totalRecordsYears, d => d.X_CALENDAR_MONTH)),
+                tickFormat: d3.timeFormat('%Y'),
+                showLegend: true,
+                colors: d3.scaleOrdinal()
+                  .range(d3.schemeCategory10),
+                ...chartSettings,
+              }
+            );
           }}
-          className={!totalRecords ? emptyClasses().className : ''}>
-            {!totalRecords &&
-              <span {...emptyClasses('text')}>No data</span>
-            }
-          </div>
-        </Panel>
+        />
       </div>
       <div className='col-xs-12'>
-        <Panel title='Records Per Person' {...classes('chart')}>
-          <div ref={(element) => {
-            if (element && recordsPerPerson) {
-              const dimensions = element.getBoundingClientRect();
-              new line().render(
-                recordsPerPerson,
-                element,
-                dimensions.width, // Scrollbar width
-                dimensions.width/4,
-                {
-                  yValue: 'Y_RECORD_COUNT',
-                  xValue: 'X_CALENDAR_MONTH',
-                  yLabel: 'Percent per person',
-                  xLabel: 'Year',
-                  xFormat: d3.timeFormat('%m/%Y'),
-                  yFormat: d => numberFormatter.format(d, 'short'),
-                  xScale: d3.scaleTime().domain(d3.extent(recordsPerPersonYears, d => d.X_CALENDAR_MONTH)),
-                  tickFormat: d3.timeFormat('%Y'),
-                  showLegend: true,
-                  colors: d3.scaleOrdinal()
-                    .range(d3.schemeCategory10),
-                  ...chartSettings,
-                }
-              );
-            }
+        <Chart
+          title='Records Per Person'
+          {...classes('chart')}
+          isDataPresent={recordsPerPerson && recordsPerPerson.length > 0}
+          render={({ width, element }) => {
+            new line().render(
+              recordsPerPerson,
+              element,
+              width, // Scrollbar width
+              width / 4,
+              {
+                yValue: 'Y_RECORD_COUNT',
+                xValue: 'X_CALENDAR_MONTH',
+                yLabel: 'Percent per person',
+                xLabel: 'Year',
+                xFormat: d3.timeFormat('%m/%Y'),
+                yFormat: d => numberFormatter.format(d, 'short'),
+                xScale: d3.scaleTime().domain(d3.extent(recordsPerPersonYears, d => d.X_CALENDAR_MONTH)),
+                tickFormat: d3.timeFormat('%Y'),
+                showLegend: true,
+                colors: d3.scaleOrdinal()
+                  .range(d3.schemeCategory10),
+                ...chartSettings,
+              }
+            );
           }}
-          className={!recordsPerPerson ? emptyClasses().className : ''}>
-            {!recordsPerPerson &&
-              <span {...emptyClasses('text')}>No data</span>
-            }
-          </div>
-        </Panel>
+        />
       </div>
       <div className='col-xs-12'>
-        <Panel title='Concepts Per Person' {...classes('chart')}>
-          <div ref={(element) => {
-            if (element && conceptsPerPerson) {
-              const dimensions = element.getBoundingClientRect();
-              new boxplot().render(
-                conceptsPerPerson,
-                element,
-                dimensions.width,
-                dimensions.width/4,
-                {
-                  yLabel: 'Percent of population',
-                  xLabel: 'Days',
-                  yFormat: d => numberFormatter.format(d, 'short'),
-                  ...chartSettings,
-                }
-              );
-            }
+        <Chart
+          title='Concepts Per Person'
+          {...classes('chart')}
+          isDataPresent={conceptsPerPerson && conceptsPerPerson.length > 0}
+          render={({ width, element }) => {
+            new boxplot().render(
+              conceptsPerPerson,
+              element,
+              width,
+              width / 4,
+              {
+                yLabel: 'Percent of population',
+                xLabel: 'Days',
+                yFormat: d => numberFormatter.format(d, 'short'),
+                ...chartSettings,
+              }
+            );
           }}
-          className={!conceptsPerPerson ? emptyClasses().className : ''}>
-            {!conceptsPerPerson &&
-              <span {...emptyClasses('text')}>No data</span>
-            }
-          </div>
-        </Panel>
+        />
       </div>
     </div>
   );

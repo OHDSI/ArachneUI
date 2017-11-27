@@ -34,6 +34,7 @@ import {
 import { numberFormatter } from 'services/Utils';
 import * as d3 from 'd3';
 import { chartSettings, defaultTrellisSet } from 'modules/DataCatalog/const';
+import Chart from 'components/Reports/Chart';
 
 function ConditionDetails(props) {
   const {
@@ -48,113 +49,89 @@ function ConditionDetails(props) {
   return (  
     <div {...classes({ extra: 'row' })}>
       <div className='col-xs-12'>
-        <Panel title='Condition Prevalence' {...classes('chart')}>
-          <div ref={(element) => {
-            if (element && conditionPrevalence) {
-              const dimensions = element.getBoundingClientRect();
-              new trellisline().render(
-                conditionPrevalence,
-                element,
-                dimensions.width,
-                dimensions.width/3,
-                {
-                  ...chartSettings,
-                  trellisSet: defaultTrellisSet,
-                  trellisLabel: 'Age Decile',
-                  seriesLabel: 'Year of Observation',
-                  yLabel: 'Prevalence Per 1000 People',
-                  xFormat: d3.timeFormat('%Y'),
-                  yFormat: d3.format('0.2f'),
-                  tickPadding: 20,
-                  colors: d3.scaleOrdinal()
-                    .domain(['MALE', 'FEMALE'])
-                    .range(['#1f77b4', '#ff7f0e'])
-                }
-              )
-            }
+        <Chart
+          title='Condition Prevalence'
+          isDataPresent={conditionPrevalence}
+          render={({ width, element }) => {
+            new trellisline().render(
+              conditionPrevalence,
+              element,
+              width,
+              width/3,
+              {
+                ...chartSettings,
+                trellisSet: defaultTrellisSet,
+                trellisLabel: 'Age Decile',
+                seriesLabel: 'Year of Observation',
+                yLabel: 'Prevalence Per 1000 People',
+                xFormat: d3.timeFormat('%Y'),
+                yFormat: d3.format('0.2f'),
+                tickPadding: 20,
+                colors: d3.scaleOrdinal()
+                  .domain(['MALE', 'FEMALE'])
+                  .range(['#1f77b4', '#ff7f0e'])
+              }
+            )
           }}
-          className={!conditionPrevalence ? emptyClasses().className : ''}>
-            {!conditionPrevalence &&
-              <span {...emptyClasses('text')}>No data</span>
-            }
-          </div>
-        </Panel>
+        />
       </div>
       <div className='col-xs-12'>
-        <Panel title='Condition Prevalence by Month' {...classes('chart')}>
-          <div ref={(element) => {
-            if (element && conditionByMonth) {
-              const dimensions = element.getBoundingClientRect();
-              new line().render(
-                conditionByMonth,
-                element,
-                dimensions.width,
-                dimensions.width/3,
-                {
-                  ...chartSettings,
-                  yLabel: 'Prevalence per 1000 People',
-                  xLabel: 'Date',
-                  yFormat: d => numberFormatter.format(d, 'short'),
-                  xFormat: d3.timeFormat('%m/%Y'),
-                  tickFormat: d3.timeFormat('%Y'),
-                  xScale: d3.scaleTime().domain(d3.extent(conditionByMonth[0].values, d => d.xValue)),
-                }
-              );
-            }
+        <Chart
+          title='Condition Prevalence by Month'
+          isDataPresent={conditionByMonth}
+          render={({ width, element }) => {
+           new line().render(
+              conditionByMonth,
+              element,
+              width,
+              width/3,
+              {
+                ...chartSettings,
+                yLabel: 'Prevalence per 1000 People',
+                xLabel: 'Date',
+                yFormat: d => numberFormatter.format(d, 'short'),
+                xFormat: d3.timeFormat('%m/%Y'),
+                tickFormat: d3.timeFormat('%Y'),
+                xScale: d3.scaleTime().domain(d3.extent(conditionByMonth[0].values, d => d.xValue)),
+              }
+            );
           }}
-          className={!conditionByMonth ? emptyClasses().className : ''}>
-            {!conditionByMonth &&
-              <span {...emptyClasses('text')}>No data</span>
-            }
-          </div>
-        </Panel>
+        />
       </div>
       <div className='col-xs-6'>
-        <Panel title='Procedures by Type' {...classes('chart')}>
-          <div ref={(element) => {
-            if (element && proceduresByType) {
-              const dimensions = element.getBoundingClientRect();
-              new donut().render(
-                proceduresByType,
-                element,
-                dimensions.width,
-                dimensions.width*0.75,
-                chartSettings,
-              );
-            }
+        <Chart
+          title='Procedures by Type'
+          isDataPresent={proceduresByType}
+          render={({ width, element }) => {
+            new donut().render(
+              proceduresByType,
+              element,
+              width,
+              width*0.75,
+              chartSettings,
+            );
           }}
-          className={!proceduresByType ? emptyClasses().className : ''}>
-            {!proceduresByType &&
-              <span {...emptyClasses('text')}>No data</span>
-            }
-          </div>
-        </Panel>
+        />
       </div>
       <div className='col-xs-6'>
-        <Panel title='Age at First occurrence' {...classes('chart')}>
-          <div ref={(element) => {
-            if (element && ageOfFirstOccurrence) {
-              const dimensions = element.getBoundingClientRect();
-              new boxplot().render(
-                ageOfFirstOccurrence,
-                element,
-                dimensions.width,
-                dimensions.width*0.75,
-                {
-                  ...chartSettings,
-                  xLabel: 'Age at first diagnosis',
-                  yLabel: 'Gender',
-                  yFormat: d => numberFormatter.format(d, 'short')
-                }
-              );
-            }
+        <Chart
+          title='Age at First occurrence'
+          isDataPresent={ageOfFirstOccurrence}
+          render={({ width, element }) => {
+            new boxplot().render(
+              ageOfFirstOccurrence,
+              element,
+              width,
+              width*0.75,
+              {
+                ...chartSettings,
+                xLabel: 'Age at first diagnosis',
+                yLabel: 'Gender',
+                yFormat: d => numberFormatter.format(d, 'short')
+              }
+            );
           }}
-          className={!ageOfFirstOccurrence ? emptyClasses().className : ''}>
-            {!ageOfFirstOccurrence &&
-              <span {...emptyClasses('text')}>No data</span>
-            } 
-          </div>
-        </Panel>
+        />
       </div>
     </div>
   );

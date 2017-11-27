@@ -1,3 +1,25 @@
+/*
+ *
+ * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Company: Odysseus Data Services, Inc.
+ * Product Owner/Architecture: Gregory Klebanov
+ * Authors: Alexander Saltykov
+ * Created: November 20, 2017
+ *
+ */
+
 import React, { PropTypes } from 'react';
 import { canUseDom } from 'services/Utils';
 import BEMHelper from 'services/BemHelper';
@@ -22,6 +44,15 @@ if (canUseDom()) {
     Person: require('components/Reports/Person').default,
     Procedures: require('components/Reports/Procedures').default,
     Visits: require('components/Reports/Visits').default,
+    Conditions: require('components/Reports/Conditions').default,
+    ConditionEra: require('components/Reports/ConditionEra').default,
+
+    Cohortspecific: require('./components/Cohortspecific').default,
+    Heraclesheel: require('./components/Heraclesheel').default,
+    ProceduresByIndex: require('./components/ProceduresByIndex').default,
+    ConditionsByIndex: require('./components/ConditionsByIndex').default,
+    DataCompleteness: require('./components/DataCompleteness').default,
+    Entropy: require('./components/Entropy').default,
   };
 }
 
@@ -35,7 +66,23 @@ function ReportViewer(props) {
     downloadLink,
     pageTitle,
     toolbarOpts,
+    // for treemap reports only
+    loadTreemapDetails,
+    tableData,
+    tableColumns,
+    details,
   } = props;
+
+  const treemapParams = {
+    conditions: data,
+    loadDetails: loadTreemapDetails,
+    details,
+    onZoom: () => {},
+    initialZoomedConcept: null,
+    tableData,
+    tableColumns,
+    getFilename: conceptId => conceptId,
+  };
 
   return (
     <PageContent title={pageTitle}>
@@ -43,7 +90,7 @@ function ReportViewer(props) {
         <Toolbar params={toolbarOpts} />
         <ActionBar downloadLink={downloadLink} />
         <div {...classes('content')}>
-          {reports.Dashboard && type === reportTypes.DASHBOARD &&
+          {reports.Dashboard && type === reportTypes.dashboard &&
             <reports.Dashboard
               showSummary={false}
               ageAtFirstObservation={{
@@ -58,7 +105,7 @@ function ReportViewer(props) {
               observedByMonth={data.observedByMonth}
             />
           }
-          {reports.Person && type === reportTypes.PERSON &&
+          {reports.Person && type === reportTypes.person &&
             <reports.Person
               showSummary={false}
               birthYear={{
@@ -74,7 +121,7 @@ function ReportViewer(props) {
               summary={null}
             />
           }
-          {reports.ObservationPeriods && type === reportTypes.OBSERVATION_PERIODS &&
+          {reports.ObservationPeriods && type === reportTypes.observationperiods &&
             <reports.ObservationPeriods
               ageAtFirstObservation={{
                 DATA: data.ageAtFirst,
@@ -102,17 +149,17 @@ function ReportViewer(props) {
                 MIN: 0,
               }}
               observationsPerPerson={data.periodPerPerson}
-              rawObservationsByMonth={data.observedByMonth}
+              observationsByMonth={data.observedByMonth}
             />
           }
-          {reports.DataDensity && type === reportTypes.DATA_DENSITY &&
+          {reports.DataDensity && type === reportTypes.datadensity &&
             <reports.DataDensity
               conceptsPerPerson={data.conceptsPerPerson}
               recordsPerPerson={data.recordsPerPerson}
               totalRecords={data.totalRecords}
             />
           }
-          {reports.Death && type === reportTypes.DEATH &&
+          {reports.Death && type === reportTypes.death &&
             <reports.Death
               ageOfDeath={data.ageAtDeath}
               deathByAge={data.prevalenceByGenderAgeYear}
@@ -120,24 +167,42 @@ function ReportViewer(props) {
               deathByType={data.deathByType}
             />
           }
-          {/*reports.Observations && type === reportTypes.OBSERVATIONS &&
-            <reports.Observations />
-          */}
-          {/*reports.DrugEra && type === reportTypes.DRUGERA &&
-            <reports.DrugEra />
-          */}
-          {/*reports.Drug && type === reportTypes.DRUG &&
-            <reports.Drug />
-          */}
-          {/*reports.Procedures && type === reportTypes.PROCEDURES &&
-            <reports.Procedures />
-          */}
-          {/*reports.Visits && type === reportTypes.VISITS &&
-            <reports.Visits />
-          */}
-          {/*reports.Achillesheel && type === reportTypes.ACHILLESHEEL &&
-            <reports.Achillesheel />
-          */}
+          {reports.Observations && type === reportTypes.observations &&
+            <reports.Observations {...treemapParams} />
+          }
+          {reports.DrugEra && type === reportTypes.drugeras &&
+            <reports.DrugEra {...treemapParams} />
+          }
+          {reports.ConditionEra && type === reportTypes.conditionera &&
+            <reports.ConditionEra {...treemapParams} />
+          }
+          {reports.Procedures && type === reportTypes.procedures &&
+            <reports.Procedures {...treemapParams} />
+          }
+          {reports.Visits && type === reportTypes.visits &&
+            <reports.Visits {...treemapParams} />
+          }
+          {reports.Conditions && type === reportTypes.conditions &&
+            <reports.Conditions {...treemapParams} />
+          }
+          {reports.Cohortspecific && type === reportTypes.cohortspecific &&
+            <reports.Cohortspecific {...data} />
+          }
+          {reports.Heraclesheel && type === reportTypes.heraclesheel &&
+            <reports.Heraclesheel reportData={data} />
+          }
+          {reports.ProceduresByIndex && type === reportTypes.procbyindex &&
+            <reports.ProceduresByIndex {...treemapParams} />
+          }
+          {reports.ConditionsByIndex && type === reportTypes.condbyindex &&
+            <reports.ConditionsByIndex {...treemapParams} />
+          }
+          {reports.DataCompleteness && type === reportTypes.datacompleteness &&
+            <reports.DataCompleteness {...data} />
+          }
+          {reports.Entropy && type === reportTypes.entropy &&
+            <reports.Entropy {...data} />
+          }
         </div>
       </div>
     </PageContent>

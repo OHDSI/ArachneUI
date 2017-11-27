@@ -15,24 +15,12 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: June 07, 2017
+ * Authors: Alexander Saltyko
+ * Created: November 20, 2017
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+import ProcedureByIndexDetailsBuilder from './container';
 
-.#{$namespace} {
-	&report-conditions {
+export default (new ProcedureByIndexDetailsBuilder()).build();
 
-		&__chart {
-			margin-top: 2rem;
-		}
-
-		& .treemap_zoomtarget {
-			padding: 0.5rem 20px;
-		}
-
-	}
-
-}
