@@ -63,7 +63,7 @@ function CellChecked(props: any) {
 }
 
 function CellLicense(props: any) {
-  const { className, value, openRequestModal, isPending, isCheckable } = props;
+  const { className, value, openRequestModal, isPending, isCheckable, notAvailable } = props;
   const classes = BEMHelper('cell-license');
   if (!value) {
     return null;
@@ -77,13 +77,18 @@ function CellLicense(props: any) {
         </span> {value}
       </Link>;
   } else {
-    return <Link {...classes({ extra: 'ac-tooltip' })}
+    return <Link {...classes({ extra: notAvailable ? '' : 'ac-tooltip' })}
           aria-label='Click to request access'
           data-tootik-conf='right'
-          onClick={openRequestModal}>
-        <span {...classes({ element: 'icon', extra: `${className}--disabled` })}>
-          vpn_key
-        </span>
+          onClick={() => {
+            if (notAvailable) {
+              return false;
+            }
+            openRequestModal();
+          }}>
+          <span {...classes({ element: 'icon', extra: `${className}--disabled` })}>
+            vpn_key
+          </span>
         {value}
       </Link>;
   }
@@ -192,6 +197,7 @@ function Results(props: IResultsProps & FormProps<{}, {}, {}>) {
             isPending: vocab.status === licenseStatuses.PENDING,
             openRequestModal: () => openRequestModal(vocab),
             isCheckable: vocab.isCheckable,
+            notAvailable: vocab.required === 'Currently not available',
           })}
         />
         <Cell

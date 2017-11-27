@@ -22,6 +22,7 @@
     &__results-wrapper {
       overflow-y: scroll;
       flex-grow: 1;
+      display: flex;
     }
 
     &__content {

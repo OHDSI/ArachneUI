@@ -2,6 +2,10 @@
 
 .#{$namespace} {
   &search-results {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
 		&__management-panel {
   		display: flex;
   		padding: 1rem 1.5rem;
@@ -26,6 +30,7 @@
     &__table {
       font-size: 1.3rem;
       table-layout: fixed;
+      flex: 1;
     }
 
     &__id-th,
