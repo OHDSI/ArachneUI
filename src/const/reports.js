@@ -1,26 +1,28 @@
-const reports = {
-  DASHBOARD: 'dashboard',
-  PERSON: 'person',
-  OBSERVATION_PERIODS: 'observationperiods',
-  DATA_DENSITY: 'datadensity',
-  DEATH: 'death',
-  CONDITIONS: 'conditions',
-  CONDITIONERA: 'conditionera',
-  OBSERVATIONS: 'observations',
-  DRUGERA: 'drugeras',
-  DRUG: 'drugexposures',
-  PROCEDURES: 'procedures',
-  VISITS: 'visits',
-  ACHILLESHEEL: 'achillesheel',
-  UNKNOWN: 'unknown',
+import keyMirror from 'keymirror';
+
+const reports = keyMirror({
+  dashboard: null,
+  person: null,
+  observationperiods: null,
+  datadensity: null,
+  death: null,
+  conditions: null,
+  conditionera: null,
+  observations: null,
+  drugeras: null,
+  drugexposures: null,
+  procedures: null,
+  visits: null,
+  achillesheel: null,
+  unknown: null,
   // Cohort characterization-specific
-  COHORTPECIFIC: 'cohortspecific',
-  HERACLESHEEL: 'heraclesheel',
-  PROCEDURES_BY_INDEX: 'procbyindex',
-  CONDITIONS_BY_INDEX: 'condbyindex',
-  DATA_COMPLETENESS: 'datacompleteness',
-  ENTROPY: 'entropy',
-};
+  cohortspecific: null,
+  heraclesheel: null,
+  procbyindex: null,
+  condbyindex: null,
+  datacompleteness: null,
+  entropy: null,
+});
 
 const chartTypes = {
   BOXPLOT: 'boxplot',
@@ -46,15 +48,15 @@ const chartSettings = {
 };
 
 const treemapReports = [
-  reports.PROCEDURES,
-  reports.DRUG,
-  reports.DRUGERA,
-  reports.OBSERVATIONS,
-  reports.CONDITIONS,
-  reports.CONDITIONERA,
-  reports.VISITS,
-  reports.PROCEDURES_BY_INDEX,
-  reports.CONDITIONS_BY_INDEX,
+  reports.procedures,
+  reports.drugexposures,
+  reports.drugeras,
+  reports.observations,
+  reports.conditions,
+  reports.conditionera,
+  reports.visits,
+  reports.procbyindex,
+  reports.condbyindex,
 ];
 
 export {

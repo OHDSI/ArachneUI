@@ -88,9 +88,9 @@ export default class ReportUtils {
   }
 
   static getReportType(docType) {
-    return Object.values(reports).includes(docType)
-    ? docType
-    : reports.UNKNOWN;
+    return reports[docType]
+      ? docType
+      : reports.unknown;
   }
 
 }

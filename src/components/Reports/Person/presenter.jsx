@@ -47,6 +47,7 @@ function Person(props) {
     showSummary = true,
   } = props;
   const classes = new BEMHelper('report-person');
+  const emptyClasses = new BEMHelper('report-empty');
 
   return (  
     <div {...classes({ extra: 'row' })}>

@@ -90,7 +90,7 @@ function ReportViewer(props) {
         <Toolbar params={toolbarOpts} />
         <ActionBar downloadLink={downloadLink} />
         <div {...classes('content')}>
-          {reports.Dashboard && type === reportTypes.DASHBOARD &&
+          {reports.Dashboard && type === reportTypes.dashboard &&
             <reports.Dashboard
               showSummary={false}
               ageAtFirstObservation={{
@@ -105,7 +105,7 @@ function ReportViewer(props) {
               observedByMonth={data.observedByMonth}
             />
           }
-          {reports.Person && type === reportTypes.PERSON &&
+          {reports.Person && type === reportTypes.person &&
             <reports.Person
               showSummary={false}
               birthYear={{
@@ -121,7 +121,7 @@ function ReportViewer(props) {
               summary={null}
             />
           }
-          {reports.ObservationPeriods && type === reportTypes.OBSERVATION_PERIODS &&
+          {reports.ObservationPeriods && type === reportTypes.observationperiods &&
             <reports.ObservationPeriods
               ageAtFirstObservation={{
                 DATA: data.ageAtFirst,
@@ -152,14 +152,14 @@ function ReportViewer(props) {
               observationsByMonth={data.observedByMonth}
             />
           }
-          {reports.DataDensity && type === reportTypes.DATA_DENSITY &&
+          {reports.DataDensity && type === reportTypes.datadensity &&
             <reports.DataDensity
               conceptsPerPerson={data.conceptsPerPerson}
               recordsPerPerson={data.recordsPerPerson}
               totalRecords={data.totalRecords}
             />
           }
-          {reports.Death && type === reportTypes.DEATH &&
+          {reports.Death && type === reportTypes.death &&
             <reports.Death
               ageOfDeath={data.ageAtDeath}
               deathByAge={data.prevalenceByGenderAgeYear}
@@ -167,40 +167,40 @@ function ReportViewer(props) {
               deathByType={data.deathByType}
             />
           }
-          {reports.Observations && type === reportTypes.OBSERVATIONS &&
+          {reports.Observations && type === reportTypes.observations &&
             <reports.Observations {...treemapParams} />
           }
-          {reports.DrugEra && type === reportTypes.DRUGERA &&
+          {reports.DrugEra && type === reportTypes.drugeras &&
             <reports.DrugEra {...treemapParams} />
           }
-          {reports.ConditionEra && type === reportTypes.CONDITIONERA &&
+          {reports.ConditionEra && type === reportTypes.conditionera &&
             <reports.ConditionEra {...treemapParams} />
           }
-          {reports.Procedures && type === reportTypes.PROCEDURES &&
+          {reports.Procedures && type === reportTypes.procedures &&
             <reports.Procedures {...treemapParams} />
           }
-          {reports.Visits && type === reportTypes.VISITS &&
+          {reports.Visits && type === reportTypes.visits &&
             <reports.Visits {...treemapParams} />
           }
-          {reports.Conditions && type === reportTypes.CONDITIONS &&
+          {reports.Conditions && type === reportTypes.conditions &&
             <reports.Conditions {...treemapParams} />
           }
-          {reports.Cohortspecific && type === reportTypes.COHORTPECIFIC &&
+          {reports.Cohortspecific && type === reportTypes.cohortspecific &&
             <reports.Cohortspecific {...data} />
           }
-          {reports.Heraclesheel && type === reportTypes.HERACLESHEEL &&
+          {reports.Heraclesheel && type === reportTypes.heraclesheel &&
             <reports.Heraclesheel reportData={data} />
           }
-          {reports.ProceduresByIndex && type === reportTypes.PROCEDURES_BY_INDEX &&
+          {reports.ProceduresByIndex && type === reportTypes.procbyindex &&
             <reports.ProceduresByIndex {...treemapParams} />
           }
-          {reports.ConditionsByIndex && type === reportTypes.CONDITIONS_BY_INDEX &&
+          {reports.ConditionsByIndex && type === reportTypes.condbyindex &&
             <reports.ConditionsByIndex {...treemapParams} />
           }
-          {reports.DataCompleteness && type === reportTypes.DATA_COMPLETENESS &&
+          {reports.DataCompleteness && type === reportTypes.datacompleteness &&
             <reports.DataCompleteness {...data} />
           }
-          {reports.Entropy && type === reportTypes.ENTROPY &&
+          {reports.Entropy && type === reportTypes.entropy &&
             <reports.Entropy {...data} />
           }
         </div>

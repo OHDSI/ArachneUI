@@ -41,6 +41,8 @@ import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-async-connect';
 import { ModalUtils } from 'arachne-ui-components';
 import types from 'const/modelAttributes';
+import ReportUtils from 'components/Reports/Utils';
+import { reports } from 'const/reports';
 import URI from 'urijs';
 import { createSelector } from 'reselect';
 
@@ -214,7 +216,9 @@ const detectMimeTypeByExtension = (file) => {
   let type;
   if (file) {
     type = file.docType;
-    if (type === mimeTypes.text) {
+    if (ReportUtils.getReportType(type) !== reports.unknown) {
+      type = mimeTypes.report;
+    } else if (type === mimeTypes.text) {
       const extension = file.name.split('.').pop().toLowerCase();
       type = mimeTypes[extension];
     }

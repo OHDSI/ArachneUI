@@ -21,37 +21,24 @@
  */
 
 import { detectMimeTypeByExtension } from 'services/Utils';
-import mimeTypes from 'const/mimeTypes';
-import Utils from 'components/Reports/Utils';
-import { reports } from 'const/reports';
 
 const profilePath = id => `/expert-finder/profile/${id}`;
 
-export default (file, pathBuilder) => {
-  const reportType = Utils.getReportType(file.docType);
-  let docType = '';
-  if (reportType !== reports.UNKNOWN) {
-    docType = mimeTypes.report;
-  } else {
-    docType = detectMimeTypeByExtension(file);
-  }
-  
-  return {
-    uuid: file.uuid,
-    name: file.name,
-    label: file.label,
-    createdAt: file.created,
-    // doctype: file.docType === 'text/x-r-source' ? 'r' : file.docType,
-    docType,
-    isExecutable: file.isExecutable,
-    link: file.link || pathBuilder(file),
-    author: {
-      ...file.author,
-      link: (file.author && file.author.id) ? profilePath(file.author.id) : null,
-    },
-    commentTopicId: file.commentTopicId,
-    version: file.version,
-    isImported: file.imported,
-    manuallyUploaded: file.manuallyUploaded,
-  }
-};
+export default (file, pathBuilder) => ({
+  uuid: file.uuid,
+  name: file.name,
+  label: file.label,
+  createdAt: file.created,
+  // doctype: file.docType === 'text/x-r-source' ? 'r' : file.docType,
+  docType: detectMimeTypeByExtension(file),
+  isExecutable: file.isExecutable,
+  link: file.link || pathBuilder(file),
+  author: {
+    ...file.author,
+    link: (file.author && file.author.id) ? profilePath(file.author.id) : null,
+  },
+  commentTopicId: file.commentTopicId,
+  version: file.version,
+  isImported: file.imported,
+  manuallyUploaded: file.manuallyUploaded,
+});

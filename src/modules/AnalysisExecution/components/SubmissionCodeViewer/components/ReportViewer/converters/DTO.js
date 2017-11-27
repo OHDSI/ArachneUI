@@ -23,37 +23,37 @@
 import { reports } from 'const/reports';
 
 const DTO = {
-  [reports.CONDITIONS]: {
+  [reports.conditions]: {
     ageAtFirstDiagnosis: 'ageOfFirstDiagnosis',
     sqlConditionsByType: 'conditionByType',
     prevalenceByGenderAgeYear: 'conditionPrevalence',
     prevalenceByMonth: 'conditionByMonth',
   },
-  [reports.VISITS]: {
+  [reports.visits]: {
     ageAtFirstOccurrence: 'ageAtFirstOccurrence',
     visitDurationByType: 'durationByType',
     prevalenceByGenderAgeYear: 'conditionPrevalence',
     prevalenceByMonth: 'conditionByMonth',
   },
-  [reports.OBSERVATIONS]: {
+  [reports.observations]: {
     ageAtFirstOccurrence: 'ageAtFirstOccurrence',
     observationsByType: 'observationsByType',
     prevalenceByGenderAgeYear: 'conditionPrevalence',
     prevalenceByMonth: 'conditionByMonth',
   },
-  [reports.PROCEDURES]: {
+  [reports.procedures]: {
     ageAtFirstOccurrence: 'ageOfFirstOccurrence',
     proceduresByType: 'proceduresByType',
     prevalenceByGenderAgeYear: 'conditionPrevalence',
     prevalenceByMonth: 'conditionByMonth',
   },
-  [reports.CONDITIONERA]: {
+  [reports.conditionera]: {
     ageAtFirstDiagnosis: 'ageOfFirstDiagnosis',
     lengthOfEra: 'lengthOfEra',
     prevalenceByGenderAgeYear: 'conditionPrevalence',
     prevalenceByMonth: 'conditionByMonth',
   },
-  [reports.DRUGERA]: {
+  [reports.drugera]: {
     prevalenceByGenderAgeYear: 'conditionPrevalence',
     ageAtFirstExposure: 'ageOfFirstExposure',
     lengthOfEra: 'lengthOfEra',

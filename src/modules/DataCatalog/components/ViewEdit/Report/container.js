@@ -33,7 +33,7 @@ class Report extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedReport: reports.DASHBOARD,
+      selectedReport: reports.dashboard,
     };
     this.selectReport = this.selectReport.bind(this);
   }
@@ -114,7 +114,7 @@ function mapStateToProps(state, ownProps) {
     list,
     isLoading,
     initialValues: {
-      report: reports.DASHBOARD,
+      report: reports.dashboard,
     },
   };
 }

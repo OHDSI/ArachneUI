@@ -30,14 +30,14 @@ export default class SelectorsBuilder extends TreemapSelectorsBuilder {
   constructor() {
     super();
     this.rowMappers = {
-      [reports.PROCEDURES]: this.mapRowForProcedures,
-      [reports.VISITS]: this.mapRowForVisits,
-      [reports.CONDITIONS]: this.mapRowForConditions,
-      [reports.CONDITIONERA]: this.mapRowForConditionEras,
-      [reports.DRUGERA]: this.mapRowForDrugEras,
-      [reports.PROCEDURES_BY_INDEX]: this.mapRowForProceduresByIndex,
-      [reports.CONDITIONS_BY_INDEX]: this.mapRowForConditionsByIndex,
-      [reports.OBSERVATIONS]: this.mapRowForObservations,
+      [reports.procedures]: this.mapRowForProcedures,
+      [reports.visits]: this.mapRowForVisits,
+      [reports.conditions]: this.mapRowForConditions,
+      [reports.conditionera]: this.mapRowForConditionEras,
+      [reports.drugeras]: this.mapRowForDrugEras,
+      [reports.procbyindex]: this.mapRowForProceduresByIndex,
+      [reports.condbyindex]: this.mapRowForConditionsByIndex,
+      [reports.observations]: this.mapRowForObservations,
     };
   }
 
