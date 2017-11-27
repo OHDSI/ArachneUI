@@ -113,17 +113,28 @@ class Chart extends Component {
         canvas.height = this.height;
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0);
-        const canvasUrl = canvas.toDataURL('image/png');
-        const a = d3.select(this.container).append('a').node();
-        a.download = `${this.props.title.replace(/\W*/g, '')}.png`;
-        a.href = canvasUrl;
-        a.target = '_blank';
-        a.click();
-        a.remove();
-        canvas.style.display = 'none';
-        img.style.display = 'none';
-        canvas.remove();
-        img.remove();
+        let canvasUrl;
+        const filename = `${this.props.title.replace(/\W*/g, '')}.png`;
+        try {
+          // ie 11 will throw an exception here
+          canvasUrl = canvas.toDataURL('image/png');
+          const a = d3.select(this.container).append('a').node();
+          a.download = filename;
+          a.href = canvasUrl;
+          a.target = '_blank';
+          a.click();
+          a.remove();
+          canvas.remove();
+          img.remove();
+        } catch (er) {
+          if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(blob, filename);
+          } else {
+            window.open(url, '_blank');
+          }
+          canvas.remove();
+          img.remove();
+        }
       };
       img.src = url;
 
