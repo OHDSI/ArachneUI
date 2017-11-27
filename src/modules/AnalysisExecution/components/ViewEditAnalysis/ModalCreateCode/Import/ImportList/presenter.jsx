@@ -122,7 +122,7 @@ function ImportList(props) {
         {filteredEntities && filteredEntities.length
           ? null
           : <span {...classes('empty-state')}>
-            {`No ${nameAnalysisType(analysisType)}s found`}
+            {`No ${nameAnalysisType(analysisType, false, true)} found`}
           </span>
         }
         <div {...classes('progress')}>

@@ -45,7 +45,7 @@ function CohortLoading({ selectedSource, totalSteps, step, goBack, analysisType 
         <LoadingPanel
           active={true}
           label={
-            `${nameAnalysisType(analysisType, true)}s are being summoned.
+            `${nameAnalysisType(analysisType, true, true)} are being retrieved.
             Please wait a moment...`
           }
         />
