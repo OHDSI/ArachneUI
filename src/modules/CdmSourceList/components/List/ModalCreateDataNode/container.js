@@ -70,7 +70,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...stateProps,
     ...dispatchProps,
     doSubmit(data) {
-      const submitPromise = dispatchProps.create(data);
+      const submitPromise = dispatchProps.create({}, data);
 
       submitPromise
         .then(() => dispatchProps.reset())

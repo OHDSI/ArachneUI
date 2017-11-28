@@ -26,6 +26,7 @@ import actions from 'actions';
 import { ModalUtils } from 'arachne-ui-components';
 import { modal } from 'modules/CdmSourceList/const';
 import Actions from './presenter';
+import errors from 'const/errors';
 
 function mapStateToProps(state) {
   return {
@@ -50,6 +51,9 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     },
     startCreatingDataSource: () => {
       dispatchProps.loadDataNode()
+        .then((result) => {
+        if (result.errorCode !== errors.NO_ERROR) { throw 'Not found'; }
+        })
         .then(dispatchProps.openCreateSourceModal)
         .catch(dispatchProps.openCreateDataNodeModal);
     },
