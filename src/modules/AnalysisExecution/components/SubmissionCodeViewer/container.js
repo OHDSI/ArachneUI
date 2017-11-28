@@ -188,8 +188,12 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...dispatchProps,
     ...ownProps,
     loadTreemapDetails({ filename }) {
-      const path = stateProps.filename.substr(0, stateProps.filename.lastIndexOf('/'));
-      const realname = `${path}/${stateProps.reportType}/${filename}.json`;
+      let path = '';
+      const isRoot = stateProps.filename.lastIndexOf('/') === -1;
+      if (!isRoot) {
+        path = `${stateProps.filename.substr(0, stateProps.filename.lastIndexOf('/'))}/`;
+      }
+      const realname = `${path}${stateProps.reportType}/${filename}.json`;
       dispatchProps.loadSubmissionResultFiles(
         {
           entityId: stateProps.submissionId,
