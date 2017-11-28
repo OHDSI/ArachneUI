@@ -2,10 +2,13 @@
 
 .#{$namespace} {
   &vocabularies {
-  	margin: 0 -0.5rem;
+    margin: 0 -0.5rem;
+    display: flex;
+    flex: 1;
 
     &__table {
       table-layout: fixed;
+      flex: 1;
     }
 
     &__selection-th {
