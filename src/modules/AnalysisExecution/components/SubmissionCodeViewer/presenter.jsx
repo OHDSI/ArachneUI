@@ -38,6 +38,7 @@ function SubmissionCodeViewer({
   tableData,
   tableColumns,
   details,
+  isDetailsLoading,
 }) {
   return isReport
     ? <ReportViewer
@@ -50,6 +51,7 @@ function SubmissionCodeViewer({
       loadTreemapDetails={loadTreemapDetails}
       tableData={tableData}
       tableColumns={tableColumns}
+      isLoading={isDetailsLoading}
     />
     : <FileViewer
       file={file}

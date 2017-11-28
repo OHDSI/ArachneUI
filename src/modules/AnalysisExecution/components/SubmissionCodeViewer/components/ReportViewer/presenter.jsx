@@ -25,6 +25,7 @@ import { canUseDom } from 'services/Utils';
 import BEMHelper from 'services/BemHelper';
 import {
   PageContent,
+  LoadingPanel,
 } from 'arachne-ui-components';
 import { reports as reportTypes } from 'const/reports';
 import Toolbar from 'components/FileViewer/Toolbar/index';
@@ -71,6 +72,7 @@ function ReportViewer(props) {
     tableData,
     tableColumns,
     details,
+    isLoading,
   } = props;
 
   const treemapParams = {
@@ -205,6 +207,10 @@ function ReportViewer(props) {
           }
         </div>
       </div>
+      <LoadingPanel
+        active={isLoading}
+        label={'Loading drilldown'}
+      />
     </PageContent>
   );
 }

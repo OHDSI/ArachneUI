@@ -110,6 +110,7 @@ function mapStateToProps(state, ownProps) {
   let tableData = {};
   let tableColumns = {};
   let details = {};
+  let isDetailsLoading = get(state, 'analysisExecution.submissionFileDetails.isLoading', false);
   if (submissionFileData && submissionFileData.content) {
     reportType = ReportUtils.getReportType(get(submissionFileData, 'docType'));
     isReport = reportType !== reports.unknown;
@@ -168,6 +169,7 @@ function mapStateToProps(state, ownProps) {
     tableData,
     tableColumns,
     details,
+    isDetailsLoading,
   };
 }
 
@@ -186,15 +188,15 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...dispatchProps,
     ...ownProps,
     loadTreemapDetails({ filename }) {
-      const realname = `${stateProps.reportType}/${stateProps.reportType}/${filename}.json`;
+      const path = stateProps.filename.substr(0, stateProps.filename.lastIndexOf('/'));
+      const realname = `${path}/${stateProps.reportType}/${filename}.json`;
       dispatchProps.loadSubmissionResultFiles(
         {
           entityId: stateProps.submissionId,
           isSubmissionGroup: false,
         },
         {
-          path: stateProps.filename.substr(0, stateProps.filename.lastIndexOf('/')),
-          realname,
+          'real-name': realname,
         }
       ).then(detailedFiles => dispatchProps.loadDetails({
         type: 'result',
