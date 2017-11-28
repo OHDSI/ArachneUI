@@ -25,7 +25,7 @@ import { apiPaths } from '../const';
 
 const coreName = 'CSL_DS';
 
-function receiveSource() {
+function clearSource() {
   return {
     type: `${coreName}_QUERY_FULFILLED`,
     payload: null,
@@ -40,7 +40,7 @@ const dataSource = new Duck({
 export default {
   actions: {
     ...dataSource.actions,
-    reset: (dispatch) => dispatch(receiveSource()),
+    reset: (dispatch) => dispatch(clearSource()),
   },
   reducer: dataSource.reducer,
 };

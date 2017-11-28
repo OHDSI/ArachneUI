@@ -35,27 +35,6 @@ const form = keyMirror({
   createDataNode: null,
 });
 
-/*const actionTypes = keyMirror({
-  REQUEST_DATA_SOURCE_LIST: null,
-  RECEIVE_DATA_SOURCE_LIST: null,
-  //
-  REQUEST_DATA_SOURCE: null,
-  RECEIVE_DATA_SOURCE: null,
-  UPDATE_DATA_SOURCE: null,
-  //
-  REQUEST_DATA_SOURCE_BUSINESS: null,
-  RECEIVE_DATA_SOURCE_BUSINESS: null,
-  //
-  REQUEST_DATA_NODE: null,
-  RECEIVE_DATA_NODE: null,
-  //
-  REQUEST_CDM_CHARACTERIZATION: null,
-  RECEIVE_CDM_CHARACTERIZATION: null,
-  //
-  REQUEST_ACHILLES_RESULTS: null,
-  UPDATE_ACHILLES_RESULTS: null,
-});*/
-
 const paths = {
   dataSources: id => `/cdm-source-list/data-sources${id ? `/${id}` : ''}`,
 };

@@ -66,7 +66,7 @@ function mapStateToProps(state) {
   const characterizationSource = get(state, 'cdmSourceList.characterization.queryResult.result.content[0].source');
   const thisCharacterization = get(state, 'cdmSourceList.characterization.queryResult.result.content[0].finished', null);
   const prevCharacterization = get(state, 'cdmSourceList.characterization.queryResult.result.content[1].finished', null);
-  const hasResults = true;//get(state, 'cdmSourceList.achillesResults.queryResult.result');
+  const hasResults = get(state, 'cdmSourceList.achillesResults.queryResult.result');
   const isCharacterizationStarted = characterizationStatus === characterizationStatuses.IN_PROGRESS
     || get(state, 'cdmSourceList.characterization.isLoading', false)
     || get(state, 'cdmSourceList.achillesResults.isSaving', false);

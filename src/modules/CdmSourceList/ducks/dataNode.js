@@ -31,11 +31,6 @@ const dataNode = new Duck({
 });
 
 export default {
-  actions:{
-    ...dataNode.actions,
-    query: () => {
-      return (dispatch) => dispatch(...dataNode.actions.query())
-    }
-  }.actions,
+  actions: dataNode.actions,
   reducer: dataNode.reducer,
 };

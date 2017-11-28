@@ -25,7 +25,7 @@ import { apiPaths } from '../const';
 
 const coreName = 'CSL_CHARACTERIZATION';
 
-function receiveSource() {
+function clearSource() {
   return {
     type: `${coreName}_QUERY_FULFILLED`,
     payload: null,
@@ -40,7 +40,7 @@ const characterization = new Duck({
 export default {
   actions: {
     ...characterization.actions,
-    reset: (dispatch) => dispatch(receiveSource()),
+    reset: (dispatch) => dispatch(clearSource()),
   },
   reducer: characterization.reducer,
 };
