@@ -42,12 +42,6 @@ class SubmissionCode extends Component {
       entityType: this.props.from,
       id: this.props.submissionGroupId || this.props.submissionId,
     });
-    if (!Array.isArray(this.props.submissionResultFiles)) {
-      this.props.loadSubmissionResultFiles({
-        entityId: this.props.submissionId,
-        isSubmissionGroup: false,
-      });
-    }
   }
 
   componentWillUnmount() {
@@ -92,7 +86,7 @@ function mapStateToProps(state, ownProps) {
 
   const submissionFileData = get(state, 'analysisExecution.submissionFile.data.result');
   const submissionFileDetails = get(state, 'analysisExecution.submissionFileDetails.data.result');
-  const submissionResultFiles = get(state, 'analysisExecution.analysisCode.queryResult');
+  const filename = get(submissionFileData, 'realname', '');
 
   const urlParams = {
     type,
@@ -165,10 +159,10 @@ function mapStateToProps(state, ownProps) {
     from,
     submissionGroupId,
     submissionId,
-    submissionResultFiles,
 
     isReport,
     reportType,
+    filename,
 
     // treemap reports
     tableData,
@@ -192,17 +186,22 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...dispatchProps,
     ...ownProps,
     loadTreemapDetails({ filename }) {
-      const detailedFile = stateProps.submissionResultFiles.find(
-        file => file.name === `${stateProps.reportType}/${filename}.json`
-      );
-      if (detailedFile) {
-        dispatchProps.loadDetails({
-          type: 'result',
-          submissionGroupId: stateProps.submissionGroupId,
-          submissionId: stateProps.submissionId,
-          fileId: detailedFile.uuid,
-        });
-      }
+      const realname = `${stateProps.filename}/${stateProps.reportType}/${filename}.json`;
+      dispatchProps.loadSubmissionResultFiles(
+        {
+          entityId: stateProps.submissionId,
+          isSubmissionGroup: false,
+        },
+        {
+          path: '/',
+          realname,
+        }
+      ).then(detailedFile => dispatchProps.loadDetails({
+        type: 'result',
+        submissionGroupId: stateProps.submissionGroupId,
+        submissionId: stateProps.submissionId,
+        fileId: detailedFile.uuid,
+      }));
     },
   };
 }
