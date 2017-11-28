@@ -86,7 +86,7 @@ function mapStateToProps(state, ownProps) {
 
   const submissionFileData = get(state, 'analysisExecution.submissionFile.data.result');
   const submissionFileDetails = get(state, 'analysisExecution.submissionFileDetails.data.result');
-  const filename = get(submissionFileData, 'realname', '');
+  const filename = get(submissionFileData, 'name', '');
 
   const urlParams = {
     type,
@@ -186,21 +186,21 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...dispatchProps,
     ...ownProps,
     loadTreemapDetails({ filename }) {
-      const realname = `${stateProps.filename}/${stateProps.reportType}/${filename}.json`;
+      const realname = `${stateProps.reportType}/${stateProps.reportType}/${filename}.json`;
       dispatchProps.loadSubmissionResultFiles(
         {
           entityId: stateProps.submissionId,
           isSubmissionGroup: false,
         },
         {
-          path: '/',
+          path: stateProps.filename.substr(0, stateProps.filename.lastIndexOf('/')),
           realname,
         }
-      ).then(detailedFile => dispatchProps.loadDetails({
+      ).then(detailedFiles => dispatchProps.loadDetails({
         type: 'result',
         submissionGroupId: stateProps.submissionGroupId,
         submissionId: stateProps.submissionId,
-        fileId: detailedFile.uuid,
+        fileId: get(detailedFiles, '[0].uuid', '1'),
       }));
     },
   };
