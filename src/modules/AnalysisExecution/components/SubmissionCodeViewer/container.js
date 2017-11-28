@@ -42,12 +42,6 @@ class SubmissionCode extends Component {
       entityType: this.props.from,
       id: this.props.submissionGroupId || this.props.submissionId,
     });
-    if (!Array.isArray(this.props.submissionResultFiles)) {
-      this.props.loadSubmissionResultFiles({
-        entityId: this.props.submissionId,
-        isSubmissionGroup: false,
-      });
-    }
   }
 
   componentWillUnmount() {
@@ -92,7 +86,7 @@ function mapStateToProps(state, ownProps) {
 
   const submissionFileData = get(state, 'analysisExecution.submissionFile.data.result');
   const submissionFileDetails = get(state, 'analysisExecution.submissionFileDetails.data.result');
-  const submissionResultFiles = get(state, 'analysisExecution.analysisCode.queryResult');
+  const filename = get(submissionFileData, 'name', '');
 
   const urlParams = {
     type,
@@ -116,6 +110,7 @@ function mapStateToProps(state, ownProps) {
   let tableData = {};
   let tableColumns = {};
   let details = {};
+  let isDetailsLoading = get(state, 'analysisExecution.submissionFileDetails.isLoading', false);
   if (submissionFileData && submissionFileData.content) {
     reportType = ReportUtils.getReportType(get(submissionFileData, 'docType'));
     isReport = reportType !== reports.unknown;
@@ -165,15 +160,16 @@ function mapStateToProps(state, ownProps) {
     from,
     submissionGroupId,
     submissionId,
-    submissionResultFiles,
 
     isReport,
     reportType,
+    filename,
 
     // treemap reports
     tableData,
     tableColumns,
     details,
+    isDetailsLoading,
   };
 }
 
@@ -192,17 +188,26 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...dispatchProps,
     ...ownProps,
     loadTreemapDetails({ filename }) {
-      const detailedFile = stateProps.submissionResultFiles.find(
-        file => file.name === `${stateProps.reportType}/${filename}.json`
-      );
-      if (detailedFile) {
-        dispatchProps.loadDetails({
-          type: 'result',
-          submissionGroupId: stateProps.submissionGroupId,
-          submissionId: stateProps.submissionId,
-          fileId: detailedFile.uuid,
-        });
+      let path = '';
+      const isRoot = stateProps.filename.lastIndexOf('/') === -1;
+      if (!isRoot) {
+        path = `${stateProps.filename.substr(0, stateProps.filename.lastIndexOf('/'))}/`;
       }
+      const realname = `${path}${stateProps.reportType}/${filename}.json`;
+      dispatchProps.loadSubmissionResultFiles(
+        {
+          entityId: stateProps.submissionId,
+          isSubmissionGroup: false,
+        },
+        {
+          'real-name': realname,
+        }
+      ).then(detailedFiles => dispatchProps.loadDetails({
+        type: 'result',
+        submissionGroupId: stateProps.submissionGroupId,
+        submissionId: stateProps.submissionId,
+        fileId: get(detailedFiles, '[0].uuid', '1'),
+      }));
     },
   };
 }
