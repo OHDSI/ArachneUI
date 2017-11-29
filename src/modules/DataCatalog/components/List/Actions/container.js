@@ -22,19 +22,13 @@
 
 // @ts-check
 import actions from 'actions';
-import { Utils } from 'services/Utils';
+import { get, ContainerBuilder } from 'services/Utils';
 import ToolbarActions from './presenter';
 
-class DataCatalogListActionsBuilder {
+export default class DataCatalogListActionsBuilder extends ContainerBuilder {
 
   getComponent() {
     return ToolbarActions;
-  }
-
-  mapStateToProps(state) {
-    return {
-      currentSearchStr: state.routing.locationBeforeTransitions.search,
-    };
   }
 
   /**
@@ -43,28 +37,15 @@ class DataCatalogListActionsBuilder {
   getMapDispatchToProps() {
     return {
       loadDsList: actions.dataCatalog.dataSourceList.query,
+      reload: actions.router.reload,
     };
   }
 
   mergeProps(stateProps, dispatchProps, ownProps) {
     return {
-      ...ownProps,
       ...stateProps,
       ...dispatchProps,
-      reload: () => {
-        dispatchProps.loadDsList({ searchStr: stateProps.currentSearchStr });
-      },
+      ...ownProps,
     };
   }
-
-  build() {
-    return Utils.buildConnectedComponent({
-      Component: this.getComponent(),
-      mapStateToProps: this.mapStateToProps,
-      mapDispatchToProps: this.getMapDispatchToProps(),
-      mergeProps: this.mergeProps,
-    });
-  }
 }
-
-export default DataCatalogListActionsBuilder;

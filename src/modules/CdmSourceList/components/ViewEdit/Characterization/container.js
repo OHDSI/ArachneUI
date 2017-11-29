@@ -20,36 +20,38 @@
  *
  */
 
-import { Component, PropTypes } from 'react';
+import { Component } from 'react';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
-import actions from 'actions/index';
-import { characterizationStatuses, pollTime } from 'modules/CdmSourceList/const';
+import actions from 'actions';
+import {
+  characterizationStatuses,
+  pollTime,
+} from 'modules/CdmSourceList/const';
 import presenter from './presenter';
-import selectors from './selectors';
 
 class Characterization extends Component {
   componentWillMount() {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.isCharacterizationStarted !== nextProps.isCharacterizationStarted) {
-      if (this.poll) {
-        clearInterval(this.poll);
-      }
-      if (nextProps.isCharacterizationStarted) {
-        this.poll = setInterval(
-          this.props.loadCharacterization,
-          pollTime,
-          { datasourceId: nextProps.datasourceId }
-        );
-      }      
+    if (this.poll) {
+      clearInterval(this.poll);
+    }
+    if (nextProps.isCharacterizationStarted) {
+      this.poll = setInterval(
+        this.props.loadCharacterization,
+        pollTime,
+        { datasourceId: nextProps.datasourceId },
+      );
     }
   }
+
 
   componentWillUnmount() {
     if (this.poll) {
       clearInterval(this.poll);
+      this.props.clearState();
     }
   }
 
@@ -59,14 +61,15 @@ class Characterization extends Component {
 }
 
 function mapStateToProps(state) {
-  const datasourceId = get(state, 'cdmSourceList.dataSourceBusiness.data.id');
-  const characterizationStatus = get(state, 'cdmSourceList.characterization.data.content[0].status');
-  const characterizationSource = get(state, 'cdmSourceList.characterization.data.content[0].source');
-  const thisCharacterization = get(state, 'cdmSourceList.characterization.data.content[0].finished', null);
-  const prevCharacterization = get(state, 'cdmSourceList.characterization.data.content[1].finished', null);
-  const hasResults = get(state, 'cdmSourceList.achillesResults.data');
+  const datasourceId = get(state, 'cdmSourceList.dataSourceBusiness.queryResult.result.id');
+  const characterizationStatus = get(state, 'cdmSourceList.characterization.queryResult.result.content[0].status');
+  const characterizationSource = get(state, 'cdmSourceList.characterization.queryResult.result.content[0].source');
+  const thisCharacterization = get(state, 'cdmSourceList.characterization.queryResult.result.content[0].finished', null);
+  const prevCharacterization = get(state, 'cdmSourceList.characterization.queryResult.result.content[1].finished', null);
+  const hasResults = get(state, 'cdmSourceList.achillesResults.queryResult.result');
   const isCharacterizationStarted = characterizationStatus === characterizationStatuses.IN_PROGRESS
-    || get(state, 'cdmSourceList.characterization.isLoading', false);
+    || get(state, 'cdmSourceList.characterization.isLoading', false)
+    || get(state, 'cdmSourceList.achillesResults.isSaving', false);
 
   return {
     datasourceId,
@@ -78,10 +81,11 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  updateCharacterization: actions.cdmSourceList.characterization.update,
-  loadCharacterization: params => actions.cdmSourceList.characterization.load({ ...params, limit: 2 }),
-  loadResults: actions.cdmSourceList.achillesResults.load,
-  doImportResults: actions.cdmSourceList.achillesResults.update,
+  updateCharacterization: actions.cdmSourceList.characterization.create,
+  loadCharacterization: params => actions.cdmSourceList.characterization.query({ ...params }, { limit: 2 }),
+  loadResults: actions.cdmSourceList.achillesResults.query,
+  doImportResults: actions.cdmSourceList.achillesResults.create,
+  clearState: actions.cdmSourceList.characterization.reset,
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {

@@ -20,36 +20,16 @@
  *
  */
 
-import { Component } from 'react';
 import { connect } from 'react-redux';
 import actions from 'actions/index';
-import get from 'lodash/get';
-import selectors from './selectors';
-import presenter from './presenter';
+import SelectorsBuilder from './selectors';
+import Observations from './presenter';
 
-class Observations extends Component {
-  constructor() {
-    super();
-    this.initialZoomedConcept = null;
-    this.onZoom = this.onZoom.bind(this);
-  }
-
-  onZoom(concept) {
-    this.initialZoomedConcept = concept;
-  }
-
-  render() {
-    return presenter({
-      ...this.props,
-      onZoom: this.onZoom,
-      initialZoomedConcept: this.initialZoomedConcept,
-    });
-  }
-}
+const selectors = new SelectorsBuilder().build();
 
 function mapStateToProps(state) {
   const reportData = selectors.getReportData(state);
-  const details = get(state, 'dataCatalog.reportDetails.data.result');
+  const details = selectors.getReportDetails(state);
   const tableData = selectors.getTableData(state);
   const tableColumns = {
     id: 'Id',
@@ -63,7 +43,7 @@ function mapStateToProps(state) {
   };
 
   return {
-    conditions: reportData,
+    data: reportData,
     details,
     tableData,
     tableColumns,
@@ -74,19 +54,4 @@ const mapDispatchToProps = {
   loadDetails: params => actions.dataCatalog.reportDetails.find(params),
 };
 
-function mergeProps(stateProps, dispatchProps, ownProps) {
-  return {
-    ...stateProps,
-    ...dispatchProps,
-    ...ownProps,
-    loadConditionDetails: (conceptId) => {
-      dispatchProps.loadDetails({
-        id: ownProps.dataSourceId,
-        path: 'observations',
-        filename: `observation_${conceptId}.json`,
-      });
-    },
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(Observations);
+export default connect(mapStateToProps, mapDispatchToProps)(Observations);

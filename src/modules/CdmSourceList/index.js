@@ -21,14 +21,13 @@
  */
 
 import { combineReducers } from 'redux';
-import actions from './actions/index';
-import reducer from './reducers/index';
+import ducks from './ducks';
 import { paths, imgs } from './const';
 
 export default {
-  actions: () => actions,
+  actions: () => ducks.actions,
   routes: () => require('./routes').default(), // eslint-disable-line global-require
-  reducer: () => combineReducers(reducer),
+  reducer: () => combineReducers(ducks.reducer),
   sidebarElement: {
     ico: imgs.sidebarIco,
     name: 'CDM Data sources',

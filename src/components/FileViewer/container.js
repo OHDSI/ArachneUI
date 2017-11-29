@@ -33,7 +33,7 @@ class FileViewer extends Component {
       ...params.urlParams,
       query : {...params.queryParams, withContent: false},
     }).then((result) => {
-      if (!isMimeTypeFat(get(result, 'docType', '', 'String'))) {
+      if (!isMimeTypeFat(get(result, 'result.docType', '', 'String'))) {
         params.loadFile({
           ...params.urlParams,
           query : {...params.queryParams, withContent: true},

@@ -29,6 +29,9 @@ const attributeNames = keyMirror({
   modelType: null,
   cdmVersion: null,
   deleted: null,
+  targetSchema: null,
+  resultSchema: null,
+  cohortTargetTable: null,
 });
 
 const modelTypesValues = keyMirror({
@@ -125,6 +128,7 @@ const staticAttrList = [
     showInList: true,
     options: null,
     order: 0,
+    isRequired: true,
   },
   {
     label: 'Organization',
@@ -134,6 +138,7 @@ const staticAttrList = [
     showInList: true,
     options: null,
     order: 2,
+    isRequired: true,
   },
   {
     label: 'Model Type',
@@ -143,6 +148,7 @@ const staticAttrList = [
     showInList: true,
     options: modelTypes,
     order: 2,
+    isRequired: true,
   },
   {
     label: 'Version',
@@ -152,6 +158,8 @@ const staticAttrList = [
     showInList: true,
     options: cdmVersionList,
     order: 2,
+    isRequired: true,
+    cdmSpecific: true,
   },
   {
     label: 'Deleted At',
@@ -161,6 +169,37 @@ const staticAttrList = [
     showInList: false,
     options: null,
     calculated: true,
+    isRequired: true,
+  },
+  {
+    label: 'Target Schema',
+    name: attributeNames.targetSchema,
+    type: fieldTypes.string,
+    faceted: false,
+    showInList: false,
+    options: null,
+    order: 2,
+    cdmSpecific: true,
+  },
+  {
+    label: 'Result Schema',
+    name: attributeNames.resultSchema,
+    type: fieldTypes.string,
+    faceted: false,
+    showInList: false,
+    options: null,
+    order: 2,
+    cdmSpecific: true,
+  },
+  {
+    label: 'Cohort Target Table',
+    name: attributeNames.cohortTargetTable,
+    type: fieldTypes.string,
+    faceted: false,
+    showInList: false,
+    options: null,
+    order: 2,
+    cdmSpecific: true,
   },
 ];
 

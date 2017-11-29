@@ -112,7 +112,7 @@ const connectedAnalysisCode = connect(mapStateToProps, mapDispatchToProps)(Analy
 export default asyncConnect([{
   promise: ({ params, store: { dispatch } }) => {
     const fetchers = {
-      loadAnalysis: actions.analysisExecution.analysis.find.bind(null, params.analysisId),
+      loadAnalysis: actions.analysisExecution.analysis.find.bind(null, { id: params.analysisId }),
       loadAnalysisCode: actions.analysisExecution.analysisCode.find.bind(null, {
         analysisId: params.analysisId,
         analysisCodeId: params.analysisCodeId,

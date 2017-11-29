@@ -25,7 +25,7 @@ import BEMHelper from 'services/BemHelper';
 import {
   Panel,
 } from 'arachne-ui-components';
-import Table from 'modules/DataCatalog/components/ViewEdit/Report/Charts/Table';
+import Table from 'components/Charts/Table';
 
 require('./style.scss');
 

@@ -25,7 +25,7 @@ import { connect } from 'react-redux';
 import { reduxForm, reset as resetForm } from 'redux-form';
 import get from 'lodash/get';
 
-import actions from 'actions/index';
+import actions from 'actions';
 import { ModalUtils } from 'arachne-ui-components';
 import { modal, form } from 'modules/CdmSourceList/const';
 import presenter from './presenter';
@@ -36,7 +36,7 @@ class ModalCreateEdit extends Component {
     if (nextProps.dataSourceId !== this.props.dataSourceId) {
       if (nextProps.dataSourceId) {
         // If was selected editing of some Data Source - load its data
-        this.props.loadDataSource(nextProps.dataSourceId);
+        this.props.loadDataSource({id: nextProps.dataSourceId});
       } else {
         // Otherwise - clear form
         this.props.resetDataSource();
@@ -56,7 +56,7 @@ ModalCreateEdit.propTypes = {
 };
 
 function mapStateToProps(state) {
-  const dataSourceData = state.cdmSourceList.dataSource.data;
+  const dataSourceData = get(state, 'cdmSourceList.dataSource.queryResult.result', [], 'Array');
 
   return {
     dbmsTypeList: selectors.getDbmsTypeList(state),
@@ -72,13 +72,13 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  loadDataSource: actions.cdmSourceList.dataSource.load,
+  loadDataSource: actions.cdmSourceList.dataSource.query,
   resetDataSource: actions.cdmSourceList.dataSource.reset,
   createDataSource: actions.cdmSourceList.dataSource.create,
   updateDataSource: actions.cdmSourceList.dataSource.update,
   resetForm: () => resetForm(form.createDataSource),
   closeModal: () => ModalUtils.actions.toggle(modal.createDataSource, false),
-  loadDataSourceList: actions.cdmSourceList.dataSourceList.load,
+  loadDataSourceList: actions.cdmSourceList.dataSourceList.query,
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
@@ -88,13 +88,13 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...dispatchProps,
     doSubmit(data) {
       const submitPromise = stateProps.dataSourceId
-        ? dispatchProps.updateDataSource(stateProps.dataSourceId, data)
-        : dispatchProps.createDataSource(data);
+        ? dispatchProps.updateDataSource({id: stateProps.dataSourceId}, data)
+        : dispatchProps.createDataSource({}, data);
 
       submitPromise
         .then(() => dispatchProps.resetForm())
         .then(() => dispatchProps.closeModal())
-        .then(() => dispatchProps.loadDataSourceList(stateProps.currentListQuery))
+        .then(() => dispatchProps.loadDataSourceList({}, {query: stateProps.currentListQuery}))
         .catch(() => {});
 
       // We have to return a submission promise back to redux-form

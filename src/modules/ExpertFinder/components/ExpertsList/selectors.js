@@ -27,7 +27,7 @@ import { extractPaginationData } from 'components/Grid';
 import { viewModePageSize } from 'const/viewModes';
 
 const getRawProfessionalTypes = state => get(state, 'expertFinder.professionalTypes.queryResult.result') || [];
-const getFacets = state => get(state, 'expertFinder.expertsList.facets.queryResult.result') || [];
+const getFacets = state => get(state, 'expertFinder.expertsList.queryResult.result.facets') || [];
 
 const getFilterList = createSelector(
   [getRawProfessionalTypes, getFacets],
@@ -62,7 +62,7 @@ const getPaginationDetails = (state) => {
     numOfElsPerPage: viewModePageSize.DEFAULT,
     startsFromOne: true,
   });
-}
+};
 
 export default {
   getFilterList,
