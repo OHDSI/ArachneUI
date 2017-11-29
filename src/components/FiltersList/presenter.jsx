@@ -40,6 +40,8 @@ import difference from 'lodash/difference';
 
 require('./style.scss');
 
+const anyOptionValue = Symbol.for('anyOptionValue');
+
 function FilterFormSelect(props) {
   const {
     isMulti,
@@ -63,11 +65,13 @@ function FilterFormSelect(props) {
     onFocus={() => input.onFocus()}
     onBlur={() => input.onBlur()}
     onChange={(val) => {
-      const selectedValue = difference(val, input.value);
       let newValue = val;
-      // if selected 'Any' option
-      if (isMulti && selectedValue[0] === ' ') {
-        newValue = [];
+      if (isMulti) {
+        const isAnyOptionSelected = val.includes(anyOptionValue);
+        newValue = isAnyOptionSelected ? [] : val;
+      } else {
+        // whether 'Any' option selected
+        newValue = val === anyOptionValue ? null : val;
       }
       input.onChange(newValue);
     }}
@@ -156,7 +160,7 @@ function DropdownFilters({ classes, fields, clear, handleSubmit }) {
   fields.forEach((field) => {
     const options = [{
       label: 'Any',
-      value: field.isMulti ? ' ' : null,
+      value: anyOptionValue,
     }].concat(field.options);
     dropdownFields.push({
       // assure it's compatable with the form in FacetedSearch component
