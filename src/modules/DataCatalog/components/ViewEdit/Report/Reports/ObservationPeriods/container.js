@@ -34,7 +34,7 @@ function mapStateToProps(state) {
   const durationByAgeDecline = get(reportData, 'OBSERVATION_PERIOD_LENGTH_BY_AGE');
   const durationByYear = get(reportData, 'OBSERVED_BY_YEAR_HISTOGRAM');
   const observationsPerPerson = get(reportData, 'PERSON_PERIODS_DATA');
-  const rawObservationsByMonth = get(reportData, 'OBSERVED_BY_MONTH');
+  const observationsByMonth = get(reportData, 'OBSERVED_BY_MONTH');
 
   return {
     ageAtFirstObservation,
@@ -45,7 +45,7 @@ function mapStateToProps(state) {
     durationByAgeDecline,
     durationByYear,
     observationsPerPerson,
-    rawObservationsByMonth,
+    observationsByMonth,
   };
 }
 

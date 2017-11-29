@@ -20,52 +20,39 @@
  *
  */
 
-import TreemapReportBuilder from 'components/Reports/TreemapReport';
 import { connect } from 'react-redux';
 import actions from 'actions/index';
-import presenter from './presenter';
+import ConditionEra from './presenter';
 import SelectorsBuilder from './selectors';
 
 const selectors = new SelectorsBuilder().build();
 
-export default class ConditionEra extends TreemapReportBuilder {
-  constructor() {
-    super();
-    this.presenter = presenter;
-    this.filePath = 'conditioneras';
-  }
+function mapStateToProps(state) {
+  const reportData = selectors.getReportData(state);
+  const details = selectors.getReportDetails(state);
+  const tableData = selectors.getTableData(state);
+  const tableColumns = {
+    id: 'Id',
+    soc: 'SOC',
+    hlt: 'HLT',
+    hlgt: 'HLGT',
+    pt: 'PT',
+    snomed: 'SNOMED',
+    personCount: 'Persons',
+    prevalence: 'Prevalence',
+    lengthOfEra: 'Era length',
+  };
 
-  getFilename(conceptId) {
-    return `condition_${conceptId}.json`;
-  }
-
-  mapStateToProps(state) {
-    const reportData = selectors.getReportData(state);
-    const details = selectors.getReportDetails(state);
-    const tableData = selectors.getTableData(state);
-    const tableColumns = {
-      id: 'Id',
-      soc: 'SOC',
-      hlt: 'HLT',
-      hlgt: 'HLGT',
-      pt: 'PT',
-      snomed: 'SNOMED',
-      personCount: 'Persons',
-      prevalence: 'Prevalence',
-      lengthOfEra: 'Era length',
-    };
-
-    return {
-      conditions: reportData,
-      details,
-      tableData,
-      tableColumns,
-    };
-  }
-
-  getMapDispatchToProps() {
-    return {
-      loadDetails: params => actions.dataCatalog.reportDetails.find(params),
-    };
-  }
+  return {
+    conditions: reportData,
+    details,
+    tableData,
+    tableColumns,
+  };
 }
+
+const mapDispatchToProps = {
+  loadDetails: params => actions.dataCatalog.reportDetails.find(params),
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ConditionEra);

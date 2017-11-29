@@ -22,29 +22,13 @@
 
 import { connect } from 'react-redux';
 import get from 'lodash/get';
-import Person from './presenter';
-
-function getData(rawData) {
-  const data = [];
-  rawData.ATTRIBUTEVALUE.forEach((entity) => {
-    const row = entity.split(':');
-    data.push({
-      type: {
-        value: row[0],
-      },
-      message: {
-        value: row[1],
-      },
-    });
-  });
-
-  return data;
-}
+import { convertDataToHeelData } from 'components/Reports/converters';
+import Achillesheel from './presenter';
 
 function mapStateToProps(state) {
   const reportData = get(state, 'dataCatalog.report.data.result', {});
   const data = reportData.MESSAGES
-        ? getData(reportData.MESSAGES)
+        ? convertDataToHeelData(reportData.MESSAGES)
         : [];
 
   const columns = {
@@ -62,4 +46,4 @@ const mapDispatchToProps = {
 
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Person);
+export default connect(mapStateToProps, mapDispatchToProps)(Achillesheel);

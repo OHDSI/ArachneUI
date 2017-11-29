@@ -24,6 +24,7 @@
 
 .#{$namespace} {
 	&report-observations {
+		flex: 1;
 
 		&__chart {
 			margin-top: 2rem;

@@ -22,6 +22,7 @@
 
 import { TreemapSelectorsBuilder } from 'services/Utils';
 import { treemap } from '@ohdsi/atlascharts/dist/atlascharts.umd';
+import get from 'lodash/get';
 
 export default class SelectorsBuilder extends TreemapSelectorsBuilder {
   constructor() {
@@ -64,7 +65,10 @@ export default class SelectorsBuilder extends TreemapSelectorsBuilder {
 
   extractReportDetails(details) {
     return {
-
+      ageAtFirstOccurrence: get(details, 'AGE_AT_FIRST_OCCURRENCE', []),
+      durationByType: get(details, 'VISIT_DURATION_BY_TYPE', []),
+      conditionPrevalence: get(details, 'PREVALENCE_BY_GENDER_AGE_YEAR', []),
+      conditionByMonth: get(details, 'PREVALENCE_BY_MONTH', []),
     };
   }
 }

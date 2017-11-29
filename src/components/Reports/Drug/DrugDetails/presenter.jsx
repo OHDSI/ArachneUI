@@ -34,6 +34,7 @@ import {
 import { numberFormatter } from 'services/Utils';
 import * as d3 from 'd3';
 import { chartSettings, defaultTrellisSet } from 'modules/DataCatalog/const';
+import Chart from 'components/Reports/Chart';
 
 function DrugDetails(props) {
   const {
@@ -52,191 +53,149 @@ function DrugDetails(props) {
   return (
     <div {...classes({ extra: 'row' })}>
       <div className='col-xs-12'>
-        <Panel title='Drug Prevalence' {...classes('chart')}>
-          <div ref={(element) => {
-            if (element && drugPrevalence) {
-              const dimensions = element.getBoundingClientRect();
-              new trellisline().render(
-                drugPrevalence,
-                element,
-                dimensions.width,
-                dimensions.width/3,
-                {
-                  ...chartSettings,
-                  trellisSet: defaultTrellisSet,
-                  trellisLabel: 'Age Decile',
-                  seriesLabel: 'Year of Observation',
-                  yLabel: 'Prevalence Per 1000 People',
-                  xFormat: d3.timeFormat('%Y'),
-                  yFormat: d3.format('0.2f'),
-                  tickPadding: 20,
-                  colors: d3.scaleOrdinal()
-                    .domain(['MALE', 'FEMALE'])
-                    .range(['#1f77b4', '#ff7f0e'])
-                }
-              )
-            }
+        <Chart
+          title='Drug Prevalence'
+          isDataPresent={drugPrevalence}
+          render={({ width, element }) => {
+            new trellisline().render(
+              drugPrevalence,
+              element,
+              width,
+              width/3,
+              {
+                ...chartSettings,
+                trellisSet: defaultTrellisSet,
+                trellisLabel: 'Age Decile',
+                seriesLabel: 'Year of Observation',
+                yLabel: 'Prevalence Per 1000 People',
+                xFormat: d3.timeFormat('%Y'),
+                yFormat: d3.format('0.2f'),
+                tickPadding: 20,
+                colors: d3.scaleOrdinal()
+                  .domain(['MALE', 'FEMALE'])
+                  .range(['#1f77b4', '#ff7f0e'])
+              }
+            )
           }}
-          className={!drugPrevalence ? emptyClasses().className : ''}>
-            {!drugPrevalence &&
-              <span {...emptyClasses('text')}>No data</span>
-            }
-          </div>
-        </Panel>
+        />
       </div>
       <div className='col-xs-12'>
-        <Panel title='Drug exposure Prevalence by Month' {...classes('chart')}>
-          <div ref={(element) => {
-            if (element && exposureByMonth) {
-              const dimensions = element.getBoundingClientRect();
-              new line().render(
-                exposureByMonth,
-                element,
-                dimensions.width,
-                dimensions.width/3,
-                {
-                  ...chartSettings,
-                  yLabel: 'Prevalence per 1000 People',
-                  xLabel: 'Date',
-                  yFormat: d => numberFormatter.format(d, 'short'),
-                  xFormat: d3.timeFormat('%m/%Y'),
-                  tickFormat: d3.timeFormat('%Y'),
-                  xScale: d3.scaleTime().domain(d3.extent(exposureByMonth[0].values, d => d.xValue)),
-                }
-              );
-            }
+        <Chart
+          title='Drug exposure Prevalence by Month'
+          isDataPresent={exposureByMonth}
+          render={({ width, element }) => {
+            new line().render(
+              exposureByMonth,
+              element,
+              width,
+              width/3,
+              {
+                ...chartSettings,
+                yLabel: 'Prevalence per 1000 People',
+                xLabel: 'Date',
+                yFormat: d => numberFormatter.format(d, 'short'),
+                xFormat: d3.timeFormat('%m/%Y'),
+                tickFormat: d3.timeFormat('%Y'),
+                xScale: d3.scaleTime().domain(d3.extent(exposureByMonth[0].values, d => d.xValue)),
+              }
+            );
           }}
-          className={!exposureByMonth ? emptyClasses().className : ''}>
-            {!exposureByMonth &&
-              <span {...emptyClasses('text')}>No data</span>
-            }
-          </div>
-        </Panel>
+        />
       </div>
       <div className='col-xs-6'>
-        <Panel title='Age at First exposure' {...classes('chart')}>
-          <div ref={(element) => {
-            if (element && ageOfFirstExposure) {
-              const dimensions = element.getBoundingClientRect();
-              new boxplot().render(
-                ageOfFirstExposure,
-                element,
-                dimensions.width,
-                dimensions.width/2,
-                {
-                  ...chartSettings,
-                  xLabel: 'Age at first exposure',
-                  yLabel: 'Gender',
-                  yFormat: d => numberFormatter.format(d, 'short')
-                }
-              );
-            }
+        <Chart
+          title='Age at First exposure'
+          isDataPresent={ageOfFirstExposure}
+          render={({ width, element }) => {
+            new boxplot().render(
+              ageOfFirstExposure,
+              element,
+              width,
+              width/2,
+              {
+                ...chartSettings,
+                xLabel: 'Age at first exposure',
+                yLabel: 'Gender',
+                yFormat: d => numberFormatter.format(d, 'short')
+              }
+            );
           }}
-          className={!ageOfFirstExposure ? emptyClasses().className : ''}>
-            {!ageOfFirstExposure &&
-              <span {...emptyClasses('text')}>No data</span>
-            } 
-          </div>
-        </Panel>
+        />
       </div>
       <div className='col-xs-6'>
-        <Panel title='Days supply' {...classes('chart')}>
-          <div ref={(element) => {
-            if (element && daysSupplyDistribution) {
-              const dimensions = element.getBoundingClientRect();
-              new boxplot().render(
-                daysSupplyDistribution,
-                element,
-                dimensions.width,
-                dimensions.width/2,
-                {
-                  ...chartSettings,
-                  xLabel: 'Days supply',
-                  yLabel: 'Days',
-                  yFormat: d => numberFormatter.format(d, 'short')
-                }
-              );
-            }
+        <Chart
+          title='Days supply'
+          isDataPresent={daysSupplyDistribution}
+          render={({ width, element }) => {
+            new boxplot().render(
+              daysSupplyDistribution,
+              element,
+              width,
+              width/2,
+              {
+                ...chartSettings,
+                xLabel: 'Days supply',
+                yLabel: 'Days',
+                yFormat: d => numberFormatter.format(d, 'short')
+              }
+            );
           }}
-          className={!daysSupplyDistribution ? emptyClasses().className : ''}>
-            {!daysSupplyDistribution &&
-              <span {...emptyClasses('text')}>No data</span>
-            } 
-          </div>
-        </Panel>
+        />
       </div>      
       <div className='col-xs-6'>
-        <Panel title='Quantity' {...classes('chart')}>
-          <div ref={(element) => {
-            if (element && quantity) {
-              const dimensions = element.getBoundingClientRect();
-              new boxplot().render(
-                quantity,
-                element,
-                dimensions.width,
-                dimensions.width/2,
-                {
-                  ...chartSettings,
-                  xLabel: 'Quantity',
-                  yLabel: 'Quantity',
-                  yFormat: d => numberFormatter.format(d, 'short')
-                }
-              );
-            }
+        <Chart
+          title='Quantity'
+          isDataPresent={quantity}
+          render={({ width, element }) => {
+            new boxplot().render(
+              quantity,
+              element,
+              width,
+              width/2,
+              {
+                ...chartSettings,
+                xLabel: 'Quantity',
+                yLabel: 'Quantity',
+                yFormat: d => numberFormatter.format(d, 'short')
+              }
+            );
           }}
-          className={!quantity ? emptyClasses().className : ''}>
-            {!quantity &&
-              <span {...emptyClasses('text')}>No data</span>
-            } 
-          </div>
-        </Panel>
+        />
       </div>
       <div className='col-xs-6'>
-        <Panel title='Refills' {...classes('chart')}>
-          <div ref={(element) => {
-            if (element && refills) {
-              const dimensions = element.getBoundingClientRect();
-              new boxplot().render(
-                refills,
-                element,
-                dimensions.width,
-                dimensions.width/2,
-                {
-                  ...chartSettings,
-                  xLabel: 'Age at first diagnosis',
-                  yLabel: 'Gender',
-                  yFormat: d => numberFormatter.format(d, 'short')
-                }
-              );
-            }
+        <Chart
+          title='Refills'
+          isDataPresent={refills}
+          render={({ width, element }) => {
+            new boxplot().render(
+              refills,
+              element,
+              width,
+              width/2,
+              {
+                ...chartSettings,
+                xLabel: 'Age at first diagnosis',
+                yLabel: 'Gender',
+                yFormat: d => numberFormatter.format(d, 'short')
+              }
+            );
           }}
-          className={!refills ? emptyClasses().className : ''}>
-            {!refills &&
-              <span {...emptyClasses('text')}>No data</span>
-            } 
-          </div>
-        </Panel>
+        />
       </div>      
       <div className='col-xs-6'>
-        <Panel title='Age at First exposure' {...classes('chart')}>
-          <div ref={(element) => {
-            if (element && drugsByType) {
-              const dimensions = element.getBoundingClientRect();
-              new donut().render(
-                drugsByType,
-                element,
-                dimensions.width,
-                dimensions.width*0.75,
-                chartSettings,
-              );
-            }
+        <Chart
+          title='Age at First exposure'
+          isDataPresent={drugsByType}
+          render={({ width, element }) => {
+            new donut().render(
+              drugsByType,
+              element,
+              width,
+              width*0.75,
+              chartSettings,
+            );
           }}
-          className={!drugsByType ? emptyClasses().className : ''}>
-            {!drugsByType &&
-              <span {...emptyClasses('text')}>No data</span>
-            } 
-          </div>
-        </Panel>
+        />
       </div>
     </div>
   );

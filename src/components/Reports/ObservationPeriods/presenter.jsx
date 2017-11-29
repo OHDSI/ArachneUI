@@ -34,6 +34,7 @@ import {
 import { numberFormatter } from 'services/Utils';
 import * as d3 from 'd3';
 import { chartSettings } from 'modules/DataCatalog/const';
+import Chart from 'components/Reports/Chart';
 
 require('./style.scss');
 
@@ -55,245 +56,191 @@ function ObservationPeriods(props) {
   return (  
     <div {...classes({ extra: 'row' })}>
       <div className='col-xs-8'>
-        <Panel title='Age at First Observation' {...classes('chart')}>
-          <div ref={(element) => {
-            if (element && ageAtFirstObservation) {
-              const dimensions = element.getBoundingClientRect();
-              new histogram().render(
-                histogram.mapHistogram(ageAtFirstObservation),
-                element,
-                dimensions.width,
-                dimensions.width/3,
-                {
-                  ...chartSettings,
-                  xLabel: 'Age',
-                  yLabel: 'People',
-                  yFormat: d => numberFormatter.format(d, 'short')
-                }
-              );
-            }
+        <Chart
+          title='Age at First Observation'
+          isDataPresent={ageAtFirstObservation}
+          render={({ width, element }) => {
+            new histogram().render(
+              histogram.mapHistogram(ageAtFirstObservation),
+              element,
+              width,
+              width/3,
+              {
+                ...chartSettings,
+                xLabel: 'Age',
+                yLabel: 'People',
+                yFormat: d => numberFormatter.format(d, 'short')
+              }
+            );
           }}
-          className={!ageAtFirstObservation ? emptyClasses().className : ''}>
-            {!ageAtFirstObservation &&
-              <span {...emptyClasses('text')}>No data</span>
-            }
-          </div>
-        </Panel>
+        />
       </div>
       <div className='col-xs-4'>
-        <Panel title='Age by Gender' {...classes('chart')}>
-          <div ref={(element) => {
-            if (element && ageByGender) {
-              const dimensions = element.getBoundingClientRect();
-              new boxplot().render(
-                ageByGender,
-                element,
-                dimensions.width, // Scrollbar width
-                dimensions.width/2,
-                {
-                  ...chartSettings,
-                  xLabel: 'Gender',
-                  yLabel: 'Age',
-                  yFormat: d => numberFormatter.format(d, 'short')
-                }
-              );
-            }
+        <Chart
+          title='Age by Gender'
+          isDataPresent={ageByGender}
+          render={({ width, element }) => {
+            new boxplot().render(
+              ageByGender,
+              element,
+              width, // Scrollbar width
+              width/2,
+              {
+                ...chartSettings,
+                xLabel: 'Gender',
+                yLabel: 'Age',
+                yFormat: d => numberFormatter.format(d, 'short')
+              }
+            );
           }}
-          className={!ageByGender ? emptyClasses().className : ''}>
-            {!ageByGender &&
-              <span {...emptyClasses('text')}>No data</span>
-            }
-          </div>
-        </Panel>
+        />
       </div>
       <div className='col-xs-8'>
-        <Panel title='Observation length' {...classes('chart')}>
-          <div ref={(element) => {
-            if (element && observationLength) {
-              const dimensions = element.getBoundingClientRect();
-              new histogram().render(
-                histogram.mapHistogram(observationLength),
-                element,
-                dimensions.width,
-                dimensions.width/3,
-                {
-                  ...chartSettings,
-                  xLabel: 'Days',
-                  yLabel: 'People',
-                  yFormat: d => numberFormatter.format(d, 'short')
-                }
-              );
-            }
+        <Chart
+          title='Observation length'
+          isDataPresent={observationLength}
+          render={({ width, element }) => {
+            new histogram().render(
+              histogram.mapHistogram(observationLength),
+              element,
+              width,
+              width/3,
+              {
+                ...chartSettings,
+                xLabel: 'Days',
+                yLabel: 'People',
+                yFormat: d => numberFormatter.format(d, 'short')
+              }
+            );
           }}
-          className={!observationLength ? emptyClasses().className : ''}>
-            {!observationLength &&
-              <span {...emptyClasses('text')}>No data</span>
-            }
-          </div>
-        </Panel>
+        />
       </div>
       <div className='col-xs-4'>
-        <Panel title='Duration by Gender' {...classes('chart')}>
-          <div ref={(element) => {
-            if (element && durationByGender) {
-              const dimensions = element.getBoundingClientRect();
-              new boxplot().render(
-                durationByGender,
-                element,
-                dimensions.width, // Scrollbar width
-                dimensions.width/2,
-                {
-                  ...chartSettings,
-                  xLabel: 'Gender',
-                  yLabel: 'Days',
-                  yFormat: d => numberFormatter.format(d, 'short')
-                }
-              );
-            }
+        <Chart
+          title='Duration by Gender'
+          isDataPresent={durationByGender}
+          render={({ width, element }) => {
+            new boxplot().render(
+              durationByGender,
+              element,
+              width, // Scrollbar width
+              width/2,
+              {
+                ...chartSettings,
+                xLabel: 'Gender',
+                yLabel: 'Days',
+                yFormat: d => numberFormatter.format(d, 'short')
+              }
+            );
           }}
-          className={!durationByGender ? emptyClasses().className : ''}>
-            {!durationByGender &&
-              <span {...emptyClasses('text')}>No data</span>
-            }
-          </div>
-        </Panel>
+        />
       </div>
       <div className='col-xs-6'>
-        <Panel title='Cumulative observation' {...classes('chart')}>
-          <div ref={(element) => {
-            if (element && cumulativeObservation) {
-              const dimensions = element.getBoundingClientRect();
-              new line().render(
-                cumulativeObservation,
-                element,
-                dimensions.width, // Scrollbar width
-                dimensions.width/2,
-                {
-                  ...chartSettings,
-                  yValue: 'Y_PERCENT_PERSONS',
-                  xValue: 'X_LENGTH_OF_OBSERVATION',
-                  yLabel: 'Percent of population',
-                  xLabel: 'Days',
-                  yFormat: d => numberFormatter.format(d, 'short')
-                }
-              );
-            }
+        <Chart
+          title='Cumulative observation'
+          isDataPresent={cumulativeObservation}
+          render={({ width, element }) => {
+            new line().render(
+              cumulativeObservation,
+              element,
+              width, // Scrollbar width
+              width/2,
+              {
+                ...chartSettings,
+                yValue: 'Y_PERCENT_PERSONS',
+                xValue: 'X_LENGTH_OF_OBSERVATION',
+                yLabel: 'Percent of population',
+                xLabel: 'Days',
+                yFormat: d => numberFormatter.format(d, 'short')
+              }
+            );
           }}
-          className={!cumulativeObservation ? emptyClasses().className : ''}>
-            {!cumulativeObservation &&
-              <span {...emptyClasses('text')}>No data</span>
-            }
-          </div>
-        </Panel>
+        />
       </div>
       <div className='col-xs-6'>
-        <Panel title='Duration by age decline' {...classes('chart')}>
-          <div ref={(element) => {
-            if (element && durationByAgeDecline) {
-              const dimensions = element.getBoundingClientRect();
-              new boxplot().render(
-                durationByAgeDecline,
-                element,
-                dimensions.width, // Scrollbar width
-                dimensions.width/2,
-                {
-                  ...chartSettings,
-                  xLabel: 'Gender',
-                  yLabel: 'Days',
-                  yFormat: d => numberFormatter.format(d, 'short')
-                }
-              );
-            }
+        <Chart
+          title='Duration by age decline'
+          isDataPresent={durationByAgeDecline}
+          render={({ width, element }) => {
+            new boxplot().render(
+              durationByAgeDecline,
+              element,
+              width, // Scrollbar width
+              width/2,
+              {
+                ...chartSettings,
+                xLabel: 'Gender',
+                yLabel: 'Days',
+                yFormat: d => numberFormatter.format(d, 'short')
+              }
+            );
           }}
-          className={!durationByAgeDecline ? emptyClasses().className : ''}>
-            {!durationByAgeDecline &&
-              <span {...emptyClasses('text')}>No data</span>
-            }
-          </div>
-        </Panel>
+        />
       </div>
       <div className='col-xs-8'>
-        <Panel title='Persons With Continuous Observation By Year' {...classes('chart')}>
-          <div ref={(element) => {
-            if (element && durationByYear) {
-              const dimensions = element.getBoundingClientRect();
-              new histogram().render(
-                histogram.mapHistogram(durationByYear),
-                element,
-                dimensions.width, // Scrollbar width
-                dimensions.width/3,
-                {
-                  ...chartSettings,
-                  xFormat: d3.timeFormat('%Y'),
-                  xLabel: 'Year',
-                  yLabel: 'People',
-                  yFormat: d => numberFormatter.format(d, 'short')
-                }
-              );
-            }
+        <Chart
+          title='Persons With Continuous Observation By Year'
+          isDataPresent={durationByYear}
+          render={({ width, element }) => {
+            new histogram().render(
+              histogram.mapHistogram(durationByYear),
+              element,
+              width, // Scrollbar width
+              width/3,
+              {
+                ...chartSettings,
+                xFormat: d3.timeFormat('%Y'),
+                xLabel: 'Year',
+                yLabel: 'People',
+                yFormat: d => numberFormatter.format(d, 'short')
+              }
+            );
           }}
-          className={!durationByYear ? emptyClasses().className : ''}>
-            {!durationByYear &&
-              <span {...emptyClasses('text')}>No data</span>
-            }
-          </div>
-        </Panel>
+        />
       </div>
       <div className='col-xs-4'>
-        <Panel title='Observation Periods per Person' {...classes('chart')}>
-          <div ref={(element) => {
-            if (element && observationsPerPerson) {
-              const dimensions = element.getBoundingClientRect();
-              new donut().render(
-                observationsPerPerson,
-                element,
-                dimensions.width, // Scrollbar width
-                dimensions.width/2,
-                chartSettings,
-              );
-            }
+        <Chart
+          title='Observation Periods per Person'
+          isDataPresent={observationsPerPerson}
+          render={({ width, element }) => {
+            new donut().render(
+              observationsPerPerson,
+              element,
+              width, // Scrollbar width
+              width/2,
+              chartSettings,
+            );
           }}
-          className={!observationsPerPerson ? emptyClasses().className : ''}>
-            {!observationsPerPerson &&
-              <span {...emptyClasses('text')}>No data</span>
-            }
-          </div>
-        </Panel>
+        />
       </div>
       <div className='col-xs-12'>
-        <Panel title='Persons With Continuous Observation By Month' {...classes('chart')}>
-          <div ref={(element) => {
-            if (element && observationsByMonth) {
-              const dimensions = element.getBoundingClientRect();
-              new line().render(
-                observationsByMonth,
-                element,
-                dimensions.width,
-                dimensions.width/4,
-                {
-                  ...chartSettings,
-                  xScale: d3.scaleLinear().domain(
-                    d3.extent(
-                      observationsByMonth[0].values,
-                      d => d.xValue
-                    )
-                  ),
-                  ticks: 10,
-                  xLabel: 'Date',
-                  yLabel: 'People',                  
-                  xFormat: d3.timeFormat('%m/%Y'),
-                  tickFormat: d3.timeFormat('%Y'),
-                  yFormat: d => numberFormatter.format(d, 'short')
-                }
-              );
-            }
+        <Chart
+          title='Persons With Continuous Observation By Month'
+          isDataPresent={observationsByMonth}
+          render={({ width, element }) => {
+            new line().render(
+              observationsByMonth,
+              element,
+              width,
+              width/4,
+              {
+                ...chartSettings,
+                xScale: d3.scaleLinear().domain(
+                  d3.extent(
+                    observationsByMonth[0].values,
+                    d => d.xValue
+                  )
+                ),
+                ticks: 10,
+                xLabel: 'Date',
+                yLabel: 'People',                  
+                xFormat: d3.timeFormat('%m/%Y'),
+                tickFormat: d3.timeFormat('%Y'),
+                yFormat: d => numberFormatter.format(d, 'short')
+              }
+            );
           }}
-          className={!observationsByMonth ? emptyClasses().className : ''}>
-            {!observationsByMonth &&
-              <span {...emptyClasses('text')}>No data</span>
-            }
-          </div>
-        </Panel>
+        />
       </div>
     </div>
   );

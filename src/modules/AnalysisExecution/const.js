@@ -70,6 +70,7 @@ const paths = {
 function importEntityPathByType(type){
   switch (type) {
     case 'COHORT': return 'cohorts';
+    case 'COHORT_CHARACTERIZATION': return 'cohorts';
     case 'ESTIMATION': return 'estimations';
     case 'PREDICTION': return 'predictions';
     default: return '';
@@ -169,17 +170,24 @@ const submissionActionTypes = keyMirror({
   PUBLISH: null,
 });
 
-const importableAnalysisTypes = ['COHORT', 'ESTIMATION', 'PREDICTION'];
+const importableAnalysisTypes = ['COHORT', 'ESTIMATION', 'PREDICTION', 'COHORT_CHARACTERIZATION'];
 const analysisTypeNames = {
   COHORT: 'cohort',
-  ESTIMATION: 'estimation',
-  PREDICTION: 'prediction',
+  ESTIMATION: 'PLE analysis',
+  PREDICTION: 'PLP analysis',
+  COHORT_CHARACTERIZATION: 'cohort characterization',
 };
-function nameAnalysisType(analysisType, capitalize = false) {
-  if (!(analysisType in analysisTypeNames)) {
+const pluralAnalysisTypeNames = {
+  COHORT: 'cohorts',
+  ESTIMATION: 'PLE analyses',
+  PREDICTION: 'PLP analyses',
+};
+function nameAnalysisType({ analysisType, capitalize = false, plural = false }) {
+  const typeNames = plural ? pluralAnalysisTypeNames : analysisTypeNames;
+  if (!(analysisType in typeNames)) {
     return '';
   }
-  let name = analysisTypeNames[analysisType];
+  let name = typeNames[analysisType];
   if (capitalize) {
     name = `${name.substr(0, 1).toUpperCase()}${name.substr(1)}`;
   }

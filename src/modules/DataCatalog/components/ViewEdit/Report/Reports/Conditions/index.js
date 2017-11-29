@@ -20,6 +20,6 @@
  *
  */
 
-import ConditionsBuilder from './container';
+import Conditions from './container';
 
-export default new ConditionsBuilder().build();
+export default Conditions;
