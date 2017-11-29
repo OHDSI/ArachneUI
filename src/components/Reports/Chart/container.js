@@ -109,8 +109,8 @@ class Chart extends Component {
       img.onload = () => {
         // Now that the image has loaded, put the image into a canvas element.
         const canvas = d3.select(this.container).append('canvas').node();
-        canvas.width = this.width;
-        canvas.height = this.height;
+        canvas.width = img.width;
+        canvas.height = img.height;
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0);
         let canvasUrl;
