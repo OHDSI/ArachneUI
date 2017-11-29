@@ -175,12 +175,13 @@ const analysisTypeNames = {
   COHORT: 'cohort',
   ESTIMATION: 'PLE analysis',
   PREDICTION: 'PLP analysis',
-  COHORT_CHARACTERIZATION: 'cohort characterization',
+  COHORT_CHARACTERIZATION: 'cohort',
 };
 const pluralAnalysisTypeNames = {
   COHORT: 'cohorts',
   ESTIMATION: 'PLE analyses',
   PREDICTION: 'PLP analyses',
+  COHORT_CHARACTERIZATION: 'cohorts',
 };
 function nameAnalysisType({ analysisType, capitalize = false, plural = false }) {
   const typeNames = plural ? pluralAnalysisTypeNames : analysisTypeNames;
