@@ -16,14 +16,21 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: September 25, 2017
+ * Created: November 24, 2017
  *
  */
 
-import ReducerFactory from 'services/ReducerFactory';
-import { actionTypes } from 'modules/CdmSourceList/const';
+import Duck from 'services/Duck';
+import { apiPaths } from '../const';
 
-export default new ReducerFactory()
-  .setRequestAction(actionTypes.REQUEST_ACHILLES_RESULTS)
-  .setReceiveAction(actionTypes.UPDATE_ACHILLES_RESULTS)
-  .build();
+const coreName = 'CSL_DS_LIST';
+
+const dataSourceList = new Duck({
+  name: coreName,
+  urlBuilder: apiPaths.dataSources,
+});
+
+export default {
+  actions: dataSourceList.actions,
+  reducer: dataSourceList.reducer,
+};

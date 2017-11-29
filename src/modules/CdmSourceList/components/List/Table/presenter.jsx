@@ -30,22 +30,6 @@ import { healthStatuses } from 'const/dataSource';
 
 require('./style.scss');
 
-/* const numFormatter = (value) => {
-	const million = Math.pow(10, 6);
-	const thousand = Math.pow(10, 3);
-	let formattedVal = value;
-
-	if (value > million) {
-		formattedVal =  (value/million);
-		Math.round(formattedVal) !== formattedVal	&& (formattedVal = formattedVal.toFixed(1));
-		formattedVal += ' million';
-	}
-	else if (value > thousand) {
-		formattedVal = Math.floor(value/thousand) + ' thousand';
-	}
-	return formattedVal;
-}*/
-
 function CellRegistered({ value }) {
   const classes = new BEMHelper('data-source-list-cell-registered');
   const isRegistered = value;
@@ -70,14 +54,14 @@ function CellRegister({ isRegistered, onClick }) {
           label="Edit metadata"
           onClick={onClick}
         />
-				:
+        :
         <Button
           {...classes('btn')}
           mods={['submit', 'rounded']}
           label="Register"
           onClick={onClick}
         />
-			}
+      }
     </div>
   );
 }
@@ -101,26 +85,26 @@ function CellName({ value, healthStatus }) {
   const classes = new BEMHelper('ds-name');
   return <div {...classes()}>
     <div {...classes({
-        element: 'indicator',
-        modifiers: [healthStatus.title],
-        extra: 'ac-tooltip',
-      })}
-      aria-label={healthStatuses.getTitle(healthStatus.title)}
-      data-tootik-conf="right"
-      ></div>
-      {value}
+      element: 'indicator',
+      modifiers: [healthStatus.title],
+      extra: 'ac-tooltip',
+    })}
+         aria-label={healthStatuses.getTitle(healthStatus.title)}
+         data-tootik-conf="right"
+    ></div>
+    {value}
   </div>;
 }
 
 function DataSourceTable(props) {
   const tableClasses = new BEMHelper('data-source-list-table');
   const {
-  	dataSourceList,
-  	editDataSource,
+    dataSourceList,
+    editDataSource,
     remove,
-  	goToDataSource,
-		setSearch,
-		sorting,
+    goToDataSource,
+    setSearch,
+    sorting,
   } = props;
 
   return (
@@ -166,18 +150,18 @@ function DataSourceTable(props) {
       <CellRegister
         {...tableClasses('register')}
         props={
-					entity => ({
-  isRegistered: entity.isRegistered,
-  onClick: () => goToDataSource(entity.id),
-})
-				}
+          entity => ({
+            isRegistered: entity.isRegistered,
+            onClick: () => goToDataSource(entity.id),
+          })
+        }
       />
       <CellEdit
         {...tableClasses('edit')}
         field="id"
         editDataSource={editDataSource}
         removeDataSource={remove}
-        props={ entity => ({ isRegistered: entity.isRegistered })}
+        props={entity => ({ isRegistered: entity.isRegistered })}
       />
     </Table>
   );

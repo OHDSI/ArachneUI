@@ -16,14 +16,21 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: June 14, 2017
+ * Created: November 24, 2017
  *
  */
 
-import ReducerFactory from 'services/ReducerFactory';
-import { actionTypes } from '../const';
+import Duck from 'services/Duck';
+import { apiPaths } from '../const';
 
-export default new ReducerFactory()
-  .setRequestAction(actionTypes.REQUEST_CDM_CHARACTERIZATION)
-  .setReceiveAction(actionTypes.RECEIVE_CDM_CHARACTERIZATION)
-  .build();
+const coreName = 'CSL_DS_BUSINESS';
+
+const dsBusiness = new Duck({
+  name: coreName,
+  urlBuilder: apiPaths.dataSourceBusiness,
+});
+
+export default {
+  actions: dsBusiness.actions,
+  reducer: dsBusiness.reducer,
+};
