@@ -16,54 +16,21 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: April 21, 2017
+ * Created: November 24, 2017
  *
  */
 
-import api from 'services/Api';
-import errors from 'const/errors';
-import { apiPaths, actionTypes } from 'modules/CdmSourceList/const';
-import { validators } from 'services/Utils';
+import Duck from 'services/Duck';
+import { apiPaths } from '../const';
 
-// private
+const coreName = 'CSL_ACHILLES_RESULTS';
 
-function requestNode() {
-  return {
-    type: actionTypes.REQUEST_DATA_NODE,
-  };
-}
-
-function receiveNode(dataNode) {
-  return {
-    type: actionTypes.RECEIVE_DATA_NODE,
-    payload: dataNode,
-  };
-}
-
-// public
-
-function create(data) {
-  return () => api.doPost(
-      apiPaths.dataNode(),
-      data,
-      (res) => {
-        validators.checkValidationError(res);
-      }
-    );
-}
-
-function load() {
-  return (dispatch) => api.doGet(
-    apiPaths.dataNode(),
-    (res) => {
-      if (res.errorCode !== errors.NO_ERROR) {
-        throw 'Not found';
-      }
-    }
-  );
-}
+const achillesResults = new Duck({
+  name: coreName,
+  urlBuilder: apiPaths.achillesResults,
+});
 
 export default {
-  create,
-  load,
+  actions: achillesResults.actions,
+  reducer: achillesResults.reducer,
 };

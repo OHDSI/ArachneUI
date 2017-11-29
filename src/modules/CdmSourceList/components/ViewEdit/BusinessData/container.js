@@ -24,7 +24,7 @@ import { reduxForm } from 'redux-form';
 import { push as goToPage } from 'react-router-redux';
 import { Utils, get } from 'services/Utils';
 
-import actions from 'actions/index';
+import actions from 'actions';
 import {
   form,
   paths
@@ -55,10 +55,10 @@ class CdmSourceListViewEditBusinessDataBuilder {
 
   getMapDispatchToProps() {
     return {
-      load: actions.cdmSourceList.dataSourceBusiness.load,
-      register: actions.cdmSourceList.dataSourceBusiness.register,
+      load: actions.cdmSourceList.dataSourceBusiness.query,
+      register: actions.cdmSourceList.register,
       update: actions.cdmSourceList.dataSourceBusiness.update,
-      unregisterAtCentral: actions.cdmSourceList.dataSourceBusiness.unregisterAtCentral,
+      unregisterAtCentral: actions.cdmSourceList.unRegister,
       goToPage,
     };
   }
@@ -70,8 +70,8 @@ class CdmSourceListViewEditBusinessDataBuilder {
       ...dispatchProps,
       doSubmit(data) {
         const submitPromise = stateProps.isRegistered
-          ? dispatchProps.update(stateProps.id, data)
-          : dispatchProps.register(stateProps.id, data);
+          ? dispatchProps.update({id: stateProps.id}, data)
+          : dispatchProps.register({id: stateProps.id}, data);
 
         submitPromise
           .then(() => dispatchProps.goToPage(paths.dataSources()))
@@ -81,8 +81,8 @@ class CdmSourceListViewEditBusinessDataBuilder {
       },
       unregisterAtCentral: () => {
         const id = stateProps.id;
-        dispatchProps.unregisterAtCentral(id)
-          .then(() => dispatchProps.load(id))
+        dispatchProps.unregisterAtCentral({id})
+          .then(() => dispatchProps.load({id}))
           .catch(() => {});
       },
     };

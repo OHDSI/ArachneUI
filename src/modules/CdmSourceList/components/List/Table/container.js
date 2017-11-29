@@ -24,7 +24,7 @@ import { connect } from 'react-redux';
 import { push as goToPage } from 'react-router-redux';
 import { ModalUtils } from 'arachne-ui-components';
 import { modal, paths } from 'modules/CdmSourceList/const';
-import actions from 'actions/index';
+import actions from 'actions';
 import Table from './presenter';
 import selectors from './selectors';
 
@@ -46,10 +46,10 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = {
   editDataSource: id => ModalUtils.actions.toggle(modal.createDataSource, true, { id }),
-  remove: actions.cdmSourceList.dataSource.remove,
+  remove: actions.cdmSourceList.dataSource.delete,
   goToDataSource: id => goToPage(paths.dataSources(id)),
   setSearch: actions.router.setSearch,
-  loadList: actions.cdmSourceList.dataSourceList.load
+  loadList: actions.cdmSourceList.dataSourceList.query
 };
 
 function mergeProps(state, dispatch, ownProps) {
@@ -59,8 +59,8 @@ function mergeProps(state, dispatch, ownProps) {
     ...dispatch,
     ...ownProps,
     remove(id) {
-      dispatch.remove(id).then(function () {
-        dispatch.loadList(state.query);
+      dispatch.remove({ id }).then(function () {
+        dispatch.loadList({}, { query: state.query });
       })
     }
   };

@@ -24,7 +24,7 @@ import { createSelector } from 'reselect';
 import get from 'lodash/get';
 
 const getDbmsTypeList = state => get(state, 'cdmSourceList.dbmsTypes.queryResult', [], 'Array');
-const getRawDataSourceList = state => get(state, 'cdmSourceList.dataSourceList.data') || [];
+const getRawDataSourceList = state => get(state, 'cdmSourceList.dataSourceList.queryResult.result', [], 'Array');
 
 const getDataSourceList = createSelector(
   [getRawDataSourceList, getDbmsTypeList],
