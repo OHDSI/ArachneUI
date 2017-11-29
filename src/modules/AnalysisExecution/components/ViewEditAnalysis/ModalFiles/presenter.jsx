@@ -76,6 +76,7 @@ function ModalFiles(props) {
     filesCount,
     filterText,
     filter,
+    canDownload,
   } = props;
   const fuseSearch = new Fuse(fileList, {
     ...searchSettings,
@@ -125,7 +126,7 @@ function ModalFiles(props) {
         }
         {filesCount !== 0 &&
           <div {...classes('actions')}>
-            {fileList.length > 0 
+            {canDownload 
               ? <Button
                 {...classes('btn')}
                 mods={['success', 'rounded']}
