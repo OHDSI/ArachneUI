@@ -73,7 +73,7 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = {
   loadDataSource: actions.cdmSourceList.dataSource.query,
-  resetDataSource: actions.cdmSourceList.dataSource.reset,
+  resetDataSource: () => actions.cdmSourceList.dataSource.reset,
   createDataSource: actions.cdmSourceList.dataSource.create,
   updateDataSource: actions.cdmSourceList.dataSource.update,
   resetForm: () => resetForm(form.createDataSource),

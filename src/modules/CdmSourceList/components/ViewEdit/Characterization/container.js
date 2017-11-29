@@ -85,7 +85,7 @@ const mapDispatchToProps = {
   loadCharacterization: params => actions.cdmSourceList.characterization.query({ ...params }, { limit: 2 }),
   loadResults: actions.cdmSourceList.achillesResults.query,
   doImportResults: actions.cdmSourceList.achillesResults.create,
-  clearState: actions.cdmSourceList.characterization.reset,
+  clearState: () => actions.cdmSourceList.characterization.reset,
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
