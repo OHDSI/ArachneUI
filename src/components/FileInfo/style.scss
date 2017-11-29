@@ -57,6 +57,9 @@
 
   	&__ico {
   		@include background-doc-ico;
+        &--cohortdefinition {
+          background-image: url('/img/icons/documents/cohort.png');
+        }
   		height: 25px;
   		width: 20px;
       // margin-left: 20px;
