@@ -20,6 +20,7 @@ const reports = keyMirror({
   heraclesheel: null,
   procbyindex: null,
   condbyindex: null,
+  drugbyindex: null,
   datacompleteness: null,
   entropy: null,
 });
@@ -57,6 +58,7 @@ const treemapReports = [
   reports.visits,
   reports.procbyindex,
   reports.condbyindex,
+  reports.drugbyindex,
 ];
 
 export {
