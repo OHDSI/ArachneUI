@@ -33,7 +33,7 @@ export default class SelectorsBuilder {
       MimeTypes.r,      
       MimeTypes.sql,
       MimeTypes.cohort,
-      MimeTypes.cohortdefinition,
+      MimeTypes.cohortdefinitionjson,
     ];
   }
 
