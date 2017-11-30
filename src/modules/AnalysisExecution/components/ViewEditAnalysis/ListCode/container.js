@@ -49,6 +49,7 @@ export default class ListCodeBuilder {
     const isLoading = selectors.getIsLoading(state);
     const canDeleteFiles = get(analysisData, 'permissions.DELETE_ANALYSIS_FILES', false);
     const canSubmit = codeList.length > 0;
+    const canAddFiles = get(analysisData, 'permissions.UPLOAD_ANALYSIS_FILES', false);
 
     return {
       analysisId,
@@ -60,6 +61,7 @@ export default class ListCodeBuilder {
       isLoading,
       canDeleteFiles,
       canSubmit,
+      canAddFiles,
     };
   }
 
