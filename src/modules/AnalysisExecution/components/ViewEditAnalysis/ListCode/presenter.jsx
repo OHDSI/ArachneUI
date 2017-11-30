@@ -192,7 +192,7 @@ export default class ListCode extends Component {
     return this.codeList.map((code, key) =>
       <CodeItem
         code={code}
-        isEditable={this.canAddFiles && !this.isLocked}
+        isEditable={this.canAddFiles && this.canDeleteFiles && !this.isLocked}
         reimportCode={this.reimportCode}
         removeCode={this.removeCode}
         key={key}
