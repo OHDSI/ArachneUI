@@ -20,10 +20,12 @@
  *
  */
 
+import { get } from 'services/Utils';
+
 export default (data, DTO = { name: 'All series', xValue: 'x', yValue: 'y', yPercent: 'p' }) => {
   return [{
     name: DTO.name || '',
-    values: data[DTO.xValue].map((val, i) => ({
+    values: get(data, DTO.xValue, []).map((val, i) => ({
       xValue: data[DTO.xValue][i],
       yValue: data[DTO.yValue][i],
     })),
