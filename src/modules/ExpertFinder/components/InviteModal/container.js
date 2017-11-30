@@ -48,7 +48,7 @@ class InviteModal extends Component {
 function mapStateToProps(state) {
   const name = get(state, 'modal.invite.data.name', '') || 'an expert';
   const userToInvite = get(state, 'modal.invite.data.id', -1);
-  const studies = selectors.getStudies(get(state, 'expertFinder.study'));
+  const studies = selectors.getStudies(get(state, 'expertFinder.studies'));
 
   return {
     inviteDialogTitle: `Invite ${name}`,
