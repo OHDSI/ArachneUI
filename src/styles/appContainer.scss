@@ -20,8 +20,8 @@
  *
  */
 
-@import 'arachne-ui-components/lib/styles/components';
 @import 'arachne-ui-components/lib/styles/app.scss';
+@import 'arachne-ui-components/lib/styles/components';
 @import 'introjs.scss';
 
 .#{$namespace} {

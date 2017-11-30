@@ -86,7 +86,7 @@ function FileAddressBar({ path = '', loadFolder }) {
 
   return (
     <div {...classes()}>
-      {itemList.map((item) => 
+      {itemList.map((item) =>
         <Link {...classes('item')} onClick={() => loadFolder({ path: item.path })}>
           {item.label}
         </Link>
@@ -173,7 +173,7 @@ function ModalFiles(props) {
           ? <div {...classes('empty-state')}>
             <EmptyState message={`Output contains ${numberFormatter.format(filesCount)} files and is too big to preview`} />
           </div>
-          : 
+          :
           <div>
             <div {...classes('adress-bar')}>
               <FileAddressBar path={filesPath} loadFolder={loadSubmissionFiles} />
@@ -216,7 +216,7 @@ function ModalFiles(props) {
         }
         {filesCount !== 0 &&
           <div {...classes('actions')}>
-            {canDownload 
+            {canDownload
               ? <Button
                 {...classes('btn')}
                 mods={['success', 'rounded']}
