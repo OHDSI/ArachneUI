@@ -20,13 +20,13 @@
  *
  */
 
-import React from "react";
-import BEMHelper from "services/BemHelper";
-import {Field} from "redux-form";
-import {Button} from "arachne-ui-components";
-import LabelDataSource from "components/LabelDataSource";
-import ProgressDots from "components/ProgressDots";
-import {nameAnalysisType} from "modules/AnalysisExecution/const";
+import React from 'react';
+import BEMHelper from 'services/BemHelper';
+import { Field } from 'redux-form';
+import { Button } from 'arachne-ui-components';
+import LabelDataSource from 'components/LabelDataSource';
+import ProgressDots from 'components/ProgressDots';
+import { nameAnalysisType } from 'modules/AnalysisExecution/const';
 
 require('./style.scss');
 
