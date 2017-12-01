@@ -20,13 +20,13 @@
  *
  */
 
-import React from 'react';
-import BEMHelper from 'services/BemHelper';
-import { Field } from 'redux-form';
-import { Button } from 'arachne-ui-components';
-import LabelDataSource from 'components/LabelDataSource';
-import ProgressDots from 'components/ProgressDots';
-import { nameAnalysisType } from 'modules/AnalysisExecution/const';
+import React from "react";
+import BEMHelper from "services/BemHelper";
+import {Field} from "redux-form";
+import {Button} from "arachne-ui-components";
+import LabelDataSource from "components/LabelDataSource";
+import ProgressDots from "components/ProgressDots";
+import {nameAnalysisType} from "modules/AnalysisExecution/const";
 
 require('./style.scss');
 
@@ -82,7 +82,7 @@ function NodeSelector({ dataNodeList, totalSteps, step, analysisType }) {
     return (
       <div {...classes()}>
         <span {...classes('descr', 'empty')}>
-          No data nodes connected to Atlas are presented in the study.
+          Atlas is not connected to any data nodes used in this study.
         </span>
       </div>
     )
