@@ -97,9 +97,13 @@ public abstract class BaseDataSourceTest extends BaseUserTest {
         final By organization = ByBuilder.input(DATASOURCE_ORGANIZATION_PLACEHOLDER);
         driver.findElement(organization).sendKeys(dataSource.organization);
 
-        final By version = ByBuilder.select(DATASOURCE_VERSION_PLACEHOLDER);
+        final By version1 = ByBuilder.select("Model Type");
+        final By versionOption1 = ByBuilder.selectOption("CDM");
+        Utils.selectOption(driver, version1, versionOption1, null);
+
+/*        final By version = ByBuilder.select(DATASOURCE_VERSION_PLACEHOLDER);
         final By versionOption = ByBuilder.selectOption(dataSource.version);
-        Utils.selectOption(driver, version, versionOption, null);
+        Utils.selectOption(driver, version, versionOption, null);*/
 
         driver.findElement(registerButton).click();
         //Utils.waitFor(driver, toolbar);
