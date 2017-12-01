@@ -41,7 +41,10 @@ export default {
     refresh: () => {
       return (dispatch) => dispatch(actions.create({}))
         .then((result) => {
-          AuthService.setToken(result.result);
+          if (!!result.error){
+            throw result.error;
+          }
+          AuthService.setToken(!!result.result ? result.result : "");
         });
       },
   },
