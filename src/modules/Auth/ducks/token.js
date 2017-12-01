@@ -41,12 +41,12 @@ export default {
     refresh: () => {
       return (dispatch) => dispatch(actions.create({}))
         .then((result) => {
-          if (!!result.error){
+          if (result.error) {
             throw result.error;
           }
-          AuthService.setToken(!!result.result ? result.result : "");
+          AuthService.setToken(result.result || '');
         });
-      },
+    },
   },
   reducer,
 };
