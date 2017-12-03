@@ -43,6 +43,7 @@ function ConditionEra(props) {
     initialZoomedConcept,
     tableData,
     tableColumns,
+    treemap,
   } = props;
   const classes = new BEMHelper('report-conditionera');  
   const dataPresent = conditions && conditions.PERCENT_PERSONS && conditions.PERCENT_PERSONS.length;
@@ -67,7 +68,7 @@ function ConditionEra(props) {
               const minimumArea = 50;
               const height = width / 3;
               const threshold = minimumArea / (width * height);
-              new treemap().render(
+              treemap.render(
                 convertDataToTreemapData(conditions, threshold, {
                   numPersons: 'NUM_PERSONS',
                   id: 'CONCEPT_ID',
@@ -89,13 +90,13 @@ function ConditionEra(props) {
                     const i = steps.length - 1;
                     result += `<div class='pathleaf'>${steps[i]}</div>`;
                     result += `<div class='pathleafstat'>
-                      Prevalence: ${new treemap().formatters.format_pct(node.pctPersons)}
+                      Prevalence: ${treemap.formatters.format_pct(node.pctPersons)}
                     </div>`;
                     result += `<div class='pathleafstat'>
-                      Number of People: ${new treemap().formatters.format_comma(node.numPersons)}
+                      Number of People: ${treemap.formatters.format_comma(node.numPersons)}
                     </div>`;
                     result += `<div class='pathleafstat'>
-                      Length of era: ${new treemap().formatters.format_fixed(node.recordsPerPerson)}
+                      Length of era: ${treemap.formatters.format_fixed(node.recordsPerPerson)}
                     </div>`;
                     return result;
                   },

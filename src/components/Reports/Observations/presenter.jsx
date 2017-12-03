@@ -47,6 +47,7 @@ function Observations(props) {
     initialZoomedConcept,
     tableData,
     tableColumns,
+    treemap,
   } = props;
   const classes = new BEMHelper('report-observations');
   const dataPresent = conditions && conditions.PERCENT_PERSONS && conditions.PERCENT_PERSONS.length;
@@ -70,7 +71,7 @@ function Observations(props) {
               const height = width/3;
               const minimum_area = 50;
               const threshold = minimum_area / (width * height);
-              new treemap().render(
+              treemap.render(
                 convertDataToTreemapData(conditions, threshold),
                 element,
                 width,
@@ -86,13 +87,13 @@ function Observations(props) {
                     const i = steps.length - 1;
                     result += `<div class='pathleaf'>${steps[i]}</div>`;
                     result += `<div class='pathleafstat'>
-                      Prevalence: ${new treemap().formatters.format_pct(node.pctPersons)}
+                      Prevalence: ${treemap.formatters.format_pct(node.pctPersons)}
                     </div>`;
                     result += `<div class='pathleafstat'>
-                      Number of People: ${new treemap().formatters.format_comma(node.numPersons)}
+                      Number of People: ${treemap.formatters.format_comma(node.numPersons)}
                     </div>`;
                     result += `<div class='pathleafstat'>
-                      Records per person: ${new treemap().formatters.format_fixed(node.recordsPerPerson)}
+                      Records per person: ${treemap.formatters.format_fixed(node.recordsPerPerson)}
                     </div>`;
                     return result;
                   },

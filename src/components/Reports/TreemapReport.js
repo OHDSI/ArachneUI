@@ -24,6 +24,7 @@ import { Component, PropTypes } from 'react';
 import isEmpty from 'lodash/isEmpty';
 import { ContainerBuilder } from 'services/Utils';
 import Chart from './Chart';
+import { treemap } from '@ohdsi/atlascharts/dist/atlascharts.umd';
 
 class TreemapReport extends Component {
   static get propTypes() {
@@ -86,6 +87,7 @@ export default class TreemapReportBuilder extends ContainerBuilder {
     this.filePath = '';
     this.presenter = null;
     this.mergeProps = this.mergeProps.bind(this);
+    this.treemap = new treemap();
   }
 
   getComponent() {
@@ -105,6 +107,7 @@ export default class TreemapReportBuilder extends ContainerBuilder {
       details,
       tableData,
       tableColumns,
+      treemap: this.treemap
     };
   }
 

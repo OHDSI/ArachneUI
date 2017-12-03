@@ -26,9 +26,6 @@ import {
   Panel,
   TabbedPane,
 } from 'arachne-ui-components';
-import {
-  treemap,
-} from '@ohdsi/atlascharts/dist/atlascharts.umd';
 import Table from 'components/Charts/Table';
 import * as d3 from 'd3';
 import { chartSettings } from 'modules/DataCatalog/const';
@@ -47,6 +44,7 @@ function Visits(props) {
     initialZoomedConcept,
     tableData,
     tableColumns,
+    treemap,
   } = props;
   const classes = new BEMHelper('report-conditionera');
   const dataPresent = conditions && conditions.PERCENT_PERSONS && conditions.PERCENT_PERSONS.length;
@@ -70,7 +68,7 @@ function Visits(props) {
               const height = width/3;
               const minimum_area = 50;
               const threshold = minimum_area / (width * height);
-              new treemap().render(
+              treemap.render(
                 convertDataToTreemapData(conditions, threshold),
                 element,
                 width,
@@ -86,13 +84,13 @@ function Visits(props) {
                     const i = steps.length - 1;
                     result += `<div class='pathleaf'>${steps[i]}</div>`;
                     result += `<div class='pathleafstat'>
-                      Prevalence: ${new treemap().formatters.format_pct(node.pctPersons)}
+                      Prevalence: ${treemap.formatters.format_pct(node.pctPersons)}
                     </div>`;
                     result += `<div class='pathleafstat'>
-                      Number of People: ${new treemap().formatters.format_comma(node.numPersons)}
+                      Number of People: ${treemap.formatters.format_comma(node.numPersons)}
                     </div>`;
                     result += `<div class='pathleafstat'>
-                      Length of era: ${new treemap().formatters.format_fixed(node.recordsPerPerson)}
+                      Length of era: ${treemap.formatters.format_fixed(node.recordsPerPerson)}
                     </div>`;
                     return result;
                   },
