@@ -62,6 +62,7 @@ $default-box-padding: 1.5rem 2rem;
   &--purple { color: $purple; }
   &--green { color: $green; }
   &--red { color: $red; }
+  &--grey { color: $grey-placeholder; }
 }
 
 @mixin entity-settings() {
