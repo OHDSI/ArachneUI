@@ -459,7 +459,9 @@ public class StudyManagerTest extends BaseUserTest {
 
         WebElement save = commentDialog.findElement(ByBuilder.button("Save"));
         save.click();
-        Thread.sleep(1000); // todo pozhidaeva
+
+        logout();
+        loginWithOpenedForm(ADMIN_LOGIN, ADMIN_PASSWORD);
         openParticipantsTab();
 
         WebElement refresh = driver.findElement(By.className("ac-study-actions__reload-ico"));
