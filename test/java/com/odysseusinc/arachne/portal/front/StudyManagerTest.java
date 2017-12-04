@@ -512,8 +512,18 @@ public class StudyManagerTest extends BaseUserTest {
         calendar.set(Calendar.DAY_OF_MONTH, lastMonthDay);
         String updatedEndDateLabel = formatter.format(calendar.getTime());
 
-        waitFor(driver, ByBuilder.byClassAndText("ac-study-date-input__value", updatedEndDateLabel));
-        waitFor(driver, ByBuilder.byClassAndText("ac-study-date-input__value", newStartDateLabel));
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        final List<WebElement> datesAfter = driver.findElements(By.className("ac-study-date-input__value"));
+        Assert.assertEquals(updatedEndDateLabel, datesAfter.get(0).getText());
+        Assert.assertEquals(newStartDateLabel, datesAfter.get(1).getText());
+
+       // waitFor(driver, ByBuilder.byClassAndText("ac-study-date-input__value", updatedEndDateLabel));
+       // waitFor(driver, ByBuilder.byClassAndText("ac-study-date-input__value", newStartDateLabel));
     }
 
     @Test
