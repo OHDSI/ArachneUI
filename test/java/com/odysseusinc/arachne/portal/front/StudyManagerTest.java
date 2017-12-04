@@ -184,7 +184,6 @@ public class StudyManagerTest extends BaseUserTest {
         waitFor(driver, documentList);
         WebElement removeIco = driver.findElement(documentList).findElement(By.className("ac-list-item__remove"));
         removeIco.click();
-        Thread.sleep(2000);
         acceptAlert();
         waitFor(driver, ByBuilder.byClassAndText("ac-list-item__content", "No documents available"));
     }
@@ -480,7 +479,7 @@ public class StudyManagerTest extends BaseUserTest {
 
         loginAndOpenStudy();
 
-        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/YYYY");
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
         String dateLabel = formatter.format(new Date());
 
         waitFor(driver, ByBuilder.byClassAndText("ac-study-date-input__value", dateLabel));
@@ -511,19 +510,8 @@ public class StudyManagerTest extends BaseUserTest {
 
         calendar.set(Calendar.DAY_OF_MONTH, lastMonthDay);
         String updatedEndDateLabel = formatter.format(calendar.getTime());
-
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        final List<WebElement> datesAfter = driver.findElements(By.className("ac-study-date-input__value"));
-        Assert.assertEquals(updatedEndDateLabel, datesAfter.get(0).getText());
-        Assert.assertEquals(newStartDateLabel, datesAfter.get(1).getText());
-
-       // waitFor(driver, ByBuilder.byClassAndText("ac-study-date-input__value", updatedEndDateLabel));
-       // waitFor(driver, ByBuilder.byClassAndText("ac-study-date-input__value", newStartDateLabel));
+        waitFor(driver, ByBuilder.byClassAndText("ac-study-date-input__value", updatedEndDateLabel));
+        waitFor(driver, ByBuilder.byClassAndText("ac-study-date-input__value", newStartDateLabel));
     }
 
     @Test
