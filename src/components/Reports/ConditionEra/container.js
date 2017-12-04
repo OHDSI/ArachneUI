@@ -22,12 +22,23 @@
 
 import TreemapReportBuilder from 'components/Reports/TreemapReport';
 import presenter from './presenter';
+import {
+	boxplot,
+	line,
+	trellisline,
+} from '@ohdsi/atlascharts/dist/atlascharts.umd';
 
 export default class ConditionEra extends TreemapReportBuilder {
   constructor() {
     super();
     this.presenter = presenter;
     this.filePath = 'conditioneras';
+		this.detailsCharts = {
+			conditionPrevalenceChart: new trellisline(),
+			conditionByMonthChart: new line(),
+			ageOfFirstDiagnosisChart: new boxplot(),
+			lengthOfEraChart: new boxplot(),
+		}
   }
 
   getFilename(conceptId) {

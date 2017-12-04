@@ -46,6 +46,7 @@ function Visits(props) {
     tableData,
     tableColumns,
     treemap,
+    detailsCharts,
   } = props;
   const classes = new BEMHelper('report-conditionera');
   const dataPresent = conditions && conditions.PERCENT_PERSONS && conditions.PERCENT_PERSONS.length;
@@ -95,7 +96,7 @@ function Visits(props) {
           />
         </div>
       </div>
-      {details && <VisitsDetails {...details} />}
+      {details && <VisitsDetails { ...details } { ...detailsCharts } />}
     </div>
   );
 }

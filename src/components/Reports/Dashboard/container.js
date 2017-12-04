@@ -24,44 +24,61 @@ import { connect } from 'react-redux';
 import ReportUtils from 'components/Reports/Utils';
 import { convertDataToMonthLineChartData } from 'components/Reports/converters';
 import Dashboard from './presenter';
+import {
+	donut,
+	histogram,
+	line,
+} from '@ohdsi/atlascharts/dist/atlascharts.umd';
+import { ContainerBuilder } from 'services/Utils';
 
 const observedByMonthDTO = {
-  dateField: 'MONTH_YEAR',
-  yValue: 'COUNT_VALUE',
-  yPercent: 'PERCENT_VALUE',
+	dateField: 'MONTH_YEAR',
+	yValue: 'COUNT_VALUE',
+	yPercent: 'PERCENT_VALUE',
 };
 
-function mapStateToProps(state, ownProps) {
-  const {
-    ageAtFirstObservation,
-    cumulativeDuration,
-    genderData,
-    summary,
-    characterizationDate,
-  } = ownProps;
-  let {
-    observedByMonth,
-  } = ownProps;
-
-  if (observedByMonth) {
-    observedByMonth = convertDataToMonthLineChartData(
-      observedByMonth,
-      observedByMonthDTO
-    );
+export default class DashboardContainerBuilder extends ContainerBuilder {
+  constructor() {
+    super();
+    this.detailsCharts = {
+			genderDataChart: new donut(),
+			ageAtFirstObservationChart: new histogram(),
+			observedByMonthChart: new line(),
+			cumulativeDurationChart: new line(),
+		}
   }
 
-  return {
-    ageAtFirstObservation,
-    cumulativeDuration,
-    genderData: ReportUtils.prepareChartDataForDonut(genderData),
-    observedByMonth,
-    summary,
-    characterizationDate,
-  };
+  getComponent() {
+    return Dashboard;
+  }
+
+	mapStateToProps(state, ownProps) {
+		const {
+			ageAtFirstObservation,
+			cumulativeDuration,
+			genderData,
+			summary,
+			characterizationDate,
+		} = ownProps;
+		let {
+			observedByMonth,
+		} = ownProps;
+
+		if (observedByMonth) {
+			observedByMonth = convertDataToMonthLineChartData(
+				observedByMonth,
+				observedByMonthDTO
+			);
+		}
+
+		return {
+			ageAtFirstObservation,
+			cumulativeDuration,
+			genderData: ReportUtils.prepareChartDataForDonut(genderData),
+			observedByMonth,
+			summary,
+			characterizationDate,
+			...this.detailsCharts,
+		};
+	}
 }
-
-const mapDispatchToProps = {
-
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

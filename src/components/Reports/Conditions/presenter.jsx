@@ -46,6 +46,7 @@ function Conditions(props) {
     tableData,
     tableColumns,
     treemap,
+		detailsCharts,
   } = props;
   const classes = new BEMHelper('report-conditions');
   const dataPresent = conditions && conditions.PERCENT_PERSONS && conditions.PERCENT_PERSONS.length;
@@ -96,7 +97,7 @@ function Conditions(props) {
           />
         </div>
       </div>
-      {details && <ConditionDetails {...details} />}
+      {details && <ConditionDetails {...details} {...detailsCharts} />}
     </div>
   );
 }

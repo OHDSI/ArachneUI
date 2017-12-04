@@ -42,6 +42,7 @@ function ConditionEra(props) {
     tableData,
     tableColumns,
     treemap,
+		detailsCharts,
   } = props;
   const classes = new BEMHelper('report-conditionera');  
   const dataPresent = conditions && conditions.PERCENT_PERSONS && conditions.PERCENT_PERSONS.length;
@@ -98,7 +99,7 @@ function ConditionEra(props) {
           />
         </div>
       </div>
-      {details && <ConditionEraDetails {...details} />}
+      {details && <ConditionEraDetails {...details} {...detailsCharts} />}
     </div>
   );
 }

@@ -46,6 +46,7 @@ function Observations(props) {
     tableData,
     tableColumns,
     treemap,
+		detailsCharts,
   } = props;
   const classes = new BEMHelper('report-observations');
   const dataPresent = conditions && conditions.PERCENT_PERSONS && conditions.PERCENT_PERSONS.length;
@@ -95,7 +96,7 @@ function Observations(props) {
           />
         </div>
       </div>
-      {details && <ObservationsDetails {...details} />}
+      {details && <ObservationsDetails {...details} {...detailsCharts} />}
     </div>
   );
 }

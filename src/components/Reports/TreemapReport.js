@@ -88,6 +88,7 @@ export default class TreemapReportBuilder extends ContainerBuilder {
     this.presenter = null;
     this.mergeProps = this.mergeProps.bind(this);
     this.treemap = new treemap();
+    this.detailsCharts = {};
   }
 
   getComponent() {
@@ -107,7 +108,8 @@ export default class TreemapReportBuilder extends ContainerBuilder {
       details,
       tableData,
       tableColumns,
-      treemap: this.treemap
+      treemap: this.treemap,
+      detailsCharts: this.detailsCharts,
     };
   }
 

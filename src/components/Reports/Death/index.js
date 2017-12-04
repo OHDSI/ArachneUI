@@ -22,4 +22,4 @@
 
 import Death from './container';
 
-export default Death;
+export default new Death().build();
