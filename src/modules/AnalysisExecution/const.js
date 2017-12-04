@@ -125,6 +125,7 @@ const statusesForPublishing = ['PENDING', 'NOT APPROVED', 'IN PROGRESS'];
 const refreshTime = 10000;
 
 const statusColors = {
+  QUEUE_PROCESSING: 'grey',
   PENDING: 'orange',
   NOT_APPROVED: 'red',
   IN_PROGRESS: 'blue',
