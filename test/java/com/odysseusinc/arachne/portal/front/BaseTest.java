@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.net.ssl.SSLContext;
@@ -88,7 +89,7 @@ public class BaseTest {
         MAIL_SERVER_API_MESSAGES = String.format("http://%s:%s/api/v1/messages", mailhogHost, mailhogApiPort);
 
         final InspectContainerResponse mailhogContainerInfo = mailhogContainer.getContainerInfo();
-
+        String containerName = "seleniumportal" + UUID.randomUUID();
         Map<String, String> portalEnvs = ImmutableMap.<String, String>builder()
                 .put("jasypt.encryptor.password", "arachne")
                 .put("server.ssl.enabled", String.valueOf(USE_SSL))
@@ -98,7 +99,7 @@ public class BaseTest {
                 .put("spring.mail.properties.mail.smtp.auth", "false")
                 .put("spring.mail.properties.mail.smtp.starttls.enable", "false")
                 .put("spring.mail.properties.mail.smtp.starttls.required", "false")
-                .put("portal.hostsWhiteList", "localhost,seleniumportal")
+                .put("portal.hostsWhiteList", "localhost,"+ containerName)
                 .build();
 
         portalContainer = new GenericContainer("hub.arachnenetwork.com/portal:1.10.0-SNAPSHOT")
@@ -110,7 +111,7 @@ public class BaseTest {
         portalContainer.start();
         String oldName = portalContainer.getContainerName().substring(1);
 
-        DockerClientFactory.instance().client().renameContainerCmd(oldName).withName("seleniumportal").exec();
+        DockerClientFactory.instance().client().renameContainerCmd(oldName).withName(containerName).exec();
 
         final String portalHost = portalContainer.getContainerIpAddress();
         final Integer portalPort = portalContainer.getMappedPort(8080);
@@ -121,7 +122,7 @@ public class BaseTest {
         Map<String, String> datanodeEnvs = ImmutableMap.<String, String>builder()
                 .put("jasypt.encryptor.password", "arachne")
                 .put("server.ssl.enabled", String.valueOf(USE_SSL))
-                .put("datanode.arachneCentral.host", "http://" + "seleniumportal")
+                .put("datanode.arachneCentral.host", "http://" + containerName)
                 .put("datanode.arachneCentral.port", "8080")
                 .put("datanode.baseURL", "https://#{systemProperties['HOSTNAME']}")
                 .put("ACHILES_STARTUP", "1")
@@ -151,6 +152,8 @@ public class BaseTest {
         datanodeContainer.stop();
         portalContainer.stop();
         mailhogContainer.stop();
+
+
         httpClient.close();
     }
 
