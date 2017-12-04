@@ -33,7 +33,7 @@ import AchillesSettings from './AchillesSettings';
 
 require('./style.scss');
 
-function ViewEdit({ isLoading, dataSourceName, modelType }) {
+function ViewEdit({ isLoading, dataSourceName, isRegistered, modelType }) {
   const classes = new BEMHelper('cdm-data-source');
 
   return (
@@ -45,7 +45,7 @@ function ViewEdit({ isLoading, dataSourceName, modelType }) {
             <div className="col-xs-12 col-md-6">
               <BusinessData />
             </div>
-            { modelType === modelTypesValues.CDM && <div className="col-xs-12 col-md-6">
+            { modelType === modelTypesValues.CDM && isRegistered && <div className="col-xs-12 col-md-6">
               <AchillesSettings />
             </div> }
           </div>

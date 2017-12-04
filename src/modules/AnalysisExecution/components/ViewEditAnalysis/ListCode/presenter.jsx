@@ -192,7 +192,7 @@ export default class ListCode extends Component {
     return this.codeList.map((code, key) =>
       <CodeItem
         code={code}
-        isEditable={!this.isLocked}
+        isEditable={this.canAddFiles && this.canDeleteFiles && !this.isLocked}
         reimportCode={this.reimportCode}
         removeCode={this.removeCode}
         key={key}
@@ -203,7 +203,7 @@ export default class ListCode extends Component {
 
   getActions() {
     return (<ActionsLine
-      canAddFiles={!this.isLocked}
+      canAddFiles={this.canAddFiles && !this.isLocked}
       openCreateCodeModal={this.openCreateCodeModal}
       openSubmitModal={this.openSubmitModal}
       canSubmit={this.canSubmit}
@@ -222,6 +222,7 @@ export default class ListCode extends Component {
     this.isLocked = this.props.isLocked;
     this.canDeleteFiles = this.props.canDeleteFiles;
     this.canSubmit = this.props.canSubmit;
+    this.canAddFiles = this.props.canAddFiles;
 
     return (
       <Panel
