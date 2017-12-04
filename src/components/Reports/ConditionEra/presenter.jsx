@@ -22,15 +22,13 @@
 
 import React from 'react';
 import BEMHelper from 'services/BemHelper';
-import {
-  treemap,
-} from '@ohdsi/atlascharts/dist/atlascharts.umd';
 import Table from 'components/Charts/Table';
 import * as d3 from 'd3';
 import { chartSettings } from 'const/reports';
 import { convertDataToTreemapData } from 'components/Reports/converters';
 import Chart from 'components/Reports/Chart';
 import ConditionEraDetails from './ConditionEraDetails';
+import ReportUtils from 'components/Reports/Utils';
 
 require('./style.scss');
 
@@ -85,28 +83,10 @@ function ConditionEra(props) {
                   getsizevalue: node => node.numPersons,
                   getcolorvalue: node => node.recordsPerPerson,
                   getcontent: (node) => {
-                    let result = '';
-                    const steps = node.path.split('||');
-                    const i = steps.length - 1;
-                    result += `<div class='pathleaf'>${steps[i]}</div>`;
-                    result += `<div class='pathleafstat'>
-                      Prevalence: ${treemap.formatters.format_pct(node.pctPersons)}
-                    </div>`;
-                    result += `<div class='pathleafstat'>
-                      Number of People: ${treemap.formatters.format_comma(node.numPersons)}
-                    </div>`;
-                    result += `<div class='pathleafstat'>
-                      Length of era: ${treemap.formatters.format_fixed(node.recordsPerPerson)}
-                    </div>`;
-                    return result;
+                    return ReportUtils.getTreemapTooltipContent(node, treemap, 'Prevalence:', 'Number of People:', 'Length of era:');
                   },
                   gettitle: (node) => {
-                    let title = ''
-                    const steps = node.path.split('||');
-                    steps.forEach((step, i) => {
-                      title += ` <div class='pathstep'>${Array(i + 1).join('&nbsp;&nbsp')}${step}</div>`;
-                    });
-                    return title;
+                    return ReportUtils.getTreemapTooltipTitle(node);
                   },
                   useTip: true,
                   getcolorrange: () => d3.schemeCategory20c.slice(1),

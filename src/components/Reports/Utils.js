@@ -93,4 +93,29 @@ export default class ReportUtils {
       : reports.unknown;
   }
 
+  static getTreemapTooltipContent(node, treemap, label1, label2, label3) {
+    let result = '';
+    const steps = node.path.split('||');
+    const i = steps.length - 1;
+    result += `<div class='pathleaf'>${steps[i]}</div>`;
+    result += `<div class='pathleafstat'>
+                    ${label1} ${treemap.formatters.format_pct(node.pctPersons)}
+                  </div>`;
+    result += `<div class='pathleafstat'>
+                    ${label2} ${treemap.formatters.format_comma(node.numPersons)}
+                  </div>`;
+    result += `<div class='pathleafstat'>
+                    ${label3} ${treemap.formatters.format_fixed(node.recordsPerPerson)}
+                  </div>`;
+    return result;
+  }
+
+  static getTreemapTooltipTitle(node) {
+    let title = '';
+    const steps = node.path.split('||');
+    steps.forEach((step, i) => {
+      title += ` <div class='pathstep'>${Array(i + 1).join('&nbsp;&nbsp')}${step}</div>`;
+    });
+    return title;
+  }
 }
