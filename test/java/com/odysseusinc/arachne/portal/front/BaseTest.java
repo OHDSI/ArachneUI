@@ -104,7 +104,7 @@ public class BaseTest {
                 .put("portal.hostsWhiteList", "localhost,"+ containerName)
                 .build();
 
-        portalContainer = new GenericContainer("hub.arachnenetwork.com/portal:1.10.0-SNAPSHOT")
+        portalContainer = new GenericContainer("hub.arachnenetwork.com/portal:1.9.0-SNAPSHOT")
                 .withEnv(portalEnvs)
                 .withNetwork(network)
                 .withExposedPorts(8080)
@@ -130,7 +130,7 @@ public class BaseTest {
                 .put("ACHILES_STARTUP", "1")
                 .build();
 
-        datanodeContainer = new GenericContainer("hub.arachnenetwork.com/datanode:1.10.0-SNAPSHOT")
+        datanodeContainer = new GenericContainer("hub.arachnenetwork.com/datanode:1.9.0-SNAPSHOT")
                 .withEnv(datanodeEnvs)
                 .withNetwork(network)
                 .withExposedPorts(8880)
