@@ -13,6 +13,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +37,8 @@ import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testcontainers.DockerClientFactory;
@@ -128,6 +131,7 @@ public class BaseTest {
                 .put("datanode.arachneCentral.port", "8080")
                 .put("datanode.baseURL", "https://#{systemProperties['HOSTNAME']}")
                 .put("ACHILES_STARTUP", "1")
+                .put("jasypt.encryptor.algorythm", "PBEWITHSHA256AND256BITAES-CBC-BC")
                 .build();
 
         datanodeContainer = new GenericContainer("hub.arachnenetwork.com/datanode:1.10.0-SNAPSHOT")
