@@ -27,6 +27,7 @@ import {
   convertDataToTrellislineData,
   convertDataToMonthLineChartData,
 } from 'components/Reports/converters';
+import isEmpty from 'lodash/isEmpty';
 import Death from './presenter';
 
 const deathByMonthDTO = {
@@ -37,18 +38,23 @@ const deathByMonthDTO = {
 
 function mapStateToProps(state, ownProps) {
   const {
-    ageOfDeath,
+    ageOfDeath: rawAgeOfDeath,
     deathByMonth,
     deathByType,
     deathByAge: rawDeathByAge,
   } = ownProps;
-  let deathByAge;
+  let deathByAge = null;
+  let ageOfDeath = null;
 
-  if (rawDeathByAge) {
+  if (rawDeathByAge && !isEmpty(rawDeathByAge)) {
     const { data } = convertDataToTrellislineData(
       rawDeathByAge
     );
     deathByAge = data;
+  }
+
+  if (rawAgeOfDeath && !isEmpty(rawAgeOfDeath)) {
+    ageOfDeath = convertDataToBoxplotData(rawAgeOfDeath);
   }
 
   return {
@@ -62,10 +68,7 @@ function mapStateToProps(state, ownProps) {
       ReportUtils.prepareChartDataForDonut(
         deathByType
       ),
-    ageOfDeath:
-      convertDataToBoxplotData(
-        ageOfDeath
-      ),
+    ageOfDeath,
   };
 }
 
