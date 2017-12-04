@@ -20,12 +20,30 @@
  *
  */
 
-import TreemapReport from 'components/Reports/TreemapReport';
+import { ContainerBuilder, get } from 'services/Utils';
+import {
+  convertDataToLineChartData,
+} from 'components/Reports/converters';
 import DrugByIndexDetails from './presenter';
 
-export default class DrugByIndexDetailsBuilder extends TreemapReport {
-  constructor() {
-    super();
-    this.presenter = DrugByIndexDetails;
+const DTO = {
+  xValue: 'DURATION',
+  yValue: 'COUNT_VALUE',
+  yPercent: 'PCT_PERSONS',
+};
+
+export default class DrugByIndexDetailsBuilder extends ContainerBuilder {
+  getComponent() {
+    return DrugByIndexDetails;
+  }
+
+  mapStateToProps(state, ownProps) {
+    const data = get(ownProps, 'data', null);
+
+    return {
+      data: data
+        ? convertDataToLineChartData(data, DTO)
+        : null,
+    };
   }
 }

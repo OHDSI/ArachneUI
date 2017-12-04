@@ -21,7 +21,7 @@
  */
 
 import TreemapReport from 'components/Reports/TreemapReport';
-import ProceduresByIndex from './presenter';
+import DrugByIndex from './presenter';
 
 export default class DrugByIndexBuilder extends TreemapReport {
   constructor() {

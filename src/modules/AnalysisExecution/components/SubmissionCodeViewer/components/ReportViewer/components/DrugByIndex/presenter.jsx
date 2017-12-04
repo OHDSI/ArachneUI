@@ -30,7 +30,7 @@ import * as d3 from 'd3';
 import { chartSettings } from 'modules/DataCatalog/const';
 import { convertDataToTreemapData } from 'components/Reports/converters';
 import get from 'lodash/get';
-import ProceduresByIndexDetails from './DrugByIndexDetails';
+import DrugByIndexDetails from './DrugByIndexDetails';
 import Chart from 'components/Reports/Chart';
 
 import './style.scss';
@@ -118,7 +118,7 @@ function DrugByIndex(props) {
         </div>
       </div>
       {details && <DrugByIndexDetails
-        conditions={get(details, 'drugByIndex', {})}
+        data={get(details, 'drugByIndex', {})}
         details={{}}
       />
       }
