@@ -45,6 +45,10 @@ function Person(props) {
     race,
     summary,
     showSummary = true,
+		birthYearChart,
+		genderDataChart,
+		raceChart,
+		ethnicityChart,
   } = props;
   const classes = new BEMHelper('report-person');
   const emptyClasses = new BEMHelper('report-empty');
@@ -81,7 +85,7 @@ function Person(props) {
           title='Year of birth'
           isDataPresent={birthYear}
           render={({ width, element }) => {
-            new histogram().render(
+            birthYearChart.render(
               histogram.mapHistogram(birthYear),
               element,
               width,
@@ -102,7 +106,7 @@ function Person(props) {
           title='Population by Gender'
           isDataPresent={genderData}
           render={({ width, element }) => {
-            new donut().render(
+            genderDataChart.render(
               genderData,
               element,
               width,
@@ -117,7 +121,7 @@ function Person(props) {
           title='Population by Race'
           isDataPresent={race}
           render={({ width, element }) => {
-            new donut().render(
+            raceChart.render(
               race,
               element,
               width,
@@ -132,7 +136,7 @@ function Person(props) {
           title='Population by Ethnicity'
           isDataPresent={ethnicity}
           render={({ width, element }) => {
-            new donut().render(
+            ethnicityChart.render(
               ethnicity,
               element,
               width, // Scrollbar width

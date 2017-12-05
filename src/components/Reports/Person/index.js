@@ -20,6 +20,6 @@
  *
  */
 
-import Person from './container';
+import PersonBuilder from './container';
 
-export default Person;
+export default new PersonBuilder().build();

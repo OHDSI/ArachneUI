@@ -21,19 +21,14 @@
  */
 
 import React from 'react';
-import {
-  Panel,
-} from 'arachne-ui-components';
 import * as d3 from 'd3';
 import { chartSettings } from 'modules/DataCatalog/const';
-import { convertDataToTreemapData } from 'components/Reports/converters';
 import Chart from 'components/Reports/Chart';
-import ReportUtils from 'components/Reports/Utils';
 
-function ProceduresByIndex(props) {
+function DrugByIndex(props) {
   const {
-    conditions,
-    treemap,
+    data,
+    drugsChart,
   } = props;
 
   return (
@@ -41,46 +36,29 @@ function ProceduresByIndex(props) {
       <div className='row'>
         <div className='col-xs-12'>
           <Chart
-            title='Procedures'
-            isDataPresent={conditions}
+            title='Drugs by index'
+            isDataPresent={data}
             render={({ width, element }) => {
               const height = width/3;
               const minimum_area = 50;
               const threshold = minimum_area / (width * height);
-              treemap.render(
-                convertDataToTreemapData(conditions, threshold, {
-                  numPersons: 'COUNT_VALUE',
-                  id: 'CONCEPT_ID',
-                  path: 'CONCEPT_NAME',
-                  pctPersons: 'PCT_PERSONS',
-                  recordsPerPerson: 'DURATION',
-                }),
+              drugsChart.render(
+                data,
                 element,
                 width,
                 height,
                 {
+                  yLabel: 'Count',
+                  xLabel: 'Duration',
+                  xScale: d3.scaleTime().domain(
+                    d3.extent(data[0].values, d => d.xValue)
+                  ),
+                  showLegend: false,
+                  colors: d3.scaleOrdinal()
+                    .range(d3.schemeCategory10),
                   ...chartSettings,
-                  onclick: () => {},
-                  getsizevalue: node => node.numPersons,
-                  getcolorvalue: node => node.recordsPerPerson,
-                  getcontent: (node) => {
-                    return ReportUtils.getTreemapTooltipContent({
-                      node,
-                      treemap,
-                      label1: 'Prevalence:',
-                      label2: 'Number of People:',
-                      label3: 'Duration:',
-                    });
-                  },
-                  gettitle: (node) => {
-                    return ReportUtils.getTreemapTooltipTitle(node);
-                  },
-                  useTip: true,
-                  getcolorrange: () => d3.schemeCategory20c.slice(1),
-                  onZoom: () => {},
-                  initialZoomedConcept: null,
                 }
-              )
+              );
             }}
           />
         </div>
@@ -89,4 +67,4 @@ function ProceduresByIndex(props) {
   );
 }
 
-export default ProceduresByIndex;
+export default DrugByIndex;

@@ -22,4 +22,4 @@
 
 import ObservationPeriods from './container';
 
-export default ObservationPeriods;
+export default new ObservationPeriods().build();

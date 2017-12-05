@@ -16,49 +16,34 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Alexander Saltykov
- * Created: November 21, 2017
+ * Created: November 20, 2017
  *
  */
 
-
-import { ContainerBuilder } from 'services/Utils';
+import { ContainerBuilder, get } from 'services/Utils';
 import {
   convertDataToLineChartData,
 } from 'components/Reports/converters';
-import EntropyReport from './presenter';
-import {
-	line,
-} from '@ohdsi/atlascharts';
+import DrugByIndexDetails from './presenter';
 
-const entropyDTO = {
-  xValue: 'date',
-  yValue: 'entropy',
-  yPercent: 'entropy',
+const DTO = {
+  xValue: 'DURATION',
+  yValue: 'COUNT_VALUE',
+  yPercent: 'PCT_PERSONS',
 };
 
-export default class EntropyReportBuilder extends ContainerBuilder {
-  constructor() {
-    super();
-    this.lineChart = new line();
-  }
-
+export default class DrugByIndexDetailsBuilder extends ContainerBuilder {
   getComponent() {
-    return EntropyReport;
+    return DrugByIndexDetails;
   }
 
   mapStateToProps(state, ownProps) {
-    const {
-      entropy,
-    } = ownProps;
-
-    const data = convertDataToLineChartData(
-      entropy,
-      entropyDTO
-    );
+    const data = get(ownProps, 'data', null);
 
     return {
-      data,
-      line: this.lineChart,
+      data: data
+        ? convertDataToLineChartData(data, DTO)
+        : null,
     };
   }
 }
