@@ -31,10 +31,10 @@ import isEmpty from 'lodash/isEmpty';
 import Death from './presenter';
 import { ContainerBuilder } from 'services/Utils';
 import {
-	boxplot,
-	donut,
-	line,
-	trellisline,
+  boxplot,
+  donut,
+  line,
+  trellisline,
 } from '@ohdsi/atlascharts/dist/atlascharts.umd';
 
 const deathByMonthDTO = {
@@ -45,53 +45,54 @@ const deathByMonthDTO = {
 
 export default class DeathContainerBuilder extends ContainerBuilder {
 
-	constructor() {
-		super();
-		this.detailsCharts = {
-			deathByAgeChart: new trellisline(),
-			deathByMonthChart: new line(),
-			deathByTypeChart: new donut(),
-			ageOfDeathChart: new boxplot(),
-		}
-	}
+  constructor() {
+    super();
+    this.detailsCharts = {
+      deathByAgeChart: new trellisline(),
+      deathByMonthChart: new line(),
+      deathByTypeChart: new donut(),
+      ageOfDeathChart: new boxplot(),
+    }
+  }
 
   getComponent() {
     return Death;
   }
 
-	mapStateToProps(state, ownProps) {
-		const {
-			ageOfDeath: rawAgeOfDeath,
-			deathByMonth,
-			deathByType,
-			deathByAge: rawDeathByAge,
-		} = ownProps;
-		let deathByAge = null;
-		let ageOfDeath = null;
+  mapStateToProps(state, ownProps) {
+    const {
+      ageOfDeath: rawAgeOfDeath,
+      deathByMonth,
+      deathByType,
+      deathByAge: rawDeathByAge,
+    } = ownProps;
+    let deathByAge = null;
+    let ageOfDeath = null;
 
-		if (rawDeathByAge && !isEmpty(rawDeathByAge)) {
-			const { data } = convertDataToTrellislineData(
-				rawDeathByAge
-			);
-			deathByAge = data;
-		}
+    if (rawDeathByAge && !isEmpty(rawDeathByAge)) {
+      const { data } = convertDataToTrellislineData(
+        rawDeathByAge
+      );
+      deathByAge = data;
+    }
 
-		if (rawAgeOfDeath && !isEmpty(rawAgeOfDeath)) {
-			ageOfDeath = convertDataToBoxplotData(rawAgeOfDeath);
-		}
+    if (rawAgeOfDeath && !isEmpty(rawAgeOfDeath)) {
+      ageOfDeath = convertDataToBoxplotData(rawAgeOfDeath);
+    }
 
-		return {
-			deathByAge,
-			deathByMonth:
-				convertDataToMonthLineChartData(
-					deathByMonth,
-					deathByMonthDTO
-				),
-			deathByType:
-				ReportUtils.prepareChartDataForDonut(
-					deathByType
-				),
-			ageOfDeath,
-		};
-	}
+    return {
+      deathByAge,
+      deathByMonth:
+        convertDataToMonthLineChartData(
+          deathByMonth,
+          deathByMonthDTO
+        ),
+      deathByType:
+        ReportUtils.prepareChartDataForDonut(
+          deathByType
+        ),
+      ageOfDeath,
+      ...this.detailsCharts,
+    };
+  }
 }
