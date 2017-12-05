@@ -44,6 +44,10 @@ function Death(props) {
     deathByMonth,
     deathByType,
     ageOfDeath,
+		deathByAgeChart,
+		deathByMonthChart,
+		deathByTypeChart,
+		ageOfDeathChart,
   } = props;
   const classes = new BEMHelper('report-death');
   const emptyClasses = new BEMHelper('report-empty');
@@ -55,7 +59,7 @@ function Death(props) {
           title='Death Prevalence by Age, Gender, Year'
           isDataPresent={deathByAge}
           render={({ width, element }) => {
-            new trellisline().render(
+            deathByAgeChart.render(
               deathByAge,
               element,
               width,
@@ -82,7 +86,7 @@ function Death(props) {
           title='Death Prevalence by Month'
           isDataPresent={deathByMonth}
           render={({ width, element }) => {
-            new line().render(
+            deathByMonthChart.render(
               deathByMonth,
               element,
               width,
@@ -105,7 +109,7 @@ function Death(props) {
           title='Death by Type'
           isDataPresent={deathByType}
           render={({ width, element }) => {
-            new donut().render(
+            deathByTypeChart.render(
               deathByType,
               element,
               width,
@@ -120,7 +124,7 @@ function Death(props) {
           title='Age at Death'
           isDataPresent={ageOfDeath}
           render={({ width, element }) => {
-            new boxplot().render(
+            ageOfDeathChart.render(
               ageOfDeath,
               element,
               width,

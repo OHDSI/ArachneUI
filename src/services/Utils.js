@@ -469,7 +469,9 @@ class ContainerBuilder {
   build() {
     return Utils.buildConnectedComponent({
       Component: this.getComponent(),
-      mapStateToProps: this.mapStateToProps,
+      mapStateToProps: this.mapStateToProps ?
+        this.mapStateToProps.bind(this):
+        this.mapStateToProps,
       getMapDispatchToProps: this.getMapDispatchToProps,
       mapDispatchToProps: this.mapDispatchToProps,
       mergeProps: this.mergeProps,

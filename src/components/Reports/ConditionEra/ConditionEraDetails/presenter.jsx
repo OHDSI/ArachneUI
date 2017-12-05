@@ -21,11 +21,6 @@
  */
 
 import React from 'react';
-import {
-  boxplot,
-  line,
-  trellisline,
-} from '@ohdsi/atlascharts/dist/atlascharts.umd';
 import { numberFormatter } from 'services/Utils';
 import * as d3 from 'd3';
 import { chartSettings, defaultTrellisSet } from 'modules/DataCatalog/const';
@@ -37,6 +32,10 @@ function ConditionEraDetails(props) {
     conditionByMonth,
     lengthOfEra,
     ageOfFirstDiagnosis,
+		conditionPrevalenceChart,
+		conditionByMonthChart,
+		ageOfFirstDiagnosisChart,
+		lengthOfEraChart,
   } = props;
 
   return (  
@@ -46,7 +45,7 @@ function ConditionEraDetails(props) {
           title='Condition Prevalence'
           isDataPresent={conditionPrevalence}
           render={({ width, element }) => {
-            new trellisline().render(
+						conditionPrevalenceChart.render(
               conditionPrevalence,
               element,
               width,
@@ -73,7 +72,7 @@ function ConditionEraDetails(props) {
           title='Condition Prevalence by Month'
           isDataPresent={conditionByMonth}
           render={({ width, element }) => {
-            new line().render(
+						conditionByMonthChart.render(
               conditionByMonth,
               element,
               width,
@@ -96,7 +95,7 @@ function ConditionEraDetails(props) {
           title='Age at First Diagnosis'
           isDataPresent={ageOfFirstDiagnosis}
           render={({ width, element }) => {
-            new boxplot().render(
+						ageOfFirstDiagnosisChart.render(
               ageOfFirstDiagnosis,
               element,
               width,
@@ -116,7 +115,7 @@ function ConditionEraDetails(props) {
           title='Length of Condition Era'
           isDataPresent={lengthOfEra}
           render={({ width, element }) => {
-            new boxplot().render(
+						lengthOfEraChart.render(
               lengthOfEra,
               element,
               width,

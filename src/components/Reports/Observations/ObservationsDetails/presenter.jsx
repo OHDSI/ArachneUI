@@ -42,6 +42,10 @@ function ConditionEraDetails(props) {
     conditionByMonth,
     ageAtFirstOccurrence,
     observationsByType,
+		conditionPrevalenceChart,
+		conditionByMonthChart,
+		observationsByTypeChart,
+		ageAtFirstOccurrenceChart,
   } = props;
   const classes = new BEMHelper('report-death');
 
@@ -52,7 +56,7 @@ function ConditionEraDetails(props) {
           title='Condition Prevalence'
           isDataPresent={conditionPrevalence}
           render={({ width, element }) => {
-            new trellisline().render(
+            conditionPrevalenceChart().render(
               conditionPrevalence,
               element,
               width,
@@ -79,7 +83,7 @@ function ConditionEraDetails(props) {
           title='Condition Prevalence by Month'
           isDataPresent={conditionByMonth}
           render={({ width, element }) => {
-            new line().render(
+            conditionByMonthChart().render(
               conditionByMonth,
               element,
               width,
@@ -102,7 +106,7 @@ function ConditionEraDetails(props) {
           title='Observations by type'
           isDataPresent={observationsByType}
           render={({ width, element }) => {
-            new donut().render(             
+            observationsByTypeChart().render(
               observationsByType,
               element,
               width,
@@ -117,7 +121,7 @@ function ConditionEraDetails(props) {
           title='Age at first occurrence'
           isDataPresent={ageAtFirstOccurrence}
           render={({ width, element }) => {
-            new boxplot().render(
+            ageAtFirstOccurrenceChart().render(
               ageAtFirstOccurrence,
               element,
               width,

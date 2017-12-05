@@ -46,6 +46,13 @@ function DrugDetails(props) {
     quantity,
     refills,
     drugsByType,
+		drugPrevalenceChart,
+		exposureByMonthChart,
+		ageOfFirstExposureChart,
+		daysSupplyDistributionChart,
+		quantityChart,
+		refillsChart,
+		drugsByTypeChart,
   } = props;
   const classes = new BEMHelper('report-death');
   const emptyClasses = new BEMHelper('report-empty');
@@ -57,7 +64,7 @@ function DrugDetails(props) {
           title='Drug Prevalence'
           isDataPresent={drugPrevalence}
           render={({ width, element }) => {
-            new trellisline().render(
+            drugPrevalenceChart.render(
               drugPrevalence,
               element,
               width,
@@ -84,7 +91,7 @@ function DrugDetails(props) {
           title='Drug exposure Prevalence by Month'
           isDataPresent={exposureByMonth}
           render={({ width, element }) => {
-            new line().render(
+            exposureByMonthChart.render(
               exposureByMonth,
               element,
               width,
@@ -107,7 +114,7 @@ function DrugDetails(props) {
           title='Age at First exposure'
           isDataPresent={ageOfFirstExposure}
           render={({ width, element }) => {
-            new boxplot().render(
+            ageOfFirstExposureChart.render(
               ageOfFirstExposure,
               element,
               width,
@@ -127,7 +134,7 @@ function DrugDetails(props) {
           title='Days supply'
           isDataPresent={daysSupplyDistribution}
           render={({ width, element }) => {
-            new boxplot().render(
+            daysSupplyDistributionChart.render(
               daysSupplyDistribution,
               element,
               width,
@@ -147,7 +154,7 @@ function DrugDetails(props) {
           title='Quantity'
           isDataPresent={quantity}
           render={({ width, element }) => {
-            new boxplot().render(
+            quantityChart.render(
               quantity,
               element,
               width,
@@ -167,7 +174,7 @@ function DrugDetails(props) {
           title='Refills'
           isDataPresent={refills}
           render={({ width, element }) => {
-            new boxplot().render(
+            refillsChart.render(
               refills,
               element,
               width,
@@ -187,7 +194,7 @@ function DrugDetails(props) {
           title='Age at First exposure'
           isDataPresent={drugsByType}
           render={({ width, element }) => {
-            new donut().render(
+            drugsByTypeChart.render(
               drugsByType,
               element,
               width,

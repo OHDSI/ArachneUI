@@ -40,6 +40,9 @@ function DataDensity(props) {
     recordsPerPersonYears,
     totalRecords,
     totalRecordsYears,
+		totalRecordsChart,
+		recordsPerPersonChart,
+		conceptsPerPersonChart,
   } = props;
   const classes = new BEMHelper('report-observation-data-density');
 
@@ -51,7 +54,7 @@ function DataDensity(props) {
           {...classes('chart')}
           isDataPresent={totalRecords && totalRecords.length > 0}
           render={({ width, element }) => {
-            new line().render(
+            totalRecordsChart.render(
               totalRecords,
               element,
               width,
@@ -80,7 +83,7 @@ function DataDensity(props) {
           {...classes('chart')}
           isDataPresent={recordsPerPerson && recordsPerPerson.length > 0}
           render={({ width, element }) => {
-            new line().render(
+            recordsPerPersonChart.render(
               recordsPerPerson,
               element,
               width, // Scrollbar width
@@ -109,7 +112,7 @@ function DataDensity(props) {
           {...classes('chart')}
           isDataPresent={conceptsPerPerson && conceptsPerPerson.length > 0}
           render={({ width, element }) => {
-            new boxplot().render(
+            conceptsPerPersonChart.render(
               conceptsPerPerson,
               element,
               width,

@@ -34,8 +34,26 @@ import {
   prevalenceByYearGenderSexDTO,
 } from './DTO';
 import CohortspecificReport from './presenter';
+import {
+	line,
+	trellisline,
+	boxplot,
+} from '@ohdsi/atlascharts';
 
 export default class CohortspecificReportBuilder extends ContainerBuilder {
+
+  constructor() {
+    super();
+    this.detailsCharts = {
+			prevalenceByMonthChart: new line(),
+			prevalenceByYearGenderSexChart: new trellisline(),
+			personsInCohortFromCohortStartToEndChart: new line(),
+			personsByDurationFromStartToEndChart: new line(),
+			ageAtIndexDistributionChart: new boxplot(),
+			distributionOfAgeAtCohortStartByGenderChart: new boxplot(),
+    }
+  }
+
   getComponent() {
     return CohortspecificReport;
   }
@@ -78,6 +96,7 @@ export default class CohortspecificReportBuilder extends ContainerBuilder {
         ),
       prevalenceByYearGenderSex,
       prevalenceByYearGenderSexSet,
+      ...this.detailsCharts,
     };
   }
 }

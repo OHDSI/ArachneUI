@@ -21,12 +21,6 @@
  */
 
 import React from 'react';
-import {
-  boxplot,
-  donut,
-  line,
-  trellisline,
-} from '@ohdsi/atlascharts/dist/atlascharts.umd';
 import { numberFormatter } from 'services/Utils';
 import * as d3 from 'd3';
 import { chartSettings, defaultTrellisSet } from 'modules/DataCatalog/const';
@@ -38,6 +32,10 @@ function ConditionDetails(props) {
     conditionByMonth,
     conditionByType,
     ageOfFirstDiagnosis,
+		conditionPrevalenceChart,
+		conditionByMonthChart,
+		conditionByTypeChart,
+		ageOfFirstDiagnosisChart,
   } = props;
 
   return (  
@@ -47,7 +45,7 @@ function ConditionDetails(props) {
           title='Condition Prevalence'
           isDataPresent={conditionPrevalence}
           render={({ width, element }) => {
-            new trellisline().render(
+            conditionPrevalenceChart.render(
               conditionPrevalence,
               element,
               width,
@@ -74,7 +72,7 @@ function ConditionDetails(props) {
           title='Condition Prevalence by Month'
           isDataPresent={conditionByMonth}
           render={({ width, element }) => {
-            new line().render(
+            conditionByMonthChart.render(
               conditionByMonth,
               element,
               width,
@@ -97,7 +95,7 @@ function ConditionDetails(props) {
           title='Conditions by Type'
           isDataPresent={conditionByType}
           render={({ width, element }) => {
-            new donut().render(
+            conditionByTypeChart.render(
               conditionByType,
               element,
               width,
@@ -112,7 +110,7 @@ function ConditionDetails(props) {
           title='Age at First Diagnosis'
           isDataPresent={ageOfFirstDiagnosis}
           render={({ width, element }) => {
-            new boxplot().render(
+            ageOfFirstDiagnosisChart.render(
               ageOfFirstDiagnosis,
               element,
               width,

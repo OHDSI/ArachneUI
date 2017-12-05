@@ -49,6 +49,10 @@ function Dashboard(props) {
     summary,
     characterizationDate,
     showSummary = true,
+		genderDataChart,
+		ageAtFirstObservationChart,
+		observedByMonthChart,
+		cumulativeDurationChart,
   } = props;
   const classes = new BEMHelper('report-dashboard');
   const emptyClasses = new BEMHelper('report-empty');
@@ -93,7 +97,7 @@ function Dashboard(props) {
           title='Population by Gender'
           isDataPresent={genderData}
           render={({ width, element }) => {
-            new donut().render(
+            genderDataChart.render(
               genderData,
               element,
               width,
@@ -108,7 +112,7 @@ function Dashboard(props) {
           title='Age at First Observation'
           isDataPresent={ageAtFirstObservation}
           render={({ width, element }) => {
-            new histogram().render(
+            ageAtFirstObservationChart.render(
               histogram.mapHistogram(ageAtFirstObservation),
               element,
               width,
@@ -128,7 +132,7 @@ function Dashboard(props) {
           title='Persons With Continuous Observation By Month'
           isDataPresent={observedByMonth}
           render={({ width, element }) => {
-            new line().render(
+            observedByMonthChart.render(
               observedByMonth,
               element,
               width,
@@ -154,7 +158,7 @@ function Dashboard(props) {
           title='Cumulative Observation'
           isDataPresent={cumulativeDuration}
           render={({ width, element }) => {
-            new line().render(
+            cumulativeDurationChart.render(
               cumulativeDuration,
               element,
               width,

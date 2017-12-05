@@ -1,6 +1,6 @@
 {
   "name": "arachne-ui",
-  "version": "1.10.23",
+  "version": "1.10.26",
   "licenses": [
     {
       "type": "Apache-2.0",
@@ -30,7 +30,7 @@
     "ssr-server-central-watch": "webpack --config webpack/server.config.js --watch"
   },
   "dependencies": {
-    "@ohdsi/atlascharts": "1.2.0",
+    "@ohdsi/atlascharts": "git+https://github.com/agackovka/Visualizations.git",
     "@stomp/stompjs": "^3.0.3",
     "arachne-ui-components": "^1.2.9",
     "autoprefixer": "^6.7.6",

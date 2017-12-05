@@ -26,15 +26,13 @@ import {
   Panel,
   TabbedPane,
 } from 'arachne-ui-components';
-import {
-  treemap,
-} from '@ohdsi/atlascharts/dist/atlascharts.umd';
 import Table from 'components/Charts/Table';
 import * as d3 from 'd3';
 import { chartSettings } from 'modules/DataCatalog/const';
 import { convertDataToTreemapData } from 'components/Reports/converters';
 import Chart from 'components/Reports/Chart';
 import ProceduresDetails from './ProceduresDetails';
+import ReportUtils from 'components/Reports/Utils';
 
 require('./style.scss');
 
@@ -47,6 +45,8 @@ function Procedures(props) {
     initialZoomedConcept,
     tableData,
     tableColumns,
+    treemap,
+		detailsCharts,
   } = props;
   const classes = new BEMHelper('report-conditions');
   const dataPresent = conditions && conditions.PERCENT_PERSONS && conditions.PERCENT_PERSONS.length;
@@ -70,7 +70,7 @@ function Procedures(props) {
               const height = width/3;
               const minimum_area = 50;
               const threshold = minimum_area / (width * height);
-              new treemap().render(
+              treemap.render(
                 convertDataToTreemapData(conditions, threshold),
                 element,
                 width,
@@ -81,28 +81,16 @@ function Procedures(props) {
                   getsizevalue: node => node.numPersons,
                   getcolorvalue: node => node.recordsPerPerson,
                   getcontent: (node) => {
-                    let result = '';
-                    const steps = node.path.split('||');
-                    const i = steps.length - 1;
-                    result += `<div class='pathleaf'>${steps[i]}</div>`;
-                    result += `<div class='pathleafstat'>
-                      Prevalence: ${new treemap().formatters.format_pct(node.pctPersons)}
-                    </div>`;
-                    result += `<div class='pathleafstat'>
-                      Number of People: ${new treemap().formatters.format_comma(node.numPersons)}
-                    </div>`;
-                    result += `<div class='pathleafstat'>
-                      Records per Person: ${new treemap().formatters.format_fixed(node.recordsPerPerson)}
-                    </div>`;
-                    return result;
+                    return ReportUtils.getTreemapTooltipContent({
+                      node,
+                      treemap,
+                      label1: 'Prevalence:',
+                      label2:  'Number of People:',
+                      label3:  'Records per Person:',
+                    });
                   },
                   gettitle: (node) => {
-                    let title = ''
-                    const steps = node.path.split('||');
-                    steps.forEach((step, i) => {
-                      title += ` <div class='pathstep'>${Array(i + 1).join('&nbsp;&nbsp')}${step}</div>`;
-                    });
-                    return title;
+                    return ReportUtils.getTreemapTooltipTitle(node);
                   },
                   useTip: true,
                   getcolorrange: () => d3.schemeCategory20c.slice(1),
@@ -114,7 +102,7 @@ function Procedures(props) {
           />
         </div>
       </div>
-      {details && <ProceduresDetails {...details} />}
+      {details && <ProceduresDetails {...details} {...detailsCharts} />}
     </div>
   );
 }

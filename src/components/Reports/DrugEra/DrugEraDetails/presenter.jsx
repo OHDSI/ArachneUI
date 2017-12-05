@@ -41,6 +41,10 @@ function DrugEraDetails(props) {
     exposureByMonth,
     lengthOfEra,
     ageOfFirstExposure,
+		drugPrevalenceChart,
+		exposureByMonthChart,
+		ageOfFirstExposureChart,
+		lengthOfEraChart,
   } = props;
   const classes = new BEMHelper('report-death');
 
@@ -51,7 +55,7 @@ function DrugEraDetails(props) {
           title='Drug Prevalence'
           isDataPresent={drugPrevalence}
           render={({ width, element }) => {
-            new trellisline().render(
+            drugPrevalenceChart.render(
               drugPrevalence,
               element,
               width,
@@ -78,7 +82,7 @@ function DrugEraDetails(props) {
           title='Drug exposure Prevalence by Month'
           isDataPresent={exposureByMonth}
           render={({ width, element }) => {
-            new line().render(
+            exposureByMonthChart.render(
               exposureByMonth,
               element,
               width,
@@ -101,7 +105,7 @@ function DrugEraDetails(props) {
           title='Age at First exposure'
           isDataPresent={ageOfFirstExposure}
           render={({ width, element }) => {
-            new boxplot().render(
+            ageOfFirstExposureChart.render(
               ageOfFirstExposure,
               element,
               width,
@@ -121,7 +125,7 @@ function DrugEraDetails(props) {
           title='Length of Era distribution'
           isDataPresent={lengthOfEra}
           render={({ width, element }) => {
-            new boxplot().render(
+            lengthOfEraChart.render(
               lengthOfEra,
               element,
               width,
