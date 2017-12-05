@@ -26,39 +26,56 @@ import {
   convertDataToBoxplotData,
 } from 'components/Reports/converters';
 import DataDensity from './presenter';
+import { ContainerBuilder } from 'services/Utils';
+import {
+	boxplot,
+	line,
+} from '@ohdsi/atlascharts/dist/atlascharts.umd';
 
-function mapStateToProps(state, ownProps) {
-  const {
-    totalRecords: rawTotalRecords,
-    conceptsPerPerson,
-    recordsPerPerson: rawRecordsPerPerson,
-  } = ownProps;
+export default class DataDensityChartBuilder extends ContainerBuilder {
 
-  const {
-        transformedData: totalRecords,
-        normalizedData: totalRecordsScale,
-    } = ReportUtils.prepareLineData(rawTotalRecords);
+  constructor() {
+    super();
+    this.detailsCharts = {
+			totalRecordsChart: new line(),
+			recordsPerPersonChart: new line(),
+			conceptsPerPersonChart: new boxplot(),
+		}
+  }
 
-  const {
-        transformedData: recordsPerPerson,
-        normalizedData: perPersonScale,
-    } = ReportUtils.prepareLineData(rawRecordsPerPerson);
+  getComponent() {
+    return DataDensity;
+  }
+
+	mapStateToProps(state, ownProps) {
+		const {
+			totalRecords: rawTotalRecords,
+			conceptsPerPerson,
+			recordsPerPerson: rawRecordsPerPerson,
+
+		} = ownProps;
+
+		const {
+			transformedData: totalRecords,
+			normalizedData: totalRecordsScale,
+		} = ReportUtils.prepareLineData(rawTotalRecords);
+
+		const {
+			transformedData: recordsPerPerson,
+			normalizedData: perPersonScale,
+		} = ReportUtils.prepareLineData(rawRecordsPerPerson);
 
 
-  return {
-    conceptsPerPerson:
-      convertDataToBoxplotData(
-        conceptsPerPerson,
-      ),
-    recordsPerPerson,
-    recordsPerPersonYears: perPersonScale,
-    totalRecords,
-    totalRecordsYears: totalRecordsScale,
-  };
+		return {
+			conceptsPerPerson:
+				convertDataToBoxplotData(
+					conceptsPerPerson,
+				),
+			recordsPerPerson,
+			recordsPerPersonYears: perPersonScale,
+			totalRecords,
+			totalRecordsYears: totalRecordsScale,
+			...this.detailsCharts,
+		};
+	}
 }
-
-const mapDispatchToProps = {
-
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(DataDensity);

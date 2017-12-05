@@ -36,6 +36,7 @@ function Entropy(props) {
   const classes = new BEMHelper('report-entropy');
   const {
     data,
+		lineChart,
   } = props;
 
   return (
@@ -44,7 +45,7 @@ function Entropy(props) {
         title='Entropy'
         isDataPresent={data}
         render={({ width, element }) => {
-          new line().render(
+					lineChart.render(
             data,
             element,
             width, // Scrollbar width

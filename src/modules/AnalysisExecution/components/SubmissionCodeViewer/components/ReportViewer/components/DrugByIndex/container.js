@@ -15,34 +15,24 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: November 09, 2017
+ * Authors: Alexander Saltykov
+ * Created: November 20, 2017
  *
  */
 
-import TreemapReportBuilder from 'components/Reports/TreemapReport';
-import presenter from './presenter';
+import TreemapReport from 'components/Reports/TreemapReport';
 import {
-	boxplot,
-	line,
-	trellisline,
+  line,
 } from '@ohdsi/atlascharts/dist/atlascharts.umd';
+import DrugByIndex from './presenter';
 
-export default class DrugEraBuilder extends TreemapReportBuilder {
+export default class DrugByIndexBuilder extends TreemapReport {
   constructor() {
     super();
-    this.presenter = presenter;
-    this.filePath = 'drugeras';
-    this.reportsDetails = {
-			drugPrevalenceChart: new trellisline(),
-			exposureByMonthChart: new line(),
-			ageOfFirstExposureChart: new boxplot(),
-			lengthOfEraChart: new boxplot(),
-		}
+    this.presenter = DrugByIndex;
+    this.detailsCharts = {
+      drugsChart: new line(),
+    };
   }
 
-  getFilename(conceptId) {
-    return `drug_${conceptId}.json`;
-  }
 }
-

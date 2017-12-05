@@ -22,4 +22,4 @@
 
 import DataDensity from './container';
 
-export default DataDensity;
+export default new DataDensity().build();

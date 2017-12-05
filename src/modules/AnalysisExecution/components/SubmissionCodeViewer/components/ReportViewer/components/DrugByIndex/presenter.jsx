@@ -21,46 +21,66 @@
  */
 
 import React from 'react';
-import {
-  Panel,
-} from 'arachne-ui-components';
+import BEMHelper from 'services/BemHelper';
+import Table from 'components/Charts/Table';
 import * as d3 from 'd3';
 import { chartSettings } from 'modules/DataCatalog/const';
 import { convertDataToTreemapData } from 'components/Reports/converters';
+import get from 'lodash/get';
 import Chart from 'components/Reports/Chart';
 import ReportUtils from 'components/Reports/Utils';
+import DrugByIndexDetails from './DrugByIndexDetails';
 
-function ProceduresByIndex(props) {
+import './style.scss';
+
+function DrugByIndex(props) {
   const {
     conditions,
+    loadConditionDetails,
+    details,
+    onZoom,
+    initialZoomedConcept,
+    tableData,
+    tableColumns,
+    detailsCharts,
     treemap,
   } = props;
+  const classes = new BEMHelper('report-drug-by-index');
+  const dataPresent = conditions && conditions.PERCENT_PERSONS && conditions.PERCENT_PERSONS.length;
+  const table = <Table
+    data={tableData}
+    columns={tableColumns}
+    pageSize={5}
+    onRowClick={node => loadConditionDetails(node.id.value)}
+  />;
 
   return (
-    <div>
+    <div {...classes()}>
       <div className='row'>
         <div className='col-xs-12'>
           <Chart
             title='Procedures'
-            isDataPresent={conditions}
+            isDataPresent={dataPresent}
+            isTreemap
+            table={table}
             render={({ width, element }) => {
               const height = width/3;
               const minimum_area = 50;
               const threshold = minimum_area / (width * height);
               treemap.render(
                 convertDataToTreemapData(conditions, threshold, {
-                  numPersons: 'COUNT_VALUE',
+                  numPersons: 'NUM_PERSONS',
                   id: 'CONCEPT_ID',
-                  path: 'CONCEPT_NAME',
-                  pctPersons: 'PCT_PERSONS',
-                  recordsPerPerson: 'DURATION',
+                  path: 'CONCEPT_PATH',
+                  pctPersons: 'PERCENT_PERSONS',
+                  recordsPerPerson: 'RISK_DIFF_AFTER_BEFORE',
                 }),
                 element,
                 width,
                 height,
                 {
                   ...chartSettings,
-                  onclick: () => {},
+                  onclick: node => loadConditionDetails(node.id),
                   getsizevalue: node => node.numPersons,
                   getcolorvalue: node => node.recordsPerPerson,
                   getcontent: (node) => {
@@ -69,24 +89,30 @@ function ProceduresByIndex(props) {
                       treemap,
                       label1: 'Prevalence:',
                       label2: 'Number of People:',
-                      label3: 'Duration:',
+                      label3: 'Relative Risk per Person:',
                     });
                   },
                   gettitle: (node) => {
-                    return ReportUtils.getTreemapTooltipTitle(node);
+                    ReportUtils.getTreemapTooltipTitle(node);
                   },
                   useTip: true,
                   getcolorrange: () => d3.schemeCategory20c.slice(1),
-                  onZoom: () => {},
-                  initialZoomedConcept: null,
+                  onZoom: onZoom,
+                  initialZoomedConcept: initialZoomedConcept,
                 }
               )
             }}
           />
         </div>
       </div>
+      {details && <DrugByIndexDetails
+        data={get(details, 'drugByIndex', {})}
+        details={{}}
+        {...detailsCharts}
+      />
+      }
     </div>
   );
 }
 
-export default ProceduresByIndex;
+export default DrugByIndex;

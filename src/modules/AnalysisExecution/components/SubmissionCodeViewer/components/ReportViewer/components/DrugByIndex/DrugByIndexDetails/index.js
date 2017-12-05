@@ -15,11 +15,12 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: November 09, 2017
+ * Authors: Alexander Saltyko
+ * Created: November 20, 2017
  *
  */
 
-import Dashboard from './container';
+import DrugByIndexDetailsBuilder from './container';
 
-export default new Dashboard().build();
+export default (new DrugByIndexDetailsBuilder()).build();
+

@@ -37,6 +37,7 @@ export default class SelectorsBuilder extends TreemapSelectorsBuilder {
       [reports.drugeras]: this.mapRowForDrugEras,
       [reports.procbyindex]: this.mapRowForProceduresByIndex,
       [reports.condbyindex]: this.mapRowForConditionsByIndex,
+      [reports.drugbyindex]: this.mapRowForDrugByIndex,
       [reports.observations]: this.mapRowForObservations,
     };
   }
@@ -286,6 +287,45 @@ export default class SelectorsBuilder extends TreemapSelectorsBuilder {
       name: {
         columnName: 'Concept name',
         value: concept[4],
+      },
+      personCount: {
+        columnName: 'Person count',
+        value: normalData.NUM_PERSONS[i],
+        formatter: new treemap().formatters.format_comma,
+      },
+      prevalence: {
+        columnName: 'Prevalence',
+        value: normalData.PERCENT_PERSONS[i],
+        formatter: new treemap().formatters.format_pct,
+      },
+      riskPerPerson: {
+        columnName: 'Relative Risk per Person',
+        value: normalData.RISK_DIFF_AFTER_BEFORE[i],
+      },
+    };
+  }
+
+  mapRowForDrugByIndex(concept, normalData, i) {
+    return {
+      id: {
+        columnName: 'Id',
+        value: normalData.CONCEPT_ID[i],
+      },
+      atc1: {
+        columnName: 'ATC1',
+        value: concept[0],
+      },
+      atc3: {
+        columnName: 'ATC3',
+        value: concept[1],
+      },
+      atc5: {
+        columnName: 'ATC5',
+        value: concept[2],
+      },
+      ingredient: {
+        columnName: 'Ingredient',
+        value: concept[3],
       },
       personCount: {
         columnName: 'Person count',

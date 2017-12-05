@@ -43,6 +43,12 @@ export default function CohortspecificReport(props) {
     personsInCohortFromCohortStartToEnd,
     prevalenceByYearGenderSex,
     prevalenceByYearGenderSexSet,
+		prevalenceByMonthChart,
+		prevalenceByYearGenderSexChart,
+		personsInCohortFromCohortStartToEndChart,
+		personsByDurationFromStartToEndChart,
+		ageAtIndexDistributionChart,
+		distributionOfAgeAtCohortStartByGenderChart,
   } = props;
   const classes = BEMHelper('report-cohortspecific');
 
@@ -54,7 +60,7 @@ export default function CohortspecificReport(props) {
             title='Prevalence by Month'
             isDataPresent={prevalenceByMonth}
             render={({ width, element }) => {
-              new line().render(
+              prevalenceByMonthChart.render(
                 prevalenceByMonth,
                 element,
                 width, // Scrollbar width
@@ -82,7 +88,7 @@ export default function CohortspecificReport(props) {
             title='Number of Persons by Cohort Start'
             isDataPresent={prevalenceByYearGenderSex}
             render={({ width, element }) => {
-              new trellisline().render(
+              prevalenceByYearGenderSexChart.render(
                 prevalenceByYearGenderSex,
                 element,
                 width,
@@ -111,7 +117,7 @@ export default function CohortspecificReport(props) {
             title='Persons in cohort from start to end'
             isDataPresent={personsInCohortFromCohortStartToEnd}
             render={({ width, element }) => {
-              new line().render(
+              personsInCohortFromCohortStartToEndChart.render(
                 personsInCohortFromCohortStartToEnd,
                 element,
                 width, // Scrollbar width
@@ -141,7 +147,7 @@ export default function CohortspecificReport(props) {
             title='Number of persons by duration from cohort start to cohort end'
             isDataPresent={personsByDurationFromStartToEnd}
             render={({ width, element }) => {
-              new line().render(
+              personsByDurationFromStartToEndChart.render(
                 personsByDurationFromStartToEnd,
                 element,
                 width, // Scrollbar width
@@ -171,7 +177,7 @@ export default function CohortspecificReport(props) {
             title='Age at Index'
             isDataPresent={ageAtIndexDistribution}
             render={({ width, element }) => {
-              new boxplot().render(
+              ageAtIndexDistributionChart.render(
                 ageAtIndexDistribution,
                 element,
                 width, // Scrollbar width
@@ -191,7 +197,7 @@ export default function CohortspecificReport(props) {
             title='Distribution of age at cohort start by gender '
             isDataPresent={distributionOfAgeAtCohortStartByGender}
             render={({ width, element }) => {
-              new boxplot().render(
+              distributionOfAgeAtCohortStartByGenderChart.render(
                 distributionOfAgeAtCohortStartByGender,
                 element,
                 width, // Scrollbar width

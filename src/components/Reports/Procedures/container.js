@@ -22,12 +22,24 @@
 
 import TreemapReportBuilder from 'components/Reports/TreemapReport';
 import presenter from './presenter';
+import {
+	boxplot,
+	donut,
+	line,
+	trellisline,
+} from '@ohdsi/atlascharts/dist/atlascharts.umd';
 
 export default class ProceduresBuilder extends TreemapReportBuilder {
   constructor() {
     super();
     this.presenter = presenter;
     this.filePath = 'procedures';
+		this.detailsCharts = {
+			conditionPrevalenceChart: new trellisline(),
+			conditionByMonthChart: new line(),
+			proceduresByTypeChart: new donut(),
+			ageOfFirstOccurrenceChart: new boxplot(),
+		}
   }
 
   getFilename(conceptId) {
