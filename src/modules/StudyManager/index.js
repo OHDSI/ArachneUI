@@ -26,11 +26,16 @@ import { paths, imgs } from './const';
 
 export default {
   actions: () => ducks.actions,
-  routes: () => require('./routes').default(), // eslint-disable-line global-require
+  routes: () => (location, cb) => {
+    require.ensure([], (require) => {
+      cb(null, require('./routes').default()); // eslint-disable-line global-require
+    });
+  },
   reducer: () => combineReducers(ducks.reducer),
   sidebarElement: {
     ico: imgs.sidebarIco,
     name: 'Study Notebook',
     path: paths.studies(),
   },
+  indexRedirect: '/studies',
 };

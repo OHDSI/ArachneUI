@@ -84,6 +84,7 @@
     "react-draggable-list": "^3.1.2",
     "react-dropzone": "^3.7.3",
     "react-helmet": "^2.2.0",
+    "react-loadable": "^5.3.1",
     "react-pdf": "^1.8.3",
     "react-prevent-outside-scroll": "0.0.2",
     "react-redux": "^4.4.5",
@@ -153,6 +154,7 @@
     "style-loader": "^0.13.1",
     "url": "^0.11.0",
     "webpack": "^1.13.2",
+    "webpack-bundle-analyzer": "^2.9.1",
     "webpack-dev-server": "^1.16.2",
     "yargs": "^6.5.0"
   }

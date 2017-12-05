@@ -27,7 +27,7 @@ import selectors from './selectors';
 import { order } from 'const/sorting';
 import { push as goToPage } from 'react-router-redux';
 import URI from 'urijs';
-import { split } from 'lodash';
+import split from 'lodash/split';
 
 class UserListTableBuilder extends ContainerBuilder {
 

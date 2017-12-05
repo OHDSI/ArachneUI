@@ -21,10 +21,8 @@
  */
 
 import errors from 'const/errors';
-import {
-  get as _get,
-  isEqual,
-} from 'lodash';
+import isEqual from 'lodash/isEqual';
+import _get from 'lodash/get';
 import { types as fieldTypes } from 'const/modelAttributes';
 import mimeTypes from 'const/mimeTypes';
 import {
