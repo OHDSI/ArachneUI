@@ -23,7 +23,8 @@
 import { connect } from 'react-redux';
 import { reduxForm, reset as resetForm } from 'redux-form';
 import { push as goToPage } from 'react-router-redux';
-import { get, isEqual } from 'lodash';
+import get from 'lodash/get';
+import isEqual from 'lodash/isEqual';
 import actions from 'actions/index';
 import { ModalUtils } from 'arachne-ui-components';
 import { apiPaths, form, paths, modal } from 'modules/AnalysisExecution/const';

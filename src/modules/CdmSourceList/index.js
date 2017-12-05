@@ -33,4 +33,5 @@ export default {
     name: 'CDM Data sources',
     path: paths.dataSources(),
   },
+  indexRedirect: '/data-sources',
 };
