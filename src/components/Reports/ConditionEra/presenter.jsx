@@ -84,7 +84,13 @@ function ConditionEra(props) {
                   getsizevalue: node => node.numPersons,
                   getcolorvalue: node => node.recordsPerPerson,
                   getcontent: (node) => {
-                    return ReportUtils.getTreemapTooltipContent(node, treemap, 'Prevalence:', 'Number of People:', 'Length of era:');
+                    return ReportUtils.getTreemapTooltipContent({
+                      node,
+                      treemap,
+                      label1: 'Prevalence:',
+                      label2:  'Number of People:',
+                      label3:  'Length of era:',
+                    });
                   },
                   gettitle: (node) => {
                     return ReportUtils.getTreemapTooltipTitle(node);

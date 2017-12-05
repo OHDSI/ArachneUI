@@ -93,7 +93,7 @@ export default class ReportUtils {
       : reports.unknown;
   }
 
-  static getTreemapTooltipContent(node, treemap, label1, label2, label3) {
+  static getTreemapTooltipContent({ node, treemap, label1, label2, label3 }) {
     let result = '';
     const steps = node.path.split('||');
     const i = steps.length - 1;
