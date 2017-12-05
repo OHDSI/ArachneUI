@@ -37,8 +37,6 @@ import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testcontainers.DockerClientFactory;
@@ -47,7 +45,6 @@ import org.testcontainers.containers.Network;
 import org.testcontainers.containers.wait.HttpWaitStrategy;
 import org.testcontainers.containers.wait.Wait;
 import org.testcontainers.containers.wait.WaitStrategy;
-import org.testcontainers.shaded.com.google.common.collect.ImmutableMap;
 
 public class BaseTest {
 
@@ -94,18 +91,18 @@ public class BaseTest {
         MAIL_SERVER_API_MESSAGES = String.format("http://%s:%s/api/v1/messages", mailhogHost, mailhogApiPort);
 
         final InspectContainerResponse mailhogContainerInfo = mailhogContainer.getContainerInfo();
-        String containerName = "seleniumportal" + UUID.randomUUID();
-        Map<String, String> portalEnvs = ImmutableMap.<String, String>builder()
-                .put("jasypt.encryptor.password", "arachne")
-                .put("server.ssl.enabled", String.valueOf(USE_SSL))
-                .put("portal.url", PROTOCOL + "://portal_host_placeholder:010101")
-                .put("spring.mail.host", mailhogContainerInfo.getConfig().getHostName())
-                .put("spring.mail.port", "1025")
-                .put("spring.mail.properties.mail.smtp.auth", "false")
-                .put("spring.mail.properties.mail.smtp.starttls.enable", "false")
-                .put("spring.mail.properties.mail.smtp.starttls.required", "false")
-                .put("portal.hostsWhiteList", "localhost,"+ containerName)
-                .build();
+        String containerName = "selenium-portal" + UUID.randomUUID();
+        Map<String, String> portalEnvs = new HashMap<>();
+        portalEnvs.put("server.ssl.enabled", String.valueOf(USE_SSL));
+        portalEnvs.put("portal.url", PROTOCOL + "://portal_host_placeholder:010101");
+        portalEnvs.put("spring.mail.host", mailhogContainerInfo.getConfig().getHostName());
+        portalEnvs.put("spring.mail.port", "1025");
+        portalEnvs.put("spring.mail.properties.mail.smtp.auth", "false");
+        portalEnvs.put("spring.mail.properties.mail.smtp.starttls.enable", "false");
+        portalEnvs.put("spring.mail.properties.mail.smtp.starttls.required", "false");
+        portalEnvs.put("portal.hostsWhiteList", "localhost," + containerName);
+
+        portalEnvs.put("jasypt.encryptor.password", System.getProperty("jasypt.encryptor.password"));
 
         portalContainer = new GenericContainer("hub.arachnenetwork.com/portal:1.10.0-SNAPSHOT")
                 .withEnv(portalEnvs)
@@ -124,15 +121,15 @@ public class BaseTest {
 
         final InspectContainerResponse portalContainerInfo = portalContainer.getContainerInfo();
 
-        Map<String, String> datanodeEnvs = ImmutableMap.<String, String>builder()
-                .put("jasypt.encryptor.password", "arachne")
-                .put("server.ssl.enabled", String.valueOf(USE_SSL))
-                .put("datanode.arachneCentral.host", "http://" + containerName)
-                .put("datanode.arachneCentral.port", "8080")
-                .put("datanode.baseURL", "https://#{systemProperties['HOSTNAME']}")
-                .put("ACHILES_STARTUP", "1")
-                .put("jasypt.encryptor.algorythm", "PBEWITHSHA256AND256BITAES-CBC-BC")
-                .build();
+        Map<String, String> datanodeEnvs = new HashMap<>();
+        datanodeEnvs.put("server.ssl.enabled", String.valueOf(USE_SSL));
+        datanodeEnvs.put("datanode.arachneCentral.host", "http://" + containerName);
+        datanodeEnvs.put("datanode.arachneCentral.port", "8080");
+        datanodeEnvs.put("datanode.baseURL", "https://#{systemProperties['HOSTNAME']}");
+        datanodeEnvs.put("ACHILES_STARTUP", "1");
+
+        datanodeEnvs.put("jasypt.encryptor.password", System.getProperty("jasypt.encryptor.password"));
+        datanodeEnvs.put("jasypt.encryptor.algorythm", System.getProperty("jasypt.encryptor.algorythm"));
 
         datanodeContainer = new GenericContainer("hub.arachnenetwork.com/datanode:1.10.0-SNAPSHOT")
                 .withEnv(datanodeEnvs)
@@ -143,7 +140,7 @@ public class BaseTest {
 
         final String datanodeHost = datanodeContainer.getContainerIpAddress();
         final Integer datanodePort = datanodeContainer.getMappedPort(8880);
-        DATA_NODE_BASE_URL = String.format("%s://%s:%s", PROTOCOL, datanodeHost,  datanodePort);
+        DATA_NODE_BASE_URL = String.format("%s://%s:%s", PROTOCOL, datanodeHost, datanodePort);
 
         driver = new ChromeDriver();
     }
@@ -212,7 +209,7 @@ public class BaseTest {
         loginInput.sendKeys(username);
         passwordInput.sendKeys(password, Keys.ENTER);
 
-        waitFor(driver,  ByBuilder.toolbar("studies")); //todo
+        waitFor(driver, ByBuilder.toolbar("studies")); //todo
         /*
         final By avatar = By.className("ac-avatar");
         waitFor(driver, avatar);
