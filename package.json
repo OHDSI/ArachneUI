@@ -1,6 +1,6 @@
 {
   "name": "arachne-ui",
-  "version": "1.10.29",
+  "version": "1.10.30",
   "licenses": [
     {
       "type": "Apache-2.0",
@@ -25,6 +25,7 @@
     "node": "webpack --app node --env dev --config webpack/app.config.js",
     "build": "webpack --env production --progress --config webpack/app.config.js",
     "build-node": "webpack --env production --app node --progress --config webpack/app.config.js --watch",
+    "test": "webpack --app central --env qa --config webpack/app.config.js",
     "portal-ssr-app": "webpack --app central --production --progress --config webpack/ssr-app.config.js --watch",
     "portal-ssr-node": "webpack --app node --production --progress --config webpack/ssr-app.config.js --watch",
     "ssr-server-central-watch": "webpack --config webpack/server.config.js --watch"

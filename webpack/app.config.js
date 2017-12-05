@@ -174,13 +174,6 @@ if (env === ENV_TYPE.PRODUCTION) {
 }
 
 if (env === ENV_TYPE.DEV) {
-
-  config.plugins.push(
-    new BundleAnalyzerPlugin({
-      analyzerMode: 'static',
-    })
-  );
-
   // process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
   // Webpack hot reload server
@@ -220,6 +213,14 @@ if (env === ENV_TYPE.DEV) {
   server.listen(
     appType === APP_TYPE.NODE ? 8020 : 8010,
     'localhost'
+  );
+}
+
+if (env === ENV_TYPE.QA) {
+  config.plugins.push(
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+    })
   );
 }
 

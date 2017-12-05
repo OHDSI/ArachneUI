@@ -138,7 +138,7 @@ function mapStateToProps(state) {
   const isLoading = get(state, 'analysisExecution.analysisCode.isLoading', false);
   const prevPath = get(state, 'routingHistory.prevLocation.pathname', '');
 
-  const filesPath = get(state, 'analysisExecution.analysisCode.requestParams.query.path', '');
+  const filesPath = get(state, 'analysisExecution.analysisCode.requestParams.query.path', '/');
 
   return {
     analysisId: get(analysisData, 'id'),
