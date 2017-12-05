@@ -21,6 +21,7 @@
  */
 
 import { connect } from 'react-redux';
+
 import { chart } from '@ohdsi/atlascharts/dist/atlascharts.umd';
 import ReportUtils from 'components/Reports/Utils';
 import {
@@ -29,6 +30,13 @@ import {
   convertDataToMonthLineChartData,
 } from 'components/Reports/converters';
 import ObservationPeriods from './presenter';
+import {
+	donut,
+	histogram,
+	boxplot,
+	line,
+} from '@ohdsi/atlascharts/dist/atlascharts.umd';
+import { ContainerBuilder } from 'services/Utils';
 
 const observationsByMonthDTO = {
   dateField: 'MONTH_YEAR',
@@ -36,59 +44,76 @@ const observationsByMonthDTO = {
   yPercent: 'PERCENT_VALUE',
 };
 
-function mapStateToProps(state, ownProps) {
-  const {
-    ageByGender,
-    durationByGender,
-    durationByAgeDecline,
-    ageAtFirstObservation,
-    observationLength,
-    rawCumulativeObservation,
-    durationByYear,
-    observationsPerPerson,
-    observationsByMonth,
-  } = ownProps;
-  let cumulativeObservation = null;
-  if (rawCumulativeObservation) {
-    cumulativeObservation = [{
-      name: '',
-      values: rawCumulativeObservation.SERIES_NAME.map((name, i) => ({
-        Y_PERCENT_PERSONS: rawCumulativeObservation.Y_PERCENT_PERSONS[i],
-        X_LENGTH_OF_OBSERVATION: rawCumulativeObservation.X_LENGTH_OF_OBSERVATION[i],
-      })),
-    }];
+export default class ObservationPeriodContainerBuilder extends ContainerBuilder {
+
+  constructor() {
+    super();
+		this.detailsCharts = {
+			ageAtFirstObservationChart: new histogram(),
+			ageByGenderChart: new boxplot(),
+			observationLengthChart: new histogram(),
+			durationByGenderChart: new boxplot(),
+			cumulativeObservationChart: new line(),
+			durationByAgeDeclineChart: new boxplot(),
+			durationByYearChart: new histogram(),
+			observationsPerPersonChart: new donut(),
+			observationsByMonthChart: new line(),
+		}
   }
-  
-  return {
-    ageByGender:
-      convertDataToBoxplotData(
-        ageByGender
-      ),
-    durationByGender:
-      convertDataToBoxplotData(
-        durationByGender
-      ),
-    durationByAgeDecline:
-      convertDataToBoxplotData(
-        durationByAgeDecline
-      ),
-    ageAtFirstObservation,
-    observationLength,
-    cumulativeObservation,
-    durationByYear,
-    observationsPerPerson: observationsPerPerson
-      ? ReportUtils.prepareChartDataForDonut(observationsPerPerson)
-      : null,
-    observationsByMonth:
-      convertDataToMonthLineChartData(
-        observationsByMonth,
-        observationsByMonthDTO
-      ),
-  };
+
+  getComponent() {
+    return ObservationPeriods;
+  }
+
+	mapStateToProps(state, ownProps) {
+		const {
+			ageByGender,
+			durationByGender,
+			durationByAgeDecline,
+			ageAtFirstObservation,
+			observationLength,
+			rawCumulativeObservation,
+			durationByYear,
+			observationsPerPerson,
+			observationsByMonth,
+		} = ownProps;
+		let cumulativeObservation = null;
+		if (rawCumulativeObservation) {
+			cumulativeObservation = [{
+				name: '',
+				values: rawCumulativeObservation.SERIES_NAME.map((name, i) => ({
+					Y_PERCENT_PERSONS: rawCumulativeObservation.Y_PERCENT_PERSONS[i],
+					X_LENGTH_OF_OBSERVATION: rawCumulativeObservation.X_LENGTH_OF_OBSERVATION[i],
+				})),
+			}];
+		}
+
+		return {
+			ageByGender:
+				convertDataToBoxplotData(
+					ageByGender
+				),
+			durationByGender:
+				convertDataToBoxplotData(
+					durationByGender
+				),
+			durationByAgeDecline:
+				convertDataToBoxplotData(
+					durationByAgeDecline
+				),
+			ageAtFirstObservation,
+			observationLength,
+			cumulativeObservation,
+			durationByYear,
+			observationsPerPerson: observationsPerPerson
+				? ReportUtils.prepareChartDataForDonut(observationsPerPerson)
+				: null,
+			observationsByMonth:
+				convertDataToMonthLineChartData(
+					observationsByMonth,
+					observationsByMonthDTO
+				),
+			...this.detailsCharts,
+		};
+	}
 }
-
-const mapDispatchToProps = {
-
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ObservationPeriods);

@@ -26,6 +26,9 @@ import {
   convertDataToLineChartData,
 } from 'components/Reports/converters';
 import EntropyReport from './presenter';
+import {
+	line,
+} from '@ohdsi/atlascharts';
 
 const entropyDTO = {
   xValue: 'date',
@@ -34,6 +37,11 @@ const entropyDTO = {
 };
 
 export default class EntropyReportBuilder extends ContainerBuilder {
+  constructor() {
+    super();
+    this.lineChart = new line();
+  }
+
   getComponent() {
     return EntropyReport;
   }
@@ -50,6 +58,7 @@ export default class EntropyReportBuilder extends ContainerBuilder {
 
     return {
       data,
+      line: this.lineChart,
     };
   }
 }

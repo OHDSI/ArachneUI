@@ -21,9 +21,6 @@
  */
 
 import React from 'react';
-import {
-  line,
-} from '@ohdsi/atlascharts/dist/atlascharts.umd';
 import * as d3 from 'd3';
 import { chartSettings } from 'modules/DataCatalog/const';
 import Chart from 'components/Reports/Chart';
@@ -31,6 +28,7 @@ import Chart from 'components/Reports/Chart';
 function DrugByIndex(props) {
   const {
     data,
+    drugsChart,
   } = props;
 
   return (
@@ -44,7 +42,7 @@ function DrugByIndex(props) {
               const height = width/3;
               const minimum_area = 50;
               const threshold = minimum_area / (width * height);
-              new line().render(
+              drugsChart.render(
                 data,
                 element,
                 width,

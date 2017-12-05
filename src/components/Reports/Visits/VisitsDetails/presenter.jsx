@@ -25,11 +25,6 @@ import BEMHelper from 'services/BemHelper';
 import {
   Panel,
 } from 'arachne-ui-components';
-import {
-  boxplot,
-  line,
-  trellisline,
-} from '@ohdsi/atlascharts/dist/atlascharts.umd';
 import { numberFormatter } from 'services/Utils';
 import * as d3 from 'd3';
 import { chartSettings, defaultTrellisSet } from 'modules/DataCatalog/const';
@@ -41,6 +36,10 @@ function VisitsDetails(props) {
     conditionByMonth,
     ageAtFirstOccurrence,
     durationByType,
+		conditionPrevalenceChart,
+		conditionByMonthChart,
+		durationByTypeChart,
+		ageAtFirstOccurrenceChart,
   } = props;
   const classes = new BEMHelper('report-death');
 
@@ -51,7 +50,7 @@ function VisitsDetails(props) {
           title='Condition Prevalence'
           isDataPresent={conditionPrevalence}
           render={({ width, element }) => {
-            new trellisline().render(
+						conditionPrevalenceChart.render(
               conditionPrevalence,
               element,
               width,
@@ -78,7 +77,7 @@ function VisitsDetails(props) {
           title='Condition Prevalence by Month'
           isDataPresent={conditionByMonth}
           render={({ width, element }) => {
-            new line().render(
+						conditionByMonthChart.render(
               conditionByMonth,
               element,
               width,
@@ -101,7 +100,7 @@ function VisitsDetails(props) {
           title='visit duration by type'
           isDataPresent={durationByType}
           render={({ width, element }) => {
-            new boxplot().render(
+						durationByTypeChart.render(
               durationByType,
               element,
               width,
@@ -121,7 +120,7 @@ function VisitsDetails(props) {
           title='Age at first occurrence'
           isDataPresent={ageAtFirstOccurrence}
           render={({ width, element }) => {
-            new boxplot().render(
+            ageAtFirstOccurrenceChart.render(
               ageAtFirstOccurrence,
               element,
               width,

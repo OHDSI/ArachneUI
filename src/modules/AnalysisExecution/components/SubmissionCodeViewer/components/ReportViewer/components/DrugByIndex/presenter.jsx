@@ -22,16 +22,14 @@
 
 import React from 'react';
 import BEMHelper from 'services/BemHelper';
-import {
-  treemap,
-} from '@ohdsi/atlascharts/dist/atlascharts.umd';
 import Table from 'components/Charts/Table';
 import * as d3 from 'd3';
 import { chartSettings } from 'modules/DataCatalog/const';
 import { convertDataToTreemapData } from 'components/Reports/converters';
 import get from 'lodash/get';
-import DrugByIndexDetails from './DrugByIndexDetails';
 import Chart from 'components/Reports/Chart';
+import ReportUtils from 'components/Reports/Utils';
+import DrugByIndexDetails from './DrugByIndexDetails';
 
 import './style.scss';
 
@@ -44,6 +42,8 @@ function DrugByIndex(props) {
     initialZoomedConcept,
     tableData,
     tableColumns,
+    detailsCharts,
+    treemap,
   } = props;
   const classes = new BEMHelper('report-drug-by-index');
   const dataPresent = conditions && conditions.PERCENT_PERSONS && conditions.PERCENT_PERSONS.length;
@@ -67,7 +67,7 @@ function DrugByIndex(props) {
               const height = width/3;
               const minimum_area = 50;
               const threshold = minimum_area / (width * height);
-              new treemap().render(
+              treemap.render(
                 convertDataToTreemapData(conditions, threshold, {
                   numPersons: 'NUM_PERSONS',
                   id: 'CONCEPT_ID',
@@ -84,28 +84,16 @@ function DrugByIndex(props) {
                   getsizevalue: node => node.numPersons,
                   getcolorvalue: node => node.recordsPerPerson,
                   getcontent: (node) => {
-                    let result = '';
-                    const steps = node.path.split('||');
-                    const i = steps.length - 1;
-                    result += `<div class='pathleaf'>${steps[i]}</div>`;
-                    result += `<div class='pathleafstat'>
-                      Prevalence: ${new treemap().formatters.format_pct(node.pctPerson)}
-                    </div>`;
-                    result += `<div class='pathleafstat'>
-                      Number of People: ${new treemap().formatters.format_comma(node.numPersons)}
-                    </div>`;
-                    result += `<div class='pathleafstat'>
-                      Relative Risk per Person: ${new treemap().formatters.format_fixed(node.recordsPerPerson)}
-                    </div>`;
-                    return result;
+                    return ReportUtils.getTreemapTooltipContent({
+                      node,
+                      treemap,
+                      label1: 'Prevalence:',
+                      label2: 'Number of People:',
+                      label3: 'Relative Risk per Person:',
+                    });
                   },
                   gettitle: (node) => {
-                    let title = ''
-                    const steps = node.path.split('||');
-                    steps.forEach((step, i) => {
-                      title += ` <div class='pathstep'>${Array(i + 1).join('&nbsp;&nbsp')}${step}</div>`;
-                    });
-                    return title;
+                    ReportUtils.getTreemapTooltipTitle(node);
                   },
                   useTip: true,
                   getcolorrange: () => d3.schemeCategory20c.slice(1),
@@ -120,6 +108,7 @@ function DrugByIndex(props) {
       {details && <DrugByIndexDetails
         data={get(details, 'drugByIndex', {})}
         details={{}}
+        {...detailsCharts}
       />
       }
     </div>

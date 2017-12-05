@@ -22,12 +22,23 @@
 
 import TreemapReportBuilder from 'components/Reports/TreemapReport';
 import presenter from './presenter';
+import {
+	boxplot,
+	line,
+	trellisline,
+} from '@ohdsi/atlascharts/dist/atlascharts.umd';
 
 export default class DrugEraBuilder extends TreemapReportBuilder {
   constructor() {
     super();
     this.presenter = presenter;
     this.filePath = 'drugeras';
+    this.reportsDetails = {
+			drugPrevalenceChart: new trellisline(),
+			exposureByMonthChart: new line(),
+			ageOfFirstExposureChart: new boxplot(),
+			lengthOfEraChart: new boxplot(),
+		}
   }
 
   getFilename(conceptId) {

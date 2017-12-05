@@ -21,12 +21,18 @@
  */
 
 import TreemapReport from 'components/Reports/TreemapReport';
+import {
+  line,
+} from '@ohdsi/atlascharts/dist/atlascharts.umd';
 import DrugByIndex from './presenter';
 
 export default class DrugByIndexBuilder extends TreemapReport {
   constructor() {
     super();
     this.presenter = DrugByIndex;
+    this.detailsCharts = {
+      drugsChart: new line(),
+    };
   }
 
 }
