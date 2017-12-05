@@ -27,6 +27,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const argv = require('yargs').argv;
 const keyMirror = require('keymirror');
 const WebpackDevServer = require('webpack-dev-server');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 
 const currentDir = path.resolve(__dirname, '..');
@@ -149,6 +150,15 @@ const config = {
         to: path.join(webapp, 'img/icons'),
       },
     ]),
+
+    // https://medium.com/@adamrackis/vendor-and-code-splitting-in-webpack-2-6376358f1923
+    new webpack.optimize.CommonsChunkPlugin({
+      async: 'used-twice',
+      minChunks(module, count) {
+          return count >= 2;
+      },
+    }),
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|ru/),
   ],
 };
 
@@ -164,6 +174,12 @@ if (env === ENV_TYPE.PRODUCTION) {
 }
 
 if (env === ENV_TYPE.DEV) {
+
+  config.plugins.push(
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+    })
+  );
 
   // process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
