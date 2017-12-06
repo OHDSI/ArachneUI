@@ -37,8 +37,8 @@ export default class Conditions extends TreemapReportBuilder {
 		this.detailsCharts = {
 			conditionPrevalenceChart: new trellisline(),
 			conditionByMonthChart: new line(),
-			durationByTypeChart: new donut(),
-			ageAtFirstOccurrenceChart: new boxplot(),
+			conditionByTypeChart: new donut(),
+			ageOfFirstDiagnosisChart: new boxplot(),
 		}
   }
 
