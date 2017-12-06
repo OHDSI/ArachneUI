@@ -121,6 +121,7 @@ const config = {
     path: webapp,
     publicPath: '/',
     filename: 'js/app.js',
+    chunkFilename: '[name]/app-[hash].js',
   },
   devtool: env === ENV_TYPE.PRODUCTION ? null : 'source-map',
   plugins: [
@@ -153,7 +154,7 @@ const config = {
 
     // https://medium.com/@adamrackis/vendor-and-code-splitting-in-webpack-2-6376358f1923
     new webpack.optimize.CommonsChunkPlugin({
-      async: 'used-twice',
+      async: 'js',
       minChunks(module, count) {
           return count >= 2;
       },
@@ -167,7 +168,7 @@ if (env === ENV_TYPE.PRODUCTION) {
   // minification
   config.output.publicPath = '/';
   config.plugins.push(new webpack.optimize.UglifyJsPlugin({
-    comments: false,
+    comments: true,
   }));
   config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
   config.plugins.push(new webpack.optimize.DedupePlugin());

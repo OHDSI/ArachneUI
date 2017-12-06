@@ -33,7 +33,7 @@
   },
   "size-limit": [    
     {
-      "path": "public/*.js/app.js",
+      "path": "public/*/app-*.js",
       "webpack": false,
       "limit": "1024 KB"
     },
