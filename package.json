@@ -1,6 +1,6 @@
 {
   "name": "arachne-ui",
-  "version": "1.10.32",
+  "version": "1.10.33",
   "licenses": [
     {
       "type": "Apache-2.0",
@@ -31,7 +31,12 @@
     "portal-ssr-node": "webpack --app node --production --progress --config webpack/ssr-app.config.js --watch",
     "ssr-server-central-watch": "webpack --config webpack/server.config.js --watch"
   },
-  "size-limit": [
+  "size-limit": [    
+    {
+      "path": "public/*.js/app.js",
+      "webpack": false,
+      "limit": "1024 KB"
+    },
     {
       "path": "public/js/app.js",
       "webpack": false,
