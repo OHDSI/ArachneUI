@@ -68,6 +68,9 @@ public class BaseTest {
     protected static GenericContainer portalContainer;
     protected static GenericContainer datanodeContainer;
 
+    protected static GenericContainer portalPostgresContainer;
+    protected static GenericContainer datanodePostgresContainer;
+
     @BeforeClass
     public static void setup() {
 
@@ -78,6 +81,14 @@ public class BaseTest {
         final WaitStrategy arachneWaitStrategy = new HttpWaitStrategy()
                 .forPath("/api/v1/build-number")
                 .withStartupTimeout(Duration.ofMinutes(3));
+
+        String uuid = UUID.randomUUID().toString();
+        String containerName = "selenium-portal-" + uuid;
+        String portalPGContainerName = "portal-pg-" + uuid;
+        String datanodePGContainerName = "datanode-pg-" + uuid;
+
+        portalPostgresContainer = createPostgresContainer(portalPGContainerName, "arachne_portal", network);
+        datanodePostgresContainer = createPostgresContainer(datanodePGContainerName, "datanode", network);
 
         mailhogContainer = new GenericContainer("mailhog/mailhog:latest")
                 .withNetwork(network)
@@ -91,7 +102,6 @@ public class BaseTest {
         MAIL_SERVER_API_MESSAGES = String.format("http://%s:%s/api/v1/messages", mailhogHost, mailhogApiPort);
 
         final InspectContainerResponse mailhogContainerInfo = mailhogContainer.getContainerInfo();
-        String containerName = "selenium-portal" + UUID.randomUUID();
         Map<String, String> portalEnvs = new HashMap<>();
         portalEnvs.put("server.ssl.enabled", String.valueOf(USE_SSL));
         portalEnvs.put("portal.url", PROTOCOL + "://portal_host_placeholder:010101");
@@ -103,6 +113,8 @@ public class BaseTest {
         portalEnvs.put("portal.hostsWhiteList", "localhost," + containerName);
 
         portalEnvs.put("jasypt.encryptor.password", System.getProperty("jasypt.encryptor.password"));
+
+        portalEnvs.put("spring.datasource.url", "jdbc:postgresql://" + portalPGContainerName + ":5432/arachne_portal");
 
         portalContainer = new GenericContainer("hub.arachnenetwork.com/portal:1.10.0-SNAPSHOT")
                 .withEnv(portalEnvs)
@@ -119,8 +131,6 @@ public class BaseTest {
         final Integer portalPort = portalContainer.getMappedPort(8080);
         PORTAL_BASE_URL = String.format("%s://%s:%s", PROTOCOL, portalHost, portalPort);
 
-        final InspectContainerResponse portalContainerInfo = portalContainer.getContainerInfo();
-
         Map<String, String> datanodeEnvs = new HashMap<>();
         datanodeEnvs.put("server.ssl.enabled", String.valueOf(USE_SSL));
         datanodeEnvs.put("datanode.arachneCentral.host", "http://" + containerName);
@@ -130,6 +140,8 @@ public class BaseTest {
 
         datanodeEnvs.put("jasypt.encryptor.password", System.getProperty("jasypt.encryptor.password"));
         datanodeEnvs.put("jasypt.encryptor.algorythm", System.getProperty("jasypt.encryptor.algorythm"));
+
+        datanodeEnvs.put("spring.datasource.url", "jdbc:postgresql://" + datanodePGContainerName + ":5432/datanode");
 
         datanodeContainer = new GenericContainer("hub.arachnenetwork.com/datanode:1.10.0-SNAPSHOT")
                 .withEnv(datanodeEnvs)
@@ -142,7 +154,34 @@ public class BaseTest {
         final Integer datanodePort = datanodeContainer.getMappedPort(8880);
         DATA_NODE_BASE_URL = String.format("%s://%s:%s", PROTOCOL, datanodeHost, datanodePort);
 
+        // if chrome.exe is in not default dir
+        /* Map<String, Object> chromeOptions = new HashMap<>();
+        chromeOptions.put("binary", "PATH_TO_CHROME-EXE\chrome.exe") ;
+        DesiredCapabilities capabilities = DesiredCapabilities. chrome();
+        capabilities.setCapability(ChromeOptions. CAPABILITY, chromeOptions) ;
+        driver = new ChromeDriver(capabilities);*/
+
         driver = new ChromeDriver();
+    }
+
+    private static GenericContainer createPostgresContainer(String containerName, String dbName, Network.NetworkImpl network) {
+
+        Map<String, String> envs = new HashMap<>();
+
+        envs.put("POSTGRES_USER", "ohdsi");
+        envs.put("POSTGRES_PASSWORD", System.getProperty("postgres.password"));
+        envs.put("POSTGRES_DB", dbName);
+
+        GenericContainer container = new GenericContainer("postgres:9.6.5")
+                .withEnv(envs)
+                .withNetwork(network)
+                .withExposedPorts(5432);
+        // todo wait startup
+        container.start();
+        String oldPGName = container.getContainerName().substring(1);
+        DockerClientFactory.instance().client().renameContainerCmd(oldPGName).withName(containerName).exec();
+
+        return container;
     }
 
     @AfterClass
@@ -156,7 +195,8 @@ public class BaseTest {
         portalContainer.stop();
         mailhogContainer.stop();
 
-
+        portalPostgresContainer.stop();
+        datanodePostgresContainer.stop();
         httpClient.close();
     }
 
