@@ -25,7 +25,7 @@ import { connect } from 'react-redux';
 import { reduxForm, reset as resetForm } from 'redux-form';
 import get from 'lodash/get';
 
-import actions from 'actions/index';
+import actions from 'actions';
 import { ModalUtils } from 'arachne-ui-components';
 import { modal, form } from 'modules/CdmSourceList/const';
 import presenter from './presenter';
@@ -70,7 +70,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...stateProps,
     ...dispatchProps,
     doSubmit(data) {
-      const submitPromise = dispatchProps.create(data);
+      const submitPromise = dispatchProps.create({}, data);
 
       submitPromise
         .then(() => dispatchProps.reset())

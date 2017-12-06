@@ -21,6 +21,7 @@
  */
 
 import keyMirror from 'keymirror';
+import { reports } from 'const/reports';
 
 const forms = keyMirror({
   facetedSearch: null,
@@ -57,36 +58,20 @@ const imgs = {
   sidebarIco: '/img/icons/Universal_Desktop/Navigation/Arachne_Desktop_icon-Data_Catalog.png',
 };
 
-const reports = {
-  DASHBOARD: 'dashboard',
-  PERSON: 'person',
-  OBSERVATION_PERIODS: 'observationperiods',
-  DATA_DENSITY: 'datadensity',
-  DEATH: 'death',
-  CONDITIONS: 'conditions',
-  CONDITIONERA: 'conditionera',
-  OBSERVATIONS: 'observations',
-  DRUGERA: 'drugeras',
-  DRUG: 'drugexposures',
-  PROCEDURES: 'procedures',
-  VISITS: 'visits',
-  ACHILLESHEEL: 'achillesheel',
-};
-
 const reportFilenames = {
-  [reports.DASHBOARD]: /dashboard\.json/gi,
-  [reports.PERSON]: /person\.json/gi,
-  [reports.OBSERVATION_PERIODS]: /observationperiod\.json/gi,
-  [reports.DATA_DENSITY]: /datadensity\.json/gi,
-  [reports.DEATH]: /death\.json/gi,
-  [reports.CONDITIONS]: /condition_treemap\.json/gi,
-  [reports.CONDITIONERA]: /conditionera_treemap\.json/gi,
-  [reports.OBSERVATIONS]: /observation_treemap\.json/gi,
-  [reports.DRUGERA]: /drugera_treemap\.json/gi,
-  [reports.DRUG]: /drug_treemap\.json/gi,
-  [reports.PROCEDURES]: /procedure_treemap\.json/gi,
-  [reports.VISITS]: /visit_treemap\.json/gi,
-  [reports.ACHILLESHEEL]: /achillesheel\.json/gi,
+  [reports.dashboard]: /dashboard\.json/gi,
+  [reports.person]: /person\.json/gi,
+  [reports.observationperiods]: /observationperiod\.json/gi,
+  [reports.datadensity]: /datadensity\.json/gi,
+  [reports.death]: /death\.json/gi,
+  [reports.conditions]: /condition_treemap\.json/gi,
+  [reports.conditionera]: /conditionera_treemap\.json/gi,
+  [reports.observations]: /observation_treemap\.json/gi,
+  [reports.drugeras]: /drugera_treemap\.json/gi,
+  [reports.drugexposures]: /drug_treemap\.json/gi,
+  [reports.procedures]: /procedure_treemap\.json/gi,
+  [reports.visits]: /visit_treemap\.json/gi,
+  [reports.achillesheel]: /achillesheel\.json/gi,
 };
 
 const chartSettings = {
@@ -113,7 +98,6 @@ export {
   forms,
   modal,
   paths,
-  reports,
   reportFilenames,
   chartSettings,
   defaultTrellisSet,

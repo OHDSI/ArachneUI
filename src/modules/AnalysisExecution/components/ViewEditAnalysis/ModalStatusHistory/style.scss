@@ -35,14 +35,9 @@
 		
 		&__status {
 			@include title();
+			@include colored();
 			width: 50%;
 			padding: 15px 0 15px 60px;
-
-			&--orange { color: $orange; }
-			&--blue { color: $blue-light; }
-			&--purple { color: $purple; }
-			&--green { color: $green; }
-			&--red { color: $red; }
 		}
 		
 		&__author {

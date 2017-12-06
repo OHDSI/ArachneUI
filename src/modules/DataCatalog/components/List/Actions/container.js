@@ -40,4 +40,12 @@ export default class DataCatalogListActionsBuilder extends ContainerBuilder {
       reload: actions.router.reload,
     };
   }
+
+  mergeProps(stateProps, dispatchProps, ownProps) {
+    return {
+      ...stateProps,
+      ...dispatchProps,
+      ...ownProps,
+    };
+  }
 }

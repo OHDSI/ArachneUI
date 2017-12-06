@@ -29,7 +29,7 @@ import { ContainerBuilder, get, Utils } from 'services/Utils';
 import UserListSelectorBuilder from './selectors';
 import userFilterFields from './Filters';
 import { saveFilter, getSavedFilter } from "modules/Admin/ducks/portalUserList";
-import { values } from 'lodash';
+import values from 'lodash/values';
 import Uri from 'urijs';
 import { push } from 'react-router-redux';
 

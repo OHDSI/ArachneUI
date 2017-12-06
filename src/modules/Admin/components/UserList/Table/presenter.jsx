@@ -25,7 +25,8 @@ import BEMHelper from 'services/BemHelper';
 import {
 	Link,
 	Table,
-	TableCellText as Cell
+	TableCellText as Cell,
+	Checkbox
 } from 'arachne-ui-components';
 
 require('./style.scss');
@@ -38,11 +39,18 @@ function CellRemove({ id, removeUser }) {
 	);
 }
 
+function CellCheck({ id, value, entity, toggle }) {
+  return (
+		<Checkbox isChecked={value} onChange={(e) => toggle(id, e.target.checked, entity)} />
+  );
+}
+
 function AdminTable(props) {
 	const tableClasses = new BEMHelper('admin-panel-user-list-table');
   const {
     userList,
     removeUser,
+		updateUser,
     sorting,
     setSearch,
   } = props;
@@ -65,6 +73,19 @@ function AdminTable(props) {
           header="Email"
           field="email"
         />
+				<CellCheck
+					{...tableClasses('enabled')}
+					header="Enabled"
+					field="enabled"
+					isSortable={false}
+					props={
+						entity => ({
+							id: entity.id,
+							entity: entity,
+							toggle: updateUser,
+						})
+					}
+				/>
         <CellRemove
           {...tableClasses('remove')}
         	header="Remove"

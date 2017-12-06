@@ -22,10 +22,38 @@
 
 import React from 'react';
 import FileViewer from 'components/FileViewer';
+import ReportViewer from './components/ReportViewer';
 
-function SubmissionCodeViewer({ file, isLoading, loadFile, toolbarOpts, downloadLink, urlParams, pageTitle }) {
-  return (
-    <FileViewer
+function SubmissionCodeViewer({
+  file,
+  isLoading,
+  loadFile,
+  toolbarOpts,
+  downloadLink,
+  urlParams,
+  pageTitle,
+  isReport = false,
+  reportType,
+  loadTreemapDetails,
+  tableData,
+  tableColumns,
+  details,
+  isDetailsLoading,
+}) {
+  return isReport
+    ? <ReportViewer
+      type={reportType}
+      data={file}
+      details={details}
+      toolbarOpts={toolbarOpts}
+      downloadLink={downloadLink}
+      pageTitle={pageTitle}
+      loadTreemapDetails={loadTreemapDetails}
+      tableData={tableData}
+      tableColumns={tableColumns}
+      isLoading={isDetailsLoading}
+    />
+    : <FileViewer
       file={file}
       isLoading={isLoading}
       loadFile={loadFile}
@@ -33,8 +61,7 @@ function SubmissionCodeViewer({ file, isLoading, loadFile, toolbarOpts, download
       downloadLink={downloadLink}
       urlParams={urlParams}
       pageTitle={pageTitle}
-    />
-  );
+    />;
 }
 
 export default SubmissionCodeViewer;

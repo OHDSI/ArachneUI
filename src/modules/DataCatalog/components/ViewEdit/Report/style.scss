@@ -22,15 +22,9 @@
 
 @import 'styles/vars-and-mixins.scss';
 
-.d3-tip {
-	background: rgba(0, 0, 0, 0.3);
-	border-radius: $input-border-radius;
-	color: $white;
-	padding: 3px;
-}
-
 .#{$namespace} {
 	&data-source-report {
+		@include report();
 		margin-top: 2rem;
 		margin-bottom: 2rem;
     width: calc(100% - 4rem);
@@ -39,90 +33,6 @@
 		&__select {
 			@include input-border();
 		}
-
-		& .donut text {
-			font-size: 1.2rem;
-		}
-
-		& .axislabel {
-			@include title();
-		}
-
-		& .lineplot {
-			& .line {
-				fill: transparent;
-				stroke: $blue;
-			}
-
-			& circle.focus {
-				opacity: 0;
-			}
-		}
-
-		& .bar {
-			fill: $blue;
-		}
-
-		& .boxplot {
-			& .bar, & .whisker, & .box, & .median {
-				stroke: $blue;
-			}
-
-			& .box {
-				fill: lighten($blue, 60%);
-			}
-		}
-		/* trellisline */
-		& .g-trellis {
-			& .y-guide,
-			& .x-guide {
-				& .tick line {
-					stroke: #ccc;
-		    	stroke-width: .6;
-		    }
-
-				& .domain {
-					stroke: none;
-				}
-			}
-			& .g-overlay {
-				fill: none;
-	    	pointer-events: all;
-			}
-		}
-		/* treemap */
-		& .grouper {
-	    fill: none;
-	    stroke: white;
-	    stroke-width: 2px;
-		}
-
-		& .treemap_zoomtarget {
-			padding: 0.5rem 20px;
-		}
-
-		& .#{$namespace} {
-			&panel {
-				&__content {
-					& .#{$namespace} {
-						&tabbed-pane {
-							& .#{$namespace} {
-								&tabs {
-									&__item {
-										background: $grey;
-
-										&--selected {
-											background: $blue-light;
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-
 	}
 
 	&report-empty {

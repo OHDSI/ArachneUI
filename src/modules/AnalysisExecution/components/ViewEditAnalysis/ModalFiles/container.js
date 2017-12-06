@@ -78,7 +78,7 @@ class ModalFiles extends Component {
     if (this.props.isOpened === false && nextProps.isOpened === true) {
       if (nextProps.filesCount <= maxFilesCount) {
         if (nextProps.isResults) {
-          this.props.loadSubmissionFiles(nextProps.submissionId);
+          this.props.loadSubmissionFiles({ submissionId: nextProps.submissionId });
         } else {
           this.props.loadSubmissionGroupFiles(nextProps.submissionGroupId);
         }
@@ -138,6 +138,8 @@ function mapStateToProps(state) {
   const isLoading = get(state, 'analysisExecution.analysisCode.isLoading', false);
   const prevPath = get(state, 'routingHistory.prevLocation.pathname', '');
 
+  const filesPath = get(state, 'analysisExecution.analysisCode.requestParams.query.path', '/');
+
   return {
     analysisId: get(analysisData, 'id'),
     submissionId,
@@ -152,6 +154,7 @@ function mapStateToProps(state) {
     filesCount,
     prevPath,
     canDownload,
+    filesPath,
   };
 }
 
@@ -165,11 +168,16 @@ const mapDispatchToProps = {
       entityId: groupId,
       isSubmissionGroup: true,
     }),
-  loadSubmissionFiles: submissionId =>
-    actions.analysisExecution.analysisCode.codeList.query({
-      entityId: submissionId,
-      isSubmissionGroup: false,
-    }),
+  loadSubmissionFiles: ({ submissionId, path = '/' }) =>
+    actions.analysisExecution.analysisCode.codeList.query(
+      {
+        entityId: submissionId,
+        isSubmissionGroup: false,
+      },
+      {
+        path,
+      }
+    ),
   flush: actions.analysisExecution.analysisCode.flush,
 };
 
@@ -178,12 +186,13 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...ownProps,
     ...stateProps,
     ...dispatchProps,
+    loadSubmissionFiles: ({ submissionId = stateProps.submissionId, path }) => dispatchProps.loadSubmissionFiles({ submissionId, path }),
     removeResult: (fileId) => {
       Utils.confirmDelete()
         .then(() => {
           dispatchProps
             .removeResult({ submissionId: stateProps.submissionId, fileId })
-            .then(() => dispatchProps.loadSubmissionFiles(stateProps.submissionId))
+            .then(() => dispatchProps.loadSubmissionFiles({ submissionId: stateProps.submissionId }))
             .then(() => dispatchProps.loadAnalysis({ id: stateProps.analysisId }));
         });
     },

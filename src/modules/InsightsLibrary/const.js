@@ -82,10 +82,6 @@ const paperFileType = keyMirror({
 
 const publishStates = [
   {
-    label: 'Any',
-    value: '',
-  },
-  {
     label: 'Published',
     value: 'PUBLISHED',
   },
