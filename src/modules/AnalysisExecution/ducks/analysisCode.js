@@ -50,21 +50,14 @@ function receiveAnalysisCodeFlush() {
   };
 }
 
-function searchArnalysisCode() {
-  return {
-    type: `${coreName}_SEARCH_FULFILLED`,
-  };
-}
-
 function flush() {
   return dispatch => dispatch(receiveAnalysisCodeFlush());
 }
 
 function search(urlParams, requestParams) {
-  return dispatch => Api.doGet(
+  return () => Api.doGet(
     apiPaths.submissionCodeFiles({ submissionId: urlParams.entityId }),
-    requestParams,
-    () => dispatch(searchArnalysisCode())
+    requestParams
   );
 }
 
