@@ -1,3 +1,5 @@
+// @ts-check
+
 /*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
@@ -89,7 +91,7 @@ class Api {
 
   /**
    * Checks HTTP status for errors.
-   * @param  {object} response
+   * @param  { {[x: string]: any} } response
    * @return {boolean}
    */
   checkStatusError(response) {
@@ -215,22 +217,24 @@ class Api {
   }
 
   doWsAction(func) {
+    let resPromise;
     if (this.isWsInited) {
-      func.call(this);
+      resPromise = new Promise((resolve) => {
+        resolve(func.call(this));
+      });
     } else {
-      this.initWS().then(() => func.call(this));
+      resPromise = this.initWS().then(() => func.call(this));
     }
+    return resPromise;
   }
 
   subscribe(url, cb) {
-    this.doWsAction(() => {
-      this.stompClient.subscribe(url, cb, this.getHeaders());
-    });
+    return this.doWsAction(() => this.stompClient.subscribe(url, cb, this.getHeaders()));
   }
 
-  unsubscribe(url) {
+  unsubscribe(id) {
     this.doWsAction(() => {
-      this.stompClient.unsubscribe(url);
+      this.stompClient.unsubscribe(id);
     });
   }
 
