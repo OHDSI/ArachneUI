@@ -1,6 +1,6 @@
 {
   "name": "arachne-ui",
-  "version": "1.10.26",
+  "version": "1.10.30",
   "licenses": [
     {
       "type": "Apache-2.0",
@@ -25,6 +25,7 @@
     "node": "webpack --app node --env dev --config webpack/app.config.js",
     "build": "webpack --env production --progress --config webpack/app.config.js",
     "build-node": "webpack --env production --app node --progress --config webpack/app.config.js --watch",
+    "test": "webpack --app central --env qa --config webpack/app.config.js",
     "portal-ssr-app": "webpack --app central --production --progress --config webpack/ssr-app.config.js --watch",
     "portal-ssr-node": "webpack --app node --production --progress --config webpack/ssr-app.config.js --watch",
     "ssr-server-central-watch": "webpack --config webpack/server.config.js --watch"
@@ -84,6 +85,7 @@
     "react-draggable-list": "^3.1.2",
     "react-dropzone": "^3.7.3",
     "react-helmet": "^2.2.0",
+    "react-loadable": "^5.3.1",
     "react-pdf": "^1.8.3",
     "react-prevent-outside-scroll": "0.0.2",
     "react-redux": "^4.4.5",
@@ -110,6 +112,7 @@
     "type-check": "^0.3.2",
     "urijs": "^1.18.2",
     "url-loader": "^0.5.9",
+    "webpack-bundle-analyzer": "^2.9.1",
     "whatwg-fetch": "^1.0.0"
   },
   "devDependencies": {

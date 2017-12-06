@@ -83,7 +83,11 @@ if (__APP_TYPE_CENTRAL__) {
 
   modules.push({
     ...Admin,
-    routes: () => require('modules/Admin/routesCentral').default.build(),
+    routes: () => (location, cb) => {
+      require.ensure([], (require) => {
+        cb(null, require('modules/Admin/routesCentral').default.build()); // eslint-disable-line global-require
+      });
+    },
     path: 'admin-settings',
     namespace: 'adminSettings',
     isAdminOnly: true,
@@ -102,7 +106,11 @@ if (__APP_TYPE_NODE__) {
 
   modules.push({
     ...Admin,
-    routes: () => require('modules/Admin/routesNode').default.build(),
+    routes: () => (location, cb) => {
+      require.ensure([], (require) => {
+        cb(null, require('modules/Admin/routesNode').default.build()); // eslint-disable-line global-require
+      });
+    },
     path: 'admin-settings',
     namespace: 'adminSettings',
     isAdminOnly: true,

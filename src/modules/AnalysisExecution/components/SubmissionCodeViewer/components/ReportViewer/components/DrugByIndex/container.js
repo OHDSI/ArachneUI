@@ -15,27 +15,24 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 13, 2016
+ * Authors: Alexander Saltykov
+ * Created: November 20, 2017
  *
  */
 
-import { combineReducers } from 'redux';
-import ducks from './ducks/index';
-import { paths, imgs } from './const';
+import TreemapReport from 'components/Reports/TreemapReport';
+import {
+  line,
+} from '@ohdsi/atlascharts/dist/atlascharts.umd';
+import DrugByIndex from './presenter';
 
-export default {
-  actions: () => ducks.actions,
-  routes: () => (location, cb) => {
-    require.ensure([], (require) => {
-      cb(null, require('./routes').default()); // eslint-disable-line global-require
-    });
-  },
-  reducer: () => combineReducers(ducks.reducer),
-  sidebarElement: {
-    ico: imgs.sidebarIco,
-    name: 'Study Notebook',
-    path: paths.studies(),
-  },
-  indexRedirect: '/studies',
-};
+export default class DrugByIndexBuilder extends TreemapReport {
+  constructor() {
+    super();
+    this.presenter = DrugByIndex;
+    this.detailsCharts = {
+      drugsChart: new line(),
+    };
+  }
+
+}

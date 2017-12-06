@@ -23,10 +23,10 @@
 import TreemapReportBuilder from 'components/Reports/TreemapReport';
 import presenter from './presenter';
 import {
-	boxplot,
-	donut,
-	line,
-	trellisline,
+  boxplot,
+  donut,
+  line,
+  trellisline,
 } from '@ohdsi/atlascharts/dist/atlascharts.umd';
 
 export default class Drug extends TreemapReportBuilder {
@@ -34,15 +34,15 @@ export default class Drug extends TreemapReportBuilder {
     super();
     this.presenter = presenter;
     this.filePath = 'drugs';
-		this.detailsCharts = {
-			drugPrevalenceChart: new trellisline(),
-			exposureByMonthChart: new line(),
-			ageOfFirstExposureChart: new boxplot(),
-			daysSupplyDistributionChart: new boxplot(),
-			quantityChart: new boxplot(),
-			refillsChart: new boxplot(),
-			drugsByTypeChart: new donut(),
-		}
+    this.detailsCharts = {
+      drugPrevalenceChart: new trellisline(),
+      exposureByMonthChart: new line(),
+      ageOfFirstExposureChart: new boxplot(),
+      daysSupplyDistributionChart: new boxplot(),
+      quantityChart: new boxplot(),
+      refillsChart: new boxplot(),
+      drugsByTypeChart: new donut(),
+    }
   }
 
   getFilename(conceptId) {

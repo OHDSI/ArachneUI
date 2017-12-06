@@ -16,7 +16,7 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: November 09, 2017
+ * Created: November 20, 2017
  *
  */
 
@@ -26,13 +26,14 @@ import Table from 'components/Charts/Table';
 import * as d3 from 'd3';
 import { chartSettings } from 'modules/DataCatalog/const';
 import { convertDataToTreemapData } from 'components/Reports/converters';
+import get from 'lodash/get';
 import Chart from 'components/Reports/Chart';
 import ReportUtils from 'components/Reports/Utils';
-import DrugDetails from './DrugDetails';
+import DrugByIndexDetails from './DrugByIndexDetails';
 
-require('./style.scss');
+import './style.scss';
 
-function Drug(props) {
+function DrugByIndex(props) {
   const {
     conditions,
     loadConditionDetails,
@@ -41,10 +42,10 @@ function Drug(props) {
     initialZoomedConcept,
     tableData,
     tableColumns,
+    detailsCharts,
     treemap,
-		detailsCharts,
   } = props;
-  const classes = new BEMHelper('report-drugera');
+  const classes = new BEMHelper('report-drug-by-index');
   const dataPresent = conditions && conditions.PERCENT_PERSONS && conditions.PERCENT_PERSONS.length;
   const table = <Table
     data={tableData}
@@ -58,7 +59,7 @@ function Drug(props) {
       <div className='row'>
         <div className='col-xs-12'>
           <Chart
-            title='Drug exposures'
+            title='Procedures'
             isDataPresent={dataPresent}
             isTreemap
             table={table}
@@ -67,7 +68,13 @@ function Drug(props) {
               const minimum_area = 50;
               const threshold = minimum_area / (width * height);
               treemap.render(
-                convertDataToTreemapData(conditions, threshold),
+                convertDataToTreemapData(conditions, threshold, {
+                  numPersons: 'NUM_PERSONS',
+                  id: 'CONCEPT_ID',
+                  path: 'CONCEPT_PATH',
+                  pctPersons: 'PERCENT_PERSONS',
+                  recordsPerPerson: 'RISK_DIFF_AFTER_BEFORE',
+                }),
                 element,
                 width,
                 height,
@@ -81,26 +88,31 @@ function Drug(props) {
                       node,
                       treemap,
                       label1: 'Prevalence:',
-                      label2:  'Number of People:',
-                      label3:  'Records per Person:',
+                      label2: 'Number of People:',
+                      label3: 'Relative Risk per Person:',
                     });
                   },
                   gettitle: (node) => {
-                    return ReportUtils.getTreemapTooltipTitle(node);
+                    ReportUtils.getTreemapTooltipTitle(node);
                   },
                   useTip: true,
                   getcolorrange: () => d3.schemeCategory20c.slice(1),
                   onZoom: onZoom,
                   initialZoomedConcept: initialZoomedConcept,
                 }
-              );
+              )
             }}
           />
         </div>
       </div>
-      {details && <DrugDetails {...details} {...detailsCharts} />}
+      {details && <DrugByIndexDetails
+        data={get(details, 'drugByIndex', {})}
+        details={{}}
+        {...detailsCharts}
+      />
+      }
     </div>
   );
 }
 
-export default Drug;
+export default DrugByIndex;
