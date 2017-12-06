@@ -1,6 +1,6 @@
 {
   "name": "arachne-ui",
-  "version": "1.10.31",
+  "version": "1.10.32",
   "licenses": [
     {
       "type": "Apache-2.0",
@@ -25,11 +25,19 @@
     "node": "webpack --app node --env dev --config webpack/app.config.js",
     "build": "webpack --env production --progress --config webpack/app.config.js",
     "build-node": "webpack --env production --app node --progress --config webpack/app.config.js --watch",
-    "test": "webpack --app central --env qa --config webpack/app.config.js",
+    "test": "size-limit",
+    "qa": "webpack --app central --env qa --config webpack/app.config.js",
     "portal-ssr-app": "webpack --app central --production --progress --config webpack/ssr-app.config.js --watch",
     "portal-ssr-node": "webpack --app node --production --progress --config webpack/ssr-app.config.js --watch",
     "ssr-server-central-watch": "webpack --config webpack/server.config.js --watch"
   },
+  "size-limit": [
+    {
+      "path": "public/js/app.js",
+      "webpack": false,
+      "limit": "1024 KB"
+    }
+  ],
   "dependencies": {
     "@ohdsi/atlascharts": "git+https://github.com/agackovka/Visualizations.git",
     "@stomp/stompjs": "^3.0.3",
@@ -105,6 +113,7 @@
     "redux-thunk": "^2.1.0",
     "reselect": "3.0.1",
     "serialize-javascript": "^1.4.0",
+    "size-limit": "^0.13.2",
     "sockjs-client": "^1.1.2",
     "source-map-loader": "^0.2.1",
     "stompjs": "github:stomp-js/stomp-websocket",
