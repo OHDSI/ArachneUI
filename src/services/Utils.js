@@ -66,6 +66,9 @@ if (!numeral['locales']['arachne']) {
       billion: null,
       trillion: null,
     }),
+    currency: {
+      symbol: '$'
+    }
   });
 }
 
@@ -81,6 +84,9 @@ if (!numeral['locales']['arachne-short']) {
       billion: 'bn',
       trillion: 'tn',
     },
+    currency: {
+      symbol: '$'
+    }
   });
 }
 
