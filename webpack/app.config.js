@@ -105,7 +105,7 @@ const config = {
       },
       {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract('css!postcss!sass'), // 'style!css!postcss!sass',
+        loader: ExtractTextPlugin.extract('style-loader', 'css!postcss!sass'), // 'style!css!postcss!sass',
       },
       {
         test: /\.(png|woff|woff2|eot|ttf|svg)$/,
