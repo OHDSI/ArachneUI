@@ -22,6 +22,7 @@
 
 // import api from 'services/Api';
 import { apiPaths } from 'modules/AnalysisExecution/const';
+import Api from 'services/Api';
 import Duck from 'services/Duck';
 
 export const coreName = 'AE_ANALYSIS_CODE';
@@ -32,7 +33,7 @@ const duck = new Duck({
 });
 
 const codeList = new Duck({
-  name: 'AE_ANALYSIS_CODE',
+  name: `${coreName}`,
   urlBuilder: ({ entityId, isSubmissionGroup } = {}) => {
     const apiPath = isSubmissionGroup
       ? apiPaths.submissionGroupCodeFiles({ submissionGroupId: entityId })
@@ -44,8 +45,14 @@ const codeList = new Duck({
 
 function receiveAnalysisCodeFlush() {
   return {
-    type: 'AE_ANALYSIS_CODE_QUERY_FULFILLED',
+    type: `${coreName}_QUERY_FULFILLED`,
     payload: null,
+  };
+}
+
+function searchArnalysisCode() {
+  return {
+    type: `${coreName}_SEARCH_FULFILLED`,
   };
 }
 
@@ -53,11 +60,20 @@ function flush() {
   return dispatch => dispatch(receiveAnalysisCodeFlush());
 }
 
+function search(urlParams, requestParams) {
+  return dispatch => Api.doGet(
+    apiPaths.submissionCodeFiles({ submissionId: urlParams.entityId }),
+    requestParams,
+    () => dispatch(searchArnalysisCode())
+  );
+}
+
 export default {
   actions: {
     ...duck.actions,
     codeList: codeList.actions,
     flush,
+    search,
   },
   reducer: duck.reducer,
 };
