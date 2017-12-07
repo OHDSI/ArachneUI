@@ -16,27 +16,36 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: September 06, 2017
+ * Created: December 05, 2017
  *
  */
 
-import React from 'react';
-import { Route, IndexRedirect } from 'react-router';
-import UserList from './components/UserList';
-import AdminRoutes from './routesCommon';
+import Duck from 'services/Duck';
+import { apiPaths } from 'modules/Admin/const';
 
-class AdminNodeRoutes extends AdminRoutes {
+const actionCoreName = 'AD_ATLAS_CONNECTION';
 
-  static buildNodeRoutes() {
-    return [
-      <Route path="users" component={UserList} />,
-      <IndexRedirect to="admins"/>,
-    ];
-  }
-
-  static build() {
-    return super.build().concat(this.buildNodeRoutes());
-  }
+function clearSource() {
+  return {
+    type: `${actionCoreName}_CREATE_FULFILLED`,
+    payload: null,
+  };
 }
 
-export default AdminNodeRoutes;
+const atlasConnection = new Duck(
+  {
+    name: actionCoreName,
+    urlBuilder: apiPaths.atlasConnection,
+  }
+);
+
+const actions = atlasConnection.actions;
+const reducer = atlasConnection.reducer;
+
+export default {
+  actions: {
+    ...atlasConnection.actions,
+    reset: (dispatch) => dispatch(clearSource()),
+},
+  reducer,
+};
