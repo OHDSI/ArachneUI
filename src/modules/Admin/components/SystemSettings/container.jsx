@@ -81,6 +81,10 @@ class SystemSettingsBuilder extends ContainerBuilder {
       },
       applySettings: () => {
         dispatchProps.applySettings(() => dispatchProps.loadSystemSettings());
+      },
+      checkAtlas: () => {
+        dispatchProps.checkAtlas()
+          .catch((error) => {alert(error.errors._error)})
       }
     };
   }

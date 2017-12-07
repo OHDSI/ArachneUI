@@ -56,6 +56,7 @@ const apiPaths = {
 
   restartServer: () => '/api/v1/admin/restart',
   ping: () => '/api/v1/auth/me',
+  atlasConnection: () => '/api/v1/admin/atlasConnection',
 
   portalUsers: ({ id, query }) => {
     const link = `/api/v1/admin/users${id ? `/${id}` : ''}`;
