@@ -37,13 +37,6 @@ import NotFound from 'components/NotFound';
 
 require('styles/appContainer.scss');
 
-const isIE = !!navigator.userAgent.match(/Trident/g) || !!navigator.userAgent.match(/MSIE/g);
-if (isIE) {
-  require.ensure([], (require) => {
-    require('styles/ie-shim.scss'); // eslint-disable-line global-require
-  });
-}
-
 function initModules(modules) {
   const initialState = {};
   const reducers = {};
