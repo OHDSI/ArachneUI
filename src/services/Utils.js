@@ -240,6 +240,7 @@ class Utils {
           if (isNaN(facetId)) {
             facetId = facetId.toString().toLowerCase();
           }
+          option.value = option.value.toString();
           option.facetCount = get(facets, `${field.name}.${facetId}`, 0);
         });
       }
