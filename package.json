@@ -78,7 +78,6 @@
     "json-loader": "^0.5.4",
     "keymirror": "^0.1.1",
     "lodash": "^4.17.2",
-    "material-icons-base64": "^1.1.5",
     "moment": "^2.16.0",
     "moment-timezone": "^0.5.13",
     "node-command-line": "^1.0.2",
