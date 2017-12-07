@@ -25,6 +25,13 @@ import { apiPaths } from 'modules/Admin/const';
 
 const actionCoreName = 'AD_ATLAS_CONNECTION';
 
+function clearSource() {
+  return {
+    type: `${actionCoreName}_CREATE_FULFILLED`,
+    payload: null,
+  };
+}
+
 const atlasConnection = new Duck(
   {
     name: actionCoreName,
@@ -36,6 +43,9 @@ const actions = atlasConnection.actions;
 const reducer = atlasConnection.reducer;
 
 export default {
-  actions,
+  actions: {
+    ...atlasConnection.actions,
+    reset: (dispatch) => dispatch(clearSource()),
+},
   reducer,
 };
