@@ -46,6 +46,16 @@
             </properties>
         </profile>
 
+<!--
+       <profile>
+            <id>test-local</id>
+            <properties>
+                <env>test-local</env>
+                <onlydb>true</onlydb>
+            </properties>
+        </profile>
+-->
+
         <profile>
             <id>prod</id>
             <properties>
