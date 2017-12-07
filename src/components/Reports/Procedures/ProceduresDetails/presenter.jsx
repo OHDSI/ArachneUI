@@ -25,12 +25,6 @@ import BEMHelper from 'services/BemHelper';
 import {
   Panel,
 } from 'arachne-ui-components';
-import {
-  boxplot,
-  donut,
-  line,
-  trellisline,
-} from '@ohdsi/atlascharts/dist/atlascharts.umd';
 import { numberFormatter } from 'services/Utils';
 import * as d3 from 'd3';
 import { chartSettings, defaultTrellisSet } from 'modules/DataCatalog/const';
@@ -42,6 +36,10 @@ function ConditionDetails(props) {
     conditionByMonth,
     conditionPrevalence,
     ageOfFirstOccurrence,
+		conditionPrevalenceChart,
+		conditionByMonthChart,
+		proceduresByTypeChart,
+		ageOfFirstOccurrenceChart,
   } = props;
   const classes = new BEMHelper('report-death');
   const emptyClasses = new BEMHelper('report-empty');
@@ -53,7 +51,7 @@ function ConditionDetails(props) {
           title='Condition Prevalence'
           isDataPresent={conditionPrevalence}
           render={({ width, element }) => {
-            new trellisline().render(
+            conditionPrevalenceChart.render(
               conditionPrevalence,
               element,
               width,
@@ -80,7 +78,7 @@ function ConditionDetails(props) {
           title='Condition Prevalence by Month'
           isDataPresent={conditionByMonth}
           render={({ width, element }) => {
-           new line().render(
+           conditionByMonthChart.render(
               conditionByMonth,
               element,
               width,
@@ -103,7 +101,7 @@ function ConditionDetails(props) {
           title='Procedures by Type'
           isDataPresent={proceduresByType}
           render={({ width, element }) => {
-            new donut().render(
+            proceduresByTypeChart.render(
               proceduresByType,
               element,
               width,
@@ -118,7 +116,7 @@ function ConditionDetails(props) {
           title='Age at First occurrence'
           isDataPresent={ageOfFirstOccurrence}
           render={({ width, element }) => {
-            new boxplot().render(
+            ageOfFirstOccurrenceChart.render(
               ageOfFirstOccurrence,
               element,
               width,

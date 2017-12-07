@@ -52,6 +52,7 @@ if (canUseDom()) {
     Heraclesheel: require('./components/Heraclesheel').default,
     ProceduresByIndex: require('./components/ProceduresByIndex').default,
     ConditionsByIndex: require('./components/ConditionsByIndex').default,
+    DrugByIndex: require('./components/DrugByIndex').default,
     DataCompleteness: require('./components/DataCompleteness').default,
     Entropy: require('./components/Entropy').default,
   };
@@ -198,6 +199,9 @@ function ReportViewer(props) {
           }
           {reports.ConditionsByIndex && type === reportTypes.condbyindex &&
             <reports.ConditionsByIndex {...treemapParams} />
+          }
+          {reports.DrugByIndex && type === reportTypes.drugbyindex &&
+            <reports.DrugByIndex {...treemapParams} />
           }
           {reports.DataCompleteness && type === reportTypes.datacompleteness &&
             <reports.DataCompleteness {...data} />

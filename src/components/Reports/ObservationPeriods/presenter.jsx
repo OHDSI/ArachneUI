@@ -49,6 +49,15 @@ function ObservationPeriods(props) {
     durationByYear,
     observationsPerPerson,
     observationsByMonth,
+		ageAtFirstObservationChart,
+		ageByGenderChart,
+		observationLengthChart,
+		durationByGenderChart,
+		cumulativeObservationChart,
+		durationByAgeDeclineChart,
+		durationByYearChart,
+		observationsPerPersonChart,
+		observationsByMonthChart,
   } = props;
   const classes = new BEMHelper('report-observation-periods');
   const emptyClasses = new BEMHelper('report-empty');
@@ -60,7 +69,7 @@ function ObservationPeriods(props) {
           title='Age at First Observation'
           isDataPresent={ageAtFirstObservation}
           render={({ width, element }) => {
-            new histogram().render(
+            ageAtFirstObservationChart.render(
               histogram.mapHistogram(ageAtFirstObservation),
               element,
               width,
@@ -80,7 +89,7 @@ function ObservationPeriods(props) {
           title='Age by Gender'
           isDataPresent={ageByGender}
           render={({ width, element }) => {
-            new boxplot().render(
+            ageByGenderChart.render(
               ageByGender,
               element,
               width, // Scrollbar width
@@ -100,7 +109,7 @@ function ObservationPeriods(props) {
           title='Observation length'
           isDataPresent={observationLength}
           render={({ width, element }) => {
-            new histogram().render(
+            observationLengthChart.render(
               histogram.mapHistogram(observationLength),
               element,
               width,
@@ -120,7 +129,7 @@ function ObservationPeriods(props) {
           title='Duration by Gender'
           isDataPresent={durationByGender}
           render={({ width, element }) => {
-            new boxplot().render(
+            durationByGenderChart.render(
               durationByGender,
               element,
               width, // Scrollbar width
@@ -140,7 +149,7 @@ function ObservationPeriods(props) {
           title='Cumulative observation'
           isDataPresent={cumulativeObservation}
           render={({ width, element }) => {
-            new line().render(
+            cumulativeObservationChart.render(
               cumulativeObservation,
               element,
               width, // Scrollbar width
@@ -162,7 +171,7 @@ function ObservationPeriods(props) {
           title='Duration by age decline'
           isDataPresent={durationByAgeDecline}
           render={({ width, element }) => {
-            new boxplot().render(
+            durationByAgeDeclineChart.render(
               durationByAgeDecline,
               element,
               width, // Scrollbar width
@@ -182,7 +191,7 @@ function ObservationPeriods(props) {
           title='Persons With Continuous Observation By Year'
           isDataPresent={durationByYear}
           render={({ width, element }) => {
-            new histogram().render(
+            durationByYearChart.render(
               histogram.mapHistogram(durationByYear),
               element,
               width, // Scrollbar width
@@ -203,7 +212,7 @@ function ObservationPeriods(props) {
           title='Observation Periods per Person'
           isDataPresent={observationsPerPerson}
           render={({ width, element }) => {
-            new donut().render(
+            observationsPerPersonChart.render(
               observationsPerPerson,
               element,
               width, // Scrollbar width
@@ -218,7 +227,7 @@ function ObservationPeriods(props) {
           title='Persons With Continuous Observation By Month'
           isDataPresent={observationsByMonth}
           render={({ width, element }) => {
-            new line().render(
+            observationsByMonthChart.render(
               observationsByMonth,
               element,
               width,

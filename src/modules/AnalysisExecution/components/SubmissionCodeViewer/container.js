@@ -177,7 +177,7 @@ const mapDispatchToProps = {
   loadBreadcrumbs: actions.analysisExecution.breadcrumbs.query,
   loadFile: actions.analysisExecution.submissionFile.find,
   loadDetails: actions.analysisExecution.submissionFileDetails.find,
-  loadSubmissionResultFiles: actions.analysisExecution.analysisCode.codeList.query,
+  loadSubmissionResultFiles: actions.analysisExecution.analysisCode.search,
   clearFileData: actions.analysisExecution.submissionFile.clear,
   clearDetailsData: actions.analysisExecution.submissionFileDetails.clear,
 };
@@ -197,7 +197,6 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
       dispatchProps.loadSubmissionResultFiles(
         {
           entityId: stateProps.submissionId,
-          isSubmissionGroup: false,
         },
         {
           'real-name': realname,

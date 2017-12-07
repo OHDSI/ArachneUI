@@ -23,7 +23,7 @@
 // @ts-check
 import { Component } from 'react';
 import actions from 'actions';
-import { get } from 'lodash';
+import get from 'lodash/get';
 import { Utils } from 'services/Utils';
 import { goBack } from 'react-router-redux';
 import presenter from './presenter';

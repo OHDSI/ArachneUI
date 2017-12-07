@@ -44,7 +44,7 @@ function Chart(props) {
   const emptyClasses = BEMHelper('report-empty');
   const classes = BEMHelper('chart');
   const headerBtns = <Button onClick={downloadAsPng}>
-    <span {...classes('download-btn')}>cloud_download</span>
+    <span {...classes('download-btn')}>file_download</span>
   </Button>;
 
   const sections = [

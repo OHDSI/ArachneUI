@@ -22,13 +22,6 @@
 
 @import 'styles/vars-and-mixins.scss';
 
-.d3-tip {
-	background: rgba(0, 0, 0, 0.3);
-	border-radius: $input-border-radius;
-	color: $white;
-	padding: 3px;
-}
-
 .#{$namespace} {
 	&data-source-report {
 		@include report();

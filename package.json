@@ -1,6 +1,6 @@
 {
   "name": "arachne-ui",
-  "version": "1.10.23",
+  "version": "1.11.0",
   "licenses": [
     {
       "type": "Apache-2.0",
@@ -25,14 +25,28 @@
     "node": "webpack --app node --env dev --config webpack/app.config.js",
     "build": "webpack --env production --progress --config webpack/app.config.js",
     "build-node": "webpack --env production --app node --progress --config webpack/app.config.js --watch",
+    "test": "size-limit",
+    "qa": "webpack --app central --env qa --config webpack/app.config.js",
     "portal-ssr-app": "webpack --app central --production --progress --config webpack/ssr-app.config.js --watch",
     "portal-ssr-node": "webpack --app node --production --progress --config webpack/ssr-app.config.js --watch",
     "ssr-server-central-watch": "webpack --config webpack/server.config.js --watch"
   },
+  "size-limit": [    
+    {
+      "path": "public/*.js/app.js",
+      "webpack": false,
+      "limit": "1024 KB"
+    },
+    {
+      "path": "public/js/app.js",
+      "webpack": false,
+      "limit": "1024 KB"
+    }
+  ],
   "dependencies": {
-    "@ohdsi/atlascharts": "1.2.0",
+    "@ohdsi/atlascharts": "git+https://github.com/agackovka/Visualizations.git",
     "@stomp/stompjs": "^3.0.3",
-    "arachne-ui-components": "^1.2.9",
+    "arachne-ui-components": "^1.11.0",
     "autoprefixer": "^6.7.6",
     "babel-core": "^6.25.0",
     "babel-eslint": "^7.2.3",
@@ -64,6 +78,7 @@
     "json-loader": "^0.5.4",
     "keymirror": "^0.1.1",
     "lodash": "^4.17.2",
+    "material-icons-base64": "^1.1.5",
     "moment": "^2.16.0",
     "moment-timezone": "^0.5.13",
     "node-command-line": "^1.0.2",
@@ -84,6 +99,7 @@
     "react-draggable-list": "^3.1.2",
     "react-dropzone": "^3.7.3",
     "react-helmet": "^2.2.0",
+    "react-loadable": "^5.3.1",
     "react-pdf": "^1.8.3",
     "react-prevent-outside-scroll": "0.0.2",
     "react-redux": "^4.4.5",
@@ -103,6 +119,7 @@
     "redux-thunk": "^2.1.0",
     "reselect": "3.0.1",
     "serialize-javascript": "^1.4.0",
+    "size-limit": "^0.13.2",
     "sockjs-client": "^1.1.2",
     "source-map-loader": "^0.2.1",
     "stompjs": "github:stomp-js/stomp-websocket",
@@ -110,6 +127,7 @@
     "type-check": "^0.3.2",
     "urijs": "^1.18.2",
     "url-loader": "^0.5.9",
+    "webpack-bundle-analyzer": "^2.9.1",
     "whatwg-fetch": "^1.0.0"
   },
   "devDependencies": {

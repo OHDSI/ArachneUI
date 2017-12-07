@@ -15,27 +15,35 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 13, 2016
+ * Authors: Alexander Saltykov
+ * Created: November 20, 2017
  *
  */
 
-import { combineReducers } from 'redux';
-import ducks from './ducks/index';
-import { paths, imgs } from './const';
+import { ContainerBuilder, get } from 'services/Utils';
+import {
+  convertDataToLineChartData,
+} from 'components/Reports/converters';
+import DrugByIndexDetails from './presenter';
 
-export default {
-  actions: () => ducks.actions,
-  routes: () => (location, cb) => {
-    require.ensure([], (require) => {
-      cb(null, require('./routes').default()); // eslint-disable-line global-require
-    });
-  },
-  reducer: () => combineReducers(ducks.reducer),
-  sidebarElement: {
-    ico: imgs.sidebarIco,
-    name: 'Study Notebook',
-    path: paths.studies(),
-  },
-  indexRedirect: '/studies',
+const DTO = {
+  xValue: 'DURATION',
+  yValue: 'COUNT_VALUE',
+  yPercent: 'PCT_PERSONS',
 };
+
+export default class DrugByIndexDetailsBuilder extends ContainerBuilder {
+  getComponent() {
+    return DrugByIndexDetails;
+  }
+
+  mapStateToProps(state, ownProps) {
+    const data = get(ownProps, 'data', null);
+
+    return {
+      data: data
+        ? convertDataToLineChartData(data, DTO)
+        : null,
+    };
+  }
+}

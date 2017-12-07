@@ -24,27 +24,44 @@ import { connect } from 'react-redux';
 import get from 'lodash/get';
 import ReportUtils from 'components/Reports/Utils';
 import Person from './presenter';
+import { ContainerBuilder } from 'services/Utils';
+import {
+	donut,
+	histogram,
+} from '@ohdsi/atlascharts/dist/atlascharts.umd';
 
-function mapStateToProps(state, ownProps) {
-  const {
-    birthYear,
-    ethnicity,
-    genderData,
-    race,
-    summary,
-  } = ownProps;
+export default class PersonContainerBuilder extends ContainerBuilder {
 
-  return {
-    birthYear,
-    ethnicity: ReportUtils.prepareChartDataForDonut(ethnicity),
-    genderData: ReportUtils.prepareChartDataForDonut(genderData),
-    race: ReportUtils.prepareChartDataForDonut(race),
-    summary,
-  };
+	constructor() {
+		super();
+		this.detailsCharts = {
+			birthYearChart: new histogram(),
+			genderDataChart: new donut(),
+			raceChart: new donut(),
+			ethnicityChart: new donut(),
+		}
+	}
+
+	getComponent() {
+		return Person;
+	}
+
+	mapStateToProps(state, ownProps) {
+		const {
+			birthYear,
+			ethnicity,
+			genderData,
+			race,
+			summary,
+		} = ownProps;
+
+		return {
+			birthYear,
+			ethnicity: ReportUtils.prepareChartDataForDonut(ethnicity),
+			genderData: ReportUtils.prepareChartDataForDonut(genderData),
+			race: ReportUtils.prepareChartDataForDonut(race),
+			summary,
+			...this.detailsCharts,
+		};
+	}
 }
-
-const mapDispatchToProps = {
-
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Person);

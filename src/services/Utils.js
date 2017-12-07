@@ -21,10 +21,8 @@
  */
 
 import errors from 'const/errors';
-import {
-  get as _get,
-  isEqual,
-} from 'lodash';
+import isEqual from 'lodash/isEqual';
+import _get from 'lodash/get';
 import { types as fieldTypes } from 'const/modelAttributes';
 import mimeTypes from 'const/mimeTypes';
 import {
@@ -68,6 +66,9 @@ if (!numeral['locales']['arachne']) {
       billion: null,
       trillion: null,
     }),
+    currency: {
+      symbol: '$'
+    }
   });
 }
 
@@ -83,6 +84,9 @@ if (!numeral['locales']['arachne-short']) {
       billion: 'bn',
       trillion: 'tn',
     },
+    currency: {
+      symbol: '$'
+    }
   });
 }
 
@@ -469,7 +473,9 @@ class ContainerBuilder {
   build() {
     return Utils.buildConnectedComponent({
       Component: this.getComponent(),
-      mapStateToProps: this.mapStateToProps,
+      mapStateToProps: this.mapStateToProps ?
+        this.mapStateToProps.bind(this):
+        this.mapStateToProps,
       getMapDispatchToProps: this.getMapDispatchToProps,
       mapDispatchToProps: this.mapDispatchToProps,
       mergeProps: this.mergeProps,
