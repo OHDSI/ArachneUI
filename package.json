@@ -23,7 +23,7 @@
   "scripts": {
     "portal": "webpack --app central --env dev --config webpack/app.config.js",
     "node": "webpack --app node --env dev --config webpack/app.config.js",
-    "build": "webpack --env production --progress --config webpack/app.config.js && npm run test",
+    "build": "webpack --env production --progress --config webpack/app.config.js",
     "build-node": "webpack --env production --app node --progress --config webpack/app.config.js --watch",
     "test": "size-limit",
     "qa": "webpack --app central --env qa --config webpack/app.config.js",
