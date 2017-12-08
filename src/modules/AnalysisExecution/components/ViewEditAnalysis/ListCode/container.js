@@ -50,7 +50,6 @@ export default class ListCodeBuilder {
     const isSubmittable = get(permissions, analysisPermissions.createSubmission, false);
     const canDeleteFiles = get(permissions, analysisPermissions.deleteAnalysisFiles, false);
     const canAddFiles = get(permissions, analysisPermissions.uploadAnalysisFiles, false);
-    const isEditable = get(permissions, analysisPermissions.editAnalysis, false);
 
     const canSubmit = codeList.length > 0;
     const isLoading = selectors.getIsLoading(state);
@@ -66,7 +65,6 @@ export default class ListCodeBuilder {
       canDeleteFiles,
       canSubmit,
       canAddFiles,
-      isEditable
     };
   }
 

@@ -62,15 +62,17 @@ export class CodeItem extends Component {
     this.toggleExecutable = this.props.toggleExecutable;
     this.removable = this.props.removable;
     this.selectExecutable = this.props.selectExecutable;
+    this.isActionable = this.props.isActionable;
+    this.isLocked=this.props.isLocked;
 
     const mods = {
       hover: true,
-      actionable: this.isEditable,
+      actionable: this.isActionable,
     };
 
     const actions = [];
 
-    if (this.isEditable && this.code.isImported === true) {
+    if (this.props.isActionable && this.code.isImported === true) {
       actions.push(
         <span
           {...this.classes('action')}
@@ -193,6 +195,8 @@ export default class ListCode extends Component {
       <CodeItem
         code={code}
         isEditable={this.isEditable}
+        isActionable={this.canAddFiles && this.canDeleteFiles && !this.isLocked}
+        isLocked={this.isLocked}
         reimportCode={this.reimportCode}
         removeCode={this.removeCode}
         key={key}
@@ -224,6 +228,7 @@ export default class ListCode extends Component {
     this.canSubmit = this.props.canSubmit;
     this.canAddFiles = this.props.canAddFiles;
     this.isEditable = this.props.isEditable;
+    this.canBeReimported = this.props.canBeReimported;
 
     return (
       <Panel
