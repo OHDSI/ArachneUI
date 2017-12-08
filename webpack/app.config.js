@@ -28,7 +28,7 @@ const argv = require('yargs').argv;
 const keyMirror = require('keymirror');
 const WebpackDevServer = require('webpack-dev-server');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const currentDir = path.resolve(__dirname, '..');
 const webapp = path.join(currentDir, 'public');
@@ -120,8 +120,8 @@ const config = {
   output: {
     path: webapp,
     publicPath: '/',
-    filename: 'js/app.js',
-    chunkFilename: '[name]/app-[hash].js',
+    filename: 'js/[hash].js',
+    chunkFilename: '[name]/[hash].js',
   },
   devtool: env === ENV_TYPE.PRODUCTION ? null : 'source-map',
   plugins: [
@@ -151,15 +151,23 @@ const config = {
         to: path.join(webapp, 'img/icons'),
       },
     ]),
-
+    new webpack.optimize.CommonsChunkPlugin({
+      async: 'fonts/base64',
+      minChunks(module, count) {
+          return module.resource && module.resource.indexOf('fonts-base64-fallback.scss') !== -1;
+      },
+    }),
     // https://medium.com/@adamrackis/vendor-and-code-splitting-in-webpack-2-6376358f1923
     new webpack.optimize.CommonsChunkPlugin({
-      async: 'js',
+      async: 'commons',
       minChunks(module, count) {
           return count >= 2;
       },
     }),
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|ru/),
+    new HtmlWebpackPlugin({
+      template: path.join(appRoot, 'index.html'),
+    }),
   ],
 };
 

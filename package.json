@@ -23,7 +23,7 @@
   "scripts": {
     "portal": "webpack --app central --env dev --config webpack/app.config.js",
     "node": "webpack --app node --env dev --config webpack/app.config.js",
-    "build": "webpack --env production --progress --config webpack/app.config.js",
+    "build": "webpack --env production --progress --config webpack/app.config.js && npm run test",
     "build-node": "webpack --env production --app node --progress --config webpack/app.config.js --watch",
     "test": "size-limit",
     "qa": "webpack --app central --env qa --config webpack/app.config.js",
@@ -31,14 +31,14 @@
     "portal-ssr-node": "webpack --app node --production --progress --config webpack/ssr-app.config.js --watch",
     "ssr-server-central-watch": "webpack --config webpack/server.config.js --watch"
   },
-  "size-limit": [    
+  "size-limit": [
     {
-      "path": "public/*/app-*.js",
+      "path": "public/?/*.js",
       "webpack": false,
       "limit": "1024 KB"
     },
     {
-      "path": "public/js/app.js",
+      "path": "public/js/*.js",
       "webpack": false,
       "limit": "1024 KB"
     }
@@ -72,6 +72,7 @@
     "flexboxgrid": "^6.3.1",
     "fuse.js": "^3.0.4",
     "get-random-values": "^1.2.0",
+    "html-webpack-plugin": "^2.30.1",
     "intro.js": "^2.5.0",
     "isomorphic-fetch": "^2.2.1",
     "js-cookie": "^2.1.3",
