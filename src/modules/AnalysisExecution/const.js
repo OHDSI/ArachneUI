@@ -208,7 +208,7 @@ const fileSources = keyMirror({
   SUBMISSION: null,
 });
 
-const maxFilesCount = 1000;
+const maxFilesCount = 10000;
 
 export {
   apiPaths,
