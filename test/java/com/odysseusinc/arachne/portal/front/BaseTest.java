@@ -2,6 +2,8 @@ package com.odysseusinc.arachne.portal.front;
 
 import static com.odysseusinc.arachne.portal.front.utils.Utils.waitFor;
 import static com.odysseusinc.arachne.portal.front.utils.Utils.waitForPageLoad;
+import static java.util.concurrent.TimeUnit.MINUTES;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,6 +25,8 @@ import java.util.regex.Pattern;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -32,12 +36,15 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testcontainers.DockerClientFactory;
 import org.testcontainers.containers.FixedHostPortGenericContainer;
@@ -47,10 +54,24 @@ import org.testcontainers.containers.wait.HttpWaitStrategy;
 import org.testcontainers.containers.wait.Wait;
 import org.testcontainers.containers.wait.WaitStrategy;
 
+/*
+   "Local-profile" runs postgres-portal(exposed port: 5489), postgres-datanode(exposed port: 5490),
+   solr(exposed port: 8995), mailhog(exposed port: 8025) containers for local testing.
+   For portal and datanode use selenium-test profiles.
+   "Full-profile" runs portal, datanode and mailhog containers (all with random exposed port) in network.
+ */
 public class BaseTest {
 
+    protected static final Log logger = LogFactory.getLog(BaseTest.class);
+
     protected static final boolean USE_SSL = false;
+    protected static final int SOLR_PORT = 8985;
+    protected static final int PG_PORTAL_PORT = 5489;
+    protected static final int PG_DATANODE_PORT = 5490;
+    protected static final int MAIL_API_PORT = 8025;
+    protected static final int MAIL_SMTP_PORT = 1025;
     protected static boolean LOCAL_RUNNING = false;
+    protected static String VERSION = "1.10.0-SNAPSHOT";
     protected static final String PROTOCOL = USE_SSL ? "https" : "http";
 
     protected static final String ADMIN_LOGIN = "admin@odysseusinc.com";
@@ -77,45 +98,61 @@ public class BaseTest {
     @BeforeClass
     public static void setup() {
 
-        LOCAL_RUNNING = Boolean.getBoolean(System.getProperty("onlydb"));
+        LOCAL_RUNNING = Boolean.getBoolean(System.getProperty("local-profile"));
+        VERSION = System.getProperty("version");
 
         httpClient = getHttpClient();
 
-        final Network.NetworkImpl network = !LOCAL_RUNNING ? Network.builder().build() : null;
+        final Network.NetworkImpl network = LOCAL_RUNNING ? null : Network.builder().build();
 
         String uuid = UUID.randomUUID().toString();
         String portalContainerName = "selenium-portal-" + uuid;
         String portalPGContainerName = "portal-pg-" + uuid;
         String datanodePGContainerName = "datanode-pg-" + uuid;
+        mailhogContainer = createMailServerContainer(network);
+
+        // if chrome.exe is in not default dir
+/*        Map<String, Object> chromeOptions = new HashMap<>();
+        chromeOptions.put("binary", "PATH_TO_CHROME_EXE\\chrome.exe");
+        DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+        capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
+        driver = new ChromeDriver(capabilities);*/
+        driver = new ChromeDriver();
 
         if (LOCAL_RUNNING) {
-            portalPostgresContainer = createPostgresContainer(portalPGContainerName, 5489, "arachne_portal", network);
-            datanodePostgresContainer = createPostgresContainer(datanodePGContainerName, 5490, "datanode", network);
-            solrContainer = createSolrContainer(8985);
-        }
+            portalPostgresContainer = createLocalProfilePostgresContainer(portalPGContainerName, PG_PORTAL_PORT, "arachne_portal");
+            datanodePostgresContainer = createLocalProfilePostgresContainer(datanodePGContainerName, PG_DATANODE_PORT, "datanode");
+            solrContainer = createLocalProfileSolrContainer();
 
-        mailhogContainer = createMailServerContainer(8025, network);
+            waitManualStarting(PORTAL_BASE_URL, "PORTAL");
+            waitManualStarting(DATA_NODE_BASE_URL, "DATANODE");
+        }
 
         if (!LOCAL_RUNNING) {
             final WaitStrategy arachneWaitStrategy = new HttpWaitStrategy()
                     .forPath("/api/v1/build-number")
                     .withStartupTimeout(Duration.ofMinutes(3));
 
-            createPortalContainer(portalContainerName, portalPGContainerName, mailhogContainer.getContainerInfo(), arachneWaitStrategy, network);
-            createDatanodeContainer(portalContainerName, datanodePGContainerName, arachneWaitStrategy, network);
+            createPortalContainer(portalContainerName, mailhogContainer.getContainerInfo(), arachneWaitStrategy,
+                    network);
+            createDatanodeContainer(portalContainerName, arachneWaitStrategy, network);
         }
-        // if chrome.exe is in not default dir
-/*        Map<String, Object> chromeOptions = new HashMap<>();
-        chromeOptions.put("binary", "D:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe");
-        DesiredCapabilities capabilities = DesiredCapabilities.chrome();
-        capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
-        driver = new ChromeDriver(capabilities);*/
-
-        driver = new ChromeDriver();
     }
 
+    private static void waitManualStarting(String url, String appName) {
 
-    private static void createPortalContainer(String portalContainerName, String portalPGContainerName,
+        driver.get(url);
+        logger.info("START " + appName + " PLEASE");
+
+        FluentWait<WebDriver> wait = new FluentWait<>(driver)
+                .withTimeout(2, MINUTES)
+                .pollingEvery(10, SECONDS)
+                .ignoring(NoSuchElementException.class);
+
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.className("ac-auth")));
+    }
+
+    private static void createPortalContainer(String portalContainerName,
                                               InspectContainerResponse mailhogContainerInfo,
                                               WaitStrategy arachneWaitStrategy,
                                               Network.NetworkImpl network) {
@@ -132,7 +169,7 @@ public class BaseTest {
 
         portalEnvs.put("jasypt.encryptor.password", System.getProperty("jasypt.encryptor.password"));
 
-        portalContainer = new GenericContainer("hub.arachnenetwork.com/portal:1.10.0-SNAPSHOT")
+        portalContainer = new GenericContainer("hub.arachnenetwork.com/portal:" + VERSION)
                 .withEnv(portalEnvs)
                 .withNetwork(network)
                 .withExposedPorts(8080)
@@ -149,7 +186,6 @@ public class BaseTest {
     }
 
     private static void createDatanodeContainer(String portalContainerName,
-                                                String datanodePGContainerName,
                                                 WaitStrategy arachneWaitStrategy,
                                                 Network.NetworkImpl network) {
         Map<String, String> datanodeEnvs = new HashMap<>();
@@ -162,7 +198,7 @@ public class BaseTest {
         datanodeEnvs.put("jasypt.encryptor.password", System.getProperty("jasypt.encryptor.password"));
         datanodeEnvs.put("jasypt.encryptor.algorythm", System.getProperty("jasypt.encryptor.algorythm"));
 
-        datanodeContainer = new GenericContainer("hub.arachnenetwork.com/datanode:1.10.0-SNAPSHOT")
+        datanodeContainer = new GenericContainer("hub.arachnenetwork.com/datanode:" + VERSION)
                 .withEnv(datanodeEnvs)
                 .withNetwork(network)
                 .withExposedPorts(8880)
@@ -174,7 +210,9 @@ public class BaseTest {
         DATA_NODE_BASE_URL = String.format("%s://%s:%s", PROTOCOL, datanodeHost, datanodePort);
     }
 
-    private static FixedHostPortGenericContainer createPostgresContainer(String containerName, Integer mappedPort, String dbName, Network.NetworkImpl network) {
+    private static FixedHostPortGenericContainer createLocalProfilePostgresContainer(String containerName,
+                                                                                     Integer mappedPort,
+                                                                                     String dbName) {
 
         Map<String, String> envs = new HashMap<>();
 
@@ -184,14 +222,7 @@ public class BaseTest {
 
         FixedHostPortGenericContainer container = new FixedHostPortGenericContainer("postgres:9.6.5");
         container.withEnv(envs);
-        container.addExposedPort(5432);
-
-        if (network == null) {
-            container.withFixedExposedPort(mappedPort, 5432);
-        } else {
-            container.withNetwork(network);
-        }
-        // todo wait startup
+        container.withFixedExposedPort(mappedPort, 5432);
         container.start();
 
         String oldPGName = container.getContainerName().substring(1);
@@ -200,13 +231,13 @@ public class BaseTest {
     }
 
 
-    private static FixedHostPortGenericContainer createMailServerContainer(Integer mappedPort, Network.NetworkImpl network) {
+    private static FixedHostPortGenericContainer createMailServerContainer(Network.NetworkImpl network) {
 
         FixedHostPortGenericContainer mailhogContainer = new FixedHostPortGenericContainer("mailhog/mailhog:latest");
 
         if (network == null) {
-            mailhogContainer.withFixedExposedPort(mappedPort, 8025);
-            mailhogContainer.withFixedExposedPort(1025, 1025);
+            mailhogContainer.withFixedExposedPort(MAIL_API_PORT, 8025);
+            mailhogContainer.withFixedExposedPort(MAIL_SMTP_PORT, 1025);
         } else {
             mailhogContainer.withNetwork(network);
             mailhogContainer.withExposedPorts(8025);
@@ -223,13 +254,11 @@ public class BaseTest {
     }
 
 
-    private static GenericContainer createSolrContainer(Integer mappedPort) {
+    private static GenericContainer createLocalProfileSolrContainer() {
 
         FixedHostPortGenericContainer solrContainer = new FixedHostPortGenericContainer("hub.arachnenetwork.com/solr:1.0.0");
-        solrContainer.withFixedExposedPort(8985, 8983);
-        // todo check startup?
+        solrContainer.withFixedExposedPort(SOLR_PORT, 8983);
         solrContainer.start();
-
         return solrContainer;
     }
 
@@ -241,7 +270,6 @@ public class BaseTest {
             driver = null;
         }
         if (!LOCAL_RUNNING) {
-            // rm ?
             datanodeContainer.stop();
             portalContainer.stop();
         }
@@ -304,11 +332,7 @@ public class BaseTest {
         loginInput.sendKeys(username);
         passwordInput.sendKeys(password, Keys.ENTER);
 
-        waitFor(driver, ByBuilder.toolbar("studies")); //todo
-        /*
-        final By avatar = By.className("ac-avatar");
-        waitFor(driver, avatar);
-        */
+        waitFor(driver, ByBuilder.toolbar("studies"));
     }
 
     protected static void loginDataNode(String username, String password) throws Exception {
