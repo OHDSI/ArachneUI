@@ -39,6 +39,7 @@ function DataSourceItem(props) {
     addDataSource,
     removeDataSource,
     editDataSource,
+    hasEditStudyPermissions,
   } = props;
 
   const mods = {
@@ -102,7 +103,7 @@ function DataSourceItem(props) {
           <div {...classes('comment-icon')}>chat_bubble</div>
         </Link>
       }
-      {dataSource.isVirtual && dataSource.isCurrentUserOwner
+      {dataSource.isVirtual && dataSource.isCurrentUserOwner && hasEditStudyPermissions
         ? <Link {...classes('name')} onClick={() => editDataSource(dataSource.id)}>{dataSource.name}<span {...classes('ico')}>edit</span></Link>
         : <Link {...classes('name')} to={dataSource.link}>{dataSource.name}</Link>
       }
@@ -127,6 +128,7 @@ function ListDataSources(props) {
     addDataSource,
     removeDataSource,
     editDataSource,
+    hasEditStudyPermissions,
   } = props;
 
   return (
@@ -139,6 +141,7 @@ function ListDataSources(props) {
           removeDataSource={removeDataSource}
           key={key}
           editDataSource={editDataSource}
+          hasEditStudyPermissions={hasEditStudyPermissions}
         />
       )}
       {dataSourceList.length === 0 &&
