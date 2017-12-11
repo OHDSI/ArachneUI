@@ -97,7 +97,7 @@ export default class ViewEditAnalysis extends Component {
             </div>
             <div className="row">
               <div className="col-xs-12">
-                <ListSubmissions />
+                <ListSubmissions isEditable={isEditable} />
               </div>
             </div>
           </div>
