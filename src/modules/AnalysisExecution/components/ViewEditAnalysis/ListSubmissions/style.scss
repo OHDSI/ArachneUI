@@ -220,7 +220,7 @@
 	&submissions-cell-actions {
 		display: flex;
 		height: 3rem;
-		width: 3rem;
+		width: calc( 3rem + 15px ); /* IE fix for only-child */
 		font-size: 2.5rem;
 
 		&__btn {
