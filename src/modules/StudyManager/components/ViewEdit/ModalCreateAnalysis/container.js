@@ -53,7 +53,7 @@ export default class ModalCreateAnalysisBuilder {
       analysisTypes: selectors.getAnalysisTypesList(state),
       initialValues: {
         attachDefaultCodeFiles: true,
-      }
+      },
     };
   }
 

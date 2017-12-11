@@ -20,43 +20,82 @@
  *
  */
 
-import React from 'react';
-import { Form, Modal } from 'arachne-ui-components';
+import React, { Component } from 'react';
+import { Form, FormInput, FormSelect, Modal } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
-import getFields from './getFields';
 
 require('./style.scss');
 
-function ModalCreateAnalysis(props) {
-  const classes = new BEMHelper('study-form-create-analysis');
+class ModalCreateAnalysis extends Component {
 
-  const fields = getFields({ classes, analysisTypes: props.analysisTypes });
+  constructor() {
+    super();
+    this.getClasses = this.getClasses.bind(this);
+    this.getFields = this.getFields.bind(this);
+  }
 
-  const submitBtn = {
-    label: 'Create',
-    loadingLabel: 'Creating...',
-    mods: ['success', 'rounded'],
-  };
+  getClasses() {
+    return new BEMHelper('study-form-create-analysis');
+  }
 
-  const cancelBtn = {
-    label: 'Cancel',
-  };
+  getFields({ analysisTypes }) {
+    return [
+      {
+        name: 'title',
+        InputComponent: {
+          component: FormInput,
+          props: {
+            mods: ['bordered'],
+            placeholder: 'Title',
+            type: 'text',
+          },
+        },
+      },
+      {
+        name: 'typeId',
+        InputComponent: {
+          component: FormSelect,
+          props: {
+            mods: ['bordered'],
+            placeholder: 'Type',
+            options: analysisTypes,
+          },
+        },
+      },
+    ];
+  }
 
-  return (
-    <Modal modal={props.modal} title="Create analysis">
-      <div {...classes()}>
-        <Form
-          mods="spacing-actions-sm"
-          fields={fields}
-          submitBtn={submitBtn}
-          cancelBtn={cancelBtn}
-          onSubmit={props.doSubmit}
-          onCancel={props.modal.close}
-          {...props}
-        />
-      </div>
-    </Modal>
-  );
+  render() {
+    const classes = this.getClasses();
+    const fields = this.getFields(this.props);
+
+    const submitBtn = {
+      label: 'Create',
+      loadingLabel: 'Creating...',
+      mods: ['success', 'rounded'],
+    };
+
+    const cancelBtn = {
+      label: 'Cancel',
+    };
+
+    return (
+      <Modal modal={this.props.modal} title="Create analysis">
+        <div {...classes()}>
+          <Form
+            mods="spacing-actions-sm"
+            fields={fields}
+            submitBtn={submitBtn}
+            cancelBtn={cancelBtn}
+            onSubmit={this.props.doSubmit}
+            onCancel={this.props.modal.close}
+            {...this.props}
+          />
+        </div>
+      </Modal>
+    );
+  }
+
 }
 
 export default ModalCreateAnalysis;
