@@ -21,6 +21,7 @@
  */
 
 import keyMirror from 'keymirror';
+import { Utils } from 'services/Utils';
 
 const modal = keyMirror({
   createDataSource: null,
@@ -34,35 +35,14 @@ const form = keyMirror({
   createDataNode: null,
 });
 
-const actionTypes = keyMirror({
-  REQUEST_DATA_SOURCE_LIST: null,
-  RECEIVE_DATA_SOURCE_LIST: null,
-  //
-  REQUEST_DATA_SOURCE: null,
-  RECEIVE_DATA_SOURCE: null,
-  UPDATE_DATA_SOURCE: null,
-  //
-  REQUEST_DATA_SOURCE_BUSINESS: null,
-  RECEIVE_DATA_SOURCE_BUSINESS: null,
-  //
-  REQUEST_DATA_NODE: null,
-  RECEIVE_DATA_NODE: null,
-  //
-  REQUEST_CDM_CHARACTERIZATION: null,
-  RECEIVE_CDM_CHARACTERIZATION: null,
-  //
-  REQUEST_ACHILLES_RESULTS: null,
-  UPDATE_ACHILLES_RESULTS: null,
-});
-
 const paths = {
   dataSources: id => `/cdm-source-list/data-sources${id ? `/${id}` : ''}`,
 };
 
 const apiPaths = {
-  dataSources: id => `/api/v1/data-sources${id ? `/${id}` : ''}`,
-  dataSourceBusiness: id => `/api/v1/data-sources/${id}/business`,
-  registerDataSource: id => `/api/v1/data-sources/${id}/register-on-central`,
+  dataSources: ({ id }) => `/api/v1/data-sources${id ? `/${id}` : ''}`,
+  dataSourceBusiness: ({ id }) => `/api/v1/data-sources/${id}/business`,
+  registerDataSource: ({ id }) => `/api/v1/data-sources/${id}/register-on-central`,
   dataNode: () => '/api/v1/datanode',
   characterization: ({ datasourceId, limit }) =>
     `/api/v1/achilles/${datasourceId}/jobs${limit ? '?size='+limit : ''}`,
@@ -130,7 +110,6 @@ const characterizationStatuses = keyMirror({
 const pollTime = 5000;
 
 export {
-  actionTypes,
   apiPaths,
   form,
   imgs,

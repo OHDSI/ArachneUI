@@ -21,10 +21,8 @@
  */
 
 import errors from 'const/errors';
-import {
-  get as _get,
-  isEqual,
-} from 'lodash';
+import isEqual from 'lodash/isEqual';
+import _get from 'lodash/get';
 import { types as fieldTypes } from 'const/modelAttributes';
 import mimeTypes from 'const/mimeTypes';
 import {
@@ -41,7 +39,10 @@ import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-async-connect';
 import { ModalUtils } from 'arachne-ui-components';
 import types from 'const/modelAttributes';
+import ReportUtils from 'components/Reports/Utils';
+import { reports } from 'const/reports';
 import URI from 'urijs';
+import { createSelector } from 'reselect';
 
 function buildFormData(obj) {
   const formData = new FormData();
@@ -65,6 +66,9 @@ if (!numeral['locales']['arachne']) {
       billion: null,
       trillion: null,
     }),
+    currency: {
+      symbol: '$'
+    }
   });
 }
 
@@ -80,6 +84,9 @@ if (!numeral['locales']['arachne-short']) {
       billion: 'bn',
       trillion: 'tn',
     },
+    currency: {
+      symbol: '$'
+    }
   });
 }
 
@@ -213,7 +220,9 @@ const detectMimeTypeByExtension = (file) => {
   let type;
   if (file) {
     type = file.docType;
-    if (type === mimeTypes.text) {
+    if (ReportUtils.getReportType(type) !== reports.unknown) {
+      type = mimeTypes.report;
+    } else if (type === mimeTypes.text) {
       const extension = file.name.split('.').pop().toLowerCase();
       type = mimeTypes[extension];
     }
@@ -369,17 +378,6 @@ class Utils {
     return initialValues;
   }
 
-  static prepareChartDataForDonut(rawData = { CONCEPT_ID: [], COUNT_VALUE: [], CONCEPT_NAME: [] }) {
-    const values = Array.isArray(rawData.COUNT_VALUE) ? rawData.COUNT_VALUE : [rawData.COUNT_VALUE];
-    const legend = Array.isArray(rawData.CONCEPT_NAME) ? rawData.CONCEPT_NAME : [rawData.CONCEPT_NAME];
-    const ids = Array.isArray(rawData.CONCEPT_ID) ? rawData.CONCEPT_ID : [rawData.CONCEPT_ID];
-    return values.map((value, i) => ({
-      value,
-      label: legend[i],
-      id: ids[i],
-    }));
-  }
-
   static confirmDelete({ message = 'Are you sure?' } = {}) {
     const promise = new Promise((resolve, reject) => {
       if (confirm(message)) {
@@ -475,7 +473,9 @@ class ContainerBuilder {
   build() {
     return Utils.buildConnectedComponent({
       Component: this.getComponent(),
-      mapStateToProps: this.mapStateToProps,
+      mapStateToProps: this.mapStateToProps ?
+        this.mapStateToProps.bind(this):
+        this.mapStateToProps,
       getMapDispatchToProps: this.getMapDispatchToProps,
       mapDispatchToProps: this.mapDispatchToProps,
       mergeProps: this.mergeProps,
@@ -485,6 +485,55 @@ class ContainerBuilder {
         ? this.getFetchers.bind(this)
         : this.getFetchers,
     });
+  }
+}
+
+class TreemapSelectorsBuilder {
+  constructor() {
+    this.dataPath = '';
+    this.detailsPath = '';
+  }
+
+  getReportData(state) {
+    return get(state, this.dataPath, {});
+  }
+
+  getRawTableData(state) {
+    return get(state, this.dataPath) || [];
+  }
+
+  getRawDetails(state) {
+    return get(state, this.detailsPath);
+  }
+
+  extractTableData(rawTableData) {
+    return [];
+  }
+
+  extractReportDetails(rawReportDetails) {
+    return {};
+  }
+
+  buildSelectorForTableData() {
+    return createSelector(
+      this.getRawTableData.bind(this),
+      this.extractTableData
+    );
+  }
+
+  buildSelectorForReportDetails() {
+    return createSelector(
+      this.getRawDetails.bind(this),
+      this.extractReportDetails
+    );
+  }
+
+  build() {
+    return {
+      getReportData: this.getReportData.bind(this),
+      getTableData: this.buildSelectorForTableData(),
+      getReportDetails: this.buildSelectorForReportDetails(),
+    };
   }
 }
 
@@ -502,4 +551,5 @@ export {
   detectMimeTypeByExtension,
   Utils,
   ContainerBuilder,
+  TreemapSelectorsBuilder,
 };

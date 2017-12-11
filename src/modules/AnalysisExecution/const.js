@@ -70,10 +70,11 @@ const paths = {
 function importEntityPathByType(type){
   switch (type) {
     case 'COHORT': return 'cohorts';
+    case 'COHORT_CHARACTERIZATION': return 'cohorts';
     case 'ESTIMATION': return 'estimations';
     case 'PREDICTION': return 'predictions';
     case 'INCIDENCE': return 'incidence-rates';
-    default: return 'unknown';
+    default: return '';
   }
 }
 
@@ -125,6 +126,7 @@ const statusesForPublishing = ['PENDING', 'NOT APPROVED', 'IN PROGRESS'];
 const refreshTime = 10000;
 
 const statusColors = {
+  QUEUE_PROCESSING: 'grey',
   PENDING: 'orange',
   NOT_APPROVED: 'red',
   IN_PROGRESS: 'blue',
@@ -170,16 +172,27 @@ const submissionActionTypes = keyMirror({
   PUBLISH: null,
 });
 
-const importableAnalysisTypes = ['COHORT', 'ESTIMATION', 'PREDICTION', 'INCIDENCE'];
+const importableAnalysisTypes = ['COHORT', 'ESTIMATION', 'PREDICTION', 'COHORT_CHARACTERIZATION', 'INCIDENCE'];
 const analysisTypeNames = {
   COHORT: 'cohort',
-  ESTIMATION: 'estimation',
+  ESTIMATION: 'PLE analysis',
+  PREDICTION: 'PLP analysis',
+  COHORT_CHARACTERIZATION: 'cohort',
+  INCIDENCE: 'incidence rates',
 };
-function nameAnalysisType(analysisType, capitalize = false) {
-  if (!(analysisType in analysisTypeNames)) {
+const pluralAnalysisTypeNames = {
+  COHORT: 'cohorts',
+  ESTIMATION: 'PLE analyses',
+  PREDICTION: 'PLP analyses',
+  COHORT_CHARACTERIZATION: 'cohorts',
+  INCIDENCE: 'incidence rates',
+};
+function nameAnalysisType({ analysisType, capitalize = false, plural = false }) {
+  const typeNames = plural ? pluralAnalysisTypeNames : analysisTypeNames;
+  if (!(analysisType in typeNames)) {
     return '';
   }
-  let name = analysisTypeNames[analysisType];
+  let name = typeNames[analysisType];
   if (capitalize) {
     name = `${name.substr(0, 1).toUpperCase()}${name.substr(1)}`;
   }

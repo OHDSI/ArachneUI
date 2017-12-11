@@ -78,7 +78,7 @@ class ModalFiles extends Component {
     if (this.props.isOpened === false && nextProps.isOpened === true) {
       if (nextProps.filesCount <= maxFilesCount) {
         if (nextProps.isResults) {
-          this.props.loadSubmissionFiles(nextProps.submissionId);
+          this.props.loadSubmissionFiles({ submissionId: nextProps.submissionId });
         } else {
           this.props.loadSubmissionGroupFiles(nextProps.submissionGroupId);
         }
@@ -117,20 +117,28 @@ function mapStateToProps(state) {
   let downloadAllLink;
   let files;
   const isResults = get(modalState, 'data.type') === 'result';
+  let canDownload = true;
   let filesCount = get(modalState, 'data.resultFilesCount', 0);
   if (isResults) {
     title = 'Results';
     downloadAllLink = apiPaths.submissionResultAll({ submissionId });
     files = selectors.getResultFiles(state);
+    const resultFiles = get(state, 'analysisExecution.analysisCode.queryResult');
+    if (Array.isArray(resultFiles) && resultFiles.length === 0) {
+      canDownload = false;
+    }
   } else {
     title = 'Code files';
     downloadAllLink = apiPaths.submissionGroupCodeAll({ submissionGroupId });
     files = selectors.getQueryFiles(state);
     filesCount = get(modalState, 'data.queryFilesCount');
+    canDownload = filesCount > 0;
   }
   const isOpened = get(modalState, 'isOpened', false);
   const isLoading = get(state, 'analysisExecution.analysisCode.isLoading', false);
   const prevPath = get(state, 'routingHistory.prevLocation.pathname', '');
+
+  const filesPath = get(state, 'analysisExecution.analysisCode.requestParams.query.path', '/');
 
   return {
     analysisId: get(analysisData, 'id'),
@@ -145,6 +153,8 @@ function mapStateToProps(state) {
     isLoading,
     filesCount,
     prevPath,
+    canDownload,
+    filesPath,
   };
 }
 
@@ -158,11 +168,16 @@ const mapDispatchToProps = {
       entityId: groupId,
       isSubmissionGroup: true,
     }),
-  loadSubmissionFiles: submissionId =>
-    actions.analysisExecution.analysisCode.codeList.query({
-      entityId: submissionId,
-      isSubmissionGroup: false,
-    }),
+  loadSubmissionFiles: ({ submissionId, path = '/' }) =>
+    actions.analysisExecution.analysisCode.codeList.query(
+      {
+        entityId: submissionId,
+        isSubmissionGroup: false,
+      },
+      {
+        path,
+      }
+    ),
   flush: actions.analysisExecution.analysisCode.flush,
 };
 
@@ -171,12 +186,13 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...ownProps,
     ...stateProps,
     ...dispatchProps,
+    loadSubmissionFiles: ({ submissionId = stateProps.submissionId, path }) => dispatchProps.loadSubmissionFiles({ submissionId, path }),
     removeResult: (fileId) => {
       Utils.confirmDelete()
         .then(() => {
           dispatchProps
             .removeResult({ submissionId: stateProps.submissionId, fileId })
-            .then(() => dispatchProps.loadSubmissionFiles(stateProps.submissionId))
+            .then(() => dispatchProps.loadSubmissionFiles({ submissionId: stateProps.submissionId }))
             .then(() => dispatchProps.loadAnalysis({ id: stateProps.analysisId }));
         });
     },

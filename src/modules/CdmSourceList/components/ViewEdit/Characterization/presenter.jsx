@@ -65,7 +65,7 @@ function Characterization(props) {
             {...classes('btn')}
             label={isImporting ? 'Importing' : lastCharacterization ? 'Re-import' : 'Import'}
             mods={['success']}
-            disabled={!hasResults || isCharacterizationStarted}
+            disabled={isCharacterizationStarted || !hasResults}
             onClick={importResults}
           />
           <Button

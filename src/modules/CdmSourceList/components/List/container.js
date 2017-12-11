@@ -31,7 +31,7 @@ import presenter from './presenter';
 class List extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.query !== this.props.query) {
-      this.props.loadDataSourceList(nextProps.query);
+      this.props.loadDataSourceList({}, nextProps.query);
       this.props.queryDbmsTypes();
     }
   }
@@ -57,7 +57,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  loadDataSourceList: actions.cdmSourceList.dataSourceList.load,
+  loadDataSourceList: actions.cdmSourceList.dataSourceList.query,
   queryDbmsTypes: actions.cdmSourceList.dbmsTypes.query,
 };
 
@@ -68,7 +68,7 @@ export default asyncConnect([{
     const state = getState();
     const query = state.routing.locationBeforeTransitions.query;
     const fetchers = {
-      load: actions.cdmSourceList.dataSourceList.load.bind(null, query),
+      load: () => actions.cdmSourceList.dataSourceList.query({}, { query: query }),
       loadDbmsTypes: actions.cdmSourceList.dbmsTypes.query,
     };
     return Utils.fetchAll({ fetchers, dispatch });

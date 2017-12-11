@@ -44,7 +44,7 @@ const apiPaths = {
   adminOptions: ({ query }) => `/api/v1/admin/admins/suggest?query=${query}`,
   solrIndex: ({ domain }) => `/api/v1/admin/${domain}/reindex-solr`,
   users: ({ id, query }) => {
-    const uri = new  URI(`/api/v1/admin/users${id ? `/${id}` : ''}`);
+    const uri = new URI(`/api/v1/admin/users${id ? `/${id}` : ''}`);
     if (query) {
       uri.setSearch(query);
     }
@@ -56,6 +56,7 @@ const apiPaths = {
 
   restartServer: () => '/api/v1/admin/restart',
   ping: () => '/api/v1/auth/me',
+  atlasConnection: () => '/api/v1/admin/atlas-connection',
 
   portalUsers: ({ id, query }) => {
     const link = `/api/v1/admin/users${id ? `/${id}` : ''}`;

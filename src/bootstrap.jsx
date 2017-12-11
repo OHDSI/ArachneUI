@@ -37,6 +37,13 @@ import NotFound from 'components/NotFound';
 
 require('styles/appContainer.scss');
 
+const isIE = !!navigator.userAgent.match(/Trident/g) || !!navigator.userAgent.match(/MSIE/g);
+if (isIE) {
+  require.ensure([], (require) => {
+    require('styles/fonts-base64-fallback.scss'); // eslint-disable-line global-require
+  });
+}
+
 function initModules(modules) {
   const initialState = {};
   const reducers = {};
@@ -44,6 +51,7 @@ function initModules(modules) {
   let indexRedirect;
   let menuItems = [];
   let middleware = [];
+  let redirects = {};
 
   modules.forEach((module, moduleKey) => {
     injectActionToRoot(module.namespace, module.actions());
@@ -57,13 +65,20 @@ function initModules(modules) {
     }
 
     if (module.routes) {
-      routes.push((
-        <Route path={module.path} key={moduleKey}>
-          {module.routes().map((route, routeKey) =>
-            React.cloneElement(route, { key: routeKey })
-          )}
-        </Route>
-      ));
+      const moduleRoutes = module.routes();
+      if (Array.isArray(moduleRoutes)) {
+        routes.push((
+          <Route path={module.path} key={moduleKey}>
+            {moduleRoutes.map((route, routeKey) =>
+              React.cloneElement(route, { key: routeKey })
+            )}
+          </Route>
+        ));
+      } else {
+        routes.push(
+          <Route path={module.path} key={moduleKey} getChildRoutes={moduleRoutes} />
+        );
+      }
     }
 
     if (module.initialState) {
@@ -77,6 +92,10 @@ function initModules(modules) {
     if (module.menuItems) {
       menuItems = menuItems.concat(module.menuItems());
     }
+
+    if (module.indexRedirect) {
+      redirects[`/${module.path}`] = `/${module.path}${module.indexRedirect}`;
+    }
   });
 
   return {
@@ -86,6 +105,7 @@ function initModules(modules) {
     middleware,
     reducers,
     routes,
+    redirects,
   };
 }
 
@@ -126,7 +146,7 @@ function initializeApi(store) {
     });
 }
 
-function initRootRoute({ store, routes, indexRedirect, menuItems }) {
+function initRootRoute({ store, routes, indexRedirect, menuItems, redirects }) {
   const setActiveModule = (module) => {
     const action = actions.modules.setActive(module);
     store.dispatch(action);
@@ -139,7 +159,13 @@ function initRootRoute({ store, routes, indexRedirect, menuItems }) {
           route,
           {
             key,
-            onEnter: () => setActiveModule(route.props.path),
+            onEnter: (nextState, replace, callback) => {
+              setActiveModule(route.props.path);
+              if (redirects[nextState.location.pathname]) {
+                replace({ pathname: redirects[nextState.location.pathname] });
+              }
+              callback();
+            },
           }
         )
       )}
@@ -149,7 +175,7 @@ function initRootRoute({ store, routes, indexRedirect, menuItems }) {
   );
 }
 
-function initRouter({ store, history, routes, indexRedirect, menuItems }) {
+function initRouter({ store, history, routes, indexRedirect, menuItems, redirects }) {
   return (
     <Provider store={store}>
       <Router
@@ -158,7 +184,7 @@ function initRouter({ store, history, routes, indexRedirect, menuItems }) {
           <ReduxAsyncConnect {...props} />
         }
       >
-        {initRootRoute({ store, routes, indexRedirect, menuItems })}
+        {initRootRoute({ store, routes, indexRedirect, menuItems, redirects })}
       </Router>
     </Provider>
   );
@@ -172,6 +198,7 @@ function bootstrap() {
     middleware,
     reducers,
     routes,
+    redirects,
   } = initModules(appModules);
 
   const dataFromServer = window.__data;
@@ -189,7 +216,7 @@ function bootstrap() {
   initializeApi(store);
   
   const history = initBrowserHistory(store);
-  const router = initRouter({ store, history, routes, indexRedirect, menuItems });
+  const router = initRouter({ store, history, routes, indexRedirect, menuItems, redirects });
 
   return router;
 }
@@ -201,13 +228,14 @@ export function getRenderInfo({ history }) {
     middleware,
     reducers,
     routes,
+    redirects,
   } = initModules(appModules);
 
   const rootReducer = makeRootReducer(reducers);
   const store = configureStore({ rootReducer, middleware, history });
 
   registerModules({ store, modules: appModules });
-  const rootRoute = initRootRoute({ store, routes, indexRedirect, menuItems });
+  const rootRoute = initRootRoute({ store, routes, indexRedirect, menuItems, redirects });
 
   // AppContainer.menuItems = menuItems;
 

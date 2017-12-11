@@ -21,7 +21,6 @@
  */
 
 @import 'styles/vars-and-mixins.scss';
-@import 'codemirror/lib/codemirror';
 
 .#{$namespace} {
   &analysis-code-editor {
@@ -48,7 +47,14 @@
 
   		&:not(:first-child) {
   			margin-left: 7px;
-  		}
+      }
+      
+      &--unlock {
+        background-color: $purple;
+        &:hover {
+          background-color: darken($purple, 10%);
+        }
+      }
   	}
 
     &__request-unlock-tooltip {

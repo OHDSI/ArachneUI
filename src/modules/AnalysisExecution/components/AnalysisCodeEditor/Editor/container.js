@@ -23,7 +23,8 @@
 import { connect } from 'react-redux';
 import { reduxForm, reset as resetForm } from 'redux-form';
 import { push as goToPage } from 'react-router-redux';
-import { get, isEqual } from 'lodash';
+import get from 'lodash/get';
+import isEqual from 'lodash/isEqual';
 import actions from 'actions/index';
 import { ModalUtils } from 'arachne-ui-components';
 import { apiPaths, form, paths, modal } from 'modules/AnalysisExecution/const';
@@ -70,7 +71,7 @@ const mapDispatchToProps = {
   goToAnalysis: id => goToPage.call(null, paths.analyses(id)),
   showConfirmDialog: analysisId =>
     ModalUtils.actions.toggle(modal.confirmDialog, true, { analysisId }),
-  loadAnalysis: actions.analysisExecution.analysis.query,
+  loadAnalysis: actions.analysisExecution.analysis.find,
   lockCode: actions.analysisExecution.codeLock.create,
   openRequestUnlockModal: () => ModalUtils.actions.toggle(modal.requestUnlock, true),
 };
@@ -114,7 +115,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
             { analysisId: stateProps.analysisId },
             { locked: false }
           )
-          .then(() => dispatchProps.loadAnalysis(stateProps.analysisId));
+          .then(() => dispatchProps.loadAnalysis({ id: stateProps.analysisId }));
       } else {
         dispatchProps.openRequestUnlockModal();
       }

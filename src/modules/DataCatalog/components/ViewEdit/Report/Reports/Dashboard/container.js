@@ -22,8 +22,6 @@
 
 import { connect } from 'react-redux';
 import get from 'lodash/get';
-import { chart } from '@ohdsi/atlascharts/dist/atlascharts.umd';
-import { Utils } from 'services/Utils';
 import Dashboard from './presenter';
 
 function mapStateToProps(state) {
@@ -31,22 +29,14 @@ function mapStateToProps(state) {
   const ageAtFirstObservation = get(reportData, 'AGE_AT_FIRST_OBSERVATION_HISTOGRAM');
   const cumulativeDuration = get(reportData, 'CUMULATIVE_DURATION');
   const genderData = get(reportData, 'GENDER_DATA');
-  let observedByMonth = get(reportData, 'OBSERVED_BY_MONTH');
+  const observedByMonth = get(reportData, 'OBSERVED_BY_MONTH');
   const summary = get(reportData, 'SUMMARY');
-
-  if (observedByMonth) {
-    observedByMonth = chart.mapMonthYearDataToSeries(observedByMonth, {
-      dateField: 'MONTH_YEAR',
-      yValue: 'COUNT_VALUE',
-      yPercent: 'PERCENT_VALUE',
-    });
-  }
   const characterizationDate = get(state, 'dataCatalog.characterization.data.result.date', Date.now()) || Date.now();
 
   return {
     ageAtFirstObservation,
     cumulativeDuration,
-    genderData: Utils.prepareChartDataForDonut(genderData),
+    genderData,
     observedByMonth,
     summary,
     characterizationDate,

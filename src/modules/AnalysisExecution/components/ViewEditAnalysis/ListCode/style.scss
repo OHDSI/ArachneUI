@@ -48,7 +48,8 @@
       padding-left: 2rem;
       display: flex;
       flex-direction: column;
-      width: 100%;
+      width: calc(100% - 15px); /* .ac-radio-button__box width */
+      flex-shrink: 0;
 
       & .#{$namespace}code-file-info {
         width: 100%;

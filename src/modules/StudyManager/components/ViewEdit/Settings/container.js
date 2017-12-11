@@ -29,6 +29,16 @@ import StudySettings from './presenter';
 import SelectorsBuilder from './selectors';
 
 const selectors = (new SelectorsBuilder()).build();
+const privacyOptions = [
+  {
+    label: 'Private',
+    value: true,
+  },
+  {
+    label: 'Public',
+    value: false,
+  },
+];
 
 export default class StudySettingsBuilder {
   getComponent() {
@@ -48,6 +58,11 @@ export default class StudySettingsBuilder {
     const statusOptions = selectors.getStatusOptions(state);
 
     return {
+      privacyOptions,
+      privacySelected: StudySettingsBuilder.getSelectedOption(
+        privacyOptions,
+        get(studyState, 'privacy'),
+      ),
       studyId: get(studyState, 'id'),
       isEditable: get(studyState, `permissions[${studyPermissions.editStudy}]`, false),
 
@@ -81,6 +96,10 @@ export default class StudySettingsBuilder {
       ...ownProps,
       ...stateProps,
       ...dispatchProps,
+      setPrivacy: privacy =>
+        dispatchProps
+          .updateStudy(stateProps.studyId, { privacy })
+          .then(() => dispatchProps.load(stateProps.studyId)),
       setType: (type) => {
         dispatchProps
           .updateStudy(stateProps.studyId, {

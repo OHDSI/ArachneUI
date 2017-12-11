@@ -33,6 +33,7 @@ export default class SelectorsBuilder {
       MimeTypes.r,      
       MimeTypes.sql,
       MimeTypes.cohort,
+      MimeTypes.cohortdefinitionjson,
     ];
   }
 
@@ -81,7 +82,7 @@ export default class SelectorsBuilder {
   getIsLoading(state) {
     return get(
       state,
-      'analysisExecution.importEntity.isLoading',
+      'analysisExecution.importEntity.isUpdating',
       false,
       'Boolean'
     );
