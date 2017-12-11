@@ -220,7 +220,8 @@
 	&submissions-cell-actions {
 		display: flex;
 		height: 3rem;
-		width: calc( 3rem + 15px ); /* IE fix for only-child */
+		width: 6rem;
+		justify-content: center;
 		font-size: 2.5rem;
 
 		&__btn {
@@ -257,10 +258,6 @@
 			&:last-child {
 				border-top-right-radius: $block-border-radius;
 				border-bottom-right-radius: $block-border-radius;
-			}
-
-			&:only-child {
-				margin-left: 15px;
 			}
 		}
 	}
