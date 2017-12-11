@@ -51,6 +51,9 @@ export default class ModalCreateAnalysisBuilder {
     return {
       studyId: get(moduleData, 'study.data.result.id'),
       analysisTypes: selectors.getAnalysisTypesList(state),
+      initialValues: {
+        attachDefaultCodeFiles: true,
+      }
     };
   }
 
@@ -69,10 +72,9 @@ export default class ModalCreateAnalysisBuilder {
       ...ownProps,
       ...stateProps,
       ...dispatchProps,
-      doSubmit({ title, typeId }) {
+      doSubmit(params) {
         const submitPromise = dispatchProps.createAnalysis(null, {
-          title,
-          typeId,
+          ...params,
           studyId: stateProps.studyId,
         });
 
@@ -82,8 +84,6 @@ export default class ModalCreateAnalysisBuilder {
           })
           .catch(() => {});
 
-        // We have to return a submission promise back to redux-form
-        // to allow it update the state
         return submitPromise;
       },
     };

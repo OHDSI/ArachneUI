@@ -21,64 +21,41 @@
  */
 
 import React from 'react';
-import { Modal } from 'arachne-ui-components';
-import { Form, FormInput, FormSelect } from 'arachne-ui-components';
+import { Form, Modal } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
+import getFields from './getFields';
 
 require('./style.scss');
 
 function ModalCreateAnalysis(props) {
   const classes = new BEMHelper('study-form-create-analysis');
-  
-  const fields = [
-    {
-      name: 'title',
-      InputComponent: {
-        component: FormInput,
-        props: {
-          mods: ['bordered'],
-          placeholder: 'Title',
-          type: 'text',
-        }
-      }
-    },
-    {
-      name: 'typeId',
-      InputComponent: {
-        component: FormSelect,
-        props: {
-          mods: ['bordered'],
-          placeholder: 'Type',
-          options: props.analysisTypes
-        }
-      },
-    },
-  ];
+
+  const fields = getFields({ classes, analysisTypes: props.analysisTypes });
 
   const submitBtn = {
     label: 'Create',
     loadingLabel: 'Creating...',
     mods: ['success', 'rounded'],
-  }
+  };
 
   const cancelBtn = {
     label: 'Cancel',
-  }
+  };
 
   return (
-  	<Modal modal={props.modal} title="Create analysis">
-  		<div {...classes()}>
-  			<Form
+    <Modal modal={props.modal} title="Create analysis">
+      <div {...classes()}>
+        <Form
           mods="spacing-actions-sm"
-  				fields={fields}
-  				submitBtn={submitBtn}
+          fields={fields}
+          submitBtn={submitBtn}
           cancelBtn={cancelBtn}
-  				onSubmit={props.doSubmit}
+          onSubmit={props.doSubmit}
           onCancel={props.modal.close}
-  				{...props}
-  			/>
-  		</div>
-  	</Modal>
+          {...props}
+        />
+      </div>
+    </Modal>
   );
 }
 
