@@ -28,6 +28,7 @@ import { apiPaths } from 'modules/AnalysisExecution/const';
 import { isFat as isMimeTypeFat, isText } from 'services/MimeTypeUtil';
 import { asyncConnect } from 'redux-async-connect';
 import presenter from './presenter';
+import { analysisPermissions } from 'modules/AnalysisExecution/const';
 
 class AnalysisCode extends Component {
   componentWillReceiveProps(props) {
@@ -76,6 +77,8 @@ function mapStateToProps(state, ownProps) {
   const language = detectLanguageByExtension(fileData);
   const isLoading = get(moduleState, 'analysisCode.isLoading');
 
+  const isEditable = get(fileData, `permissions[${analysisPermissions.deleteAnalysisFiles}]`, false)
+
   const pageTitle = [
     get(fileData, 'name', 'Code file'),
     ...(get(moduleState, 'breadcrumbs.data', []).map(crumb => crumb.title).reverse()),
@@ -98,6 +101,7 @@ function mapStateToProps(state, ownProps) {
     name,
     createdAt,
     language,
+    isEditable,
   };
 }
 

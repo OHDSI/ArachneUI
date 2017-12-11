@@ -28,15 +28,17 @@ import { Button } from 'arachne-ui-components';
 
 require('./style.scss');
 
-function InsightActions({ remove }) {
+function InsightActions({ remove, isEditable }) {
   const classes = new BEMHelper('insight-actions');
 
   return (
     <ul {...classes()}>
       <li {...classes('item')}>
-        <Button {...classes('remove')} onClick={remove}>
-          <i {...classes('remove-ico')}>delete</i>
-        </Button>
+        {isEditable &&
+          <Button {...classes('remove')} onClick={remove}>
+            <i {...classes('remove-ico')}>delete</i>
+          </Button>
+        }
       </li>
     </ul>
   );
