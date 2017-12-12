@@ -22,7 +22,7 @@
 
 import { createSelector } from 'reselect';
 import get from 'lodash/get';
-import { form } from 'modules/StudyManager/const';
+import { form, participantStatuses } from 'modules/StudyManager/const';
 
 export default class selectorsBuilder {
   getCurrentUserId(state) {
@@ -87,10 +87,14 @@ export default class selectorsBuilder {
   }
 
   getOwnerOptions(participantList, selectedOwnerList) {
+    // Filter pending users
+    const filteredList = participantList
+      .filter(u => ![participantStatuses.PENDING, participantStatuses.DELETED].includes(u.status));
+
     // Remove duplicates
     // (which appear because or diferent roles of the same person)
     const participantSet = {};
-    participantList.forEach((user) => {
+    filteredList.forEach((user) => {
       if (!participantSet.hasOwnProperty(user.id)) { // eslint-disable-line no-prototype-builtins
         participantSet[user.id] = user;
       }
@@ -101,13 +105,15 @@ export default class selectorsBuilder {
       delete participantSet[user.id];
     });
 
-    return Object.values(participantSet).filter(u => u).map(participant => ({
-      label: participant.fullName,
-      value: {
-        ...participant,
-        isRemovable: true,
-      },
-    }));
+    return Object.values(participantSet)
+      .filter(u => u)
+      .map(participant => ({
+        label: participant.fullName,
+        value: {
+          ...participant,
+          isRemovable: true,
+        },
+      }));
   }
 
   // For autocomplete
