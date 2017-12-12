@@ -23,7 +23,6 @@
 import React, { PropTypes } from 'react';
 import BEMHelper from 'services/BemHelper';
 import { StickyContainer, Sticky } from 'react-sticky';
-import { headerHeight } from 'const/style';
 
 import { LoadingPanel, PageContent, Link } from 'arachne-ui-components';
 
