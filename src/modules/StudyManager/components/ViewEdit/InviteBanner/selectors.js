@@ -16,32 +16,39 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 13, 2016
+ * Created: July 13, 2017
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+// @ts-check
+import { createSelector } from 'reselect';
+import { get } from 'services/Utils';
+import { participantStatuses } from 'modules/StudyManager/const';
 
-.#{$namespace} {
-  &study-manager-view {
-    @include view-edit-page();
-		height: 100%;
-		
-		&__container {
-			flex-grow: 1;
-			display: flex;
-			flex-direction: column;
-		}
+export default class SelectorsBuilder {
 
-    &__empty-state {
-    	@include title();
-    	align-items: center;
-    	display: flex;
-    	flex-direction: column;
-    	height: 100%;
-    	justify-content: center;
-    	width: 100%;
-    	line-height: 1.5;
-    }
+  getInvitations(state) {
+    return get(state, 'studyManager.studyInvitations.queryResult.result');
+  }
+
+  getCurrentUserInfo(state) {
+    return get(state, 'auth.principal.queryResult.result');
+  }
+
+  getPendingInvitation(invitations, currentUserInfo) {
+    return (invitations && invitations.length) ? invitations[0] : null;
+  }
+
+  buildSelectorForInvitation() {
+    return createSelector(
+      [this.getInvitations, this.getCurrentUserInfo],
+      this.getPendingInvitation
+    );
+  }
+
+  build() {
+    return {
+      getInvitation: this.buildSelectorForInvitation(),
+    };
   }
 }

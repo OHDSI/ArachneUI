@@ -22,11 +22,14 @@
 
 import React, { PropTypes } from 'react';
 import BEMHelper from 'services/BemHelper';
+import { StickyContainer, Sticky } from 'react-sticky';
+import { headerHeight } from 'const/style';
 
 import { LoadingPanel, PageContent, Link } from 'arachne-ui-components';
 
 import DateInterval from './DateInterval';
 import Toolbar from './Toolbar';
+import InviteBanner from './InviteBanner';
 
 import ModalEditTitle from './ModalEditTitle';
 import ModalAddParticipant from './ModalAddParticipant';
@@ -49,22 +52,36 @@ function ViewEditStudy(props) {
     <PageContent title={`${studyTitle} | Arachne`}>
       <div {...classes()}>
         {accessGranted
-        ? [<Toolbar studyId={id} />,
-          <div {...classes('content')}>
-            <div className="row">
-              <div className="col-xs-12 col-lg-6">
-                <DateInterval />
-                <div className="row">
-                  <div className="col-xs-12">
-                    <LeftColumn />
+        ? [
+          <StickyContainer {...classes('container')}>
+            <Toolbar studyId={id} />
+            <Sticky>
+              {
+                ({ style, isSticky }) => {
+                  let stickyStyle = style;
+                  if (isSticky) {
+                    stickyStyle = { ...style, top: `${headerHeight}px` };
+                  }
+                  return <InviteBanner style={stickyStyle} />;
+                }
+              }
+            </Sticky>
+            <div {...classes('content')}>
+              <div className="row">
+                <div className="col-xs-12 col-lg-6">
+                  <DateInterval />
+                  <div className="row">
+                    <div className="col-xs-12">
+                      <LeftColumn />
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="col-xs-12 col-lg-6">
-                <RightColumn studyId={id}/>
+                <div className="col-xs-12 col-lg-6">
+                  <RightColumn studyId={id} />
+                </div>
               </div>
             </div>
-          </div>,
+          </StickyContainer>,
           <LoadingPanel active={isLoading} />]
         : <div {...classes('empty-state')}>
             <span>You do not have access rights for this study. Please contact a study lead investigator.</span>
