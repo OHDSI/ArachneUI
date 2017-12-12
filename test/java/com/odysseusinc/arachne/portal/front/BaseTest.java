@@ -240,6 +240,7 @@ public class BaseTest {
         container.withFixedExposedPort(mappedPort, 5432);
         container.start();
 
+        //removing leading char for getting "clear" container name
         String oldPGName = container.getContainerName().substring(1);
         DockerClientFactory.instance().client().renameContainerCmd(oldPGName).withName(containerName).exec();
         return container;
