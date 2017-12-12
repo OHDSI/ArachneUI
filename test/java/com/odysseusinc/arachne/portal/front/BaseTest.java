@@ -4,6 +4,7 @@ import static com.odysseusinc.arachne.portal.front.utils.Utils.waitFor;
 import static com.odysseusinc.arachne.portal.front.utils.Utils.waitForPageLoad;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.apache.commons.lang.StringUtils.defaultIfBlank;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,6 +26,7 @@ import java.util.regex.Pattern;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
@@ -60,7 +62,7 @@ import org.testcontainers.containers.wait.WaitStrategy;
    For portal and datanode use selenium-test profiles.
    "Full-profile" runs portal, datanode and mailhog containers (all with random exposed port) in network.
    Don't forget provide external parameter value: arachne-tag (required), jasypt.encryptor.password (required),
-   jasypt.encryptor.algorythm (required), local-profile, pg-tag, solr-tag, mailhog-tag.
+   jasypt.encryptor.algorythm (required), local-profile (required), pg-tag, solr-tag, mailhog-tag.
  */
 public class BaseTest {
 
@@ -107,9 +109,9 @@ public class BaseTest {
         ARACHNE_TAG = System.getProperty("arachne-tag");
 
         LOCAL_RUNNING = Boolean.getBoolean(System.getProperty("local-profile"));
-        PG_TAG = parameterValue(PG_TAG, "pg-tag");
-        MAILHOG_TAG = parameterValue(MAILHOG_TAG, "mailhog-tag");
-        SOLR_TAG = parameterValue(SOLR_TAG, "solr-tag");
+        PG_TAG = defaultIfBlank(System.getProperty("pg-tag"), PG_TAG);
+        MAILHOG_TAG = defaultIfBlank(System.getProperty("mailhog-tag"), MAILHOG_TAG);
+        SOLR_TAG = defaultIfBlank(System.getProperty("solr-tag"), SOLR_TAG);
 
         httpClient = getHttpClient();
 
@@ -145,12 +147,6 @@ public class BaseTest {
                     network);
             createDatanodeContainer(portalContainerName, arachneWaitStrategy, network);
         }
-    }
-
-    private static String parameterValue(String parameter, String propertyName) {
-
-        String property = System.getProperty(propertyName);
-        return property != null ? property : parameter;
     }
 
     private static void waitManualStarting(String url, String appName) {
