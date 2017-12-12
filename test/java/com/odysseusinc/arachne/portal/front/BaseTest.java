@@ -59,6 +59,8 @@ import org.testcontainers.containers.wait.WaitStrategy;
    solr(exposed port: 8995), mailhog(exposed port: 8025) containers for local testing.
    For portal and datanode use selenium-test profiles.
    "Full-profile" runs portal, datanode and mailhog containers (all with random exposed port) in network.
+   Don't forget provide external parameter value: arachne-tag (required), jasypt.encryptor.password (required),
+   jasypt.encryptor.algorythm (required), local-profile, pg-tag, solr-tag, mailhog-tag.
  */
 public class BaseTest {
 
@@ -71,7 +73,11 @@ public class BaseTest {
     protected static final int MAIL_API_PORT = 8025;
     protected static final int MAIL_SMTP_PORT = 1025;
     protected static boolean LOCAL_RUNNING = false;
-    protected static String VERSION = "1.10.0-SNAPSHOT";
+    protected static String ARACHNE_TAG;
+    protected static String PG_TAG = "9.6.5";
+    protected static String MAILHOG_TAG = "latest";
+    protected static String SOLR_TAG = "1.0.0";
+
     protected static final String PROTOCOL = USE_SSL ? "https" : "http";
 
     protected static final String ADMIN_LOGIN = "admin@odysseusinc.com";
@@ -98,8 +104,12 @@ public class BaseTest {
     @BeforeClass
     public static void setup() {
 
+        ARACHNE_TAG = System.getProperty("arachne-tag");
+
         LOCAL_RUNNING = Boolean.getBoolean(System.getProperty("local-profile"));
-        VERSION = System.getProperty("version");
+        PG_TAG = parameterValue(PG_TAG, "pg-tag");
+        MAILHOG_TAG = parameterValue(MAILHOG_TAG, "mailhog-tag");
+        SOLR_TAG = parameterValue(SOLR_TAG, "solr-tag");
 
         httpClient = getHttpClient();
 
@@ -112,7 +122,7 @@ public class BaseTest {
         mailhogContainer = createMailServerContainer(network);
 
         // if chrome.exe is in not default dir
-/*        Map<String, Object> chromeOptions = new HashMap<>();
+        /* Map<String, Object> chromeOptions = new HashMap<>();
         chromeOptions.put("binary", "PATH_TO_CHROME_EXE\\chrome.exe");
         DesiredCapabilities capabilities = DesiredCapabilities.chrome();
         capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
@@ -126,9 +136,7 @@ public class BaseTest {
 
             waitManualStarting(PORTAL_BASE_URL, "PORTAL");
             waitManualStarting(DATA_NODE_BASE_URL, "DATANODE");
-        }
-
-        if (!LOCAL_RUNNING) {
+        } else {
             final WaitStrategy arachneWaitStrategy = new HttpWaitStrategy()
                     .forPath("/api/v1/build-number")
                     .withStartupTimeout(Duration.ofMinutes(3));
@@ -137,6 +145,12 @@ public class BaseTest {
                     network);
             createDatanodeContainer(portalContainerName, arachneWaitStrategy, network);
         }
+    }
+
+    private static String parameterValue(String parameter, String propertyName) {
+
+        String property = System.getProperty(propertyName);
+        return property != null ? property : parameter;
     }
 
     private static void waitManualStarting(String url, String appName) {
@@ -169,7 +183,7 @@ public class BaseTest {
 
         portalEnvs.put("jasypt.encryptor.password", System.getProperty("jasypt.encryptor.password"));
 
-        portalContainer = new GenericContainer("hub.arachnenetwork.com/portal:" + VERSION)
+        portalContainer = new GenericContainer("hub.arachnenetwork.com/portal:" + ARACHNE_TAG)
                 .withEnv(portalEnvs)
                 .withNetwork(network)
                 .withExposedPorts(8080)
@@ -188,6 +202,7 @@ public class BaseTest {
     private static void createDatanodeContainer(String portalContainerName,
                                                 WaitStrategy arachneWaitStrategy,
                                                 Network.NetworkImpl network) {
+
         Map<String, String> datanodeEnvs = new HashMap<>();
         datanodeEnvs.put("server.ssl.enabled", String.valueOf(USE_SSL));
         datanodeEnvs.put("datanode.arachneCentral.host", "http://" + portalContainerName);
@@ -198,7 +213,7 @@ public class BaseTest {
         datanodeEnvs.put("jasypt.encryptor.password", System.getProperty("jasypt.encryptor.password"));
         datanodeEnvs.put("jasypt.encryptor.algorythm", System.getProperty("jasypt.encryptor.algorythm"));
 
-        datanodeContainer = new GenericContainer("hub.arachnenetwork.com/datanode:" + VERSION)
+        datanodeContainer = new GenericContainer("hub.arachnenetwork.com/datanode:" + ARACHNE_TAG)
                 .withEnv(datanodeEnvs)
                 .withNetwork(network)
                 .withExposedPorts(8880)
@@ -220,7 +235,7 @@ public class BaseTest {
         envs.put("POSTGRES_PASSWORD", System.getProperty("postgres.password"));
         envs.put("POSTGRES_DB", dbName);
 
-        FixedHostPortGenericContainer container = new FixedHostPortGenericContainer("postgres:9.6.5");
+        FixedHostPortGenericContainer container = new FixedHostPortGenericContainer("postgres:" + PG_TAG);
         container.withEnv(envs);
         container.withFixedExposedPort(mappedPort, 5432);
         container.start();
@@ -233,7 +248,7 @@ public class BaseTest {
 
     private static FixedHostPortGenericContainer createMailServerContainer(Network.NetworkImpl network) {
 
-        FixedHostPortGenericContainer mailhogContainer = new FixedHostPortGenericContainer("mailhog/mailhog:latest");
+        FixedHostPortGenericContainer mailhogContainer = new FixedHostPortGenericContainer("mailhog/mailhog:" + MAILHOG_TAG);
 
         if (network == null) {
             mailhogContainer.withFixedExposedPort(MAIL_API_PORT, 8025);
@@ -256,7 +271,7 @@ public class BaseTest {
 
     private static GenericContainer createLocalProfileSolrContainer() {
 
-        FixedHostPortGenericContainer solrContainer = new FixedHostPortGenericContainer("hub.arachnenetwork.com/solr:1.0.0");
+        FixedHostPortGenericContainer solrContainer = new FixedHostPortGenericContainer("hub.arachnenetwork.com/solr:" + SOLR_TAG);
         solrContainer.withFixedExposedPort(SOLR_PORT, 8983);
         solrContainer.start();
         return solrContainer;
@@ -269,16 +284,14 @@ public class BaseTest {
             driver.close();
             driver = null;
         }
-        if (!LOCAL_RUNNING) {
-            datanodeContainer.stop();
-            portalContainer.stop();
-        }
         mailhogContainer.stop();
-
         if (LOCAL_RUNNING) {
             portalPostgresContainer.stop();
             datanodePostgresContainer.stop();
             solrContainer.stop();
+        } else {
+            datanodeContainer.stop();
+            portalContainer.stop();
         }
         httpClient.close();
     }
