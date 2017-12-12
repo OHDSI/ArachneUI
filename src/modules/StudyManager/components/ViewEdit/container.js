@@ -75,6 +75,7 @@ export default class ViewEditStudyBuilder {
       loadStudy: () => actions.studyManager.study.find(studyId),
       loadInsights: () => actions.studyManager.studyInsights.find({ studyId }),
       loadTransitions: () => actions.studyManager.availableTransitions.query({ studyId }),
+      loadSudyInvitations: () => actions.studyManager.studyInvitations.query({ studyId }),
     };
   }
 
