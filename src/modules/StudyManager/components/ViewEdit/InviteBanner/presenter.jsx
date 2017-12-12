@@ -12,7 +12,7 @@ function InviteBanner({
   invitation,
   acceptInvitation,
   declineInvitation,
-  style,
+  className,
 }) {
   const classes = new BEMHelper('study-invite-banner');
 
@@ -27,7 +27,7 @@ function InviteBanner({
   } = invitation;
 
   return (
-    <div {...classes()} style={style} >
+    <div {...classes({ extra: className })}>
       <div {...classes('avatar')}>
         <Avatar img={ activityApiPaths.userpic(user.id) } />
       </div>

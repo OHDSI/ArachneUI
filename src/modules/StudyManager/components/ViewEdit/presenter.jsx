@@ -57,13 +57,7 @@ function ViewEditStudy(props) {
             <Toolbar studyId={id} />
             <Sticky>
               {
-                ({ style, isSticky }) => {
-                  let stickyStyle = style;
-                  if (isSticky) {
-                    stickyStyle = { ...style, top: `${headerHeight}px` };
-                  }
-                  return <InviteBanner style={stickyStyle} />;
-                }
+                ({ isSticky }) => <InviteBanner className={ isSticky ? classes('sticky-banner').className : null } />
               }
             </Sticky>
             <div {...classes('content')}>

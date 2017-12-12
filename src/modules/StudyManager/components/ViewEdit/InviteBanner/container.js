@@ -61,7 +61,7 @@ export default class IviteBannerBuilder extends ContainerBuilder {
         })
         .then(() => {
           dispatchProps.loadStudy(stateProps.studyId);
-          dispatchProps.loadSudyInvitations(({ studyId: stateProps.studyId }));
+          dispatchProps.loadSudyInvitations({ studyId: stateProps.studyId });
         });
       },
       declineInvitation: () => {

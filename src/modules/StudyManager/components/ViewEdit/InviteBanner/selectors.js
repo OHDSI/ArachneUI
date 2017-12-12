@@ -31,17 +31,13 @@ export default class SelectorsBuilder {
     return get(state, 'studyManager.studyInvitations.queryResult.result');
   }
 
-  getCurrentUserInfo(state) {
-    return get(state, 'auth.principal.queryResult.result');
-  }
-
-  getPendingInvitation(invitations, currentUserInfo) {
+  getPendingInvitation(invitations) {
     return (invitations && invitations.length) ? invitations[0] : null;
   }
 
   buildSelectorForInvitation() {
     return createSelector(
-      [this.getInvitations, this.getCurrentUserInfo],
+      [this.getInvitations],
       this.getPendingInvitation
     );
   }
