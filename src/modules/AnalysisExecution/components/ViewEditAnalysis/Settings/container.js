@@ -34,7 +34,6 @@ function mapStateToProps(state) {
 
   return {
     analysisId: get(analysisState, 'id'),
-    isEditable: true, // ???
 
     typeOptions,
     typeSelected: getSelectedOption(

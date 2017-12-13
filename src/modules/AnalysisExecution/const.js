@@ -121,6 +121,13 @@ const apiPaths = {
     `/api/v1/analysis-management/submission-groups/${submissionGroupId}/files`,
 };
 
+const analysisPermissions = {
+  editAnalysis: 'EDIT_ANALYSIS',
+  createSubmission :'CREATE_SUBMISSION',
+  deleteAnalysisFiles :'DELETE_ANALYSIS_FILES',
+  uploadAnalysisFiles :'UPLOAD_ANALYSIS_FILES',
+};
+
 const statusesForPublishing = ['PENDING', 'NOT APPROVED', 'IN PROGRESS'];
 
 const refreshTime = 10000;
@@ -211,7 +218,7 @@ const fileSources = keyMirror({
   SUBMISSION: null,
 });
 
-const maxFilesCount = 1000;
+const maxFilesCount = 10000;
 
 export {
   apiPaths,
@@ -229,4 +236,5 @@ export {
   docTypes,
   fileSources,
   maxFilesCount,
+  analysisPermissions,
 };
