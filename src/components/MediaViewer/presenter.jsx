@@ -21,18 +21,20 @@
  */
 
 import React, { PropTypes } from 'react';
-import ReactPDF from 'react-pdf/build/entry.webpack';
 import BEMHelper from 'services/BemHelper';
 import Viewer from 'react-viewer';
+import Loadable from 'react-loadable';
 import EmptyState from 'components/EmptyState';
 import { isText } from 'services/MimeTypeUtil';
-import { Button, Pagination } from 'arachne-ui-components';
+import { Button, LoadingPanel, Pagination } from 'arachne-ui-components';
 import MimeTypes from 'const/mimeTypes';
 import CodeViewer from 'components/CodeViewer';
 
+let ReactPDF;
+
 require('./style.scss');
 
-function ActionBar(props = {}) {
+export function ActionBar(props = {}) {
   const classes = new BEMHelper('action-bar');
   const {
     downloadLink,
@@ -108,6 +110,16 @@ function pdf({ classes, container, data, setContainer, onPDFLoaded, pageIndex, p
   );
 }
 
+const LazyPDF = Loadable({
+  loader: () => new Promise((resolve) => {
+    require.ensure([], (require) => {
+      ReactPDF = require('react-pdf/build/entry.webpack');
+      resolve(pdf);
+    });
+  }),
+  loading: LoadingPanel,
+});
+
 function empty({ classes }) {
   return (
     (<div {...classes({ element: 'container' })}>
@@ -124,7 +136,9 @@ function MediaViewer({ language, onPDFLoaded, pageIndex, path, data, mimeType, s
   if (mimeType === MimeTypes.image) {
     element = image({ classes, container, setContainer, data });
   } else if (mimeType === MimeTypes.pdf) {
-    element = pdf({ classes, container, data, setContainer, totalPages, path, pageIndex, onPDFLoaded });
+    element = (
+      <LazyPDF { ...{ classes, container, data, setContainer, totalPages, path, pageIndex, onPDFLoaded } } />
+    );
   } else if (isText(mimeType)) {
     element = (
       <CodeViewer

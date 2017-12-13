@@ -53,7 +53,7 @@ function NodeSelector({ dataNodeList, totalSteps, step, analysisType }) {
     return (
       <div {...classes()}>
         <span {...classes('descr')}>
-          {`Choose data node to import ${nameAnalysisType(analysisType)}s from`}
+          {`Choose data node to import ${nameAnalysisType({ analysisType })} from`}
         </span>
         <form>
           <ul {...classes('list')}>
@@ -82,7 +82,7 @@ function NodeSelector({ dataNodeList, totalSteps, step, analysisType }) {
     return (
       <div {...classes()}>
         <span {...classes('descr', 'empty')}>
-          No data nodes connected to Atlas are presented in the study.
+          Atlas is not connected to any data nodes used in this study.
         </span>
       </div>
     )

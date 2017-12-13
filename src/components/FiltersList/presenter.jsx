@@ -27,7 +27,7 @@ import {
   FacetedSearchPanel as FacetedSearch,
   Panel,
   Form,
-  FormSelect,
+  Select,
   FormToggle,
   FormSlider,
   FormInput,
@@ -39,10 +39,48 @@ import uniqBy from 'lodash/uniqBy';
 
 require('./style.scss');
 
+const anyOptionValue = Symbol.for('anyOptionValue');
+
+function FilterFormSelect(props) {
+  const {
+    isMulti,
+    mods,
+    placeholder,
+    options,
+    disabled,
+
+    input,
+    meta,
+  } = props;
+
+  return <Select
+    isMulti={isMulti}
+    mods={mods}
+    placeholder={placeholder}
+    options={options}
+    value={input.value}
+    expanded={meta.active}
+    disabled={meta.submitting || disabled}
+    onFocus={() => input.onFocus()}
+    onBlur={() => input.onBlur()}
+    onChange={(val) => {
+      let newValue = val;
+      if (isMulti) {
+        const isAnyOptionSelected = val.includes(anyOptionValue);
+        newValue = isAnyOptionSelected ? [] : val;
+      } else {
+        // whether 'Any' option selected
+        newValue = val === anyOptionValue ? null : val;
+      }
+      input.onChange(newValue);
+    }}
+  />;
+}
+
 function getComponentByType(type) {
   switch (type) {
     case types.enum: case types.enumMulti:
-      return FormSelect;
+      return FilterFormSelect;
     case types.toggle:
       return FormToggle;
     case types.integer:
@@ -85,11 +123,27 @@ function getOptions(field) {
   }
 }
 
+function addAnyOption(field) {
+  if (field.type === types.enum && !field.isMulti) {
+    return {
+      ...field,
+      options: [
+        {
+          label: 'Any',
+          value: '',
+        },
+        ...field.options,
+      ],
+    };
+  }
+  return field;
+}
+
 function FacetedFilters({ clear, fields, handleSubmit }) {
   return (
     <FacetedSearch
       doSubmit={() => {}}
-      dynamicFields={fields}
+      dynamicFields={fields.map(addAnyOption)}
       fullTextSearchEnabled
       sortingEnabled={false}
       showRefineSearch
@@ -119,13 +173,10 @@ function DropdownFilters({ classes, fields, clear, handleSubmit }) {
   ];
 
   fields.forEach((field) => {
-    let options = field.options;
-    if (!field.isMulti && field.type !== types.enumMulti) {
-      options = [{
-        label: 'Any',
-        value: '',
-      }].concat(field.options);
-    }
+    const options = [{
+      label: 'Any',
+      value: anyOptionValue,
+    }].concat(field.options);
     dropdownFields.push({
       // assure it's compatable with the form in FacetedSearch component
       name: `filter[${field.name}]`,
@@ -187,13 +238,13 @@ function FiltersList(props) {
       </DropdownTrigger>
       <DropdownContent>
         <div {...classes('content', null, className)}>
-          <DropdownFilters classes={classes} fields={fields} clear={clear} handleSubmit={handleSubmit}/>
+          <DropdownFilters classes={classes} fields={fields} clear={clear} handleSubmit={handleSubmit} />
         </div>
       </DropdownContent>
     </Dropdown>
     : <div {...classes(null, 'column')}>
       <div {...classes('filters', null, className)}>
-        <FacetedFilters fields={fields} clear={clear} handleSubmit={handleSubmit}/>
+        <FacetedFilters fields={fields} clear={clear} handleSubmit={handleSubmit} />
       </div>
     </div>;
 }

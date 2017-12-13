@@ -24,7 +24,7 @@
 import get from 'lodash/get';
 import { ModalUtils } from 'arachne-ui-components';
 import actions from 'actions/index';
-import { apiPaths, modal } from 'modules/AnalysisExecution/const';
+import { apiPaths, modal, analysisPermissions } from 'modules/AnalysisExecution/const';
 import { Utils } from 'services/Utils';
 import SelectorsBuilder from './selectors';
 
@@ -44,10 +44,15 @@ export default class ListCodeBuilder {
     const analysisType = get(analysisData, 'type.id');
     const codeList = selectors.getCodeList(state);
     const downloadAllLink = apiPaths.analysisCodeDownloadAll({ analysisId });
-    const isSubmittable = get(analysisData, 'permissions.CREATE_SUBMISSION', false);
     const isLocked = get(analysisData, 'locked');
+
+    const permissions = get(analysisData, 'permissions', {});
+    const isSubmittable = get(permissions, analysisPermissions.createSubmission, false);
+    const canDeleteFiles = get(permissions, analysisPermissions.deleteAnalysisFiles, false);
+    const canAddFiles = get(permissions, analysisPermissions.uploadAnalysisFiles, false);
+
+    const canSubmit = codeList.length > 0;
     const isLoading = selectors.getIsLoading(state);
-    const canDeleteFiles = get(analysisData, 'permissions.DELETE_ANALYSIS_FILES', false);
 
     return {
       analysisId,
@@ -58,6 +63,8 @@ export default class ListCodeBuilder {
       isLocked,
       isLoading,
       canDeleteFiles,
+      canSubmit,
+      canAddFiles,
     };
   }
 

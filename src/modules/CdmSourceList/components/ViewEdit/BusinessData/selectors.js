@@ -49,7 +49,7 @@ class CdmSourceListViewEditSelectorsBuilder {
   getRawData(state) {
     return get(
       state,
-      'cdmSourceList.dataSourceBusiness.data',
+      'cdmSourceList.dataSourceBusiness.queryResult.result',
       {
         id: -1,
         isRegistered: false,

@@ -67,6 +67,16 @@ const paths = {
   profile: id => `/expert-finder/profile/${id}`,
 };
 
+function importEntityPathByType(type){
+  switch (type) {
+    case 'COHORT': return 'cohorts';
+    case 'COHORT_CHARACTERIZATION': return 'cohorts';
+    case 'ESTIMATION': return 'estimations';
+    case 'PREDICTION': return 'predictions';
+    default: return '';
+  }
+}
+
 const apiPaths = {
   analyses: ({ id }) => `/api/v1/analysis-management/analyses${id ? `/${id}` : ''}`,
   analysisTypes: () => '/api/v1/analysis-management/analyses/types',
@@ -85,7 +95,7 @@ const apiPaths = {
   analysisRequestCodeUnlock: ({ analysisId }) => `/api/v1/analysis-management/analyses/${analysisId}/unlock-request`,
   breadcrumbs: ({ entityType, id }) => `/api/v1/utils/breadcrumbs/${entityType.toUpperCase()}/${id}`,
   importOptionList: ({ type, dataNodeId }) =>
-    `/api/v1/data-nodes/${dataNodeId}/${type === 'COHORT' ? 'cohorts' : 'estimations'}`,
+    `/api/v1/data-nodes/${dataNodeId}/${importEntityPathByType(type)}`,
   entities: ({ analysisId, fileId, type }) =>
     `/api/v1/analysis-management/analyses/${analysisId}/entities${fileId ? `/${fileId}` : ''}${type ? `?type=${type}` : ''}`,
   comments: ({ commentTopicId, commentId }) => `/api/v1/comments/${commentTopicId}${commentId ? `/${commentId}` : ''}`,
@@ -110,11 +120,19 @@ const apiPaths = {
     `/api/v1/analysis-management/submission-groups/${submissionGroupId}/files`,
 };
 
+const analysisPermissions = {
+  editAnalysis: 'EDIT_ANALYSIS',
+  createSubmission :'CREATE_SUBMISSION',
+  deleteAnalysisFiles :'DELETE_ANALYSIS_FILES',
+  uploadAnalysisFiles :'UPLOAD_ANALYSIS_FILES',
+};
+
 const statusesForPublishing = ['PENDING', 'NOT APPROVED', 'IN PROGRESS'];
 
 const refreshTime = 10000;
 
 const statusColors = {
+  QUEUE_PROCESSING: 'grey',
   PENDING: 'orange',
   NOT_APPROVED: 'red',
   IN_PROGRESS: 'blue',
@@ -160,16 +178,25 @@ const submissionActionTypes = keyMirror({
   PUBLISH: null,
 });
 
-const importableAnalysisTypes = ['COHORT', 'ESTIMATION'];
+const importableAnalysisTypes = ['COHORT', 'ESTIMATION', 'PREDICTION', 'COHORT_CHARACTERIZATION'];
 const analysisTypeNames = {
   COHORT: 'cohort',
-  ESTIMATION: 'estimation',
+  ESTIMATION: 'PLE analysis',
+  PREDICTION: 'PLP analysis',
+  COHORT_CHARACTERIZATION: 'cohort',
 };
-function nameAnalysisType(analysisType, capitalize = false) {
-  if (!(analysisType in analysisTypeNames)) {
+const pluralAnalysisTypeNames = {
+  COHORT: 'cohorts',
+  ESTIMATION: 'PLE analyses',
+  PREDICTION: 'PLP analyses',
+  COHORT_CHARACTERIZATION: 'cohorts',
+};
+function nameAnalysisType({ analysisType, capitalize = false, plural = false }) {
+  const typeNames = plural ? pluralAnalysisTypeNames : analysisTypeNames;
+  if (!(analysisType in typeNames)) {
     return '';
   }
-  let name = analysisTypeNames[analysisType];
+  let name = typeNames[analysisType];
   if (capitalize) {
     name = `${name.substr(0, 1).toUpperCase()}${name.substr(1)}`;
   }
@@ -188,7 +215,7 @@ const fileSources = keyMirror({
   SUBMISSION: null,
 });
 
-const maxFilesCount = 1000;
+const maxFilesCount = 10000;
 
 export {
   apiPaths,
@@ -206,4 +233,5 @@ export {
   docTypes,
   fileSources,
   maxFilesCount,
+  analysisPermissions,
 };

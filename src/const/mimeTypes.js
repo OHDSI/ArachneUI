@@ -33,6 +33,7 @@ const mimeTypes = {
   csv: 'csv',
   r: 'r',
   cohort: 'cohort',
+  cohortdefinitionjson: 'cohortdefinitionjson',
   excel: 'excel',
   estimation: 'estimation',
   comparator: 'comparator cohort',
@@ -42,6 +43,8 @@ const mimeTypes = {
   other: 'other',
   text: 'text',
   link: 'link',
+  report: 'report',
+  folder: 'folder',
 };
 
 export default mimeTypes;

@@ -30,7 +30,11 @@ import MenuDropdown from './components/MenuDropdown';
 export default {
   actions: () => ducks.actions,
   reducer: () => combineReducers(ducks.reducer),
-  routes: () => require('./routes').default(), // eslint-disable-line global-require,
+  routes: () => (location, cb) => {
+    require.ensure([], (require) => {
+      cb(null, require('./routes').default()); // eslint-disable-line global-require
+    });
+  },
   sidebarElement: {
     ico: imgs.sidebar.expertFinder,
     name: 'Expert Finder',
@@ -39,4 +43,5 @@ export default {
   menuItems: () => [
     <MenuDropdown />,
   ],
+  indexRedirect: '/list',
 };

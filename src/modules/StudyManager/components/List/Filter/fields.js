@@ -61,5 +61,23 @@ export default function getFields(props) {
         value: opts.value,
       })),
     },
+    {
+      label: 'Privacy',
+      name: 'privacy',
+      type: types.enum,
+      forceOpened: true,
+      hasTitle: true,
+      isMulti: false,
+      options: [
+        {
+          label: 'Private',
+          value: 'true',
+        },
+        {
+          label: 'Public',
+          value: 'false',
+        },
+      ],
+    },
   ];
 }

@@ -49,6 +49,14 @@ export default class selectorsBuilder {
     );
   }
 
+  hasEditStudyPermissions(state) {
+    return get(
+      state,
+      `studyManager.study.data.result.permissions[${studyPermissions.editStudy}]`,
+      false
+    );
+  }
+
   isDeleted(dataSource) {
     return dataSource.status.toLowerCase() === dataSourceStatuses.DELETED.toLowerCase();
   }
@@ -86,6 +94,7 @@ export default class selectorsBuilder {
         this.getRawDataSourceList,
         this.hasAttachPermissions,
         this.hasDeletePermissions,
+        this.hasEditStudyPermissions,
       ],
       this.getDataSourceList.bind(this)
     );
@@ -96,6 +105,7 @@ export default class selectorsBuilder {
       getDataSourceList: this.buildselectorForDataSourceList(),
       hasAttachPermissions: this.hasAttachPermissions,
       hasDeletePermissions: this.hasDeletePermissions,
+      hasEditStudyPermissions: this.hasEditStudyPermissions,
     };
   }
 }

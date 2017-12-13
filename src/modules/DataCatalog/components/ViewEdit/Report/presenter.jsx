@@ -29,7 +29,7 @@ import {
   LoadingPanel,
 } from 'arachne-ui-components';
 
-import { reports as reportConst } from 'modules/DataCatalog/const';
+import { reports as reportConst } from 'const/reports';
 
 let reports = {};
 
@@ -74,43 +74,43 @@ function Report(props) {
         value={selectedReport}
         {...classes('select')}
       />
-      {reports.Dashboard && selectedReport === reportConst.DASHBOARD &&
+      {reports.Dashboard && selectedReport === reportConst.dashboard &&
         <reports.Dashboard />
       }
-      {reports.Person && selectedReport === reportConst.PERSON &&
+      {reports.Person && selectedReport === reportConst.person &&
         <reports.Person />
       }
-      {reports.ObservationPeriods && selectedReport === reportConst.OBSERVATION_PERIODS &&
+      {reports.ObservationPeriods && selectedReport === reportConst.observationperiods &&
         <reports.ObservationPeriods />
       }
-      {reports.DataDensity && selectedReport === reportConst.DATA_DENSITY &&
+      {reports.DataDensity && selectedReport === reportConst.datadensity &&
         <reports.DataDensity />
       }
-      {reports.Death && selectedReport === reportConst.DEATH &&
+      {reports.Death && selectedReport === reportConst.death &&
         <reports.Death />
       }
-      {reports.Conditions && selectedReport === reportConst.CONDITIONS &&
+      {reports.Conditions && selectedReport === reportConst.conditions &&
         <reports.Conditions dataSourceId={dataSourceId} />
       }
-      {reports.ConditionEra && selectedReport === reportConst.CONDITIONERA &&
+      {reports.ConditionEra && selectedReport === reportConst.conditionera &&
         <reports.ConditionEra dataSourceId={dataSourceId} />
       }
-      {reports.Observations && selectedReport === reportConst.OBSERVATIONS &&
+      {reports.Observations && selectedReport === reportConst.observations &&
         <reports.Observations dataSourceId={dataSourceId} />
       }
-      {reports.DrugEra && selectedReport === reportConst.DRUGERA &&
+      {reports.DrugEra && selectedReport === reportConst.drugeras &&
         <reports.DrugEra dataSourceId={dataSourceId} />
       }
-      {reports.Drug && selectedReport === reportConst.DRUG &&
+      {reports.Drug && selectedReport === reportConst.drugexposures &&
         <reports.Drug dataSourceId={dataSourceId} />
       }
-      {reports.Procedures && selectedReport === reportConst.PROCEDURES &&
+      {reports.Procedures && selectedReport === reportConst.procedures &&
         <reports.Procedures dataSourceId={dataSourceId} />
       }
-      {reports.Visits && selectedReport === reportConst.VISITS &&
+      {reports.Visits && selectedReport === reportConst.visits &&
         <reports.Visits dataSourceId={dataSourceId} />
       }
-      {reports.Achillesheel && selectedReport === reportConst.ACHILLESHEEL &&
+      {reports.Achillesheel && selectedReport === reportConst.achillesheel &&
         <reports.Achillesheel />
       }
       <LoadingPanel active={isLoading} />

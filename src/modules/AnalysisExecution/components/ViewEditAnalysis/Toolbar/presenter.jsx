@@ -39,6 +39,7 @@ function AnalysisToolbar(props) {
     editTitle,
     isLoading,
     author,
+    isEditable,
   } = props;
 
   return (
@@ -47,6 +48,7 @@ function AnalysisToolbar(props) {
       breadcrumbList={breadcrumbList}
       backUrl={backUrl}
       onEdit={editTitle}
+      isEditable={isEditable}
     >
       <span {...classes('refreshing')}>
         {isLoading

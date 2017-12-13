@@ -21,7 +21,6 @@
  */
 
 @import 'styles/vars-and-mixins.scss';
-@import 'codemirror/lib/codemirror';
 
 .#{$namespace} {
   &analysis-code-editor {

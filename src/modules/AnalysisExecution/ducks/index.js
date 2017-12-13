@@ -31,6 +31,7 @@ import insight from './insight';
 import studyDataSourceList from './studyDataSourceList';
 import statusHistory from './statusHistory';
 import submissionFile from './submissionFile';
+import submissionFileDetails from './submissionFileDetails';
 
 import code from './code';
 import codeLock from './codeLock';
@@ -53,6 +54,7 @@ export default {
     studyDataSourceList: studyDataSourceList.actions,
     statusHistory: statusHistory.actions,
     submissionFile: submissionFile.actions,
+    submissionFileDetails: submissionFileDetails.actions,
     code: code.actions,
     codeLock: codeLock.actions,
     executionStatus: executionStatus.actions,
@@ -73,6 +75,7 @@ export default {
     studyDataSourceList: studyDataSourceList.reducer,
     statusHistory: statusHistory.reducer,
     submissionFile: submissionFile.reducer,
+    submissionFileDetails: submissionFileDetails.reducer,
     insightFile: insightFile.reducer,
   },
 };
