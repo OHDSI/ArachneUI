@@ -187,7 +187,7 @@ public class BaseTest {
 
         portalContainer.start();
 
-        String oldName = portalContainer.getContainerName().substring(1);
+        String oldName = clearContainerName(portalContainer);
         DockerClientFactory.instance().client().renameContainerCmd(oldName).withName(portalContainerName).exec();
 
         final String portalHost = portalContainer.getContainerIpAddress();
@@ -236,12 +236,17 @@ public class BaseTest {
         container.withFixedExposedPort(mappedPort, 5432);
         container.start();
 
-        //removing leading char for getting "clear" container name
-        String oldPGName = container.getContainerName().substring(1);
+        String oldPGName = clearContainerName(container);
         DockerClientFactory.instance().client().renameContainerCmd(oldPGName).withName(containerName).exec();
         return container;
     }
 
+
+    private static String clearContainerName(GenericContainer container){
+
+        //removing leading char for getting "clear" container name
+        return container.getContainerName().substring(1);
+    }
 
     private static FixedHostPortGenericContainer createMailServerContainer(Network.NetworkImpl network) {
 
