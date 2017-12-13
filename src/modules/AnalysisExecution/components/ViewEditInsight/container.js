@@ -60,6 +60,7 @@ export default class ViewEditInsightBuilder extends ContainerBuilder {
     const insightTitle = get(moduleState, 'insight.data.result.name', 'Insight');
     const analysisTitle = get(insightData, 'analysis.title', 'Analysis');
     const studyTitle = get(insightData, 'analysis.study.title', 'Study');
+    const isEditable = get(insightData, 'permissions.EDIT_INSIGHT', false);
     const pageTitle = [
       insightTitle,
       analysisTitle,
@@ -70,8 +71,9 @@ export default class ViewEditInsightBuilder extends ContainerBuilder {
     return {
       isLoading: get(moduleState, 'insight.isLoading', false),
       submissionId: parseInt(ownProps.routeParams.submissionId, 10),
-      insightTitle: get(moduleState, 'insight.data.result.name', ''),
+      insightTitle: get(insightData, 'name', ''),
       pageTitle: pageTitle.join(' | '),
+      isEditable,
     };
   }
 

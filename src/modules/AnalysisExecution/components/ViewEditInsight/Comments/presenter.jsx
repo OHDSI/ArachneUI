@@ -38,6 +38,7 @@ function Comments(props) {
     submissionId,
     unloadComments,
     unloadFile,
+    isEditable,
   } = props;
 
   const ShowRecent = () => <Link onClick={() => { unloadComments(); unloadFile(); }}>Show all</Link>;
@@ -78,7 +79,7 @@ function Comments(props) {
                     </li>
                   )}
                 </ul>
-                {!isRecentComments &&
+                {!isRecentComments && isEditable &&
                   <div  {...classes('new-form')}>
                     <NewComment submissionId={ submissionId } />
                   </div>

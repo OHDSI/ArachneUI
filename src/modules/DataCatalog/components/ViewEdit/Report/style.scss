@@ -35,17 +35,4 @@
 		}
 	}
 
-	&report-empty {
-		display: flex;
-		align-items: center;
-		align-content: center;
-		height: 20rem;
-
-		&__text {
-			@include title();
-			color: $grey-placeholder;
-			margin: auto;
-		}
-	}
-
 }
