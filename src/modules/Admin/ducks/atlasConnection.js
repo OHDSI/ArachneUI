@@ -16,38 +16,36 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 13, 2016
+ * Created: December 05, 2017
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+import Duck from 'services/Duck';
+import { apiPaths } from 'modules/Admin/const';
 
-.#{$namespace} {
-  &study-manager-view {
-    @include view-edit-page();
-		height: 100%;
-		
-		&__container {
-			flex-grow: 1;
-			display: flex;
-			flex-direction: column;
-		}
+const actionCoreName = 'AD_ATLAS_CONNECTION';
 
-		&__sticky-banner {
-      position: fixed;
-      top: $header-height;
-      width: calc(100% - #{$sidebar-width});
-    }
-
-    &__empty-state {
-    	@include title();
-    	align-items: center;
-    	display: flex;
-    	flex-direction: column;
-    	height: 100%;
-    	justify-content: center;
-    	width: 100%;
-    	line-height: 1.5;
-    }
-  }
+function clearSource() {
+  return {
+    type: `${actionCoreName}_CREATE_FULFILLED`,
+    payload: null,
+  };
 }
+
+const atlasConnection = new Duck(
+  {
+    name: actionCoreName,
+    urlBuilder: apiPaths.atlasConnection,
+  }
+);
+
+const actions = atlasConnection.actions;
+const reducer = atlasConnection.reducer;
+
+export default {
+  actions: {
+    ...atlasConnection.actions,
+    reset: (dispatch) => dispatch(clearSource()),
+},
+  reducer,
+};

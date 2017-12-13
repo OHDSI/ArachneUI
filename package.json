@@ -1,6 +1,6 @@
 {
   "name": "arachne-ui",
-  "version": "1.10.48",
+  "version": "1.11.12",
   "licenses": [
     {
       "type": "Apache-2.0",
@@ -31,14 +31,14 @@
     "portal-ssr-node": "webpack --app node --production --progress --config webpack/ssr-app.config.js --watch",
     "ssr-server-central-watch": "webpack --config webpack/server.config.js --watch"
   },
-  "size-limit": [    
+  "size-limit": [
     {
-      "path": "public/*.js/app.js",
+      "path": "public/?/*.js",
       "webpack": false,
       "limit": "1024 KB"
     },
     {
-      "path": "public/js/app.js",
+      "path": "public/js/*.js",
       "webpack": false,
       "limit": "1024 KB"
     }
@@ -46,7 +46,7 @@
   "dependencies": {
     "@ohdsi/atlascharts": "git+https://github.com/agackovka/Visualizations.git",
     "@stomp/stompjs": "^3.0.3",
-    "arachne-ui-components": "1.10.16",
+    "arachne-ui-components": "^1.11.0",
     "autoprefixer": "^6.7.6",
     "babel-core": "^6.25.0",
     "babel-eslint": "^7.2.3",
@@ -72,6 +72,7 @@
     "flexboxgrid": "^6.3.1",
     "fuse.js": "^3.0.4",
     "get-random-values": "^1.2.0",
+    "html-webpack-plugin": "^2.30.1",
     "intro.js": "^2.5.0",
     "isomorphic-fetch": "^2.2.1",
     "js-cookie": "^2.1.3",
