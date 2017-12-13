@@ -67,7 +67,7 @@ export class CodeItem extends Component {
 
     const mods = {
       hover: true,
-      actionable: this.isActionable,
+      actionable: true,
     };
 
     const actions = [];
