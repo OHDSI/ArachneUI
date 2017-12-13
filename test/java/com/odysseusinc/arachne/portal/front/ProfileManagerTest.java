@@ -41,12 +41,12 @@ public class ProfileManagerTest extends BaseTest {
         profileMenuWebElement.click();
 
         By userProfile = ByBuilder.text("User Profile");
-        waitFor(driver, userProfile);//
+        waitFor(driver, userProfile);
         WebElement userProfileWebElement = driver.findElement(userProfile);
         userProfileWebElement.click();
 
         waitFor(driver, ByBuilder.byClassAndText("ac-profile-view__user-name", "admin admin admin"));
-        driver.findElement(ByBuilder.byClassAndText("ac-button ac-profile-view__edit-button", "mode_edit")).click();
+        driver.findElement(ByBuilder.buttonIco("mode_edit")).click();
 
         By nameEditingDialog = ByBuilder.modal("Edit Name");
         waitFor(driver, nameEditingDialog);
@@ -62,8 +62,8 @@ public class ProfileManagerTest extends BaseTest {
         lastNameInput.sendKeys(postfix);
 
         saveBtn.click();
-        waitFor(driver, ByBuilder.byClassAndText("ac-profile-view__user-name",
-                StringUtils.repeat("admin" + postfix, " ", 3)));
+
+        waitFor(driver, ByBuilder.toolbar(StringUtils.repeat("admin" + postfix, " ", 3)));
         logout();
     }
 

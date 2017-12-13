@@ -3,6 +3,8 @@ package com.odysseusinc.arachne.portal.front;
 import static com.odysseusinc.arachne.portal.front.BaseStudyTest.createAnalysisFromStudy;
 import static com.odysseusinc.arachne.portal.front.BaseStudyTest.createStudy;
 import static com.odysseusinc.arachne.portal.front.ProfileManagerTest.updateName;
+import static com.odysseusinc.arachne.portal.front.StudyNotebookTest.getOptionalStudyRow;
+import static com.odysseusinc.arachne.portal.front.StudyNotebookTest.getStudyRow;
 import static com.odysseusinc.arachne.portal.front.utils.Utils.waitFor;
 import static com.odysseusinc.arachne.portal.front.utils.Utils.waitForPageLoad;
 
@@ -22,7 +24,6 @@ import org.junit.FixMethodOrder;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -162,13 +163,15 @@ public class StudyManagerTest extends BaseDataCatalogTest {
 
         loginAndOpenStudy();
 
-        WebElement studyTypeSelect = driver.findElement(ByBuilder.byClassAndText("ac-study-document-list-add__label", "Add document"));
-        studyTypeSelect.click();
-        waitFor(driver, ByBuilder.byClassAndText("ac-tabs__item ac-tabs__item--selected", "Computer"));
+        WebElement addDocumentButton = driver.findElement(
+                ByBuilder.byClassAndText("ac-study-document-list-add__label", "Add document"));
+        addDocumentButton.click();
+
+        waitFor(driver, By.className("ac-study-form-create-document"));
 
         WebElement uploadElement = driver.findElement(By.cssSelector("input[type=file]"));
         uploadElement.sendKeys(file.getAbsolutePath());
-        driver.findElement(ByBuilder.byClassAndText("ac-form__submit", "Add")).click();
+        driver.findElement(ByBuilder.button("Add")).click();
         waitFor(driver, ByBuilder.byClassAndText("ac-link ac-code-file-info__name", "text.txt"));
     }
 
@@ -176,8 +179,10 @@ public class StudyManagerTest extends BaseDataCatalogTest {
     public void test06RemoveStudyDocument() throws Exception {
 
         loginAndOpenStudy();
-        waitFor(driver, By.className("ac-list-item__remove"));
-        WebElement removeIco = driver.findElement(By.className("ac-list-item__remove"));
+
+        By documentList = By.className("ac-study-document-list");
+        waitFor(driver, documentList);
+        WebElement removeIco = driver.findElement(documentList).findElement(By.className("ac-list-item__remove"));
         removeIco.click();
         acceptAlert();
         waitFor(driver, ByBuilder.byClassAndText("ac-list-item__content", "No documents available"));
@@ -189,7 +194,11 @@ public class StudyManagerTest extends BaseDataCatalogTest {
         String chosenName = "admin2 admin2";
         inviteParticipant(chosenName, 2);
 
-        WebElement addedRow = driver.findElements(By.className("ac-list-item")).get(0);
+        By documentList = By.className("ac-study-participants-list");
+        waitFor(driver, documentList);
+
+        WebElement addedRow = driver.findElement(By.className("ac-study-participants-list"))
+                .findElements(By.className("ac-list-item")).get(0);
 
         String role = "Lead Investigator";
         Assert.assertTrue(addedRow.findElement(ByBuilder.byClassAndText("ac-select-control__label", role)).isDisplayed());
@@ -202,10 +211,7 @@ public class StudyManagerTest extends BaseDataCatalogTest {
 
         loginPortal("mr_data_set_owner@example.com", "password");
 
-        By studyRow = ByBuilder.tableRow(STUDY_NAME);
-        waitForPageLoad(driver, studyRow);
-
-        WebElement studyInTable = driver.findElement(studyRow);
+        WebElement studyInTable = getStudyRow(STUDY_NAME);
         studyInTable.click();
 
         WebElement notificationIco = driver.findElement(
@@ -222,7 +228,7 @@ public class StudyManagerTest extends BaseDataCatalogTest {
 
         WebElement study = content.findElement(By.className("ac-activity-list-item__entity"));
         Assert.assertEquals(STUDY_NAME, study.getText());
-        WebElement accept = content.findElement(ByBuilder.byClassAndText("ac-activity-list-item__action", "Accept"));
+        WebElement accept = content.findElement(ByBuilder.button("Accept"));
         accept.click();
 
         WebElement refresh = driver.findElement(By.className("ac-study-actions__reload-ico"));
@@ -274,23 +280,23 @@ public class StudyManagerTest extends BaseDataCatalogTest {
         loginAndOpenStudy();
         openParticipantsTab();
 
-        List<WebElement> addedRows = driver.findElements(By.className("ac-list-item"));
+        List<WebElement> addedRows = driver.findElement(By.className("ac-study-participants-list"))
+                .findElements(By.className("ac-list-item"));
 
         WebElement participantRoleSelect = addedRows.stream()
                 .filter(row -> row.findElement(
-                        ByBuilder.byClassAndText("ac-link", "admin2 admin2 admin2")).isDisplayed())
+                        ByBuilder.link("admin2 admin2 admin2")).isDisplayed())
                 .findAny()
                 .get();
 
         String updatedRole = "Contributor";
-        WebElement roleTypeOption = participantRoleSelect.findElement(By.className("ac-select__options"))
-                .findElement(ByBuilder.text(updatedRole));
+        WebElement roleTypeOption = participantRoleSelect.findElement(ByBuilder.selectOption(updatedRole));
 
         Actions actions = new Actions(driver);
         actions.moveToElement(participantRoleSelect).click().build().perform();
         actions.moveToElement(roleTypeOption).click().build().perform();
 
-        waitFor(driver, ByBuilder.text("Contributor"));
+        waitFor(driver, ByBuilder.text(updatedRole));
     }
 
     private boolean isDisplayed(WebElement element, String className, String text) {
@@ -300,6 +306,7 @@ public class StudyManagerTest extends BaseDataCatalogTest {
 
     @Test
     public void test11RemoveParticipant() throws Exception {
+
         loginAndOpenStudy();
         openParticipantsTab();
         WebElement remove = driver.findElement(By.className("ac-study-participants-item__action-ico--remove"));
@@ -313,8 +320,9 @@ public class StudyManagerTest extends BaseDataCatalogTest {
                         ByBuilder.link("admin2 admin2 admin2")).isDisplayed())
                 .findAny().get();
 
-        waitFor(driver, ByBuilder.byClassAndText("ac-study-participants-item__status ac-study-participants-item__status--disabled", "disabled"));
-        Assert.assertTrue(participantRow.findElement(ByBuilder.byClassAndText("ac-study-participants-item__status ac-study-participants-item__status--disabled", "disabled")).isDisplayed());
+        By updatedStatus = ByBuilder.byClassAndText("ac-study-participants-item__status ac-study-participants-item__status--disabled", "disabled");
+        waitFor(driver, updatedStatus);
+        Assert.assertTrue(participantRow.findElement(updatedStatus).isDisplayed());
     }
 
     protected void inviteParticipant(String chosenName, int chosenUserId) throws Exception {
@@ -346,8 +354,7 @@ public class StudyManagerTest extends BaseDataCatalogTest {
         actions.moveToElement(participantRoleSelect).click().build().perform();
         actions.moveToElement(roleTypeOption).click().build().perform();
 
-
-        WebElement participantSelect = driver.findElement(ByBuilder.byClassAndText("Select-placeholder", "Search by name"));
+        WebElement participantSelect = driver.findElement(ByBuilder.inputWithAutoComplete("Search by name"));
         actions = new Actions(driver);
         actions.moveToElement(participantSelect).click().sendKeys("admin" + chosenUserId).build().perform();
 
@@ -378,7 +385,6 @@ public class StudyManagerTest extends BaseDataCatalogTest {
         webDriverWait = new WebDriverWait(driver, 3);
         webDriverWait.until((Predicate<WebDriver>) driver -> {
             return driver
-                    //  .findElements(By.xpath(".//*[contains(@class, 'ac-select-control__label') and text()='" + updatedRole + "']")).get(1)
                     .findElements(ByBuilder.byClassAndText("ac-select-control__label", updatedRole)).get(1)
                     .isDisplayed();
         });
@@ -511,13 +517,17 @@ public class StudyManagerTest extends BaseDataCatalogTest {
 
         createAnalysisFromStudy(ANALYSIS_NAME);
 
-        // return on study page -> back button
+        returnToStudyPage();
+
+        Assert.assertTrue(driver.findElement(By.className("ac-study-analyses-list"))
+                .findElement(ByBuilder.link(ANALYSIS_NAME)).isDisplayed());
+    }
+
+    protected static void returnToStudyPage(){
+
         WebElement backToStudyBtn = driver.findElement(By.className("ac-toolbar__back-icon"));
         backToStudyBtn.click();
-
         waitFor(driver, ByBuilder.toolbar(STUDY_NAME));
-        Assert.assertTrue(driver.findElement(By.className("ac-study-analyses-list"))
-                .findElement(ByBuilder.byClassAndText("ac-link", ANALYSIS_NAME)).isDisplayed());
     }
 
     @Test
@@ -544,35 +554,14 @@ public class StudyManagerTest extends BaseDataCatalogTest {
     public void test17AddDatasource() throws Exception {
 
         loginAndOpenStudy(STUDY_NAME);
-        openDatasourcesTab();
+        addDataSourceToStudy(NAME_DS, "2");
 
-        waitFor(driver, ByBuilder.byClassAndText("ac-list-item__content", "No attached data sources"));
-
-        WebElement datasourceAddBtm = driver.findElement(ByBuilder.byClassAndText("ac-list-item__content", "Add Data Source"));
-        datasourceAddBtm.click();
-        waitFor(driver, ByBuilder.byClassAndText("ac-tabs__item--selected", "Data catalog"));
-
-        WebElement dsSelect = driver.findElement(
-                ByBuilder.byClassAndText("Select-placeholder", "Filter by name"));
-        Actions actions = new Actions(driver);
-        actions.moveToElement(dsSelect).click().sendKeys("2").build().perform();
-
-        waitFor(driver, ByBuilder.byClassAndText("ac-label-data-source__name", NAME_DS));
-
-        WebElement dsOption = driver.findElement(
-                ByBuilder.byClassAndText("ac-label-data-source__name", NAME_DS));
-        actions.moveToElement(dsOption).click().build().perform();
-
-        WebElement addDSBtm = driver.findElement(ByBuilder.button("Add data source"));
-        addDSBtm.click();
-
-        waitFor(driver, ByBuilder.byClassAndText("ac-link", NAME_DS));
         List<WebElement> rows = driver.findElements(By.className("ac-list-item__content"));
 
 
         Assert.assertTrue(rows.stream()
                 .anyMatch(row ->
-                        row.findElement(ByBuilder.byClassAndText("ac-link", NAME_DS)).isDisplayed()));
+                        row.findElement(ByBuilder.link(NAME_DS)).isDisplayed()));
         Assert.assertTrue(rows.stream()
                 .anyMatch(row ->
                         row.findElement(ByBuilder.byClassAndText("ac-study-datasource-item__status ac-study-datasource-item__status--approved", "approved")).isDisplayed()));
@@ -589,13 +578,39 @@ public class StudyManagerTest extends BaseDataCatalogTest {
         Assert.assertTrue(result.findElement(By.className("ac-study-participants-item__name")).getText().equals("admin4 admin4 admin4"));
     }
 
+    protected static void addDataSourceToStudy(String dataSourceName, String searchKeys){
+
+        openDatasourcesTab();
+
+        waitFor(driver, ByBuilder.byClassAndText("ac-list-item__content", "No attached data sources"));
+
+        WebElement datasourceAddBtm = driver.findElement(ByBuilder.byClassAndText("ac-list-item__content", "Add Data Source"));
+        datasourceAddBtm.click();
+        waitFor(driver, ByBuilder.byClassAndText("ac-tabs__item--selected", "Data catalog"));
+
+        WebElement dsSelect = driver.findElement(ByBuilder.inputWithAutoComplete("Filter by name"));
+        Actions actions = new Actions(driver);
+        actions.moveToElement(dsSelect).click().sendKeys(searchKeys).build().perform();
+
+        waitFor(driver, ByBuilder.byClassAndText("ac-label-data-source__name", dataSourceName));
+
+        WebElement dsOption = driver.findElement(
+                ByBuilder.byClassAndText("ac-label-data-source__name", dataSourceName));
+        actions.moveToElement(dsOption).click().build().perform();
+
+        WebElement addDSBtm = driver.findElement(ByBuilder.button("Add data source"));
+        addDSBtm.click();
+
+        waitFor(driver, ByBuilder.link(dataSourceName));
+    }
+
     @Test
     public void test18RemoveDataSource() throws Exception {
 
         loginAndOpenStudy();
         openDatasourcesTab();
 
-        waitFor(driver, ByBuilder.byClassAndText("ac-link", NAME_DS));
+        waitFor(driver, ByBuilder.link(NAME_DS));
 
         WebElement deleteIco = driver.findElement(By.className("ac-study-datasource-item__action"));
         deleteIco.click();
@@ -605,8 +620,7 @@ public class StudyManagerTest extends BaseDataCatalogTest {
         waitFor(driver, By.className("ac-study-datasource-item__status--suspended"));
         List<WebElement> datasourceRows = driver.findElements(By.className("ac-list-item__content"));
 
-        Assert.assertTrue(datasourceRows.get(0)
-                .findElement(ByBuilder.byClassAndText("ac-link", NAME_DS)).isDisplayed());
+        Assert.assertTrue(datasourceRows.get(0).findElement(ByBuilder.link(NAME_DS)).isDisplayed());
         Assert.assertEquals("SUSPENDED", datasourceRows.get(0)
                 .findElement(By.className("ac-study-datasource-item__status--suspended")).getText());
 
@@ -637,28 +651,20 @@ public class StudyManagerTest extends BaseDataCatalogTest {
         final By studiesPage = ByBuilder.toolbar("studies");
         waitFor(driver, studiesPage);
 
-        Assert.assertEquals(0, driver.findElements(ByBuilder.tableRow(NAME_FOR_DELETED_STUDY)).size());
+        Assert.assertFalse(getOptionalStudyRow(NAME_FOR_DELETED_STUDY).isPresent());
     }
 
-    private void loginAndOpenStudy() {
+    protected static void loginAndOpenStudy() {
 
         loginAndOpenStudy(STUDY_NAME);
     }
 
-    private void loginAndOpenStudy(String name) {
+    private static void loginAndOpenStudy(String name) {
 
         loginPortal(ADMIN_LOGIN, ADMIN_PASSWORD);
-        By studyRow = ByBuilder.tableRow(name);
-        waitFor(driver, studyRow);
 
-        WebElement studyInTable = driver.findElement(studyRow);
+        WebElement studyInTable = getStudyRow(name);
         studyInTable.click();
-    }
-
-    private void acceptAlert() {
-
-        Alert alert = driver.switchTo().alert();
-        alert.accept();
     }
 
     private void openParticipantsTab() {
@@ -668,7 +674,7 @@ public class StudyManagerTest extends BaseDataCatalogTest {
         participantTab.click();
     }
 
-    private void openDatasourcesTab() {
+    private static void openDatasourcesTab() {
 
         WebElement datasourcesTab = driver.findElement(ByBuilder.tab("Data sources"));
         datasourcesTab.click();

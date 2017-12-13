@@ -13,6 +13,7 @@ import org.openqa.selenium.interactions.Actions;
 public abstract class BaseStudyTest extends BaseUserTest {
 
     protected static final String MODAL_TITLE_CREATE_ANALYSIS = "Create analysis";
+    protected static final String DEFAULT_ANALYSIS_TYPE = "Patient Level Prediction";
 
     protected static void createAdminStudy(StudyData studyData) {
 
@@ -62,12 +63,11 @@ public abstract class BaseStudyTest extends BaseUserTest {
                 .findElement(By.className("ac-study-analyses-list"))
                 .findElement(ByBuilder.byClassAndText("ac-list-item__content", "Add analysis"));
         addAnalysisBtn.click();
-        String analysisType = "Patient Level Prediction";
 
         WebElement modal = driver.findElement(ByBuilder.modal(MODAL_TITLE_CREATE_ANALYSIS));
         WebElement titleInput = modal.findElement(ByBuilder.input(PLACEHOLDER_ANALYSIS_TITLE));
         WebElement analysisTypeSelect = modal.findElement(ByBuilder.select(PLACEHOLDER_STUDY_TYPE));
-        WebElement analysisTypeOption = modal.findElement(ByBuilder.selectOption(analysisType));
+        WebElement analysisTypeOption = modal.findElement(ByBuilder.selectOption(DEFAULT_ANALYSIS_TYPE));
 
         WebElement createBtn = modal.findElement(ByBuilder.button("Create"));
 

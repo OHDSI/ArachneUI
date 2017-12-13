@@ -13,7 +13,6 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,14 +29,12 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.openqa.selenium.By;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.Network;
 import org.testcontainers.containers.wait.HttpWaitStrategy;
@@ -199,8 +196,12 @@ public class BaseTest {
 
         loginInput.sendKeys(username);
         passwordInput.sendKeys(password, Keys.ENTER);
+
+        waitFor(driver,  ByBuilder.toolbar("studies")); //todo
+        /*
         final By avatar = By.className("ac-avatar");
-        waitForPageLoad(driver, avatar);
+        waitFor(driver, avatar);
+        */
     }
 
     protected static void loginDataNode(String username, String password) {
@@ -285,5 +286,11 @@ public class BaseTest {
     protected static String getLinkFromMail() throws IOException {
 
         return getLinksFromMail().get(0);
+    }
+
+    protected void acceptAlert() {
+
+        Alert alert = driver.switchTo().alert();
+        alert.accept();
     }
 }

@@ -20,7 +20,7 @@ public class ByBuilder {
 
     public static By buttonIco(String icoName) {
 
-        return By.xpath(".//*[contains(@class,'ac-button')][i[text()='" + icoName + "']]");
+        return By.xpath(".//*[contains(@class,'ac-button') and text()='" + icoName + "']");
     }
 
     public static By input(String placeholderExpression) {
@@ -28,11 +28,11 @@ public class ByBuilder {
         return By.xpath(".//input[@placeholder='" + placeholderExpression + "']");
     }
 
-    public static By inputWithAutoComplete(String placholderExpression) {
+    public static By inputWithAutoComplete(String placeholderExpression) {
 
         final String selector = String.format(
                 ".//*[contains(@class, 'Select-placeholder') and contains(text(), '%s')]/following-sibling::div/input",
-                placholderExpression
+                placeholderExpression
         );
         return By.xpath(selector);
     }
@@ -136,12 +136,6 @@ public class ByBuilder {
         return By.xpath(selector);
     }
 
-
-    public static By tableRow(String placeholder) {
-
-        return By.xpath(".//*[contains(@class, 'ac-title-study__title') and text()='" + placeholder + "']");
-    }
-
     public static By tab(String title) {
 
         String selector = ".//*[contains(@class, 'ac-tabs__item')" + (title != null ? "and text()='" + title + "'" : "") + "]";
@@ -152,4 +146,5 @@ public class ByBuilder {
 
         return ByBuilder.byClassAndText("ac-study-status-option__label", status);
     }
+
 }
