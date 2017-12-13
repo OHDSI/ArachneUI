@@ -36,6 +36,7 @@ function Description({ isEditable, submissionId }) {
       {...classes()}
       title="Description"
       viewContent={<ViewContent />}
+      isEditable={isEditable}
       editContent={<EditContent submissionId={ submissionId } />}
     />
   );

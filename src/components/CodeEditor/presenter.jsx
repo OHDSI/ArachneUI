@@ -21,15 +21,14 @@
  */
 
 import React, { PropTypes } from 'react';
-import { Field } from 'redux-form';
+import Loadable from 'react-loadable';
 import BEMHelper from 'services/BemHelper';
-import { Button } from 'arachne-ui-components';
+import { Button, LoadingPanel } from 'arachne-ui-components';
+
 let CodeMirror = null;
-if (typeof window !== 'undefined' && typeof window.navigator !== 'undefined') {
-    CodeMirror = require('react-codemirror');
-    require('codemirror/mode/r/r');
-    require('codemirror/mode/sql/sql');
-}
+/* if (typeof window !== 'undefined' && typeof window.navigator !== 'undefined') {
+    
+} */
 
 require('./style.scss');
 
@@ -118,4 +117,16 @@ CodeEditor.propTypes = {
   title: PropTypes.string.isRequired,
 };
 
-export default CodeEditor;
+const LoadableCodeEditor = Loadable({
+  loader: () => new Promise((resolve) => {
+    require.ensure([], (require) => {
+      CodeMirror = require('react-codemirror');
+      require('codemirror/mode/r/r');
+      require('codemirror/mode/sql/sql');
+      resolve(CodeEditor);
+    });
+  }),
+  loading: LoadingPanel,
+});
+
+export default LoadableCodeEditor;

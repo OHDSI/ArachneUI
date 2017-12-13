@@ -23,7 +23,7 @@
 // @ts-check
 import { Component } from 'react';
 import actions from 'actions';
-import { get } from 'lodash';
+import get from 'lodash/get';
 import { Utils } from 'services/Utils';
 import { goBack } from 'react-router-redux';
 import presenter from './presenter';
@@ -48,11 +48,12 @@ export default class ViewEditStudyBuilder {
     ];
     const isStudyLoading = get(moduleState, 'study.isLoading');
     const isTypesLoading = get(moduleState, 'typeList.isLoading');
+    const isParticipantsLoading = get(moduleState, 'study.participants.isSaving');
 
     return {
       id: parseInt(ownProps.routeParams.studyId, 10),
       studyTitle: pageTitle.join(' | '),
-      isLoading: isStudyLoading || isTypesLoading,
+      isLoading: isStudyLoading || isTypesLoading || isParticipantsLoading,
       accessGranted: studyData !== null,
     };
   }

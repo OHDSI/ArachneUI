@@ -62,15 +62,17 @@ export class CodeItem extends Component {
     this.toggleExecutable = this.props.toggleExecutable;
     this.removable = this.props.removable;
     this.selectExecutable = this.props.selectExecutable;
+    this.isActionable = this.props.isActionable;
+    this.isLocked=this.props.isLocked;
 
     const mods = {
       hover: true,
-      actionable: this.isEditable,
+      actionable: this.isActionable,
     };
 
     const actions = [];
 
-    if (this.isEditable && this.code.isImported === true) {
+    if (this.props.isActionable && this.code.isImported === true) {
       actions.push(
         <span
           {...this.classes('action')}
@@ -127,7 +129,9 @@ export class ActionsLine extends Component {
         {...this.submitClasses()}
         mods={['success']}
         label="Submit"
-        onClick={this.openSubmitModal} />
+        onClick={this.openSubmitModal}
+        disabled={!this.props.canSubmit}
+      />
     );
     const add = (
       <Button
@@ -190,7 +194,9 @@ export default class ListCode extends Component {
     return this.codeList.map((code, key) =>
       <CodeItem
         code={code}
-        isEditable={!this.isLocked}
+        isEditable={this.isEditable}
+        isActionable={this.canAddFiles && this.canDeleteFiles && !this.isLocked}
+        isLocked={this.isLocked}
         reimportCode={this.reimportCode}
         removeCode={this.removeCode}
         key={key}
@@ -201,9 +207,10 @@ export default class ListCode extends Component {
 
   getActions() {
     return (<ActionsLine
-      canAddFiles={!this.isLocked}
+      canAddFiles={this.canAddFiles && !this.isLocked}
       openCreateCodeModal={this.openCreateCodeModal}
       openSubmitModal={this.openSubmitModal}
+      canSubmit={this.canSubmit}
     />);
   }
 
@@ -218,6 +225,10 @@ export default class ListCode extends Component {
     this.removeCode = this.props.removeCode;
     this.isLocked = this.props.isLocked;
     this.canDeleteFiles = this.props.canDeleteFiles;
+    this.canSubmit = this.props.canSubmit;
+    this.canAddFiles = this.props.canAddFiles;
+    this.isEditable = this.props.isEditable;
+    this.canBeReimported = this.props.canBeReimported;
 
     return (
       <Panel

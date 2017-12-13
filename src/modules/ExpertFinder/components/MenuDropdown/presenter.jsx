@@ -40,7 +40,7 @@ function MenuDropdown(props) {
     >
       <DropdownTrigger {...classes('header')}>
         <div {...classes('user-pic')}>
-          <Avatar img={apiPaths.myUserpic(props.hash)} />
+          <Avatar img={apiPaths.myUserpic({ hash: props.hash })} />
         </div>
         <div {...classes('user-name')}>
           {props.firstName &&

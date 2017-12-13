@@ -40,6 +40,7 @@ class selectorsBuilder {
       type: rawStudy.type,
       status: rawStudy.status,
       endDate: rawStudy.endDate,
+      isPrivate: rawStudy.privacy,
     };
   }
 

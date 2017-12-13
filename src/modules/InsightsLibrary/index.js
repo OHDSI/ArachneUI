@@ -27,10 +27,15 @@ import { paths } from './const';
 export default {
   actions: () => ducks.actions,
   reducer: () => ducks.reducer,
-  routes: () => require('./routes').default(), // eslint-disable-line global-require,
+  routes: () => (location, cb) => {
+    require.ensure([], (require) => {
+      cb(null, require('./routes').default()); // eslint-disable-line global-require
+    });
+  },
   sidebarElement: {
     ico: imgs.sidebar.insightsLibrary,
     name: 'Insights Library',
     path: paths.insights(),
+    indexRedirect: '/insights',
   },
 };

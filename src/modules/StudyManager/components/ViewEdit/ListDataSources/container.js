@@ -43,6 +43,7 @@ export default class ListDataSourcesBuilder {
       dataSourceList: selectors.getDataSourceList(state),
       hasAttachPermissions: selectors.hasAttachPermissions(state),
       hasDeletePermissions: selectors.hasDeletePermissions(state),
+      hasEditStudyPermissions: selectors.hasEditStudyPermissions(state),
     };
   }
 

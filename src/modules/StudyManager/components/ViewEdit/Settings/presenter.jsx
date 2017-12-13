@@ -22,7 +22,7 @@
 
 // @ts-check
 import React, { Component } from 'react';
-import { Select, Panel } from 'arachne-ui-components';
+import { Select, Panel, Tabs } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
 import StudyStatus from 'modules/StudyManager/components/Status';
 
@@ -37,7 +37,8 @@ class StudySettings extends Component {
   }
 
   getHeader() {
-    const header = [      
+    const header = [
+      <span {...this.headerClasses('group')}>Permissions</span>,
       <span {...this.headerClasses({ element: 'group', modifiers: { wide: !this.props.isEditable } })}>Type of Study</span>,
       <span {...this.headerClasses('group')}>Status</span>,
     ];
@@ -47,6 +48,20 @@ class StudySettings extends Component {
 
   getSettings() {
     return [
+      <li {...this.classes({ element: 'group', modifiers: { uneditable: !this.props.isEditable } })}>
+        {this.props.isEditable ?
+          <Tabs
+            placeholder="Privacy"
+            value={this.props.privacySelected.value}
+            options={this.props.privacyOptions}
+            onChange={this.props.setPrivacy}
+          />
+          :
+          <span {...this.classes('label')}>
+            {this.props.privacySelected.label}
+          </span>
+        }
+      </li>,
       <li {...this.classes({ element: 'group', modifiers: { wide: !this.props.isEditable, uneditable: !this.props.isEditable } })}>
         {this.props.isEditable ?
           <Select

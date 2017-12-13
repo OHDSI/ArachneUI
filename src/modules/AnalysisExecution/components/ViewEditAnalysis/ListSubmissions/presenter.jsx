@@ -128,7 +128,7 @@ function CellActions(props) {
   );
 }
 
-function CellInsight({ hasInsight, isDisabled, name, showCreateInsight, submissionId }) {
+function CellInsight({ hasInsight, isDisabled, name, showCreateInsight, submissionId, isEditable }) {
   const classes = new BEMHelper('submissions-insight-ico');
   const tooltipClass = new BEMHelper('tooltip');
 
@@ -158,7 +158,7 @@ function CellInsight({ hasInsight, isDisabled, name, showCreateInsight, submissi
       </Link>
     );
   }
-  else {
+  else if (isEditable) {
     return (
       <Link onClick={() => showCreateInsight(submissionId)}>
         <i 
@@ -168,6 +168,17 @@ function CellInsight({ hasInsight, isDisabled, name, showCreateInsight, submissi
         ></i>
       </Link>
     );
+  } else {
+    return (
+      <i
+      {...classes({
+        modifiers: ['disabled'],
+        extra: tooltipClass().className,
+      })}
+      aria-label="You have no permissions to edit this analysis"
+      data-tootik-conf="left"
+    ></i>
+    )
   }
 }
 
@@ -237,6 +248,7 @@ function SubmissionLine(props) {
     showUploadForm,
     showRejectionModal,
     analysisId,
+    isEditable,
   } = props;
 
   return (
@@ -280,6 +292,7 @@ function SubmissionLine(props) {
       <div {...classes('cell', 'insight')}>
         <CellInsight
           isDisabled={submission.actions[submissionActionTypes.PUBLISH].result !== true}
+          isEditable={isEditable}
           hasInsight={submission.hasInsight}
           name={get(submission, 'insight.name')}
           showCreateInsight={showCreateInsight}
@@ -303,6 +316,7 @@ function ListSubmissions(props) {
     showUploadForm,
     showRejectionModal,
     analysisId,
+    isEditable,
   } = props;
 
   const groupCount = submissionGroupList.length;
@@ -329,6 +343,7 @@ function ListSubmissions(props) {
             showUploadForm={showUploadForm}
             showRejectionModal={showRejectionModal}
             analysisId={analysisId}
+            isEditable={isEditable}
           />
         )}
         </div>

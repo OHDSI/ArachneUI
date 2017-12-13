@@ -35,6 +35,7 @@ function InsightToolbar(props) {
     backUrl,
     breadcrumbList,
     editTitle,
+    isEditable,
   } = props;
 
   return (
@@ -42,8 +43,9 @@ function InsightToolbar(props) {
       caption={insightTitle}
       breadcrumbList={breadcrumbList}
       backUrl={backUrl}
-      onEdit={editTitle}>
-      <Actions/>
+      onEdit={editTitle}
+      isEditable={isEditable}>
+      <Actions isEditable={isEditable} />
     </Toolbar>
   );
 }

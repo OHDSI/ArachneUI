@@ -39,7 +39,7 @@ function parseSolrValue(value, { type }) {
       }
       break;
     }
-    case fieldTypes.enum:
+    case fieldTypes.enum: case fieldTypes.enumMulti:
       parsedValue = value
         .replace(/[\(,\)]/g, '') // eslint-disable-line no-useless-escape
         .split(' ');

@@ -20,6 +20,6 @@
  *
  */
 
-import Description from './container';
+import Description from './presenter';
 
 export default Description;
