@@ -123,11 +123,27 @@ function getOptions(field) {
   }
 }
 
+function addAnyOption(field) {
+  if (field.type === types.enum && !field.isMulti) {
+    return {
+      ...field,
+      options: [
+        {
+          label: 'Any',
+          value: '',
+        },
+        ...field.options,
+      ],
+    };
+  }
+  return field;
+}
+
 function FacetedFilters({ clear, fields, handleSubmit }) {
   return (
     <FacetedSearch
       doSubmit={() => {}}
-      dynamicFields={fields}
+      dynamicFields={fields.map(addAnyOption)}
       fullTextSearchEnabled
       sortingEnabled={false}
       showRefineSearch
