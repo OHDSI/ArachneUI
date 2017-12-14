@@ -24,11 +24,7 @@ import React, { Component, PropTypes } from 'react';
 import { get, ContainerBuilder } from 'services/Utils';
 import { refreshTime } from 'modules/AnalysisExecution/const';
 import actions from 'actions/index';
-import SelectorsBuilder from 'components/Banners/Invite/selectors';
-import { goBack } from 'react-router-redux';
 import Presenter from './presenter';
-
-const selectors = (new SelectorsBuilder()).build();
 
 class ViewEditAnalysis extends Component {
   get propTypes() {
@@ -39,7 +35,6 @@ class ViewEditAnalysis extends Component {
       loadTypeList: PropTypes.func,
       studyId: PropTypes.number,
       unloadAnalysis: PropTypes.func.isRequired,
-      loadSudyInvitations: PropTypes.func,
     };
   }
 
@@ -95,7 +90,6 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
 
   getMapDispatchToProps() {
     return {
-      goBack,
       loadAnalysis: actions.analysisExecution.analysis.find,
       loadTypeList: actions.analysisExecution.analysisTypes.query,
       unloadAnalysis: actions.analysisExecution.analysis.unload,

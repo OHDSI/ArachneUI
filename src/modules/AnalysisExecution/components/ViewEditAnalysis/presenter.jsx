@@ -25,7 +25,6 @@ import React, { Component, PropTypes } from 'react';
 import {
   PageContent,
   LoadingPanel,
-  Link,
 } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
 import InviteBanner from 'components/Banners/Invite';
@@ -78,7 +77,7 @@ export default class ViewEditAnalysis extends Component {
   render() {
     this.studyUrl = this.props.studyUrl;
     const isLoading = this.props.isLoading;
-    this.pageTitle = this.props.pageTitle;    
+    this.pageTitle = this.props.pageTitle;
 
     return (
       <PageContent title={this.pageTitle}>
