@@ -42,7 +42,6 @@ class ViewEditAnalysis extends Component {
     // TODO: only if window is in focus
     this.refreshInterval = setInterval(() => {
       this.isPolledData = true;
-      const studyId = this.props.studyId;
       this.props.loadAnalysis({ id: this.props.id });
     }, refreshTime);
   }
@@ -79,7 +78,7 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
       get(analysisData, 'study.title', 'Study'),
       'Arachne',
     ];
-    const studyId = get(moduleState, 'analysis.data.result.study.id', -1);
+    const studyId = get(analysisData, 'study.id', -1);
 
     return {
       id: parseInt(ownProps.routeParams.analysisId, 10),
