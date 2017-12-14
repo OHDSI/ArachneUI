@@ -34,7 +34,7 @@ import Details from './Details';
 
 require('./style.scss');
 
-function ViewEditInsight({ isLoading, submissionId, pageTitle, studyId }) {
+function ViewEditInsight({ isLoading, submissionId, pageTitle, studyId, isEditable }) {
   const classes = new BEMHelper('insight-view');
 
   return (
@@ -46,7 +46,7 @@ function ViewEditInsight({ isLoading, submissionId, pageTitle, studyId }) {
           studyId={studyId}
           module={modules.insight}
         >
-          <Toolbar />
+          <Toolbar isEditable={isEditable}/>
           <div {...classes('content')}>
             <div className="row">
               <div {...classes('block', null, 'col-xs-12')}>
@@ -55,7 +55,7 @@ function ViewEditInsight({ isLoading, submissionId, pageTitle, studyId }) {
             </div>
             <div className="row">
               <div {...classes('block', null, 'col-xs-12')}>
-                <Description submissionId={ submissionId } />
+                <Description submissionId={submissionId} isEditable={isEditable} />
               </div>
             </div>
             <div className="row">
@@ -63,7 +63,7 @@ function ViewEditInsight({ isLoading, submissionId, pageTitle, studyId }) {
                 <Sections />
               </div>
               <div {...classes('block', null, 'col-xs-12 col-md-6')}>
-                <Comments submissionId={ submissionId } />
+                <Comments submissionId={submissionId} isEditable={isEditable}/>
               </div>
             </div>
           </div>

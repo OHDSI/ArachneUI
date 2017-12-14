@@ -110,7 +110,7 @@ function pdf({ classes, container, data, setContainer, onPDFLoaded, pageIndex, p
   );
 }
 
-const lazyPdf = Loadable({
+const LazyPDF = Loadable({
   loader: () => new Promise((resolve) => {
     require.ensure([], (require) => {
       ReactPDF = require('react-pdf/build/entry.webpack');
@@ -136,7 +136,9 @@ function MediaViewer({ language, onPDFLoaded, pageIndex, path, data, mimeType, s
   if (mimeType === MimeTypes.image) {
     element = image({ classes, container, setContainer, data });
   } else if (mimeType === MimeTypes.pdf) {
-    element = lazyPdf({ classes, container, data, setContainer, totalPages, path, pageIndex, onPDFLoaded });
+    element = (
+      <LazyPDF { ...{ classes, container, data, setContainer, totalPages, path, pageIndex, onPDFLoaded } } />
+    );
   } else if (isText(mimeType)) {
     element = (
       <CodeViewer

@@ -62,15 +62,17 @@ export class CodeItem extends Component {
     this.toggleExecutable = this.props.toggleExecutable;
     this.removable = this.props.removable;
     this.selectExecutable = this.props.selectExecutable;
+    this.isLocked = this.props.isLocked;
+    this.canBeReimported = this.props.canBeReimported;
 
     const mods = {
       hover: true,
-      actionable: this.isEditable,
+      actionable: true,
     };
 
     const actions = [];
 
-    if (this.isEditable && this.code.isImported === true) {
+    if (this.canBeReimported && this.code.isImported === true) {
       actions.push(
         <span
           {...this.classes('action')}
@@ -83,7 +85,7 @@ export class CodeItem extends Component {
       );
     }
 
-    if (this.removable) {
+    if (!this.isLocked && this.removable) {
       actions.push(
         <span
           {...this.classes('action')}
@@ -192,7 +194,9 @@ export default class ListCode extends Component {
     return this.codeList.map((code, key) =>
       <CodeItem
         code={code}
-        isEditable={this.canAddFiles && this.canDeleteFiles && !this.isLocked}
+        isEditable={this.isEditable}
+        canBeReimported={this.canAddFiles && this.canDeleteFiles && !this.isLocked}
+        isLocked={this.isLocked}
         reimportCode={this.reimportCode}
         removeCode={this.removeCode}
         key={key}
@@ -223,6 +227,8 @@ export default class ListCode extends Component {
     this.canDeleteFiles = this.props.canDeleteFiles;
     this.canSubmit = this.props.canSubmit;
     this.canAddFiles = this.props.canAddFiles;
+    this.isEditable = this.props.isEditable;
+    this.canBeReimported = this.props.canBeReimported;
 
     return (
       <Panel

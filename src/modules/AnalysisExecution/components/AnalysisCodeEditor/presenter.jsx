@@ -49,6 +49,7 @@ function AnalysisCode({
   studyId,
   analysisId,
   analysisCodeId,
+  isEditable,
 }) {
   const classes = new BEMHelper('analysis-code');
 
@@ -62,7 +63,7 @@ function AnalysisCode({
         >
           <Toolbar />
           <div {...classes('content')}>
-            {isTextFile ? <Editor language={language} /> :
+            {isTextFile && isEditable ? <Editor language={language} /> :
             <MediaViewer
               language={language}
               mimeType={mimeType}

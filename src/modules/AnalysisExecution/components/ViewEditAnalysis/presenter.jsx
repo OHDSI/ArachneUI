@@ -76,8 +76,12 @@ export default class ViewEditAnalysis extends Component {
 
   render() {
     this.studyUrl = this.props.studyUrl;
-    const isLoading = this.props.isLoading;
     this.pageTitle = this.props.pageTitle;
+
+    const {
+      isLoading,
+      isEditable
+    } = this.props;
 
     return (
       <PageContent title={this.pageTitle}>
@@ -88,20 +92,20 @@ export default class ViewEditAnalysis extends Component {
             studyId={this.props.studyId}
             module={modules.analysis}
           >
-            <Toolbar />
+            <Toolbar isEditable={isEditable} />
             <div {...this.classes('content')}>
               <div className="row">
                 <div className="col-xs-12 col-md-6">
-                  <Settings />
-                  <Description />
+                  <Settings isEditable={isEditable} />
+                  <Description isEditable={isEditable} />
                 </div>
                 <div className="col-xs-12 col-md-6">
-                  <ListCode />
+                  <ListCode isEditable={isEditable} />
                 </div>
               </div>
               <div className="row">
                 <div className="col-xs-12">
-                  <ListSubmissions />
+                  <ListSubmissions isEditable={isEditable} />
                 </div>
               </div>
             </div>

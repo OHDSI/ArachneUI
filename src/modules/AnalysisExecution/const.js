@@ -73,6 +73,7 @@ function importEntityPathByType(type){
     case 'COHORT_CHARACTERIZATION': return 'cohorts';
     case 'ESTIMATION': return 'estimations';
     case 'PREDICTION': return 'predictions';
+    case 'INCIDENCE': return 'incidence-rates';
     default: return '';
   }
 }
@@ -118,6 +119,13 @@ const apiPaths = {
   submissionCodeFiles: ({ submissionId }) => `/api/v1/analysis-management/submissions/${submissionId}/results`,
   submissionGroupCodeFiles: ({ submissionGroupId }) =>
     `/api/v1/analysis-management/submission-groups/${submissionGroupId}/files`,
+};
+
+const analysisPermissions = {
+  editAnalysis: 'EDIT_ANALYSIS',
+  createSubmission :'CREATE_SUBMISSION',
+  deleteAnalysisFiles :'DELETE_ANALYSIS_FILES',
+  uploadAnalysisFiles :'UPLOAD_ANALYSIS_FILES',
 };
 
 const statusesForPublishing = ['PENDING', 'NOT APPROVED', 'IN PROGRESS'];
@@ -171,18 +179,20 @@ const submissionActionTypes = keyMirror({
   PUBLISH: null,
 });
 
-const importableAnalysisTypes = ['COHORT', 'ESTIMATION', 'PREDICTION', 'COHORT_CHARACTERIZATION'];
+const importableAnalysisTypes = ['COHORT', 'ESTIMATION', 'PREDICTION', 'COHORT_CHARACTERIZATION', 'INCIDENCE'];
 const analysisTypeNames = {
   COHORT: 'cohort',
   ESTIMATION: 'PLE analysis',
   PREDICTION: 'PLP analysis',
   COHORT_CHARACTERIZATION: 'cohort',
+  INCIDENCE: 'incidence rates',
 };
 const pluralAnalysisTypeNames = {
   COHORT: 'cohorts',
   ESTIMATION: 'PLE analyses',
   PREDICTION: 'PLP analyses',
   COHORT_CHARACTERIZATION: 'cohorts',
+  INCIDENCE: 'incidence rates',
 };
 function nameAnalysisType({ analysisType, capitalize = false, plural = false }) {
   const typeNames = plural ? pluralAnalysisTypeNames : analysisTypeNames;
@@ -208,7 +218,7 @@ const fileSources = keyMirror({
   SUBMISSION: null,
 });
 
-const maxFilesCount = 1000;
+const maxFilesCount = 10000;
 
 export {
   apiPaths,
@@ -226,4 +236,5 @@ export {
   docTypes,
   fileSources,
   maxFilesCount,
+  analysisPermissions,
 };

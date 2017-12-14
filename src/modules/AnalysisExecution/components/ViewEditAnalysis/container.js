@@ -22,7 +22,7 @@
 
 import React, { Component, PropTypes } from 'react';
 import { get, ContainerBuilder } from 'services/Utils';
-import { refreshTime } from 'modules/AnalysisExecution/const';
+import { refreshTime, analysisPermissions } from 'modules/AnalysisExecution/const';
 import actions from 'actions/index';
 import Presenter from './presenter';
 
@@ -72,10 +72,11 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
   }
 
   mapStateToProps(state, ownProps) {
-    const moduleState = state.analysisExecution;
+    const analysis = get(state, 'analysisExecution.analysis');
+    const analysisData = get(analysis, 'data.result');
     const pageTitle = [
-      get(moduleState, 'analysis.data.result.title', 'Analysis'),
-      get(state, 'analysisExecution.analysis.data.result.study.title', 'Study'),
+      get(analysisData, 'title', 'Analysis'),
+      get(analysisData, 'study.title', 'Study'),
       'Arachne',
     ];
     const studyId = get(moduleState, 'analysis.data.result.study.id', -1);
@@ -83,8 +84,9 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
     return {
       id: parseInt(ownProps.routeParams.analysisId, 10),
       studyId,
-      isLoading: get(moduleState, 'analysis.isLoading', false),
+      isLoading: get(analysis, 'isLoading', false),
       pageTitle: pageTitle.join(' | '),
+      isEditable: get(analysisData, `permissions[${analysisPermissions.editAnalysis}]`, false),
     };
   }
 
