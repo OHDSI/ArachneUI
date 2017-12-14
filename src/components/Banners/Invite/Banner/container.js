@@ -21,7 +21,7 @@
  */
 
 import { ContainerBuilder } from 'services/Utils';
-import { modal } from 'const/banner';
+import { modal } from 'modules/Portal/const';
 import { ModalUtils } from 'arachne-ui-components';
 import Banner from './presenter';
 
@@ -37,7 +37,23 @@ export default class BannerBuilder extends ContainerBuilder {
 
   getMapDispatchToProps() {
     return {
-      showDeclineModal: () => ModalUtils.actions.toggle(modal.declineInvitation, true),
+      showDeclineModal: invite => ModalUtils.actions.toggle(
+        modal.rejectInvitation,
+        true,
+        {
+          invitationId: invite.id,
+          invitationType: invite.type,
+        }
+      ),
+    };
+  }
+
+  mergeProps(stateProps, dispatchProps, ownProps) {
+    return {
+      ...ownProps,
+      ...stateProps,
+      ...dispatchProps,
+      showDeclineModal: () => dispatchProps.showDeclineModal(ownProps.invitation),
     };
   }
 }

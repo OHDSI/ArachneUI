@@ -26,7 +26,7 @@ import {
 } from 'const/activity';
 import { paths } from 'modules/StudyManager/const';
 import BEMHelper from 'services/BemHelper';
-import DeclineModal from 'components/Banners/Invite/DeclineModal';
+import DeclineModal from 'modules/Portal/components/InvitationList/ModalRejectInvitation';
 
 import './style.scss';
 

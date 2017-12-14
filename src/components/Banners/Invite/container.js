@@ -95,15 +95,7 @@ export default class InviteBannerBuilder extends ContainerBuilder {
         .then(ownProps.onAction)
         .then(() => dispatchProps.loadSudyInvitations({ studyId: ownProps.studyId }));
       },
-      onDecline: ({ reason }) => {
-        return dispatchProps.rejectInvitation({
-          id: stateProps.invitation.id,
-          type: stateProps.invitation.type,
-          comment: reason,
-        })
-        .then(ownProps.onAction)
-        .catch(() => {});
-      },
+      onDecline: ownProps.onAction,
     };
   }
 
