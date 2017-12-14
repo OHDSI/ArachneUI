@@ -20,17 +20,24 @@
  *
  */
 
-import React, { Component } from 'react';
+import { Component, PropTypes } from 'react';
 import actions from 'actions';
 import { ContainerBuilder, get } from 'services/Utils';
 import { goBack } from 'react-router-redux';
-import { modules } from 'const/banner';
 import SelectorsBuilder from './selectors';
 import presenter from './presenter';
 
 const selectors = (new SelectorsBuilder()).build();
 
 class InviteBanner extends Component {
+  static get propTypes() {
+    return {
+      studyId: PropTypes.number.isRequired,
+      className: PropTypes.string,
+      onBannerActed: PropTypes.func.isRequired,
+    };
+  }
+
   componentWillMount() {
     if (this.props.studyId !== -1) {
       // in case of studyManager module, to prevent double request for study
@@ -40,9 +47,7 @@ class InviteBanner extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.studyId !== nextProps.studyId && nextProps.studyId !== -1) {
-      if (nextProps.module !== modules.study) {
-        nextProps.loadStudy(nextProps.studyId);
-      }
+      nextProps.loadStudy(nextProps.studyId);
       nextProps.loadSudyInvitations({ studyId: nextProps.studyId });
     }
   }
@@ -74,8 +79,6 @@ export default class InviteBannerBuilder extends ContainerBuilder {
       acceptInvitation: actions.portal.invitation.acceptInvitation,
       rejectInvitation: actions.portal.invitation.rejectInvitation,
       loadStudy: actions.studyManager.study.find,
-      loadAnalysis: actions.analysisExecution.analysis.find,
-      loadInsight: actions.analysisExecution.insight.find,
     };
   }
 
@@ -85,21 +88,11 @@ export default class InviteBannerBuilder extends ContainerBuilder {
       ...stateProps,
       ...dispatchProps,
       onAccept: () => {
-        // TODO use ownProps
         dispatchProps.acceptInvitation({
           id: stateProps.invitation.id,
           type: stateProps.invitation.type,
         })
-        .then(() => {
-          switch (ownProps.module) {
-            case modules.study:
-              return dispatchProps.loadStudy(ownProps.studyId);
-            case modules.analysis:
-              return dispatchProps.loadAnalysis({ id: ownProps.id });
-            case modules.insight:
-              return dispatchProps.loadInsight({ submissionId: ownProps.id });
-          }
-        })
+        .then(ownProps.onAction)
         .then(() => dispatchProps.loadSudyInvitations({ studyId: ownProps.studyId }));
       },
       onDecline: ({ reason }) => {
@@ -108,7 +101,7 @@ export default class InviteBannerBuilder extends ContainerBuilder {
           type: stateProps.invitation.type,
           comment: reason,
         })
-        .then(() => dispatchProps.loadStudy(ownProps.studyId))
+        .then(ownProps.onAction)
         .catch(() => {});
       },
     };

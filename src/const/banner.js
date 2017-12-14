@@ -28,11 +28,3 @@ export const modal = keyMirror({
 export const form = keyMirror({
   declineInvitation: null,
 });
-
-export const modules = keyMirror({
-  study: null,
-  analysis: null,
-  insight: null,
-  paper: null,
-  codeFile: null,
-});

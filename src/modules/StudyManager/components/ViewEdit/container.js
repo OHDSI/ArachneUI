@@ -97,6 +97,15 @@ export default class ViewEditStudyBuilder extends ContainerBuilder {
     };
   }
 
+  mergeProps(stateProps, dispatchProps, ownProps) {
+    return {
+      ...ownProps,
+      ...stateProps,
+      ...dispatchProps,
+      onBannerActed: () => dispatchProps.loadStudy(stateProps.id),
+    };
+  }
+
   getFetchers({ params }) {
     const studyId = params.studyId;
     return {

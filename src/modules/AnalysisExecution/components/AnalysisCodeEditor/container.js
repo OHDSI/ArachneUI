@@ -113,7 +113,24 @@ const mapDispatchToProps = {
   loadBreadcrumbs: actions.analysisExecution.breadcrumbs.query,
 };
 
-const connectedAnalysisCode = connect(mapStateToProps, mapDispatchToProps)(AnalysisCode);
+function mergeProps(stateProps, dispatchProps, ownProps) {
+  return {
+    ...ownProps,
+    ...stateProps,
+    ...dispatchProps,
+    onBannerActed: () => dispatchProps.loadAnalysisCode({
+      analysisId: stateProps.analysisId,
+      analysisCodeId: stateProps.analysisCodeId,
+      withContent: !isMimeTypeFat(stateProps.mimeType),
+    }),
+  };
+}
+
+const connectedAnalysisCode = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+  mergeProps
+)(AnalysisCode);
 
 export default asyncConnect([{
   promise: ({ params, store: { dispatch } }) => {

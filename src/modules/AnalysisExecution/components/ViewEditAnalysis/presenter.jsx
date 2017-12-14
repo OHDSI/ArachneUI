@@ -44,7 +44,6 @@ import ModalRejectSubmission from './ModalRejectSubmission';
 
 
 import './style.scss';
-import { modules } from 'const/banner';
 
 /** @augments{ Component<any, any> } */
 export default class ViewEditAnalysis extends Component {
@@ -88,9 +87,8 @@ export default class ViewEditAnalysis extends Component {
         <div {...this.classes()}>
           <InviteBanner
             {...this.classes('container')}
-            id={this.props.id}
             studyId={this.props.studyId}
-            module={modules.analysis}
+            onAction={this.props.onBannerActed}
           >
             <Toolbar isEditable={isEditable} />
             <div {...this.classes('content')}>

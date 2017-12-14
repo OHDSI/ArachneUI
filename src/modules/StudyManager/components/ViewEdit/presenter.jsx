@@ -25,7 +25,6 @@ import BEMHelper from 'services/BemHelper';
 
 import { LoadingPanel, PageContent } from 'arachne-ui-components';
 import InviteBanner from 'components/Banners/Invite';
-import { modules } from 'const/banner';
 
 import DateInterval from './DateInterval';
 import Toolbar from './Toolbar';
@@ -48,6 +47,7 @@ function ViewEditStudy(props) {
     studyTitle,
     isLoading,
     id,
+    onBannerActed,
   } = props;
   const classes = new BEMHelper('study-manager-view');
 
@@ -57,7 +57,7 @@ function ViewEditStudy(props) {
         <InviteBanner
           {...classes('container')}
           studyId={id}
-          module={modules.study}
+          onAction={onBannerActed}
         >
           <Toolbar studyId={id} />
           <div {...classes('content')}>

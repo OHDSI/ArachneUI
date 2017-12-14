@@ -31,7 +31,6 @@ import Toolbar from './Toolbar/index';
 import Editor from './Editor/index';
 import ConfirmDialog from './ConfirmDialog';
 import ModalRequestUnlock from './ModalRequestUnlock';
-import { modules } from 'const/banner';
 
 
 require('./style.scss');
@@ -50,6 +49,7 @@ function AnalysisCode({
   analysisId,
   analysisCodeId,
   isEditable,
+  onBannerActed,
 }) {
   const classes = new BEMHelper('analysis-code');
 
@@ -59,7 +59,7 @@ function AnalysisCode({
         <InviteBanner
           id={analysisCodeId}
           studyId={studyId}
-          module={modules.codeFile}
+          onAction={onBannerActed}
         >
           <Toolbar />
           <div {...classes('content')}>

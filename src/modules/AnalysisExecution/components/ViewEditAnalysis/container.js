@@ -98,6 +98,15 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
     };
   }
 
+  mergeProps(stateProps, dispatchProps, ownProps) {
+    return {
+      ...ownProps,
+      ...stateProps,
+      ...dispatchProps,
+      onBannerActed: () => dispatchProps.loadAnalysis({ id: stateProps.id }),
+    };
+  }
+
   getFetchers({ params, dispatch, getState }) {
     const componentActions = this.getMapDispatchToProps();
     return {

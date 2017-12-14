@@ -24,7 +24,6 @@ import React from 'react';
 import BEMHelper from 'services/BemHelper';
 import { LoadingPanel, PageContent } from 'arachne-ui-components';
 import InviteBanner from 'components/Banners/Invite';
-import { modules } from 'const/banner';
 import Toolbar from './Toolbar';
 import Description from './Description';
 import Sections from './Sections';
@@ -34,7 +33,7 @@ import Details from './Details';
 
 require('./style.scss');
 
-function ViewEditInsight({ isLoading, submissionId, pageTitle, studyId, isEditable }) {
+function ViewEditInsight({ isLoading, submissionId, pageTitle, studyId, isEditable, onBannerActed }) {
   const classes = new BEMHelper('insight-view');
 
   return (
@@ -42,9 +41,8 @@ function ViewEditInsight({ isLoading, submissionId, pageTitle, studyId, isEditab
       <div {...classes()}>
         <InviteBanner
           {...classes('container')}
-          id={submissionId}
           studyId={studyId}
-          module={modules.insight}
+          onAction={onBannerActed}
         >
           <Toolbar isEditable={isEditable}/>
           <div {...classes('content')}>

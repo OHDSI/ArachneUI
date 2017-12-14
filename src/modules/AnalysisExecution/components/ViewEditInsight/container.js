@@ -84,6 +84,15 @@ export default class ViewEditInsightBuilder extends ContainerBuilder {
     };
   }
 
+  mergeProps(stateProps, dispatchProps, ownProps) {
+    return {
+      ...ownProps,
+      ...stateProps,
+      ...dispatchProps,
+      onBannerActed: () => dispatchProps.loadInsight({ submissionId: stateProps.submissionId }),
+    };
+  }
+
   getFetchers({ params }) {
     const submissionId = params.submissionId;
     const load = moduleActions.insight.find;
