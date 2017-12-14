@@ -23,6 +23,8 @@
 import React from 'react';
 import BEMHelper from 'services/BemHelper';
 import { LoadingPanel, PageContent } from 'arachne-ui-components';
+import InviteBanner from 'components/Banners/Invite';
+import { modules } from 'const/banner';
 import Toolbar from './Toolbar';
 import Description from './Description';
 import Sections from './Sections';
@@ -32,33 +34,40 @@ import Details from './Details';
 
 require('./style.scss');
 
-function ViewEditInsight({ isLoading, submissionId, pageTitle }) {
+function ViewEditInsight({ isLoading, submissionId, pageTitle, studyId }) {
   const classes = new BEMHelper('insight-view');
 
   return (
     <PageContent title={pageTitle}>
       <div {...classes()}>
-        <Toolbar />
-        <div {...classes('content')}>
-          <div className="row">
-            <div {...classes('block', null, 'col-xs-12')}>
-              <Details />
+        <InviteBanner
+          {...classes('container')}
+          id={submissionId}
+          studyId={studyId}
+          module={modules.insight}
+        >
+          <Toolbar />
+          <div {...classes('content')}>
+            <div className="row">
+              <div {...classes('block', null, 'col-xs-12')}>
+                <Details />
+              </div>
+            </div>
+            <div className="row">
+              <div {...classes('block', null, 'col-xs-12')}>
+                <Description submissionId={ submissionId } />
+              </div>
+            </div>
+            <div className="row">
+              <div {...classes('block', null, 'col-xs-12 col-md-6')}>
+                <Sections />
+              </div>
+              <div {...classes('block', null, 'col-xs-12 col-md-6')}>
+                <Comments submissionId={ submissionId } />
+              </div>
             </div>
           </div>
-          <div className="row">
-            <div {...classes('block', null, 'col-xs-12')}>
-              <Description submissionId={ submissionId } />
-            </div>
-          </div>
-          <div className="row">
-            <div {...classes('block', null, 'col-xs-12 col-md-6')}>
-              <Sections />
-            </div>
-            <div {...classes('block', null, 'col-xs-12 col-md-6')}>
-              <Comments submissionId={ submissionId } />
-            </div>
-          </div>
-        </div>
+        </InviteBanner>
         <ModalEditTitle submissionId={ submissionId } />
         <LoadingPanel active={isLoading} />
       </div>

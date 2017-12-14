@@ -25,8 +25,10 @@ import React, { Component, PropTypes } from 'react';
 import {
   PageContent,
   LoadingPanel,
+  Link,
 } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
+import InviteBanner from 'components/Banners/Invite';
 import Toolbar from './Toolbar/index';
 import Settings from './Settings/index';
 import Description from './Description/index';
@@ -43,6 +45,7 @@ import ModalRejectSubmission from './ModalRejectSubmission';
 
 
 import './style.scss';
+import { modules } from 'const/banner';
 
 /** @augments{ Component<any, any> } */
 export default class ViewEditAnalysis extends Component {
@@ -75,28 +78,35 @@ export default class ViewEditAnalysis extends Component {
   render() {
     this.studyUrl = this.props.studyUrl;
     const isLoading = this.props.isLoading;
-    this.pageTitle = this.props.pageTitle;
+    this.pageTitle = this.props.pageTitle;    
 
     return (
       <PageContent title={this.pageTitle}>
         <div {...this.classes()}>
-          <Toolbar />
-          <div {...this.classes('content')}>
-            <div className="row">
-              <div className="col-xs-12 col-md-6">
-                <Settings />
-                <Description />
+          <InviteBanner
+            {...this.classes('container')}
+            id={this.props.id}
+            studyId={this.props.studyId}
+            module={modules.analysis}
+          >
+            <Toolbar />
+            <div {...this.classes('content')}>
+              <div className="row">
+                <div className="col-xs-12 col-md-6">
+                  <Settings />
+                  <Description />
+                </div>
+                <div className="col-xs-12 col-md-6">
+                  <ListCode />
+                </div>
               </div>
-              <div className="col-xs-12 col-md-6">
-                <ListCode />
+              <div className="row">
+                <div className="col-xs-12">
+                  <ListSubmissions />
+                </div>
               </div>
             </div>
-            <div className="row">
-              <div className="col-xs-12">
-                <ListSubmissions />
-              </div>
-            </div>
-          </div>
+          </InviteBanner>
           {this.getModals()}
           <LoadingPanel active={isLoading} />
         </div>

@@ -21,8 +21,6 @@
  */
 
 import { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { asyncConnect } from 'redux-async-connect';
 import { get, ContainerBuilder } from 'services/Utils';
 import actions from 'actions';
 import presenter from './presenter';
@@ -72,6 +70,7 @@ export default class ViewEditInsightBuilder extends ContainerBuilder {
       submissionId: parseInt(ownProps.routeParams.submissionId, 10),
       insightTitle: get(moduleState, 'insight.data.result.name', ''),
       pageTitle: pageTitle.join(' | '),
+      studyId: get(insightData, 'analysis.study.id', -1),
     };
   }
 
@@ -89,7 +88,7 @@ export default class ViewEditInsightBuilder extends ContainerBuilder {
     return {
       loadInsight: load.bind(null, { submissionId }),
       unloadComments: moduleActions.insightComments.unload,
-      unloadFile: moduleActions.insightFile.unload
+      unloadFile: moduleActions.insightFile.unload,
     };
   }
 

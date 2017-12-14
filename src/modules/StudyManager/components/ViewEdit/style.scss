@@ -33,12 +33,6 @@
 			flex-direction: column;
 		}
 
-		&__sticky-banner {
-      position: fixed;
-      top: $header-height;
-      width: calc(100% - #{$sidebar-width});
-    }
-
     &__empty-state {
     	@include title();
     	align-items: center;

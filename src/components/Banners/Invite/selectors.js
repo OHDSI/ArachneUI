@@ -16,20 +16,34 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 13, 2016
+ * Created: July 13, 2017
  *
  */
 
-import { combineReducers } from 'redux';
-import ducks from './ducks';
+// @ts-check
+import { createSelector } from 'reselect';
+import { get } from 'services/Utils';
 
-export default {
-  actions: () => ducks.actions,
-  routes: () => (location, cb) => {
-    require.ensure([], (require) => {
-      console.warn('Analysis execution on enter');
-      cb(null, require('./routes').default()); // eslint-disable-line global-require
-    });
-  },
-  reducer: () => combineReducers(ducks.reducer),
-};
+export default class SelectorsBuilder {
+
+  getInvitations(state) {
+    return get(state, 'studyManager.studyInvitations.queryResult.result');
+  }
+
+  getPendingInvitation(invitations) {
+    return (invitations && invitations.length) ? invitations[0] : null;
+  }
+
+  buildSelectorForInvitation() {
+    return createSelector(
+      [this.getInvitations],
+      this.getPendingInvitation
+    );
+  }
+
+  build() {
+    return {
+      getInvitation: this.buildSelectorForInvitation(),
+    };
+  }
+}

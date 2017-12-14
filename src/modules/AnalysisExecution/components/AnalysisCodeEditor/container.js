@@ -75,6 +75,7 @@ function mapStateToProps(state, ownProps) {
   const createdAt = get(fileData, 'created');
   const language = detectLanguageByExtension(fileData);
   const isLoading = get(moduleState, 'analysisCode.isLoading');
+  const studyId = get(moduleState, 'analysis.data.result.study.id', -1);
 
   const pageTitle = [
     get(fileData, 'name', 'Code file'),
@@ -98,6 +99,7 @@ function mapStateToProps(state, ownProps) {
     name,
     createdAt,
     language,
+    studyId,
   };
 }
 

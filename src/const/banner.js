@@ -16,20 +16,23 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 13, 2016
+ * Created: December 13, 2017
  *
  */
+import keyMirror from 'keymirror';
 
-import { combineReducers } from 'redux';
-import ducks from './ducks';
+export const modal = keyMirror({
+  declineInvitation: null,
+});
 
-export default {
-  actions: () => ducks.actions,
-  routes: () => (location, cb) => {
-    require.ensure([], (require) => {
-      console.warn('Analysis execution on enter');
-      cb(null, require('./routes').default()); // eslint-disable-line global-require
-    });
-  },
-  reducer: () => combineReducers(ducks.reducer),
-};
+export const form = keyMirror({
+  declineInvitation: null,
+});
+
+export const modules = keyMirror({
+  study: null,
+  analysis: null,
+  insight: null,
+  paper: null,
+  codeFile: null,
+});

@@ -25,11 +25,13 @@ import React from 'react';
 import { PageContent, LoadingPanel } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
 import MediaViewer from 'components/MediaViewer';
+import InviteBanner from 'components/Banners/Invite';
 
 import Toolbar from './Toolbar/index';
 import Editor from './Editor/index';
 import ConfirmDialog from './ConfirmDialog';
 import ModalRequestUnlock from './ModalRequestUnlock';
+import { modules } from 'const/banner';
 
 
 require('./style.scss');
@@ -44,26 +46,35 @@ function AnalysisCode({
   title,
   createdAt,
   language,
+  studyId,
+  analysisId,
+  analysisCodeId,
 }) {
   const classes = new BEMHelper('analysis-code');
 
   return (
     <PageContent title={pageTitle}>
       <div {...classes()}>
-        <Toolbar />
-        <div {...classes('content')}>
-          {isTextFile ? <Editor language={language} /> :
-          <MediaViewer
-            language={language}
-            mimeType={mimeType}
-            data={content}
-            downloadLink={downloadLink}
-            name={name}
-            title={title}
-            createdAt={createdAt}
-          />
-          }
-        </div>
+        <InviteBanner
+          id={analysisCodeId}
+          studyId={studyId}
+          module={modules.codeFile}
+        >
+          <Toolbar />
+          <div {...classes('content')}>
+            {isTextFile ? <Editor language={language} /> :
+            <MediaViewer
+              language={language}
+              mimeType={mimeType}
+              data={content}
+              downloadLink={downloadLink}
+              name={name}
+              title={title}
+              createdAt={createdAt}
+            />
+            }
+          </div>
+        </InviteBanner>
         <LoadingPanel active={isLoading} />
         <ConfirmDialog />
         <ModalRequestUnlock />

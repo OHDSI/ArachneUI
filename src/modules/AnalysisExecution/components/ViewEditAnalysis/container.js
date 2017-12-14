@@ -21,10 +21,14 @@
  */
 
 import React, { Component, PropTypes } from 'react';
-import { Utils, get, ContainerBuilder } from 'services/Utils';
+import { get, ContainerBuilder } from 'services/Utils';
 import { refreshTime } from 'modules/AnalysisExecution/const';
 import actions from 'actions/index';
+import SelectorsBuilder from 'components/Banners/Invite/selectors';
+import { goBack } from 'react-router-redux';
 import Presenter from './presenter';
+
+const selectors = (new SelectorsBuilder()).build();
 
 class ViewEditAnalysis extends Component {
   get propTypes() {
@@ -35,6 +39,7 @@ class ViewEditAnalysis extends Component {
       loadTypeList: PropTypes.func,
       studyId: PropTypes.number,
       unloadAnalysis: PropTypes.func.isRequired,
+      loadSudyInvitations: PropTypes.func,
     };
   }
 
@@ -42,7 +47,8 @@ class ViewEditAnalysis extends Component {
     // TODO: only if window is in focus
     this.refreshInterval = setInterval(() => {
       this.isPolledData = true;
-      this.props.loadAnalysis({ id: this.props.id })
+      const studyId = this.props.studyId;
+      this.props.loadAnalysis({ id: this.props.id });
     }, refreshTime);
   }
 
@@ -77,10 +83,11 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
       get(state, 'analysisExecution.analysis.data.result.study.title', 'Study'),
       'Arachne',
     ];
+    const studyId = get(moduleState, 'analysis.data.result.study.id', -1);
 
     return {
       id: parseInt(ownProps.routeParams.analysisId, 10),
-      studyId: get(moduleState, 'analysis.data.result.study.id'),
+      studyId,
       isLoading: get(moduleState, 'analysis.isLoading', false),
       pageTitle: pageTitle.join(' | '),
     };
@@ -88,6 +95,7 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
 
   getMapDispatchToProps() {
     return {
+      goBack,
       loadAnalysis: actions.analysisExecution.analysis.find,
       loadTypeList: actions.analysisExecution.analysisTypes.query,
       unloadAnalysis: actions.analysisExecution.analysis.unload,
@@ -95,16 +103,15 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
     };
   }
 
-  getFetchers({ params, state, dispatch, getState }) {
+  getFetchers({ params, dispatch, getState }) {
     const componentActions = this.getMapDispatchToProps();
     return {
-      loadAnalysisWDataSources: dispatch(componentActions.loadAnalysis({ id: params.analysisId })).then(() => {
-        const studyId = getState().analysisExecution.analysis.data.result.study.id;
-        return dispatch(componentActions.loadStudyDataSources({ studyId }));
-      }),
+      loadAnalysisWDataSources: dispatch(componentActions.loadAnalysis({ id: params.analysisId }))
+        .then(() => {
+          const studyId = getState().analysisExecution.analysis.data.result.study.id;
+          return dispatch(componentActions.loadStudyDataSources({ studyId }));
+        }),
       loadTypeList: componentActions.loadTypeList,
     };
   }
-  
 }
-

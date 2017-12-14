@@ -16,20 +16,40 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 13, 2016
+ * Created: December 13, 2017
  *
  */
 
-import { combineReducers } from 'redux';
-import ducks from './ducks';
+import { ModalUtils } from 'arachne-ui-components';
+import { ContainerBuilder } from 'services/Utils';
+import { modal, form } from 'const/banner';
+import DeclineModal from './presenter';
 
-export default {
-  actions: () => ducks.actions,
-  routes: () => (location, cb) => {
-    require.ensure([], (require) => {
-      console.warn('Analysis execution on enter');
-      cb(null, require('./routes').default()); // eslint-disable-line global-require
-    });
-  },
-  reducer: () => combineReducers(ducks.reducer),
-};
+export default class DeclineModalBuilder extends ContainerBuilder {
+  getModalParams() {
+    return {
+      name: modal.declineInvitation,
+    };
+  }
+
+  getFormParams() {
+    return {
+      form: form.declineInvitation,
+    };
+  }
+
+  getComponent() {
+    return DeclineModal;
+  }
+
+  mapStateToProps(state) {
+    return {};
+  }
+
+  getMapDispatchToProps() {
+    return {
+      cancel: () => ModalUtils.actions.toggle(modal.declineInvitation, false),
+    };
+  }
+
+}

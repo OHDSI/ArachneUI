@@ -20,11 +20,10 @@
  *
  */
 
-// @ts-check
 import { Component, PropTypes } from 'react';
 import actions from 'actions';
 import get from 'lodash/get';
-import { Utils } from 'services/Utils';
+import { ContainerBuilder } from 'services/Utils';
 import { goBack } from 'react-router-redux';
 import presenter from './presenter';
 
@@ -41,7 +40,6 @@ export class ViewEditStudy extends Component {
       loadStudy: PropTypes.func,
       loadInsights: PropTypes.func,
       loadTransitions: PropTypes.func,
-      loadSudyInvitations: PropTypes.func,
     };
   }
 
@@ -53,7 +51,6 @@ export class ViewEditStudy extends Component {
       this.props.loadStudy(nextProps.id);
       this.props.loadInsights({ studyId: nextProps.id });
       this.props.loadTransitions({ studyId: nextProps.id });
-      this.props.loadSudyInvitations({ studyId: nextProps.id });
     }
   }
 
@@ -62,7 +59,7 @@ export class ViewEditStudy extends Component {
   }
 }
 
-export default class ViewEditStudyBuilder {
+export default class ViewEditStudyBuilder extends ContainerBuilder {
   getComponent() {
     return ViewEditStudy;
   }
@@ -82,7 +79,6 @@ export default class ViewEditStudyBuilder {
       id: parseInt(ownProps.routeParams.studyId, 10),
       studyTitle: pageTitle.join(' | '),
       isLoading: isStudyLoading || isTypesLoading || isParticipantsLoading,
-      accessGranted: studyData !== null,
     };
   }
 
@@ -98,7 +94,6 @@ export default class ViewEditStudyBuilder {
       loadStudy: actions.studyManager.study.find,
       loadInsights: actions.studyManager.studyInsights.find,
       loadTransitions: actions.studyManager.availableTransitions.query,
-      loadSudyInvitations: actions.studyManager.studyInvitations.query,
     };
   }
 
@@ -111,17 +106,7 @@ export default class ViewEditStudyBuilder {
       loadStudy: () => actions.studyManager.study.find(studyId),
       loadInsights: () => actions.studyManager.studyInsights.find({ studyId }),
       loadTransitions: () => actions.studyManager.availableTransitions.query({ studyId }),
-      loadSudyInvitations: () => actions.studyManager.studyInvitations.query({ studyId }),
     };
-  }
-
-  build() {
-    return Utils.buildConnectedComponent({
-      Component: this.getComponent(),
-      mapStateToProps: this.mapStateToProps,
-      mapDispatchToProps: this.getMapDispatchToProps(),
-      getFetchers: this.getFetchers,
-    });
   }
 
 }

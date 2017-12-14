@@ -39,8 +39,9 @@ function subscritionChanged() {
 export default {
   actions: {
     ...invitation.actions,
-    acceptInvitation: urlParams =>
-      invitation.actions.create({}, { accepted: true, ...urlParams }),
+    acceptInvitation: urlParams => {
+      return invitation.actions.create({}, { accepted: true, ...urlParams });
+    },
     rejectInvitation: urlParams =>
       invitation.actions.create({}, { accepted: false, ...urlParams }),
     subscribeToInvitations: () => {
