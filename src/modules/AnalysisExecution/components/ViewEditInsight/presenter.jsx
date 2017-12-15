@@ -23,6 +23,7 @@
 import React from 'react';
 import BEMHelper from 'services/BemHelper';
 import { LoadingPanel, PageContent } from 'arachne-ui-components';
+import InviteRestrictedArea from 'components/InviteRestrictedArea';
 import Toolbar from './Toolbar';
 import Description from './Description';
 import Sections from './Sections';
@@ -32,34 +33,40 @@ import Details from './Details';
 
 require('./style.scss');
 
-function ViewEditInsight({ isLoading, submissionId, pageTitle, isEditable }) {
+function ViewEditInsight({ isLoading, submissionId, pageTitle, studyId, isEditable, onBannerActed }) {
   const classes = new BEMHelper('insight-view');
 
   return (
     <PageContent title={pageTitle}>
       <div {...classes()}>
-        <Toolbar isEditable={isEditable}/>
-        <div {...classes('content')}>
-          <div className="row">
-            <div {...classes('block', null, 'col-xs-12')}>
-              <Details />
+        <InviteRestrictedArea
+          {...classes('container')}
+          studyId={studyId}
+          onAction={onBannerActed}
+        >
+          <Toolbar isEditable={isEditable}/>
+          <div {...classes('content')}>
+            <div className="row">
+              <div {...classes('block', null, 'col-xs-12')}>
+                <Details />
+              </div>
+            </div>
+            <div className="row">
+              <div {...classes('block', null, 'col-xs-12')}>
+                <Description submissionId={submissionId} isEditable={isEditable} />
+              </div>
+            </div>
+            <div className="row">
+              <div {...classes('block', null, 'col-xs-12 col-md-6')}>
+                <Sections />
+              </div>
+              <div {...classes('block', null, 'col-xs-12 col-md-6')}>
+                <Comments submissionId={submissionId} isEditable={isEditable}/>
+              </div>
             </div>
           </div>
-          <div className="row">
-            <div {...classes('block', null, 'col-xs-12')}>
-              <Description submissionId={submissionId} isEditable={isEditable} />
-            </div>
-          </div>
-          <div className="row">
-            <div {...classes('block', null, 'col-xs-12 col-md-6')}>
-              <Sections />
-            </div>
-            <div {...classes('block', null, 'col-xs-12 col-md-6')}>
-              <Comments submissionId={submissionId} isEditable={isEditable}/>
-            </div>
-          </div>
-        </div>
-        <ModalEditTitle submissionId={submissionId} />
+        </InviteRestrictedArea>
+        <ModalEditTitle submissionId={ submissionId } />
         <LoadingPanel active={isLoading} />
       </div>
     </PageContent>

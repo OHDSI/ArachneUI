@@ -42,7 +42,7 @@ class ViewEditAnalysis extends Component {
     // TODO: only if window is in focus
     this.refreshInterval = setInterval(() => {
       this.isPolledData = true;
-      this.props.loadAnalysis({ id: this.props.id })
+      this.props.loadAnalysis({ id: this.props.id });
     }, refreshTime);
   }
 
@@ -78,10 +78,11 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
       get(analysisData, 'study.title', 'Study'),
       'Arachne',
     ];
+    const studyId = get(analysisData, 'study.id', -1);
 
     return {
       id: parseInt(ownProps.routeParams.analysisId, 10),
-      studyId: get(analysisData, 'study.id'),
+      studyId,
       isLoading: get(analysis, 'isLoading', false),
       pageTitle: pageTitle.join(' | '),
       isEditable: get(analysisData, `permissions[${analysisPermissions.editAnalysis}]`, false),
@@ -97,16 +98,24 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
     };
   }
 
-  getFetchers({ params, state, dispatch, getState }) {
+  mergeProps(stateProps, dispatchProps, ownProps) {
+    return {
+      ...ownProps,
+      ...stateProps,
+      ...dispatchProps,
+      onBannerActed: () => dispatchProps.loadAnalysis({ id: stateProps.id }),
+    };
+  }
+
+  getFetchers({ params, dispatch, getState }) {
     const componentActions = this.getMapDispatchToProps();
     return {
-      loadAnalysisWDataSources: dispatch(componentActions.loadAnalysis({ id: params.analysisId })).then(() => {
-        const studyId = getState().analysisExecution.analysis.data.result.study.id;
-        return dispatch(componentActions.loadStudyDataSources({ studyId }));
-      }),
+      loadAnalysisWDataSources: dispatch(componentActions.loadAnalysis({ id: params.analysisId }))
+        .then(() => {
+          const studyId = getState().analysisExecution.analysis.data.result.study.id;
+          return dispatch(componentActions.loadStudyDataSources({ studyId }));
+        }),
       loadTypeList: componentActions.loadTypeList,
     };
   }
-  
 }
-

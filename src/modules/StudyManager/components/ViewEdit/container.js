@@ -20,21 +20,46 @@
  *
  */
 
-// @ts-check
-import { Component } from 'react';
+import { Component, PropTypes } from 'react';
 import actions from 'actions';
 import get from 'lodash/get';
-import { Utils } from 'services/Utils';
+import { ContainerBuilder } from 'services/Utils';
 import { goBack } from 'react-router-redux';
 import presenter from './presenter';
 
 export class ViewEditStudy extends Component {
+  static get propTypes() {
+    return {
+      id: PropTypes.number,
+      studyTitle: PropTypes.string,
+      isLoading: PropTypes.bool,
+      accessGranted: PropTypes.bool,
+      loadTypeList: PropTypes.func,
+      loadAnalysisTypeList: PropTypes.func,
+      loadStatusList: PropTypes.func,
+      loadStudy: PropTypes.func,
+      loadInsights: PropTypes.func,
+      loadTransitions: PropTypes.func,
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.id !== nextProps.id && nextProps.id) {
+      this.props.loadTypeList();
+      this.props.loadAnalysisTypeList();
+      this.props.loadStatusList();
+      this.props.loadStudy(nextProps.id);
+      this.props.loadInsights({ studyId: nextProps.id });
+      this.props.loadTransitions({ studyId: nextProps.id });
+    }
+  }
+
   render() {
     return presenter(this.props);
   }
 }
 
-export default class ViewEditStudyBuilder {
+export default class ViewEditStudyBuilder extends ContainerBuilder {
   getComponent() {
     return ViewEditStudy;
   }
@@ -54,7 +79,6 @@ export default class ViewEditStudyBuilder {
       id: parseInt(ownProps.routeParams.studyId, 10),
       studyTitle: pageTitle.join(' | '),
       isLoading: isStudyLoading || isTypesLoading || isParticipantsLoading,
-      accessGranted: studyData !== null,
     };
   }
 
@@ -64,6 +88,21 @@ export default class ViewEditStudyBuilder {
   getMapDispatchToProps() {
     return {
       goBack,
+      loadTypeList: actions.studyManager.typeList.find,
+      loadAnalysisTypeList: actions.studyManager.analysisTypes.find,
+      loadStatusList: actions.studyManager.statusList.find,
+      loadStudy: actions.studyManager.study.find,
+      loadInsights: actions.studyManager.studyInsights.find,
+      loadTransitions: actions.studyManager.availableTransitions.query,
+    };
+  }
+
+  mergeProps(stateProps, dispatchProps, ownProps) {
+    return {
+      ...ownProps,
+      ...stateProps,
+      ...dispatchProps,
+      onBannerActed: () => dispatchProps.loadStudy(stateProps.id),
     };
   }
 
@@ -76,17 +115,7 @@ export default class ViewEditStudyBuilder {
       loadStudy: () => actions.studyManager.study.find(studyId),
       loadInsights: () => actions.studyManager.studyInsights.find({ studyId }),
       loadTransitions: () => actions.studyManager.availableTransitions.query({ studyId }),
-      loadSudyInvitations: () => actions.studyManager.studyInvitations.query({ studyId }),
     };
-  }
-
-  build() {
-    return Utils.buildConnectedComponent({
-      Component: this.getComponent(),
-      mapStateToProps: this.mapStateToProps,
-      mapDispatchToProps: this.getMapDispatchToProps(),
-      getFetchers: this.getFetchers,
-    });
   }
 
 }

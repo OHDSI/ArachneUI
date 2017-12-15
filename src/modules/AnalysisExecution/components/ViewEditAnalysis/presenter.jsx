@@ -27,6 +27,7 @@ import {
   LoadingPanel,
 } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
+import InviteRestrictedArea from 'components/InviteRestrictedArea';
 import Toolbar from './Toolbar/index';
 import Settings from './Settings/index';
 import Description from './Description/index';
@@ -84,23 +85,29 @@ export default class ViewEditAnalysis extends Component {
     return (
       <PageContent title={this.pageTitle}>
         <div {...this.classes()}>
-          <Toolbar isEditable={isEditable} />
-          <div {...this.classes('content')}>
-            <div className="row">
-              <div className="col-xs-12 col-md-6">
-                <Settings isEditable={isEditable} />
-                <Description isEditable={isEditable} />
+          <InviteRestrictedArea
+            {...this.classes('container')}
+            studyId={this.props.studyId}
+            onAction={this.props.onBannerActed}
+          >
+            <Toolbar isEditable={isEditable} />
+            <div {...this.classes('content')}>
+              <div className="row">
+                <div className="col-xs-12 col-md-6">
+                  <Settings isEditable={isEditable} />
+                  <Description isEditable={isEditable} />
+                </div>
+                <div className="col-xs-12 col-md-6">
+                  <ListCode isEditable={isEditable} />
+                </div>
               </div>
-              <div className="col-xs-12 col-md-6">
-                <ListCode isEditable={isEditable} />
+              <div className="row">
+                <div className="col-xs-12">
+                  <ListSubmissions isEditable={isEditable} />
+                </div>
               </div>
             </div>
-            <div className="row">
-              <div className="col-xs-12">
-                <ListSubmissions isEditable={isEditable} />
-              </div>
-            </div>
-          </div>
+          </InviteRestrictedArea>
           {this.getModals()}
           <LoadingPanel active={isLoading} />
         </div>

@@ -22,13 +22,12 @@
 
 import React, { PropTypes } from 'react';
 import BEMHelper from 'services/BemHelper';
-import { StickyContainer, Sticky } from 'react-sticky';
 
-import { LoadingPanel, PageContent, Link } from 'arachne-ui-components';
+import { LoadingPanel, PageContent } from 'arachne-ui-components';
+import InviteRestrictedArea from 'components/InviteRestrictedArea';
 
 import DateInterval from './DateInterval';
 import Toolbar from './Toolbar';
-import InviteBanner from './InviteBanner';
 
 import ModalEditTitle from './ModalEditTitle';
 import ModalAddParticipant from './ModalAddParticipant';
@@ -44,42 +43,40 @@ import RightColumn from './RightColumn';
 require('./style.scss');
 
 function ViewEditStudy(props) {
-  const { studyTitle, isLoading, id, accessGranted, goBack } = props;
+  const {
+    studyTitle,
+    isLoading,
+    id,
+    onBannerActed,
+  } = props;
   const classes = new BEMHelper('study-manager-view');
 
   return (
     <PageContent title={`${studyTitle} | Arachne`}>
       <div {...classes()}>
-        {accessGranted
-        ? [
-          <StickyContainer {...classes('container')}>
-            <Toolbar studyId={id} />
-            <Sticky>
-              {
-                ({ isSticky }) => <InviteBanner className={ isSticky ? classes('sticky-banner').className : null } />
-              }
-            </Sticky>
-            <div {...classes('content')}>
-              <div className="row">
-                <div className="col-xs-12 col-lg-6">
-                  <DateInterval />
-                  <div className="row">
-                    <div className="col-xs-12">
-                      <LeftColumn />
-                    </div>
+        <InviteRestrictedArea
+          {...classes('container')}
+          studyId={id}
+          onAction={onBannerActed}
+        >
+          <Toolbar studyId={id} />
+          <div {...classes('content')}>
+            <div className="row">
+              <div className="col-xs-12 col-lg-6">
+                <DateInterval />
+                <div className="row">
+                  <div className="col-xs-12">
+                    <LeftColumn />
                   </div>
                 </div>
-                <div className="col-xs-12 col-lg-6">
-                  <RightColumn studyId={id} />
-                </div>
+              </div>
+              <div className="col-xs-12 col-lg-6">
+                <RightColumn studyId={id} />
               </div>
             </div>
-          </StickyContainer>,
-          <LoadingPanel active={isLoading} />]
-        : <div {...classes('empty-state')}>
-            <span>You do not have access rights for this study. Please contact a study lead investigator.</span>
-            <Link onClick={goBack}>Go back</Link>
-          </div>}
+          </div>
+        </InviteRestrictedArea>
+        <LoadingPanel active={isLoading} />
       </div>
       <ModalEditTitle />
       <ModalCreateAnalysis />

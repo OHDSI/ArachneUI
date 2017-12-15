@@ -76,6 +76,7 @@ function mapStateToProps(state, ownProps) {
   const createdAt = get(fileData, 'created');
   const language = detectLanguageByExtension(fileData);
   const isLoading = get(moduleState, 'analysisCode.isLoading');
+  const studyId = get(moduleState, 'analysis.data.result.study.id', -1);
 
   const isEditable = get(fileData, `permissions[${analysisPermissions.deleteAnalysisFiles}]`, false)
 
@@ -101,6 +102,7 @@ function mapStateToProps(state, ownProps) {
     name,
     createdAt,
     language,
+    studyId,
     isEditable,
   };
 }
@@ -111,7 +113,24 @@ const mapDispatchToProps = {
   loadBreadcrumbs: actions.analysisExecution.breadcrumbs.query,
 };
 
-const connectedAnalysisCode = connect(mapStateToProps, mapDispatchToProps)(AnalysisCode);
+function mergeProps(stateProps, dispatchProps, ownProps) {
+  return {
+    ...ownProps,
+    ...stateProps,
+    ...dispatchProps,
+    onBannerActed: () => dispatchProps.loadAnalysisCode({
+      analysisId: stateProps.analysisId,
+      analysisCodeId: stateProps.analysisCodeId,
+      withContent: !isMimeTypeFat(stateProps.mimeType),
+    }),
+  };
+}
+
+const connectedAnalysisCode = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+  mergeProps
+)(AnalysisCode);
 
 export default asyncConnect([{
   promise: ({ params, store: { dispatch } }) => {
