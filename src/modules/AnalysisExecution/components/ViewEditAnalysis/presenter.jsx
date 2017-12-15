@@ -27,7 +27,7 @@ import {
   LoadingPanel,
 } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
-import BlockingInviteBanner from 'components/Banners/BlockingInvite';
+import InviteRestrictedArea from 'components/InviteRestrictedArea';
 import Toolbar from './Toolbar/index';
 import Settings from './Settings/index';
 import Description from './Description/index';
@@ -85,7 +85,7 @@ export default class ViewEditAnalysis extends Component {
     return (
       <PageContent title={this.pageTitle}>
         <div {...this.classes()}>
-          <BlockingInviteBanner
+          <InviteRestrictedArea
             {...this.classes('container')}
             studyId={this.props.studyId}
             onAction={this.props.onBannerActed}
@@ -107,7 +107,7 @@ export default class ViewEditAnalysis extends Component {
                 </div>
               </div>
             </div>
-          </BlockingInviteBanner>
+          </InviteRestrictedArea>
           {this.getModals()}
           <LoadingPanel active={isLoading} />
         </div>

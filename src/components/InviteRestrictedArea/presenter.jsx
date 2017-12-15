@@ -31,7 +31,7 @@ import Banner from './Banner';
 
 import './style.scss';
 
-function InviteBanner(props) {
+function InviteRestrictedArea(props) {
   const {
     children,
     className,
@@ -41,7 +41,7 @@ function InviteBanner(props) {
     goBack,
     invitation,
   } = props;
-  const classes = new BEMHelper('banner');
+  const classes = new BEMHelper('invite-restricted-area');
   const emptyStateMessage = (
     <div {...classes('empty-state')}>
       <span>You do not have access rights for this study. Please contact a study lead investigator.</span>
@@ -70,11 +70,11 @@ function InviteBanner(props) {
   );
 }
 
-InviteBanner.propTypes = {
+InviteRestrictedArea.propTypes = {
   children: PropTypes.any,
   className: PropTypes.string,
   onAccept: PropTypes.func.isRequired,
   onDecline: PropTypes.func.isRequired,
 };
 
-export default InviteBanner;
+export default InviteRestrictedArea;

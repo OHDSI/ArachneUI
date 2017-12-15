@@ -29,7 +29,7 @@ import presenter from './presenter';
 
 const selectors = (new SelectorsBuilder()).build();
 
-class InviteBanner extends Component {
+class InviteRestrictedArea extends Component {
   static get propTypes() {
     return {
       studyId: PropTypes.number.isRequired,
@@ -57,9 +57,9 @@ class InviteBanner extends Component {
   }
 }
 
-export default class InviteBannerBuilder extends ContainerBuilder {
+export default class InviteRestrictedAreaBuilder extends ContainerBuilder {
   getComponent() {
-    return InviteBanner;
+    return InviteRestrictedArea;
   }
 
   mapStateToProps(state) {

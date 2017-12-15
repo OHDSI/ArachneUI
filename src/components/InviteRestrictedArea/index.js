@@ -20,6 +20,6 @@
  *
  */
 
-import InviteBannerBuilder from './container';
+import InviteRestrictedAreaBuilder from './container';
 
-export default new InviteBannerBuilder().build();
+export default new InviteRestrictedAreaBuilder().build();

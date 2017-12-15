@@ -24,7 +24,7 @@ import React, { PropTypes } from 'react';
 import BEMHelper from 'services/BemHelper';
 
 import { LoadingPanel, PageContent } from 'arachne-ui-components';
-import BlockingInviteBanner from 'components/Banners/BlockingInvite';
+import InviteRestrictedArea from 'components/InviteRestrictedArea';
 
 import DateInterval from './DateInterval';
 import Toolbar from './Toolbar';
@@ -54,7 +54,7 @@ function ViewEditStudy(props) {
   return (
     <PageContent title={`${studyTitle} | Arachne`}>
       <div {...classes()}>
-        <BlockingInviteBanner
+        <InviteRestrictedArea
           {...classes('container')}
           studyId={id}
           onAction={onBannerActed}
@@ -75,7 +75,7 @@ function ViewEditStudy(props) {
               </div>
             </div>
           </div>
-        </BlockingInviteBanner>
+        </InviteRestrictedArea>
         <LoadingPanel active={isLoading} />
       </div>
       <ModalEditTitle />

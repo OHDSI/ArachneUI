@@ -25,7 +25,7 @@ import React from 'react';
 import { PageContent, LoadingPanel } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
 import MediaViewer from 'components/MediaViewer';
-import BlockingInviteBanner from 'components/Banners/BlockingInvite';
+import InviteRestrictedArea from 'components/InviteRestrictedArea';
 
 import Toolbar from './Toolbar/index';
 import Editor from './Editor/index';
@@ -56,7 +56,7 @@ function AnalysisCode({
   return (
     <PageContent title={pageTitle}>
       <div {...classes()}>
-        <BlockingInviteBanner
+        <InviteRestrictedArea
           id={analysisCodeId}
           studyId={studyId}
           onAction={onBannerActed}
@@ -75,7 +75,7 @@ function AnalysisCode({
             />
             }
           </div>
-        </BlockingInviteBanner>
+        </InviteRestrictedArea>
         <LoadingPanel active={isLoading} />
         <ConfirmDialog />
         <ModalRequestUnlock />
