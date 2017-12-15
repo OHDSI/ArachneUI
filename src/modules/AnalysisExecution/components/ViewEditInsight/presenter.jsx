@@ -23,7 +23,7 @@
 import React from 'react';
 import BEMHelper from 'services/BemHelper';
 import { LoadingPanel, PageContent } from 'arachne-ui-components';
-import InviteBanner from 'components/Banners/Invite';
+import BlockingInviteBanner from 'components/Banners/BlockingInvite';
 import Toolbar from './Toolbar';
 import Description from './Description';
 import Sections from './Sections';
@@ -39,7 +39,7 @@ function ViewEditInsight({ isLoading, submissionId, pageTitle, studyId, isEditab
   return (
     <PageContent title={pageTitle}>
       <div {...classes()}>
-        <InviteBanner
+        <BlockingInviteBanner
           {...classes('container')}
           studyId={studyId}
           onAction={onBannerActed}
@@ -65,7 +65,7 @@ function ViewEditInsight({ isLoading, submissionId, pageTitle, studyId, isEditab
               </div>
             </div>
           </div>
-        </InviteBanner>
+        </BlockingInviteBanner>
         <ModalEditTitle submissionId={ submissionId } />
         <LoadingPanel active={isLoading} />
       </div>
