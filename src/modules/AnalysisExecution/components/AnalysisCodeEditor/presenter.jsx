@@ -57,7 +57,6 @@ function AnalysisCode({
     <PageContent title={pageTitle}>
       <div {...classes()}>
         <InviteRestrictedArea
-          id={analysisCodeId}
           studyId={studyId}
           onAction={onBannerActed}
         >
