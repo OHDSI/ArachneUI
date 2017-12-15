@@ -52,6 +52,7 @@ class SubmissionListSelectorsBuilder {
       status: source.status || {},
       actions,
       resultFilesCount: source.resultFilesCount,
+      resultInfo: source.resultInfo,
       insight: source.insight,
       hasInsight: !!source.insight,
       canUploadResult: actions[submissionActionTypes.MANUAL_UPLOAD].available
@@ -75,6 +76,7 @@ class SubmissionListSelectorsBuilder {
       checksum: source.checksum,
       created: source.created ? moment(source.created).tz(moment.tz.guess()).format(commonDateFormat) : '',
       submissions: this.getSubmissionList(source.submissions),
+      analysisType: source.analysisType,
     }));
   }
 
