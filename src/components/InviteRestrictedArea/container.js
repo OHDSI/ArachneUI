@@ -65,10 +65,12 @@ export default class InviteRestrictedAreaBuilder extends ContainerBuilder {
   mapStateToProps(state) {
     const moduleState = get(state, 'studyManager');
     const studyData = get(moduleState, 'study.data.result', null);
+    const isLoading = get(moduleState, 'study.isLoading', true);
 
     return {
       accessGranted: studyData !== null,
       invitation: selectors.getInvitation(state),
+      isLoading,
     };
   }
 
