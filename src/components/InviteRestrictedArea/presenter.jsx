@@ -40,6 +40,7 @@ function InviteRestrictedArea(props) {
     accessGranted,
     goBack,
     invitation,
+    isLoading,
   } = props;
   const classes = new BEMHelper('invite-restricted-area');
   const emptyStateMessage = (
@@ -48,6 +49,10 @@ function InviteRestrictedArea(props) {
       <Link onClick={goBack}>Go back</Link>
     </div>
   );
+
+  if (isLoading) {
+    return null;
+  }
 
   return (
       accessGranted
