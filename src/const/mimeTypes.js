@@ -22,7 +22,7 @@
 
 const mimeTypes = {
   image: 'image',
-  txt: 'txt',
+  txt: 'text',
   pdf: 'pdf',
   sql: 'sql',
   zip: 'zip',
