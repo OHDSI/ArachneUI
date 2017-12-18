@@ -69,7 +69,7 @@ function mapStateToProps(state, ownProps) {
   const file = get(ownProps, 'file', {});
 
   const title = get(file, 'label', '');
-  let mimeType = get(file, 'docType');
+  const mimeType = detectMimeTypeByExtension(file);
   const createdAt = get(file, 'created');
   const language = detectLanguageByExtension(file);
 
@@ -77,11 +77,6 @@ function mapStateToProps(state, ownProps) {
   const content = isLoading ? null : get(file, 'content', null, 'String');
 
   const loadFile = get(ownProps, 'loadFile');
-
-  const extensionMimeType = detectMimeTypeByExtension(file);
-  if (isText(extensionMimeType)) {
-    mimeType = extensionMimeType;
-  }
 
   return {
     content,
