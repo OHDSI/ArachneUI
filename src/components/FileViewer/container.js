@@ -22,7 +22,7 @@
 import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { get, detectLanguageByExtension, detectMimeTypeByExtension } from 'services/Utils';
-import { isFat as isMimeTypeFat, isText } from 'services/MimeTypeUtil';
+import { isFat as isMimeTypeFat } from 'services/MimeTypeUtil';
 import presenter from './presenter';
 
 class FileViewer extends Component {
