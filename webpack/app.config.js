@@ -160,7 +160,7 @@ const config = {
     // https://github.com/webpack-contrib/extract-text-webpack-plugin/issues/456
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      filename: 'vendor.js',
+      filename: 'js/vendor/[hash].js',
       minChunks(module) {
         return module.context && module.context.indexOf('node_modules') !== -1;
       },
