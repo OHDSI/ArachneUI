@@ -184,6 +184,7 @@ if (env === ENV_TYPE.PRODUCTION) {
 
 if (env === ENV_TYPE.DEV) {
   // process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+  config.plugins.push(new webpack.NamedModulesPlugin());
 
   // Webpack hot reload server
   const server = new WebpackDevServer(
