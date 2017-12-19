@@ -107,7 +107,11 @@ if (__APP_TYPE_NODE__) {
   modules.push({
     ...Admin,
     // in case of async chunk it won't find css-base module (css-loader)
-    routes: () => require('modules/Admin/routesNode').default.build(),
+    routes: () => (location, cb) => {
+      require.ensure([], (require) => {
+        cb(null, require('modules/Admin/routesNode').default.build()); // eslint-disable-line global-require
+      });
+    },
     path: 'admin-settings',
     namespace: 'adminSettings',
     isAdminOnly: true,
