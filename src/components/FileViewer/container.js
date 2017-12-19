@@ -21,7 +21,7 @@
 
 import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { get, detectLanguageByExtension } from 'services/Utils';
+import { get, detectLanguageByExtension, detectMimeTypeByExtension } from 'services/Utils';
 import { isFat as isMimeTypeFat } from 'services/MimeTypeUtil';
 import presenter from './presenter';
 
@@ -69,7 +69,7 @@ function mapStateToProps(state, ownProps) {
   const file = get(ownProps, 'file', {});
 
   const title = get(file, 'label', '');
-  const mimeType = get(file, 'docType');
+  const mimeType = detectMimeTypeByExtension(file);
   const createdAt = get(file, 'created');
   const language = detectLanguageByExtension(file);
 

@@ -29,6 +29,7 @@ import { isText } from 'services/MimeTypeUtil';
 import { Button, LoadingPanel, Pagination } from 'arachne-ui-components';
 import MimeTypes from 'const/mimeTypes';
 import CodeViewer from 'components/CodeViewer';
+import CSV from './CsvViewer';
 
 let ReactPDF;
 
@@ -133,26 +134,37 @@ function MediaViewer({ language, onPDFLoaded, pageIndex, path, data, mimeType, s
   let element;
   let isDownloadLinkWrapperNeeded = true;
 
-  if (mimeType === MimeTypes.image) {
-    element = image({ classes, container, setContainer, data });
-  } else if (mimeType === MimeTypes.pdf) {
-    element = (
-      <LazyPDF { ...{ classes, container, data, setContainer, totalPages, path, pageIndex, onPDFLoaded } } />
-    );
-  } else if (isText(mimeType)) {
-    element = (
-      <CodeViewer
-        language={language}
-        value={data}
-        name={name}
-        title={title}
-        createdAt={createdAt}
-        downloadLink={downloadLink}
-      />
-    );
-    isDownloadLinkWrapperNeeded = false;
-  } else {
-    element = empty({ classes });
+  switch (mimeType) {
+    case MimeTypes.image:
+      element = image({ classes, container, setContainer, data });
+      break;
+    case MimeTypes.pdf:
+      element = (
+        <LazyPDF { ...{ classes, container, data, setContainer, totalPages, path, pageIndex, onPDFLoaded } } />
+      );
+      break;
+    case MimeTypes.csv:
+      element = (
+        <CSV data={data} />
+      );
+      break;
+    default:
+      if (isText(mimeType)) {
+        element = (
+          <CodeViewer
+            language={language}
+            value={data}
+            name={name}
+            title={title}
+            createdAt={createdAt}
+            downloadLink={downloadLink}
+          />
+        );
+        isDownloadLinkWrapperNeeded = false;
+      } else {
+        element = empty({ classes });
+      }
+      break;
   }
 
   return isDownloadLinkWrapperNeeded ? (

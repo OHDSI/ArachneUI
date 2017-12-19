@@ -16,35 +16,43 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: August 17, 2017
+ * Created: December 15, 2017
  *
  */
 
-const mimeTypes = {
-  image: 'image',
-  txt: 'text',
-  pdf: 'pdf',
-  sql: 'sql',
-  zip: 'zip',
-  rar: 'rar',
-  gz: 'gz',
-  packrat: 'packrat',
-  json: 'json',
-  csv: 'csv',
-  r: 'r',
-  cohort: 'cohort',
-  cohortdefinitionjson: 'cohortdefinitionjson',
-  excel: 'excel',
-  estimation: 'estimation',
-  comparator: 'comparator cohort',
-  outcomeCohort: 'outcome cohort',
-  targetCohort: 'target cohort',
-  html: 'html',
-  other: 'other',
-  text: 'text',
-  link: 'link',
-  report: 'report',
-  folder: 'folder',
-};
+@import 'styles/vars-and-mixins.scss';
+ 
+.#{$namespace} {
+  &csv-viewer {
+    height: 100%;
 
-export default mimeTypes;
+    &__header-th {
+      @include text-ellipsis();
+    }
+
+    & .#{$namespace}table {
+      height: 100%;
+
+      & tbody {
+        max-height: calc( 100% - 47px );
+        overflow: scroll;
+        display: block;
+        width: 100%;
+      }
+      &__cell,
+      &__header-cell {
+        border-right: 1px solid $grey-medium;
+      }
+      & thead,
+      &__row {
+        display:table;
+        width: 100%;
+        table-layout:fixed;
+      }
+      & thead {
+        width: calc( 100% - 16px );
+      }
+    }
+  }
+}
+ 

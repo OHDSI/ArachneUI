@@ -16,35 +16,11 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: August 17, 2017
+ * Created: December 15, 2017
  *
  */
 
-const mimeTypes = {
-  image: 'image',
-  txt: 'text',
-  pdf: 'pdf',
-  sql: 'sql',
-  zip: 'zip',
-  rar: 'rar',
-  gz: 'gz',
-  packrat: 'packrat',
-  json: 'json',
-  csv: 'csv',
-  r: 'r',
-  cohort: 'cohort',
-  cohortdefinitionjson: 'cohortdefinitionjson',
-  excel: 'excel',
-  estimation: 'estimation',
-  comparator: 'comparator cohort',
-  outcomeCohort: 'outcome cohort',
-  targetCohort: 'target cohort',
-  html: 'html',
-  other: 'other',
-  text: 'text',
-  link: 'link',
-  report: 'report',
-  folder: 'folder',
-};
+import CsvViewer from './presenter';
 
-export default mimeTypes;
+export default CsvViewer;
+

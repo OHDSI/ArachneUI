@@ -30,6 +30,7 @@
     border-top: 1px solid $grey-light;
     display: flex;
     padding: 15px 30px;
+    flex-shrink: 0;
 
     &__actions {
       display: flex;
