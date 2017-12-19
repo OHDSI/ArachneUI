@@ -56,9 +56,9 @@ function Cohort(props) {
     resultInfo,
   } = props;
 
-  const persons = get(resultInfo, "persons");
+  const persons = get(resultInfo, 'persons');
 
-  return <span>{!!persons ? persons : 0} person{persons !== 1 ? "s" : ""}</span>;
+  return <span>{!!persons ? persons : 0} person{persons !== 1 ? 's' : ''}</span>;
 }
 
 function CohortCharacterization(props) {
@@ -66,7 +66,9 @@ function CohortCharacterization(props) {
     resultInfo,
   } = props;
 
-  return (<span>{`${resultInfo.reports} report${resultInfo.reports > 1 || resultInfo.reports === 0 ? "s" : ""}`}</span>);
+  const reports = get(resultInfo, 'reports');
+
+  return <span>{!!reports ? reports : 0} report{reports !== 1 ? 's' : ''}</span>;
 }
 
 function Incidence(props) {
@@ -78,21 +80,20 @@ function Incidence(props) {
   const classes = new BEMHelper('incedence-label');
   const tooltipClass = new BEMHelper('tooltip');
 
-  const personCount = get(resultInfo, "PERSON_COUNT");
-  const timeAtRisk = get(resultInfo, "TIME_AT_RISK");
-  const cases = get(resultInfo, "CASES");
-  const rate = get(resultInfo, "RATE");
-  const proportion = get(resultInfo, "PROPORTION");
-  const tooltipString = `person${personCount > 1 ? "s" : ""}: ${personCount} 
-  time at risk:${timeAtRisk} 
-  case${cases > 1 ? "s" : ""}:${cases} 
+  const personCount = get(resultInfo, 'PERSON_COUNT');
+  const timeAtRisk = get(resultInfo, 'TIME_AT_RISK');
+  const cases = get(resultInfo, 'CASES');
+  const rate = get(resultInfo, 'RATE');
+  const proportion = get(resultInfo, 'PROPORTION');
+  const tooltipString = `person${personCount > 1 ? 's' : ''}: ${personCount} 
+  time at risk: ${timeAtRisk} 
+  case${cases > 1 ? 's' : ''}: ${cases} 
   rate: ${rate} 
   proportion: ${proportion}`;
 
   return <div {...classes({
       extra: tooltipClass().className,
-      // modifiers: {'line'}
-      element: 'line'})} aria-label={tooltipString} data-tootik-conf="left">
+      element: 'line'})} aria-label={tooltipString} data-tootik-conf='left multiline'>
     <span {...classes({ element: 'result-ico'})}>perm_identity</span>
     {personCount}
     <span {...classes({ element: 'result-ico'})}>query_builder</span>
@@ -110,5 +111,5 @@ function Default(props) {
   const {
     resultFilesCount,
   } = props;
-  return <span>{resultFilesCount} document{resultFilesCount !== 1 ? "s" : ""}</span>;
+  return <span>{resultFilesCount} document{resultFilesCount !== 1 ? 's' : ''}</span>;
 }
