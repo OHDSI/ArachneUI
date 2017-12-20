@@ -25,6 +25,10 @@ import { TreemapSelectorsBuilder } from 'services/Utils';
 import { convertDataToTableData } from 'components/Reports/converters';
 import { reports } from 'const/reports';
 import { treemap } from '@ohdsi/atlascharts/dist/atlascharts.umd';
+import { createSelector } from 'reselect';
+import converter from 'components/FileInfo/converter';
+import get from 'lodash/get';
+import { paths } from 'modules/AnalysisExecution/const';
 
 export default class SelectorsBuilder extends TreemapSelectorsBuilder {
   constructor() {
@@ -390,9 +394,23 @@ export default class SelectorsBuilder extends TreemapSelectorsBuilder {
     );
   }
 
+  getRawFiles(state) {
+    return get(state, 'analysisExecution.analysisCode.queryResult', [], 'Array');
+  }
+
+  buildSelectorForSubmissionFileList() {
+    return createSelector(
+      [this.getRawFiles],
+      files => files.map(
+        file => converter(file, item => paths.submissionResultFile({ submissionId: item.submissionId, fileId: item.uuid }))
+      )
+    );
+  }
+
   build() {
     return {
       getTableData: this.extractTableData.bind(this),
+      getSubmissionFilesList: this.buildSelectorForSubmissionFileList(),
     };
   }
 }

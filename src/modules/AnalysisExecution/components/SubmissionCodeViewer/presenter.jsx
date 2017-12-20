@@ -22,7 +22,9 @@
 
 import React from 'react';
 import FileViewer from 'components/FileViewer';
+import FileBrowser from 'components/FileBrowser';
 import ReportViewer from './components/ReportViewer';
+import Summary from './components/Summary';
 
 function SubmissionCodeViewer({
   file,
@@ -39,8 +41,44 @@ function SubmissionCodeViewer({
   tableColumns,
   details,
   isDetailsLoading,
+
+  resultFiles,
+  submissionId,
+  submissionGroupId,
 }) {
-  return isReport
+    return <FileBrowser
+      filesList={resultFiles}
+      selectedFile={urlParams.fileId}
+      detailsComponent={
+        isReport
+          ? <ReportViewer
+            type={reportType}
+            data={file}
+            details={details}
+            toolbarOpts={toolbarOpts}
+            downloadLink={downloadLink}
+            pageTitle={pageTitle}
+            loadTreemapDetails={loadTreemapDetails}
+            tableData={tableData}
+            tableColumns={tableColumns}
+            isLoading={isDetailsLoading}
+          />
+          : <FileViewer
+            file={file}
+            isLoading={isLoading}
+            loadFile={loadFile}
+            toolbarOpts={toolbarOpts}
+            downloadLink={downloadLink}
+            urlParams={urlParams}
+            pageTitle={pageTitle}
+          />
+      }
+      mainInfoComponent={<Summary
+        submissionId={submissionId}
+        submissionGroupId={submissionGroupId}
+      />}
+    />;
+  /*return isReport
     ? <ReportViewer
       type={reportType}
       data={file}
@@ -61,7 +99,7 @@ function SubmissionCodeViewer({
       downloadLink={downloadLink}
       urlParams={urlParams}
       pageTitle={pageTitle}
-    />;
+    />;*/
 }
 
 export default SubmissionCodeViewer;

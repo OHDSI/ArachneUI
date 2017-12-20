@@ -20,12 +20,13 @@
  *
  */
 
-import { Component, PropTypes } from 'react';
+import { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { ModalUtils } from 'arachne-ui-components';
-import { modal } from 'modules/AnalysisExecution/const';
+import { modal, paths } from 'modules/AnalysisExecution/const';
 import get from 'lodash/get';
 import actions from 'actions';
+import { push as goToPage } from 'react-router-redux';
 import ListSubmissions from './presenter';
 import SelectorsBuilder from './selectors';
 
@@ -41,6 +42,7 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = {
   showFileList: data => ModalUtils.actions.toggle(modal.analysisFiles, true, data),
+  showResultFileList: ({ submissionId }) => goToPage(paths.submissionResultFiles({ submissionId })),
   loadAnalysis: actions.analysisExecution.analysis.find,
   changeExecutionStatus: actions.analysisExecution.executionStatus.create,
   changePublishStatus: actions.analysisExecution.publishStatus.create,
@@ -68,11 +70,8 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
       });
     },
     showResultFileList(submission) {
-      dispatchProps.showFileList({
-        type: 'result',
+      dispatchProps.showResultFileList({
         submissionId: submission.id,
-        canRemoveFiles: submission.canUploadResult,
-        resultFilesCount: submission.resultFilesCount,
       });
     },
     onChangeExecutionStatus(submissionId, status) {

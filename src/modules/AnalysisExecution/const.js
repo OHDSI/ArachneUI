@@ -61,6 +61,7 @@ const paths = {
   analysisCode: ({ analysisId, codeFileId }) => `/analysis-execution/analyses/${analysisId}/code/${codeFileId}`,
   submissionCodeFile: ({ submissionGroupId, fileId }) => `/analysis-execution/submission-groups/${submissionGroupId}/code/${fileId}`,
   submissionResultFile: ({ submissionId, fileId }) => `/analysis-execution/submissions/${submissionId}/results/${fileId}`,
+  submissionResultFiles: ({ submissionId }) => `/analysis-execution/submissions/${submissionId}/results`,
   insightCodeFile: ({ submissionId, fileId }) => `/analysis-execution/submissions/${submissionId}/insight/code/${fileId}`,
   insightResultFile: ({ submissionId, fileId }) => `/analysis-execution/submissions/${submissionId}/insight/results/${fileId}`,
   insight: ({ submissionId }) => `/analysis-execution/submissions/${submissionId}/insight`,
@@ -220,6 +221,12 @@ const fileSources = keyMirror({
 
 const maxFilesCount = 10000;
 
+const breadcrumbTypes = keyMirror({
+  STUDY: null,
+  ANALYSIS: null,
+  INSIGHT: null,
+});
+
 export {
   apiPaths,
   form,
@@ -237,4 +244,5 @@ export {
   fileSources,
   maxFilesCount,
   analysisPermissions,
+  breadcrumbTypes,
 };

@@ -42,6 +42,20 @@ class SubmissionCode extends Component {
       entityType: this.props.from,
       id: this.props.submissionGroupId || this.props.submissionId,
     });
+    this.props.loadSubmissionFiles({ submissionId: this.props.submissionId });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.urlParams.fileId !== nextProps.urlParams.fileId && nextProps.urlParams.fileId) {
+      this.props.loadFile({
+        type: 'result',
+        submissionGroupId: nextProps.submissionGroupId,
+        submissionId: nextProps.submissionId,
+        fileId: nextProps.urlParams.fileId,
+        downloadFile: false,
+        query: { withContent: false },
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -170,6 +184,8 @@ function mapStateToProps(state, ownProps) {
     tableColumns,
     details,
     isDetailsLoading,
+
+    resultFiles: selectors.getSubmissionFilesList(state),
   };
 }
 
@@ -180,6 +196,16 @@ const mapDispatchToProps = {
   loadSubmissionResultFiles: actions.analysisExecution.analysisCode.search,
   clearFileData: actions.analysisExecution.submissionFile.clear,
   clearDetailsData: actions.analysisExecution.submissionFileDetails.clear,
+  loadSubmissionFiles: ({ submissionId, path = '/' }) =>
+    actions.analysisExecution.analysisCode.codeList.query(
+      {
+        entityId: submissionId,
+        isSubmissionGroup: false,
+      },
+      {
+        path,
+      }
+    ),
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {

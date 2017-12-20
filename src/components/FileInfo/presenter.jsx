@@ -41,18 +41,19 @@ function FileInfo(props) {
     subtitle,
     horizontal,
     onClick,
+    className,
   } = props;
 
   return (
-    <div {...classes({ modifiers: { horizontal } })}>
+    <div {...classes({ modifiers: { horizontal }, extra: className })}>
       <div {...classes('main-container')}>
         <i {...classes('ico', docType)} />
-        <span {...classes('main-info')} title={label}>
+        <span {...classes('main-info')} title={label || name}>
           {(link || onClick)
             ? <Link {...classes('name')} onClick={onClick} to={link} target={linkTarget}>
-              {label}
+              {label || name}
             </Link>
-            : <span>{label}</span>
+            : <span>{label || name}</span>
           }
           {createdAt &&
             <span {...classes('datetime')}>
