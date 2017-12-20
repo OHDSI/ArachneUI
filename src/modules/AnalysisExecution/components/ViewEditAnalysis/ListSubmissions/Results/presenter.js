@@ -23,6 +23,7 @@
 import React from 'react';
 import BEMHelper from 'services/BemHelper';
 import get from 'lodash/get';
+import { numberFormatter } from 'services/Utils';
 
 require('./style.scss');
 
@@ -45,7 +46,8 @@ export default function Results(props) {
     case 'INCIDENCE':
       element = <Incidence resultInfo={resultInfo} resultFilesCount={resultFilesCount}/>;
       break;
-    default: element = <Default resultFilesCount={resultFilesCount}/>;
+    default:
+      element = <Default resultFilesCount={resultFilesCount}/>;
   }
   return element;
 }
@@ -85,25 +87,29 @@ function Incidence(props) {
   const cases = get(resultInfo, 'CASES');
   const rate = get(resultInfo, 'RATE');
   const proportion = get(resultInfo, 'PROPORTION');
-  const tooltipString = `person${personCount > 1 ? 's' : ''}: ${personCount} 
-  time at risk: ${timeAtRisk} 
-  case${cases > 1 ? 's' : ''}: ${cases} 
-  rate: ${rate} 
-  proportion: ${proportion}`;
+  const tooltipString = `
+  Rate: ${rate}
+  Case${cases > 1 ? 's' : ''}: ${cases} 
+  Person${personCount > 1 ? 's' : ''}: ${personCount} 
+  Time at risk: ${timeAtRisk} 
+  Proportion: ${proportion}`;
 
   return <div {...classes({
-      extra: tooltipClass().className,
-      element: 'line'})} aria-label={tooltipString} data-tootik-conf='left multiline'>
-    <span {...classes({ element: 'result-ico'})}>perm_identity</span>
-    {personCount}
-    <span {...classes({ element: 'result-ico'})}>query_builder</span>
-    {timeAtRisk}
-    <span {...classes({ element: 'result-ico'})}>open_with</span>
-    {cases}
-    <span {...classes({ element: 'result-ico'})}>trending_up</span>
-    {rate}
-    <span {...classes({ element: 'result-ico'})}>view_quilt</span>
-    {proportion}
+    extra: tooltipClass().className,
+    element: 'line',
+  })} aria-label={tooltipString} data-tootik-conf='left multiline' >
+    <span{...classes({ element: 'result-element' })}>
+      <span {...classes({ element: 'result-ico' })}>trending_up</span>
+      <span>{numberFormatter.format(rate, 'short')}</span>
+    </span>
+    <span{...classes({ element: 'result-element' })}>
+      <span {...classes({ element: 'result-ico' })}>open_with</span>
+      <span>{numberFormatter.format(cases, 'short')}</span>
+    </span>
+    <span{...classes({ element: 'result-element' })}>
+      <span {...classes({ element: 'result-ico' })}>perm_identity</span>
+      <span>{numberFormatter.format(personCount, 'short')}</span>
+    </span>
   </div>;
 }
 
