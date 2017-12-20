@@ -23,6 +23,14 @@
 @import 'styles/vars-and-mixins.scss';
 
 .#{$namespace} {
+  &tooltip {
+    &--preformatted {
+      &::after {
+        white-space: pre-wrap;
+        width: 200px;
+      }
+    }
+  }
 
   &incedence-label {
     &__result-element {

@@ -87,17 +87,16 @@ function Incidence(props) {
   const cases = get(resultInfo, 'CASES');
   const rate = get(resultInfo, 'RATE');
   const proportion = get(resultInfo, 'PROPORTION');
-  const tooltipString = `
-  Rate: ${rate}
+  const tooltipString = `Rate: ${rate}
   Case${cases > 1 ? 's' : ''}: ${cases} 
   Person${personCount > 1 ? 's' : ''}: ${personCount} 
   Time at risk: ${timeAtRisk} 
   Proportion: ${proportion}`;
 
   return <div {...classes({
-    extra: tooltipClass().className,
+    extra: tooltipClass({ modifiers: 'preformatted' }).className,
     element: 'line',
-  })} aria-label={tooltipString} data-tootik-conf='left multiline' >
+  })} aria-label={tooltipString} data-tootik-conf='left' >
     <span{...classes({ element: 'result-element' })}>
       <span {...classes({ element: 'result-ico' })}>trending_up</span>
       <span>{numberFormatter.format(rate, 'short')}</span>
