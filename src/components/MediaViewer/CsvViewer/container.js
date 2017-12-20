@@ -16,39 +16,41 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 15, 2017
+ * Created: December 19, 2017
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
- 
-.#{$namespace} {
-  &csv-viewer {
-    height: 100%;
-    overflow: auto;
-    position: relative;
+import { Component } from 'react';
+import presenter from './presenter';
 
-    &__table {
-      position: relative;
-      top: -47px;
-      &--sticky {
-        position: sticky;
-        top: 0px;
-        z-index: 100;
-        table-layout: fixed;
+export default class CsvViewer extends Component {
+  constructor() {
+    super();
+    this.state = {
+      widths: null,
+    };
+    this.setThWidths = this.setThWidths.bind(this);
+  }
 
-        & tbody {
-          display: none;
-        }
-      }
-    }
-
-    & .#{$namespace}table {
-      &__cell,
-      &__header-cell {
-        border-right: 1px solid $grey-medium;
-      }
+  setThWidths(headers) {
+    if (headers instanceof NodeList && headers.length) {
+      const widths = [];
+      headers.forEach((header, index) => {
+        const bounds = header.getBoundingClientRect();
+        widths[index] = `${bounds.width}px`;
+      });
+      this.setState({
+        widths,
+      });
     }
   }
+
+  render() {
+    return presenter({
+      ...this.props,
+      ...this.state,
+      setThWidths: this.setThWidths,
+    });
+  }
 }
- 
+
