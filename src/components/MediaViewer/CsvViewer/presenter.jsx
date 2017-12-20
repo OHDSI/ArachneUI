@@ -38,10 +38,34 @@ function TableCellText({ className, value }) {
   );
 }
 
+function CsvTable({ columns, rows, sticky = false, reference }) {
+  const classes = BEMHelper('csv-viewer');
+
+  return (
+    <Table
+      {...classes({ element: 'table', modifiers: { sticky } })}
+      data={rows}
+      mods={['hover']}
+      reference={reference}
+    >
+      {columns.map((col, i) =>
+        <TableCellText
+          key={i}
+          {...classes('header')}
+          header={col.header}
+          field={col.field}
+        />
+      )}
+    </Table>
+  );
+}
+
 export default function CsvViewer(props) {
   const classes = BEMHelper('csv-viewer');
   const {
     data,
+    widths,
+    setThWidths,
   } = props;
   let isHeaderRead = false;
   const columns = [];
@@ -68,23 +92,18 @@ export default function CsvViewer(props) {
 
   return (
     <div {...classes()}>
-      <Table
-        data={rows}
-        mods={['hover']}
-      >
-        {columns.map((col, i) =>
-          <TableCellText
-            key={i}
-            {...classes('header')}
-            header={
-              <span title={col.header}>
-                {col.header}
-              </span>
-            }
-            field={col.field}
-          />
-        )}
-      </Table>
+      <CsvTable columns={columns} rows={[]} sticky reference={(el) => {
+        if (el && Array.isArray(widths) && widths.length) {
+          el.querySelectorAll('th').forEach((th, index) => {
+            th.width = widths[index];
+          });
+        }
+      }} />
+      <CsvTable columns={columns} rows={rows} reference={(el) => {
+        if (el && !widths) {
+          setThWidths(el.querySelectorAll('th'));
+        }
+      }} />
     </div>
   );
 }
