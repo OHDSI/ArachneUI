@@ -31,6 +31,10 @@ class SubmissionResultSummarySelectorsBuilder {
     return get(state, 'analysisExecution.breadcrumbs.queryResult.result', [], 'Array');
   }
 
+  getAnalysis(state) {
+    return get(state, 'analysisExecution.analysis.data.result');
+  }
+
   buildSelectorForAnalysisId() {
     return createSelector(
       this.getBreadcrumbs,
@@ -45,23 +49,37 @@ class SubmissionResultSummarySelectorsBuilder {
     );
   }
 
-  getInfo(state, analysisId, submissionGroupId, submissionId) {
+  getSubmission(state, analysisId, submissionId) {
     const submissionGroups = flatten(get(state, 'analysisExecution.analysis.data.result.submissionGroup', [], 'Array'));
     if (submissionGroups) {
       const submissions = flatten(submissionGroups.map(group => group.submissions));
-      const submission = find(submissions, ['id', parseInt(submissionId)]);
+      const submission = find(submissions, ['id', parseInt(submissionId, 10)]);
       if (submission) {
-        return get(submission, 'resultInfo', null);
+        return submission;
       }
       return null;
     }
     return null;
   }
 
+  getSubmissionType(state, analysisId, submissionId) {
+    const submissionGroups = get(state, 'analysisExecution.analysis.data.result.submissionGroup', [], 'Array');
+    let type = undefined;
+    submissionGroups.forEach((group) => {
+      const submissions = get(group, 'submissions', [], 'Array');
+      if (find(submissions, ['id', parseInt(submissionId, 10)])) {
+        type = get(group, 'analysisType');
+      }
+    });
+    return type;
+  }
+
   build() {
     return {
       getAnalysisId: this.buildSelectorForAnalysisId(),
-      getInfo: this.getInfo,
+      getAnalysis: this.getAnalysis,
+      getSubmissionType: this.getSubmissionType,
+      getSubmission: this.getSubmission,
     };
   }
 

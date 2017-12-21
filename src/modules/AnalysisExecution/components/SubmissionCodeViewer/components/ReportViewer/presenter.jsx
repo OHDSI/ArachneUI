@@ -67,7 +67,6 @@ function ReportViewer(props) {
     data,
     downloadLink,
     pageTitle,
-    toolbarOpts,
     // for treemap reports only
     loadTreemapDetails,
     tableData,
@@ -90,7 +89,6 @@ function ReportViewer(props) {
   return (
     <PageContent title={pageTitle}>
       <div {...classes()}>
-        <Toolbar params={toolbarOpts} />
         <ActionBar downloadLink={downloadLink} />
         <div {...classes('content')}>
           {reports.Dashboard && type === reportTypes.dashboard &&

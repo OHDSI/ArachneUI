@@ -44,11 +44,11 @@ function SubmissionCodeViewer({
 
   resultFiles,
   submissionId,
-  submissionGroupId,
 }) {
     return <FileBrowser
       filesList={resultFiles}
       selectedFile={urlParams.fileId}
+      toolbarOpts={toolbarOpts}
       detailsComponent={
         isReport
           ? <ReportViewer
@@ -67,7 +67,6 @@ function SubmissionCodeViewer({
             file={file}
             isLoading={isLoading}
             loadFile={loadFile}
-            toolbarOpts={toolbarOpts}
             downloadLink={downloadLink}
             urlParams={urlParams}
             pageTitle={pageTitle}
@@ -75,7 +74,6 @@ function SubmissionCodeViewer({
       }
       mainInfoComponent={<Summary
         submissionId={submissionId}
-        submissionGroupId={submissionGroupId}
       />}
     />;
   /*return isReport

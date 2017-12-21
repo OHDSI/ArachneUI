@@ -22,13 +22,66 @@
 
 import React from 'react';
 import EmptyState from 'components/EmptyState';
+import { analysisTypes, nameAnalysisType, statusColors } from 'modules/AnalysisExecution/const';
 import BEMHelper from 'services/BemHelper';
+import {
+  Panel,
+} from 'arachne-ui-components';
+import SummaryIncidence from './Incidence';
 
 import './style.scss';
+import moment from 'moment';
+import { commonDate } from 'const/formats';
 
 export default function SubmissionResultSummary(props) {
   const {
     resultInfo,
+    analysis,
+    submissionGroupType,
+    submission,
   } = props;
-  return <EmptyState message={'Summary'} />
+  const classes = BEMHelper('submission-result-summary');
+
+  if (!analysis) {
+    return <EmptyState message={'Summary'} />;
+  }
+
+  let specificSummary = null;
+  
+  switch (submissionGroupType) {
+    case analysisTypes.INCIDENCE:
+      specificSummary = <SummaryIncidence analysis={analysis} resultInfo={resultInfo} {...classes('summary-block')} />;
+      break;
+  }
+  const statusMods = submission.status.value ? statusColors[submission.status.value] : null;
+
+  return (
+    <div {...classes()}>
+      <div {...classes('summary-block')}>
+        <span {...classes('header')}>Analysis</span>
+        <div {...classes('sub-block')}>          
+          <div {...classes('panel-content')}>
+            Type: {nameAnalysisType({ analysisType: submissionGroupType })}
+          </div>
+          <div {...classes('panel-content')}>
+            Created: {moment(analysis.createdAt).tz(moment.tz.guess()).format(commonDate)}
+          </div>
+        </div>
+      </div>
+      <div {...classes('summary-block')}>
+        <span {...classes('header')}>Submission</span>
+        <div {...classes('sub-block')}>
+          <div {...classes('panel-content')}>
+            Status: <span {...classes({ element: 'status', modifiers: statusMods })}>
+              {submission.status.title}
+            </span>
+          </div>
+          <div {...classes('panel-content')}>
+            Created: {moment(submission.createdAt).tz(moment.tz.guess()).format(commonDate)}
+          </div>
+        </div>
+      </div>
+      {specificSummary}
+    </div>
+  );
 }

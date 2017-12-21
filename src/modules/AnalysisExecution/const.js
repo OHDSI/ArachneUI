@@ -180,6 +180,15 @@ const submissionActionTypes = keyMirror({
   PUBLISH: null,
 });
 
+const analysisTypes = keyMirror({
+  ESTIMATION: null,
+  REPORTING: null,
+  CUSTOM: null,
+  PREDICTION: null,
+  COHORT_CHARACTERIZATION: null,
+  COHORT: null,
+  INCIDENCE: null,
+});
 const importableAnalysisTypes = ['COHORT', 'ESTIMATION', 'PREDICTION', 'COHORT_CHARACTERIZATION', 'INCIDENCE'];
 const analysisTypeNames = {
   COHORT: 'cohort',
@@ -238,6 +247,7 @@ export {
   statusColors,
   submissionActionTypes,
   repeatTypes,
+  analysisTypes,
   importableAnalysisTypes,
   nameAnalysisType,
   docTypes,

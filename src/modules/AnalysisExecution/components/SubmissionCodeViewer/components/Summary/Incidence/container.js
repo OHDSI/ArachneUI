@@ -20,30 +20,11 @@
  *
  */
 
+import SummaryIncidence from './presenter';
+import { ContainerBuilder } from 'services/Utils';
 
-@import 'styles/vars-and-mixins.scss';
-
-.#{$namespace} {
-  &file-browser {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-
-    &__content {      
-      display: flex;
-      width: 100%;
-      flex-grow: 1;
-    }
-
-    &__files-list {
-      width: 32rem;
-      background: $grey-lighter;
-      flex-shrink: 0;
-    }
-
-    &__details {
-      flex-grow: 1;
-      display: flex;
-    }
+export default class SummaryIncidenceBuilder extends ContainerBuilder {
+  getComponent() {
+    return SummaryIncidence;
   }
 }

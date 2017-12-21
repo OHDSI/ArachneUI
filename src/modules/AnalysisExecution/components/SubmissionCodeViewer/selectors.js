@@ -28,7 +28,8 @@ import { treemap } from '@ohdsi/atlascharts/dist/atlascharts.umd';
 import { createSelector } from 'reselect';
 import converter from 'components/FileInfo/converter';
 import get from 'lodash/get';
-import { paths } from 'modules/AnalysisExecution/const';
+import find from 'lodash/find';
+import { paths, breadcrumbTypes } from 'modules/AnalysisExecution/const';
 
 export default class SelectorsBuilder extends TreemapSelectorsBuilder {
   constructor() {
@@ -407,10 +408,22 @@ export default class SelectorsBuilder extends TreemapSelectorsBuilder {
     );
   }
 
+  getBreadcrumbs(state) {
+    return get(state, 'analysisExecution.breadcrumbs.queryResult.result', [], 'Array');
+  }
+
+  buildSelectorForAnalysis() {
+    return createSelector(
+      this.getBreadcrumbs,
+      breadcrumbs => find(breadcrumbs, ['entityType', breadcrumbTypes.ANALYSIS])
+    );
+  }
+
   build() {
     return {
       getTableData: this.extractTableData.bind(this),
       getSubmissionFilesList: this.buildSelectorForSubmissionFileList(),
+      getAnalysis: this.buildSelectorForAnalysis(),
     };
   }
 }

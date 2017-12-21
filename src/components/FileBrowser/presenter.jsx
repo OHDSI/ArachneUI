@@ -22,8 +22,11 @@
 
 import React from 'react';
 import EmptyState from 'components/EmptyState';
-import File from './File';
 import BEMHelper from 'services/BemHelper';
+import {
+  Toolbar,
+} from 'arachne-ui-components';
+import File from './File';
 
 import './style.scss';
 
@@ -32,6 +35,7 @@ export default function FileBrowser(props) {
     className,
     children,
     selectedFile,
+    toolbarOpts,
   } = props;
   // files list
   const {
@@ -51,17 +55,22 @@ export default function FileBrowser(props) {
 
   return (
     <div {...classes({ extra: className })}>
-      <div {...classes('files-list')}>
-        {Array.isArray(filesList) && filesList.length
-          ? filesList.map(file => <File file={file} selected={file.uuid === selectedFile} />)
-          : <EmptyState message={'No files available'} />
-        }
-      </div>
-      <div {...classes('details')}>
-        {selectedFile
-          ? detailsComponent
-          : mainInfoComponent
-        }
+      {toolbarOpts &&
+        <Toolbar {...toolbarOpts} />
+      }
+      <div {...classes('content')}>
+        <div {...classes('files-list')}>
+          {Array.isArray(filesList) && filesList.length
+            ? filesList.map(file => <File file={file} selected={file.uuid === selectedFile} />)
+            : <EmptyState message={'No files available'} />
+          }
+        </div>
+        <div {...classes('details')}>
+          {selectedFile
+            ? detailsComponent
+            : mainInfoComponent
+          }
+        </div>
       </div>
     </div>
   );

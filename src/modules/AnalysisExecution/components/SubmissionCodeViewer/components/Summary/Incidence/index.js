@@ -20,30 +20,7 @@
  *
  */
 
+import SummaryIncidenceBuilder from './container';
 
-@import 'styles/vars-and-mixins.scss';
+export default (new SummaryIncidenceBuilder()).build();
 
-.#{$namespace} {
-  &file-browser {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-
-    &__content {      
-      display: flex;
-      width: 100%;
-      flex-grow: 1;
-    }
-
-    &__files-list {
-      width: 32rem;
-      background: $grey-lighter;
-      flex-shrink: 0;
-    }
-
-    &__details {
-      flex-grow: 1;
-      display: flex;
-    }
-  }
-}

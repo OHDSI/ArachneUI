@@ -67,8 +67,8 @@ if (!numeral['locales']['arachne']) {
       trillion: null,
     }),
     currency: {
-      symbol: '$'
-    }
+      symbol: '$',
+    },
   });
 }
 
@@ -85,8 +85,8 @@ if (!numeral['locales']['arachne-short']) {
       trillion: 'tn',
     },
     currency: {
-      symbol: '$'
-    }
+      symbol: '$',
+    },
   });
 }
 
@@ -94,6 +94,9 @@ const numberFormatter = {
   format: (value, form = 'full') => {
     if (form === 'short') {
       numeral.locale('arachne-short');
+    } else if (form === 'whole') {
+      numeral.locale('arachne');
+      return numeral(value).format('0,0[.]0');
     } else {
       numeral.locale('arachne');
     }

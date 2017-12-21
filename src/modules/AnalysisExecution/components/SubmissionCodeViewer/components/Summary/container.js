@@ -55,16 +55,20 @@ export default class SubmissionResultsummaryBuilder extends ContainerBuilder {
 
   mapStateToProps(state, ownProps) {
     const {
-      submissionGroupId,
       submissionId,
     } = ownProps;
     const analysisId = selectors.getAnalysisId(state);
-    const resultInfo = selectors.getInfo(state, analysisId, submissionGroupId, submissionId);
-    console.warn('result info', resultInfo);
+    const submission = selectors.getSubmission(state, analysisId, submissionId);
+    const resultInfo = get(submission, 'resultInfo', {});
+    const analysis = selectors.getAnalysis(state);
+    const submissionGroupType = selectors.getSubmissionType(state, analysisId, submissionId);
 
     return {
+      analysis,
       analysisId,
       resultInfo,
+      submissionGroupType,
+      submission,
     };
   }
 

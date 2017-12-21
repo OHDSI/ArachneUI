@@ -25,7 +25,35 @@
  
 .#{$namespace} {
   &submission-result-summary {
-    
+    width: 100%;
+
+    &__summary-block {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    &__header {
+      @include title();
+      margin-bottom: 2rem;
+    }
+
+    &__panel-content {
+      padding: 1rem;
+    }
+
+
+    &__sub-block {
+      display: flex;
+      justify-content: center;    
+    }
+
+    &__status {
+			@include title();
+			@include colored();
+    }
   }
     
 }

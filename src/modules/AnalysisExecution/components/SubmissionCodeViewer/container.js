@@ -111,11 +111,12 @@ function mapStateToProps(state, ownProps) {
 
   const breadcrumbList = buildBreadcrumbList(get(state, 'analysisExecution.breadcrumbs.queryResult.result'));
   const backUrl = breadcrumbList.length > 0 ? breadcrumbList[breadcrumbList.length - 1].link : null;
+  const analysis = selectors.getAnalysis(state);
 
   const toolbarOpts = {
     backUrl,
     breadcrumbList,
-    title: get(submissionFileData, 'label') || get(submissionFileData, 'name'),
+    caption: get(analysis, 'title'),
   };
 
   let reportType = reports.unknown;
