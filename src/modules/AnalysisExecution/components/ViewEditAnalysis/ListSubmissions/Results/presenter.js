@@ -24,6 +24,7 @@ import React from 'react';
 import BEMHelper from 'services/BemHelper';
 import get from 'lodash/get';
 import { numberFormatter } from 'services/Utils';
+import pluralize from 'pluralize';
 
 require('./style.scss');
 
@@ -60,7 +61,7 @@ function Cohort(props) {
 
   const persons = get(resultInfo, 'persons');
 
-  return <span>{!!persons ? persons : 0} person{persons !== 1 ? 's' : ''}</span>;
+  return <span>{persons || 0} {pluralize('person', persons)}</span>;
 }
 
 function CohortCharacterization(props) {
@@ -70,7 +71,7 @@ function CohortCharacterization(props) {
 
   const reports = get(resultInfo, 'reports');
 
-  return <span>{!!reports ? reports : 0} report{reports !== 1 ? 's' : ''}</span>;
+  return <span>{reports || 0} {pluralize('report', reports)}</span>;
 }
 
 function Incidence(props) {
@@ -89,8 +90,8 @@ function Incidence(props) {
   const proportion = get(resultInfo, 'PROPORTION');
   const tooltipString = `
   Rate: ${rate}
-  Case${cases > 1 ? 's' : ''}: ${cases} 
-  Person${personCount > 1 ? 's' : ''}: ${personCount} 
+  ${pluralize('Case', cases)}: ${cases}
+  ${pluralize('Person', personCount)}: ${personCount}
   Time at risk: ${timeAtRisk} 
   Proportion: ${proportion}`;
 
@@ -117,5 +118,5 @@ function Default(props) {
   const {
     resultFilesCount,
   } = props;
-  return <span>{resultFilesCount} document{resultFilesCount !== 1 ? 's' : ''}</span>;
+  return <span>{resultFilesCount} {pluralize('document', resultFilesCount)}</span>;
 }
