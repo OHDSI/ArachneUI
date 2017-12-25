@@ -29,6 +29,8 @@ import { isText } from 'services/MimeTypeUtil';
 import { Button, LoadingPanel, Pagination } from 'arachne-ui-components';
 import MimeTypes from 'const/mimeTypes';
 import CodeViewer from 'components/CodeViewer';
+import moment from 'moment-timezone';
+import { usDateTime as dateFormat } from 'const/formats';
 import CSV from './CsvViewer';
 
 let ReactPDF;
@@ -39,9 +41,19 @@ export function ActionBar(props = {}) {
   const classes = new BEMHelper('action-bar');
   const {
     downloadLink,
+    title,
+    createdAt,
   } = props;
   return (
     <div {...classes()}>
+      <div {...classes('info')}>
+        {title && <div {...classes('title')}>
+          {title}
+        </div>}
+        {createdAt && <span>
+          Created at {moment(createdAt).tz(moment.tz.guess()).format(dateFormat)}
+        </span>}
+      </div>
       <div {...classes('actions')}>
         {downloadLink && <Button
           {...classes('btn', 'download')}
@@ -169,7 +181,7 @@ function MediaViewer({ language, onPDFLoaded, pageIndex, path, data, mimeType, s
 
   return isDownloadLinkWrapperNeeded ? (
     <div {...classes()}>
-      <ActionBar downloadLink={downloadLink} />
+      <ActionBar downloadLink={downloadLink} title={title} />
       {element}
     </div>
   ) : element;

@@ -191,16 +191,6 @@ function canUseDom() {
   return (typeof window !== 'undefined' && typeof document !== 'undefined' && document.documentElement);
 }
 
-const detectLanguage = (mimeType) => {
-  let language;
-  if (mimeType === mimeTypes.r) {
-    language = 'r';
-  } else if (isSql(mimeType)) {
-    language = 'text/x-sql';
-  }
-  return language;
-};
-
 const detectLanguageByExtension = (file) => {
   let language;
   if (file) {
@@ -550,7 +540,7 @@ export {
   sortOptions,
   validators,
   canUseDom,
-  detectLanguage,
+  // detectLanguage,
   detectLanguageByExtension,
   detectMimeTypeByExtension,
   Utils,

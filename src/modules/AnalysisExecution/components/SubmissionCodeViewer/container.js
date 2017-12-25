@@ -165,9 +165,8 @@ function mapStateToProps(state, ownProps) {
 
   return {
     urlParams,
-    file: isReport
-      ? reportDTO
-      : submissionFileData,
+    file: submissionFileData,
+    report: reportDTO,
     isLoading,
     toolbarOpts,
     pageTitle: pageTitle.join(' | '),

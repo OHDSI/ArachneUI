@@ -49,6 +49,16 @@
         margin-left: 7px;
       }
     }
+
+    &__info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__title {
+      @include title();
+      margin-bottom: 0.5rem;
+    }
   }
 
   &media-viewer {

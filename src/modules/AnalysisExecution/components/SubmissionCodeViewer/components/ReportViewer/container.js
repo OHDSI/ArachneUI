@@ -20,11 +20,25 @@
  *
  */
 
-import { ContainerBuilder } from 'services/Utils';
+import { ContainerBuilder, get } from 'services/Utils';
 import ReportViewer from './presenter';
 
 export default class ReportViewerBuilder extends ContainerBuilder {
   getComponent() {
     return ReportViewer;
+  }
+
+  mapStateToProps(state, ownProps) {
+    const file = get(ownProps, 'file', {});
+    let title = get(file, 'label', '');
+    if (!title) {
+      title = get(file, 'name', '');
+    }
+    const createdAt = get(file, 'created');
+
+    return {
+      title,
+      createdAt,
+    };
   }
 }

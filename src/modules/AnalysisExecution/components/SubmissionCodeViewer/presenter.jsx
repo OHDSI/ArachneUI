@@ -29,6 +29,7 @@ import { get } from 'services/Utils';
 
 function SubmissionCodeViewer({
   file,
+  report,
   isLoading,
   loadFile,
   toolbarOpts,
@@ -55,7 +56,7 @@ function SubmissionCodeViewer({
       isReport
         ? <ReportViewer
           type={reportType}
-          data={file}
+          data={report}
           details={details}
           toolbarOpts={toolbarOpts}
           downloadLink={downloadLink}
@@ -63,8 +64,8 @@ function SubmissionCodeViewer({
           loadTreemapDetails={loadTreemapDetails}
           tableData={tableData}
           tableColumns={tableColumns}
-          title={filename}
           isLoading={isLoading}
+          file={file}
         />
         : <FileViewer
           file={file}
@@ -72,7 +73,6 @@ function SubmissionCodeViewer({
           downloadLink={downloadLink}
           urlParams={urlParams}
           pageTitle={pageTitle}
-          title={filename}
           isLoading={isLoading}
         />
     }

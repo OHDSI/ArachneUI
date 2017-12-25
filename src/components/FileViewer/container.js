@@ -81,7 +81,10 @@ function mapStateToProps(state, ownProps) {
 
   const file = get(ownProps, 'file', {});
 
-  const title = get(file, 'label', '');
+  let title = get(file, 'label', '');
+  if (!title) {
+    title = get(file, 'name', '');
+  }
   const mimeType = detectMimeTypeByExtension(file);
   const createdAt = get(file, 'created');
   const language = detectLanguageByExtension(file);
