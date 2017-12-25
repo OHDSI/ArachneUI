@@ -536,7 +536,6 @@ export {
   sortOptions,
   validators,
   canUseDom,
-  detectLanguage,
   detectLanguageByExtension,
   detectMimeTypeByExtension,
   Utils,
