@@ -36,18 +36,12 @@ const mimeTypes = {
     MimeTypes.cohortdefinitionjson,
     MimeTypes.sql,
   ],
-  sql: [
-    MimeTypes.cohort,
-    MimeTypes.sql,
-  ]
 };
 
 const isText = mimeType => mimeTypes.text.includes(mimeType);
 const isFat = mimeType => mimeTypes.fat.includes(mimeType);
-const isSql = mimeType => mimeTypes.sql.includes(mimeType);
 
 export {
   isText,
   isFat,
-  isSql,
 };
