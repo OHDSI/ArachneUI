@@ -41,6 +41,7 @@ class InviteRestrictedArea extends Component {
   componentWillMount() {
     if (this.props.studyId !== -1) {
       // in case of studyManager module, to prevent double request for study
+      this.props.loadStudy(this.props.studyId);
       this.props.loadSudyInvitations({ studyId: this.props.studyId });
     }
   }

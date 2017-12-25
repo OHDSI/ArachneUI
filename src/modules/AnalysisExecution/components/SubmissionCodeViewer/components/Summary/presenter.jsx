@@ -22,16 +22,30 @@
 
 import React from 'react';
 import EmptyState from 'components/EmptyState';
+import LabelDataSource from 'components/LabelDataSource';
 import { analysisTypes, nameAnalysisType, statusColors } from 'modules/AnalysisExecution/const';
 import BEMHelper from 'services/BemHelper';
+import moment from 'moment';
+import { commonDate } from 'const/formats';
 import {
   Panel,
 } from 'arachne-ui-components';
 import SummaryIncidence from './Incidence';
+import SummaryCohort from './Cohort';
 
 import './style.scss';
-import moment from 'moment';
-import { commonDate } from 'const/formats';
+
+function ResultInfoBlock({ children }) {
+  const classes = BEMHelper('submission-result-summary');
+
+  return (
+    <div {...classes('summary-block')}>
+      <div {...classes('sub-block')}>
+        {children}
+      </div>
+    </div>
+  );
+}
 
 export default function SubmissionResultSummary(props) {
   const {
@@ -39,6 +53,7 @@ export default function SubmissionResultSummary(props) {
     analysis,
     submissionGroupType,
     submission,
+    datasource,
   } = props;
   const classes = BEMHelper('submission-result-summary');
 
@@ -47,41 +62,57 @@ export default function SubmissionResultSummary(props) {
   }
 
   let specificSummary = null;
-  
+  const specificSummaryMods = {
+    narrow: true,
+    wide: false,
+  };
+
   switch (submissionGroupType) {
     case analysisTypes.INCIDENCE:
-      specificSummary = <SummaryIncidence analysis={analysis} resultInfo={resultInfo} {...classes('summary-block')} />;
+      specificSummary = <SummaryIncidence analysis={analysis} resultInfo={resultInfo} />;
+      break;
+    case analysisTypes.COHORT: case analysisTypes.COHORT_CHARACTERIZATION:
+      specificSummary = <SummaryCohort analysis={analysis} resultInfo={resultInfo} />;
       break;
   }
   const statusMods = submission.status.value ? statusColors[submission.status.value] : null;
 
   return (
     <div {...classes()}>
-      <div {...classes('summary-block')}>
-        <span {...classes('header')}>Analysis</span>
-        <div {...classes('sub-block')}>          
+      <ResultInfoBlock>
+        <Panel title={'Analysis'} {...classes('panel')}>
           <div {...classes('panel-content')}>
-            Type: {nameAnalysisType({ analysisType: submissionGroupType })}
+            <ul {...classes('list')}>
+              <li {...classes('list-item')}>{nameAnalysisType({ analysisType: submissionGroupType, capitalize: true })}</li>
+              <li {...classes('list-item')}>{moment(analysis.createdAt).tz(moment.tz.guess()).format(commonDate)}</li>
+            </ul>
           </div>
+        </Panel>
+        <Panel title={'Submission details'} {...classes('panel')}>
           <div {...classes('panel-content')}>
-            Created: {moment(analysis.createdAt).tz(moment.tz.guess()).format(commonDate)}
+            <ul {...classes('list')}>
+              <li {...classes('list-item')}>
+                <span {...classes({ element: 'status', modifiers: statusMods })}>
+                  {submission.status.title}
+                </span>
+              </li>
+              <li {...classes('list-item')}>{moment(submission.createdAt).tz(moment.tz.guess()).format(commonDate)}</li>
+              <li {...classes('list-item')}>
+                <LabelDataSource {...datasource} />
+              </li>
+            </ul>
           </div>
-        </div>
-      </div>
-      <div {...classes('summary-block')}>
-        <span {...classes('header')}>Submission</span>
-        <div {...classes('sub-block')}>
-          <div {...classes('panel-content')}>
-            Status: <span {...classes({ element: 'status', modifiers: statusMods })}>
-              {submission.status.title}
-            </span>
-          </div>
-          <div {...classes('panel-content')}>
-            Created: {moment(submission.createdAt).tz(moment.tz.guess()).format(commonDate)}
-          </div>
-        </div>
-      </div>
-      {specificSummary}
+        </Panel>
+      </ResultInfoBlock>
+      {specificSummary &&
+        <ResultInfoBlock>
+          <Panel title={'Result summary'} {...classes('panel', specificSummaryMods)}>
+            <div {...classes('panel-content')}>
+              {specificSummary}
+            </div>
+          </Panel>
+        </ResultInfoBlock>
+      }
     </div>
   );
 }

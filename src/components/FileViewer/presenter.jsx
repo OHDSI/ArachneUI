@@ -34,7 +34,7 @@ function FileViewer({ language, isLoading, pageTitle, downloadLink, mimeType, co
     <PageContent title={pageTitle}>
       <div {...classes()}>
         {toolbarOpts &&
-          <Toolbar params={toolbarOpts}/>
+          <Toolbar params={toolbarOpts} />
         }
         <div {...classes('content')}>
           <MediaViewer

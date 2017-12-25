@@ -20,35 +20,11 @@
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+import SummaryCohort from './presenter';
+import { ContainerBuilder } from 'services/Utils';
 
-.#{$namespace} {
-  &summary-incidence {
-
-    &__result-info {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    &__result-element {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      width: 10rem;
-    }
-
-    &__result-ico {
-      @include material-icon();
-      font-size: 3rem;
-      margin-bottom: 1rem;
-      color: $grey-dark;
-    }
-
-    &__count {
-      margin-bottom: 1rem;
-    }
-    
+export default class SummaryCohortBuilder extends ContainerBuilder {
+  getComponent() {
+    return SummaryCohort;
   }
 }

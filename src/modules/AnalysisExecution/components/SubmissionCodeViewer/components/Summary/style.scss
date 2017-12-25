@@ -26,34 +26,56 @@
 .#{$namespace} {
   &submission-result-summary {
     width: 100%;
+    padding: 1rem;
 
     &__summary-block {
       display: flex;
       flex-direction: column;
       width: 100%;
-      padding: 2rem;
-      text-align: center;
+      padding: 0 1rem 0.75rem;
     }
 
-    &__header {
-      @include title();
-      margin-bottom: 2rem;
+    &__panel {
+      flex-basis: 50%;
+      margin: 1rem;
+
+      &--wide {
+        flex-basis: 100%;
+      }
+      &--narrow {
+        margin-right: calc(50% + 1rem);
+      }
     }
 
     &__panel-content {
-      padding: 1rem;
+      padding: 1.5rem 2rem;
     }
-
 
     &__sub-block {
       display: flex;
-      justify-content: center;    
+      justify-content: space-between;
     }
 
     &__status {
 			@include title();
 			@include colored();
     }
+
+    &__list {
+			align-items: center;
+			display: flex;
+		}
+		&__list-item {
+      display: flex;
+
+			&:not(:first-child) {
+				&:before {
+					content: "\2022";
+					padding-left: 1.5rem;
+					padding-right: 1.5rem;
+				}
+			}
+		}
   }
     
 }

@@ -23,23 +23,36 @@ import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { get, detectLanguageByExtension, detectMimeTypeByExtension } from 'services/Utils';
 import { isFat as isMimeTypeFat } from 'services/MimeTypeUtil';
+import isEqual from 'lodash/isEqual';
 import presenter from './presenter';
 
 class FileViewer extends Component {
 
-  componentWillMount() {
-    const params = this.props;
-    params.loadFile({
-      ...params.urlParams,
-      query : {...params.queryParams, withContent: false},
+  getFile(props) {
+    props.loadFile({
+      ...props.urlParams,
+      query: { ...props.queryParams, withContent: false },
     }).then((result) => {
       if (!isMimeTypeFat(get(result, 'result.docType', '', 'String'))) {
-        params.loadFile({
-          ...params.urlParams,
-          query : {...params.queryParams, withContent: true},
+        props.loadFile({
+          ...props.urlParams,
+          query: { ...props.queryParams, withContent: true },
         });
       }
     });
+  }
+
+  componentWillMount() {
+    this.getFile(this.props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (
+      !isEqual(this.props.urlParams, nextProps.urlParams)
+      || !isEqual(this.props.queryParams, nextProps.queryParams)
+    ) {
+      this.getFile(nextProps);
+    }
   }
 
   render() {

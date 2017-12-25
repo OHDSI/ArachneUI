@@ -25,6 +25,7 @@ import { get, ContainerBuilder } from 'services/Utils';
 import actions from 'actions';
 import presenter from './presenter';
 import SelectorsBuilder from './selectors';
+import { dsConverter } from 'components/LabelDataSource';
 
 class SubmissionResultsummary extends Component {
   constructor() {
@@ -62,6 +63,7 @@ export default class SubmissionResultsummaryBuilder extends ContainerBuilder {
     const resultInfo = get(submission, 'resultInfo', {});
     const analysis = selectors.getAnalysis(state);
     const submissionGroupType = selectors.getSubmissionType(state, analysisId, submissionId);
+    const datasource = dsConverter(get(submission, 'dataSource', {}));
 
     return {
       analysis,
@@ -69,6 +71,7 @@ export default class SubmissionResultsummaryBuilder extends ContainerBuilder {
       resultInfo,
       submissionGroupType,
       submission,
+      datasource,
     };
   }
 

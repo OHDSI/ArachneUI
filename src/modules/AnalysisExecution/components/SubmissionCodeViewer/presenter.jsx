@@ -25,6 +25,7 @@ import FileViewer from 'components/FileViewer';
 import FileBrowser from 'components/FileBrowser';
 import ReportViewer from './components/ReportViewer';
 import Summary from './components/Summary';
+import { get } from 'services/Utils';
 
 function SubmissionCodeViewer({
   file,
@@ -44,60 +45,45 @@ function SubmissionCodeViewer({
 
   resultFiles,
   submissionId,
+  filename,
 }) {
-    return <FileBrowser
-      filesList={resultFiles}
-      selectedFile={urlParams.fileId}
-      toolbarOpts={toolbarOpts}
-      detailsComponent={
-        isReport
-          ? <ReportViewer
-            type={reportType}
-            data={file}
-            details={details}
-            toolbarOpts={toolbarOpts}
-            downloadLink={downloadLink}
-            pageTitle={pageTitle}
-            loadTreemapDetails={loadTreemapDetails}
-            tableData={tableData}
-            tableColumns={tableColumns}
-            isLoading={isDetailsLoading}
-          />
-          : <FileViewer
-            file={file}
-            isLoading={isLoading}
-            loadFile={loadFile}
-            downloadLink={downloadLink}
-            urlParams={urlParams}
-            pageTitle={pageTitle}
-          />
-      }
-      mainInfoComponent={<Summary
-        submissionId={submissionId}
-      />}
-    />;
-  /*return isReport
-    ? <ReportViewer
-      type={reportType}
-      data={file}
-      details={details}
-      toolbarOpts={toolbarOpts}
-      downloadLink={downloadLink}
-      pageTitle={pageTitle}
-      loadTreemapDetails={loadTreemapDetails}
-      tableData={tableData}
-      tableColumns={tableColumns}
-      isLoading={isDetailsLoading}
-    />
-    : <FileViewer
-      file={file}
-      isLoading={isLoading}
-      loadFile={loadFile}
-      toolbarOpts={toolbarOpts}
-      downloadLink={downloadLink}
-      urlParams={urlParams}
-      pageTitle={pageTitle}
-    />;*/
+  const fileViewer = (<FileBrowser
+    filesList={resultFiles}
+    selectedFile={urlParams.fileId}
+    toolbarOpts={toolbarOpts}
+    detailsComponent={
+      isReport
+        ? <ReportViewer
+          type={reportType}
+          data={file}
+          details={details}
+          toolbarOpts={toolbarOpts}
+          downloadLink={downloadLink}
+          pageTitle={pageTitle}
+          loadTreemapDetails={loadTreemapDetails}
+          tableData={tableData}
+          tableColumns={tableColumns}
+          title={filename}
+          isLoading={isLoading}
+        />
+        : <FileViewer
+          file={file}
+          loadFile={loadFile}
+          downloadLink={downloadLink}
+          urlParams={urlParams}
+          pageTitle={pageTitle}
+          title={filename}
+          isLoading={isLoading}
+        />
+    }
+    mainInfoComponent={<Summary
+      submissionId={submissionId}
+    />}
+  />);
+
+  return (
+    fileViewer
+  );
 }
 
 export default SubmissionCodeViewer;

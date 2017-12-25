@@ -27,41 +27,17 @@ import { get, numberFormatter } from 'services/Utils';
 
 import './style.scss';
 
-export default function SummaryIncidence({ analysis, resultInfo = {}, className }) {
-  const classes = BEMHelper('summary-incidence');
-  const cases = get(resultInfo, 'CASES', 0);
+export default function SummaryCohort({ analysis, resultInfo = {}, className }) {
+  const classes = BEMHelper('summary-cohort');
   const personCount = get(resultInfo, 'PERSON_COUNT', 0);
-  const proportion = get(resultInfo, 'PROPORTION', 0);
-  const rate = get(resultInfo, 'RATE', 0);
-  const timeAtRisk = get(resultInfo, 'TIME_AT_RISK', 0);
 
   return (
     <div {...classes({ extra: className })}>
       <div {...classes('result-info')}>
-        <span{...classes('result-element')}>
-          <span {...classes('result-ico')}>open_with</span>
-          <span {...classes('count')}>{numberFormatter.format(cases, 'whole')}</span>
-          <span>{pluralize('Case', cases)}</span>
-        </span>
-        <span {...classes('result-element')}>
-          <span {...classes('result-ico')}>trending_up</span>
-          <span {...classes('count')}>{numberFormatter.format(rate, 'whole')}</span>
-          <span>{pluralize('Rate', rate)}</span>
-        </span>
         <span {...classes('result-element')}>
           <span {...classes('result-ico')}>perm_identity</span>
           <span {...classes('count')}>{numberFormatter.format(personCount, 'whole')}</span>
           <span>{pluralize('Person', personCount)}</span>
-        </span>
-        <span {...classes('result-element')}>
-          <span {...classes('result-ico')}>pie_chart</span>
-          <span {...classes('count')}>{numberFormatter.format(proportion, 'whole')}</span>
-          <span>Proportion</span>
-        </span>
-        <span {...classes('result-element')}>
-          <span {...classes('result-ico')}>timelapse</span>
-          <span {...classes('count')}>{numberFormatter.format(timeAtRisk, 'whole')}</span>
-          <span>Time at risk</span>
         </span>
       </div>
     </div>
