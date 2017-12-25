@@ -20,7 +20,7 @@
  *
  */
 
-import CsvViewer from './presenter';
+import CsvViewer from './container';
 
 export default CsvViewer;
 

@@ -20,35 +20,6 @@
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
- 
-.#{$namespace} {
-  &csv-viewer {
-    height: 100%;
-    overflow: auto;
-    position: relative;
+import Results from './presenter';
 
-    &__table {
-      position: relative;
-      top: -47px;
-      &--sticky {
-        position: sticky;
-        top: 0px;
-        z-index: 100;
-        table-layout: fixed;
-
-        & tbody {
-          display: none;
-        }
-      }
-    }
-
-    & .#{$namespace}table {
-      &__cell,
-      &__header-cell {
-        border-right: 1px solid $grey-medium;
-      }
-    }
-  }
-}
- 
+export default Results;

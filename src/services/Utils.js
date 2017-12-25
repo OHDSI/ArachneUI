@@ -26,7 +26,6 @@ import _get from 'lodash/get';
 import { types as fieldTypes } from 'const/modelAttributes';
 import mimeTypes from 'const/mimeTypes';
 import {
-  isSql,
   isText,
 } from 'services/MimeTypeUtil';
 import { reduxForm, SubmissionError } from 'redux-form';
@@ -187,16 +186,6 @@ const validators = {
 function canUseDom() {
   return (typeof window !== 'undefined' && typeof document !== 'undefined' && document.documentElement);
 }
-
-const detectLanguage = (mimeType) => {
-  let language;
-  if (mimeType === mimeTypes.r) {
-    language = 'r';
-  } else if (isSql(mimeType)) {
-    language = 'text/x-sql';
-  }
-  return language;
-};
 
 const detectLanguageByExtension = (file) => {
   let language;
@@ -547,7 +536,6 @@ export {
   sortOptions,
   validators,
   canUseDom,
-  detectLanguage,
   detectLanguageByExtension,
   detectMimeTypeByExtension,
   Utils,
