@@ -26,8 +26,20 @@ import { isFat as isMimeTypeFat } from 'services/MimeTypeUtil';
 import isEqual from 'lodash/isEqual';
 import presenter from './presenter';
 
-class FileViewer extends Component {
+export class FileLoader extends Component {
+  componentWillMount() {
+    this.getFile(this.props);
+  }
 
+  componentWillReceiveProps(nextProps) {
+    if (
+      !isEqual(this.props.urlParams, nextProps.urlParams)
+      || !isEqual(this.props.queryParams, nextProps.queryParams)
+    ) {
+      this.getFile(nextProps);
+    }
+  }
+  
   getFile(props) {
     props.loadFile({
       ...props.urlParams,
@@ -41,20 +53,9 @@ class FileViewer extends Component {
       }
     });
   }
+}
 
-  componentWillMount() {
-    this.getFile(this.props);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (
-      !isEqual(this.props.urlParams, nextProps.urlParams)
-      || !isEqual(this.props.queryParams, nextProps.queryParams)
-    ) {
-      this.getFile(nextProps);
-    }
-  }
-
+class FileViewer extends FileLoader {
   render() {
     return presenter(this.props);
   }

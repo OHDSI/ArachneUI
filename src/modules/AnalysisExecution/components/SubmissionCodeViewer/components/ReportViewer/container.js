@@ -21,7 +21,26 @@
  */
 
 import { ContainerBuilder, get } from 'services/Utils';
-import ReportViewer from './presenter';
+import ReportUtils from 'components/Reports/Utils';
+import { treemapReports } from 'const/reports';
+import { FileLoader } from 'components/FileViewer/container';
+import actions from 'actions';
+import convertDetailsDataToReportData from './converters/reportDetailsToReportData';
+import DTO from './converters/DTO';
+import presenter from './presenter';
+import SelectorsBuilder from './selectors';
+
+const selectors = new SelectorsBuilder().build();
+
+class ReportViewer extends FileLoader {
+  componentWillMount() {
+
+  }
+
+  render() {
+    return presenter(this.props);
+  }
+}
 
 export default class ReportViewerBuilder extends ContainerBuilder {
   getComponent() {
@@ -31,14 +50,101 @@ export default class ReportViewerBuilder extends ContainerBuilder {
   mapStateToProps(state, ownProps) {
     const file = get(ownProps, 'file', {});
     let title = get(file, 'label', '');
+    let reportDTO = {};
+    let tableData = {};
+    let tableColumns = {};
+    const isDetailsLoading = get(state, 'analysisExecution.submissionFileDetails.isLoading', false);
+    const submissionFileDetails = get(state, 'analysisExecution.submissionFileDetails.data.result');
+    const createdAt = get(file, 'created');
+    const reportType = ReportUtils.getReportType(get(file, 'docType'));
+    const filename = get(file, 'name', '');
+    let details = {};
     if (!title) {
       title = get(file, 'name', '');
     }
-    const createdAt = get(file, 'created');
+
+    try {
+      const fileContent = JSON.parse(file.content);
+
+      // change key names in JSON and it's structure
+      const structure = Object.entries(fileContent);
+      structure.forEach(([key, value]) => {
+        reportDTO[key] = ReportUtils.arrayToDataframe(value);
+      });
+
+      if (treemapReports.includes(reportType)) {
+        reportDTO = Object.entries(reportDTO)[0][1];
+        tableData = selectors.getTableData(reportType, reportDTO);
+        tableColumns = {};
+        Object.entries(tableData[0]).forEach(([key, value]) => {
+          tableColumns[key] = value.columnName;
+        });
+      }
+    } catch (er) {}
+    
+
+    if (submissionFileDetails && submissionFileDetails.content) {
+      try {
+        const fileContent = JSON.parse(submissionFileDetails.content);
+
+        // change key names in JSON and it's structure
+        const structure = Object.entries(fileContent);
+        structure.forEach(([key, value]) => {
+          details[key] = ReportUtils.arrayToDataframe(value);
+        });
+        details = convertDetailsDataToReportData(details, DTO[reportType]);
+      } catch (er) {}
+    }
 
     return {
       title,
       createdAt,
+      data: reportDTO,
+      type: reportType,
+     
+      // treemap reports
+      tableData,
+      tableColumns,
+      details,
+      isDetailsLoading,
+
+      filename,
+    };
+  }
+
+  getMapDispatchToProps() {
+    return {
+      loadDetails: actions.analysisExecution.submissionFileDetails.find,
+      loadSubmissionResultFiles: actions.analysisExecution.analysisCode.search,
+    };
+  }
+
+  mergeProps(stateProps, dispatchProps, ownProps) {
+    return {
+      ...stateProps,
+      ...dispatchProps,
+      ...ownProps,
+      loadTreemapDetails({ filename }) {
+        let path = '';
+        const isRoot = stateProps.filename.lastIndexOf('/') === -1;
+        if (!isRoot) {
+          path = `${stateProps.filename.substr(0, stateProps.filename.lastIndexOf('/'))}/`;
+        }
+        const realname = `${path}${stateProps.type}/${filename}.json`;
+        dispatchProps.loadSubmissionResultFiles(
+          {
+            entityId: ownProps.submissionId,
+          },
+          {
+            'real-name': realname,
+          }
+        ).then(detailedFiles => dispatchProps.loadDetails({
+          type: 'result',
+          submissionGroupId: ownProps.submissionGroupId,
+          submissionId: ownProps.submissionId,
+          fileId: get(detailedFiles, '[0].uuid', '1'),
+        }));
+      },
     };
   }
 }

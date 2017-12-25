@@ -25,11 +25,9 @@ import FileViewer from 'components/FileViewer';
 import FileBrowser from 'components/FileBrowser';
 import ReportViewer from './components/ReportViewer';
 import Summary from './components/Summary';
-import { get } from 'services/Utils';
 
 function SubmissionCodeViewer({
   file,
-  report,
   isLoading,
   loadFile,
   toolbarOpts,
@@ -37,16 +35,10 @@ function SubmissionCodeViewer({
   urlParams,
   pageTitle,
   isReport = false,
-  reportType,
-  loadTreemapDetails,
-  tableData,
-  tableColumns,
-  details,
-  isDetailsLoading,
 
   resultFiles,
   submissionId,
-  filename,
+  submissionGroupId,
 }) {
   const fileViewer = (<FileBrowser
     filesList={resultFiles}
@@ -55,17 +47,14 @@ function SubmissionCodeViewer({
     detailsComponent={
       isReport
         ? <ReportViewer
-          type={reportType}
-          data={report}
-          details={details}
-          toolbarOpts={toolbarOpts}
-          downloadLink={downloadLink}
-          pageTitle={pageTitle}
-          loadTreemapDetails={loadTreemapDetails}
-          tableData={tableData}
-          tableColumns={tableColumns}
-          isLoading={isLoading}
           file={file}
+          loadFile={loadFile}
+          downloadLink={downloadLink}
+          urlParams={urlParams}
+          pageTitle={pageTitle}
+          isLoading={isLoading}
+          submissionId={submissionId}
+          submissionGroupId={submissionGroupId}
         />
         : <FileViewer
           file={file}
