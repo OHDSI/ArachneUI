@@ -56,11 +56,12 @@ class FileTreeDataDuckBuilder {
   }
 
   getToggleAction() {
-    return ({ relativePath }, state) => ({
+    return ({ relativePath }, state, toggleParents = false) => ({
       type: this.actions.TOGGLE,
       payload: {
         relativePath,
         state,
+        toggleParents,
       },
     });
   }
@@ -128,7 +129,7 @@ class FileTreeDataDuckBuilder {
           handler: (state, { payload: { relativePath, state: nodeState, toggleParents = false } }) => {
             const newTree = cloneDeep(state.queryResult);
             const toggleRelPath = relativePath;
-            const toggledNode = FileTreeUtils.findNodeByPath(newTree, toggleRelPath, toggleParents);
+            const toggledNode = FileTreeUtils.findNodeByPath(newTree, toggleRelPath, nodeState && toggleParents);
             const toggledNodeList = Array.isArray(toggledNode) ? toggledNode : [toggledNode];
             toggledNodeList.forEach(
               (node) => { node.isExpanded = nodeState; }
