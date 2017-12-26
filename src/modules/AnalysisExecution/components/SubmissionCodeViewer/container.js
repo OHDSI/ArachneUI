@@ -47,7 +47,7 @@ class SubmissionCode extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (get(this.props.file, 'uuid') !== get(nextProps.file, 'uuid')) {
+    if (get(nextProps.file, 'submissionId') && get(this.props.file, 'uuid') !== get(nextProps.file, 'uuid')) {
       let loadPromise = new Promise(resolve => resolve());
       if (get(this.props.file, 'submissionId') !== get(nextProps.file, 'submissionId')) {
         const folderPath = FileTreeUtils.getFileFolder(nextProps.file.relativePath);

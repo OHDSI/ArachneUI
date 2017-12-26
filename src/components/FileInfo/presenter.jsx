@@ -20,7 +20,7 @@
  *
  */
 
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import moment from 'moment-timezone';
 import BEMHelper from 'services/BemHelper';
 import { Link } from 'arachne-ui-components';
@@ -28,7 +28,22 @@ import { shortDate as dateFormat } from 'const/formats';
 
 require('./style.scss');
 
+/** @augments{ Component<any, any>} */
 class FileInfo extends Component {
+
+  static propTypes() {
+    return {
+      author: PropTypes.object,
+      createdAt: PropTypes.number,
+      docType: PropTypes.string,
+      link: PropTypes.string,
+      linkTarget: PropTypes.string,
+      mods: PropTypes.object,
+      version: PropTypes.string,
+      subtitle: PropTypes.string,
+      onClick: PropTypes.func,
+    };
+  }
 
   constructor(props) {
     super(props);
