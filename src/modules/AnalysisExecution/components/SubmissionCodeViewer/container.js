@@ -21,26 +21,25 @@
  */
 
 import { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { get } from 'services/Utils';
+import { get, ContainerBuilder } from 'services/Utils';
 import actions from 'actions/index';
-import { downloadLinkBuilder } from 'modules/AnalysisExecution/ducks/submissionFile';
 import { buildBreadcrumbList } from 'modules/AnalysisExecution/utils';
 import ReportUtils from 'components/Reports/Utils';
 import { reports } from 'const/reports';
+import { LinkBuilder } from 'modules/AnalysisExecution/ducks/linkBuilder';
 import presenter from './presenter';
-import SelectorsBuilder from './selectors';
 
-const selectors = new SelectorsBuilder().build();
-
-class SubmissionCode extends Component {
+export class SubmissionCode extends Component {
+  constructor() {
+    super();
+    this.LinkBuilder = new LinkBuilder();
+  }
 
   componentWillMount() {
     this.props.loadBreadcrumbs({
       entityType: this.props.from,
       id: this.props.submissionGroupId || this.props.submissionId,
     });
-    this.props.loadSubmissionFiles({ submissionId: this.props.submissionId });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -62,7 +61,84 @@ class SubmissionCode extends Component {
   }
 
   render() {
-    return presenter(this.props);
+    return presenter({
+      ...this.props,
+      downloadLink: this.LinkBuilder.build(),
+    });
+  }
+}
+
+export class SubmissionCodeBuilder extends ContainerBuilder {
+  constructor() {
+    super();
+    this.selectors = {};
+  }
+
+  getComponent() {
+    return SubmissionCode;
+  }
+
+  mapStateToProps(state, ownProps) {
+    const from = ownProps.route.from;
+    const type = ownProps.route.type;
+    const submissionGroupId = ownProps.params.submissionGroupId;
+    const submissionId = ownProps.params.submissionId;
+    const fileUuid = ownProps.params.fileUuid;
+
+    const isFileLoading = this.selectors.getIsFileLoading(state);
+    const isLoading = get(state, 'analysisExecution.breadcrumbs.isLoading', false)
+      || isFileLoading;
+
+    const pageTitle = [
+      this.selectors.getPageTitle(state),
+      ...(get(state, 'analysisExecution.breadcrumbs.data', []).map(crumb => crumb.title).reverse()),
+      'Arachne',
+    ];
+
+    const submissionFileData = this.selectors.getFileData(state);
+
+    const urlParams = {
+      type,
+      submissionGroupId,
+      submissionId,
+      fileId: fileUuid,
+    };
+
+    const breadcrumbList = buildBreadcrumbList(get(state, 'analysisExecution.breadcrumbs.queryResult.result'));
+    const backUrl = breadcrumbList.length > 0 ? breadcrumbList[breadcrumbList.length - 1].link : null;
+    const analysis = this.selectors.getAnalysis(state);
+
+    const toolbarOpts = {
+      backUrl,
+      breadcrumbList,
+      caption: get(analysis, 'title'),
+    };
+
+    let isReport = false;
+    if (submissionFileData && submissionFileData.content) {
+      const reportType = ReportUtils.getReportType(get(submissionFileData, 'docType'));
+      isReport = reportType !== reports.unknown;
+    }
+
+    return {
+      urlParams,
+      file: submissionFileData,
+      isLoading,
+      toolbarOpts,
+      pageTitle: pageTitle.join(' | '),
+      from,
+      submissionGroupId,
+      submissionId,
+      isReport,
+      resultFiles: this.selectors.getSubmissionFilesList(state),
+    };
+  }
+
+  getMapDispatchToProps() {
+    return {
+      loadBreadcrumbs: actions.analysisExecution.breadcrumbs.query,
+      clearDetailsData: actions.analysisExecution.submissionFileDetails.clear,
+    };
   }
 }
 
@@ -75,84 +151,3 @@ SubmissionCode.propTypes = {
   fileUuid: PropTypes.string,
   type: PropTypes.string,
 };
-
-function mapStateToProps(state, ownProps) {
-  const from = ownProps.route.from;
-  const type = ownProps.route.type;
-
-  const submissionGroupId = ownProps.params.submissionGroupId;
-  const submissionId = ownProps.params.submissionId;
-  const fileUuid = ownProps.params.fileUuid;
-
-  const isFileLoading = get(state, 'analysisExecution.submissionFile.isLoading', false);
-  const isLoading = get(state, 'analysisExecution.breadcrumbs.isLoading', false)
-    || isFileLoading;
-
-  const pageTitle = [
-    get(state, 'analysisExecution.submissionFile.data.result.name', 'Code file'),
-    ...(get(state, 'analysisExecution.breadcrumbs.data', []).map(crumb => crumb.title).reverse()),
-    'Arachne',
-  ];
-
-  const downloadLink = downloadLinkBuilder({ type, submissionGroupId, submissionId, fileId: fileUuid, downloadFile: true });
-
-  const submissionFileData = get(state, 'analysisExecution.submissionFile.data.result');
-
-  const urlParams = {
-    type,
-    submissionGroupId,
-    submissionId,
-    fileId: fileUuid,
-  };
-
-  const breadcrumbList = buildBreadcrumbList(get(state, 'analysisExecution.breadcrumbs.queryResult.result'));
-  const backUrl = breadcrumbList.length > 0 ? breadcrumbList[breadcrumbList.length - 1].link : null;
-  const analysis = selectors.getAnalysis(state);
-
-  const toolbarOpts = {
-    backUrl,
-    breadcrumbList,
-    caption: get(analysis, 'title'),
-  };
-
-  let isReport = false;
-  if (submissionFileData && submissionFileData.content) {
-    const reportType = ReportUtils.getReportType(get(submissionFileData, 'docType'));
-    isReport = reportType !== reports.unknown;
-  }
-
-  return {
-    urlParams,
-    file: submissionFileData,
-    isLoading,
-    toolbarOpts,
-    pageTitle: pageTitle.join(' | '),
-    downloadLink,
-    from,
-    submissionGroupId,
-    submissionId,
-    isReport,
-    resultFiles: selectors.getSubmissionFilesList(state),
-  };
-}
-
-const mapDispatchToProps = {
-  loadBreadcrumbs: actions.analysisExecution.breadcrumbs.query,
-  loadFile: actions.analysisExecution.submissionFile.find,
-  loadSubmissionResultFiles: actions.analysisExecution.analysisCode.search,
-  clearFileData: actions.analysisExecution.submissionFile.clear,
-  clearDetailsData: actions.analysisExecution.submissionFileDetails.clear,
-  loadSubmissionFiles: ({ submissionId, path = '/' }) =>
-    actions.analysisExecution.analysisCode.codeList.query(
-      {
-        entityId: submissionId,
-        isSubmissionGroup: false,
-      },
-      {
-        path,
-      }
-    ),
-};
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(SubmissionCode);

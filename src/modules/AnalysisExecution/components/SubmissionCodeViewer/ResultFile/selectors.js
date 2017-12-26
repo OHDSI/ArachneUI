@@ -16,16 +16,22 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: November 14, 2017
+ * Created: December 26, 2017
  *
  */
+import { SubmissionCodeSelectorsBuilder } from 'modules/AnalysisExecution/components/SubmissionCodeViewer/selectors';
+import get from 'lodash/get';
 
-// drilldown for treemap reports
-import DuckBuilder from 'modules/AnalysisExecution/ducks/submissionFileDuckBuilder';
-import { SubmissionResultLinkBuilder } from 'modules/AnalysisExecution/ducks/linkBuilder';
+export default class SubmissionResultSelectors extends SubmissionCodeSelectorsBuilder {
+  getIsFileLoading(state) {
+    return get(state, 'analysisExecution.submissionResultFile.isLoading', false);
+  }
 
-const duck = new DuckBuilder();
-duck.coreName = 'AE_ANALYSIS_SUBMISSION_FILE_DETAILS';
-duck.LinkBuilder = SubmissionResultLinkBuilder;
+  getPageTitle(state) {
+    return get(state, 'analysisExecution.submissionResultFile.data.result.name', 'Code file');
+  }
 
-export default duck.build();
+  getFileData(state) {
+    return get(state, 'analysisExecution.submissionResultFile.data.result');
+  }
+}

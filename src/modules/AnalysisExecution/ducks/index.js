@@ -30,7 +30,8 @@ import insightComments from './insightComments';
 import insight from './insight';
 import studyDataSourceList from './studyDataSourceList';
 import statusHistory from './statusHistory';
-import submissionFile from './submissionFile';
+import submissionResultFile from './submissionResultFile';
+import submissionGroupFile from './submissionGroupFile';
 import submissionFileDetails from './submissionFileDetails';
 
 import code from './code';
@@ -53,7 +54,8 @@ export default {
     insight: insight.actions,
     studyDataSourceList: studyDataSourceList.actions,
     statusHistory: statusHistory.actions,
-    submissionFile: submissionFile.actions,
+    submissionResultFile: submissionResultFile.actions,
+    submissionGroupFile: submissionGroupFile.actions,
     submissionFileDetails: submissionFileDetails.actions,
     code: code.actions,
     codeLock: codeLock.actions,
@@ -74,7 +76,8 @@ export default {
     insight: insight.reducer,
     studyDataSourceList: studyDataSourceList.reducer,
     statusHistory: statusHistory.reducer,
-    submissionFile: submissionFile.reducer,
+    submissionResultFile: submissionResultFile.reducer,
+    submissionGroupFile: submissionGroupFile.reducer,
     submissionFileDetails: submissionFileDetails.reducer,
     insightFile: insightFile.reducer,
   },

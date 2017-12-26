@@ -16,16 +16,39 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: November 14, 2017
+ * Created: December 26, 2017
  *
  */
 
-// drilldown for treemap reports
-import DuckBuilder from 'modules/AnalysisExecution/ducks/submissionFileDuckBuilder';
-import { SubmissionResultLinkBuilder } from 'modules/AnalysisExecution/ducks/linkBuilder';
+import Duck from 'services/Duck';
+import { LinkBuilder } from 'modules/AnalysisExecution/ducks/linkBuilder';
 
-const duck = new DuckBuilder();
-duck.coreName = 'AE_ANALYSIS_SUBMISSION_FILE_DETAILS';
-duck.LinkBuilder = SubmissionResultLinkBuilder;
+export default class DuckBuilder {
+  constructor() {
+    this.coreName = 'AE_ANALYSIS_SUBMISSION_FILE';
+    this.LinkBuilder = LinkBuilder;
+  }
 
-export default duck.build();
+  clear() {
+    return dispatch => dispatch({
+      type: `${this.coreName}_FIND_FULFILLED`,
+      payload: null,
+    });
+  }
+
+  build() {
+    const urlBuilder = new (this.LinkBuilder)();
+    const duck = new Duck({
+      name: this.coreName,
+      urlBuilder: urlBuilder.build,
+    });
+
+    return {
+      actions: {
+        ...duck.actions,
+        clear: this.clear,
+      },
+      reducer: duck.reducer,
+    };
+  }
+}

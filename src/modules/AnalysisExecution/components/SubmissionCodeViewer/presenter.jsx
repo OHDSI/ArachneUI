@@ -23,8 +23,8 @@
 import React from 'react';
 import FileViewer from 'components/FileViewer';
 import FileBrowser from 'components/FileBrowser';
-import ReportViewer from './components/ReportViewer';
-import Summary from './components/Summary';
+import ReportViewer from './ResultFile/components/ReportViewer';
+import Summary from './ResultFile/components/Summary';
 
 function SubmissionCodeViewer({
   file,

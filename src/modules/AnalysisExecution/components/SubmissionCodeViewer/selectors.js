@@ -23,11 +23,11 @@
 
 import { createSelector } from 'reselect';
 import converter from 'components/FileInfo/converter';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import find from 'lodash/find';
 import { paths, breadcrumbTypes } from 'modules/AnalysisExecution/const';
 
-export default class SelectorsBuilder {
+export class SubmissionCodeSelectorsBuilder {
 
   getRawFiles(state) {
     return get(state, 'analysisExecution.analysisCode.queryResult', [], 'Array');
@@ -53,10 +53,25 @@ export default class SelectorsBuilder {
     );
   }
 
+  getIsFileLoading(state) {
+    return false;
+  }
+
+  getPageTitle(state) {
+    return 'Code file';
+  }
+
+  getFileData(state) {
+    return null;
+  }
+
   build() {
     return {
       getSubmissionFilesList: this.buildSelectorForSubmissionFileList(),
       getAnalysis: this.buildSelectorForAnalysis(),
+      getIsFileLoading: this.getIsFileLoading,
+      getFileData: this.getFileData,
+      getPageTitle: this.getPageTitle,
     };
   }
 }
