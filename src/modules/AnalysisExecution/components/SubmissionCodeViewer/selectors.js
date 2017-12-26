@@ -21,7 +21,7 @@
  */
 
 
-import { TreemapSelectorsBuilder } from 'services/Utils';
+import { TreemapSelectorsBuilder, get } from 'services/Utils';
 import { convertDataToTableData } from 'components/Reports/converters';
 import { reports } from 'const/reports';
 import { treemap } from '@ohdsi/atlascharts/dist/atlascharts.umd';
@@ -390,9 +390,19 @@ export default class SelectorsBuilder extends TreemapSelectorsBuilder {
     );
   }
 
+  getFileTreeData(state) {
+    return get(state, 'analysisExecution.fileTreeData.queryResult');
+  }
+
+  getSelectedFileFromTree(state) {
+    return get(state, 'analysisExecution.fileTreeData.selectedFile');
+  }
+
   build() {
     return {
       getTableData: this.extractTableData.bind(this),
+      getFileTreeData: this.getFileTreeData,
+      getSelectedFileFromTree: this.getSelectedFileFromTree,
     };
   }
 }

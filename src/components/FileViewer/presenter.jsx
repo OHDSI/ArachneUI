@@ -22,28 +22,65 @@
 import React from 'react';
 import BEMHelper from 'services/BemHelper';
 import { PageContent, LoadingPanel } from 'arachne-ui-components';
+import FileTree from 'components/FileTree';
 import MediaViewer from 'components/MediaViewer';
 import Toolbar from './Toolbar/index';
 
 require('./style.scss');
 
-function FileViewer({ language, isLoading, pageTitle, downloadLink, mimeType, content, name, title, createdAt, toolbarOpts }) {
+function FileViewer(props) {
   const classes = new BEMHelper('file');
+
+  const {
+    language,
+    isLoading,
+    pageTitle,
+    downloadLink,
+    mimeType,
+    content,
+    name,
+    title,
+    createdAt,
+    toolbarOpts,
+
+    fileTreeData,
+    selectedFilePath,
+    toggleFolder,
+    openFile,
+  } = props;
 
   return (
     <PageContent title={pageTitle}>
       <div {...classes()}>
         <Toolbar params={toolbarOpts}/>
-        <div {...classes('content')}>
-          <MediaViewer
-            language={language}
-            mimeType={mimeType}
-            data={content}
-            downloadLink={downloadLink}
-            name={name}
-            title={title}
-            createdAt={createdAt}
-          />
+        <div {...classes('workspace')}>
+          {fileTreeData
+            ? <div {...classes('nav')}>
+                <div {...classes('nav-header')}>
+                  Browse files
+                </div>
+                <div {...classes('nav-content')}>
+                  <FileTree
+                    data={fileTreeData}
+                    selectedFilePath={selectedFilePath}
+                    toggleFolder={toggleFolder}
+                    openFile={openFile}
+                  />
+                </div>
+            </div>
+            : null
+          }
+          <div {...classes('content')}>
+            <MediaViewer
+              language={language}
+              mimeType={mimeType}
+              data={content}
+              downloadLink={downloadLink}
+              name={name}
+              title={title}
+              createdAt={createdAt}
+            />
+          </div>
         </div>
         <LoadingPanel active={isLoading} />
       </div>

@@ -14,41 +14,46 @@
  *
  *  Company: Odysseus Data Services, Inc.
  *  Product Owner/Architecture: Gregory Klebanov
- *  Authors: Anton Gackovka
- *  Created: October 18, 2017
+ *  Authors: Pavel Grafkin
+ *  Created: December 25, 2017
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+ @import 'styles/vars-and-mixins.scss';
+ 
+ .#{$namespace} {
+   &file-tree {
+ 
+    &__node {
+      &--selected {
+        background: $grey-light;
+      }
 
-.#{$namespace} {
-  &file {
-    @include view-edit-page();
-    height: 100%;
-    position: absolute;
-    width: 100%;
+      &-details {
+        align-items: center;
+        display: flex;
+        padding: .5rem 1rem;
+        
+        &:hover {
+          cursor: pointer;
+          background: $grey-light;
+        }
+      }
 
-    &__workspace, &__content {
-      display: flex;
-      height: 100%;
+      &-children {
+        padding-left: 2rem;
+      }
     }
 
-    &__nav {
-      border-right: 1px solid $grey-light;
-      flex-shrink: 0;
-      width: 32rem;
+    &__node-toggle {
+      @include material-icon();
+      width: 1.8rem;
+      margin-right: .5rem;
+      
+      &--spinning {
+        @include spinning();
+      }
     }
 
-    &__nav-header {
-      @include black-nav();
-    }
-
-    &__nav-content {
-      padding: .75rem 0;
-    }
-
-    &__content {
-      padding: 0;
-    }
   }
 }

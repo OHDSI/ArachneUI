@@ -24,6 +24,17 @@ import { detectMimeTypeByExtension } from 'services/Utils';
 
 const profilePath = id => `/expert-finder/profile/${id}`;
 
+function getLink(file, pathBuilder) {
+
+  if (file.link) {
+    return file.link;
+  } else if (typeof pathBuilder === 'function') {
+    return pathBuilder(file);
+  }
+
+  return null;
+}
+
 export default (file, pathBuilder) => ({
   uuid: file.uuid,
   name: file.name,
@@ -32,7 +43,7 @@ export default (file, pathBuilder) => ({
   // doctype: file.docType === 'text/x-r-source' ? 'r' : file.docType,
   docType: detectMimeTypeByExtension(file),
   isExecutable: file.isExecutable,
-  link: file.link || pathBuilder(file),
+  link: getLink(file, pathBuilder),
   author: {
     ...file.author,
     link: (file.author && file.author.id) ? profilePath(file.author.id) : null,

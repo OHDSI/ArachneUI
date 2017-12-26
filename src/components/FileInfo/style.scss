@@ -30,6 +30,26 @@
     flex-grow: 1;
     min-width: 0;
 
+    &--name-only {
+      .#{$namespace} {
+        &code-file-info {
+          &__datetime {
+            display: none;
+          }
+        }
+      }
+    }
+    
+    &--name-bold {
+      .#{$namespace} {
+        &code-file-info {
+          &__name {
+            font-weight: $font-weight-middle;
+          }
+        }
+      }
+    }
+
     &__main-container, &__version-container, &__author-container {
       flex-basis: 0;
     }

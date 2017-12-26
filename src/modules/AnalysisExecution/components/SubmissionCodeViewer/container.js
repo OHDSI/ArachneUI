@@ -28,6 +28,8 @@ import { downloadLinkBuilder } from 'modules/AnalysisExecution/ducks/submissionF
 import { buildBreadcrumbList } from 'modules/AnalysisExecution/utils';
 import ReportUtils from 'components/Reports/Utils';
 import { reports, treemapReports } from 'const/reports';
+import { fileTypes, paths } from 'modules/AnalysisExecution/const';
+import FileTreeUtils from 'services/FileTreeUtils';
 import convertDetailsDataToReportData from './components/ReportViewer/converters/reportDetailsToReportData';
 import DTO from './components/ReportViewer/converters/DTO';
 import presenter from './presenter';
@@ -42,6 +44,19 @@ class SubmissionCode extends Component {
       entityType: this.props.from,
       id: this.props.submissionGroupId || this.props.submissionId,
     });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (get(this.props.file, 'uuid') !== get(nextProps.file, 'uuid')) {
+      let loadPromise = new Promise(resolve => resolve());
+      if (get(this.props.file, 'submissionId') !== get(nextProps.file, 'submissionId')) {
+        const folderPath = FileTreeUtils.getFileFolder(nextProps.file.relativePath);
+        loadPromise = nextProps.toggleFolder({ relativePath: folderPath }, true);
+      }
+      loadPromise.then(
+        () => this.props.selectFileInTree({ relativePath: nextProps.file.relativePath })
+      );
+    }
   }
 
   componentWillUnmount() {
@@ -170,6 +185,9 @@ function mapStateToProps(state, ownProps) {
     tableColumns,
     details,
     isDetailsLoading,
+
+    treeData: selectors.getFileTreeData(state),
+    selectedFilePath: selectors.getSelectedFileFromTree(state),
   };
 }
 
@@ -180,9 +198,27 @@ const mapDispatchToProps = {
   loadSubmissionResultFiles: actions.analysisExecution.analysisCode.search,
   clearFileData: actions.analysisExecution.submissionFile.clear,
   clearDetailsData: actions.analysisExecution.submissionFileDetails.clear,
+
+  loadFilesTree: actions.analysisExecution.fileTreeData.query,
+  toggleFileTreeNode: actions.analysisExecution.fileTreeData.toggle,
+  selectFileInTree: actions.analysisExecution.fileTreeData.selectFile,
+  goToPage: actions.router.goToPage,
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
+
+  const loadFilesTree = ownProps.route.type === 'result'
+      ? (path = '/' ) => dispatchProps.loadFilesTree(
+          {
+            type: fileTypes.SUBMISSION_RESULT,
+            entityId: stateProps.submissionId,
+          },
+          {
+            path,
+          }
+        )
+      : null;
+
   return {
     ...stateProps,
     ...dispatchProps,
@@ -206,6 +242,33 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         submissionGroupId: stateProps.submissionGroupId,
         submissionId: stateProps.submissionId,
         fileId: get(detailedFiles, '[0].uuid', '1'),
+      }));
+    },
+    toggleFolder({ relativePath }, state) {
+      let loadPromise = new Promise(resolve => resolve());
+
+      if (state === true) {
+        const nodeList = FileTreeUtils.findNodeByPath(stateProps.treeData, relativePath, true);
+        const pathPartsToShow = [
+          FileTreeUtils.PATH_SEPARATOR,
+          ...relativePath.split(FileTreeUtils.PATH_SEPARATOR)
+        ];
+
+        let curPath = '';
+        pathPartsToShow.forEach((pathPart, idx) => {
+          curPath = FileTreeUtils.joinPathParts([curPath, pathPart]);
+          if (!nodeList[idx] || !nodeList[idx].loaded) {
+            loadPromise = loadPromise.then(((p) => () => loadFilesTree(p))(curPath));
+          }
+        });
+      }
+
+      return loadPromise.then(() => dispatchProps.toggleFileTreeNode({ relativePath }, true));
+    },
+    openFile: (file) => {
+      dispatchProps.goToPage(paths.submissionResultFile({
+        submissionId: stateProps.submissionId,
+        fileId: file.uuid,
       }));
     },
   };
