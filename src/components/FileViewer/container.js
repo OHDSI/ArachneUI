@@ -94,9 +94,6 @@ function mapStateToProps(state, ownProps) {
     createdAt,
     language,
     loadFile,
-
-    fileTreeData: ownProps.fileTreeData,
-    loadFileTree: ownProps.loadFileTree,
   };
 }
 
