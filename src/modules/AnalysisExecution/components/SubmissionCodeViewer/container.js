@@ -52,7 +52,7 @@ class SubmissionCode extends Component {
         let loadPromise = new Promise(resolve => resolve());
         if (get(this.props.file, 'submissionId') !== get(nextProps.file, 'submissionId')) {
           const folderPath = FileTreeUtils.getFileFolder(nextProps.file.relativePath);
-          loadPromise = nextProps.toggleFolder({ relativePath: folderPath }, true);
+          loadPromise = nextProps.toggleFolder({ relativePath: folderPath }, true, true);
         }
         loadPromise.then(
           () => this.props.selectFileInTree({ relativePath: nextProps.file.relativePath })
@@ -248,7 +248,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         fileId: get(detailedFiles, '[0].uuid', '1'),
       }));
     },
-    toggleFolder({ relativePath }, state) {
+    toggleFolder({ relativePath }, state, toggleParents = false) {
       let loadPromise = new Promise(resolve => resolve());
 
       if (state === true) {
@@ -267,7 +267,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         });
       }
 
-      return loadPromise.then(() => dispatchProps.toggleFileTreeNode({ relativePath }, true));
+      return loadPromise.then(() => dispatchProps.toggleFileTreeNode({ relativePath }, state, toggleParents));
     },
     openFile: (file) => {
       dispatchProps.goToPage(paths.submissionResultFile({
