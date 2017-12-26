@@ -20,6 +20,7 @@
  *
  */
 
+import { get } from 'services/Utils';
 import ActionFactory from './ActionFactory';
 import ReducerFactory from './ReducerFactory';
 import { action as actionName } from './CrudActionNameBuilder';
@@ -60,8 +61,8 @@ class Duck {
         (state, action) => ({
           ...state,
           isLoading: false,
-          queryResult: action.payload.result,
-          requestParams: action.payload.requestParams,
+          queryResult: get(action.payload, 'result'),
+          requestParams: get(action.payload, 'requestParams'),
         })
       )
       // FIND_PENDING

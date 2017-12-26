@@ -47,19 +47,22 @@ class SubmissionCode extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (get(nextProps.file, 'submissionId') && get(this.props.file, 'uuid') !== get(nextProps.file, 'uuid')) {
-      let loadPromise = new Promise(resolve => resolve());
-      if (get(this.props.file, 'submissionId') !== get(nextProps.file, 'submissionId')) {
-        const folderPath = FileTreeUtils.getFileFolder(nextProps.file.relativePath);
-        loadPromise = nextProps.toggleFolder({ relativePath: folderPath }, true);
+    if (nextProps.submissionId) {
+      if (get(this.props.file, 'uuid') !== get(nextProps.file, 'uuid')) {
+        let loadPromise = new Promise(resolve => resolve());
+        if (get(this.props.file, 'submissionId') !== get(nextProps.file, 'submissionId')) {
+          const folderPath = FileTreeUtils.getFileFolder(nextProps.file.relativePath);
+          loadPromise = nextProps.toggleFolder({ relativePath: folderPath }, true);
+        }
+        loadPromise.then(
+          () => this.props.selectFileInTree({ relativePath: nextProps.file.relativePath })
+        );
       }
-      loadPromise.then(
-        () => this.props.selectFileInTree({ relativePath: nextProps.file.relativePath })
-      );
     }
   }
 
   componentWillUnmount() {
+    this.props.flushFileTree();
     this.props.clearFileData();
     this.props.clearDetailsData();
   }
@@ -202,6 +205,7 @@ const mapDispatchToProps = {
   loadFilesTree: actions.analysisExecution.fileTreeData.query,
   toggleFileTreeNode: actions.analysisExecution.fileTreeData.toggle,
   selectFileInTree: actions.analysisExecution.fileTreeData.selectFile,
+  flushFileTree: actions.analysisExecution.fileTreeData.flush,
   goToPage: actions.router.goToPage,
 };
 
