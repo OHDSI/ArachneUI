@@ -37,6 +37,7 @@ class FileTreeDataDuckBuilder {
     this.actions = {
       QUERY: actionName(coreName).query().pending().toString(),
       QUERY_FULLFILLED: actionName(coreName).query().done().toString(),
+      FLUSH: `${coreName}_FLUSH`,
       TOGGLE: `${coreName}_TOGGLE`,
       SELECT_FILE: `${coreName}_SELECT_FILE`,
     };
@@ -70,6 +71,13 @@ class FileTreeDataDuckBuilder {
       payload: {
         relativePath,
       },
+    });
+  }
+
+  getFlushAction() {
+    return () => ({
+      type: this.actions.FLUSH,
+      payload: {},
     });
   }
 
@@ -138,8 +146,19 @@ class FileTreeDataDuckBuilder {
               ...state,
               selectedFile: relativePath,
             };
-          }
-        }
+          },
+        },
+        {
+          action: this.actions.FLUSH,
+          handler: (state, action) => {
+            if (state.selectedFile || state.queryResult || state.requestParams) {
+              const { selectedFile, queryResult, requestParams, ...rest } = state;
+              return rest;
+            } else {
+              return state;
+            }
+          },
+        },
       ])
       .build();
   }
@@ -150,6 +169,7 @@ class FileTreeDataDuckBuilder {
         query: this.duck.actions.query,
         toggle: this.getToggleAction(),
         selectFile: this.getSelectFileAction(),
+        flush: this.getFlushAction(),
       },
       reducer: this.buildReducer(),
     };
