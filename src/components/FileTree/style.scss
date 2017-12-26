@@ -52,6 +52,7 @@
         @include material-icon();
         width: 1.8rem;
         margin-right: .5rem;
+        flex-shrink: 0;
         
         &--spinning {
           @include spinning();
