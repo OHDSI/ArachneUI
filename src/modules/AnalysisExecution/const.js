@@ -128,6 +128,10 @@ const analysisPermissions = {
   uploadAnalysisFiles :'UPLOAD_ANALYSIS_FILES',
 };
 
+const fileTypes = keyMirror({
+  SUBMISSION_RESULT: null,
+});
+
 const statusesForPublishing = ['PENDING', 'NOT APPROVED', 'IN PROGRESS'];
 
 const refreshTime = 10000;
@@ -237,4 +241,5 @@ export {
   fileSources,
   maxFilesCount,
   analysisPermissions,
+  fileTypes,
 };

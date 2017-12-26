@@ -28,7 +28,16 @@ import presenter from './presenter';
 class FileViewer extends Component {
 
   componentWillMount() {
-    const params = this.props;
+    this.loadData(this.props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.urlParams.fileId !== nextProps.urlParams.fileId) {
+      this.loadData(nextProps);
+    }
+  }
+
+  loadData(params) {
     params.loadFile({
       ...params.urlParams,
       query : {...params.queryParams, withContent: false},
@@ -85,6 +94,9 @@ function mapStateToProps(state, ownProps) {
     createdAt,
     language,
     loadFile,
+
+    fileTreeData: ownProps.fileTreeData,
+    loadFileTree: ownProps.loadFileTree,
   };
 }
 

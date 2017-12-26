@@ -39,6 +39,11 @@ function SubmissionCodeViewer({
   tableColumns,
   details,
   isDetailsLoading,
+
+  treeData,
+  toggleFolder,
+  openFile,
+  selectedFilePath,
 }) {
   return isReport
     ? <ReportViewer
@@ -61,6 +66,11 @@ function SubmissionCodeViewer({
       downloadLink={downloadLink}
       urlParams={urlParams}
       pageTitle={pageTitle}
+
+      toggleFolder={toggleFolder}
+      openFile={openFile}
+      fileTreeData={treeData}
+      selectedFilePath={selectedFilePath}
     />;
 }
 

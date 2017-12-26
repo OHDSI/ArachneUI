@@ -40,6 +40,7 @@ import publishStatus from './publishStatus';
 import submission from './submission';
 import resultFile from './resultFile';
 import insightFile from './insightFile';
+import fileTreeData from './fileTreeData';
 
 export default {
   actions: {
@@ -62,6 +63,7 @@ export default {
     submission: submission.actions,
     resultFile: resultFile.actions,
     insightFile: insightFile.actions,
+    fileTreeData: fileTreeData.actions,
   },
   reducer: {
     analysis: analysis.reducer,
@@ -77,5 +79,6 @@ export default {
     submissionFile: submissionFile.reducer,
     submissionFileDetails: submissionFileDetails.reducer,
     insightFile: insightFile.reducer,
+    fileTreeData: fileTreeData.reducer,
   },
 };
