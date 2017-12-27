@@ -53,7 +53,7 @@ export class SubmissionCode extends Component {
       folderPath = FileTreeUtils.PATH_SEPARATOR;
     }
     loadPromise = props
-      .toggleFolder({ relativePath: folderPath }, true)
+      .toggleFolder({ relativePath: folderPath }, true, true)
       .then(
         () => {
           this.props.selectFileInTree({
@@ -66,6 +66,7 @@ export class SubmissionCode extends Component {
   }
 
   componentWillUnmount() {
+    this.props.flushFileTree();
     this.props.clearFileData();
     this.props.clearDetailsData();
   }
@@ -153,6 +154,7 @@ export class SubmissionCodeBuilder extends ContainerBuilder {
       loadFilesTree: actions.analysisExecution.fileTreeData.query,
       toggleFileTreeNode: actions.analysisExecution.fileTreeData.toggle,
       selectFileInTree: actions.analysisExecution.fileTreeData.selectFile,
+      flushFileTree: actions.analysisExecution.fileTreeData.flush,
       goToPage: actions.router.goToPage,
     };
   }
@@ -174,14 +176,14 @@ export class SubmissionCodeBuilder extends ContainerBuilder {
       ...stateProps,
       ...dispatchProps,
       ...ownProps,
-      toggleFolder({ relativePath }, state) {
+      toggleFolder({ relativePath }, state, toggleParents = false) {
         let loadPromise = new Promise(resolve => resolve());
   
         if (state === true) {
           const nodeList = FileTreeUtils.findNodeByPath(stateProps.treeData, relativePath, true);
           const pathPartsToShow = [
             FileTreeUtils.PATH_SEPARATOR,
-            ...relativePath.split(FileTreeUtils.PATH_SEPARATOR),
+            ...relativePath.split(FileTreeUtils.PATH_SEPARATOR)
           ];
   
           let curPath = '';
@@ -193,14 +195,14 @@ export class SubmissionCodeBuilder extends ContainerBuilder {
           });
         }
   
-        return loadPromise.then(() => dispatchProps.toggleFileTreeNode({ relativePath }, true));
+        return loadPromise.then(() => dispatchProps.toggleFileTreeNode({ relativePath }, state, toggleParents));
       },
       openFile: (file) => {
         dispatchProps.goToPage(paths.submissionResultFile({
           submissionId: stateProps.submissionId,
           fileId: file.uuid,
         }));
-      },
+      }
     };
   }
 }

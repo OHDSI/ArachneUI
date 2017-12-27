@@ -43,17 +43,21 @@
       &-children {
         padding-left: 2rem;
       }
-    }
 
-    &__node-toggle {
-      @include material-icon();
-      width: 1.8rem;
-      margin-right: .5rem;
+      &-label {
+        flex: 1;
+      }
       
-      &--spinning {
-        @include spinning();
+      &-toggle {
+        @include material-icon();
+        width: 1.8rem;
+        margin-right: .5rem;
+        flex-shrink: 0;
+        
+        &--spinning {
+          @include spinning();
+        }
       }
     }
-
   }
 }
