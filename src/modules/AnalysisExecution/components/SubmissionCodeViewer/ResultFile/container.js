@@ -33,7 +33,9 @@ import SubmissionResultSelectors from './selectors';
 class SubmissionResultFile extends SubmissionCode {
   componentWillMount() {
     super.componentWillMount();
-    this.loadTree(this.props);
+    if (!this.props.params.fileUuid) {
+      this.updateTree(this.props);
+    }
     this.LinkBuilder = new SubmissionResultLinkBuilder({
       submissionId: this.props.params.submissionId,
       fileId: this.props.params.fileUuid,
@@ -44,12 +46,23 @@ class SubmissionResultFile extends SubmissionCode {
   componentWillReceiveProps(nextProps) {
     super.componentWillReceiveProps(nextProps);
     if (get(this.props.file, 'uuid') !== get(nextProps.file, 'uuid')) {
-      nextProps.selectFileInTree({
-        relativePath: nextProps.file && nextProps.file.relativePath
-          ? nextProps.file.relativePath
-          : '',
-      });
+      this.updateTree(nextProps);
     }
+  }
+
+  updateTree(props) {
+    const isFileLoaded = props.file && props.file.relativePath;
+    let folderPath = FileTreeUtils.PATH_SEPARATOR;
+    if (isFileLoaded) {
+      folderPath = FileTreeUtils.getFileFolder(props.file.relativePath);
+    }
+    props
+      .toggleFolder({ relativePath: folderPath }, true, true)
+      .then(() => {
+        props.selectFileInTree({
+          relativePath: isFileLoaded ? props.file.relativePath : '',
+        });
+      });
   }
 }
 
@@ -77,12 +90,18 @@ export default class SubmissionResultFileViewerBuilder extends SubmissionCodeBui
       loadFile: actions.analysisExecution.submissionResultFile.find,
       clearFileData: actions.analysisExecution.submissionResultFile.clear,
       showSummary: ({ submissionId }) => goToPage(paths.submissionResultSummary({ submissionId })),
+
+      loadFilesTree: actions.analysisExecution.fileTreeData.query,
+      toggleFileTreeNode: actions.analysisExecution.fileTreeData.toggle,
+      selectFileInTree: actions.analysisExecution.fileTreeData.selectFile,
+      flushFileTree: actions.analysisExecution.fileTreeData.flush,
+      goToPage: actions.router.goToPage,
     };
   }
 
   mergeProps(stateProps, dispatchProps, ownProps) {
     const loadFilesTree = (path = '/') => {
-      dispatchProps.loadFilesTree(
+      return dispatchProps.loadFilesTree(
         {
           type: fileTypes.SUBMISSION_RESULT,
           entityId: stateProps.submissionId,

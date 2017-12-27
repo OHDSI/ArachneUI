@@ -59,21 +59,6 @@ export class SubmissionCode extends FileLoader {
     this.props.clearDetailsData();
   }
 
-  loadTree(props) {
-    let folderPath;
-    if (props.file && props.file.relativePath) {
-      folderPath = FileTreeUtils.getFileFolder(props.file.relativePath);
-    } else {
-      folderPath = FileTreeUtils.PATH_SEPARATOR;
-    }
-    props.toggleFolder({ relativePath: folderPath }, true, true);
-    props.selectFileInTree({
-      relativePath: props.file && props.file.relativePath
-        ? props.file.relativePath
-        : '',
-    });
-  }
-
   render() {
     return presenter({
       ...this.props,
@@ -152,12 +137,6 @@ export class SubmissionCodeBuilder extends ContainerBuilder {
     return {
       loadBreadcrumbs: actions.analysisExecution.breadcrumbs.query,
       clearDetailsData: actions.analysisExecution.submissionFileDetails.clear,
-
-      loadFilesTree: actions.analysisExecution.fileTreeData.query,
-      toggleFileTreeNode: actions.analysisExecution.fileTreeData.toggle,
-      selectFileInTree: actions.analysisExecution.fileTreeData.selectFile,
-      flushFileTree: actions.analysisExecution.fileTreeData.flush,
-      goToPage: actions.router.goToPage,
     };
   }
 }
