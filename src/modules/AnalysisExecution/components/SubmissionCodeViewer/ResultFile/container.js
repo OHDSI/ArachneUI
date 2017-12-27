@@ -55,6 +55,7 @@ export default class SubmissionResultFileViewerBuilder extends SubmissionCodeBui
     return {
       ...super.mapStateToProps(state, ownProps),
       treeData: this.selectors.getFileTreeData(state),
+      isTreeLoading: this.selectors.getIsTreeLoading(state),
     };
   }
 

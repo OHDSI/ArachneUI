@@ -34,4 +34,5 @@ export default class SubmissionResultSelectors extends SubmissionCodeSelectorsBu
   getFileData(state) {
     return get(state, 'analysisExecution.submissionResultFile.data.result');
   }
+
 }

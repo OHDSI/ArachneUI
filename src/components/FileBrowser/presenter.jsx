@@ -24,6 +24,7 @@ import React from 'react';
 import BEMHelper from 'services/BemHelper';
 import {
   Toolbar,
+  LoadingPanel,
 } from 'arachne-ui-components';
 import FileTree from 'components/FileTree';
 
@@ -35,7 +36,7 @@ export default function FileBrowser(props) {
     children,
     selectedFile,
     toolbarOpts,
-
+    isTreeLoading = false,
     fileTreeData,
     selectedFilePath,
     toggleFolder,
@@ -63,24 +64,23 @@ export default function FileBrowser(props) {
         <Toolbar {...toolbarOpts} />
       }
       <div {...classes('content')}>
-        <div {...classes('files-list')}>          
-          {fileTreeData
-            ? <div {...classes('nav')}>
-              <div {...classes('nav-header')}>
-                Browse files
-              </div>
-              <div {...classes('nav-content')}>
-                <FileTree
-                  data={fileTreeData}
-                  selectedFilePath={selectedFilePath}
-                  toggleFolder={toggleFolder}
-                  openFile={openFile}
-                />
-              </div>
+        {fileTreeData || isTreeLoading
+          ? <div {...classes('nav')}>
+            <div {...classes('nav-header')}>
+              Browse files
             </div>
-            : null
-          }
-        </div>
+            <div {...classes('nav-content')}>
+              <FileTree
+                data={fileTreeData}
+                selectedFilePath={selectedFilePath}
+                toggleFolder={toggleFolder}
+                openFile={openFile}
+              />
+            </div>
+            <LoadingPanel active={isTreeLoading} label={'Loading files tree'} />
+          </div>
+          : null
+        }
         <div {...classes('details')}>
           {selectedFile
             ? detailsComponent

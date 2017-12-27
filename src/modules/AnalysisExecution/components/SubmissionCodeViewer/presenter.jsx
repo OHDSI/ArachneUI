@@ -40,6 +40,7 @@ function SubmissionCodeViewer({
   toggleFolder,
   openFile,
   selectedFilePath,
+  isTreeLoading,
 
   resultFiles,
   submissionId,
@@ -52,6 +53,7 @@ function SubmissionCodeViewer({
     toggleFolder={toggleFolder}
     openFile={openFile}
     fileTreeData={treeData}
+    isTreeLoading={isTreeLoading}
     selectedFilePath={selectedFilePath}
     loadFile={loadFile}
     urlParams={urlParams}

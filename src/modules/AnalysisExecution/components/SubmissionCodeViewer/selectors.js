@@ -72,6 +72,10 @@ export class SubmissionCodeSelectorsBuilder {
     return get(state, 'analysisExecution.fileTreeData.selectedFile');
   }
 
+  getIsTreeLoading(state) {
+    return get(state, 'analysisExecution.fileTreeData.isLoading', false);
+  }
+
   build() {
     return {
       getSubmissionFilesList: this.buildSelectorForSubmissionFileList(),
@@ -82,6 +86,7 @@ export class SubmissionCodeSelectorsBuilder {
       
       getFileTreeData: this.getFileTreeData,
       getSelectedFileFromTree: this.getSelectedFileFromTree,
+      getIsTreeLoading: this.getIsTreeLoading,
     };
   }
 }

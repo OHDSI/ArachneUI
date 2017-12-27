@@ -23,7 +23,7 @@
 import { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { ModalUtils } from 'arachne-ui-components';
-import { modal } from 'modules/AnalysisExecution/const';
+import { modal, paths } from 'modules/AnalysisExecution/const';
 import get from 'lodash/get';
 import actions from 'actions';
 import ListSubmissions from './presenter';
@@ -52,6 +52,8 @@ const mapDispatchToProps = {
     ModalUtils.actions.toggle(modal.createInsight, true, { submissionId }),
   showRejectionModal: (submissionId, type, analysisId) =>
     ModalUtils.actions.toggle(modal.rejectSubmission, true, { submissionId, type, analysisId }),
+  showResults: ({ submissionId }) =>
+    actions.router.goToPage(paths.submissionResultSummary({ submissionId })),
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
@@ -68,11 +70,8 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
       });
     },
     showResultFileList(submission) {
-      dispatchProps.showFileList({
-        type: 'result',
+      dispatchProps.showResults({
         submissionId: submission.id,
-        canRemoveFiles: submission.canUploadResult,
-        resultFilesCount: submission.resultFilesCount,
       });
     },
     onChangeExecutionStatus(submissionId, status) {
