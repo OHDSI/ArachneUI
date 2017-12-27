@@ -38,7 +38,9 @@ export class SubmissionCode extends FileLoader {
   }
 
   componentWillMount() {
-    super.componentWillMount();
+    if (this.props.urlParams.fileId) {
+      super.componentWillMount();
+    }
     this.props.loadBreadcrumbs({
       entityType: this.props.from,
       id: this.props.submissionGroupId || this.props.submissionId,

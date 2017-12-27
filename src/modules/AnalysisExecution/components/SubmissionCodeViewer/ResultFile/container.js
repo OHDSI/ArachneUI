@@ -118,10 +118,13 @@ export default class SubmissionResultFileViewerBuilder extends SubmissionCodeBui
 
         if (state === true) {
           const nodeList = FileTreeUtils.findNodeByPath(stateProps.treeData, relativePath, true);
-          const pathPartsToShow = [
-            FileTreeUtils.PATH_SEPARATOR,
-            ...relativePath.split(FileTreeUtils.PATH_SEPARATOR),
-          ];
+          let pathPartsToShow = [FileTreeUtils.PATH_SEPARATOR];
+          if (relativePath !== FileTreeUtils.PATH_SEPARATOR) {
+            pathPartsToShow = [
+              ...pathPartsToShow,
+              ...relativePath.split(FileTreeUtils.PATH_SEPARATOR),
+            ];
+          }
 
           let curPath = '';
           pathPartsToShow.forEach((pathPart, idx) => {
