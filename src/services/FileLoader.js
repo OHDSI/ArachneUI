@@ -16,16 +16,30 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 20, 2017
+ * Created: December 27, 2017
  *
  */
 
 import { Component } from 'react';
-import presenter from './presenter';
+import { isFat as isMimeTypeFat } from 'services/MimeTypeUtil';
+import { get } from 'services/Utils';
 
-export default class FileBrowser extends Component {
+export class FileLoader extends Component {
+  componentWillMount() {
+    this.loadData();
+  }
 
-  render() {
-    return presenter(this.props);
+  loadData() {
+    this.props.loadFile({
+      ...this.props.urlParams,
+      query: { ...this.props.queryParams, withContent: false },
+    }).then((result) => {
+      if (!isMimeTypeFat(get(result, 'result.docType', '', 'String'))) {
+        this.props.loadFile({
+          ...this.props.urlParams,
+          query: { ...this.props.queryParams, withContent: true },
+        });
+      }
+    });
   }
 }

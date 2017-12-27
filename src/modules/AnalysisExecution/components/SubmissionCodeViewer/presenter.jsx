@@ -54,7 +54,6 @@ function createBreadcrumbs(path) {
 function SubmissionCodeViewer({
   file,
   isLoading,
-  loadFile,
   toolbarOpts,
   downloadLink,
   urlParams,
@@ -67,12 +66,10 @@ function SubmissionCodeViewer({
   selectedFilePath,
   isTreeLoading,
 
-  resultFiles,
   submissionId,
   submissionGroupId,
 }) {
   const fileViewer = (<FileBrowser
-    filesList={resultFiles}
     selectedFile={urlParams.fileId}
     toolbarOpts={toolbarOpts}
     toggleFolder={toggleFolder}
@@ -80,14 +77,13 @@ function SubmissionCodeViewer({
     fileTreeData={treeData}
     isTreeLoading={isTreeLoading}
     selectedFilePath={selectedFilePath}
-    loadFile={loadFile}
     urlParams={urlParams}
     detailsComponent={
       isReport
         ? <ReportViewer
           file={{
             ...file,
-            label: createBreadcrumbs(get(file, 'path', '')),
+            label: createBreadcrumbs(get(file, 'path', '', 'String')),
           }}
           downloadLink={downloadLink}
           pageTitle={pageTitle}
@@ -98,7 +94,7 @@ function SubmissionCodeViewer({
         : <FileViewer
           file={{
             ...file,
-            label: createBreadcrumbs(get(file, 'path', '')),
+            label: createBreadcrumbs(get(file, 'path', '', 'String')),
           }}
           downloadLink={downloadLink}
           pageTitle={pageTitle}

@@ -20,28 +20,41 @@
  *
  */
 
-import { Component, PropTypes } from 'react';
+import { PropTypes } from 'react';
 import { get, ContainerBuilder } from 'services/Utils';
 import actions from 'actions/index';
 import { buildBreadcrumbList } from 'modules/AnalysisExecution/utils';
 import ReportUtils from 'components/Reports/Utils';
 import { reports } from 'const/reports';
 import { LinkBuilder } from 'modules/AnalysisExecution/ducks/linkBuilder';
-import { fileTypes, paths } from 'modules/AnalysisExecution/const';
 import FileTreeUtils from 'services/FileTreeUtils';
+import { FileLoader } from 'services/FileLoader';
 import presenter from './presenter';
 
-export class SubmissionCode extends Component {
+export class SubmissionCode extends FileLoader {
   constructor() {
     super();
     this.LinkBuilder = new LinkBuilder();
   }
 
   componentWillMount() {
+    super.componentWillMount();
     this.props.loadBreadcrumbs({
       entityType: this.props.from,
       id: this.props.submissionGroupId || this.props.submissionId,
     });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.params.fileUuid !== nextProps.params.fileUuid) {
+      this.loadData();
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.flushFileTree();
+    this.props.clearFileData();
+    this.props.clearDetailsData();
   }
 
   loadTree(props) {
@@ -57,12 +70,6 @@ export class SubmissionCode extends Component {
         ? props.file.relativePath
         : '',
     });
-  }
-
-  componentWillUnmount() {
-    this.props.flushFileTree();
-    this.props.clearFileData();
-    this.props.clearDetailsData();
   }
 
   render() {
@@ -135,7 +142,6 @@ export class SubmissionCodeBuilder extends ContainerBuilder {
       submissionGroupId,
       submissionId,
       isReport,
-      resultFiles: this.selectors.getSubmissionFilesList(state),
       selectedFilePath: this.selectors.getSelectedFileFromTree(state),
     };
   }
@@ -150,53 +156,6 @@ export class SubmissionCodeBuilder extends ContainerBuilder {
       selectFileInTree: actions.analysisExecution.fileTreeData.selectFile,
       flushFileTree: actions.analysisExecution.fileTreeData.flush,
       goToPage: actions.router.goToPage,
-    };
-  }
-
-  mergeProps(stateProps, dispatchProps, ownProps) {
-    const loadFilesTree = ownProps.route.type === 'result'
-    ? (path = '/') => dispatchProps.loadFilesTree(
-      {
-        type: fileTypes.SUBMISSION_RESULT,
-        entityId: stateProps.submissionId,
-      },
-      {
-        path,
-      }
-    )
-    : null;
-
-    return {
-      ...stateProps,
-      ...dispatchProps,
-      ...ownProps,
-      toggleFolder({ relativePath }, state, toggleParents = false) {
-        let loadPromise = new Promise(resolve => resolve());
-  
-        if (state === true) {
-          const nodeList = FileTreeUtils.findNodeByPath(stateProps.treeData, relativePath, true);
-          const pathPartsToShow = [
-            FileTreeUtils.PATH_SEPARATOR,
-            ...relativePath.split(FileTreeUtils.PATH_SEPARATOR)
-          ];
-  
-          let curPath = '';
-          pathPartsToShow.forEach((pathPart, idx) => {
-            curPath = FileTreeUtils.joinPathParts([curPath, pathPart]);
-            if (!nodeList[idx] || !nodeList[idx].loaded) {
-              loadPromise = loadPromise.then(((p) => () => loadFilesTree(p))(curPath));
-            }
-          });
-        }
-  
-        return loadPromise.then(() => dispatchProps.toggleFileTreeNode({ relativePath }, state, toggleParents));
-      },
-      openFile: (file) => {
-        dispatchProps.goToPage(paths.submissionResultFile({
-          submissionId: stateProps.submissionId,
-          fileId: file.uuid,
-        }));
-      }
     };
   }
 }

@@ -19,11 +19,17 @@
  *
  */
 
-import { connect } from 'react-redux';
-import { get, detectLanguageByExtension, ContainerBuilder } from 'services/Utils';
+import { get, ContainerBuilder } from 'services/Utils';
 import actions from 'actions/index';
-import DocumentViewer from './presenter';
 import { apiPaths, paths } from 'modules/StudyManager/const';
+import { FileLoader } from 'services/FileLoader';
+import presenter from './presenter';
+
+class DocumentViewer extends FileLoader {
+  render() {
+    return presenter(this.props);
+  }
+}
 
 export default class StudyDocumentBuilder extends ContainerBuilder {
 
@@ -32,7 +38,6 @@ export default class StudyDocumentBuilder extends ContainerBuilder {
   }
 
   mapStateToProps(state, ownProps) {
-
     const fileUuid = ownProps.params.fileUuid;
     const studyId = ownProps.params.studyId;
     const isFileLoading = get(state, 'studyManager.studyDocumentFile.isLoading', false);

@@ -29,7 +29,7 @@ import SelectorsBuilder from './selectors';
 
 const selectors = (new SelectorsBuilder()).build();
 
-class SubmissionResultsummary extends Component {
+class SubmissionResultSummary extends Component {
   componentWillMount() {
     this.props.loadAnalysis({ id: this.props.analysisId });
   }
@@ -47,7 +47,7 @@ class SubmissionResultsummary extends Component {
 
 export default class SubmissionResultsummaryBuilder extends ContainerBuilder {
   getComponent() {
-    return SubmissionResultsummary;
+    return SubmissionResultSummary;
   }
 
   mapStateToProps(state, ownProps) {

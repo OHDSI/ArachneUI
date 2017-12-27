@@ -25,8 +25,9 @@ import actions from 'actions';
 import { get } from 'services/Utils';
 import { SubmissionResultLinkBuilder } from 'modules/AnalysisExecution/ducks/linkBuilder';
 import { push as goToPage } from 'react-router-redux';
-import { paths } from 'modules/AnalysisExecution/const';
+import { paths, fileTypes } from 'modules/AnalysisExecution/const';
 import mimeTypes from 'const/mimeTypes';
+import FileTreeUtils from 'services/FileTreeUtils';
 import SubmissionResultSelectors from './selectors';
 
 class SubmissionResultFile extends SubmissionCode {
@@ -41,6 +42,7 @@ class SubmissionResultFile extends SubmissionCode {
   }
 
   componentWillReceiveProps(nextProps) {
+    super.componentWillReceiveProps(nextProps);
     if (get(this.props.file, 'uuid') !== get(nextProps.file, 'uuid')) {
       nextProps.selectFileInTree({
         relativePath: nextProps.file && nextProps.file.relativePath
@@ -79,6 +81,18 @@ export default class SubmissionResultFileViewerBuilder extends SubmissionCodeBui
   }
 
   mergeProps(stateProps, dispatchProps, ownProps) {
+    const loadFilesTree = (path = '/') => {
+      dispatchProps.loadFilesTree(
+        {
+          type: fileTypes.SUBMISSION_RESULT,
+          entityId: stateProps.submissionId,
+        },
+        {
+          path,
+        }
+      );
+    };
+
     // add a link to summary
     const treeData = {
       ...stateProps.treeData,
@@ -95,8 +109,39 @@ export default class SubmissionResultFileViewerBuilder extends SubmissionCodeBui
     };
 
     return {
-      ...super.mergeProps(stateProps, dispatchProps, ownProps),
+      ...stateProps,
+      ...dispatchProps,
+      ...ownProps,
       treeData,
+      toggleFolder({ relativePath }, state, toggleParents = false) {
+        let loadPromise = new Promise(resolve => resolve());
+
+        if (state === true) {
+          const nodeList = FileTreeUtils.findNodeByPath(stateProps.treeData, relativePath, true);
+          const pathPartsToShow = [
+            FileTreeUtils.PATH_SEPARATOR,
+            ...relativePath.split(FileTreeUtils.PATH_SEPARATOR),
+          ];
+
+          let curPath = '';
+          pathPartsToShow.forEach((pathPart, idx) => {
+            curPath = FileTreeUtils.joinPathParts([curPath, pathPart]);
+            if (!nodeList[idx] || !nodeList[idx].loaded) {
+              loadPromise = loadPromise.then(((p) => () => loadFilesTree(p))(curPath));
+            }
+          });
+        }
+
+        return loadPromise.then(() =>
+          dispatchProps.toggleFileTreeNode({ relativePath }, state, toggleParents)
+        );
+      },
+      openFile(file) {
+        dispatchProps.goToPage(paths.submissionResultFile({
+          submissionId: stateProps.submissionId,
+          fileId: file.uuid,
+        }));
+      },
     };
   }
 }
