@@ -39,7 +39,7 @@ export class SubmissionCode extends FileLoader {
 
   componentWillMount() {
     if (this.props.urlParams.fileId) {
-      this.loadData();
+      super.componentWillMount();
     }
     this.props.loadBreadcrumbs({
       entityType: this.props.from,
@@ -49,7 +49,7 @@ export class SubmissionCode extends FileLoader {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.params.fileUuid !== nextProps.params.fileUuid) {
-      super.componentWillMount();
+      this.loadData();
     }
   }
 
