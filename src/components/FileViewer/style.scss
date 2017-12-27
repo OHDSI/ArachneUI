@@ -35,6 +35,8 @@
 
     &__nav {
       border-right: 1px solid $grey-light;
+      display: flex;
+      flex-direction: column;
       flex-shrink: 0;
       width: 32rem;
     }
@@ -44,6 +46,8 @@
     }
 
     &__nav-content {
+      flex-grow: 1;
+      overflow-x: auto;
       padding: .75rem 0;
     }
 
