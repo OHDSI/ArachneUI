@@ -129,7 +129,7 @@ const config = {
       __APP_TYPE_CENTRAL__: appType === APP_TYPE.CENTRAL,
       __APP_TYPE_NODE__: appType === APP_TYPE.NODE,
 
-      __DEV__: true,
+      __DEV__: env === ENV_TYPE.DEV,
       //
       'process.env': {
         NODE_ENV: env === ENV_TYPE.PRODUCTION ? '"production"' : '"development"',

@@ -89,7 +89,11 @@ class FileTree extends Component {
 
     return (
       <li {...classes('node', isSelected ? 'selected' : null)}>
-        <div {...classes('node-details')} onClick={() => onNodeClick(node)}>
+        <div {...classes('node-details')} onClick={() =>
+            node.onClick
+              ? node.onClick()
+              : onNodeClick(node)
+          }>
           {
             this.getNodeToggler({ ...node, classes })
           }
@@ -117,10 +121,11 @@ class FileTree extends Component {
       data,
       selectedFilePath,
       onNodeClick,
+      isFlat,
     } = this.props;
 
     return (
-      <ul {...classes()}>
+      <ul {...classes({ modifiers: { isFlat } })}>
         {data.map(node => this.getNode({
           classes,
           node,

@@ -20,14 +20,14 @@
  *
  */
 
-import { paths } from 'modules/AnalysisExecution/const';
+import { paths, breadcrumbTypes } from 'modules/AnalysisExecution/const';
 
 function buildBreadcrumbList(breadcrumbs = []) {
   const breadcrumbList = [];
 
   breadcrumbs.forEach((crumb) => {
     switch (crumb.entityType) {
-      case 'STUDY':
+      case breadcrumbTypes.STUDY:
         breadcrumbList.push({
           label: 'My studies',
           link: paths.studies(),
@@ -37,13 +37,13 @@ function buildBreadcrumbList(breadcrumbs = []) {
           link: paths.studies(crumb.id),
         });
         break;
-      case 'ANALYSIS':
+      case breadcrumbTypes.ANALYSIS:
         breadcrumbList.push({
           label: crumb.title,
           link: paths.analyses(crumb.id),
         });
         break;
-      case 'INSIGHT':
+      case breadcrumbTypes.INSIGHT:
         breadcrumbList.push({
           label: crumb.title,
           link: paths.insight({ submissionId: crumb.id }),

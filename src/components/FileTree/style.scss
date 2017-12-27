@@ -23,6 +23,16 @@
  
  .#{$namespace} {
    &file-tree {
+
+    &--isFlat {
+      & .#{$namespace} {
+        &file-tree {
+          &__node-toggle {
+            width: 0.4rem;
+          }
+        }
+      }
+    }
  
     &__node {
       &--selected {

@@ -31,24 +31,7 @@
     &__workspace, &__content {
       display: flex;
       height: 100%;
-    }
-
-    &__nav {
-      border-right: 1px solid $grey-light;
-      display: flex;
-      flex-direction: column;
-      flex-shrink: 0;
-      width: 32rem;
-    }
-
-    &__nav-header {
-      @include black-nav();
-    }
-
-    &__nav-content {
-      flex-grow: 1;
-      overflow-x: auto;
-      padding: .75rem 0;
+      width: 100%;
     }
 
     &__content {

@@ -27,6 +27,8 @@ import ViewEditAnalysis from './components/ViewEditAnalysis/index';
 import AnalysisCodeEditor from './components/AnalysisCodeEditor/index';
 import ViewEditInsight from './components/ViewEditInsight';
 import SubmissionCodeViewer from './components/SubmissionCodeViewer';
+import SubmissionResultFile from './components/SubmissionCodeViewer/ResultFile';
+import SubmissionGroupFile from './components/SubmissionCodeViewer/GroupFile';
 
 function Routes() {
   return [
@@ -36,14 +38,20 @@ function Routes() {
     // Show query code from Analysis page
     <Route
     	path="submission-groups/:submissionGroupId/code/:fileUuid"
-    	component={SubmissionCodeViewer}
+    	component={SubmissionGroupFile}
     	type="query"
     	from="SUBMISSION_GROUP"
     />,
     // Show result code from Analysis page
     <Route
     	path="submissions/:submissionId/results/:fileUuid"
-    	component={SubmissionCodeViewer}
+    	component={SubmissionResultFile}
+    	type="result"
+    	from="SUBMISSION"
+    />,
+    <Route
+    	path="submissions/:submissionId/results"
+    	component={SubmissionResultFile}
     	type="result"
     	from="SUBMISSION"
     />,

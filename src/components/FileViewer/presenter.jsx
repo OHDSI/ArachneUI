@@ -22,7 +22,6 @@
 import React from 'react';
 import BEMHelper from 'services/BemHelper';
 import { PageContent, LoadingPanel } from 'arachne-ui-components';
-import FileTree from 'components/FileTree';
 import MediaViewer from 'components/MediaViewer';
 import Toolbar from './Toolbar/index';
 
@@ -42,34 +41,15 @@ function FileViewer(props) {
     title,
     createdAt,
     toolbarOpts,
-
-    fileTreeData,
-    selectedFilePath,
-    toggleFolder,
-    openFile,
   } = props;
 
   return (
     <PageContent title={pageTitle}>
       <div {...classes()}>
-        <Toolbar params={toolbarOpts}/>
+        {toolbarOpts &&
+          <Toolbar params={toolbarOpts} />
+        }
         <div {...classes('workspace')}>
-          {fileTreeData
-            ? <div {...classes('nav')}>
-                <div {...classes('nav-header')}>
-                  Browse files
-                </div>
-                <div {...classes('nav-content')}>
-                  <FileTree
-                    data={fileTreeData}
-                    selectedFilePath={selectedFilePath}
-                    toggleFolder={toggleFolder}
-                    openFile={openFile}
-                  />
-                </div>
-            </div>
-            : null
-          }
           <div {...classes('content')}>
             <MediaViewer
               language={language}
