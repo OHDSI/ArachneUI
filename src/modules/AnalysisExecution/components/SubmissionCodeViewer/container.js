@@ -47,7 +47,7 @@ export class SubmissionCode extends FileLoader {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.params.fileUuid !== nextProps.params.fileUuid) {
-      this.loadData();
+      super.componentWillMount();
     }
   }
 
