@@ -42,11 +42,6 @@ export default function FileBrowser(props) {
     toggleFolder,
     openFile,
   } = props;
-  // files list
-  const {
-    filesList,
-    getFilesList,
-  } = props;
   // main info
   const {
     mainInfoComponent,

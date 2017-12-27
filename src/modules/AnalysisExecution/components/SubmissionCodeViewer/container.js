@@ -45,24 +45,18 @@ export class SubmissionCode extends Component {
   }
 
   loadTree(props) {
-    let loadPromise = new Promise(resolve => resolve());
     let folderPath;
     if (props.file && props.file.relativePath) {
       folderPath = FileTreeUtils.getFileFolder(props.file.relativePath);
     } else {
       folderPath = FileTreeUtils.PATH_SEPARATOR;
     }
-    loadPromise = props
-      .toggleFolder({ relativePath: folderPath }, true, true)
-      .then(
-        () => {
-          this.props.selectFileInTree({
-            relativePath: props.file && props.file.relativePath
-              ? props.file.relativePath
-              : FileTreeUtils.PATH_SEPARATOR,
-          });
-        }
-      );
+    props.toggleFolder({ relativePath: folderPath }, true, true);
+    props.selectFileInTree({
+      relativePath: props.file && props.file.relativePath
+        ? props.file.relativePath
+        : '',
+    });
   }
 
   componentWillUnmount() {

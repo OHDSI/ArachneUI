@@ -23,17 +23,15 @@
 import { Component } from 'react';
 import { get, ContainerBuilder } from 'services/Utils';
 import actions from 'actions';
+import { dsConverter } from 'components/LabelDataSource';
 import presenter from './presenter';
 import SelectorsBuilder from './selectors';
-import { dsConverter } from 'components/LabelDataSource';
+
+const selectors = (new SelectorsBuilder()).build();
 
 class SubmissionResultsummary extends Component {
-  constructor() {
-    super();
-  }
-
   componentWillMount() {
-
+    this.props.loadAnalysis({ id: this.props.analysisId });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -46,8 +44,6 @@ class SubmissionResultsummary extends Component {
     return presenter(this.props);
   }
 }
-
-const selectors = (new SelectorsBuilder()).build();
 
 export default class SubmissionResultsummaryBuilder extends ContainerBuilder {
   getComponent() {

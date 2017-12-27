@@ -33,10 +33,6 @@ import SelectorsBuilder from './selectors';
 const selectors = new SelectorsBuilder().build();
 
 class ReportViewer extends FileLoader {
-  componentWillMount() {
-
-  }
-
   render() {
     return presenter(this.props);
   }

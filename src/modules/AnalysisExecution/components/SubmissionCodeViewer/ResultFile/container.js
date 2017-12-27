@@ -39,6 +39,16 @@ class SubmissionResultFile extends SubmissionCode {
       downloadFile: true,
     });
   }
+
+  componentWillReceiveProps(nextProps) {
+    if (get(this.props.file, 'uuid') !== get(nextProps.file, 'uuid')) {
+      nextProps.selectFileInTree({
+        relativePath: nextProps.file && nextProps.file.relativePath
+          ? nextProps.file.relativePath
+          : '',
+      });
+    }
+  }
 }
 
 export default class SubmissionResultFileViewerBuilder extends SubmissionCodeBuilder {
@@ -74,7 +84,7 @@ export default class SubmissionResultFileViewerBuilder extends SubmissionCodeBui
       ...stateProps.treeData,
       children: [
         {
-          docType: mimeTypes.other,
+          docType: mimeTypes.home,
           isExpanded: false,
           onClick: () => dispatchProps.showSummary({ submissionId: stateProps.submissionId }),
           relativePath: '',
