@@ -121,10 +121,11 @@ class FileTree extends Component {
       data,
       selectedFilePath,
       onNodeClick,
+      isFlat,
     } = this.props;
 
     return (
-      <ul {...classes()}>
+      <ul {...classes({ modifiers: { isFlat } })}>
         {data.map(node => this.getNode({
           classes,
           node,

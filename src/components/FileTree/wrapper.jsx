@@ -62,11 +62,15 @@ class FileTreeWrapper extends Component {
   }
 
   render() {
+    const entryList = Array.isArray(this.props.data) ? this.props.data: this.props.data.children;
+    const isFlat = entryList.find(entry => entry.docType === mimeTypes.folder) === undefined;
+
     return (
       <FileTree
         {...this.props}
-        data={Array.isArray(this.props.data) ? this.props.data: this.props.data.children}
+        data={entryList}
         onNodeClick={this.onNodeClick}
+        isFlat={isFlat}
       />
     );
   }
