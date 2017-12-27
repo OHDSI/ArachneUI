@@ -23,8 +23,33 @@
 import React from 'react';
 import FileViewer from 'components/FileViewer';
 import FileBrowser from 'components/FileBrowser';
+import FileTreeUtils from 'services/FileTreeUtils';
+import { get } from 'services/Utils';
+import BEMHelper from 'services/BemHelper';
 import ReportViewer from './ResultFile/components/ReportViewer';
 import Summary from './ResultFile/components/Summary';
+
+import './style.scss';
+
+function createBreadcrumbs(path) {
+  const classes = BEMHelper('result-file-breadcrumbs');
+
+  return (
+    <div {...classes()}>
+      {path
+        .split(FileTreeUtils.PATH_SEPARATOR)
+        .filter(part => part)
+        .reduce((splittedPath, part) => {
+          return [
+            ...splittedPath,
+            <span {...classes('part')}>/</span>,
+            <span {...classes('part')}>{part}</span>,
+          ];
+        }, [])
+      }
+    </div>
+  );
+}
 
 function SubmissionCodeViewer({
   file,
@@ -60,7 +85,10 @@ function SubmissionCodeViewer({
     detailsComponent={
       isReport
         ? <ReportViewer
-          file={file}
+          file={{
+            ...file,
+            label: createBreadcrumbs(get(file, 'path', '')),
+          }}
           downloadLink={downloadLink}
           pageTitle={pageTitle}
           isLoading={isLoading}
@@ -68,7 +96,10 @@ function SubmissionCodeViewer({
           submissionGroupId={submissionGroupId}
         />
         : <FileViewer
-          file={file}
+          file={{
+            ...file,
+            label: createBreadcrumbs(get(file, 'path', '')),
+          }}
           downloadLink={downloadLink}
           pageTitle={pageTitle}
           isLoading={isLoading}
