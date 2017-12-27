@@ -19,11 +19,17 @@
  *
  */
 
-import { connect } from 'react-redux';
-import { get, detectLanguageByExtension, ContainerBuilder } from 'services/Utils';
+import { get, ContainerBuilder } from 'services/Utils';
 import actions from 'actions/index';
-import FileViewer from './presenter';
 import { apiPaths, paths } from 'modules/InsightsLibrary/const';
+import { FileLoader } from 'services/FileLoader';
+import presenter from './presenter';
+
+class FileViewer extends FileLoader {
+  render() {
+    return presenter(this.props);
+  }
+}
 
 export default class InsightFileViewerBuilder extends ContainerBuilder {
 
@@ -41,7 +47,7 @@ export default class InsightFileViewerBuilder extends ContainerBuilder {
 
     const pageTitle = [get(insightFile, 'name', 'Insight document file'),'Arachne'];
 
-    const urlParams = {fileUuid, insightId};
+    const urlParams = { fileUuid, insightId };
     const queryParams = ownProps.location.query;
 
     const backUrl = paths.insights({ insightId: get(insightFile, 'insightId') });
