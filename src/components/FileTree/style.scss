@@ -28,7 +28,7 @@
       & .#{$namespace} {
         &file-tree {
           &__node-toggle {
-            display: none;
+            width: 0.4rem;
           }
         }
       }
