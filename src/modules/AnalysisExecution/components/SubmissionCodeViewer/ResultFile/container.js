@@ -22,12 +22,17 @@
 
 import { SubmissionCodeBuilder, SubmissionCode } from 'modules/AnalysisExecution/components/SubmissionCodeViewer/container';
 import actions from 'actions';
+import { get } from 'services/Utils';
 import { SubmissionResultLinkBuilder } from 'modules/AnalysisExecution/ducks/linkBuilder';
+import { push as goToPage } from 'react-router-redux';
+import { paths } from 'modules/AnalysisExecution/const';
+import mimeTypes from 'const/mimeTypes';
 import SubmissionResultSelectors from './selectors';
 
 class SubmissionResultFile extends SubmissionCode {
   componentWillMount() {
-    this.props.loadFileList({ submissionId: this.props.submissionId });
+    super.componentWillMount();
+    this.loadTree(this.props);
     this.LinkBuilder = new SubmissionResultLinkBuilder({
       submissionId: this.props.params.submissionId,
       fileId: this.props.params.fileUuid,
@@ -46,21 +51,41 @@ export default class SubmissionResultFileViewerBuilder extends SubmissionCodeBui
     return SubmissionResultFile;
   }
 
+  mapStateToProps(state, ownProps) {
+    return {
+      ...super.mapStateToProps(state, ownProps),
+      treeData: this.selectors.getFileTreeData(state),
+    };
+  }
+
   getMapDispatchToProps() {
     return {
       ...super.getMapDispatchToProps(),
       loadFile: actions.analysisExecution.submissionResultFile.find,
       clearFileData: actions.analysisExecution.submissionResultFile.clear,
-      loadFileList: ({ submissionId, path = '/' }) =>
-        actions.analysisExecution.analysisCode.codeList.query(
-          {
-            entityId: submissionId,
-            isSubmissionGroup: false,
-          },
-          {
-            path,
-          }
-        ),
+      showSummary: ({ submissionId }) => goToPage(paths.submissionResultSummary({ submissionId })),
+    };
+  }
+
+  mergeProps(stateProps, dispatchProps, ownProps) {
+    // add a link to summary
+    const treeData = {
+      ...stateProps.treeData,
+      children: [
+        {
+          docType: mimeTypes.other,
+          isExpanded: false,
+          onClick: () => dispatchProps.showSummary({ submissionId: stateProps.submissionId }),
+          relativePath: '',
+          label: 'Summary',
+        },
+        ...get(stateProps.treeData, 'children', []),
+      ],
+    };
+
+    return {
+      ...super.mergeProps(stateProps, dispatchProps, ownProps),
+      treeData,
     };
   }
 }

@@ -21,9 +21,36 @@
  */
 
 import { Component } from 'react';
+import { isFat as isMimeTypeFat } from 'services/MimeTypeUtil';
+import { get } from 'services/Utils';
 import presenter from './presenter';
 
 export default class FileBrowser extends Component {
+
+  componentWillMount() {
+    this.loadData(this.props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.urlParams.fileId !== nextProps.urlParams.fileId) {
+      this.loadData(nextProps);
+    }
+  }
+
+  loadData(params) {
+    params.loadFile({
+      ...params.urlParams,
+      query : { ...params.queryParams, withContent: false },
+    }).then((result) => {
+      if (!isMimeTypeFat(get(result, 'result.docType', '', 'String'))) {
+        params.loadFile({
+          ...params.urlParams,
+          query : { ...params.queryParams, withContent: true },
+        });
+      }
+    });
+  }
+
   render() {
     return presenter(this.props);
   }

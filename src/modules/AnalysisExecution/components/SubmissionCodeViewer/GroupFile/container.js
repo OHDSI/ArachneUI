@@ -28,7 +28,6 @@ import { SubmissionGroupLinkBuilder } from 'modules/AnalysisExecution/ducks/link
 class SubmissionGroupFile extends SubmissionCode {
   componentWillMount() {
     super.componentWillMount();
-    this.props.loadFileList({ submissionGroupId: this.props.submissionGroupId });
     this.LinkBuilder = new SubmissionGroupLinkBuilder({
       submissionId: this.props.params.submissionId,
       submissionGroupId: this.props.params.submissionGroupId,
@@ -53,13 +52,6 @@ export default class SubmissionGroupFileViewerBuilder extends SubmissionCodeBuil
       ...super.getMapDispatchToProps(),
       loadFile: actions.analysisExecution.submissionGroupFile.find,
       clearFileData: actions.analysisExecution.submissionGroupFile.clear,
-      loadFileList: ({ submissionGroupId }) =>
-        actions.analysisExecution.analysisCode.codeList.query(
-          {
-            entityId: submissionGroupId,
-            isSubmissionGroup: true,
-          }
-        ),
     };
   }
 }

@@ -122,7 +122,7 @@ function FileItem({ file, isEditable, removeResult, isHidden }) {
       onRemove={() => removeResult(file.uuid)}
     >
       <FileInfo
-        horizontal
+        mods={['horizontal']}
         docType={file.docType}
         label={file.label || file.name}
         createdAt={file.createdAt}

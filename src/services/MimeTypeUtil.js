@@ -34,6 +34,7 @@ const mimeTypes = {
     MimeTypes.estimation,
     MimeTypes.csv,
     MimeTypes.cohortdefinitionjson,
+    MimeTypes.sql,
   ],
 };
 

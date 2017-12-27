@@ -15,11 +15,11 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 20, 2017
+ * Authors: Pavel Grafkin
+ * Created: December 25, 2017
  *
  */
 
-import File from './presenter';
+import FileTree from './wrapper';
 
-export default File;
+export default FileTree;

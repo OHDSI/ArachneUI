@@ -36,6 +36,11 @@ function SubmissionCodeViewer({
   pageTitle,
   isReport = false,
 
+  treeData,
+  toggleFolder,
+  openFile,
+  selectedFilePath,
+
   resultFiles,
   submissionId,
   submissionGroupId,
@@ -44,13 +49,17 @@ function SubmissionCodeViewer({
     filesList={resultFiles}
     selectedFile={urlParams.fileId}
     toolbarOpts={toolbarOpts}
+    toggleFolder={toggleFolder}
+    openFile={openFile}
+    fileTreeData={treeData}
+    selectedFilePath={selectedFilePath}
+    loadFile={loadFile}
+    urlParams={urlParams}
     detailsComponent={
       isReport
         ? <ReportViewer
           file={file}
-          loadFile={loadFile}
           downloadLink={downloadLink}
-          urlParams={urlParams}
           pageTitle={pageTitle}
           isLoading={isLoading}
           submissionId={submissionId}
@@ -58,9 +67,7 @@ function SubmissionCodeViewer({
         />
         : <FileViewer
           file={file}
-          loadFile={loadFile}
           downloadLink={downloadLink}
-          urlParams={urlParams}
           pageTitle={pageTitle}
           isLoading={isLoading}
         />

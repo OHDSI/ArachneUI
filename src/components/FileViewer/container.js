@@ -22,40 +22,9 @@
 import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { get, detectLanguageByExtension, detectMimeTypeByExtension } from 'services/Utils';
-import { isFat as isMimeTypeFat } from 'services/MimeTypeUtil';
-import isEqual from 'lodash/isEqual';
 import presenter from './presenter';
 
-export class FileLoader extends Component {
-  componentWillMount() {
-    this.getFile(this.props);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (
-      !isEqual(this.props.urlParams, nextProps.urlParams)
-      || !isEqual(this.props.queryParams, nextProps.queryParams)
-    ) {
-      this.getFile(nextProps);
-    }
-  }
-  
-  getFile(props) {
-    props.loadFile({
-      ...props.urlParams,
-      query: { ...props.queryParams, withContent: false },
-    }).then((result) => {
-      if (!isMimeTypeFat(get(result, 'result.docType', '', 'String'))) {
-        props.loadFile({
-          ...props.urlParams,
-          query: { ...props.queryParams, withContent: true },
-        });
-      }
-    });
-  }
-}
-
-class FileViewer extends FileLoader {
+class FileViewer extends Component {
   render() {
     return presenter(this.props);
   }
@@ -71,11 +40,8 @@ FileViewer.propTypes = {
   }),
   isLoading: PropTypes.boolean,
   loadFile: PropTypes.func,
-  toolbarOpts: PropTypes.object,
   downloadLink: PropTypes.string,
-  urlParams: PropTypes.object,
   pageTitle: PropTypes.string,
-  queryParams: PropTypes.object,
 };
 
 function mapStateToProps(state, ownProps) {
@@ -83,17 +49,15 @@ function mapStateToProps(state, ownProps) {
   const file = get(ownProps, 'file', {});
 
   let title = get(file, 'label', '');
-  if (!title) {
-    title = get(file, 'name', '');
-  }
   const mimeType = detectMimeTypeByExtension(file);
   const createdAt = get(file, 'created');
   const language = detectLanguageByExtension(file);
+  if (!title) {
+    title = get(file, 'name', '');
+  }
 
   const isLoading = get(ownProps, 'isLoading');
   const content = isLoading ? null : get(file, 'content', null, 'String');
-
-  const loadFile = get(ownProps, 'loadFile');
 
   return {
     content,
@@ -101,7 +65,6 @@ function mapStateToProps(state, ownProps) {
     title,
     createdAt,
     language,
-    loadFile,
   };
 }
 

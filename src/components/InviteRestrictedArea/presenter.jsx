@@ -41,6 +41,7 @@ function InviteRestrictedArea(props) {
     goBack,
     invitation,
     isLoading,
+    studyId,
   } = props;
   const classes = new BEMHelper('invite-restricted-area');
   const emptyStateMessage = (
@@ -50,7 +51,7 @@ function InviteRestrictedArea(props) {
     </div>
   );
 
-  if (isLoading) {
+  if (studyId !== -1 && isLoading) {
     return null;
   }
 

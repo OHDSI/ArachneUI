@@ -16,32 +16,36 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 20, 2017
+ * Created: December 15, 2017
  *
  */
 
-import React from 'react';
-import FileInfo from 'components/FileInfo';
-import BEMHelper from 'services/BemHelper';
+@import 'styles/vars-and-mixins.scss';
 
-import './style.scss';
+.#{$namespace} {
+  &tooltip {
+    &--preformatted {
+      &::after {
+        white-space: pre-wrap;
+        width: 200px;
+      }
+    }
+  }
 
-export default function File(props) {
-  const classes = BEMHelper('file-browser-file-info');
-  const {
-    file,
-    selected,
-  } = props;
+  &incedence-label {
+    &__result-element {
+      padding-right: 0.5rem;
+      display: flex;
+      align-items: center;
+    }
+    &__result-ico {
+      @include material-icon();
+      font-size: 1.6rem;
+    }
 
-  return (
-    <FileInfo
-      {...file}
-      {...classes({
-        modifiers: {
-          selected,
-        }
-      })}
-      label={file.name}
-    />
-  );
+    &__line{
+      display: flex;
+      align-items: center;
+    }
+  }
 }

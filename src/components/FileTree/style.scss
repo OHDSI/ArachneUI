@@ -1,4 +1,4 @@
-/*
+/*!
  *  Copyright 2017 Observational Health Data Sciences and Informatics
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,16 +14,46 @@
  *
  *  Company: Odysseus Data Services, Inc.
  *  Product Owner/Architecture: Gregory Klebanov
- *  Authors: Anton Gackovka
- *  Created: October 18, 2017
+ *  Authors: Pavel Grafkin
+ *  Created: December 25, 2017
  *
  */
 
-import { connect } from 'react-redux';
-import Toolbar from './presenter';
+ @import 'styles/vars-and-mixins.scss';
+ 
+ .#{$namespace} {
+   &file-tree {
+ 
+    &__node {
+      &--selected {
+        background: $grey-light;
+      }
 
-function mapStateToProps(state, ownProps) {
-  return ownProps.params || {};
+      &-details {
+        align-items: center;
+        display: flex;
+        padding: .5rem 1rem;
+        
+        &:hover {
+          cursor: pointer;
+          background: $grey-light;
+        }
+      }
+
+      &-children {
+        padding-left: 2rem;
+      }
+    }
+
+    &__node-toggle {
+      @include material-icon();
+      width: 1.8rem;
+      margin-right: .5rem;
+      
+      &--spinning {
+        @include spinning();
+      }
+    }
+
+  }
 }
-
-export default connect(mapStateToProps)(Toolbar);

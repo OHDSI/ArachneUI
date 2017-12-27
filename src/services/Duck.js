@@ -60,7 +60,8 @@ class Duck {
         (state, action) => ({
           ...state,
           isLoading: false,
-          queryResult: action.payload,
+          queryResult: action.payload.result,
+          requestParams: action.payload.requestParams,
         })
       )
       // FIND_PENDING

@@ -20,7 +20,6 @@
  *
  */
 
-
 import { createSelector } from 'reselect';
 import converter from 'components/FileInfo/converter';
 import { get } from 'services/Utils';
@@ -65,6 +64,14 @@ export class SubmissionCodeSelectorsBuilder {
     return null;
   }
 
+  getFileTreeData(state) {
+    return get(state, 'analysisExecution.fileTreeData.queryResult');
+  }
+
+  getSelectedFileFromTree(state) {
+    return get(state, 'analysisExecution.fileTreeData.selectedFile');
+  }
+
   build() {
     return {
       getSubmissionFilesList: this.buildSelectorForSubmissionFileList(),
@@ -72,6 +79,9 @@ export class SubmissionCodeSelectorsBuilder {
       getIsFileLoading: this.getIsFileLoading,
       getFileData: this.getFileData,
       getPageTitle: this.getPageTitle,
+      
+      getFileTreeData: this.getFileTreeData,
+      getSelectedFileFromTree: this.getSelectedFileFromTree,
     };
   }
 }

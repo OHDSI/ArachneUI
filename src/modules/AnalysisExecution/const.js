@@ -61,7 +61,7 @@ const paths = {
   analysisCode: ({ analysisId, codeFileId }) => `/analysis-execution/analyses/${analysisId}/code/${codeFileId}`,
   submissionCodeFile: ({ submissionGroupId, fileId }) => `/analysis-execution/submission-groups/${submissionGroupId}/code/${fileId}`,
   submissionResultFile: ({ submissionId, fileId }) => `/analysis-execution/submissions/${submissionId}/results/${fileId}`,
-  submissionResultFiles: ({ submissionId }) => `/analysis-execution/submissions/${submissionId}/results`,
+  submissionResultSummary: ({ submissionId }) => `/analysis-execution/submissions/${submissionId}/results`,
   insightCodeFile: ({ submissionId, fileId }) => `/analysis-execution/submissions/${submissionId}/insight/code/${fileId}`,
   insightResultFile: ({ submissionId, fileId }) => `/analysis-execution/submissions/${submissionId}/insight/results/${fileId}`,
   insight: ({ submissionId }) => `/analysis-execution/submissions/${submissionId}/insight`,
@@ -129,6 +129,10 @@ const analysisPermissions = {
   uploadAnalysisFiles :'UPLOAD_ANALYSIS_FILES',
 };
 
+const fileTypes = keyMirror({
+  SUBMISSION_RESULT: null,
+});
+
 const statusesForPublishing = ['PENDING', 'NOT APPROVED', 'IN PROGRESS'];
 
 const refreshTime = 10000;
@@ -180,15 +184,6 @@ const submissionActionTypes = keyMirror({
   PUBLISH: null,
 });
 
-const analysisTypes = keyMirror({
-  ESTIMATION: null,
-  REPORTING: null,
-  CUSTOM: null,
-  PREDICTION: null,
-  COHORT_CHARACTERIZATION: null,
-  COHORT: null,
-  INCIDENCE: null,
-});
 const importableAnalysisTypes = ['COHORT', 'ESTIMATION', 'PREDICTION', 'COHORT_CHARACTERIZATION', 'INCIDENCE'];
 const analysisTypeNames = {
   COHORT: 'cohort',
@@ -231,9 +226,15 @@ const fileSources = keyMirror({
 const maxFilesCount = 10000;
 
 const breadcrumbTypes = keyMirror({
-  STUDY: null,
   ANALYSIS: null,
+  STUDY: null,
   INSIGHT: null,
+});
+
+const analysisTypes = keyMirror({
+  INCIDENCE: null,
+  COHORT: null,
+  COHORT_CHARACTERIZATION: null,
 });
 
 export {
@@ -247,12 +248,13 @@ export {
   statusColors,
   submissionActionTypes,
   repeatTypes,
-  analysisTypes,
   importableAnalysisTypes,
   nameAnalysisType,
   docTypes,
   fileSources,
   maxFilesCount,
   analysisPermissions,
+  fileTypes,
   breadcrumbTypes,
+  analysisTypes,
 };

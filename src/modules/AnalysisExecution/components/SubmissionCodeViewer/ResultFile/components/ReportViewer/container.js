@@ -23,7 +23,7 @@
 import { ContainerBuilder, get } from 'services/Utils';
 import ReportUtils from 'components/Reports/Utils';
 import { treemapReports } from 'const/reports';
-import { FileLoader } from 'components/FileViewer/container';
+import FileLoader from 'components/FileViewer/container';
 import actions from 'actions';
 import convertDetailsDataToReportData from './converters/reportDetailsToReportData';
 import DTO from './converters/DTO';

@@ -35,15 +35,23 @@
       flex-grow: 1;
     }
 
-    &__files-list {
-      width: 32rem;
-      background: $grey-lighter;
-      flex-shrink: 0;
-    }
-
     &__details {
       flex-grow: 1;
       display: flex;
+    }
+
+    &__nav {
+      border-right: 1px solid $grey-light;
+      flex-shrink: 0;
+      width: 32rem;
+    }
+
+    &__nav-header {
+      @include black-nav();
+    }
+
+    &__nav-content {
+      padding: .75rem 0;
     }
   }
 }
