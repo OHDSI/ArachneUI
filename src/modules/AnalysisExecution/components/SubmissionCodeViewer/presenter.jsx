@@ -83,7 +83,7 @@ function SubmissionCodeViewer({
         ? <ReportViewer
           file={{
             ...file,
-            label: createBreadcrumbs(get(file, 'path', '', 'String')),
+            label: createBreadcrumbs(get(file, 'relativePath', '', 'String')),
           }}
           downloadLink={downloadLink}
           pageTitle={pageTitle}
@@ -94,7 +94,7 @@ function SubmissionCodeViewer({
         : <FileViewer
           file={{
             ...file,
-            label: createBreadcrumbs(get(file, 'path', '', 'String')),
+            label: createBreadcrumbs(get(file, 'relativePath', '', 'String')),
           }}
           downloadLink={downloadLink}
           pageTitle={pageTitle}

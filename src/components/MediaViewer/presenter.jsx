@@ -135,7 +135,7 @@ const LazyPDF = Loadable({
 
 function empty({ classes }) {
   return (
-    (<div {...classes({ element: 'container' })}>
+    (<div {...classes({ element: 'container', modifiers: 'empty' })}>
       <EmptyState message={'Content of this file cannot be displayed'} />
     </div>)
   );

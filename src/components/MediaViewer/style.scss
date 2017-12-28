@@ -67,6 +67,7 @@
     background: $white;
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
 
     & .ac-pagination {
       z-index: 10;
@@ -81,7 +82,7 @@
       justify-content: space-between;
       flex-direction: column;
 
-      &--loading {
+      &--loading, &--empty {
         justify-content: center;
       }
 

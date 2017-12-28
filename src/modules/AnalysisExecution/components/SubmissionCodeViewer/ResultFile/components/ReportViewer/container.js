@@ -121,17 +121,19 @@ export default class ReportViewerBuilder extends ContainerBuilder {
       ...dispatchProps,
       ...ownProps,
       loadTreemapDetails({ filename }) {
-        let path = '';
-        const isRoot = stateProps.filename.lastIndexOf('/') === -1;
+        let path = `${stateProps.type}`;
+        const filepath = get(ownProps.file, 'relativePath', '', 'String');
+        const isRoot = filepath.lastIndexOf('/') === -1;
         if (!isRoot) {
-          path = `${stateProps.filename.substr(0, stateProps.filename.lastIndexOf('/'))}/`;
+          path = `${filepath.substr(0, filepath.lastIndexOf('/'))}/${stateProps.type}`;
         }
-        const realname = `${path}${stateProps.type}/${filename}.json`;
+        const realname = `${filename}.json`;
         dispatchProps.loadSubmissionResultFiles(
           {
             entityId: ownProps.submissionId,
           },
           {
+            path,
             'real-name': realname,
           }
         ).then(detailedFiles => dispatchProps.loadDetails({
