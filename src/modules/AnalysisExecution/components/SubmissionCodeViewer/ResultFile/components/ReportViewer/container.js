@@ -121,8 +121,8 @@ export default class ReportViewerBuilder extends ContainerBuilder {
       ...dispatchProps,
       ...ownProps,
       loadTreemapDetails({ filename }) {
-        let path = '';
-        const filepath = get(ownProps.file, 'path', '', 'String');
+        let path = `${stateProps.type}`;
+        const filepath = get(ownProps.file, 'relativePath', '', 'String');
         const isRoot = filepath.lastIndexOf('/') === -1;
         if (!isRoot) {
           path = `${filepath.substr(0, filepath.lastIndexOf('/'))}/${stateProps.type}`;

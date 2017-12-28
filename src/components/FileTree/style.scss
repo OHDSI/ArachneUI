@@ -23,8 +23,6 @@
  
  .#{$namespace} {
    &file-tree {
-     /* fix for &__node width */
-     position: absolute;
 
     &--isFlat {
       & .#{$namespace} {
@@ -34,6 +32,10 @@
           }
         }
       }
+    }
+    &--isRoot {
+      /* fix for &__node width */
+      position: absolute;
     }
  
     &__node {
