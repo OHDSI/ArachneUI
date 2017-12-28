@@ -47,6 +47,11 @@ class SubmissionResultFile extends SubmissionCode {
     super.componentWillReceiveProps(nextProps);
     if (get(this.props.file, 'uuid') !== get(nextProps.file, 'uuid')) {
       this.updateTree(nextProps);
+      this.LinkBuilder.params = {
+        submissionId: this.props.params.submissionId,
+        fileId: this.props.params.fileUuid,
+        downloadFile: true,
+      };
     }
   }
 
