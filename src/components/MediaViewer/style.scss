@@ -79,10 +79,10 @@
       width: 100%;
       align-items: center;
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       flex-direction: column;
 
-      &--loading {
+      &--loading, &--empty {
         justify-content: center;
       }
 
