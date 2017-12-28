@@ -29,7 +29,7 @@ import './style.scss';
 
 export default function SummaryCohort({ analysis, resultInfo = {}, className }) {
   const classes = BEMHelper('summary-cohort');
-  const personCount = get(resultInfo, 'PERSON_COUNT', 0);
+  const personCount = get(resultInfo, 'persons', 0);
 
   return (
     <div {...classes({ extra: className })}>

@@ -23,6 +23,8 @@
  
  .#{$namespace} {
    &file-tree {
+     /* fix for &__node width */
+     position: absolute;
 
     &--isFlat {
       & .#{$namespace} {
@@ -35,6 +37,9 @@
     }
  
     &__node {
+      display: inline-block;
+      min-width: 100%;
+
       &--selected {
         background: $grey-light;
       }
