@@ -22,8 +22,6 @@
 
 import React from 'react';
 import BEMHelper from 'services/BemHelper';
-import pluralize from 'pluralize';
-import { get, numberFormatter } from 'services/Utils';
 import {
   Table,
   TableCellText,
@@ -40,9 +38,9 @@ export default function SummaryPopulationLevel({ analysis, resultInfo = {}, clas
     <div {...classes({ extra: className })}>
       <div {...classes('result-info')}>
         <Table
-          data={[t]}
+          data={[resultInfo]}
         >
-          {results.map((col, index) =>
+          {results.map(col =>
             <TableCellText
               field={col.key}
               header={col.key}
