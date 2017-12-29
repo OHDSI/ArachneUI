@@ -28,6 +28,7 @@
     width: 100%;
     padding: 1rem;
     background: $white;
+    overflow: auto;
 
     &__summary-block {
       display: flex;
@@ -46,10 +47,15 @@
       &--narrow {
         margin-right: calc(50% + 1rem);
       }
-    }
-
-    &__panel-content {
-      padding: 1.5rem 2rem;
+      &--padded {
+        & .#{$namespace} {
+          &submission-result-summary {
+            &__panel-content {
+              padding: 1.5rem 2rem;
+            }
+          }
+        }
+      }
     }
 
     &__sub-block {

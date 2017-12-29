@@ -23,8 +23,7 @@
 @import 'styles/vars-and-mixins.scss';
 
 .#{$namespace} {
-  &summary-incidence {
-
+  &summary-pl {
     @include summary-result-block();
     
   }

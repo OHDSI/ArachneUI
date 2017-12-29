@@ -20,12 +20,11 @@
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+import SummaryPopulationLevel from './presenter';
+import { ContainerBuilder } from 'services/Utils';
 
-.#{$namespace} {
-  &summary-incidence {
-
-    @include summary-result-block();
-    
+export default class SummaryPopulationLevelBuilder extends ContainerBuilder {
+  getComponent() {
+    return SummaryPopulationLevel;
   }
 }

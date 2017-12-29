@@ -20,12 +20,34 @@
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+import React from 'react';
+import BEMHelper from 'services/BemHelper';
+import {
+  Table,
+  TableCellText,
+} from 'arachne-ui-components';
 
-.#{$namespace} {
-  &summary-incidence {
+import './style.scss';
 
-    @include summary-result-block();
-    
-  }
+export default function SummaryPopulationLevel({ analysis, resultInfo = {}, className }) {
+  const classes = BEMHelper('summary-pl');
+  const results = Object.entries(resultInfo)
+    .map(([key, value]) => ({ key, value }));
+
+  return (
+    <div {...classes({ extra: className })}>
+      <div {...classes('result-info')}>
+        <Table
+          data={[resultInfo]}
+        >
+          {results.map(col =>
+            <TableCellText
+              field={col.key}
+              header={col.key}
+            />
+          )}
+        </Table>
+      </div>
+    </div>
+  );
 }

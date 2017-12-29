@@ -30,8 +30,10 @@ import { commonDate } from 'const/formats';
 import {
   Panel,
 } from 'arachne-ui-components';
+import { get } from 'services/Utils';
 import SummaryIncidence from './Incidence';
 import SummaryCohort from './Cohort';
+import SummaryPopulationLevel from './PopulationLevel';
 
 import './style.scss';
 
@@ -65,6 +67,7 @@ export default function SubmissionResultSummary(props) {
   const specificSummaryMods = {
     narrow: true,
     wide: false,
+    padded: true,
   };
 
   switch (submissionGroupType) {
@@ -74,13 +77,19 @@ export default function SubmissionResultSummary(props) {
     case analysisTypes.COHORT: case analysisTypes.COHORT_CHARACTERIZATION:
       specificSummary = <SummaryCohort analysis={analysis} resultInfo={resultInfo} />;
       break;
+    case analysisTypes.ESTIMATION: case analysisTypes.PREDICTION:
+      specificSummaryMods.narrow = false;
+      specificSummaryMods.wide = true;
+      specificSummaryMods.padded = false;
+      specificSummary = <SummaryPopulationLevel analysis={analysis} resultInfo={resultInfo} />;
+      break;
   }
-  const statusMods = submission.status.value ? statusColors[submission.status.value] : null;
+  const statusMods = get(submission, 'status.value') ? statusColors[get(submission, 'status.value', '')] : null;
 
   return (
     <div {...classes()}>
       <ResultInfoBlock>
-        <Panel title={'Analysis'} {...classes('panel')}>
+        <Panel title={'Analysis'} {...classes('panel', 'padded')}>
           <div {...classes('panel-content')}>
             <ul {...classes('list')}>
               <li {...classes('list-item')}>{nameAnalysisType({ analysisType: submissionGroupType, capitalize: true })}</li>
@@ -88,15 +97,15 @@ export default function SubmissionResultSummary(props) {
             </ul>
           </div>
         </Panel>
-        <Panel title={'Submission details'} {...classes('panel')}>
+        <Panel title={'Submission details'} {...classes('panel', 'padded')}>
           <div {...classes('panel-content')}>
             <ul {...classes('list')}>
               <li {...classes('list-item')}>
                 <span {...classes({ element: 'status', modifiers: statusMods })}>
-                  {submission.status.title}
+                  {get(submission, 'status.title', '')}
                 </span>
               </li>
-              <li {...classes('list-item')}>{moment(submission.createdAt).tz(moment.tz.guess()).format(commonDate)}</li>
+              <li {...classes('list-item')}>{moment(get(submission, 'createdAt', '')).tz(moment.tz.guess()).format(commonDate)}</li>
               <li {...classes('list-item')}>
                 <LabelDataSource {...datasource} />
               </li>
