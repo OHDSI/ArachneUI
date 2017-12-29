@@ -20,12 +20,7 @@
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+import SummaryPopulationLevelBuilder from './container';
 
-.#{$namespace} {
-  &summary-incidence {
+export default (new SummaryPopulationLevelBuilder()).build();
 
-    @include summary-result-block();
-    
-  }
-}

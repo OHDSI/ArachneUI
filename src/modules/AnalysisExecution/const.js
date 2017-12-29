@@ -235,6 +235,8 @@ const analysisTypes = keyMirror({
   INCIDENCE: null,
   COHORT: null,
   COHORT_CHARACTERIZATION: null,
+  ESTIMATION: null,
+  PREDICTION: null,
 });
 
 export {
