@@ -86,7 +86,7 @@ function initModules(modules) {
     }
 
     if (module.isRoot) {
-      indexRedirect = module.path;
+      indexRedirect = `/${module.path}${module.indexRedirect}`;
     }
 
     if (module.menuItems) {
