@@ -72,7 +72,7 @@ function ReportViewer(props) {
     tableData,
     tableColumns,
     details,
-    isLoading,
+    isDetailsLoading,
     title,
     createdAt,
   } = props;
@@ -212,7 +212,7 @@ function ReportViewer(props) {
         </div>
       </div>
       <LoadingPanel
-        active={isLoading}
+        active={isDetailsLoading}
         label={'Loading drilldown'}
       />
     </PageContent>

@@ -30,6 +30,7 @@ import './style.scss';
 export default function SummaryCohort({ analysis, resultInfo = {}, className }) {
   const classes = BEMHelper('summary-cohort');
   const personCount = get(resultInfo, 'persons', 0);
+  const reports = get(resultInfo, 'reports', 0);
 
   return (
     <div {...classes({ extra: className })}>
@@ -38,6 +39,11 @@ export default function SummaryCohort({ analysis, resultInfo = {}, className }) 
           <span {...classes('result-ico')}>perm_identity</span>
           <span {...classes('count')}>{numberFormatter.format(personCount, 'whole')}</span>
           <span>{pluralize('Person', personCount)}</span>
+        </span>
+        <span {...classes('result-element')}>
+          <span {...classes('result-ico')}>assignment</span>
+          <span {...classes('count')}>{numberFormatter.format(reports, 'whole')}</span>
+          <span>{pluralize('Report', reports)}</span>
         </span>
       </div>
     </div>

@@ -91,12 +91,17 @@ if (!numeral['locales']['arachne-short']) {
 
 const numberFormatter = {
   format: (value, form = 'full') => {
-    if (form === 'short') {
-      numeral.locale('arachne-short');
-    } else {
-      numeral.locale('arachne');
+    switch (form) {
+      case 'short':
+        numeral.locale('arachne-short');
+        return numeral(value).format('0[.]0 a');
+      case 'whole':
+        numeral.locale('arachne');
+        return numeral(value).format('0,0');
+      default:
+        numeral.locale('arachne');
+        return numeral(value).format('0[.]0 a');
     }
-    return numeral(value).format('0[.]0 a');
   },
 };
 
