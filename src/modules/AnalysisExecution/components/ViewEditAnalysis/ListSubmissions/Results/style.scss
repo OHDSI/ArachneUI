@@ -42,6 +42,7 @@
     &__result-ico {
       @include material-icon();
       font-size: 1.6rem;
+      margin-right: 0.25rem;
     }
 
     &__line{
