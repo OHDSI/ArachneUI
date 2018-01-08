@@ -34,15 +34,14 @@
 
   &incedence-label {
     &__result-element {
-      padding-right: 0.5rem;
       display: flex;
       align-items: center;
-      margin-right: 0.75rem;
+      margin-right: 1.25rem;
     }
     &__result-ico {
       @include material-icon();
-      font-size: 1.6rem;
-      margin-right: 0.25rem;
+      font-size: 1.8rem;
+      margin-right: 0.5rem;
     }
 
     &__line{

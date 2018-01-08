@@ -26,5 +26,8 @@
   &summary-pl {
     @include summary-result-block();
     
+    &__result-info {
+      border-top: 1px solid $grey-medium;
+    }
   }
 }

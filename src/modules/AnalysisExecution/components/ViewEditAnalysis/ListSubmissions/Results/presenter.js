@@ -69,9 +69,10 @@ function CohortCharacterization(props) {
     resultInfo,
   } = props;
 
-  const reports = get(resultInfo, 'reports');
+  const persons = get(resultInfo, 'persons') || 0;
+  const reports = get(resultInfo, 'reports') || 0;
 
-  return <span>{reports || 0} {pluralize('report', reports)}</span>;
+  return <span>{pluralize('person', persons, true)}, {pluralize('report', reports, true)}</span>;
 }
 
 function Incidence(props) {
@@ -103,7 +104,7 @@ function Incidence(props) {
       <span>{numberFormatter.format(rate, 'short')}</span>
     </span>
     <span{...classes({ element: 'result-element' })}>
-      <span {...classes({ element: 'result-ico' })}>open_with</span>
+      <span {...classes({ element: 'result-ico' })}>list</span>
       <span>{numberFormatter.format(cases, 'short')}</span>
     </span>
     <span{...classes({ element: 'result-element' })}>

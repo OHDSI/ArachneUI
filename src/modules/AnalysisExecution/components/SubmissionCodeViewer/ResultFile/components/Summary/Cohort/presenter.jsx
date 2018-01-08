@@ -40,11 +40,15 @@ export default function SummaryCohort({ analysis, resultInfo = {}, className }) 
           <span {...classes('count')}>{numberFormatter.format(personCount, 'whole')}</span>
           <span>{pluralize('Person', personCount)}</span>
         </span>
-        <span {...classes('result-element')}>
-          <span {...classes('result-ico')}>assignment</span>
-          <span {...classes('count')}>{numberFormatter.format(reports, 'whole')}</span>
-          <span>{pluralize('Report', reports)}</span>
-        </span>
+        {/* Reports count should be shown only in Cohor Characterization, while the component is used in simple Cohort analysis type too */
+          reports ?
+          <span {...classes('result-element')}>
+            <span {...classes('result-ico')}>assignment</span>
+            <span {...classes('count')}>{numberFormatter.format(reports, 'whole')}</span>
+            <span>{pluralize('Report', reports)}</span>
+          </span>
+          : null
+        }        
       </div>
     </div>
   );

@@ -20,11 +20,21 @@
  *
  */
 
+import { ContainerBuilder, get } from 'services/Utils';
 import SummaryPopulationLevel from './presenter';
-import { ContainerBuilder } from 'services/Utils';
 
 export default class SummaryPopulationLevelBuilder extends ContainerBuilder {
   getComponent() {
     return SummaryPopulationLevel;
+  }
+
+  mapStateToProps(state, ownProps) {
+    const headers = get(ownProps, 'resultInfo.headers', [], 'Array');
+    const records = get(ownProps, 'resultInfo.records', [], 'Array');
+
+    return {
+      headers,
+      records,
+    };
   }
 }

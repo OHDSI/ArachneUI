@@ -21,36 +21,116 @@
  */
 
 import { Component } from 'react';
+import CSV from 'comma-separated-values';
+import keyMirror from 'keymirror';
 import presenter from './presenter';
 
-export default class CsvViewer extends Component {
+class CsvViewer extends Component {
   constructor() {
     super();
     this.state = {
       widths: null,
     };
+    this.headerWidthsNeedRefresh = true;
     this.setThWidths = this.setThWidths.bind(this);
+    this.parseData = this.parseData.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.data !== nextProps.data) {
+      this.headerWidthsNeedRefresh = true;
+    }
   }
 
   setThWidths(headers) {
-    if (headers instanceof NodeList && headers.length) {
+    if (headers instanceof NodeList && headers.length && this.headerWidthsNeedRefresh) {
       const widths = [];
       headers.forEach((header, index) => {
         const bounds = header.getBoundingClientRect();
         widths[index] = `${bounds.width}px`;
       });
+      this.headerWidthsNeedRefresh = false;
       this.setState({
         widths,
       });
     }
   }
 
+  parseCsvTextData({ data }) {
+    let isHeaderRead = false;
+    const columns = [];
+    const rows = [];
+
+    if (data) {
+      new CSV(data).forEach((array) => {
+        if (!isHeaderRead) {
+          isHeaderRead = true;
+          array.forEach((cell, idx) => {
+            columns.push({
+              field: `key${idx}`,
+              header: cell,
+            });
+          });
+        } else {
+          const row = {};
+          array.forEach((cell, idx) => {
+            row[`key${idx}`] = cell;
+          });
+          rows.push(row);
+        }
+      });
+    }
+
+    return {
+      columns,
+      rows,
+    };
+  }
+
+  parseHeadersAndRecordsData({ headers, records }) {
+    const columns = headers.map(h => ({ field: h, header: h }));
+    return {
+      columns,
+      rows: records,
+    };
+  }
+
+  parseData() {
+    let columns = [];
+    let rows = [];
+
+    switch (this.props.dataType) {
+      case CsvViewer.INPUT_DATA_TYPE.HEADER_AND_RECORDS:
+        ({ columns, rows } = this.parseHeadersAndRecordsData({
+          headers: this.props.headers,
+          records: this.props.records,
+        }));
+        break;
+      case CsvViewer.INPUT_DATA_TYPE.CSV_TEXT:
+      default:
+        ({ columns, rows } = this.parseCsvTextData({ data: this.props.data }));
+        break;
+    }
+
+    return {
+      columns,
+      rows,
+    };
+  }
+
   render() {
     return presenter({
       ...this.props,
       ...this.state,
+      ...this.parseData(),
       setThWidths: this.setThWidths,
     });
   }
 }
 
+CsvViewer.INPUT_DATA_TYPE = keyMirror({
+  CSV_TEXT: null,
+  HEADER_AND_RECORDS: null,
+});
+
+export default CsvViewer;

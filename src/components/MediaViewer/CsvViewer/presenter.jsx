@@ -21,7 +21,6 @@
  */
 
 import React from 'react';
-import CSV from 'comma-separated-values';
 import {
   Table,
 } from 'arachne-ui-components';
@@ -60,35 +59,14 @@ function CsvTable({ columns, rows, sticky = false, reference }) {
   );
 }
 
-export default function CsvViewer(props) {
+function CsvViewer(props) {
   const classes = BEMHelper('csv-viewer');
   const {
-    data,
+    columns,
+    rows,
     widths,
     setThWidths,
   } = props;
-  let isHeaderRead = false;
-  const columns = [];
-  const rows = [];
-  if (data) {
-    new CSV(data).forEach((array) => {
-      if (!isHeaderRead) {
-        isHeaderRead = true;
-        array.forEach((cell, idx) => {
-          columns.push({
-            field: `key${idx}`,
-            header: cell,
-          });
-        });
-      } else {
-        const row = {};
-        array.forEach((cell, idx) => {
-          row[`key${idx}`] = cell;
-        });
-        rows.push(row);
-      }
-    });
-  }
 
   return (
     <div {...classes()}>
@@ -100,10 +78,12 @@ export default function CsvViewer(props) {
         }
       }} />
       <CsvTable columns={columns} rows={rows} reference={(el) => {
-        if (el && !widths) {
+        if (el) {
           setThWidths(el.querySelectorAll('th'));
         }
       }} />
     </div>
   );
 }
+
+export default CsvViewer;
