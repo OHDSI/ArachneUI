@@ -24,13 +24,17 @@
  
 .#{$namespace} {
   &csv-viewer {
+    $table-header-height: 47px;
+
     height: 100%;
     overflow: auto;
     position: relative;
 
+    margin-bottom: -1 * $table-header-height;
+
     &__table {
       position: relative;
-      top: -47px;
+      top: -1 * $table-header-height;
       &--sticky {
         position: sticky;
         top: 0px;
@@ -44,8 +48,8 @@
     }
 
     & .#{$namespace}table {
-      &__cell,
-      &__header-cell {
+      &__cell:not(:last-child),
+      &__header-cell:not(:last-child) {
         border-right: 1px solid $grey-medium;
       }
     }
