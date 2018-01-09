@@ -122,9 +122,9 @@ function pdf({
     >
       {isLoaded &&
         <div {...classes('zoom')}>
-          <Button {...classes('zoom-control')} onClick={zoomOut}>-</Button>
+          <div {...classes('zoom-control')} onClick={zoomOut}>-</div>
           <div {...classes('scale')}>{parseInt(scale * 100, 10)} %</div>
-          <Button {...classes('zoom-control')} onClick={zoomIn}>+</Button>
+          <div {...classes('zoom-control')} onClick={zoomIn}>+</div>
         </div>
       }
       <ReactPDF
