@@ -55,9 +55,10 @@ function InviteRestrictedArea(props) {
     return null;
   }
 
-  return (
-      accessGranted
-      ? <div {...classes()}>
+  const content = invitation === null
+    ? <div {...classes('wrapper')}>{children}</div>
+    : (
+      <div {...classes()}>
         <StickyContainer>
           <Sticky>
             {
@@ -72,6 +73,11 @@ function InviteRestrictedArea(props) {
           {children}
         </StickyContainer>
       </div>
+    );
+
+  return (
+      accessGranted
+      ? content
       : <EmptyState message={emptyStateMessage} />
   );
 }
