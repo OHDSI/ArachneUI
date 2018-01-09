@@ -92,7 +92,20 @@ function image({ classes, container, setContainer, data }) {
   );
 }
 
-function pdf({ classes, container, data, setContainer, onPDFLoaded, pageIndex, path, totalPages }) {
+function pdf({
+  classes,
+  container,
+  data,
+  setContainer,
+  onPDFLoaded,
+  pageIndex,
+  path,
+  totalPages,
+  scale,
+  zoomIn,
+  zoomOut,
+  isLoaded,
+}) {
   let pdfWidth = null;
   if (container) {
     pdfWidth = container.getBoundingClientRect().width - 17;
@@ -107,6 +120,13 @@ function pdf({ classes, container, data, setContainer, onPDFLoaded, pageIndex, p
         }
       }}
     >
+      {isLoaded &&
+        <div {...classes('zoom')}>
+          <Button {...classes('zoom-control')} onClick={zoomOut}>-</Button>
+          <div {...classes('scale')}>{parseInt(scale * 100, 10)} %</div>
+          <Button {...classes('zoom-control')} onClick={zoomIn}>+</Button>
+        </div>
+      }
       <ReactPDF
         file={`data:application/pdf;base64,${data}`}
         loading={<EmptyState message={'Loading PDF'} />}
@@ -114,7 +134,7 @@ function pdf({ classes, container, data, setContainer, onPDFLoaded, pageIndex, p
         noData={<EmptyState message={'No PDF file specified'} />}
         onDocumentError={<EmptyState message={'Error while loading document'} />}
         onPageError={<EmptyState message={'Error while loading page'} />}
-        width={pdfWidth}
+        width={pdfWidth * scale}
         pageIndex={pageIndex-1}
         onDocumentLoad={onPDFLoaded}
       />
@@ -141,7 +161,25 @@ function empty({ classes }) {
   );
 }
 
-function MediaViewer({ language, onPDFLoaded, pageIndex, path, data, mimeType, setContainer, container, totalPages, downloadLink, name, title, createdAt }) {
+function MediaViewer({
+  language,
+  onPDFLoaded,
+  pageIndex,
+  path,
+  data,
+  mimeType,
+  setContainer,
+  container,
+  totalPages,
+  downloadLink,
+  name,
+  title,
+  createdAt,
+  scale,
+  zoomIn,
+  zoomOut,
+  isLoaded,
+}) {
   const classes = new BEMHelper('media-viewer');
   let element;
   let isDownloadLinkWrapperNeeded = true;
@@ -152,7 +190,7 @@ function MediaViewer({ language, onPDFLoaded, pageIndex, path, data, mimeType, s
       break;
     case MimeTypes.pdf:
       element = (
-        <LazyPDF { ...{ classes, container, data, setContainer, totalPages, path, pageIndex, onPDFLoaded } } />
+        <LazyPDF { ...{ classes, container, data, setContainer, totalPages, path, pageIndex, onPDFLoaded, scale, zoomIn, zoomOut, isLoaded } } />
       );
       break;
     case MimeTypes.csv:

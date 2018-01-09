@@ -98,6 +98,27 @@
           }
       }
     }
+
+    &__zoom {
+      display: flex;
+      justify-content: center;
+      flex-shrink: 0;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    &__scale {
+      font-family: 'Montserrat';
+    }
+
+    &__zoom-control {
+      background: $green;
+      width: 3.5rem;
+      height: 3.5rem;
+      border-radius: 50%;
+      color: $white;
+      margin: 0 0.5rem;
+    }
   }
 }
 
