@@ -26,7 +26,6 @@
 .#{$namespace} {
   &submission-result-summary {
     width: 100%;
-    padding: 1rem;
     background: $white;
     overflow: auto;
 
@@ -35,6 +34,10 @@
       flex-direction: column;
       width: 100%;
       padding: 0 1rem 0.75rem;
+
+      &:first-child {
+        margin-top: .75rem;
+      }
     }
 
     &__panel {
