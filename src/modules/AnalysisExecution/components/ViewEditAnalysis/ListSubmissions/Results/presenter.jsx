@@ -39,16 +39,16 @@ export default function Results(props) {
   let element;
   switch (analysisType) {
     case 'COHORT':
-      element = <Cohort resultInfo={resultInfo} resultFilesCount={resultFilesCount}/>;
+      element = <Cohort resultInfo={resultInfo} resultFilesCount={resultFilesCount} />;
       break;
     case 'COHORT_CHARACTERIZATION':
-      element = <CohortCharacterization resultInfo={resultInfo} resultFilesCount={resultFilesCount}/>;
+      element = <CohortCharacterization resultInfo={resultInfo} resultFilesCount={resultFilesCount} />;
       break;
     case 'INCIDENCE':
-      element = <Incidence resultInfo={resultInfo} resultFilesCount={resultFilesCount}/>;
+      element = <Incidence resultInfo={resultInfo} resultFilesCount={resultFilesCount} />;
       break;
     default:
-      element = <Default resultFilesCount={resultFilesCount}/>;
+      element = <Default resultFilesCount={resultFilesCount} />;
   }
   return element;
 }
@@ -61,7 +61,7 @@ function Cohort(props) {
 
   const persons = get(resultInfo, 'persons');
 
-  return <span>{persons || 0} {pluralize('person', persons)}</span>;
+  return <span>{pluralize('person', persons, true)}</span>;
 }
 
 function CohortCharacterization(props) {
@@ -81,42 +81,31 @@ function Incidence(props) {
     resultInfo,
   } = props;
 
-  const classes = new BEMHelper('incedence-label');
   const tooltipClass = new BEMHelper('tooltip');
 
-  const personCount = get(resultInfo, 'PERSON_COUNT');
-  const timeAtRisk = get(resultInfo, 'TIME_AT_RISK');
-  const cases = get(resultInfo, 'CASES');
-  const rate = get(resultInfo, 'RATE');
-  const proportion = get(resultInfo, 'PROPORTION');
+  const personCount = get(resultInfo, 'PERSON_COUNT') || 0;
+  const timeAtRisk = get(resultInfo, 'TIME_AT_RISK') || 0;
+  const cases = get(resultInfo, 'CASES') || 0;
+  const rate = get(resultInfo, 'RATE') || 0;
+  const proportion = get(resultInfo, 'PROPORTION') || 0;
   const tooltipString = `Rate: ${rate}
   ${pluralize('Case', cases)}: ${cases}
   ${pluralize('Person', personCount)}: ${personCount}
   Time at risk: ${timeAtRisk} 
   Proportion: ${proportion}`;
 
-  return <div {...classes({
-    extra: tooltipClass({ modifiers: 'preformatted' }).className,
-    element: 'line',
-  })} aria-label={tooltipString} data-tootik-conf='left' >
-    <span{...classes({ element: 'result-element' })}>
-      <span {...classes({ element: 'result-ico' })}>trending_up</span>
-      <span>{numberFormatter.format(rate, 'short')}</span>
-    </span>
-    <span{...classes({ element: 'result-element' })}>
-      <span {...classes({ element: 'result-ico' })}>list</span>
-      <span>{numberFormatter.format(cases, 'short')}</span>
-    </span>
-    <span{...classes({ element: 'result-element' })}>
-      <span {...classes({ element: 'result-ico' })}>perm_identity</span>
-      <span>{numberFormatter.format(personCount, 'short')}</span>
-    </span>
-  </div>;
+  return (<div
+    {...tooltipClass({ modifiers: 'preformatted' })}
+    aria-label={tooltipString}
+    data-tootik-conf='left'
+  >
+    {numberFormatter.format(cases, 'short')} {pluralize('case', cases)}, {numberFormatter.format(personCount, 'short')} {pluralize('person', personCount)}
+  </div>);
 }
 
 function Default(props) {
   const {
     resultFilesCount,
   } = props;
-  return <span>{resultFilesCount} {pluralize('document', resultFilesCount)}</span>;
+  return <span>{pluralize('document', resultFilesCount, true)}</span>;
 }

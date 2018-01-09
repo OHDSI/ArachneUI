@@ -32,21 +32,4 @@
     }
   }
 
-  &incedence-label {
-    &__result-element {
-      display: flex;
-      align-items: center;
-      margin-right: 1.25rem;
-    }
-    &__result-ico {
-      @include material-icon();
-      font-size: 1.8rem;
-      margin-right: 0.5rem;
-    }
-
-    &__line{
-      display: flex;
-      align-items: center;
-    }
-  }
 }
