@@ -27,5 +27,14 @@
 
     @include summary-result-block();
     
+    &__header {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.5;
+    }
+
+    &__header-subtitle {
+      font-size: 1rem;
+    }
   }
 }
