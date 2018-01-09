@@ -24,6 +24,10 @@ import React from 'react';
 import BEMHelper from 'services/BemHelper';
 import pluralize from 'pluralize';
 import { get, numberFormatter } from 'services/Utils';
+import {
+  Table,
+  TableCellText,
+} from 'arachne-ui-components';
 
 import './style.scss';
 
@@ -37,33 +41,33 @@ export default function SummaryIncidence({ analysis, resultInfo = {}, className 
 
   return (
     <div {...classes({ extra: className })}>
-      <div {...classes('result-info')}>
-        <span{...classes('result-element')}>
-          <span {...classes('result-ico')}>open_with</span>
-          <span {...classes('count')}>{numberFormatter.format(cases, 'whole')}</span>
-          <span>{pluralize('Case', cases)}</span>
-        </span>
-        <span {...classes('result-element')}>
-          <span {...classes('result-ico')}>trending_up</span>
-          <span {...classes('count')}>{numberFormatter.format(rate, 'whole')}</span>
-          <span>{pluralize('Rate', rate)}</span>
-        </span>
-        <span {...classes('result-element')}>
-          <span {...classes('result-ico')}>perm_identity</span>
-          <span {...classes('count')}>{numberFormatter.format(personCount, 'whole')}</span>
-          <span>{pluralize('Person', personCount)}</span>
-        </span>
-        <span {...classes('result-element')}>
-          <span {...classes('result-ico')}>pie_chart</span>
-          <span {...classes('count')}>{numberFormatter.format(proportion, 'whole')}</span>
-          <span>Proportion</span>
-        </span>
-        <span {...classes('result-element')}>
-          <span {...classes('result-ico')}>timelapse</span>
-          <span {...classes('count')}>{numberFormatter.format(timeAtRisk, 'whole')}</span>
-          <span>Time at risk</span>
-        </span>
-      </div>
+      <Table
+        data={[{ cases, rate, personCount, proportion, timeAtRisk }]}
+      >
+        <TableCellText header={'Persons'} field={'personCount'} />
+        <TableCellText header={'Cases'} field={'cases'} />
+        <TableCellText
+          header={<div {...classes('header')}>
+            <span>Proportion [+|-]</span>
+            <span {...classes('header-subtitle')}>per 1k persons</span>
+          </div>}
+          field={'proportion'}
+        />
+        <TableCellText
+          header={<div {...classes('header')}>
+            <span>Time At Risk</span>
+            <span {...classes('header-subtitle')}>(years)</span>
+          </div>}
+          field={'timeAtRisk'}
+        />
+        <TableCellText
+          header={<div {...classes('header')}>
+            <span>Rate [+|-]</span>
+            <span {...classes('header-subtitle')}>per 1k years</span>
+          </div>}
+          field={'rate'}
+        />
+      </Table>
     </div>
   );
 }
