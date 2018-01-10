@@ -24,9 +24,9 @@
 
 .#{$namespace} {
   &summary-incidence {
-    border-top: 1px solid $grey;
 
     @include summary-result-block();
+    @include bordered-table();
     
     &__header {
       display: flex;
@@ -38,14 +38,5 @@
       font-size: 1rem;
     }
 
-    & .#{$namespace} {
-      &table {
-        &__row {
-          &:last-child {
-            border-bottom: none;
-          }
-        }
-      }
-    }
   }
 }
