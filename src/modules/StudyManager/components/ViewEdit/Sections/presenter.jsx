@@ -29,7 +29,7 @@ import ListDataSources from '../ListDataSources/index';
 
 require('./style.scss');
 
-function Sections() {
+function Sections(props) {
   const sections = [
     {
       id: 'study-docs',
@@ -47,11 +47,17 @@ function Sections() {
       content: <ListDataSources />,
     },
   ];
+  const {
+    openedSection,
+    onTabChange,
+  } = props;
 
   return (
     <TabbedPane
       modsContent={['detached-content']}
       sections={sections}
+      value={openedSection}
+      onChange={onTabChange}
     />
   );
 }
