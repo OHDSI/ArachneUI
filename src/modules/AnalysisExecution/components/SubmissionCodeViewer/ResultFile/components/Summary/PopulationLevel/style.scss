@@ -26,6 +26,18 @@
   &summary-pl {
     @include summary-result-block();
     
+    border-top: 1px solid $grey;
+
+    & .#{$namespace} {
+      &table {
+        &__row {
+          &:last-child {
+            border-bottom: none;
+          }
+        }
+      }
+    }
+    
     &__result-info {
       border-top: 1px solid $grey-medium;
     }

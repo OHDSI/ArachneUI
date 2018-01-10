@@ -46,7 +46,7 @@ export default class DuckBuilder {
     return {
       actions: {
         ...duck.actions,
-        clear: this.clear,
+        clear: this.clear.bind(this),
       },
       reducer: duck.reducer,
     };
