@@ -105,6 +105,10 @@
       flex-shrink: 0;
       align-items: center;
       padding: 1rem;
+      flex-direction: column;
+      position: fixed;
+      bottom: 0;
+      right: 1rem;
     }
 
     &__scale {
@@ -121,7 +125,7 @@
       width: 3.5rem;
       height: 3.5rem;
       border-radius: 50%;
-      margin: 0 0.5rem;
+      margin: 1.5rem 0;
       user-select: none;
       cursor: pointer;
     }
