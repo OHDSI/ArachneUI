@@ -43,6 +43,14 @@ export class ViewEditStudy extends Component {
     };
   }
 
+  componentWillMount() {
+    this.state = {
+      openedSection: 'Documents',
+    };
+    this.onTabChange = this.onTabChange.bind(this);
+  }
+
+
   componentWillReceiveProps(nextProps) {
     if (this.props.id !== nextProps.id && nextProps.id) {
       this.props.loadTypeList();
@@ -54,8 +62,18 @@ export class ViewEditStudy extends Component {
     }
   }
 
+  onTabChange(openedSection) {
+    this.setState({
+      openedSection,
+    });
+  }
+
   render() {
-    return presenter(this.props);
+    return presenter({
+      ...this.props,
+      ...this.state,
+      onTabChange: this.onTabChange,
+    });
   }
 }
 

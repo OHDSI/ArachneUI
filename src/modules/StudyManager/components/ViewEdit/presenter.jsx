@@ -48,6 +48,8 @@ function ViewEditStudy(props) {
     isLoading,
     id,
     onBannerActed,
+    openedSection,
+    onTabChange,
   } = props;
   const classes = new BEMHelper('study-manager-view');
 
@@ -66,7 +68,7 @@ function ViewEditStudy(props) {
                 <DateInterval />
                 <div className="row">
                   <div className="col-xs-12">
-                    <LeftColumn />
+                    <LeftColumn openedSection={openedSection} onTabChange={onTabChange} />
                   </div>
                 </div>
               </div>
