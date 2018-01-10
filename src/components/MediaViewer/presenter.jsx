@@ -127,17 +127,19 @@ function pdf({
           <div {...classes('zoom-control')} onClick={zoomOut}>-</div>
         </div>
       }
-      <ReactPDF
-        file={`data:application/pdf;base64,${data}`}
-        loading={<EmptyState message={'Loading PDF'} />}
-        error={<EmptyState message={'Failed to load PDF'} />}
-        noData={<EmptyState message={'No PDF file specified'} />}
-        onDocumentError={<EmptyState message={'Error while loading document'} />}
-        onPageError={<EmptyState message={'Error while loading page'} />}
-        width={pdfWidth * scale}
-        pageIndex={pageIndex-1}
-        onDocumentLoad={onPDFLoaded}
-      />
+      <div {...classes('pdf')}>
+        <ReactPDF
+          file={`data:application/pdf;base64,${data}`}
+          loading={<EmptyState message={'Loading PDF'} />}
+          error={<EmptyState message={'Failed to load PDF'} />}
+          noData={<EmptyState message={'No PDF file specified'} />}
+          onDocumentError={<EmptyState message={'Error while loading document'} />}
+          onPageError={<EmptyState message={'Error while loading page'} />}
+          width={pdfWidth * scale}
+          pageIndex={pageIndex-1}
+          onDocumentLoad={onPDFLoaded}
+        />
+      </div>
       <Pagination pages={totalPages} currentPage={pageIndex} path={path} />
     </div>)
   );
