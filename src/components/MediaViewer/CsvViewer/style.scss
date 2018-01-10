@@ -25,6 +25,7 @@
 .#{$namespace} {
   &csv-viewer {
     $table-header-height: 47px;
+    background: $white;
 
     height: 100%;
     overflow: auto;

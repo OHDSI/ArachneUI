@@ -64,7 +64,7 @@
   &media-viewer {
     height: 100%;
     width: 100%;
-    background: $white;
+    background: #fafafa;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
@@ -100,6 +100,10 @@
       }
     }
 
+    &__pdf {
+      margin: auto;
+    }
+
     &__zoom {
       display: flex;
       justify-content: center;
@@ -108,8 +112,8 @@
       padding: 1rem;
       flex-direction: column;
       position: fixed;
-      bottom: 0;
-      right: 1rem;
+      bottom: 16px;
+      right: calc( 1rem + 16px );
     }
 
     &__scale {
