@@ -24,7 +24,8 @@
 
 .#{$namespace} {
   &summary-pl {
-    @include summary-result-block();
+    @include summary-result-block();    
+    @include bordered-table();
     
     &__result-info {
       border-top: 1px solid $grey-medium;

@@ -26,6 +26,7 @@
   &summary-incidence {
 
     @include summary-result-block();
+    @include bordered-table();
     
     &__header {
       display: flex;
@@ -36,5 +37,6 @@
     &__header-subtitle {
       font-size: 1rem;
     }
+
   }
 }

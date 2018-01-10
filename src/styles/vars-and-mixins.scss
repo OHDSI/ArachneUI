@@ -421,3 +421,17 @@ $default-box-padding: 1.5rem 2rem;
     margin-bottom: 1rem;
   }
 }
+
+@mixin bordered-table() {
+  border-top: 1px solid $grey;
+
+    & .#{$namespace} {
+      &table {
+        &__row {
+          &:last-child {
+            border-bottom: none;
+          }
+        }
+      }
+    }
+}
