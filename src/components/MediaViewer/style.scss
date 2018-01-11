@@ -135,6 +135,15 @@
       user-select: none;
       cursor: pointer;
     }
+
+    &__pagination {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      background: #fafafa;
+      position: fixed;
+      bottom: 0;
+    }
   }
 }
 
