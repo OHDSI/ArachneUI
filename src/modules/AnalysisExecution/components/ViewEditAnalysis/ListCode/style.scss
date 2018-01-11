@@ -22,14 +22,40 @@
 
 @import 'styles/vars-and-mixins.scss';
 
+$list-item-height: 53px;
+
 .#{$namespace} {
   &analysis-code-list {
+
     margin-bottom: 10px;
     position: relative;
+    display: flex;
+    max-height: calc( #{$list-item-height} * 10 );
+    flex-direction: column;
+
+    &__list {
+      overflow: auto;
+      flex-grow: 1;
+    }
+
+    & .#{$namespace} {
+      &panel {
+        &__header {
+          flex-shrink: 0;
+        }
+
+        &__content {
+          display: flex;
+          flex-direction: column;
+          flex-grow: 1;
+        }
+      }
+    }
+
   }
 
   &analysis-code-item {
-    min-height: 53px;
+    min-height: $list-item-height;
     align-items: center;
     padding: 0 1.5rem 0 0;
 
@@ -75,6 +101,7 @@
     min-height: 55px;
     position: relative;
     align-items: center;
+    flex-shrink: 0;
   }
 
   &analysis-add-code {
