@@ -92,7 +92,7 @@ function CellName({ value, healthStatus }) {
          aria-label={healthStatuses.getTitle(healthStatus.title)}
          data-tootik-conf="right"
     ></div>
-    {value}
+    <span {...classes('name')}>{value}</span>
   </div>;
 }
 
