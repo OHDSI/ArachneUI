@@ -31,8 +31,6 @@
     overflow: auto;
     position: relative;
 
-    margin-bottom: -1 * $table-header-height;
-
     &__table {
       position: relative;
       top: -1 * $table-header-height;

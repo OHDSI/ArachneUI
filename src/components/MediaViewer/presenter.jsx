@@ -105,10 +105,14 @@ function pdf({
   zoomIn,
   zoomOut,
   isLoaded,
+  isInitialScaleSet,
+  setInitialScale,
 }) {
   let pdfWidth = null;
+  let pdfHeight = null;
   if (container) {
     pdfWidth = container.getBoundingClientRect().width - 17;
+    pdfHeight = container.getBoundingClientRect().height - 36;
   }
 
   return (
@@ -138,9 +142,16 @@ function pdf({
           width={pdfWidth * scale}
           pageIndex={pageIndex-1}
           onDocumentLoad={onPDFLoaded}
+          onPageLoad={(page) => {
+            if (!isInitialScaleSet) {
+              setInitialScale(pdfHeight / page.height);
+            }
+          }}
         />
       </div>
-      <Pagination pages={totalPages} currentPage={pageIndex} path={path} />
+      <div {...classes('pagination')}>
+        <Pagination pages={totalPages} currentPage={pageIndex} path={path} />
+      </div>
     </div>)
   );
 }
@@ -181,6 +192,8 @@ function MediaViewer({
   zoomIn,
   zoomOut,
   isLoaded,
+  isInitialScaleSet,
+  setInitialScale,
 }) {
   const classes = new BEMHelper('media-viewer');
   let element;
@@ -192,7 +205,7 @@ function MediaViewer({
       break;
     case MimeTypes.pdf:
       element = (
-        <LazyPDF { ...{ classes, container, data, setContainer, totalPages, path, pageIndex, onPDFLoaded, scale, zoomIn, zoomOut, isLoaded } } />
+        <LazyPDF { ...{ classes, container, data, setContainer, totalPages, path, pageIndex, onPDFLoaded, scale, zoomIn, zoomOut, isLoaded, isInitialScaleSet, setInitialScale } } />
       );
       break;
     case MimeTypes.csv:
