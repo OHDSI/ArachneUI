@@ -38,18 +38,14 @@ $list-item-height: 53px;
       flex-grow: 1;
     }
 
-    & .#{$namespace} {
-      &panel {
-        &__header {
-          flex-shrink: 0;
-        }
+    &__panel-header {
+      flex-shrink: 0;
+    }
 
-        &__content {
-          display: flex;
-          flex-direction: column;
-          flex-grow: 1;
-        }
-      }
+    &__panel-content {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
     }
 
   }
