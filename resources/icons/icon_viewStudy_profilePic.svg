@@ -1,0 +1,19 @@
+<svg version="1.1"
+     baseProfile="full"
+     width="48" height="48"
+     viewBox="0 0 48 48"
+     preserveAspectRatio="xMinYMin meet"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <!--user-->
+  <!--head-->
+  <circle cx="24" cy="24" r="9" fill="#C5C5C5" />
+  <!--outer ring-->
+  <circle cx="24" cy="24" r="22" fill="transparent" stroke="#C5C5C5" stroke-width="2px" />
+  <!--shoulders-->
+  <path style="fill: #C5C5C5;" d="M 11,41
+    Q13,34 18,32
+    Q24,36 30,32
+    Q35,34 37,41
+    Q25,50 11,41" />
+</svg>
