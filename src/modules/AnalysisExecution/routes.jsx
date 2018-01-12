@@ -37,14 +37,14 @@ function Routes() {
     <Route path="submissions/:submissionId/insight" component={ViewEditInsight} />,
     // Show query code from Analysis page
     <Route
-    	path="submission-groups/:submissionGroupId/code/:fileUuid"
+    	path="submission-groups/:submissionGroupId/code/:fileId"
     	component={SubmissionGroupFile}
     	type="query"
     	from="SUBMISSION_GROUP"
     />,
     // Show result code from Analysis page
     <Route
-    	path="submissions/:submissionId/results/:fileUuid"
+    	path="submissions/:submissionId/results/:fileId"
     	component={SubmissionResultFile}
     	type="result"
     	from="SUBMISSION"
@@ -57,14 +57,14 @@ function Routes() {
     />,
     // Show query code from Insight page
     <Route
-    	path="submissions/:submissionId/insight/code/:fileUuid"
+    	path="submissions/:submissionId/insight/code/:fileId"
     	component={SubmissionGroupFile}
     	type="query"
     	from="INSIGHT"
     />,
     // Show result code from Insight page
     <Route
-    	path="submissions/:submissionId/insight/results/:fileUuid"
+    	path="submissions/:submissionId/insight/results/:fileId"
     	component={SubmissionResultFile}
     	type="result"
     	from="INSIGHT"

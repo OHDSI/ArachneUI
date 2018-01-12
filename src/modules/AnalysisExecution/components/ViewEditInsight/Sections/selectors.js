@@ -46,10 +46,10 @@ const getCodeList = createSelector(
         code,
         () => paths.insightCodeFile({
           submissionId,
-          fileId: code.uuid,
+          fileId: code.fileId,
         })
       ),
-      isSelected: selectedFileUuid === code.uuid,
+      isSelected: selectedFileUuid === code.fileId,
       commentCount: code.commentCount,
     }
     ));

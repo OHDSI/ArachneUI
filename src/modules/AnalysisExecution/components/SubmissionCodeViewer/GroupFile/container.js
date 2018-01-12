@@ -31,7 +31,7 @@ class SubmissionGroupFile extends SubmissionCode {
     this.LinkBuilder = new SubmissionGroupLinkBuilder({
       submissionId: this.props.params.submissionId,
       submissionGroupId: this.props.params.submissionGroupId,
-      fileId: this.props.params.fileUuid,
+      fileId: this.props.params.fileId,
       downloadFile: true,
     });
   }

@@ -38,7 +38,7 @@ const getResultFiles = createSelector(
       file,
       codeFile => paths.submissionResultFile({
         submissionId,
-        fileId: codeFile.uuid,
+        fileId: codeFile.fileId,
       })
     );
   })
@@ -51,7 +51,7 @@ const getQueryFiles = createSelector(
       file,
       codeFile => paths.submissionCodeFile({
         submissionGroupId,
-        fileId: codeFile.uuid,
+        fileId: codeFile.fileId,
       })
     );
   })

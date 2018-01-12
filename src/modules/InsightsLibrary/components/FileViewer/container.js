@@ -39,7 +39,7 @@ export default class InsightFileViewerBuilder extends ContainerBuilder {
 
   mapStateToProps(state, ownProps) {
 
-    const fileUuid = ownProps.params.fileUuid;
+    const fileId = ownProps.params.fileId;
     const insightId = ownProps.params.insightId;
     const isFileLoading = get(state, 'insightsLibrary.insightFiles.isLoading', false);
 
@@ -47,7 +47,7 @@ export default class InsightFileViewerBuilder extends ContainerBuilder {
 
     const pageTitle = [get(insightFile, 'name', 'Insight document file'),'Arachne'];
 
-    const urlParams = { fileUuid, insightId };
+    const urlParams = { fileId, insightId };
     const queryParams = ownProps.location.query;
 
     const backUrl = paths.insights({ insightId: get(insightFile, 'insightId') });
