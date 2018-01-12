@@ -26,18 +26,20 @@ import { get } from 'services/Utils';
 
 export class FileLoader extends Component {
   componentWillMount() {
-    this.loadData();
+    this.loadData(this.props);
   }
 
-  loadData() {
-    this.props.loadFile({
-      ...this.props.urlParams,
-      query: { ...this.props.queryParams, withContent: false },
+  loadData(props) {
+    const urlParams = props.urlParams;
+    const queryParams = props.queryParams;
+    props.loadFile({
+      ...urlParams,
+      query: { ...queryParams, withContent: false },
     }).then((result) => {
       if (!isMimeTypeFat(get(result, 'result.docType', '', 'String'))) {
-        this.props.loadFile({
-          ...this.props.urlParams,
-          query: { ...this.props.queryParams, withContent: true },
+        props.loadFile({
+          ...urlParams,
+          query: { ...queryParams, withContent: true },
         });
       }
     });
