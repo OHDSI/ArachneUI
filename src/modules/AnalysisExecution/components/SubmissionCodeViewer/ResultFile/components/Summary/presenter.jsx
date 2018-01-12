@@ -90,37 +90,43 @@ export default function SubmissionResultSummary(props) {
   return (
     <div {...classes()}>
       <ResultInfoBlock>
-        <Panel title={'Analysis'} {...classes('panel', 'padded')}>
-          <div {...classes('panel-content')}>
-            <ul {...classes('list')}>
-              <li {...classes('list-item')}>{nameAnalysisType({ analysisType: submissionGroupType, capitalize: true })}</li>
-              <li {...classes('list-item')}>{moment(analysis.createdAt).tz(moment.tz.guess()).format(commonDate)}</li>
-            </ul>
-          </div>
-        </Panel>
-        <Panel title={'Submission details'} {...classes('panel', 'padded')}>
-          <div {...classes('panel-content')}>
-            <ul {...classes('list')}>
-              <li {...classes('list-item')}>
-                <span {...classes({ element: 'status', modifiers: statusMods })}>
-                  {get(submission, 'status.title', '')}
-                </span>
-              </li>
-              <li {...classes('list-item')}>{moment(get(submission, 'createdAt', '')).tz(moment.tz.guess()).format(commonDate)}</li>
-              <li {...classes('list-item')}>
-                <LabelDataSource {...datasource} />
-              </li>
-            </ul>
-          </div>
-        </Panel>
+        <div {...classes('panel', 'padded')}>
+          <Panel title={'Analysis'}>
+            <div {...classes('panel-content')}>
+              <ul {...classes('list')}>
+                <li {...classes('list-item')}>{nameAnalysisType({ analysisType: submissionGroupType, capitalize: true })}</li>
+                <li {...classes('list-item')}>{moment(analysis.createdAt).tz(moment.tz.guess()).format(commonDate)}</li>
+              </ul>
+            </div>
+          </Panel>
+        </div>
+        <div {...classes('panel', 'padded')}>
+          <Panel title={'Submission details'}>
+            <div {...classes('panel-content')}>
+              <ul {...classes('list')}>
+                <li {...classes('list-item')}>
+                  <span {...classes({ element: 'status', modifiers: statusMods })}>
+                    {get(submission, 'status.title', '')}
+                  </span>
+                </li>
+                <li {...classes('list-item')}>{moment(get(submission, 'createdAt', '')).tz(moment.tz.guess()).format(commonDate)}</li>
+                <li {...classes('list-item')}>
+                  <LabelDataSource {...datasource} />
+                </li>
+              </ul>
+            </div>
+          </Panel>
+        </div>
       </ResultInfoBlock>
       {specificSummary &&
         <ResultInfoBlock>
-          <Panel title={'Result summary'} {...classes('panel', specificSummaryMods)}>
-            <div {...classes('panel-content')}>
-              {specificSummary}
-            </div>
-          </Panel>
+          <div {...classes('panel', specificSummaryMods)}>
+            <Panel title={'Result summary'}>
+              <div {...classes('panel-content')}>
+                {specificSummary}
+              </div>
+            </Panel>
+          </div>
         </ResultInfoBlock>
       }
     </div>
