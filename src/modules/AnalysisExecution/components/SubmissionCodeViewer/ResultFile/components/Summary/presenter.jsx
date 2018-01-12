@@ -118,7 +118,7 @@ export default function SubmissionResultSummary(props) {
           </Panel>
         </div>
       </ResultInfoBlock>
-      {specificSummary &&
+      {specificSummary && resultInfo &&
         <ResultInfoBlock>
           <div {...classes('panel', specificSummaryMods)}>
             <Panel title={'Result summary'}>
