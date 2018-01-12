@@ -58,14 +58,14 @@ function Routes() {
     // Show query code from Insight page
     <Route
     	path="submissions/:submissionId/insight/code/:fileUuid"
-    	component={SubmissionCodeViewer}
+    	component={SubmissionGroupFile}
     	type="query"
     	from="INSIGHT"
     />,
     // Show result code from Insight page
     <Route
     	path="submissions/:submissionId/insight/results/:fileUuid"
-    	component={SubmissionCodeViewer}
+    	component={SubmissionResultFile}
     	type="result"
     	from="INSIGHT"
     />,
