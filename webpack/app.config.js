@@ -66,6 +66,7 @@ const config = {
     'react-hot-loader/patch',
     'webpack-dev-server/client?http://localhost:8001', // WebpackDevServer host and port
     'webpack/hot/only-dev-server', // "only" prevents reload on syntax errors
+    'babel-regenerator-runtime',
     entryPoint, // Appʼs entry point
   ],
   resolve: {
@@ -180,7 +181,7 @@ const config = {
 };
 
 if (env === ENV_TYPE.PRODUCTION) {
-  config.entry = [entryPoint];
+  config.entry = ['babel-regenerator-runtime', entryPoint];
   // minification
   config.output.publicPath = '/';
   config.plugins.push(new webpack.optimize.UglifyJsPlugin({
