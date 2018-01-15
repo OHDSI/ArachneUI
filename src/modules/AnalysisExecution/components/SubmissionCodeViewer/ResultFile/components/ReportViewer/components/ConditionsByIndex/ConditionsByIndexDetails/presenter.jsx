@@ -26,6 +26,7 @@ import { chartSettings } from 'modules/DataCatalog/const';
 import { convertDataToTreemapData } from 'components/Reports/converters';
 import Chart from 'components/Reports/Chart';
 import ReportUtils from 'components/Reports/Utils';
+import isEmpty from 'lodash/isEmpty';
 
 function ConditionByIndexDetails(props) {
   const {
@@ -39,7 +40,7 @@ function ConditionByIndexDetails(props) {
         <div className='col-xs-12'>
           <Chart
             title='Conditions'
-            isDataPresent={conditions}
+            isDataPresent={!isEmpty(conditions)}
             render={({ width, element }) => {
                 const height = width/3;
                 const minimum_area = 50;

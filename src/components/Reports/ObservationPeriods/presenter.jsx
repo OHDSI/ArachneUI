@@ -35,6 +35,7 @@ import { numberFormatter } from 'services/Utils';
 import * as d3 from 'd3';
 import { chartSettings } from 'modules/DataCatalog/const';
 import Chart from 'components/Reports/Chart';
+import isEmpty from 'lodash/isEmpty';
 
 require('./style.scss');
 
@@ -67,7 +68,7 @@ function ObservationPeriods(props) {
       <div className='col-xs-8'>
         <Chart
           title='Age at First Observation'
-          isDataPresent={ageAtFirstObservation}
+          isDataPresent={!isEmpty(ageAtFirstObservation)}
           render={({ width, element }) => {
             ageAtFirstObservationChart.render(
               histogram.mapHistogram(ageAtFirstObservation),
@@ -87,7 +88,7 @@ function ObservationPeriods(props) {
       <div className='col-xs-4'>
         <Chart
           title='Age by Gender'
-          isDataPresent={ageByGender}
+          isDataPresent={!isEmpty(ageByGender)}
           render={({ width, element }) => {
             ageByGenderChart.render(
               ageByGender,
@@ -107,7 +108,7 @@ function ObservationPeriods(props) {
       <div className='col-xs-8'>
         <Chart
           title='Observation length'
-          isDataPresent={observationLength}
+          isDataPresent={!isEmpty(observationLength)}
           render={({ width, element }) => {
             observationLengthChart.render(
               histogram.mapHistogram(observationLength),
@@ -127,7 +128,7 @@ function ObservationPeriods(props) {
       <div className='col-xs-4'>
         <Chart
           title='Duration by Gender'
-          isDataPresent={durationByGender}
+          isDataPresent={!isEmpty(durationByGender)}
           render={({ width, element }) => {
             durationByGenderChart.render(
               durationByGender,
@@ -147,7 +148,7 @@ function ObservationPeriods(props) {
       <div className='col-xs-6'>
         <Chart
           title='Cumulative observation'
-          isDataPresent={cumulativeObservation}
+          isDataPresent={!isEmpty(cumulativeObservation)}
           render={({ width, element }) => {
             cumulativeObservationChart.render(
               cumulativeObservation,
@@ -169,7 +170,7 @@ function ObservationPeriods(props) {
       <div className='col-xs-6'>
         <Chart
           title='Duration by age decline'
-          isDataPresent={durationByAgeDecline}
+          isDataPresent={!isEmpty(durationByAgeDecline)}
           render={({ width, element }) => {
             durationByAgeDeclineChart.render(
               durationByAgeDecline,
@@ -189,7 +190,7 @@ function ObservationPeriods(props) {
       <div className='col-xs-8'>
         <Chart
           title='Persons With Continuous Observation By Year'
-          isDataPresent={durationByYear}
+          isDataPresent={!isEmpty(durationByYear)}
           render={({ width, element }) => {
             durationByYearChart.render(
               histogram.mapHistogram(durationByYear),
@@ -210,7 +211,7 @@ function ObservationPeriods(props) {
       <div className='col-xs-4'>
         <Chart
           title='Observation Periods per Person'
-          isDataPresent={observationsPerPerson}
+          isDataPresent={!isEmpty(observationsPerPerson)}
           render={({ width, element }) => {
             observationsPerPersonChart.render(
               observationsPerPerson,
@@ -225,7 +226,7 @@ function ObservationPeriods(props) {
       <div className='col-xs-12'>
         <Chart
           title='Persons With Continuous Observation By Month'
-          isDataPresent={observationsByMonth}
+          isDataPresent={!isEmpty(observationsByMonth)}
           render={({ width, element }) => {
             observationsByMonthChart.render(
               observationsByMonth,
