@@ -77,7 +77,7 @@ export default class selectorsBuilder {
           result = false;
           break;
         case participantRoles.LEAD_INVESTIGATOR:
-          result = leadCount > 1;
+          result = leadCount > 1 || participant.status === participantStatuses.PENDING;
           break;
         default: break;
       }
