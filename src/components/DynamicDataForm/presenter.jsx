@@ -51,7 +51,7 @@ function DynamicDataForm(props) {
         component: field.type === 'checkbox' ? FormCheckbox : FormInput,
         props: {
           mods: ['bordered'],
-          placeholder: field.label,
+          placeholder: field.label + ((field.isSet && field.value === null) ? ' is hidden' : ''),
           options: {
             label: ''
           },
