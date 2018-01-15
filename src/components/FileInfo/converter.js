@@ -36,6 +36,7 @@ function getLink(file, pathBuilder) {
 }
 
 export default (file, pathBuilder) => ({
+  fileId: file.fileId,
   uuid: file.uuid,
   name: file.name,
   label: file.label,

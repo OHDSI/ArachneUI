@@ -48,7 +48,7 @@ export class SubmissionCode extends FileLoader {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.params.fileUuid !== nextProps.params.fileUuid) {
+    if (this.props.params.fileId !== nextProps.params.fileId) {
       this.loadData(nextProps);
     }
   }
@@ -82,7 +82,7 @@ export class SubmissionCodeBuilder extends ContainerBuilder {
     const type = ownProps.route.type;
     const submissionGroupId = ownProps.params.submissionGroupId;
     const submissionId = ownProps.params.submissionId;
-    const fileUuid = ownProps.params.fileUuid;
+    const fileId = ownProps.params.fileId;
 
     const isFileLoading = this.selectors.getIsFileLoading(state);
     const isLoading = get(state, 'analysisExecution.breadcrumbs.isLoading', false)
@@ -100,7 +100,7 @@ export class SubmissionCodeBuilder extends ContainerBuilder {
       type,
       submissionGroupId,
       submissionId,
-      fileId: fileUuid,
+      fileId: fileId,
     };
 
     const breadcrumbList = buildBreadcrumbList(get(state, 'analysisExecution.breadcrumbs.queryResult.result'));
@@ -147,6 +147,6 @@ SubmissionCode.propTypes = {
   submissionId: PropTypes.string,
   from: PropTypes.string,
   loadBreadcrumbs: PropTypes.func,
-  fileUuid: PropTypes.string,
+  fileId: PropTypes.number,
   type: PropTypes.string,
 };

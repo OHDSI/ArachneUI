@@ -33,23 +33,23 @@ import SubmissionResultSelectors from './selectors';
 class SubmissionResultFile extends SubmissionCode {
   componentWillMount() {
     super.componentWillMount();
-    if (!this.props.params.fileUuid) {
+    if (!this.props.params.fileId) {
       this.updateTree(this.props);
     }
     this.LinkBuilder = new SubmissionResultLinkBuilder({
       submissionId: this.props.params.submissionId,
-      fileId: this.props.params.fileUuid,
+      fileId: this.props.params.fileId,
       downloadFile: true,
     });
   }
 
   componentWillReceiveProps(nextProps) {
     super.componentWillReceiveProps(nextProps);
-    if (get(this.props.file, 'uuid') !== get(nextProps.file, 'uuid')) {
+    if (get(this.props.file, 'fileId') !== get(nextProps.file, 'fileId')) {
       this.updateTree(nextProps);
       this.LinkBuilder.params = {
         submissionId: this.props.params.submissionId,
-        fileId: this.props.params.fileUuid,
+        fileId: this.props.params.fileId,
         downloadFile: true,
       };
     }

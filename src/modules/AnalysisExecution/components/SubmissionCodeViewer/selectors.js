@@ -36,7 +36,7 @@ export class SubmissionCodeSelectorsBuilder {
     return createSelector(
       [this.getRawFiles],
       files => files.map(
-        file => converter(file, item => paths.submissionResultFile({ submissionId: item.submissionId, fileId: item.uuid }))
+        file => converter(file, item => paths.submissionResultFile({ submissionId: item.submissionId, fileId: item.fileId }))
       )
     );
   }
