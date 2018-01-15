@@ -26,6 +26,7 @@ import Chart from 'components/Reports/Chart';
 import * as d3 from 'd3';
 import { numberFormatter } from 'services/Utils';
 import { chartSettings } from 'const/reports';
+import isEmpty from 'lodash/isEmpty';
 import {
   line,
 } from '@ohdsi/atlascharts';
@@ -43,7 +44,7 @@ function Entropy(props) {
     <div {...classes()}>
       <Chart
         title='Entropy'
-        isDataPresent={data}
+        isDataPresent={!isEmpty(data)}
         render={({ width, element }) => {
 					lineChart.render(
             data,

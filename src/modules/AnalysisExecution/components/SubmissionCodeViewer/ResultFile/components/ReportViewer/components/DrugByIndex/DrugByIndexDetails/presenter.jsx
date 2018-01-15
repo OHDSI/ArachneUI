@@ -24,6 +24,7 @@ import React from 'react';
 import * as d3 from 'd3';
 import { chartSettings } from 'modules/DataCatalog/const';
 import Chart from 'components/Reports/Chart';
+import isEmpty from 'lodash/isEmpty';
 
 function DrugByIndex(props) {
   const {
@@ -37,7 +38,7 @@ function DrugByIndex(props) {
         <div className='col-xs-12'>
           <Chart
             title='Drugs by index'
-            isDataPresent={data}
+            isDataPresent={!isEmpty(data)}
             render={({ width, element }) => {
               const height = width/3;
               const minimum_area = 50;

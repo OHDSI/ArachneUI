@@ -35,6 +35,7 @@ import { numberFormatter } from 'services/Utils';
 import * as d3 from 'd3';
 import { chartSettings, defaultTrellisSet } from 'modules/DataCatalog/const';
 import Chart from 'components/Reports/Chart';
+import isEmpty from 'lodash/isEmpty';
 
 function ConditionEraDetails(props) {
   const {
@@ -54,7 +55,7 @@ function ConditionEraDetails(props) {
       <div className='col-xs-12'>
         <Chart
           title='Condition Prevalence'
-          isDataPresent={conditionPrevalence}
+          isDataPresent={!isEmpty(conditionPrevalence)}
           render={({ width, element }) => {
             conditionPrevalenceChart().render(
               conditionPrevalence,
@@ -81,7 +82,7 @@ function ConditionEraDetails(props) {
       <div className='col-xs-12'>
         <Chart
           title='Condition Prevalence by Month'
-          isDataPresent={conditionByMonth}
+          isDataPresent={!isEmpty(conditionByMonth)}
           render={({ width, element }) => {
             conditionByMonthChart().render(
               conditionByMonth,
@@ -104,7 +105,7 @@ function ConditionEraDetails(props) {
       <div className='col-xs-6'>
         <Chart
           title='Observations by type'
-          isDataPresent={observationsByType}
+          isDataPresent={!isEmpty(observationsByType)}
           render={({ width, element }) => {
             observationsByTypeChart().render(
               observationsByType,
@@ -119,7 +120,7 @@ function ConditionEraDetails(props) {
       <div className='col-xs-6'>
         <Chart
           title='Age at first occurrence'
-          isDataPresent={ageAtFirstOccurrence}
+          isDataPresent={!isEmpty(ageAtFirstOccurrence)}
           render={({ width, element }) => {
             ageAtFirstOccurrenceChart().render(
               ageAtFirstOccurrence,

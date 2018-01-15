@@ -31,6 +31,7 @@ import * as d3 from 'd3';
 import { numberFormatter } from 'services/Utils';
 import { chartSettings } from 'const/reports';
 import Chart from 'components/Reports/Chart';
+import isEmpty from 'lodash/isEmpty';
 
 import './style.scss';
 
@@ -58,7 +59,7 @@ export default function CohortspecificReport(props) {
         <div className='col-xs-12'>
           <Chart
             title='Prevalence by Month'
-            isDataPresent={prevalenceByMonth}
+            isDataPresent={!isEmpty(prevalenceByMonth)}
             render={({ width, element }) => {
               prevalenceByMonthChart.render(
                 prevalenceByMonth,
@@ -86,7 +87,7 @@ export default function CohortspecificReport(props) {
         <div className='col-xs-12'>
           <Chart
             title='Number of Persons by Cohort Start'
-            isDataPresent={prevalenceByYearGenderSex}
+            isDataPresent={!isEmpty(prevalenceByYearGenderSex)}
             render={({ width, element }) => {
               prevalenceByYearGenderSexChart.render(
                 prevalenceByYearGenderSex,
@@ -115,7 +116,7 @@ export default function CohortspecificReport(props) {
         <div className='col-xs-12'>
           <Chart
             title='Persons in cohort from start to end'
-            isDataPresent={personsInCohortFromCohortStartToEnd}
+            isDataPresent={!isEmpty(personsInCohortFromCohortStartToEnd)}
             render={({ width, element }) => {
               personsInCohortFromCohortStartToEndChart.render(
                 personsInCohortFromCohortStartToEnd,
@@ -145,7 +146,7 @@ export default function CohortspecificReport(props) {
         <div className='col-xs-8'>
           <Chart
             title='Number of persons by duration from cohort start to cohort end'
-            isDataPresent={personsByDurationFromStartToEnd}
+            isDataPresent={!isEmpty(personsByDurationFromStartToEnd)}
             render={({ width, element }) => {
               personsByDurationFromStartToEndChart.render(
                 personsByDurationFromStartToEnd,
@@ -175,7 +176,7 @@ export default function CohortspecificReport(props) {
         <div className='col-xs-6'>
           <Chart
             title='Age at Index'
-            isDataPresent={ageAtIndexDistribution}
+            isDataPresent={!isEmpty(ageAtIndexDistribution)}
             render={({ width, element }) => {
               ageAtIndexDistributionChart.render(
                 ageAtIndexDistribution,
@@ -195,7 +196,7 @@ export default function CohortspecificReport(props) {
         <div className='col-xs-6'>
           <Chart
             title='Distribution of age at cohort start by gender '
-            isDataPresent={distributionOfAgeAtCohortStartByGender}
+            isDataPresent={!isEmpty(distributionOfAgeAtCohortStartByGender)}
             render={({ width, element }) => {
               distributionOfAgeAtCohortStartByGenderChart.render(
                 distributionOfAgeAtCohortStartByGender,
