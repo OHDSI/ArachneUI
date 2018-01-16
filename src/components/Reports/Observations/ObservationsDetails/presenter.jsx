@@ -57,7 +57,7 @@ function ConditionEraDetails(props) {
           title='Condition Prevalence'
           isDataPresent={!isEmpty(conditionPrevalence)}
           render={({ width, element }) => {
-            conditionPrevalenceChart().render(
+            conditionPrevalenceChart.render(
               conditionPrevalence,
               element,
               width,
@@ -84,7 +84,7 @@ function ConditionEraDetails(props) {
           title='Condition Prevalence by Month'
           isDataPresent={!isEmpty(conditionByMonth)}
           render={({ width, element }) => {
-            conditionByMonthChart().render(
+            conditionByMonthChart.render(
               conditionByMonth,
               element,
               width,
@@ -107,7 +107,7 @@ function ConditionEraDetails(props) {
           title='Observations by type'
           isDataPresent={!isEmpty(observationsByType)}
           render={({ width, element }) => {
-            observationsByTypeChart().render(
+            observationsByTypeChart.render(
               observationsByType,
               element,
               width,
@@ -122,7 +122,7 @@ function ConditionEraDetails(props) {
           title='Age at first occurrence'
           isDataPresent={!isEmpty(ageAtFirstOccurrence)}
           render={({ width, element }) => {
-            ageAtFirstOccurrenceChart().render(
+            ageAtFirstOccurrenceChart.render(
               ageAtFirstOccurrence,
               element,
               width,
