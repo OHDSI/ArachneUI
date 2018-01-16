@@ -3,15 +3,15 @@ import BEMHelper from 'services/BemHelper';
 import {
   Pagination,
   Select,
-} from 'arachne-components';
+} from 'arachne-ui-components';
 import { locationDescriptor } from 'modules/SearchTerms/components/List/presenter';
 import { push } from 'react-router-redux';
 
 require('./style.scss');
 
 type IPageSizeSelectOption = {
-  value: number,
-  label: number,
+  value: number | string,
+  label: number | string,
 }
 
 interface IPaginationStateProps {

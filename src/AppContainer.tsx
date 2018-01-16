@@ -8,7 +8,7 @@ import IModule from 'modules/IModule';
 import {
   Header,
   LoadingPanel,
-} from 'arachne-components';
+} from 'arachne-ui-components';
 import {
   NavItem,
 } from 'components';

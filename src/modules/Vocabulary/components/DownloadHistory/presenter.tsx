@@ -5,7 +5,7 @@ import {
   Toolbar,
   Table,
   TableCellText,
-} from 'arachne-components';
+} from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
 import { paths, bundleStatuses } from 'modules/Vocabulary/const';
 import * as moment from 'moment';

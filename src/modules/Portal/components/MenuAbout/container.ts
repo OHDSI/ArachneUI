@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { get } from 'lodash';
-import { ModalUtils } from 'arachne-components';
+import { ModalUtils } from 'arachne-ui-components';
 import { connect } from 'react-redux';
 import { modal } from 'modules/Portal/const';
 import actions from 'modules/Portal/actions';

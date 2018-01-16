@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import actions from 'modules/Vocabulary/actions';
-import { ModalUtils } from 'arachne-components';
+import { ModalUtils } from 'arachne-ui-components';
 import { modal } from 'modules/Vocabulary/const';
 import { licenseStatuses } from 'const/vocabulary';
 import { get } from 'lodash';

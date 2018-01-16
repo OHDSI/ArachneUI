@@ -5,7 +5,7 @@ import {
   Table,
   TableCellText,
   Link,
-} from 'arachne-components';
+} from 'arachne-ui-components';
 import { License, Vocabulary } from 'modules/Admin/components/Licenses/types';
 
 require('./style.scss');

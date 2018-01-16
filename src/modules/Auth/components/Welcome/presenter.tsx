@@ -1,6 +1,6 @@
 import * as React from 'react';
 import BEMHelper from 'services/BemHelper';
-import { Link, Panel } from 'arachne-components';
+import { Link, Panel } from 'arachne-ui-components';
 import { paths } from 'modules/Auth/const';
 
 require('./style.scss');

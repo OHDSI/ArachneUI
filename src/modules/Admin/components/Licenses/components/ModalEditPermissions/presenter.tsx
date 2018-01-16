@@ -7,7 +7,7 @@ import {
   TabbedPane,
   RadioButton,
   Button,
-} from 'arachne-components';
+} from 'arachne-ui-components';
 import { Vocabulary } from 'modules/Admin/components/Licenses/types';
 import { Field } from 'redux-form';
 

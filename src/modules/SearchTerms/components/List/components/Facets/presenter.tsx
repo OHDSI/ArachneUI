@@ -4,7 +4,7 @@ import { Action } from 'redux';
 import { FormProps, DataShape, change as reduxFormChange } from 'redux-form';
 import {
   FacetedSearchPanel,
-} from 'arachne-components';
+} from 'arachne-ui-components';
 import { locationDescriptor } from 'modules/SearchTerms/components/List/presenter';
 import { push } from 'react-router-redux';
 import { searchParams } from 'modules/SearchTerms/actions/termList';

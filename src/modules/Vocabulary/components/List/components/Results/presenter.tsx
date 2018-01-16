@@ -6,7 +6,7 @@ import {
   TableCellText as Cell,
   Checkbox,
   Link,
-} from 'arachne-components';
+} from 'arachne-ui-components';
 import { push } from 'react-router-redux';
 import { Field, FormProps } from 'redux-form';
 import { licenseStatuses } from 'const/vocabulary';

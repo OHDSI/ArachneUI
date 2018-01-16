@@ -3,7 +3,7 @@ import BEMHelper from 'services/BemHelper';
 import { NavItem as INavItem } from 'modules/IModule';
 import {
   Link,
-} from 'arachne-components';
+} from 'arachne-ui-components';
 
 require('./style.scss');
 

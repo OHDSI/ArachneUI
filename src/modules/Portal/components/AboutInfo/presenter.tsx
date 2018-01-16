@@ -1,6 +1,6 @@
 import * as React from 'react';
 import BEMHelper from 'services/BemHelper';
-import { BadgedIcon, Modal, LoadingPanel, Link } from 'arachne-components';
+import { BadgedIcon, Modal, LoadingPanel, Link } from 'arachne-ui-components';
 import { paths, images } from 'modules/Portal/const';
 
 require('./style.scss');
