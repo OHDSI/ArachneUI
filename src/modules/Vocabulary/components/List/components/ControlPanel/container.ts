@@ -5,7 +5,7 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import { forms } from 'modules/Vocabulary/const';
 import { get } from 'lodash';
-import { ModalUtils } from 'arachne-components';
+import { ModalUtils } from 'arachne-ui-components';
 import { paths } from 'modules/Vocabulary/const';
 import { push as goToPage } from 'react-router-redux';
 import { reduxForm } from 'redux-form';

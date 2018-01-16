@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { Component } from 'react';
 import actions from 'modules/Admin/actions';
 import { get } from 'lodash';
-import { ModalUtils } from 'arachne-components';
+import { ModalUtils } from 'arachne-ui-components';
 import { modal } from 'modules/Admin/const';
 import presenter from './presenter';
 import selectors from './selectors';

@@ -9,7 +9,7 @@ import * as d3transition from 'd3-transition';
 import * as d3force from 'd3-force';
 import {
   LoadingPanel,
-} from 'arachne-components';
+} from 'arachne-ui-components';
 import {
   gapWidth,
   rectHeight,

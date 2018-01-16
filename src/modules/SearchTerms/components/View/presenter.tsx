@@ -6,7 +6,7 @@ import {
   Link,
   ListItem,
   Tabs,
-} from 'arachne-components';
+} from 'arachne-ui-components';
 import { RouterAction } from 'react-router-redux';
 import BEMHelper from 'services/BemHelper';
 import { get } from 'lodash';

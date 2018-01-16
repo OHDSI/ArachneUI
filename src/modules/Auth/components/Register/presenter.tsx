@@ -2,7 +2,7 @@ import * as React from 'react';
 import BEMHelper from 'services/BemHelper';
 import {
   Panel
-} from 'arachne-components';
+} from 'arachne-ui-components';
 import FormRegister from './FormRegister';
 
 interface IRegisterProps {}

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import BEMHelper from 'services/BemHelper';
-import { Modal, Link } from 'arachne-components';
+import { Modal, Link } from 'arachne-ui-components';
 import { paths } from 'modules/Vocabulary/const';
 
 require('./style.scss');

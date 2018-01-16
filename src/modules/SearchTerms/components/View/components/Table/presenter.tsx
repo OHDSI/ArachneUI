@@ -4,7 +4,7 @@ import {
   Table,
   Link,
   TableCellText,
-} from 'arachne-components';
+} from 'arachne-ui-components';
 import { paths } from 'modules/SearchTerms/const';
 
 require('./style.scss');

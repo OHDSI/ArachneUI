@@ -3,7 +3,7 @@ import BEMHelper from 'services/BemHelper';
 import { apiPaths, paths } from 'modules/Auth/const';
 import { paths as VocabularyPaths } from 'modules/Vocabulary/const';
 import { paths as AdminPaths } from 'modules/Admin/const';
-import { Avatar, Link } from 'arachne-components';
+import { Avatar, Link } from 'arachne-ui-components';
 import Dropdown from 'react-simple-dropdown';
 import { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
 import {

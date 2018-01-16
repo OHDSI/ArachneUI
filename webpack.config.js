@@ -32,12 +32,12 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        exclude: /(node_modules|ArachneFrontComponents|@types)/gi,
+        exclude: /(node_modules|ArachneUIComponents|@types)/gi,
         loaders: ['react-hot-loader', 'awesome-typescript-loader']
       },
       {
         test: /\.jsx?$/,
-        exclude: /(node_modules|ArachneFrontComponents)/,
+        exclude: /(node_modules|ArachneUIComponents)/,
         loaders: ['react-hot-loader', 'babel-loader']
       },
       {
@@ -82,7 +82,7 @@ module.exports = {
     }),
     new CopyWebpackPlugin([
       {
-        from: path.join(__dirname, 'node_modules/arachne-components/lib/resources/fonts'),
+        from: path.join(__dirname, 'node_modules/arachne-ui-components/lib/resources/fonts'),
         to: path.join(outPath, 'fonts')
       },
       {

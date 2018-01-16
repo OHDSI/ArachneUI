@@ -5,7 +5,7 @@ import {
   Modal,
   LoadingPanel,
   Link
-} from 'arachne-components';
+} from 'arachne-ui-components';
 import {
   paths,
   images

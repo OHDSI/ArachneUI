@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { push as goToPage } from 'react-router-redux';
 import actions from 'modules/Vocabulary/actions';
 import { reduxForm, change as reduxFormChange, SubmissionError, reset } from 'redux-form';
-import { ModalUtils } from 'arachne-components';
+import { ModalUtils } from 'arachne-ui-components';
 import { modal, forms, paths, cdmVersions } from 'modules/Vocabulary/const';
 import { get } from 'lodash';
 import selectors from 'modules/Vocabulary/components/List/components/Results/selectors';

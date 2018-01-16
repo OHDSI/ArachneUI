@@ -5,7 +5,7 @@ import {
   Form,
   LoadingPanel,
   FormInput,
-} from 'arachne-components';
+} from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
 import { paths } from 'modules/Auth/const';
 
