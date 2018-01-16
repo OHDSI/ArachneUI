@@ -99,7 +99,7 @@ class SystemSettingsBuilder extends ContainerBuilder {
               .then(() => dispatchProps.saveData({}, { values: newVals }))
               .then(dispatchProps.loadSystemSettings)
           } catch (ex) {
-            console.warn(ex);
+            console.error(ex);
           };
         }
 
