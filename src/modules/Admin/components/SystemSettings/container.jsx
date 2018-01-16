@@ -94,9 +94,13 @@ class SystemSettingsBuilder extends ContainerBuilder {
         const submitPromise = new Promise(res => res());
 
         if (Object.keys(newVals).length) {
-          submitPromise
-            .then(() => dispatchProps.saveData({}, { values: newVals }))
-            .then(dispatchProps.loadSystemSettings);
+          try {
+            submitPromise
+              .then(() => dispatchProps.saveData({}, { values: newVals }))
+              .then(dispatchProps.loadSystemSettings)
+          } catch (ex) {
+            console.warn(ex);
+          };
         }
 
         return submitPromise;
