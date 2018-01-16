@@ -73,12 +73,32 @@ class SystemSettingsBuilder extends ContainerBuilder {
       ...stateProps,
       ...dispatchProps,
       doSubmit: (formName, data) => {
-        const submitPromise = dispatchProps.saveData({}, { values: data });
+        const settingGroup = stateProps.settingGroupList.find(sg => sg.name === formName);
 
-        submitPromise
-          .then(dispatchProps.loadSystemSettings)
-          .catch(() => {
-          });
+        const newVals = settingGroup.fieldList.reduce(
+          (obj, field) => {
+            let newVals = obj;
+            const initialFieldVal = selectors.parseValue(field);
+            const newFieldVal = data[field.name];
+            
+            if (initialFieldVal !== newFieldVal) {
+              if (field.type !== 'password' || confirm(`Are you sure you want to change ${field.label}?`)) {
+                newVals = { ...newVals, ...{ [field.name]: newFieldVal } };
+              }
+            }
+            return newVals;
+          },
+          {}
+        );
+
+        const submitPromise = new Promise(res => res());
+
+        if (Object.keys(newVals).length) {
+          submitPromise
+            .then(() => dispatchProps.saveData({}, { values: newVals }))
+            .then(dispatchProps.loadSystemSettings)
+            .catch (ex => console.error(ex));
+        }
 
         return submitPromise;
       },

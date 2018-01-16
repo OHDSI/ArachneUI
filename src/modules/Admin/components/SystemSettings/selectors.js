@@ -28,6 +28,7 @@ function prepareName(name) {
 }
 
 const getRawSystemSettings = state => get(state, 'adminSettings.systemSettings.queryResult.result.list') || [];
+const parseValue = field => field.type === 'checkbox' ? field.value === 'true' : field.value;
 
 const getSystemSettings = createSelector(
   [getRawSystemSettings],
@@ -41,8 +42,9 @@ const getSystemSettings = createSelector(
         name: field.id,
         value: field.value,
         type: field.type,
+        isSet: field.isSet,
       });
-      initialValues[field.id] = field.type === 'checkbox' ? field.value === 'true' : field.value;
+      initialValues[field.id] = parseValue(field);
     });
 
     return {
@@ -56,4 +58,5 @@ const getSystemSettings = createSelector(
 
 export default {
   getSystemSettings,
+  parseValue,
 };
