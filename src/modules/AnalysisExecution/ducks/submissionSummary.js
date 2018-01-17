@@ -25,11 +25,11 @@ import { apiPaths } from 'modules/AnalysisExecution/const';
 import { combineReducers } from 'redux';
 
 const analysis = new Duck({
-  name: 'AE_SUMMARY_ANALYSIS',
+  name: 'AE_SUBMISSION_SUMMARY_ANALYSIS',
   urlBuilder: apiPaths.shortAnalysis,
 });
 const submission = new Duck({
-  name: 'AE_SUMMARY_SUBMISSION',
+  name: 'AE_SUBMISSION_SUMMARY_SUBMISSION',
   urlBuilder: apiPaths.submission,
 });
 
