@@ -31,7 +31,7 @@ const selectors = (new SelectorsBuilder()).build();
 
 class SubmissionResultSummary extends Component {
   componentWillMount() {
-    this.props.loadAnalysis({ id: this.props.analysisId });
+    this.props.loadSubmission({ id: this.props.submissionId });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -50,15 +50,12 @@ export default class SubmissionResultsummaryBuilder extends ContainerBuilder {
     return SubmissionResultSummary;
   }
 
-  mapStateToProps(state, ownProps) {
-    const {
-      submissionId,
-    } = ownProps;
+  mapStateToProps(state) {
     const analysisId = selectors.getAnalysisId(state);
-    const submission = selectors.getSubmission(state, analysisId, submissionId);
+    const submission = selectors.getSubmission(state);
     const resultInfo = get(submission, 'resultInfo', {});
     const analysis = selectors.getAnalysis(state);
-    const submissionGroupType = selectors.getSubmissionType(state, analysisId, submissionId);
+    const submissionGroupType = selectors.getSubmissionType(state);
     const datasource = dsConverter(get(submission, 'dataSource', {}));
 
     return {
@@ -73,7 +70,8 @@ export default class SubmissionResultsummaryBuilder extends ContainerBuilder {
 
   getMapDispatchToProps() {
     return {
-      loadAnalysis: actions.analysisExecution.analysis.find,
+      loadAnalysis: actions.analysisExecution.submissionSummary.analysis.find,
+      loadSubmission: actions.analysisExecution.submissionSummary.submission.find,
     };
   }
 

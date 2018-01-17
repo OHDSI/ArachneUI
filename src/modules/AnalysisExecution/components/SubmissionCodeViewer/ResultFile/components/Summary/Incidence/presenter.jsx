@@ -31,7 +31,7 @@ import {
 
 import './style.scss';
 
-export default function SummaryIncidence({ analysis, resultInfo = {}, className }) {
+export default function SummaryIncidence({ resultInfo = {}, className }) {
   const classes = BEMHelper('summary-incidence');
   const cases = get(resultInfo, 'CASES', 0);
   const personCount = get(resultInfo, 'PERSON_COUNT', 0);

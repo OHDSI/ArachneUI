@@ -27,7 +27,7 @@ import { get, numberFormatter } from 'services/Utils';
 
 import './style.scss';
 
-export default function SummaryCohort({ analysis, resultInfo = {}, className }) {
+export default function SummaryCohort({ resultInfo = {}, className }) {
   const classes = BEMHelper('summary-cohort');
   const personCount = get(resultInfo, 'persons', 0);
   const reports = get(resultInfo, 'reports', 0);

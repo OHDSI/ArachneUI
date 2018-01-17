@@ -16,32 +16,30 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 20, 2017
+ * Created: January 17, 2018
  *
  */
 
-import React from 'react';
-import BEMHelper from 'services/BemHelper';
-import {
-  Table,
-  TableCellText,
-} from 'arachne-ui-components';
-import CsvViewer from 'components/MediaViewer/CsvViewer';
+import Duck from 'services/Duck';
+import { apiPaths } from 'modules/AnalysisExecution/const';
+import { combineReducers } from 'redux';
 
-import './style.scss';
+const analysis = new Duck({
+  name: 'AE_SUBMISSION_SUMMARY_ANALYSIS',
+  urlBuilder: apiPaths.shortAnalysis,
+});
+const submission = new Duck({
+  name: 'AE_SUBMISSION_SUMMARY_SUBMISSION',
+  urlBuilder: apiPaths.submission,
+});
 
-export default function SummaryPopulationLevel({ headers = [], records = [], className }) {
-  const classes = BEMHelper('summary-pl');
-
-  return (
-    <div {...classes({ extra: className })}>
-      <div {...classes('result-info')}>
-        <CsvViewer
-          dataType={CsvViewer.INPUT_DATA_TYPE.HEADER_AND_RECORDS}
-          headers={headers}
-          records={records}
-        />
-      </div>
-    </div>
-  );
-}
+export default {
+  actions: {
+    analysis: analysis.actions,
+    submission: submission.actions,
+  },
+  reducer: combineReducers({
+    analysis: analysis.reducer,
+    submission: submission.reducer,
+  }),
+};

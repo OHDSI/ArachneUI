@@ -158,14 +158,6 @@ const config = {
         return module.resource && module.resource.indexOf('fonts-base64-fallback.scss') !== -1;
       },
     }),
-    // https://github.com/webpack-contrib/extract-text-webpack-plugin/issues/456
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      filename: 'js/vendor/[hash].js',
-      minChunks(module) {
-        return module.context && module.context.indexOf('node_modules') !== -1;
-      },
-    }),
     // https://medium.com/@adamrackis/vendor-and-code-splitting-in-webpack-2-6376358f1923
     new webpack.optimize.CommonsChunkPlugin({
       async: 'commons',
@@ -189,6 +181,14 @@ if (env === ENV_TYPE.PRODUCTION) {
   }));
   config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
   config.plugins.push(new webpack.optimize.DedupePlugin());
+  // https://github.com/webpack-contrib/extract-text-webpack-plugin/issues/456
+  config.plugins.push(new webpack.optimize.CommonsChunkPlugin({
+    name: 'vendor',
+    filename: 'js/vendor/[hash].js',
+    minChunks(module) {
+      return module.context && module.context.indexOf('node_modules') !== -1;
+    },
+  }));
 }
 
 if (env === ENV_TYPE.DEV) {

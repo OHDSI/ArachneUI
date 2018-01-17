@@ -73,16 +73,16 @@ export default function SubmissionResultSummary(props) {
   switch (submissionGroupType) {
     case analysisTypes.INCIDENCE:
       specificSummaryMods.padded = false;
-      specificSummary = <SummaryIncidence analysis={analysis} resultInfo={resultInfo} />;
+      specificSummary = <SummaryIncidence resultInfo={resultInfo} />;
       break;
     case analysisTypes.COHORT: case analysisTypes.COHORT_CHARACTERIZATION:
-      specificSummary = <SummaryCohort analysis={analysis} resultInfo={resultInfo} />;
+      specificSummary = <SummaryCohort resultInfo={resultInfo} />;
       break;
     case analysisTypes.ESTIMATION: case analysisTypes.PREDICTION:
       specificSummaryMods.narrow = false;
       specificSummaryMods.wide = true;
       specificSummaryMods.padded = false;
-      specificSummary = <SummaryPopulationLevel analysis={analysis} resultInfo={resultInfo} />;
+      specificSummary = <SummaryPopulationLevel resultInfo={resultInfo} />;
       break;
   }
   const statusMods = get(submission, 'status.value') ? statusColors[get(submission, 'status.value', '')] : null;
@@ -95,7 +95,7 @@ export default function SubmissionResultSummary(props) {
             <div {...classes('panel-content')}>
               <ul {...classes('list')}>
                 <li {...classes('list-item')}>{nameAnalysisType({ analysisType: submissionGroupType, capitalize: true })}</li>
-                <li {...classes('list-item')}>{moment(analysis.createdAt).tz(moment.tz.guess()).format(commonDate)}</li>
+                <li {...classes('list-item')}>{moment(analysis.created).tz(moment.tz.guess()).format(commonDate)}</li>
               </ul>
             </div>
           </Panel>
