@@ -120,6 +120,9 @@ const apiPaths = {
   submissionCodeFiles: ({ submissionId }) => `/api/v1/analysis-management/submissions/${submissionId}/results`,
   submissionGroupCodeFiles: ({ submissionGroupId }) =>
     `/api/v1/analysis-management/submission-groups/${submissionGroupId}/files`,
+
+  shortAnalysis: ({ id }) => `/api/v1/analysis-management/analyses/${id}/short`,
+  submission: ({ id }) => `/api/v1/analysis-management/submissions/${id}`,
 };
 
 const analysisPermissions = {
