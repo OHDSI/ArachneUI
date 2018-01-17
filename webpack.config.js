@@ -86,7 +86,7 @@ module.exports = {
         to: path.join(outPath, 'fonts')
       },
       {
-        from: path.join(__dirname, 'node_modules/material-design-icons/iconfont'),
+        from: path.join(__dirname, 'node_modules/arachne-ui-components/lib/resources/material-design-icons/iconfont'),
         to: path.join(outPath, 'fonts')
       },
       {
