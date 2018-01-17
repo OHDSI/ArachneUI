@@ -50,7 +50,7 @@ class SubmissionResultSummarySelectorsBuilder {
   }
 
   getSubmission(state) {
-    return get(state, 'analysisExecution.submissionSummary.submission.data.result', {}, 'Object');
+    return get(state, 'analysisExecution.submissionSummary.submission.data', {}, 'Object');
   }
 
   buildSelectorForSubmissionType() {
