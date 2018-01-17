@@ -62,17 +62,17 @@ export class CodeItem extends Component {
     this.toggleExecutable = this.props.toggleExecutable;
     this.removable = this.props.removable;
     this.selectExecutable = this.props.selectExecutable;
-    this.isActionable = this.props.isActionable;
-    this.isLocked=this.props.isLocked;
+    this.isLocked = this.props.isLocked;
+    this.canBeReimported = this.props.canBeReimported;
 
     const mods = {
       hover: true,
-      actionable: this.isActionable,
+      actionable: true,
     };
 
     const actions = [];
 
-    if (this.props.isActionable && this.code.isImported === true) {
+    if (this.canBeReimported && this.code.isImported === true) {
       actions.push(
         <span
           {...this.classes('action')}
@@ -85,7 +85,7 @@ export class CodeItem extends Component {
       );
     }
 
-    if (this.removable) {
+    if (!this.isLocked && this.removable) {
       actions.push(
         <span
           {...this.classes('action')}
@@ -195,7 +195,7 @@ export default class ListCode extends Component {
       <CodeItem
         code={code}
         isEditable={this.isEditable}
-        isActionable={this.canAddFiles && this.canDeleteFiles && !this.isLocked}
+        canBeReimported={this.canAddFiles && this.canDeleteFiles && !this.isLocked}
         isLocked={this.isLocked}
         reimportCode={this.reimportCode}
         removeCode={this.removeCode}
@@ -244,10 +244,10 @@ export default class ListCode extends Component {
           {this.codeList.length === 0 &&
             <ListItem label={'No code files available'}/>
           }
-          {this.isSubmittable &&
-            this.getActions()
-          }
         </ul>
+        {this.isSubmittable &&
+          this.getActions()
+        }
         {this.isLoading &&
           <LoadingPanel active={this.isLoading} />
         }

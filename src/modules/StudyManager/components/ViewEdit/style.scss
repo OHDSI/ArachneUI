@@ -25,7 +25,13 @@
 .#{$namespace} {
   &study-manager-view {
     @include view-edit-page();
-    height: 100%;
+		height: 100%;
+		
+		&__container {
+			flex-grow: 1;
+			display: flex;
+			flex-direction: column;
+		}
 
     &__empty-state {
     	@include title();

@@ -61,6 +61,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         .then(() => dispatchProps.closeModal())
         .then(() => dispatchProps.resetForm())
         .then(() => dispatchProps.loadInvitations())
+        .then(ownProps.onDecline)
         .catch(() => {});
 
       return submitPromise;

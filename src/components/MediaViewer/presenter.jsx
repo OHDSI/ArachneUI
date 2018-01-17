@@ -29,6 +29,9 @@ import { isText } from 'services/MimeTypeUtil';
 import { Button, LoadingPanel, Pagination } from 'arachne-ui-components';
 import MimeTypes from 'const/mimeTypes';
 import CodeViewer from 'components/CodeViewer';
+import moment from 'moment-timezone';
+import { usDateTime as dateFormat } from 'const/formats';
+import CSV from './CsvViewer';
 
 let ReactPDF;
 
@@ -38,9 +41,19 @@ export function ActionBar(props = {}) {
   const classes = new BEMHelper('action-bar');
   const {
     downloadLink,
+    title,
+    createdAt,
   } = props;
   return (
     <div {...classes()}>
+      <div {...classes('info')}>
+        {title && <div {...classes('title')}>
+          {title}
+        </div>}
+        {createdAt && <span>
+          Created at {moment(createdAt).tz(moment.tz.guess()).format(dateFormat)}
+        </span>}
+      </div>
       <div {...classes('actions')}>
         {downloadLink && <Button
           {...classes('btn', 'download')}
@@ -79,10 +92,27 @@ function image({ classes, container, setContainer, data }) {
   );
 }
 
-function pdf({ classes, container, data, setContainer, onPDFLoaded, pageIndex, path, totalPages }) {
+function pdf({
+  classes,
+  container,
+  data,
+  setContainer,
+  onPDFLoaded,
+  pageIndex,
+  path,
+  totalPages,
+  scale,
+  zoomIn,
+  zoomOut,
+  isLoaded,
+  isInitialScaleSet,
+  setInitialScale,
+}) {
   let pdfWidth = null;
+  let pdfHeight = null;
   if (container) {
     pdfWidth = container.getBoundingClientRect().width - 17;
+    pdfHeight = container.getBoundingClientRect().height - 36;
   }
 
   return (
@@ -94,18 +124,34 @@ function pdf({ classes, container, data, setContainer, onPDFLoaded, pageIndex, p
         }
       }}
     >
-      <ReactPDF
-        file={`data:application/pdf;base64,${data}`}
-        loading={<EmptyState message={'Loading PDF'} />}
-        error={<EmptyState message={'Failed to load PDF'} />}
-        noData={<EmptyState message={'No PDF file specified'} />}
-        onDocumentError={<EmptyState message={'Error while loading document'} />}
-        onPageError={<EmptyState message={'Error while loading page'} />}
-        width={pdfWidth}
-        pageIndex={pageIndex-1}
-        onDocumentLoad={onPDFLoaded}
-      />
-      <Pagination pages={totalPages} currentPage={pageIndex} path={path} />
+      {isLoaded &&
+        <div {...classes('zoom')}>
+          <div {...classes('zoom-control')} onClick={zoomIn}>+</div>
+          <div {...classes('scale')}>{parseInt(scale * 100, 10)} %</div>
+          <div {...classes('zoom-control')} onClick={zoomOut}>-</div>
+        </div>
+      }
+      <div {...classes('pdf')}>
+        <ReactPDF
+          file={`data:application/pdf;base64,${data}`}
+          loading={<EmptyState message={'Loading PDF'} />}
+          error={<EmptyState message={'Failed to load PDF'} />}
+          noData={<EmptyState message={'No PDF file specified'} />}
+          onDocumentError={<EmptyState message={'Error while loading document'} />}
+          onPageError={<EmptyState message={'Error while loading page'} />}
+          width={pdfWidth * scale}
+          pageIndex={pageIndex-1}
+          onDocumentLoad={onPDFLoaded}
+          onPageLoad={(page) => {
+            if (!isInitialScaleSet) {
+              setInitialScale(pdfHeight / page.height);
+            }
+          }}
+        />
+      </div>
+      <div {...classes('pagination')}>
+        <Pagination pages={totalPages} currentPage={pageIndex} path={path} />
+      </div>
     </div>)
   );
 }
@@ -122,42 +168,73 @@ const LazyPDF = Loadable({
 
 function empty({ classes }) {
   return (
-    (<div {...classes({ element: 'container' })}>
+    (<div {...classes({ element: 'container', modifiers: 'empty' })}>
       <EmptyState message={'Content of this file cannot be displayed'} />
     </div>)
   );
 }
 
-function MediaViewer({ language, onPDFLoaded, pageIndex, path, data, mimeType, setContainer, container, totalPages, downloadLink, name, title, createdAt }) {
+function MediaViewer({
+  language,
+  onPDFLoaded,
+  pageIndex,
+  path,
+  data,
+  mimeType,
+  setContainer,
+  container,
+  totalPages,
+  downloadLink,
+  name,
+  title,
+  createdAt,
+  scale,
+  zoomIn,
+  zoomOut,
+  isLoaded,
+  isInitialScaleSet,
+  setInitialScale,
+}) {
   const classes = new BEMHelper('media-viewer');
   let element;
   let isDownloadLinkWrapperNeeded = true;
 
-  if (mimeType === MimeTypes.image) {
-    element = image({ classes, container, setContainer, data });
-  } else if (mimeType === MimeTypes.pdf) {
-    element = (
-      <LazyPDF { ...{ classes, container, data, setContainer, totalPages, path, pageIndex, onPDFLoaded } } />
-    );
-  } else if (isText(mimeType)) {
-    element = (
-      <CodeViewer
-        language={language}
-        value={data}
-        name={name}
-        title={title}
-        createdAt={createdAt}
-        downloadLink={downloadLink}
-      />
-    );
-    isDownloadLinkWrapperNeeded = false;
-  } else {
-    element = empty({ classes });
+  switch (mimeType) {
+    case MimeTypes.image:
+      element = image({ classes, container, setContainer, data });
+      break;
+    case MimeTypes.pdf:
+      element = (
+        <LazyPDF { ...{ classes, container, data, setContainer, totalPages, path, pageIndex, onPDFLoaded, scale, zoomIn, zoomOut, isLoaded, isInitialScaleSet, setInitialScale } } />
+      );
+      break;
+    case MimeTypes.csv:
+      element = (
+        <CSV data={data} />
+      );
+      break;
+    default:
+      if (isText(mimeType)) {
+        element = (
+          <CodeViewer
+            language={language}
+            value={data}
+            name={name}
+            title={title}
+            createdAt={createdAt}
+            downloadLink={downloadLink}
+          />
+        );
+        isDownloadLinkWrapperNeeded = false;
+      } else {
+        element = empty({ classes });
+      }
+      break;
   }
 
   return isDownloadLinkWrapperNeeded ? (
     <div {...classes()}>
-      <ActionBar downloadLink={downloadLink} />
+      <ActionBar downloadLink={downloadLink} title={title} />
       {element}
     </div>
   ) : element;

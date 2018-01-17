@@ -94,12 +94,24 @@ const cdmVersionList = [
     value: 'V4_0',
   },
   {
-    label: 'v5.0',
+    label: 'v5.0.0',
     value: 'V5_0',
+  },
+  {
+    label: 'v5.0.1',
+    value: 'V5_0_1',
   },
   {
     label: 'v5.1',
     value: 'V5_1',
+  },
+  {
+    label: 'v5.2',
+    value: 'V5_2',
+  },
+  {
+    label: 'v5.3',
+    value: 'V5_3',
   },
 ];
 

@@ -50,7 +50,8 @@ class SystemSettingsBuilder extends ContainerBuilder {
   mapStateToProps(state) {
     return {
       isApplied: get(state, 'adminSettings.systemSettings.queryResult.result.applied', true),
-      isLoading: state.adminSettings.systemSettings.isLoading || state.adminSettings.solrIndex.isSaving,
+      isLoading: state.adminSettings.systemSettings.isLoading || state.adminSettings.solrIndex.isSaving
+      || state.adminSettings.atlasConnection.isSaving,
       settingGroupList: selectors.getSystemSettings(state),
     };
   }
@@ -61,6 +62,8 @@ class SystemSettingsBuilder extends ContainerBuilder {
       saveData: actions.adminSettings.systemSettings.create,
       applySettings: applySettings,
       solrReindex: actions.adminSettings.solrIndex.create,
+      checkAtlas: actions.adminSettings.atlasConnection.create,
+      closeLoader: () => actions.adminSettings.atlasConnection.reset,
     };
   }
 
@@ -70,18 +73,48 @@ class SystemSettingsBuilder extends ContainerBuilder {
       ...stateProps,
       ...dispatchProps,
       doSubmit: (formName, data) => {
-        const submitPromise = dispatchProps.saveData({}, { values: data });
+        const settingGroup = stateProps.settingGroupList.find(sg => sg.name === formName);
 
-        submitPromise
-          .then(dispatchProps.loadSystemSettings)
-          .catch(() => {
-          });
+        const newVals = settingGroup.fieldList.reduce(
+          (obj, field) => {
+            let newVals = obj;
+            const initialFieldVal = selectors.parseValue(field);
+            const newFieldVal = data[field.name];
+            
+            if (initialFieldVal !== newFieldVal) {
+              if (field.type !== 'password' || confirm(`Are you sure you want to change ${field.label}?`)) {
+                newVals = { ...newVals, ...{ [field.name]: newFieldVal } };
+              }
+            }
+            return newVals;
+          },
+          {}
+        );
+
+        const submitPromise = new Promise(res => res());
+
+        if (Object.keys(newVals).length) {
+          submitPromise
+            .then(() => dispatchProps.saveData({}, { values: newVals }))
+            .then(dispatchProps.loadSystemSettings)
+            .catch (ex => console.error(ex));
+        }
 
         return submitPromise;
       },
       applySettings: () => {
         dispatchProps.applySettings(() => dispatchProps.loadSystemSettings());
-      }
+      },
+      checkAtlas: () => {
+        dispatchProps.checkAtlas()
+          .then((result) => {
+            alert(result.errorMessage)
+          })
+          .catch((error) => {
+            alert(error.errors._error);
+            dispatchProps.closeLoader()
+          })
+      },
     };
   }
 

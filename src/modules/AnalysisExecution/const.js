@@ -61,6 +61,7 @@ const paths = {
   analysisCode: ({ analysisId, codeFileId }) => `/analysis-execution/analyses/${analysisId}/code/${codeFileId}`,
   submissionCodeFile: ({ submissionGroupId, fileId }) => `/analysis-execution/submission-groups/${submissionGroupId}/code/${fileId}`,
   submissionResultFile: ({ submissionId, fileId }) => `/analysis-execution/submissions/${submissionId}/results/${fileId}`,
+  submissionResultSummary: ({ submissionId }) => `/analysis-execution/submissions/${submissionId}/results`,
   insightCodeFile: ({ submissionId, fileId }) => `/analysis-execution/submissions/${submissionId}/insight/code/${fileId}`,
   insightResultFile: ({ submissionId, fileId }) => `/analysis-execution/submissions/${submissionId}/insight/results/${fileId}`,
   insight: ({ submissionId }) => `/analysis-execution/submissions/${submissionId}/insight`,
@@ -73,6 +74,7 @@ function importEntityPathByType(type){
     case 'COHORT_CHARACTERIZATION': return 'cohorts';
     case 'ESTIMATION': return 'estimations';
     case 'PREDICTION': return 'predictions';
+    case 'INCIDENCE': return 'incidence-rates';
     default: return '';
   }
 }
@@ -118,6 +120,9 @@ const apiPaths = {
   submissionCodeFiles: ({ submissionId }) => `/api/v1/analysis-management/submissions/${submissionId}/results`,
   submissionGroupCodeFiles: ({ submissionGroupId }) =>
     `/api/v1/analysis-management/submission-groups/${submissionGroupId}/files`,
+
+  shortAnalysis: ({ id }) => `/api/v1/analysis-management/analyses/${id}/short`,
+  submission: ({ id }) => `/api/v1/analysis-management/submissions/${id}`,
 };
 
 const analysisPermissions = {
@@ -126,6 +131,10 @@ const analysisPermissions = {
   deleteAnalysisFiles :'DELETE_ANALYSIS_FILES',
   uploadAnalysisFiles :'UPLOAD_ANALYSIS_FILES',
 };
+
+const fileTypes = keyMirror({
+  SUBMISSION_RESULT: null,
+});
 
 const statusesForPublishing = ['PENDING', 'NOT APPROVED', 'IN PROGRESS'];
 
@@ -178,18 +187,22 @@ const submissionActionTypes = keyMirror({
   PUBLISH: null,
 });
 
-const importableAnalysisTypes = ['COHORT', 'ESTIMATION', 'PREDICTION', 'COHORT_CHARACTERIZATION'];
+const importableAnalysisTypes = ['COHORT', 'ESTIMATION', 'PREDICTION', 'COHORT_CHARACTERIZATION', 'INCIDENCE'];
 const analysisTypeNames = {
   COHORT: 'cohort',
   ESTIMATION: 'PLE analysis',
   PREDICTION: 'PLP analysis',
   COHORT_CHARACTERIZATION: 'cohort',
+  INCIDENCE: 'incidence rates',
+  CUSTOM: 'custom',
 };
 const pluralAnalysisTypeNames = {
   COHORT: 'cohorts',
   ESTIMATION: 'PLE analyses',
   PREDICTION: 'PLP analyses',
   COHORT_CHARACTERIZATION: 'cohorts',
+  INCIDENCE: 'incidence rates',
+  CUSTOM: 'custom',
 };
 function nameAnalysisType({ analysisType, capitalize = false, plural = false }) {
   const typeNames = plural ? pluralAnalysisTypeNames : analysisTypeNames;
@@ -217,6 +230,20 @@ const fileSources = keyMirror({
 
 const maxFilesCount = 10000;
 
+const breadcrumbTypes = keyMirror({
+  ANALYSIS: null,
+  STUDY: null,
+  INSIGHT: null,
+});
+
+const analysisTypes = keyMirror({
+  INCIDENCE: null,
+  COHORT: null,
+  COHORT_CHARACTERIZATION: null,
+  ESTIMATION: null,
+  PREDICTION: null,
+});
+
 export {
   apiPaths,
   form,
@@ -234,4 +261,7 @@ export {
   fileSources,
   maxFilesCount,
   analysisPermissions,
+  fileTypes,
+  breadcrumbTypes,
+  analysisTypes,
 };

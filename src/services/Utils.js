@@ -26,7 +26,6 @@ import _get from 'lodash/get';
 import { types as fieldTypes } from 'const/modelAttributes';
 import mimeTypes from 'const/mimeTypes';
 import {
-  isSql,
   isText,
 } from 'services/MimeTypeUtil';
 import { reduxForm, SubmissionError } from 'redux-form';
@@ -92,12 +91,17 @@ if (!numeral['locales']['arachne-short']) {
 
 const numberFormatter = {
   format: (value, form = 'full') => {
-    if (form === 'short') {
-      numeral.locale('arachne-short');
-    } else {
-      numeral.locale('arachne');
+    switch (form) {
+      case 'short':
+        numeral.locale('arachne-short');
+        return numeral(value).format('0[.]0 a');
+      case 'whole':
+        numeral.locale('arachne');
+        return numeral(value).format('0,0');
+      default:
+        numeral.locale('arachne');
+        return numeral(value).format('0[.]0 a');
     }
-    return numeral(value).format('0[.]0 a');
   },
 };
 
@@ -187,16 +191,6 @@ const validators = {
 function canUseDom() {
   return (typeof window !== 'undefined' && typeof document !== 'undefined' && document.documentElement);
 }
-
-const detectLanguage = (mimeType) => {
-  let language;
-  if (mimeType === mimeTypes.r) {
-    language = 'r';
-  } else if (isSql(mimeType)) {
-    language = 'text/x-sql';
-  }
-  return language;
-};
 
 const detectLanguageByExtension = (file) => {
   let language;
@@ -547,7 +541,6 @@ export {
   sortOptions,
   validators,
   canUseDom,
-  detectLanguage,
   detectLanguageByExtension,
   detectMimeTypeByExtension,
   Utils,

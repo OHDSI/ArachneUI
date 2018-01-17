@@ -32,10 +32,11 @@ import {
 } from 'modules/AnalysisExecution/const';
 import LabelDataSource from 'components/LabelDataSource';
 import LabelSubmissionStatus from 'components/LabelSubmissionStatus';
+import Results from './Results';
 
 require('./style.scss');
 
-function CellResults({ className, filesCount, showList, canUploadResult, showUploadForm }) {
+function CellResults({ className, resultInfo, resultFilesCount, analysisType, showList, canUploadResult, showUploadForm }) {
   const classes = new BEMHelper('submissions-cell-files');
 
   return (
@@ -45,9 +46,13 @@ function CellResults({ className, filesCount, showList, canUploadResult, showUpl
         add_circle_outline
       </Link>
       }
-      {filesCount > 0 ?
-        <Link onClick={showList}>
-          <span>{filesCount} {filesCount === 1 ? 'document' : 'documents'}</span>
+      {!!resultFilesCount ?
+        <Link {...classes('file')}onClick={showList}>
+          <Results
+            resultInfo={resultInfo}
+            resultFilesCount={resultFilesCount}
+            analysisType={analysisType}
+          />
         </Link>
         :
         <span>No documents</span>
@@ -249,6 +254,7 @@ function SubmissionLine(props) {
     showRejectionModal,
     analysisId,
     isEditable,
+    analysisType,
   } = props;
 
   return (
@@ -276,7 +282,9 @@ function SubmissionLine(props) {
       </div>
       <div {...classes('cell', 'result')}>
         <CellResults
-          filesCount={submission.resultFilesCount}
+          resultInfo={submission.resultInfo}
+          resultFilesCount={submission.resultFilesCount}
+          analysisType={analysisType}
           showList={showResultFileList.bind(null, submission)}
           canUploadResult={submission.canUploadResult}
           showUploadForm={showUploadForm.bind(null, submission.id)}
@@ -344,6 +352,7 @@ function ListSubmissions(props) {
             showRejectionModal={showRejectionModal}
             analysisId={analysisId}
             isEditable={isEditable}
+            analysisType={item.analysisType}
           />
         )}
         </div>

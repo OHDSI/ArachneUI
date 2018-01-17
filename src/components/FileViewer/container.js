@@ -21,27 +21,10 @@
 
 import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { get, detectLanguageByExtension } from 'services/Utils';
-import { isFat as isMimeTypeFat } from 'services/MimeTypeUtil';
+import { get, detectLanguageByExtension, detectMimeTypeByExtension } from 'services/Utils';
 import presenter from './presenter';
 
 class FileViewer extends Component {
-
-  componentWillMount() {
-    const params = this.props;
-    params.loadFile({
-      ...params.urlParams,
-      query : {...params.queryParams, withContent: false},
-    }).then((result) => {
-      if (!isMimeTypeFat(get(result, 'result.docType', '', 'String'))) {
-        params.loadFile({
-          ...params.urlParams,
-          query : {...params.queryParams, withContent: true},
-        });
-      }
-    });
-  }
-
   render() {
     return presenter(this.props);
   }
@@ -57,26 +40,24 @@ FileViewer.propTypes = {
   }),
   isLoading: PropTypes.boolean,
   loadFile: PropTypes.func,
-  toolbarOpts: PropTypes.object,
   downloadLink: PropTypes.string,
-  urlParams: PropTypes.object,
   pageTitle: PropTypes.string,
-  queryParams: PropTypes.object,
 };
 
 function mapStateToProps(state, ownProps) {
 
   const file = get(ownProps, 'file', {});
 
-  const title = get(file, 'label', '');
-  const mimeType = get(file, 'docType');
+  let title = get(file, 'label', '');
+  const mimeType = detectMimeTypeByExtension(file);
   const createdAt = get(file, 'created');
   const language = detectLanguageByExtension(file);
+  if (!title) {
+    title = get(file, 'name', '');
+  }
 
   const isLoading = get(ownProps, 'isLoading');
   const content = isLoading ? null : get(file, 'content', null, 'String');
-
-  const loadFile = get(ownProps, 'loadFile');
 
   return {
     content,
@@ -84,7 +65,6 @@ function mapStateToProps(state, ownProps) {
     title,
     createdAt,
     language,
-    loadFile,
   };
 }
 

@@ -394,3 +394,44 @@ $default-box-padding: 1.5rem 2rem;
     }
   }
 }
+
+@mixin summary-result-block() {
+  &__result-info {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  &__result-element {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 10rem;
+  }
+
+  &__result-ico {
+    @include material-icon();
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: $grey-dark;
+  }
+
+  &__count {
+    margin-bottom: 1rem;
+  }
+}
+
+@mixin bordered-table() {
+  border-top: 1px solid $grey;
+
+    & .#{$namespace} {
+      &table {
+        &__row {
+          &:last-child {
+            border-bottom: none;
+          }
+        }
+      }
+    }
+}

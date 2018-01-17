@@ -46,6 +46,7 @@
       bottom: 0;
       position: fixed;
       top: $header-height;
+      z-index: $z-index-select-outer;
     }
 
     &__content {

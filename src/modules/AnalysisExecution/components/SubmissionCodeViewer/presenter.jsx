@@ -22,46 +22,93 @@
 
 import React from 'react';
 import FileViewer from 'components/FileViewer';
-import ReportViewer from './components/ReportViewer';
+import FileBrowser from 'components/FileBrowser';
+import FileTreeUtils from 'services/FileTreeUtils';
+import { get } from 'services/Utils';
+import BEMHelper from 'services/BemHelper';
+import ReportViewer from './ResultFile/components/ReportViewer';
+import Summary from './ResultFile/components/Summary';
+
+import './style.scss';
+
+function createBreadcrumbs(path) {
+  const classes = BEMHelper('result-file-breadcrumbs');
+
+  return (
+    <div {...classes()}>
+      {path
+        .split(FileTreeUtils.PATH_SEPARATOR)
+        .filter(part => part)
+        .reduce((splittedPath, part) => {
+          return [
+            ...splittedPath,
+            <span {...classes('part')}>/</span>,
+            <span {...classes('part')}>{part}</span>,
+          ];
+        }, [])
+      }
+    </div>
+  );
+}
 
 function SubmissionCodeViewer({
   file,
   isLoading,
-  loadFile,
   toolbarOpts,
   downloadLink,
   urlParams,
   pageTitle,
   isReport = false,
-  reportType,
-  loadTreemapDetails,
-  tableData,
-  tableColumns,
-  details,
-  isDetailsLoading,
+
+  treeData,
+  toggleFolder,
+  openFile,
+  selectedFilePath,
+  isTreeLoading,
+
+  submissionId,
+  submissionGroupId,
 }) {
-  return isReport
-    ? <ReportViewer
-      type={reportType}
-      data={file}
-      details={details}
-      toolbarOpts={toolbarOpts}
-      downloadLink={downloadLink}
-      pageTitle={pageTitle}
-      loadTreemapDetails={loadTreemapDetails}
-      tableData={tableData}
-      tableColumns={tableColumns}
-      isLoading={isDetailsLoading}
-    />
-    : <FileViewer
-      file={file}
-      isLoading={isLoading}
-      loadFile={loadFile}
-      toolbarOpts={toolbarOpts}
-      downloadLink={downloadLink}
-      urlParams={urlParams}
-      pageTitle={pageTitle}
-    />;
+  const fileViewer = (<FileBrowser
+    selectedFile={urlParams.fileId}
+    toolbarOpts={toolbarOpts}
+    toggleFolder={toggleFolder}
+    openFile={openFile}
+    fileTreeData={treeData}
+    isTreeLoading={isTreeLoading}
+    selectedFilePath={selectedFilePath}
+    urlParams={urlParams}
+    detailsComponent={
+      isReport
+        ? <ReportViewer
+          file={{
+            ...file,
+            label: createBreadcrumbs(get(file, 'relativePath', '', 'String')),
+          }}
+          downloadLink={downloadLink}
+          pageTitle={pageTitle}
+          isLoading={isLoading}
+          submissionId={submissionId}
+          submissionGroupId={submissionGroupId}
+        />
+        : <FileViewer
+          file={{
+            ...file,
+            label: createBreadcrumbs(get(file, 'relativePath', '', 'String')),
+          }}
+          downloadLink={downloadLink}
+          pageTitle={pageTitle}
+          isLoading={isLoading}
+        />
+    }
+    mainInfoComponent={<Summary
+      submissionId={submissionId}
+    />}
+  />);
+
+  return (
+    fileViewer
+  );
 }
 
 export default SubmissionCodeViewer;

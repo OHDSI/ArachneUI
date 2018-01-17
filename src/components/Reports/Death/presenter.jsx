@@ -35,6 +35,7 @@ import { numberFormatter } from 'services/Utils';
 import * as d3 from 'd3';
 import { chartSettings, defaultTrellisSet } from 'modules/DataCatalog/const';
 import Chart from 'components/Reports/Chart';
+import isEmpty from 'lodash/isEmpty';
 
 require('./style.scss');
 
@@ -57,7 +58,7 @@ function Death(props) {
       <div className='col-xs-12'>
         <Chart
           title='Death Prevalence by Age, Gender, Year'
-          isDataPresent={deathByAge}
+          isDataPresent={!isEmpty(deathByAge)}
           render={({ width, element }) => {
             deathByAgeChart.render(
               deathByAge,
@@ -84,7 +85,7 @@ function Death(props) {
       <div className='col-xs-12'>
         <Chart
           title='Death Prevalence by Month'
-          isDataPresent={deathByMonth}
+          isDataPresent={!isEmpty(deathByMonth)}
           render={({ width, element }) => {
             deathByMonthChart.render(
               deathByMonth,
@@ -107,7 +108,7 @@ function Death(props) {
       <div className='col-xs-6'>
         <Chart
           title='Death by Type'
-          isDataPresent={deathByType}
+          isDataPresent={!isEmpty(deathByType)}
           render={({ width, element }) => {
             deathByTypeChart.render(
               deathByType,
@@ -122,7 +123,7 @@ function Death(props) {
       <div className='col-xs-6'>
         <Chart
           title='Age at Death'
-          isDataPresent={ageOfDeath}
+          isDataPresent={!isEmpty(ageOfDeath)}
           render={({ width, element }) => {
             ageOfDeathChart.render(
               ageOfDeath,

@@ -21,52 +21,11 @@
  */
 
 // drilldown for treemap reports
-import { apiPaths } from 'modules/AnalysisExecution/const';
-import Duck from 'services/Duck';
+import DuckBuilder from 'modules/AnalysisExecution/ducks/submissionFileDuckBuilder';
+import { SubmissionResultLinkBuilder } from 'modules/AnalysisExecution/ducks/linkBuilder';
 
-function linkBuilder({
-  type,
-  submissionGroupId,
-  submissionId,
-  fileId,
-  downloadFile = false,
-  query = { withContent: true },
-}) {
-  let link;
+const duck = new DuckBuilder();
+duck.coreName = 'AE_ANALYSIS_SUBMISSION_FILE_DETAILS';
+duck.LinkBuilder = SubmissionResultLinkBuilder;
 
-  if (type === 'query') {
-    if (!submissionGroupId && submissionId) {
-      link = apiPaths.submissionGroupCodeBySubmission({ submissionId, fileId, downloadFile, query });
-    } else {
-      link = apiPaths.submissionGroupCode({ submissionGroupId, fileId, downloadFile, query });
-    }
-  } else if (type === 'result') {
-    link = apiPaths.submissionResults({ submissionId, fileId, downloadFile, query });
-  }
-
-  return link;
-}
-
-export const downloadLinkBuilder = linkBuilder;
-
-const coreName = 'AE_ANALYSIS_SUBMISSION_FILE_DETAILS';
-
-const duck = new Duck({
-  name: coreName,
-  urlBuilder: linkBuilder,
-});
-
-const clear = function () {
-  return dispatch => dispatch({
-    type: `${coreName}_FIND_FULFILLED`,
-    payload: null,
-  });
-};
-
-export default {
-  actions: {
-    ...duck.actions,
-    clear,
-  },
-  reducer: duck.reducer,
-};
+export default duck.build();

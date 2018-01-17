@@ -32,8 +32,9 @@ import ApiService from 'services/Api';
 import makeRootReducer from 'reducers/index';
 import { Provider } from 'react-redux';
 import React from 'react';
-import AppContainer from './AppContainer';
 import NotFound from 'components/NotFound';
+import pluralize from 'pluralize';
+import AppContainer from './AppContainer';
 
 require('styles/appContainer.scss');
 
@@ -43,6 +44,9 @@ if (isIE) {
     require('styles/fonts-base64-fallback.scss'); // eslint-disable-line global-require
   });
 }
+
+pluralize.addSingularRule(/(pe)(ople|rson)$/i, '$1rson');
+pluralize.addPluralRule(/(pe)(ople|rson)$/i, '$1rsons');
 
 function initModules(modules) {
   const initialState = {};
@@ -86,7 +90,7 @@ function initModules(modules) {
     }
 
     if (module.isRoot) {
-      indexRedirect = module.path;
+      indexRedirect = `/${module.path}${module.indexRedirect}`;
     }
 
     if (module.menuItems) {

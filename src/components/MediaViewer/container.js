@@ -31,19 +31,45 @@ class MediaViewer extends Component {
     this.state = {
       container: null,
       totalPages: null,
+      scale: 1,
+      isLoaded: false,
+      isInitialScaleSet: false,
     };
     this.setContainer = this.setContainer.bind(this);
     this.onPDFLoaded = this.onPDFLoaded.bind(this);
     this.onPageLoad = this.onPageLoad.bind(this);
+    this.zoomIn = this.zoom.bind(this, 1);
+    this.zoomOut = this.zoom.bind(this, -1);
+    this.setInitialScale = this.setInitialScale.bind(this);
+
+    this.zoomStep = 0.1;
   }
 
   onPDFLoaded({ total }) {
     this.setState({
       totalPages: total,
+      isLoaded: true,
+    });
+  }
+
+  setInitialScale(scale) {
+    this.setState({
+      isInitialScaleSet: true,
+      scale,
     });
   }
 
   onPageLoad({ pageIndex, pageNumber }) {
+  }
+
+  zoom(multiplier) {
+    const newScale = this.state.scale + this.zoomStep * multiplier;
+    if (newScale <= this.zoomStep) {
+      return false;
+    }
+    this.setState({
+      scale: newScale,
+    });
   }
   
   setContainer(container) {
@@ -58,6 +84,9 @@ class MediaViewer extends Component {
       setContainer: this.setContainer,
       onPDFLoaded: this.onPDFLoaded,
       onPageLoad: this.onPageLoad,
+      zoomIn: this.zoomIn,
+      zoomOut: this.zoomOut,
+      setInitialScale: this.setInitialScale,
     });
   }
 }

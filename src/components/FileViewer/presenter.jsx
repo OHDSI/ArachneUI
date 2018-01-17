@@ -27,23 +27,40 @@ import Toolbar from './Toolbar/index';
 
 require('./style.scss');
 
-function FileViewer({ language, isLoading, pageTitle, downloadLink, mimeType, content, name, title, createdAt, toolbarOpts }) {
+function FileViewer(props) {
   const classes = new BEMHelper('file');
+
+  const {
+    language,
+    isLoading,
+    pageTitle,
+    downloadLink,
+    mimeType,
+    content,
+    name,
+    title,
+    createdAt,
+    toolbarOpts,
+  } = props;
 
   return (
     <PageContent title={pageTitle}>
       <div {...classes()}>
-        <Toolbar params={toolbarOpts}/>
-        <div {...classes('content')}>
-          <MediaViewer
-            language={language}
-            mimeType={mimeType}
-            data={content}
-            downloadLink={downloadLink}
-            name={name}
-            title={title}
-            createdAt={createdAt}
-          />
+        {toolbarOpts &&
+          <Toolbar params={toolbarOpts} />
+        }
+        <div {...classes('workspace')}>
+          <div {...classes('content')}>
+            <MediaViewer
+              language={language}
+              mimeType={mimeType}
+              data={content}
+              downloadLink={downloadLink}
+              name={name}
+              title={title}
+              createdAt={createdAt}
+            />
+          </div>
         </div>
         <LoadingPanel active={isLoading} />
       </div>

@@ -22,6 +22,8 @@
 
 @import 'styles/vars-and-mixins.scss';
 
+$pdf-background-color: #fafafa;
+
 .#{$namespace} {
   &action-bar {
     align-items: center;
@@ -30,6 +32,7 @@
     border-top: 1px solid $grey-light;
     display: flex;
     padding: 15px 30px;
+    flex-shrink: 0;
 
     &__actions {
       display: flex;
@@ -48,14 +51,26 @@
         margin-left: 7px;
       }
     }
+
+    &__info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__title {
+      @include title();
+      margin-bottom: 0.5rem;
+    }
   }
 
   &media-viewer {
     height: 100%;
     width: 100%;
-    background: $white;
+    background: $pdf-background-color;
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
+    overflow: auto;
 
     & .ac-pagination {
       z-index: 10;
@@ -70,7 +85,7 @@
       justify-content: space-between;
       flex-direction: column;
 
-      &--loading {
+      &--loading, &--empty {
         justify-content: center;
       }
 
@@ -85,6 +100,51 @@
               height: 48px;
           }
       }
+    }
+
+    &__pdf {
+      margin: auto;
+    }
+
+    &__zoom {
+      display: flex;
+      justify-content: center;
+      flex-shrink: 0;
+      align-items: center;
+      padding: 1rem;
+      flex-direction: column;
+      position: fixed;
+      bottom: 16px;
+      right: calc( 1rem + 16px );
+    }
+
+    &__scale {
+      font-family: 'Montserrat';
+      font-size: 1.1rem;
+    }
+
+    &__zoom-control {
+      background-color: $grey-medium;
+      color: $black;
+      display: flex;
+      justify-content: center;
+      font-size: 2.25rem;
+      line-height: 3rem;
+      width: 3.5rem;
+      height: 3.5rem;
+      border-radius: 50%;
+      margin: 1.5rem 0;
+      user-select: none;
+      cursor: pointer;
+    }
+
+    &__pagination {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      background: $pdf-background-color;
+      position: fixed;
+      bottom: 0;
     }
   }
 }
