@@ -26,5 +26,9 @@
   &analysis-view {
     @include view-edit-page();
     height: 100%;
+
+    &__content {
+      padding-bottom: 0;
+    }
   }
 }

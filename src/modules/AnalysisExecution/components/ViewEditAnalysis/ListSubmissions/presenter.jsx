@@ -22,7 +22,7 @@
 
 import React from 'react';
 import BEMHelper from 'services/BemHelper';
-import { Button, Link, Panel, Table } from 'arachne-ui-components';
+import { Button, Link, Pagination } from 'arachne-ui-components';
 import { StickyContainer, Sticky } from 'react-sticky';
 import get from 'lodash/get';
 import {
@@ -325,6 +325,11 @@ function ListSubmissions(props) {
     showRejectionModal,
     analysisId,
     isEditable,
+
+    isPaginationAvailable,
+    pages,
+    currentPage,
+    path,
   } = props;
 
   const groupCount = submissionGroupList.length;
@@ -362,16 +367,23 @@ function ListSubmissions(props) {
 
   return (
     <div {...classes()}>
-      {data.length ?
-        <StickyContainer>
-          <Sticky topOffset={-56}>
-            { SubmissionsHeader }
-          </Sticky>
-          { data }
-        </StickyContainer>
-        :
-        <div {...classes('empty')}>
-          No queries were submitted yet...
+      <div {...classes('submissions-wrapper')}>
+        {data.length ?
+          <StickyContainer>
+            <Sticky topOffset={-56}>
+              { SubmissionsHeader }
+            </Sticky>
+            { data }
+          </StickyContainer>
+          :
+          <div {...classes('empty')}>
+            No queries were submitted yet...
+          </div>
+        }
+      </div>
+      {isPaginationAvailable &&
+        <div {...classes('pagination')}>
+          <Pagination pages={pages} currentPage={currentPage} path={path} />
         </div>
       }
     </div>
