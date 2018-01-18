@@ -20,48 +20,53 @@
  *
  */
 
-import { connect } from 'react-redux';
-import get from 'lodash/get';
 import ReportUtils from 'components/Reports/Utils';
-import Person from './presenter';
 import { ContainerBuilder } from 'services/Utils';
 import {
-	donut,
-	histogram,
+  donut,
+  histogram,
 } from '@ohdsi/atlascharts/dist/atlascharts.umd';
+import { BaseChart } from 'components/Reports/BaseChart';
+import presenter from './presenter';
+
+class Person extends BaseChart {
+  render() {
+    return presenter(this.props);
+  }
+}
 
 export default class PersonContainerBuilder extends ContainerBuilder {
 
-	constructor() {
-		super();
-		this.detailsCharts = {
-			birthYearChart: new histogram(),
-			genderDataChart: new donut(),
-			raceChart: new donut(),
-			ethnicityChart: new donut(),
-		}
-	}
+  constructor() {
+    super();
+    this.detailsCharts = {
+      birthYearChart: new histogram(),
+      genderDataChart: new donut(),
+      raceChart: new donut(),
+      ethnicityChart: new donut(),
+    }
+  }
 
-	getComponent() {
-		return Person;
-	}
+  getComponent() {
+    return Person;
+  }
 
-	mapStateToProps(state, ownProps) {
-		const {
-			birthYear,
-			ethnicity,
-			genderData,
-			race,
-			summary,
-		} = ownProps;
+  mapStateToProps(state, ownProps) {
+    const {
+      birthYear,
+      ethnicity,
+      genderData,
+      race,
+      summary,
+    } = ownProps;
 
-		return {
-			birthYear,
-			ethnicity: ReportUtils.prepareChartDataForDonut(ethnicity),
-			genderData: ReportUtils.prepareChartDataForDonut(genderData),
-			race: ReportUtils.prepareChartDataForDonut(race),
-			summary,
-			...this.detailsCharts,
-		};
-	}
+    return {
+      birthYear,
+      ethnicity: ReportUtils.prepareChartDataForDonut(ethnicity),
+      genderData: ReportUtils.prepareChartDataForDonut(genderData),
+      race: ReportUtils.prepareChartDataForDonut(race),
+      summary,
+      detailsCharts: this.detailsCharts,
+    };
+  }
 }
