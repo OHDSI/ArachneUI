@@ -28,29 +28,36 @@ import {
   convertDataToBoxplotData,
 } from 'components/Reports/converters';
 import {
+  line,
+  trellisline,
+  boxplot,
+} from '@ohdsi/atlascharts';
+import { BaseChart } from 'components/Reports/BaseChart';
+import {
   prevalenceByMonthDTO,
   personsInCohortFromCohortStartToEndDTO,
   personsByDurationFromStartToEndDTO,
   prevalenceByYearGenderSexDTO,
 } from './DTO';
-import CohortspecificReport from './presenter';
-import {
-	line,
-	trellisline,
-	boxplot,
-} from '@ohdsi/atlascharts';
+import presenter from './presenter';
+
+class CohortspecificReport extends BaseChart {
+  render() {
+    return presenter(this.props);
+  }
+}
 
 export default class CohortspecificReportBuilder extends ContainerBuilder {
 
   constructor() {
     super();
     this.detailsCharts = {
-			prevalenceByMonthChart: new line(),
-			prevalenceByYearGenderSexChart: new trellisline(),
-			personsInCohortFromCohortStartToEndChart: new line(),
-			personsByDurationFromStartToEndChart: new line(),
-			ageAtIndexDistributionChart: new boxplot(),
-			distributionOfAgeAtCohortStartByGenderChart: new boxplot(),
+      prevalenceByMonthChart: new line(),
+      prevalenceByYearGenderSexChart: new trellisline(),
+      personsInCohortFromCohortStartToEndChart: new line(),
+      personsByDurationFromStartToEndChart: new line(),
+      ageAtIndexDistributionChart: new boxplot(),
+      distributionOfAgeAtCohortStartByGenderChart: new boxplot(),
     }
   }
 
@@ -96,7 +103,7 @@ export default class CohortspecificReportBuilder extends ContainerBuilder {
         ),
       prevalenceByYearGenderSex,
       prevalenceByYearGenderSexSet,
-      ...this.detailsCharts,
+      detailsCharts: this.detailsCharts,
     };
   }
 }

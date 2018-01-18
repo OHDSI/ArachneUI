@@ -25,10 +25,22 @@ import { ContainerBuilder } from 'services/Utils';
 import {
   convertDataToLineChartData,
 } from 'components/Reports/converters';
-import EntropyReport from './presenter';
 import {
 	line,
 } from '@ohdsi/atlascharts';
+import { BaseChart } from 'components/Reports/BaseChart';
+import presenter from './presenter';
+
+class EntropyReport extends BaseChart {
+  constructor(props) {
+    super(props);
+    this.charts = [this.props.lineChart];
+  }
+
+  render() {
+    return presenter(this.props);
+  }
+}
 
 const entropyDTO = {
   xValue: 'date',
@@ -58,7 +70,7 @@ export default class EntropyReportBuilder extends ContainerBuilder {
 
     return {
       data,
-      line: this.lineChart,
+      lineChart: this.lineChart,
     };
   }
 }

@@ -20,62 +20,68 @@
  *
  */
 
-import { connect } from 'react-redux';
 import ReportUtils from 'components/Reports/Utils';
 import {
   convertDataToBoxplotData,
 } from 'components/Reports/converters';
-import DataDensity from './presenter';
 import { ContainerBuilder } from 'services/Utils';
 import {
-	boxplot,
-	line,
+  boxplot,
+  line,
 } from '@ohdsi/atlascharts/dist/atlascharts.umd';
+import { BaseChart } from 'components/Reports/BaseChart';
+import presenter from './presenter';
+
+class DataDensity extends BaseChart {
+  render() {
+    return presenter(this.props);
+  }
+}
 
 export default class DataDensityChartBuilder extends ContainerBuilder {
 
   constructor() {
     super();
     this.detailsCharts = {
-			totalRecordsChart: new line(),
-			recordsPerPersonChart: new line(),
-			conceptsPerPersonChart: new boxplot(),
-		}
+      totalRecordsChart: new line(),
+      recordsPerPersonChart: new line(),
+      conceptsPerPersonChart: new boxplot(),
+    }
   }
 
   getComponent() {
     return DataDensity;
   }
 
-	mapStateToProps(state, ownProps) {
-		const {
-			totalRecords: rawTotalRecords,
-			conceptsPerPerson,
-			recordsPerPerson: rawRecordsPerPerson,
+  mapStateToProps(state, ownProps) {
+    const {
+      totalRecords: rawTotalRecords,
+      conceptsPerPerson,
+      recordsPerPerson: rawRecordsPerPerson,
 
-		} = ownProps;
+    } = ownProps;
 
-		const {
-			transformedData: totalRecords,
-			normalizedData: totalRecordsScale,
-		} = ReportUtils.prepareLineData(rawTotalRecords);
+    const {
+      transformedData: totalRecords,
+      normalizedData: totalRecordsScale,
+    } = ReportUtils.prepareLineData(rawTotalRecords);
 
-		const {
-			transformedData: recordsPerPerson,
-			normalizedData: perPersonScale,
-		} = ReportUtils.prepareLineData(rawRecordsPerPerson);
+    const {
+      transformedData: recordsPerPerson,
+      normalizedData: perPersonScale,
+    } = ReportUtils.prepareLineData(rawRecordsPerPerson);
 
 
-		return {
-			conceptsPerPerson:
-				convertDataToBoxplotData(
-					conceptsPerPerson,
-				),
-			recordsPerPerson,
-			recordsPerPersonYears: perPersonScale,
-			totalRecords,
-			totalRecordsYears: totalRecordsScale,
-			...this.detailsCharts,
-		};
-	}
+    return {
+      conceptsPerPerson:
+        convertDataToBoxplotData(
+          conceptsPerPerson,
+        ),
+      recordsPerPerson,
+      recordsPerPersonYears: perPersonScale,
+      totalRecords,
+      totalRecordsYears: totalRecordsScale,
+      detailsCharts: this.detailsCharts,
+    };
+  }
 }

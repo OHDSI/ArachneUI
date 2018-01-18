@@ -50,16 +50,19 @@ function ObservationPeriods(props) {
     durationByYear,
     observationsPerPerson,
     observationsByMonth,
-		ageAtFirstObservationChart,
-		ageByGenderChart,
-		observationLengthChart,
-		durationByGenderChart,
-		cumulativeObservationChart,
-		durationByAgeDeclineChart,
-		durationByYearChart,
-		observationsPerPersonChart,
-		observationsByMonthChart,
-  } = props;
+    detailsCharts,
+   } = props;
+  const {
+    ageAtFirstObservationChart,
+    ageByGenderChart,
+    observationLengthChart,
+    durationByGenderChart,
+    cumulativeObservationChart,
+    durationByAgeDeclineChart,
+    durationByYearChart,
+    observationsPerPersonChart,
+    observationsByMonthChart,
+  } = detailsCharts;
   const classes = new BEMHelper('report-observation-periods');
   const emptyClasses = new BEMHelper('report-empty');
 

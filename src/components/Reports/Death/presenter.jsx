@@ -45,11 +45,14 @@ function Death(props) {
     deathByMonth,
     deathByType,
     ageOfDeath,
-		deathByAgeChart,
-		deathByMonthChart,
-		deathByTypeChart,
-		ageOfDeathChart,
+    detailsCharts,
   } = props;
+  const {
+    deathByAgeChart,
+    deathByMonthChart,
+    deathByTypeChart,
+    ageOfDeathChart,
+  } = detailsCharts;
   const classes = new BEMHelper('report-death');
   const emptyClasses = new BEMHelper('report-empty');
 
