@@ -105,7 +105,7 @@ function DataSourceItem(props) {
       }
       {dataSource.isVirtual && dataSource.isCurrentUserOwner && hasEditStudyPermissions
         ? <Link {...classes('name')} onClick={() => editDataSource(dataSource.id)}>{dataSource.name}<span {...classes('ico')}>edit</span></Link>
-        : <Link {...classes('name')} to={dataSource.link}>{dataSource.name}</Link>
+        : <span {...classes('name')}>{dataSource.name}</span>
       }
       <span {...classes({ element: 'status', modifiers: dataSource.status.toLowerCase() })}>{dataSource.status}</span>
     </ListItem>
