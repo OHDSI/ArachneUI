@@ -28,9 +28,7 @@ import {
   Panel,
 } from 'arachne-ui-components';
 import {
-  donut,
   histogram,
-  line,
 } from '@ohdsi/atlascharts/dist/atlascharts.umd';
 import { numberFormatter, get } from 'services/Utils';
 import { chartSettings } from 'components/Reports/const';
@@ -50,11 +48,14 @@ function Dashboard(props) {
     summary,
     characterizationDate,
     showSummary = true,
-		genderDataChart,
-		ageAtFirstObservationChart,
-		observedByMonthChart,
-		cumulativeDurationChart,
+    detailsCharts,
   } = props;
+  const {
+    genderDataChart,
+    ageAtFirstObservationChart,
+    observedByMonthChart,
+    cumulativeDurationChart,
+  } = detailsCharts;
   const classes = new BEMHelper('report-dashboard');
   const emptyClasses = new BEMHelper('report-empty');
 
