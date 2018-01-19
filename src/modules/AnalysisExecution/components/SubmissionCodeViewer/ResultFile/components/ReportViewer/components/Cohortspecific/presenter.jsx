@@ -44,13 +44,16 @@ export default function CohortspecificReport(props) {
     personsInCohortFromCohortStartToEnd,
     prevalenceByYearGenderSex,
     prevalenceByYearGenderSexSet,
-		prevalenceByMonthChart,
-		prevalenceByYearGenderSexChart,
-		personsInCohortFromCohortStartToEndChart,
-		personsByDurationFromStartToEndChart,
-		ageAtIndexDistributionChart,
-		distributionOfAgeAtCohortStartByGenderChart,
+    detailsCharts,
   } = props;
+  const {
+    prevalenceByMonthChart,
+    prevalenceByYearGenderSexChart,
+    personsInCohortFromCohortStartToEndChart,
+    personsByDurationFromStartToEndChart,
+    ageAtIndexDistributionChart,
+    distributionOfAgeAtCohortStartByGenderChart,
+  } = detailsCharts;
   const classes = BEMHelper('report-cohortspecific');
 
   return (

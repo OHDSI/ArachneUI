@@ -26,7 +26,6 @@ import {
   Panel,
 } from 'arachne-ui-components';
 import {
-  donut,
   histogram,
 } from '@ohdsi/atlascharts/dist/atlascharts.umd';
 import { numberFormatter } from 'services/Utils';
@@ -46,11 +45,14 @@ function Person(props) {
     race,
     summary,
     showSummary = true,
-		birthYearChart,
-		genderDataChart,
-		raceChart,
-		ethnicityChart,
+    detailsCharts,
   } = props;
+  const {
+    birthYearChart,
+    genderDataChart,
+    raceChart,
+    ethnicityChart,
+  } = detailsCharts;
   const classes = new BEMHelper('report-person');
   const emptyClasses = new BEMHelper('report-empty');
 
