@@ -47,7 +47,7 @@ function mapStateToProps(state) {
     submissionGroupList: selectors.getSubmissionGroupList(state),
     isPaginationAvailable,
     totalPages,
-    page: number,
+    page: number + 1,
     path: url.href(),
   };
 }

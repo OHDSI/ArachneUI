@@ -30,7 +30,7 @@ const ducks = new Duck({
   name: actionCoreName,
   urlBuilder: ({ analysisId, page, pageSize }) => {
     const url = new Uri(apiPaths.submissionGroups({ analysisId }));
-    return url.setSearch({ page, size: pageSize });
+    return url.setSearch({ page, pageSize });
   },
 });
 
