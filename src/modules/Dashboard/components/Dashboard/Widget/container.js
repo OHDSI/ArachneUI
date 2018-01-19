@@ -25,21 +25,10 @@ import { Component } from 'react';
 import presenter from './presenter';
 
 class DashboardWidget extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      grid: {
-        w: 1,
-        h: 2,
-        static: false,
-      },
-    };
-  }
 
   render() {
     return presenter({
       ...this.props,
-      ...this.state,
     });
   }
 }

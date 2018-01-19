@@ -28,6 +28,8 @@ import {
 } from 'arachne-ui-components';
 import EmptyState from 'components/EmptyState';
 import ReactGridLayout from 'react-grid-layout';
+import { LayoutManager } from 'modules/Dashboard/LayoutManager';
+import isEmpty from 'lodash/isEmpty';
 import Widget from './Widget';
 
 import './style.scss';
@@ -36,12 +38,30 @@ export default class Dashboard extends Component {
   constructor() {
     super();
     this.widgets = [
-      <Widget key={'1'}>One</Widget>,
-      <Widget key={'12'}>Two</Widget>,
-      <Widget key={'13'}>Three</Widget>,
-      <Widget key={'14'}>Four</Widget>,
-      <Widget key={'15'}>Five</Widget>,
-      <Widget key={'16'}>Six</Widget>,
+      {
+        widget: <Widget key={'1'}>One</Widget>,
+        defaultPosision: new LayoutManager.Position('1'),
+      },
+      {
+        widget: <Widget key={'12'}>Two</Widget>,
+        defaultPosision: new LayoutManager.Position('12', 2),
+      },
+      {
+        widget: <Widget key={'13'}>Three</Widget>,
+        defaultPosision: new LayoutManager.Position('13', 1, 2),
+      },
+      {
+        widget: <Widget key={'14'}>Four</Widget>,
+        defaultPosision: new LayoutManager.Position('14', 1, 1, 3),
+      },
+      {
+        widget: <Widget key={'15'}>Five</Widget>,
+        defaultPosision: new LayoutManager.Position('15', 1, 1, 4, 3),
+      },
+      {
+        widget: <Widget key={'16'}>Six</Widget>,
+        defaultPosision: new LayoutManager.Position('16'),
+      },
     ];
   }
 
@@ -49,18 +69,20 @@ export default class Dashboard extends Component {
     return this.widgets;
   }
 
+
   render(props) {
     const {
       isLoading,
       gridWidth,
       setGridWidth,
+      layout,
+      updateLayout,
     } = props;
     const classes = BEMHelper('dashboard');
-    const layout = [
-      { i: 'a', x: 0, y: 0, w: 1, h: 2, static: true },
-      { i: 'b', x: 1, y: 0, w: 3, h: 2, minW: 2, maxW: 4 },
-      { i: 'c', x: 4, y: 0, w: 1, h: 2 },
-    ];
+    let gridLayout = layout;
+    if (isEmpty(gridLayout)) {
+      gridLayout = this.widgets.map(widget => widget.defaultPosision);
+    }
 
     return (
       <PageContent
@@ -71,7 +93,7 @@ export default class Dashboard extends Component {
           ref={(el) => {
             if (el && !gridWidth) {
               const box = el.getBoundingClientRect();
-              const width = box.width;
+              const width = box.width - 126;
               setGridWidth(width);
             }
           }}
@@ -81,8 +103,11 @@ export default class Dashboard extends Component {
             cols={4}
             rowHeight={300}
             width={gridWidth}
+            layout={gridLayout}
+            onDragStop={updateLayout}
+            onResizeStop={updateLayout}
           >
-            {this.getWidgets()}
+            {this.getWidgets().map(widget => widget.widget)}
           </ReactGridLayout>
         </div>
         <LoadingPanel active={isLoading} />

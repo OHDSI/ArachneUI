@@ -40,10 +40,13 @@ const imgs = {
   sidebarIco: '/img/icons/Universal_Desktop/Navigation/ic_dashboard_white_48px.svg',
 };
 
+const LAYOUT_LS_KEY = 'dashboard-layout';
+
 export {
   apiPaths,
   forms,
   imgs,
   modal,
   paths,
+  LAYOUT_LS_KEY,
 };

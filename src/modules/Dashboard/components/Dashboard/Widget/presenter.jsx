@@ -35,11 +35,10 @@ export default function DashboardWidget(props) {
     children,
     className,
     style,
-    grid,
   } = props;
 
   return (
-    <div {...props} data-grid={grid}>
+    <div {...props}>
       <Panel title={title} {...classes()}>
         {children}
       </Panel>

@@ -435,3 +435,7 @@ $default-box-padding: 1.5rem 2rem;
       }
     }
 }
+
+@mixin widget-content() {
+  overflow: auto;
+}

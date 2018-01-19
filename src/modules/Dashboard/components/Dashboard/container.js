@@ -20,9 +20,9 @@
  *
  */
 
-import { get } from 'services/Utils';
+import { get, ContainerBuilder } from 'services/Utils';
 import actions from 'actions';
-import { ContainerBuilder } from 'services/Utils';
+import { LayoutManager } from 'modules/Dashboard/LayoutManager';
 import { Component } from 'react';
 import Presenter from './presenter';
 // import SelectorsBuiler from './selectors';
@@ -36,8 +36,15 @@ class Dasboard extends Component {
     super(props);
     this.state = {
       gridWidth: null,
+      layout: {},
     };
     this.setGridWidth = this.setGridWidth.bind(this);
+  }
+
+  componentDidMount() {
+    this.setState({
+      layout: LayoutManager.getSavedLayout(),
+    });
   }
 
   setGridWidth(gridWidth) {
@@ -46,11 +53,16 @@ class Dasboard extends Component {
     });
   }
 
+  updateLayout(layout) {
+    LayoutManager.updateLayout(layout);
+  }
+
   render() {
     return presenter.render({
       ...this.props,
       ...this.state,
       setGridWidth: this.setGridWidth,
+      updateLayout: this.updateLayout,
     });
   }
 }

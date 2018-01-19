@@ -26,9 +26,36 @@
 
   &dashboard-widget {
     height: 100%;
+    display: flex;
+    flex-direction: column;
 
-    &__panel-title {
+    &__panel-header {
       cursor: move;
+      flex-shrink: 0;
+    }
+
+    &__panel-content {
+      padding: 2rem;
+      position: relative;
+      flex-grow: 1;
+    }
+
+    & .react-resizable-handle {
+      color: $grey-medium;
+      display: block;
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      font-size: 2rem;
+      cursor: nwse-resize;
+
+      &:before {
+        @include material-icon();
+        content: 'keyboard_arrow_right';
+        transform: rotateZ(45deg)
+      }
     }
   }
 
