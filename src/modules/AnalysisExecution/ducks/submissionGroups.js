@@ -16,25 +16,28 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 13, 2016
+ * Created: January 19, 2018
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+import Duck from 'services/Duck';
+import { apiPaths } from 'modules/AnalysisExecution/const';
+import Uri from 'urijs';
 
-.#{$namespace} {
-  &analysis-view {
-    @include view-edit-page();
-    height: 100%;
+const actionCoreName = 'SM_STUDY_ANALYSIS_SUBMISSION_GROUPS';
 
-    &__content {
-      padding-bottom: 0;
-    }
+const ducks = new Duck({
+  name: actionCoreName,
+  urlBuilder: ({ analysisId, page, pageSize }) => {
+    const url = new Uri(apiPaths.submissionGroups({ analysisId }));
+    return url.setSearch({ page, size: pageSize });
+  },
+});
 
-    &__row, &__subrow, &__content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-  }
-}
+const actions = ducks.actions;
+const reducer = ducks.reducer;
+
+export default {
+  actions,
+  reducer,
+};

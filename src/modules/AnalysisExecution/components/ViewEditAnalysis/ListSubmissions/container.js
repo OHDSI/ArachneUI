@@ -35,8 +35,7 @@ const selectors = (new SelectorsBuilder()).build();
 function mapStateToProps(state) {
   const analysisData = get(state, 'analysisExecution.analysis.data.result');
   const isPaginationAvailable = true;
-  const pages = get(analysisData, 'totalPages', 10);
-  const currentPage = parseInt(get(analysisData, 'number', 1), 10);
+  const { number, totalPages } = selectors.getPagingData(state); 
   const cleanPath = get(state, 'routing.locationBeforeTransitions.pathname');
   const currentQuery = state.routing.locationBeforeTransitions.query;
 
@@ -47,8 +46,8 @@ function mapStateToProps(state) {
     analysisId: get(analysisData, 'id'),
     submissionGroupList: selectors.getSubmissionGroupList(state),
     isPaginationAvailable,
-    pages,
-    currentPage,
+    totalPages,
+    page: number,
     path: url.href(),
   };
 }

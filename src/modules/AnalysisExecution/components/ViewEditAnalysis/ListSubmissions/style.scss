@@ -25,6 +25,10 @@
 .#{$namespace} {
 
 	&submissions {
+		flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
 		&__submissions-wrapper {
 			@include block-shadow();

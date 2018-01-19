@@ -327,8 +327,8 @@ function ListSubmissions(props) {
     isEditable,
 
     isPaginationAvailable,
-    pages,
-    currentPage,
+    totalPages,
+    page,
     path,
   } = props;
 
@@ -383,7 +383,7 @@ function ListSubmissions(props) {
       </div>
       {isPaginationAvailable &&
         <div {...classes('pagination')}>
-          <Pagination pages={pages} currentPage={currentPage} path={path} />
+          <Pagination pages={totalPages} currentPage={page} path={path} />
         </div>
       }
     </div>
