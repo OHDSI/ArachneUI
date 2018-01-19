@@ -42,6 +42,15 @@ if (__APP_TYPE_CENTRAL__) {
   const ExpertFinder = require('./ExpertFinder/index').default;
   const DataCatalog = require('./DataCatalog/index').default;
   const InsightsLibrary = require('./InsightsLibrary').default;
+  const Dashboard = require('./Dashboard').default;
+
+  modules.push({
+    ...Dashboard,
+    path: 'dashboard',
+    namespace: 'dashboard',
+    isRoot: true,
+    isAdminOnly: false,
+  });
 
   modules.push({
     ...StudyManager,
