@@ -43,6 +43,7 @@ import resultFile from './resultFile';
 import insightFile from './insightFile';
 import fileTreeData from './fileTreeData';
 import submissionSummary from './submissionSummary';
+import submissionGroups from './submissionGroups';
 
 export default {
   actions: {
@@ -68,6 +69,7 @@ export default {
     insightFile: insightFile.actions,
     fileTreeData: fileTreeData.actions,
     submissionSummary: submissionSummary.actions,
+    submissionGroups: submissionGroups.actions,
   },
   reducer: {
     analysis: analysis.reducer,
@@ -86,5 +88,6 @@ export default {
     insightFile: insightFile.reducer,
     fileTreeData: fileTreeData.reducer,
     submissionSummary: submissionSummary.reducer,
+    submissionGroups: submissionGroups.reducer,
   },
 };
