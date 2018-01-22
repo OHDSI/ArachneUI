@@ -22,7 +22,7 @@
 
 import React, { Component, PropTypes } from 'react';
 import { get, ContainerBuilder } from 'services/Utils';
-import { refreshTime, analysisPermissions } from 'modules/AnalysisExecution/const';
+import { refreshTime, analysisPermissions, submissionGroupsPageSize } from 'modules/AnalysisExecution/const';
 import actions from 'actions/index';
 import Presenter from './presenter';
 
@@ -35,6 +35,7 @@ class ViewEditAnalysis extends Component {
       loadTypeList: PropTypes.func,
       studyId: PropTypes.number,
       unloadAnalysis: PropTypes.func.isRequired,
+      loadSubmissionGroups: PropTypes.func,
     };
   }
 
@@ -43,15 +44,18 @@ class ViewEditAnalysis extends Component {
     this.refreshInterval = setInterval(() => {
       this.isPolledData = true;
       this.props.loadAnalysis({ id: this.props.id });
+      this.props.loadSubmissionGroups({ analysisId: this.props.id, page: this.props.page });
     }, refreshTime);
   }
 
-  componentWillReceiveProps(nextProps) {
+  async componentWillReceiveProps(nextProps) {
     if (nextProps.id !== this.props.id) {
-      this.props.loadAnalysis({ id: nextProps.id }).then((analysis) => {
-        const studyId = analysis.result.study.id;
-        this.props.loadStudyDataSources({ studyId });
-      });
+      const analysis = await this.props.loadAnalysis({ id: nextProps.id });
+      const studyId = analysis.result.study.id;
+      this.props.loadStudyDataSources({ studyId });
+    }
+    if (nextProps.id !== this.props.id || nextProps.page !== this.props.page) {
+      this.props.loadSubmissionGroups({ analysisId: nextProps.id, page: nextProps.page });
     }
   }
 
@@ -72,6 +76,7 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
 
   mapStateToProps(state, ownProps) {
     const analysis = get(state, 'analysisExecution.analysis');
+    const isSubmissionGroupsLoading = get(state, 'analysisExecution.submissionGroups.isLoading', false);
     const analysisData = get(analysis, 'data.result');
     const pageTitle = [
       get(analysisData, 'title', 'Analysis'),
@@ -79,13 +84,15 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
       'Arachne',
     ];
     const studyId = get(analysisData, 'study.id', -1);
+    const currentQuery = state.routing.locationBeforeTransitions.query;
 
     return {
       id: parseInt(ownProps.routeParams.analysisId, 10),
       studyId,
-      isLoading: get(analysis, 'isLoading', false),
+      isLoading: get(analysis, 'isLoading', false) || isSubmissionGroupsLoading,
       pageTitle: pageTitle.join(' | '),
       isEditable: get(analysisData, `permissions[${analysisPermissions.editAnalysis}]`, false),
+      page: get(currentQuery, 'page', 1),
     };
   }
 
@@ -95,6 +102,10 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
       loadTypeList: actions.analysisExecution.analysisTypes.query,
       unloadAnalysis: actions.analysisExecution.analysis.unload,
       loadStudyDataSources: actions.analysisExecution.studyDataSourceList.query,
+      loadSubmissionGroups: ({ page = 1, analysisId }) => {
+        const pageSize = submissionGroupsPageSize;
+        return actions.analysisExecution.submissionGroups.query({ page, pageSize, analysisId });
+      },
     };
   }
 
@@ -103,16 +114,22 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
       ...ownProps,
       ...stateProps,
       ...dispatchProps,
-      onBannerActed: () => dispatchProps.loadAnalysis({ id: stateProps.id }),
+      onBannerActed: async () => {
+        await dispatchProps.loadAnalysis({ id: stateProps.id });
+        return dispatchProps.loadSubmissionGroups({ analysisId: stateProps.id, page: stateProps.page });
+      },
     };
   }
 
   getFetchers({ params, dispatch, getState }) {
     const componentActions = this.getMapDispatchToProps();
+    const currentQuery = getState().routing.locationBeforeTransitions.query;
+    const page = get(currentQuery, 'page', 1);
     return {
       loadAnalysisWDataSources: dispatch(componentActions.loadAnalysis({ id: params.analysisId }))
         .then(() => {
           const studyId = getState().analysisExecution.analysis.data.result.study.id;
+          dispatch(componentActions.loadSubmissionGroups({ analysisId: params.analysisId, page }));
           return dispatch(componentActions.loadStudyDataSources({ studyId }));
         }),
       loadTypeList: componentActions.loadTypeList,
