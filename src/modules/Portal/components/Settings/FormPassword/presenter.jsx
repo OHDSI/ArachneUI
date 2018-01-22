@@ -22,6 +22,7 @@
 
 import React, { PropTypes } from 'react';
 import BEMHelper from 'services/BemHelper';
+import PasswordField from 'components/PasswordField/connected';
 import {
   Form,
   FormInput,
@@ -41,33 +42,31 @@ function FormPassword(props) {
     {
       name: 'oldPassword',
       InputComponent: {
-        component: FormInput,
+        component: PasswordField,
         props: {
           mods: ['bordered'],
           placeholder: 'Old password',
-          type: 'password'
+          showHint: false,
         }
       },
     },
     {
       name: 'password',
       InputComponent: {
-        component: FormInput,
+        component: PasswordField,
         props: {
           mods: ['bordered'],
           placeholder: 'New password',
-          type: 'password'
         }
       },
     },
     {
       name: 'passwordConfirmation',
       InputComponent: {
-        component: FormInput,
+        component: PasswordField,
         props: {
           mods: ['bordered'],
           placeholder: 'New password confirmation',
-          type: 'password'
         }
       },
     },
