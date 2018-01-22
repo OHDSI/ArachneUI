@@ -32,6 +32,7 @@ import {
 import { Field } from 'redux-form';
 import { paths, authMethods } from 'modules/Auth/const';
 import BEMHelper from 'services/BemHelper';
+import PasswordField from 'components/PasswordField/connected';
 
 require('./style.scss');
 
@@ -75,11 +76,10 @@ function FormLogin(props) {
     password: {
       name: 'password',
       InputComponent: {
-        component: FormInput,
+        component: PasswordField,
         props: {
-          placeholder: 'Password',
-          type: 'password',
-        }
+          showHint: false,
+        },
       },
     },
     redirectTo: {
