@@ -16,22 +16,40 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: January 30, 2017
+ * Created: january 22, 2018
  *
  */
 
-import React from 'react';
-import { Route, IndexRedirect } from 'react-router';
+import { get } from 'services/Utils';
+import actions from 'actions';
+import SearchResults from './presenter';
+//import SelectorsBuiler from './selectors';
+import { ContainerBuilder } from 'services/Utils';
 
-import Settings from './components/Settings';
-import Results from './components/Search/Results';
+//const selectors = (new SelectorsBuilder()).build();
 
-function Routes() {
-  return [
-    <Route path="settings" component={Settings}/>,
-    <Route path="search" component={Results} />,
-    <IndexRedirect to="settings"/>,
-  ];
+export default class SearchResultsBuilder extends ContainerBuilder {
+  getComponent() {
+    return SearchResults;
+  }
+
+  mapStateToProps(state, ownProps) {
+    return {};
+  }
+
+  getMapDispatchToProps() {
+    return {};
+  }
+
+  mergeProps(stateProps, dispatchProps, ownProps) {
+    return {
+      ...ownProps,
+      ...stateProps,
+      ...dispatchProps,
+    };
+  }
+
+  getFetchers({ params, state, dispatch }) {
+     return {};
+  }
 }
-
-export default Routes;

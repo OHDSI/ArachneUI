@@ -25,6 +25,7 @@ import keyMirror from 'keymirror';
 const form = keyMirror({
   changePassword: null,
   rejectInvitation: null,
+  search: null,
 });
 
 const modal = keyMirror({
@@ -44,6 +45,7 @@ const paths = {
   study: id => `/study-manager/studies/${id}`,
   userProfile: id => `/expert-finder/profile/${id}`,
   odysseus: () => 'http://odysseusinc.com/',
+  search: ({ query }) => `/search?query=${query}`,
 };
 
 const inviteActionTypes = keyMirror({
