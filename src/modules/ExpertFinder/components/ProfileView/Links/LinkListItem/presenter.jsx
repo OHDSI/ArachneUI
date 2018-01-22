@@ -32,14 +32,15 @@ function LinkListItem({
   id,
   onRemove,
   title,
-  url,
+  link,
+  onClick,
 }) {
   const classes = new BEMHelper('profile-link-list-item');
 
   return (
     <div {...classes()}>
       <div {...classes('item-data')}>
-        <Link to={url}>
+        <Link to={link} onClick={onClick}>
           {title}
         </Link>
         {description &&
