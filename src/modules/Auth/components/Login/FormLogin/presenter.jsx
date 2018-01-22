@@ -77,6 +77,9 @@ function FormLogin(props) {
       name: 'password',
       InputComponent: {
         component: PasswordField,
+        props: {
+          showHint: false,
+        },
       },
     },
     redirectTo: {

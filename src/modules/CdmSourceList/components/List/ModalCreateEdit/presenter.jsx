@@ -131,6 +131,7 @@ function ModalCreateEdit(props) {
         component: PasswordField,
         props: {
           mods: ['bordered'],
+          showHint: false,
         },
       },
     }
