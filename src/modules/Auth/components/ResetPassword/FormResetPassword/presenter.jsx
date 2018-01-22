@@ -26,6 +26,7 @@ import { Form } from 'arachne-ui-components';
 import { FormInput } from 'arachne-ui-components';
 import { paths } from 'modules/Auth/const';
 import BEMHelper from 'services/BemHelper';
+import PasswordField from 'components/PasswordField';
 
 require('./style.scss');
 
@@ -38,10 +39,9 @@ function FormResetPassword(props) {
     {
       name: 'password',
       InputComponent: {
-        component: FormInput,
+        component: PasswordField,
         props: {
           placeholder: 'New password',
-          type: 'password',
         }
       },
     },

@@ -22,6 +22,7 @@
 
 import keyMirror from 'keymirror';
 import { FormInput, FormSelect } from 'arachne-ui-components';
+import PasswordField from 'components/PasswordField';
 
 const form = keyMirror({
   remindPassword: null,
@@ -125,11 +126,9 @@ const registerFields = function ({ professionalTypesOptions }) {
     {
       name: 'password',
       InputComponent: {
-        component: FormInput,
+        component: PasswordField,
         props: {
           mods: ['bordered'],
-          placeholder: 'Password',
-          type: 'password',
           required: true,
         },
       },
@@ -137,11 +136,10 @@ const registerFields = function ({ professionalTypesOptions }) {
     {
       name: 'passwordConfirmation',
       InputComponent: {
-        component: FormInput,
+        component: PasswordField,
         props: {
           mods: ['bordered'],
           placeholder: 'Confirm password',
-          type: 'password',
           required: true,
         },
       },

@@ -28,6 +28,7 @@ import { FormInput } from 'arachne-ui-components';
 import { FormSelect } from 'arachne-ui-components';
 import { FormTextarea } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
+import PasswordField from 'components/PasswordField';
 
 require('./style.scss');
 
@@ -127,12 +128,10 @@ function ModalCreateEdit(props) {
       name: 'dbPassword',
       className: 'col-md-12',
       InputComponent: {
-        component: FormInput,
+        component: PasswordField,
         props: {
           mods: ['bordered'],
-          placeholder: 'Password',
-          type: 'password',
-        }
+        },
       },
     }
   ];
