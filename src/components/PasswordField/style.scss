@@ -27,18 +27,48 @@
    &password-field {
      position: relative;
 
-     &__hint {
-       @include material-icon();
-       width: 3rem;
-       display: flex;
-       align-items: center;
-       justify-content: center;
-       position: absolute;
-       right: 0;
-       top: 0;
-       height: 100%;
-       cursor: default;
-     }
+      &__hint {
+        @include material-icon();
+        width: 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 100%;
+        cursor: default;
+        color: $grey-dark;
+      }
+
+      & .dropdown__content {
+        min-width: 40rem;
+        padding: 1rem 0;
+        top: $header-height / 2;
+        margin-left: -20rem;
+        z-index: $z-notify-dropdown-window;
+
+        &:before {
+          background: $black;
+          content: "";
+          display: block;
+          height: 2rem;
+          position: absolute;
+          right: calc( 20rem + 5px );
+          top: 0;
+          transform: rotateZ(45deg);
+          width: 2rem;
+        }
+      }
+
+      &__rules {
+        padding: 1.5rem 0;
+      }
+
+      &__rule {
+        list-style: circle inside;
+        padding: 0.5rem 2rem;
+      }
    }
    
  }

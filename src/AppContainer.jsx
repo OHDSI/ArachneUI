@@ -34,6 +34,10 @@ import { modal } from 'modules/Portal/const';
 import { asyncConnect } from 'redux-async-connect';
 
 class AppContainer extends Component {
+  componentDidMount() {
+    this.props.getPasswordPolicies();
+  }
+
   componentWillReceiveProps(nextProps) {
     if (this.props.currentLocation !== nextProps.currentLocation) {
       this.props.refreshToken()
@@ -125,6 +129,7 @@ const mapDispatchToProps = {
   showAboutInfo: () => ModalUtils.actions.toggle(modal.portalAboutInfo, true),
   refreshToken: () => actions.auth.token.refresh(),
   logout: (backurl) => actions.auth.logout(backurl),
+  getPasswordPolicies: () => actions.auth.passwordPolicy.find(),
 };
 
 export default (navItems) => {

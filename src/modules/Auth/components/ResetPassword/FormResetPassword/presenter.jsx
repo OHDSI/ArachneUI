@@ -26,7 +26,7 @@ import { Form } from 'arachne-ui-components';
 import { FormInput } from 'arachne-ui-components';
 import { paths } from 'modules/Auth/const';
 import BEMHelper from 'services/BemHelper';
-import PasswordField from 'components/PasswordField';
+import PasswordField from 'components/PasswordField/connected';
 
 require('./style.scss');
 

@@ -23,27 +23,72 @@
 import React from 'react';
 import {
   FormInput,
+  Panel,
 } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
+import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
 
 import './style.scss';
+
+function Rule({ description, rules }) {
+  const classes = BEMHelper('password-field');
+
+  return (
+    <li {...classes('rule')}>
+      {description}
+      {rules &&
+        <ul>
+          {rules.map(rule => <Rule {...rule} />)}
+        </ul>
+      }
+    </li>
+  );
+}
 
 export default function PasswordField(props) {
   const classes = BEMHelper('password-field');
   const {
     placeholder = 'Password',
-    hint = 'Password validation rules',
-    tooltipConfig = 'top',
+    tooltipConfig = 'top multiline',
     showHint = true,
+    rules = [],
+    setInstance,
+    setIsCollapsed,
   } = props;
 
   return (
     <div {...classes()}>
       <FormInput {...props} placeholder={placeholder} type={'password'} />
-      {showHint &&
-        <div {...classes('hint', '', 'ac-tooltip')} aria-label={hint} data-tootik-conf={tooltipConfig}>
-          help
-        </div>
+      {showHint && rules.length
+        ?
+          <Dropdown
+            {...classes('dropdown')}
+            ref={(el) => {
+              if (el) {
+                setInstance(el);
+              }
+            }}
+          >
+            <DropdownTrigger {...classes('icon')}>
+              <div
+                {...classes('hint')}
+                onMouseOver={() => setIsCollapsed(false)}
+                onMouseOut={() => setIsCollapsed(true)}
+              >help</div>
+            </DropdownTrigger>
+            <DropdownContent>
+              <Panel
+                title="Password policy"
+                mods="black-header"
+                {...classes('content')}
+              >
+                <ul {...classes('rules')}>
+                  {rules.map(rule => <Rule {...rule} />)}
+                </ul>
+              </Panel>
+            </DropdownContent>
+          </Dropdown>
+        : null
       }
     </div>
   );

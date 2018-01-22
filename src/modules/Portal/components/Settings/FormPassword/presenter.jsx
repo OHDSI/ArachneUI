@@ -22,7 +22,7 @@
 
 import React, { PropTypes } from 'react';
 import BEMHelper from 'services/BemHelper';
-import PasswordField from 'components/PasswordField';
+import PasswordField from 'components/PasswordField/connected';
 import {
   Form,
   FormInput,

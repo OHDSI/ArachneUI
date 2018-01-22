@@ -22,7 +22,7 @@
 
 import keyMirror from 'keymirror';
 import { FormInput, FormSelect } from 'arachne-ui-components';
-import PasswordField from 'components/PasswordField';
+import PasswordField from 'components/PasswordField/connected';
 
 const form = keyMirror({
   remindPassword: null,
@@ -66,6 +66,8 @@ const apiPaths = {
   principal: () => '/api/v1/auth/me',
   authMethod: () => '/api/v1/auth/method',
   refresh: () => '/api/v1/auth/refresh',
+  //
+  passwordPolicy: () => '/api/v1/auth/password-policies',
 };
 
 const authMethods = keyMirror({
