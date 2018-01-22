@@ -36,10 +36,12 @@ function mapStateToProps(state) {
   const editable = get(moduleState, 'data.result.isEditable', false);
   const selectedDate = get(state, `form.${forms.publications}.values.date`);
 
+  const items = data.map(item => ({ ...item, ...Utils.getSecureLink(item.url) }));
+
   return {
     id,
     isLoading: get(moduleState, 'isLoading', false),
-    items: data,
+    items,
     initialValues: {
       date: moment().format('YYYY-MM-DD'),
       description: '',
