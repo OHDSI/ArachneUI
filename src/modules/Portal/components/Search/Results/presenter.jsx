@@ -24,16 +24,25 @@ import React from 'react';
 import BEMHelper from 'services/BemHelper';
 import {
   PageContent,
+  Toolbar,
 } from 'arachne-ui-components';
+import List from './List';
 
 import './style.scss';
 
 export default function SearchResults(props) {
   const classes = BEMHelper('search-result');
+  const {
+    query,
+    sections,
+    results,
+    toggleSection,    
+  } = props;
   
   return (
-    <PageContent {...classes()}>
-      Result
-    </PageContent>
+    <div {...classes()}>
+      <Toolbar caption={`Search for '${query}'`} />
+      <List sections={sections} results={results} toggleSection={toggleSection} />
+    </div>
   );
 }

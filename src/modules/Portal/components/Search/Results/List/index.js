@@ -16,16 +16,11 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: January 23, 2018
+ * Created: january 23, 2018
  *
  */
 
- @import 'styles/vars-and-mixins.scss';
- 
-.#{$namespace} {
-  &search-result {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-  }
-}
+import SearchResultsListBuilder from './container';
+
+export default (new SearchResultsListBuilder()).build();
+

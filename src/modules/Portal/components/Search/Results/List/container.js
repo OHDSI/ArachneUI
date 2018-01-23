@@ -16,16 +16,39 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: January 23, 2018
+ * Created: january 23, 2018
  *
  */
 
- @import 'styles/vars-and-mixins.scss';
- 
-.#{$namespace} {
-  &search-result {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
+import { get } from 'services/Utils';
+import actions from 'actions';
+import SearchResultsList from './presenter';
+//import SelectorsBuiler from './selectors';
+import { ContainerBuilder } from 'services/Utils';
+
+//const selectors = (new SelectorsBuilder()).build();
+
+export default class SearchResultsListBuilder extends ContainerBuilder {
+  getComponent() {
+    return SearchResultsList;
+  }
+
+  mapStateToProps(state) {
+    
+    return {
+      
+    };
+  }
+
+  getMapDispatchToProps() {
+    return {};
+  }
+
+  mergeProps(stateProps, dispatchProps, ownProps) {
+    return {
+      ...ownProps,
+      ...stateProps,
+      ...dispatchProps,
+    };
   }
 }

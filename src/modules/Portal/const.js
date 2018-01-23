@@ -59,6 +59,25 @@ const images = {
   logo: '/img/icons/Universal_Desktop/Header/logo_odys.svg',
 };
 
+const searchSections = [
+  {
+    title: 'Study notebook',
+    code: 'STUDY_NOTEBOOK',
+  },
+  {
+    title: 'Expert finder',
+    code: 'EXPERT_FINDER',
+  },
+  {
+    title: 'Data catalog',
+    code: 'DATA_CATALOG',
+  },
+  {
+    title: 'Insights library',
+    code: 'INSIGHTS_LIBRARY',
+  },
+];
+
 export {
   apiPaths,
   form,
@@ -67,4 +86,5 @@ export {
   inviteActionTypes,
   pollingTime,
   images,
+  searchSections,
 };
