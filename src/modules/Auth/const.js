@@ -143,6 +143,7 @@ const registerFields = function ({ professionalTypesOptions }) {
           mods: ['bordered'],
           placeholder: 'Confirm password',
           required: true,
+          showHint: false,
         },
       },
     },

@@ -67,6 +67,7 @@ function FormPassword(props) {
         props: {
           mods: ['bordered'],
           placeholder: 'New password confirmation',
+          showHint: false,
         }
       },
     },
