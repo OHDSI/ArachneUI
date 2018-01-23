@@ -101,8 +101,8 @@ export default class ViewEditAnalysis extends Component {
                   <ListCode isEditable={isEditable} />
                 </div>
               </div>
-              <div className="row">
-                <div className="col-xs-12">
+              <div {...this.classes('row', '', 'row')}>
+                <div {...this.classes('subrow', '', 'col-xs-12')}>
                   <ListSubmissions isEditable={isEditable} />
                 </div>
               </div>

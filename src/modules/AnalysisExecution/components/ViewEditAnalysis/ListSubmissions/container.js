@@ -26,6 +26,7 @@ import { ModalUtils } from 'arachne-ui-components';
 import { modal, paths } from 'modules/AnalysisExecution/const';
 import get from 'lodash/get';
 import actions from 'actions';
+import Uri from 'urijs';
 import ListSubmissions from './presenter';
 import SelectorsBuilder from './selectors';
 
@@ -33,9 +34,21 @@ const selectors = (new SelectorsBuilder()).build();
 
 function mapStateToProps(state) {
   const analysisData = get(state, 'analysisExecution.analysis.data.result');
+  const isPaginationAvailable = true;
+  const { number, totalPages } = selectors.getPagingData(state); 
+  const cleanPath = get(state, 'routing.locationBeforeTransitions.pathname');
+  const currentQuery = state.routing.locationBeforeTransitions.query;
+
+  const url = new Uri(cleanPath);
+  url.setSearch(currentQuery);
+
   return {
     analysisId: get(analysisData, 'id'),
     submissionGroupList: selectors.getSubmissionGroupList(state),
+    isPaginationAvailable,
+    totalPages,
+    page: number + 1,
+    path: url.href(),
   };
 }
 
