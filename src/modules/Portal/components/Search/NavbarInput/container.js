@@ -24,6 +24,7 @@ import { Component } from 'react';
 import actions from 'actions';
 import { ContainerBuilder, get } from 'services/Utils';
 import { form, paths } from 'modules/Portal/const';
+import { push as goToPage } from 'react-router-redux';
 import { paths as studyPaths } from 'modules/StudyManager/const';
 import presenter from './presenter';
 
@@ -35,12 +36,13 @@ class NavbarSearchInput extends Component {
       results: [],
     };
     this.input = null;
-    this.toggle = this.toggle.bind(this);
+    this.setIsCollapsed = this.setIsCollapsed.bind(this);
     this.setInput = this.setInput.bind(this);
     this.fetchResults = this.fetchResults.bind(this);
+    this.showResults = this.showResults.bind(this);
   }
 
-  toggle(isCollapsed = false) {
+  setIsCollapsed(isCollapsed = false) {
     this.setState({
       isCollapsed,
     });
@@ -53,7 +55,7 @@ class NavbarSearchInput extends Component {
     this.input = element;
   }
 
-  fetchResults(query) {
+  fetchResults({ query }) {
     const results = [];
     if (query) {
       for (let i=0; i<Math.ceil(Math.random() * 10); i++) {
@@ -76,13 +78,21 @@ class NavbarSearchInput extends Component {
     });
   }
 
+  showResults(optionValue) {
+    const option = this.state.results.find(result => result.value === optionValue);
+    if (option) {
+      this.props.redirect(option.path);
+    }
+  }
+
   render() {
     return presenter({
       ...this.props,
       ...this.state,
-      toggle: this.toggle,
+      setIsCollapsed: this.setIsCollapsed,
       setInput: this.setInput,
       fetchResults: this.fetchResults,
+      showResults: this.showResults,
     });
   }
 }
@@ -104,7 +114,9 @@ export default class NavbarSearchInputBuilder extends ContainerBuilder {
   }
 
   getMapDispatchToProps() {
-    return {};
+    return {
+      redirect: goToPage,
+    };
   }
 
   mergeProps(stateProps, dispatchProps, ownProps) {

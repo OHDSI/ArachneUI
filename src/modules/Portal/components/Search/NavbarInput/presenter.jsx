@@ -40,10 +40,10 @@ function SearchResult(props) {
     path,
   } = props;
   
-  return (<Link {...classes()} to={path}>
+  return (<span {...classes()}>
     <span>{label}</span>
     <span {...classes('caption')}>{caption}</span>
-  </Link>);
+  </span>);
 }
 
 function Input({
@@ -52,9 +52,10 @@ function Input({
   results,
   classes,
   isCollapsed,
-  toggle,
+  setIsCollapsed,
   reference,
   optionRenderer,
+  showResults,
 }) {
   return (
     <div {...classes({ element: 'input-wrapper', modifiers: { collapsed: isCollapsed } })}>
@@ -62,8 +63,13 @@ function Input({
         placeholder='Search...'
         fetchOptions={fetchResults}
         value={input.value}
-        onChange={input.onChange}
-        onBlur={() => toggle(true)}
+        onChange={(value) => {
+          if (value !== null) {
+            showResults(value);
+          }
+          input.onChange(value);
+        }}
+        onBlur={() => setIsCollapsed(true)}
         options={results}
         reference={reference}
         optionRenderer={optionRenderer}
@@ -76,10 +82,11 @@ function Input({
 export default function NavbarSearchInput(props) {
   const {
     isCollapsed,
-    toggle,
+    setIsCollapsed,
     setInput,
     fetchResults,
     results,
+    showResults,
   } = props;
   const classes = BEMHelper('search-navbar-input');
   const fields = [
@@ -92,13 +99,14 @@ export default function NavbarSearchInput(props) {
           results,
           classes,
           isCollapsed,
-          toggle,
+          setIsCollapsed,
           reference: (el) => {
             if (el) {
               setInput(el);
             }
           },
           optionRenderer: SearchResult,
+          showResults,
         },
       },
     },
@@ -110,7 +118,7 @@ export default function NavbarSearchInput(props) {
       <BadgedIcon
         {...classes('icon')}
         icon='search'
-        onClick={() => toggle(!isCollapsed)}
+        onClick={() => setIsCollapsed(!isCollapsed)}
       />
     </div>
   );

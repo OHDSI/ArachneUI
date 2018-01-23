@@ -16,24 +16,14 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: january 22, 2018
+ * Created: January 22, 2018
  *
  */
 
-import React from 'react';
-import BEMHelper from 'services/BemHelper';
-import {
-  PageContent,
-} from 'arachne-ui-components';
-
-import './style.scss';
-
-export default function SearchResults(props) {
-  const classes = BEMHelper('search-result');
-  
-  return (
-    <PageContent {...classes()}>
-      Result
-    </PageContent>
-  );
+ @import 'styles/vars-and-mixins.scss';
+ 
+.#{$namespace} {
+  &search-result {
+    @include page-content();
+  }
 }

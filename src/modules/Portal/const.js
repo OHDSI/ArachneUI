@@ -45,7 +45,7 @@ const paths = {
   study: id => `/study-manager/studies/${id}`,
   userProfile: id => `/expert-finder/profile/${id}`,
   odysseus: () => 'http://odysseusinc.com/',
-  search: ({ query }) => `/search?query=${query}`,
+  search: ({ query }) => `/portal/search?query=${query}`,
 };
 
 const inviteActionTypes = keyMirror({
