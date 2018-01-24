@@ -42,21 +42,40 @@ class FileInfo extends Component {
       version: PropTypes.string,
       subtitle: PropTypes.string,
       onClick: PropTypes.func,
+      isScanned: PropTypes.bool.isRequired,
     };
   }
 
   constructor(props) {
     super(props);
+    this.classes = new BEMHelper('code-file-info');
 
     this.getLabel = this.getLabel.bind(this);
   }
 
-  getLabel() {
+  getRawLabel() {
     return this.props.label || this.props.name;
   }
 
+  getLabel() {
+    const label = this.getRawLabel();
+    const tooltipText = `File had ${this.props.isScanned ? '' : 'not'} been scanned with anti-virus`;
+
+    return (<div {...this.classes('label')}>
+      <span
+        {...this.classes({
+          element: 'checkmark',
+          modifiers: {
+            scanned: this.props.isScanned,
+          },
+        })}
+        title={tooltipText}
+      >verified_user</span>
+      <span {...this.classes('label-text')} title={label}>{label}</span>
+    </div>);
+  }
+
   render() {
-    const classes = new BEMHelper('code-file-info');
     const {
       author,
       createdAt,
@@ -67,23 +86,24 @@ class FileInfo extends Component {
       version,
       subtitle,
       onClick,
+      isScanned,
     } = this.props;
 
-    const label = this.getLabel();
+    const label = this.getRawLabel();
 
     return (
-      <div {...classes({ modifiers: mods })}>
-        <div {...classes('main-container')}>
-          <i {...classes('ico', docType)} />
-          <span {...classes('main-info')} title={label}>
+      <div {...this.classes({ modifiers: mods })}>
+        <div {...this.classes('main-container')}>
+          <i {...this.classes('ico', docType)} />
+          <span {...this.classes('main-info')}>
             {(link || onClick)
-              ? <Link {...classes('name')} onClick={onClick} to={link} target={linkTarget}>
-                {label}
+              ? <Link {...this.classes('name')} onClick={onClick} to={link} target={linkTarget}>
+                {this.getLabel()}
               </Link>
-              : <span {...classes('name')}>{label}</span>
+              : <span {...this.classes('name')}>{this.getLabel()}</span>
             }
             {createdAt &&
-              <span {...classes('datetime')}>
+              <span {...this.classes('datetime')}>
                 {moment(createdAt).tz(moment.tz.guess()).format(dateFormat)}
               </span>
             }
@@ -91,13 +111,13 @@ class FileInfo extends Component {
           </span>
         </div>
         {version &&
-          <div {...classes('version-container')}>
+          <div {...this.classes('version-container')}>
             V{version}
           </div>
         }
         {author && author.id &&
-          <div {...classes('author-container')}>
-              <Link {...classes('author')} to={author.link} target={linkTarget}>
+          <div {...this.classes('author-container')}>
+              <Link {...this.classes('author')} to={author.link} target={linkTarget}>
                 {author.firstname} {author.middlename
                   ? `${author.middlename.substr(0, 1)}.`
                   : ''} {author.lastname}

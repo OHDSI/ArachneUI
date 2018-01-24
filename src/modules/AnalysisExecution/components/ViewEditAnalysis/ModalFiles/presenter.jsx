@@ -129,6 +129,7 @@ function FileItem({ file, isEditable, removeResult, isHidden }) {
         link={file.link}
         onClick={file.onClick}
         linkTaret={file.linkTarget}
+        isScanned={file.isScanned}
       />
     </ListItem>
   );

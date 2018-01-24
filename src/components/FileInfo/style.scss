@@ -106,6 +106,7 @@
 
     &__main-info {
       @include text-ellipsis();
+      flex-grow: 1;
     }
 
     &__name {
@@ -133,6 +134,23 @@
             margin-top: 0;
           }
         }
+      }
+    }
+
+    &__label {
+      display: inline-block;
+    }
+
+    &__checkmark {
+      @include material-icon();
+      color: $red;
+      margin-right: 0.5rem;
+      position: relative;
+      top: 0.2rem;
+      font-size: 1.4rem;
+
+      &--scanned {
+        color: $green;
       }
     }
   }
