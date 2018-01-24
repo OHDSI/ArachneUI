@@ -42,7 +42,7 @@ function parseSolrValue(value, { type }) {
     case fieldTypes.enum: case fieldTypes.enumMulti:
       parsedValue = value
         .replace(/[\(,\)]/g, '') // eslint-disable-line no-useless-escape
-        .split(' ');
+        .split(' OR ');
       break;
     case fieldTypes.string:
     default:
@@ -80,7 +80,7 @@ function convertToSolrValue(value) {
   }
   // array -> list of options
   if (Array.isArray(value) && value.length > 0) {
-    convertedValue = `(${value.join(' ')})`;
+    convertedValue = `(${value.join(' OR ')})`;
   }
   return convertedValue;
 }
