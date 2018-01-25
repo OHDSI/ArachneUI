@@ -38,7 +38,7 @@ export default class SearchResultsBuilder extends ContainerBuilder {
 
   mapStateToProps(state) {
     // TODO: sanitize query
-    const searchResults = get(state, 'studyManager.studyList.data.result');
+    const searchResults = get(state, 'portal.searchResults.data.result');
     const query = get(state, 'routing.locationBeforeTransitions.query.query', '');
     const numOfElsPerPage = searchResultsPageSize;
 

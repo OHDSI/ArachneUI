@@ -24,12 +24,11 @@ import React from 'react';
 import BEMHelper from 'services/BemHelper';
 import {
   PageContent,
-  Toolbar,
 } from 'arachne-ui-components';
 import Grid from 'components/Grid';
 import cloneDeep from 'lodash/cloneDeep';
 import List from './List';
-import { Domain } from './List/presenter';
+import Domain from './List/Domain';
 
 import './style.scss';
 

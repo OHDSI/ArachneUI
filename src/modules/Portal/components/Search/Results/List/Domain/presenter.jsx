@@ -22,25 +22,20 @@
 
 import React from 'react';
 import BEMHelper from 'services/BemHelper';
-import EmptyState from 'components/EmptyState';
-import ResultItem from './ResultItem';
 
 import './style.scss';
 
-export default function SearchResultsList(props) {
-  const classes = BEMHelper('search-result-list');
+export default function Domain(props) {
   const {
-    results,
+    label,
+    value,
+    forFilter = false,
   } = props;
+  const classes = BEMHelper('search-result-list-item-domain');
 
   return (
-    <div {...classes()}>
-      <div {...classes('list')}>
-        {results && results.length
-          ? results.map(result => <ResultItem {...result} />)
-          : <EmptyState message={'No results'} />
-        }
-      </div>
-    </div>
+    <span {...classes({ modifiers: [value, forFilter ? 'filter' : 'list'] })}>
+      <span {...classes('text')}>{label}</span>
+    </span>
   );
 }

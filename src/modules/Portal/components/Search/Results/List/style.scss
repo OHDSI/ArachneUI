@@ -20,40 +20,7 @@
  *
  */
 
- @import 'styles/vars-and-mixins.scss';
- 
- @mixin domain {
-  &:after {
-    content: '';
-    display: inline-block;
-    z-index: 0;
-  }
-
-  &--STUDY_NOTEBOOK {
-    &:after {
-      background: $green;
-    }
-  }
-
-  &--EXPERT_FINDER {
-    &:after {
-      background: $orange;
-    }
-  }
-
-  &--DATA_CATALOG {
-    &:after {
-      background: $red;
-    }
-  }
-
-  &--INSIGHTS_LIBRARY {
-    &:after {
-      background: $blue;
-    }
-  }
-}
-
+@import 'styles/vars-and-mixins.scss';
 
 .#{$namespace} {
   &search-result-list {
@@ -94,42 +61,6 @@
       }
     }
 
-  }
-
-  &search-result-list-item-domain {
-    position: relative;
-
-    &--list  {
-      color: $white;
-      padding: 2px 0.75rem;
-      margin-left: 1.5rem; 
-
-      &:after {
-        position: absolute;
-        border-radius: $input-border-radius;
-        background: $grey-dark;
-        display: inline-block;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-      }
-    }
-
-    &--filter {
-      &:after {
-        border-radius: 50%;
-        width: 1rem;
-        height: 1rem;
-        margin-left: 0.5rem;
-      }
-    }
-    @include domain();
-
-    &__text {
-      position: relative;
-      z-index: $z-index-select-outer;
-    }
   }
 
   &search-result-list-item {

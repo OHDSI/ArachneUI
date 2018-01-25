@@ -22,25 +22,22 @@
 
 import React from 'react';
 import BEMHelper from 'services/BemHelper';
-import EmptyState from 'components/EmptyState';
-import ResultItem from './ResultItem';
+import {
+  Link,
+} from 'arachne-ui-components';
 
 import './style.scss';
 
-export default function SearchResultsList(props) {
-  const classes = BEMHelper('search-result-list');
+export default function Crumb(props) {
   const {
-    results,
+    title,
+    path,
+    domain,
   } = props;
+  const classes = BEMHelper('search-result-item-crumb');
 
   return (
-    <div {...classes()}>
-      <div {...classes('list')}>
-        {results && results.length
-          ? results.map(result => <ResultItem {...result} />)
-          : <EmptyState message={'No results'} />
-        }
-      </div>
-    </div>
+    <Link {...classes()} to={path}>{title}</Link>
   );
 }
+

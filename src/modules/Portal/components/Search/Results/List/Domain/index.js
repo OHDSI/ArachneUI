@@ -20,27 +20,7 @@
  *
  */
 
-import React from 'react';
-import BEMHelper from 'services/BemHelper';
-import EmptyState from 'components/EmptyState';
-import ResultItem from './ResultItem';
+import Domain from './presenter';
 
-import './style.scss';
+export default Domain;
 
-export default function SearchResultsList(props) {
-  const classes = BEMHelper('search-result-list');
-  const {
-    results,
-  } = props;
-
-  return (
-    <div {...classes()}>
-      <div {...classes('list')}>
-        {results && results.length
-          ? results.map(result => <ResultItem {...result} />)
-          : <EmptyState message={'No results'} />
-        }
-      </div>
-    </div>
-  );
-}

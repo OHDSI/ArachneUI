@@ -97,7 +97,7 @@ export default class SelectorsBuilder {
   }
 
   getRawResults(state) {
-    return get(state, 'portal.searchResults.data.content', this.generateResults(10), 'Array');
+    return get(state, 'portal.searchResults.data.result.content', this.generateResults(10), 'Array');
   }
 
   getPath({ id, domain }) {

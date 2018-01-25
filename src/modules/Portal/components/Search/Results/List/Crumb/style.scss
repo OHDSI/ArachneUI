@@ -16,31 +16,29 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: january 23, 2018
+ * Created: January 23, 2018
  *
  */
 
-import React from 'react';
-import BEMHelper from 'services/BemHelper';
-import EmptyState from 'components/EmptyState';
-import ResultItem from './ResultItem';
+@import 'styles/vars-and-mixins.scss';
 
-import './style.scss';
+.#{$namespace} {
+  &search-result-item-crumb {
+    margin-right: 1rem;
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+    font-size: 1.2rem;
 
-export default function SearchResultsList(props) {
-  const classes = BEMHelper('search-result-list');
-  const {
-    results,
-  } = props;
-
-  return (
-    <div {...classes()}>
-      <div {...classes('list')}>
-        {results && results.length
-          ? results.map(result => <ResultItem {...result} />)
-          : <EmptyState message={'No results'} />
-        }
-      </div>
-    </div>
-  );
+    &:not(:last-child) {
+      &:after {
+        margin-left: 1rem;
+        content: '';
+        width: 3px;
+        height: 3px;
+        border-radius: 50%;
+        background: $black;
+      }
+    }
+  }
 }
