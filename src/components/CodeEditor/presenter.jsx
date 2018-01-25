@@ -40,6 +40,7 @@ function CodeBar(props = {}) {
     downloadLink,
     infoList = [],
     title,
+    canBeDownloaded,
   } = props;
 
   return (
@@ -48,13 +49,18 @@ function CodeBar(props = {}) {
         {title && <span {...classes('title')}>{title}</span>}
         {infoList}
       </div>
-      <div {...classes('actions')}>
+      <div
+        {...classes('actions', null, canBeDownloaded ? '' : 'ac-tooltip')}
+        data-tootik-conf={'left'}
+        aria-label={canBeDownloaded ? '' : 'This file had not been scanned with anti-virus'}
+      >
         <Button
           {...classes('btn', 'download')}
           label="Download"
           mods={['submit', 'rounded']}
           link={downloadLink}
           target="_self"
+          disabled={!canBeDownloaded}
         />    
       </div>
       {btnList.length > 0 &&
@@ -80,6 +86,7 @@ function CodeEditor(props) {
     infoList,
     language,
     title,
+    canBeDownloaded,
     // 
     onChange,
     value,
@@ -99,6 +106,7 @@ function CodeEditor(props) {
           infoList={infoList}
           downloadLink={downloadLink}
           btnList={barBtnList}
+          canBeDownloaded={canBeDownloaded}
         />
       </div>
       { CodeMirror && <div {...classes('edit')}>

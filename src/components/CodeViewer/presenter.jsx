@@ -34,6 +34,7 @@ function Viewer(props) {
     language,
     title,
     value,
+    canBeDownloaded,
   } = props;
 
   return (
@@ -49,6 +50,7 @@ function Viewer(props) {
       language={language}
       title={title}
       value={value}
+      canBeDownloaded={canBeDownloaded}
     />
   );
 }

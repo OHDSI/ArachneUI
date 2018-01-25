@@ -43,6 +43,7 @@ export function ActionBar(props = {}) {
     downloadLink,
     title,
     createdAt,
+    canBeDownloaded,
   } = props;
   return (
     <div {...classes()}>
@@ -54,13 +55,18 @@ export function ActionBar(props = {}) {
           Created at {moment(createdAt).tz(moment.tz.guess()).format(dateFormat)}
         </span>}
       </div>
-      <div {...classes('actions')}>
+      <div
+        {...classes('actions', '', canBeDownloaded ? '' : 'ac-tooltip')}
+        aria-label={canBeDownloaded ? '' : 'This file had not been scanned with anti-virus'}
+        data-tootik-conf={'left'}
+      >
         {downloadLink && <Button
           {...classes('btn', 'download')}
           label="Download"
           mods={['submit', 'rounded']}
           link={downloadLink}
           target="_self"
+          disabled={!canBeDownloaded}
         />}
       </div>
     </div>
@@ -194,6 +200,7 @@ function MediaViewer({
   isLoaded,
   isInitialScaleSet,
   setInitialScale,
+  isScanned,
 }) {
   const classes = new BEMHelper('media-viewer');
   let element;
@@ -223,6 +230,7 @@ function MediaViewer({
             title={title}
             createdAt={createdAt}
             downloadLink={downloadLink}
+            canBeDownloaded={isScanned}
           />
         );
         isDownloadLinkWrapperNeeded = false;
@@ -234,7 +242,7 @@ function MediaViewer({
 
   return isDownloadLinkWrapperNeeded ? (
     <div {...classes()}>
-      <ActionBar downloadLink={downloadLink} title={title} />
+      <ActionBar downloadLink={downloadLink} title={title} canBeDownloaded={isScanned} />
       {element}
     </div>
   ) : element;
