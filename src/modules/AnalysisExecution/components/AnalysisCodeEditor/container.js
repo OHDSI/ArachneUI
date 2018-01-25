@@ -77,6 +77,7 @@ function mapStateToProps(state, ownProps) {
   const language = detectLanguageByExtension(fileData);
   const isLoading = get(moduleState, 'analysisCode.isLoading');
   const studyId = get(moduleState, 'analysis.data.result.study.id', -1);
+  const isScanned = get(fileData, 'isScanned', false);
 
   const isEditable = get(fileData, `permissions[${analysisPermissions.deleteAnalysisFiles}]`, false)
 
@@ -104,6 +105,7 @@ function mapStateToProps(state, ownProps) {
     language,
     studyId,
     isEditable,
+    isScanned,
   };
 }
 
