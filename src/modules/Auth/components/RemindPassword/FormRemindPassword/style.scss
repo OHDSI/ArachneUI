@@ -26,6 +26,7 @@
 
 	&form-remind-password {
 		position: relative;
+		border-radius: $block-border-radius;
 		@include form-island();
 
 		&__back-url {

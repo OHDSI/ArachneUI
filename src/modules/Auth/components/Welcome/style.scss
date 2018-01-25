@@ -25,6 +25,7 @@
 .#{$namespace} {
 
 	&form-welcome {
+		border-radius: $block-border-radius;
 		@include form-island();
 		position: relative;
 		text-align: center;
