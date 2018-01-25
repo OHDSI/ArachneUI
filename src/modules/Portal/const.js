@@ -60,6 +60,16 @@ const images = {
   logo: '/img/icons/Universal_Desktop/Header/logo_odys.svg',
 };
 
+const domains = keyMirror({
+  STUDY_NOTEBOOK: null,
+  EXPERT_FINDER: null,
+  DATA_CATALOG: null,
+  INSIGHTS_LIBRARY: null,
+  ANALYSIS: null,
+  FILE: null,
+  SUBMISSION: null,
+});
+
 const searchSections = [
   {
     label: 'Domain',
@@ -70,19 +80,19 @@ const searchSections = [
     options: [
       {
         label: 'Study notebook',
-        value: 'STUDY_NOTEBOOK',
+        value: domains.STUDY_NOTEBOOK,
       },
       {
         label: 'Expert finder',
-        value: 'EXPERT_FINDER',
+        value: domains.EXPERT_FINDER,
       },
       {
         label: 'Data catalog',
-        value: 'DATA_CATALOG',
+        value: domains.DATA_CATALOG,
       },
       {
         label: 'Insights library',
-        value: 'INSIGHTS_LIBRARY',
+        value: domains.INSIGHTS_LIBRARY,
       },
     ],
   },
@@ -100,4 +110,5 @@ export {
   images,
   searchSections,
   searchResultsPageSize,
+  domains,
 };

@@ -51,6 +51,7 @@ function ResultItem(props) {
     description,
     path,
     domain,
+    breadcrumbs,
   } = props;
   const classes = BEMHelper('search-result-list-item');
 
@@ -59,7 +60,25 @@ function ResultItem(props) {
       <Link {...classes('title')} to={path}>{title}</Link>
       <Domain label={domain.label} value={domain.value} />
       <div {...classes('description')}>{description}</div>
+      {breadcrumbs &&
+        <ul {...classes('breadcrumbs')}>
+          {breadcrumbs.map(crumb => <Crumb {...crumb} />)}
+        </ul>
+      }
     </div>
+  );
+}
+
+function Crumb(props) {
+  const {
+    title,
+    path,
+    domain,
+  } = props;
+  const classes = BEMHelper('search-result-item-crumb');
+
+  return (
+    <Link {...classes()} to={path}>{title}</Link>
   );
 }
 
