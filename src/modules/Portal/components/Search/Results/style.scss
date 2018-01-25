@@ -24,8 +24,8 @@
  
 .#{$namespace} {
   &search-result {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
+    &__content-wrapper {
+      overflow-y: hidden;
+    }
   }
 }

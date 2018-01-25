@@ -26,6 +26,10 @@ import SearchResultsList from './presenter';
 //import SelectorsBuiler from './selectors';
 import { ContainerBuilder } from 'services/Utils';
 
+
+import { paths as studyPaths } from 'modules/StudyManager/const';
+import { searchSections } from 'modules/Portal/const';
+
 //const selectors = (new SelectorsBuilder()).build();
 
 export default class SearchResultsListBuilder extends ContainerBuilder {
@@ -33,10 +37,25 @@ export default class SearchResultsListBuilder extends ContainerBuilder {
     return SearchResultsList;
   }
 
+  generateResults(count) {
+    const res = [];
+    for (let i=0; i<count; i++) {
+      const index = Math.ceil((Math.random() * 10) / 3) - 1;
+      res.push({
+        title: `Result # ${i}`,
+        description: '...Some random description indicating the surrounding of the text where the desired string appeared. The string could probably be highlighted to emphasize it..',
+        path: studyPaths.studies(27),
+        domain: searchSections[0].options[index],
+      });
+    }
+
+    return res;
+  }
+
   mapStateToProps(state) {
     
     return {
-      
+      results: this.generateResults(10),
     };
   }
 

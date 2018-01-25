@@ -22,41 +22,26 @@
 
 import React from 'react';
 import BEMHelper from 'services/BemHelper';
-import pluralize from 'pluralize';
 import {
-  Button,
   Link,
   ListItem,
-  Pagination,
 } from 'arachne-ui-components';
 import EmptyState from 'components/EmptyState';
 
 import './style.scss';
 
-function SearchSection(props) {
+export function Domain(props) {
   const {
-    title = 'Section',
-    resultsCount = 0,
-    isActive,
-    onClick,
+    label,
+    value,
+    forFilter = false,
   } = props;
-  const classes = BEMHelper('search-result-filter-item');
-  const mods = ['rounded'];
-  if (isActive) {
-    mods.push('success');
-  } else {
-    mods.push('cancel');
-  }
+  const classes = BEMHelper('search-result-list-item-domain');
 
   return (
-    <Button
-      {...classes()}
-      onClick={onClick}
-      mods={mods}
-    >
-      {title} ({resultsCount} {pluralize('Result', resultsCount)})
-      <div {...classes({ element: 'tick', modifiers: { active: isActive } })}>add</div>
-    </Button>
+    <span {...classes({ modifiers: [value, forFilter ? 'filter' : 'list'] })}>
+      <span {...classes('text')}>{label}</span>
+    </span>
   );
 }
 
@@ -65,30 +50,15 @@ function ResultItem(props) {
     title,
     description,
     path,
+    domain,
   } = props;
   const classes = BEMHelper('search-result-list-item');
 
   return (
-    <ListItem>
-      <div {...classes()}>
-        <Link to={path}>{title}</Link>
-        <span {...classes('desc')}>{description}</span>
-      </div>
-    </ListItem>
-  );
-}
-
-function Result(props) {
-  const {
-    title,
-    results,
-  } = props;
-  const classes = BEMHelper('search-result-list-section');
-
-  return (
     <div {...classes()}>
-      <div {...classes('title')}>{title}</div>
-      {results.map(result => <ResultItem {...result} />)}
+      <Link {...classes('title')} to={path}>{title}</Link>
+      <Domain label={domain.label} value={domain.value} />
+      <div {...classes('description')}>{description}</div>
     </div>
   );
 }
@@ -96,29 +66,17 @@ function Result(props) {
 export default function SearchResultsList(props) {
   const classes = BEMHelper('search-result-list');
   const {
-    sections,
     results,
-    toggleSection,
   } = props;
-  const isAvailable = results.filter(result => result.isActive).length;
+
   return (
     <div {...classes()}>
-      <div {...classes('filter')}>
-        {sections
-          .map(section => <SearchSection {...section} onClick={() => toggleSection(section)} />)
-        }
-      </div>
       <div {...classes('list')}>
-        {isAvailable
-          ? results
-              .filter(result => result.isActive)
-              .map(result => <Result {...result} />)        
+        {results && results.length
+          ? results.map(result => <ResultItem {...result} />)
           : <EmptyState message={'No results'} />
         }
       </div>
-      {isAvailable && <div {...classes('pagination')}>
-        <Pagination pages={10} currentPage={1} path={''} />
-      </div>}
     </div>
   );
 }

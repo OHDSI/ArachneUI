@@ -21,6 +21,7 @@
  */
 
 import keyMirror from 'keymirror';
+import types from 'const/modelAttributes';
 
 const form = keyMirror({
   changePassword: null,
@@ -61,22 +62,33 @@ const images = {
 
 const searchSections = [
   {
-    title: 'Study notebook',
-    code: 'STUDY_NOTEBOOK',
-  },
-  {
-    title: 'Expert finder',
-    code: 'EXPERT_FINDER',
-  },
-  {
-    title: 'Data catalog',
-    code: 'DATA_CATALOG',
-  },
-  {
-    title: 'Insights library',
-    code: 'INSIGHTS_LIBRARY',
+    label: 'Domain',
+    name: 'domain',
+    type: types.enumMulti,
+    forceOpened: true,
+    hasTitle: false,
+    options: [
+      {
+        label: 'Study notebook',
+        value: 'STUDY_NOTEBOOK',
+      },
+      {
+        label: 'Expert finder',
+        value: 'EXPERT_FINDER',
+      },
+      {
+        label: 'Data catalog',
+        value: 'DATA_CATALOG',
+      },
+      {
+        label: 'Insights library',
+        value: 'INSIGHTS_LIBRARY',
+      },
+    ],
   },
 ];
+
+const searchResultsPageSize = 10;
 
 export {
   apiPaths,
@@ -87,4 +99,5 @@ export {
   pollingTime,
   images,
   searchSections,
+  searchResultsPageSize,
 };

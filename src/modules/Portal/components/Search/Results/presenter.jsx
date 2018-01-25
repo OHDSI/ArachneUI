@@ -26,7 +26,10 @@ import {
   PageContent,
   Toolbar,
 } from 'arachne-ui-components';
+import Grid from 'components/Grid';
+import cloneDeep from 'lodash/cloneDeep';
 import List from './List';
+import { Domain } from './List/presenter';
 
 import './style.scss';
 
@@ -34,15 +37,32 @@ export default function SearchResults(props) {
   const classes = BEMHelper('search-result');
   const {
     query,
-    sections,
-    results,
-    toggleSection,    
+    isLoading,
+    paginationDetails,
+    searchQueryDecode,
+    searchQueryEncode,
+    filterFields = [],
   } = props;
-  
+
+  const filter = cloneDeep(filterFields);
+  filter[0].options = filter[0].options.map((field) => ({
+    label: <Domain forFilter label={field.label} value={field.value} />,
+    value: field.value,
+  }));
+
   return (
-    <div {...classes()}>
-      <Toolbar caption={`Search for '${query}'`} />
-      <List sections={sections} results={results} toggleSection={toggleSection} />
-    </div>
+    <PageContent {...classes()}>
+      <Grid
+        {...classes()}
+        isLoading={isLoading}
+        title={`Global search for '${query}'`}
+        filterFields={filter}
+        paginationDetails={paginationDetails}
+        searchQueryDecode={searchQueryDecode}
+        searchQueryEncode={searchQueryEncode}
+      >
+        <List />
+      </Grid>
+    </PageContent>
   );
 }
