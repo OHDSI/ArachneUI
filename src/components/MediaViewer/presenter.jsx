@@ -31,6 +31,7 @@ import MimeTypes from 'const/mimeTypes';
 import CodeViewer from 'components/CodeViewer';
 import moment from 'moment-timezone';
 import { usDateTime as dateFormat } from 'const/formats';
+import { isScanned } from 'const/antivirus';
 import CSV from './CsvViewer';
 
 let ReactPDF;
@@ -43,8 +44,11 @@ export function ActionBar(props = {}) {
     downloadLink,
     title,
     createdAt,
-    canBeDownloaded,
+    antivirusStatus,
+    antivirusDescription,
   } = props;
+  const canBeDownloaded = isScanned(antivirusStatus);
+
   return (
     <div {...classes()}>
       <div {...classes('info')}>
@@ -56,8 +60,8 @@ export function ActionBar(props = {}) {
         </span>}
       </div>
       <div
-        {...classes('actions', '', canBeDownloaded ? '' : 'ac-tooltip')}
-        aria-label={canBeDownloaded ? '' : 'This file had not been scanned with anti-virus'}
+        {...classes('actions', '', canBeDownloaded || !antivirusStatus ? '' : 'ac-tooltip')}
+        aria-label={canBeDownloaded ? '' : antivirusDescription}
         data-tootik-conf={'left'}
       >
         {downloadLink && <Button
@@ -200,7 +204,8 @@ function MediaViewer({
   isLoaded,
   isInitialScaleSet,
   setInitialScale,
-  isScanned,
+  antivirusStatus,
+  antivirusDescription,
 }) {
   const classes = new BEMHelper('media-viewer');
   let element;
@@ -230,7 +235,8 @@ function MediaViewer({
             title={title}
             createdAt={createdAt}
             downloadLink={downloadLink}
-            canBeDownloaded={isScanned}
+            canBeDownloaded={isScanned(antivirusStatus)}
+            antivirusDescription={antivirusDescription}
           />
         );
         isDownloadLinkWrapperNeeded = false;
@@ -242,7 +248,12 @@ function MediaViewer({
 
   return isDownloadLinkWrapperNeeded ? (
     <div {...classes()}>
-      <ActionBar downloadLink={downloadLink} title={title} canBeDownloaded={isScanned} />
+      <ActionBar
+        downloadLink={downloadLink}
+        title={title}
+        canBeDownloaded={isScanned(antivirusStatus)}
+        antivirusDescription={antivirusDescription}
+      />
       {element}
     </div>
   ) : element;

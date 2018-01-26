@@ -23,6 +23,7 @@ import { get, ContainerBuilder } from 'services/Utils';
 import actions from 'actions/index';
 import { apiPaths, paths } from 'modules/StudyManager/const';
 import { FileLoader } from 'services/FileLoader';
+import fileConverter from 'components/FileInfo/converter';
 import presenter from './presenter';
 
 class DocumentViewer extends FileLoader {

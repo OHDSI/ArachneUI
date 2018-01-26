@@ -25,6 +25,7 @@ import moment from 'moment-timezone';
 import BEMHelper from 'services/BemHelper';
 import { Link } from 'arachne-ui-components';
 import { shortDate as dateFormat } from 'const/formats';
+import { getScanResultDescription, scanStatuses } from 'const/antivirus';
 
 require('./style.scss');
 
@@ -42,7 +43,8 @@ class FileInfo extends Component {
       version: PropTypes.string,
       subtitle: PropTypes.string,
       onClick: PropTypes.func,
-      isScanned: PropTypes.bool.isRequired,
+      antivirusStatus: PropTypes.string,
+      antivirusDescription: PropTypes.string,
     };
   }
 
@@ -59,18 +61,19 @@ class FileInfo extends Component {
 
   getLabel() {
     const label = this.getRawLabel();
-    const tooltipText = `File had ${this.props.isScanned ? '' : 'not'} been scanned with anti-virus`;
+    const tooltipText = getScanResultDescription(this.props.antivirusStatus, this.props.antivirusDescription);
 
-    return (<div {...this.classes('label')}>
-      <span
-        {...this.classes({
-          element: 'checkmark',
-          modifiers: {
-            scanned: this.props.isScanned,
-          },
-        })}
-        title={tooltipText}
-      >verified_user</span>
+    return (
+    <div {...this.classes('label')}>
+      {this.props.antivirusStatus &&
+        <span
+          {...this.classes({
+            element: 'checkmark',
+            modifiers: this.props.antivirusStatus,
+          })}
+          title={tooltipText}
+        >verified_user</span>
+      }
       <span {...this.classes('label-text')} title={label}>{label}</span>
     </div>);
   }
@@ -86,7 +89,8 @@ class FileInfo extends Component {
       version,
       subtitle,
       onClick,
-      isScanned,
+      antivirusStatus,
+      antivirusDescription,
     } = this.props;
 
     const label = this.getRawLabel();

@@ -149,9 +149,26 @@
       top: 0.2rem;
       font-size: 1.4rem;
 
-      &--scanned {
+      &--WILL_NOT_SCAN {
+        color: $grey-dark-light;
+      }
+
+      &--NOT_SCANNED {
+        color: $red;
+      }
+
+      &--SCANNING {
+        color: $orange;
+      }
+
+      &--OK {
         color: $green;
       }
+
+      &--INFECTED {
+        color: $red;
+      }
+
     }
   }
 }

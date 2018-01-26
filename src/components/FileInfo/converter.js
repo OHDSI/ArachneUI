@@ -52,5 +52,6 @@ export default (file, pathBuilder) => ({
   version: file.version,
   isImported: file.imported,
   manuallyUploaded: file.manuallyUploaded,
-  isScanned: file.isScanned,
+  antivirusStatus: file.antivirusStatus,
+  antivirusDescription: file.antivirusDescription,
 });
