@@ -65,10 +65,27 @@ class Filter extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.dirty && (!isEqual(nextProps.selectedFilters, this.props.selectedFilters) || nextProps.selectedQuery !== this.props.selectedQuery)) {
+      // check whether Any option selected
+      const selectedFilters = {};
+      Object.keys(nextProps.selectedFilters)
+        .forEach((filterName) => {
+          let nextFilterValue = get(nextProps.selectedFilters, filterName, [], 'Array');
+          const existingFilterValue = get(this.props.selectedFilters, filterName, [], 'Array');
+          if (existingFilterValue.includes('')) {
+            // 'Any' option had been previously selected, then just ignore it
+            nextFilterValue = nextFilterValue.filter(value => value);
+          } else if (nextFilterValue.includes('')) {
+            // We're just selected it, cancel all other selected options
+            return false;
+          }
+          
+          selectedFilters[filterName] = nextFilterValue;
+        });
+
       const searchParams = buildSearchParams({
         filterFields: nextProps.fields,
         selectedQuery: nextProps.selectedQuery,
-        selectedFilters: nextProps.selectedFilters,
+        selectedFilters: selectedFilters,
         queryEncode: nextProps.queryEncode,
       });
 
