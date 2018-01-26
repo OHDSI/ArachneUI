@@ -106,6 +106,7 @@
 
     &__main-info {
       @include text-ellipsis();
+      flex-grow: 1;
     }
 
     &__name {
@@ -134,6 +135,40 @@
           }
         }
       }
+    }
+
+    &__label {
+      display: inline-block;
+    }
+
+    &__checkmark {
+      @include material-icon();
+      color: $red;
+      margin-right: 0.5rem;
+      position: relative;
+      top: 0.2rem;
+      font-size: 1.4rem;
+
+      &--WILL_NOT_SCAN {
+        color: $grey-dark-light;
+      }
+
+      &--NOT_SCANNED {
+        color: $red;
+      }
+
+      &--SCANNING {
+        color: $orange;
+      }
+
+      &--OK {
+        color: $green;
+      }
+
+      &--INFECTED {
+        color: $red;
+      }
+
     }
   }
 }
