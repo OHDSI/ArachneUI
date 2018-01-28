@@ -22,10 +22,9 @@
 
 // @ts-check
 import { Component, PropTypes } from 'react';
-import { Utils, buildFormData } from 'services/Utils';
+import { buildFormData, ContainerBuilder } from 'services/Utils';
 import get from 'lodash/get';
 import {
-  reduxForm,
   change as reduxFormChange,
   reset as resetForm,
 } from 'redux-form';
@@ -50,13 +49,15 @@ export class LinksUpload extends Component {
   }
 }
 
-const FormLinksUpload = reduxForm({
-  form: form.createDocumentLinks,
-})(LinksUpload);
-
-export default class LinksUploadBuilder {
+export default class LinksUploadBuilder extends ContainerBuilder {
   getComponent() {
-    return FormLinksUpload;
+    return LinksUpload;
+  }
+
+  getFormParams() {
+    return {
+      form: form.createDocumentLinks,
+    };
   }
 
   mapStateToProps(state) {
@@ -73,6 +74,7 @@ export default class LinksUploadBuilder {
       links,
       addButtonTitle,
       fieldName,
+      canSubmit: links.filter(link => link.label && link.value).length > 0,
     };
   }
 
@@ -100,11 +102,13 @@ export default class LinksUploadBuilder {
             })
           )
         );
-        const submitPromise = Promise.all(submitPromises)
-          .then(() => dispatchProps.reset())
+        const submitPromise = Promise.all(submitPromises);
+        submitPromise.then(() => dispatchProps.reset())
           .then(() => dispatchProps.closeModal())
           .then(() => dispatchProps.loadStudy(stateProps.studyId))
-          .catch(() => {});
+          .catch((er) => {
+            console.error(er);
+          });
 
         // We have to return a submission promise back to redux-form
         // to allow it update the state
@@ -119,15 +123,6 @@ export default class LinksUploadBuilder {
         dispatchProps.add(links);
       },
     };
-  }
-
-  build() {
-    return Utils.buildConnectedComponent({
-      Component: this.getComponent(),
-      mapStateToProps: this.mapStateToProps,
-      mapDispatchToProps: this.getMapDispatchToProps(),
-      mergeProps: this.mergeProps,
-    });
   }
 }
 
