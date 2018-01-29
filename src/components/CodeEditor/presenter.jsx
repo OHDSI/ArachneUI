@@ -24,6 +24,7 @@ import React, { PropTypes } from 'react';
 import Loadable from 'react-loadable';
 import BEMHelper from 'services/BemHelper';
 import { Button, LoadingPanel } from 'arachne-ui-components';
+import { getScanResultDescription } from 'const/antivirus';
 
 let CodeMirror = null;
 /* if (typeof window !== 'undefined' && typeof window.navigator !== 'undefined') {
@@ -52,7 +53,7 @@ function CodeBar(props = {}) {
       </div>
       <div
         {...classes('actions', null, antivirusStatus ? 'ac-tooltip' : '')}
-        aria-label={antivirusDescription}
+        aria-label={getScanResultDescription(antivirusStatus, antivirusDescription)}
         data-tootik-conf={'left'}
       >
         <Button
