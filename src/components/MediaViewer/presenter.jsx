@@ -31,8 +31,8 @@ import MimeTypes from 'const/mimeTypes';
 import CodeViewer from 'components/CodeViewer';
 import moment from 'moment-timezone';
 import { usDateTime as dateFormat } from 'const/formats';
-import { isScanned } from 'const/antivirus';
 import CSV from './CsvViewer';
+import { getScanResultDescription } from 'const/antivirus';
 
 let ReactPDF;
 
@@ -60,7 +60,7 @@ export function ActionBar(props = {}) {
       </div>
       <div
         {...classes('actions', '', antivirusStatus ? 'ac-tooltip' : '')}
-        aria-label={antivirusDescription}
+        aria-label={getScanResultDescription(antivirusStatus, antivirusDescription)}
         data-tootik-conf={'left'}
       >
         {downloadLink && <Button
