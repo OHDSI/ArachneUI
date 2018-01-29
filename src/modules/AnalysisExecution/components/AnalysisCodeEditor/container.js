@@ -24,12 +24,10 @@ import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { get, detectLanguageByExtension } from 'services/Utils';
 import actions from 'actions/index';
-import { apiPaths } from 'modules/AnalysisExecution/const';
+import { apiPaths, analysisPermissions } from 'modules/AnalysisExecution/const';
 import { isFat as isMimeTypeFat, isText } from 'services/MimeTypeUtil';
 import { asyncConnect } from 'redux-async-connect';
 import presenter from './presenter';
-import { analysisPermissions } from 'modules/AnalysisExecution/const';
-import { getScanResultDescription } from 'const/antivirus';
 
 class AnalysisCode extends Component {
   componentWillReceiveProps(props) {
@@ -106,9 +104,9 @@ function mapStateToProps(state, ownProps) {
     createdAt,
     language,
     studyId,
-    isEditable,   
+    isEditable, 
     antivirusStatus,
-    antivirusDescription: getScanResultDescription(antivirusStatus, antivirusDescription),
+    antivirusDescription,
   };
 }
 
