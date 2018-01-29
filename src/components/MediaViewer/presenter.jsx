@@ -47,7 +47,6 @@ export function ActionBar(props = {}) {
     antivirusStatus,
     antivirusDescription,
   } = props;
-  const canBeDownloaded = isScanned(antivirusStatus);
 
   return (
     <div {...classes()}>
@@ -60,8 +59,8 @@ export function ActionBar(props = {}) {
         </span>}
       </div>
       <div
-        {...classes('actions', '', canBeDownloaded || !antivirusStatus ? '' : 'ac-tooltip')}
-        aria-label={canBeDownloaded ? '' : antivirusDescription}
+        {...classes('actions', '', antivirusStatus ? 'ac-tooltip' : '')}
+        aria-label={antivirusDescription}
         data-tootik-conf={'left'}
       >
         {downloadLink && <Button
@@ -70,7 +69,6 @@ export function ActionBar(props = {}) {
           mods={['submit', 'rounded']}
           link={downloadLink}
           target="_self"
-          disabled={!canBeDownloaded}
         />}
       </div>
     </div>
@@ -235,7 +233,7 @@ function MediaViewer({
             title={title}
             createdAt={createdAt}
             downloadLink={downloadLink}
-            canBeDownloaded={isScanned(antivirusStatus)}
+            antivirusStatus={antivirusStatus}
             antivirusDescription={antivirusDescription}
           />
         );
@@ -251,7 +249,7 @@ function MediaViewer({
       <ActionBar
         downloadLink={downloadLink}
         title={title}
-        canBeDownloaded={isScanned(antivirusStatus)}
+        antivirusStatus={antivirusStatus}
         antivirusDescription={antivirusDescription}
       />
       {element}

@@ -34,7 +34,8 @@ function Viewer(props) {
     language,
     title,
     value,
-    canBeDownloaded,
+    antivirusStatus,
+    antivirusDescription,
   } = props;
 
   return (
@@ -50,7 +51,8 @@ function Viewer(props) {
       language={language}
       title={title}
       value={value}
-      canBeDownloaded={canBeDownloaded}
+      antivirusStatus={antivirusStatus}
+      antivirusDescription={antivirusDescription}
     />
   );
 }
