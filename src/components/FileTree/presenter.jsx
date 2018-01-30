@@ -110,7 +110,7 @@ class FileTree extends Component {
             this.getNodeToggler({
               ...node,
               classes,
-              isHome: node.docType === mimeTypes.home,
+              isHome: isDeletable && node.docType === mimeTypes.home,
             })
           }
           {isDeletable && !isFolder
