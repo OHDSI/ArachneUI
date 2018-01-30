@@ -50,16 +50,18 @@ class FileInfo extends Component {
 
   constructor(props) {
     super(props);
-
-    this.getLabel = this.getLabel.bind(this);
+    this.classes = new BEMHelper('code-file-info');
   }
 
-  getLabel() {
-    const label = this.getRawLabel();
+  getRawLabel() {
+    return this.props.label || this.props.name;
+  }
+
+  getAntivirusIcon() {
     const tooltipText = getScanResultDescription(this.props.antivirusStatus, this.props.antivirusDescription);
 
     return (
-    <div {...this.classes('label')}>
+    <div {...this.classes('antivirus-icon')}>
       {this.props.antivirusStatus &&
         <span
           {...this.classes({
@@ -69,12 +71,10 @@ class FileInfo extends Component {
           title={tooltipText}
         >verified_user</span>
       }
-      <span {...this.classes('label-text')} title={label}>{label}</span>
     </div>);
   }
 
   render() {
-    const classes = new BEMHelper('code-file-info');
     const {
       author,
       createdAt,
@@ -89,21 +89,22 @@ class FileInfo extends Component {
       antivirusDescription,
     } = this.props;
 
-    const label = this.getLabel();
+    const label = this.getRawLabel();
 
     return (
-      <div {...classes({ modifiers: mods })}>
-        <div {...classes('main-container')}>
-          <i {...classes('ico', docType)} />
-          <span {...classes('main-info')} title={label}>
+      <div {...this.classes({ modifiers: mods })}>
+        <div {...this.classes('main-container')}>
+          <i {...this.classes('ico', docType)} />
+          {this.getAntivirusIcon()}
+          <span {...this.classes('main-info')}>
             {(link || onClick)
-              ? <Link {...classes('name')} onClick={onClick} to={link} target={linkTarget}>
+              ? <Link {...this.classes('name')} onClick={onClick} to={link} target={linkTarget}>
                 {label}
               </Link>
-              : <span {...classes('name')}>{label}</span>
+              : <span {...this.classes('name')}>{label}</span>
             }
             {createdAt &&
-              <span {...classes('datetime')}>
+              <span {...this.classes('datetime')}>
                 {moment(createdAt).tz(moment.tz.guess()).format(dateFormat)}
               </span>
             }
@@ -111,13 +112,13 @@ class FileInfo extends Component {
           </span>
         </div>
         {version &&
-          <div {...classes('version-container')}>
+          <div {...this.classes('version-container')}>
             V{version}
           </div>
         }
         {author && author.id &&
-          <div {...classes('author-container')}>
-              <Link {...classes('author')} to={author.link} target={linkTarget}>
+          <div {...this.classes('author-container')}>
+              <Link {...this.classes('author')} to={author.link} target={linkTarget}>
                 {author.firstname} {author.middlename
                   ? `${author.middlename.substr(0, 1)}.`
                   : ''} {author.lastname}
