@@ -51,20 +51,17 @@ class FileInfo extends Component {
   constructor(props) {
     super(props);
     this.classes = new BEMHelper('code-file-info');
-
-    this.getLabel = this.getLabel.bind(this);
   }
 
   getRawLabel() {
     return this.props.label || this.props.name;
   }
 
-  getLabel() {
-    const label = this.getRawLabel();
+  getAntivirusIcon() {
     const tooltipText = getScanResultDescription(this.props.antivirusStatus, this.props.antivirusDescription);
 
     return (
-    <div {...this.classes('label')}>
+    <div {...this.classes('antivirus-icon')}>
       {this.props.antivirusStatus &&
         <span
           {...this.classes({
@@ -74,7 +71,6 @@ class FileInfo extends Component {
           title={tooltipText}
         >verified_user</span>
       }
-      <span {...this.classes('label-text')} title={label}>{label}</span>
     </div>);
   }
 
@@ -99,12 +95,13 @@ class FileInfo extends Component {
       <div {...this.classes({ modifiers: mods })}>
         <div {...this.classes('main-container')}>
           <i {...this.classes('ico', docType)} />
+          {this.getAntivirusIcon()}
           <span {...this.classes('main-info')}>
             {(link || onClick)
               ? <Link {...this.classes('name')} onClick={onClick} to={link} target={linkTarget}>
-                {this.getLabel()}
+                {label}
               </Link>
-              : <span {...this.classes('name')}>{this.getLabel()}</span>
+              : <span {...this.classes('name')}>{label}</span>
             }
             {createdAt &&
               <span {...this.classes('datetime')}>

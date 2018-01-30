@@ -64,6 +64,7 @@
       // width: 65%;
       flex-grow: 7;
       overflow: hidden;
+      position: relative;
     }
 
     &__version-container {
@@ -137,8 +138,11 @@
       }
     }
 
-    &__label {
+    &__antivirus-icon {
       display: inline-block;
+      position: absolute;
+      top: 0px;
+      left: 12px;
     }
 
     &__checkmark {
