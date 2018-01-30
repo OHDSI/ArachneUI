@@ -53,6 +53,9 @@
 
     &__nav-header {
       @include black-nav();
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     &__nav-content {

@@ -25,10 +25,11 @@ import actions from 'actions';
 import { get } from 'services/Utils';
 import { SubmissionResultLinkBuilder } from 'modules/AnalysisExecution/ducks/linkBuilder';
 import { push as goToPage } from 'react-router-redux';
-import { paths, fileTypes } from 'modules/AnalysisExecution/const';
+import { paths, fileTypes, modal } from 'modules/AnalysisExecution/const';
 import mimeTypes from 'const/mimeTypes';
 import FileTreeUtils from 'services/FileTreeUtils';
 import SubmissionResultSelectors from './selectors';
+import { ModalUtils } from 'arachne-ui-components';
 
 class SubmissionResultFile extends SubmissionCode {
   componentWillMount() {
@@ -41,9 +42,11 @@ class SubmissionResultFile extends SubmissionCode {
       fileId: this.props.params.fileId,
       downloadFile: true,
     });
+    this.doDelete = this.doDelete.bind(this);
+    this.props.loadSubmission({ id: this.props.submissionId });
   }
 
-  componentWillReceiveProps(nextProps) {
+  async componentWillReceiveProps(nextProps) {
     super.componentWillReceiveProps(nextProps);
     if (get(this.props.file, 'uuid') !== get(nextProps.file, 'uuid')) {
       this.updateTree(nextProps);
@@ -52,6 +55,18 @@ class SubmissionResultFile extends SubmissionCode {
         fileId: nextProps.params.fileId,
         downloadFile: true,
       };
+    }
+    if (this.props.isUploadModalOpened === true && nextProps.isUploadModalOpened === false) {
+      await this.props.loadFilesTree(
+        {
+          type: fileTypes.SUBMISSION_RESULT,
+          entityId: nextProps.submissionId,
+        },
+        {
+          path: '/',
+        }
+      );
+      this.updateTree(nextProps);
     }
   }
 
@@ -69,6 +84,30 @@ class SubmissionResultFile extends SubmissionCode {
         });
       });
   }
+
+  async doDelete(file) {
+    await this.props.deleteFile({
+      submissionId: file.submissionId,
+      fileId: file.uuid,
+    });
+    await this.props.loadFilesTree(
+      {
+        type: fileTypes.SUBMISSION_RESULT,
+        entityId: this.props.submissionId,
+      },
+      {
+        path: '/',
+      }
+    );
+    this.updateTree(this.props);
+  }
+
+  getRenderParams() {
+    return {
+      ...super.getRenderParams(),
+      doDelete: this.doDelete,
+    };
+  }
 }
 
 export default class SubmissionResultFileViewerBuilder extends SubmissionCodeBuilder {
@@ -82,10 +121,15 @@ export default class SubmissionResultFileViewerBuilder extends SubmissionCodeBui
   }
 
   mapStateToProps(state, ownProps) {
+    const permissions = this.selectors.getPermissions(state);
+    const isUploadModalOpened = get(state, `modal.${modal.uploadResult}.isOpened`, false);
+
     return {
       ...super.mapStateToProps(state, ownProps),
       treeData: this.selectors.getFileTreeData(state),
       isTreeLoading: this.selectors.getIsTreeLoading(state),
+      hasPermissions: permissions.APPROVE_SUBMISSION,
+      isUploadModalOpened,
     };
   }
 
@@ -93,6 +137,7 @@ export default class SubmissionResultFileViewerBuilder extends SubmissionCodeBui
     return {
       ...super.getMapDispatchToProps(),
       loadFile: actions.analysisExecution.submissionResultFile.find,
+      deleteFile: actions.analysisExecution.submissionResultFile.delete,
       clearFileData: actions.analysisExecution.submissionResultFile.clear,
       showSummary: ({ submissionId }) => goToPage(paths.submissionResultSummary({ submissionId })),
 
@@ -101,6 +146,9 @@ export default class SubmissionResultFileViewerBuilder extends SubmissionCodeBui
       selectFileInTree: actions.analysisExecution.fileTreeData.selectFile,
       flushFileTree: actions.analysisExecution.fileTreeData.flush,
       goToPage: actions.router.goToPage,
+      loadSubmission: actions.analysisExecution.submissionSummary.submission.find,
+      showUploadModal: submissionId =>
+        ModalUtils.actions.toggle(modal.uploadResult, true, { submissionId }),
     };
   }
 

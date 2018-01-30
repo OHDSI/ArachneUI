@@ -25,6 +25,7 @@ import BEMHelper from 'services/BemHelper';
 import FileInfo from 'components/FileInfo';
 import mimeTypes from 'const/mimeTypes';
 import fileInfoConverter from 'components/FileInfo/converter';
+import { Utils } from 'services/Utils';
 
 require('./style.scss');
 
@@ -42,6 +43,8 @@ class FileTree extends Component {
       onNodeClick: PropTypes.func,
       isNodeExpanded: PropTypes.func,
       collapseNode: PropTypes.func,
+      hasPermissions: PropTypes.bool,
+      doDelete: PropTypes.bool,
     };
   }
 
@@ -82,10 +85,13 @@ class FileTree extends Component {
       node,
       onNodeClick,
       selectedFilePath,
+      doDelete,
+      isDeletable,
     } = props;
 
     const isSelected = node.relativePath === selectedFilePath;
     const mods = ['name-only', isSelected ? 'name-bold' : null];
+    const isFolder = [mimeTypes.home, mimeTypes.folder].includes(node.docType);
 
     return (
       <li {...classes('node', isSelected ? 'selected' : null)}>
@@ -96,6 +102,22 @@ class FileTree extends Component {
           }>
           {
             this.getNodeToggler({ ...node, classes })
+          }
+          {isDeletable && !isFolder
+            ? <span
+              {...classes('delete-handle')}
+              onClick={(e) => {
+                e.preventDefault();
+                if (doDelete) {
+                  Utils.confirmDelete()
+                    .then(() => doDelete(node))
+                    .catch(() => {});
+                }
+              }}
+            >
+              delete_forever
+            </span>
+            : null
           }
           <span {...classes('node-label')}>
             <FileInfo {...fileInfoConverter(node)} mods={mods} />
@@ -108,6 +130,8 @@ class FileTree extends Component {
               onNodeClick={onNodeClick}
               selectedFilePath={selectedFilePath}
               isRoot={false}
+              doDelete={doDelete}
+              hasPermissions={isDeletable}
             />
           </div>
           : null
@@ -124,6 +148,8 @@ class FileTree extends Component {
       onNodeClick,
       isFlat,
       isRoot = true,
+      doDelete,
+      hasPermissions = false,
     } = this.props;
 
     return (
@@ -133,6 +159,8 @@ class FileTree extends Component {
           node,
           selectedFilePath,
           onNodeClick,
+          doDelete,
+          isDeletable: hasPermissions,
         }))}
       </ul>
     );

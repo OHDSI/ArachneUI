@@ -41,6 +41,7 @@
     &__node {
       display: inline-block;
       min-width: 100%;
+      position: relative;
 
       &--selected {
         background: $grey-light;
@@ -48,8 +49,9 @@
 
       &-details {
         align-items: center;
-        display: flex;
+        display: inline-flex;
         padding: .5rem 1rem;
+        width: 100%;
         
         &:hover {
           cursor: pointer;
@@ -75,6 +77,14 @@
           @include spinning();
         }
       }
+    }
+
+    &__delete-handle {
+      @include material-icon();
+      display: inline-block;
+      margin-left: -2.3rem;
+      margin-right: 0.7rem;
+      cursor: pointer;
     }
   }
 }

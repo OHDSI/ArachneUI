@@ -41,6 +41,9 @@ export default function FileBrowser(props) {
     selectedFilePath,
     toggleFolder,
     openFile,
+    hasPermissions,
+    doDelete,
+    headerBtns,
   } = props;
   // main info
   const {
@@ -62,7 +65,8 @@ export default function FileBrowser(props) {
         {fileTreeData || isTreeLoading
           ? <div {...classes('nav')}>
             <div {...classes('nav-header')}>
-              Browse files
+              <span {...classes('title')}>Browse files</span>
+              {headerBtns}
             </div>
             <div {...classes('nav-content')}>
               <FileTree
@@ -70,6 +74,8 @@ export default function FileBrowser(props) {
                 selectedFilePath={selectedFilePath}
                 toggleFolder={toggleFolder}
                 openFile={openFile}
+                hasPermissions={hasPermissions}
+                doDelete={doDelete}
               />
             </div>
             <LoadingPanel active={isTreeLoading} label={'Loading files tree'} />
@@ -83,6 +89,7 @@ export default function FileBrowser(props) {
           }
         </div>
       </div>
+      {children}
     </div>
   );
 }
