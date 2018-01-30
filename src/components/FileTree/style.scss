@@ -30,6 +30,14 @@
           &__node-toggle {
             width: 0.4rem;
           }
+          &__node-toggle {
+            &--home {
+              margin-left: 1.5rem;
+            }
+          }
+          &__delete-handle {
+            margin-left: -1rem;
+          }
         }
       }
     }

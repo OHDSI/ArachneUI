@@ -55,7 +55,7 @@ class FileTree extends Component {
     this.getNode = this.getNode.bind(this);
   }
 
-  getNodeToggler({ classes, docType, isLoading, isExpanded }) {
+  getNodeToggler({ classes, docType, isLoading, isExpanded, isHome }) {
     const classname = 'node-toggle';
     let element;
 
@@ -73,7 +73,13 @@ class FileTree extends Component {
       element = <i {...classes(classname, modifiers)}>{icon}</i>;
     } else {
       element = (
-        <span {...classes(classname, 'no-toggle')} />
+        <span {...classes({
+          element: classname,
+          modifiers: {
+            'no-toggle': true,
+            home: isHome,
+          },
+        })} />
       );
     }
     return element;
@@ -101,7 +107,11 @@ class FileTree extends Component {
               : onNodeClick(node)
           }>
           {
-            this.getNodeToggler({ ...node, classes })
+            this.getNodeToggler({
+              ...node,
+              classes,
+              isHome: node.docType === mimeTypes.home,
+            })
           }
           {isDeletable && !isFolder
             ? <span
