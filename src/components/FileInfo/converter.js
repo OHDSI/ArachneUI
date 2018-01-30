@@ -25,7 +25,6 @@ import { detectMimeTypeByExtension } from 'services/Utils';
 const profilePath = id => `/expert-finder/profile/${id}`;
 
 function getLink(file, pathBuilder) {
-
   if (file.link) {
     return file.link;
   } else if (typeof pathBuilder === 'function') {
@@ -53,4 +52,6 @@ export default (file, pathBuilder) => ({
   version: file.version,
   isImported: file.imported,
   manuallyUploaded: file.manuallyUploaded,
+  antivirusStatus: file.antivirusStatus,
+  antivirusDescription: file.antivirusDescription,
 });

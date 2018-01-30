@@ -24,6 +24,7 @@ import React, { PropTypes } from 'react';
 import Loadable from 'react-loadable';
 import BEMHelper from 'services/BemHelper';
 import { Button, LoadingPanel } from 'arachne-ui-components';
+import { getScanResultDescription } from 'const/antivirus';
 
 let CodeMirror = null;
 /* if (typeof window !== 'undefined' && typeof window.navigator !== 'undefined') {
@@ -40,6 +41,8 @@ function CodeBar(props = {}) {
     downloadLink,
     infoList = [],
     title,
+    antivirusStatus,
+    antivirusDescription,
   } = props;
 
   return (
@@ -48,7 +51,11 @@ function CodeBar(props = {}) {
         {title && <span {...classes('title')}>{title}</span>}
         {infoList}
       </div>
-      <div {...classes('actions')}>
+      <div
+        {...classes('actions', null, antivirusStatus ? 'ac-tooltip' : '')}
+        aria-label={getScanResultDescription(antivirusStatus, antivirusDescription)}
+        data-tootik-conf={'left'}
+      >
         <Button
           {...classes('btn', 'download')}
           label="Download"
@@ -80,6 +87,8 @@ function CodeEditor(props) {
     infoList,
     language,
     title,
+    antivirusStatus,
+    antivirusDescription,
     // 
     onChange,
     value,
@@ -99,6 +108,8 @@ function CodeEditor(props) {
           infoList={infoList}
           downloadLink={downloadLink}
           btnList={barBtnList}
+          antivirusStatus={antivirusStatus}
+          antivirusDescription={antivirusDescription}
         />
       </div>
       { CodeMirror && <div {...classes('edit')}>
