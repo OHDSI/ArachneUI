@@ -53,6 +53,9 @@
 
     &__nav-header {
       @include black-nav();
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     &__nav-content {
@@ -61,6 +64,19 @@
       padding: .75rem 0;
       /* fix for &file-tree__node width */
       position: relative;
+    }
+
+    &__summary {
+      @include file-tree-item();
+
+      &-label {
+        margin-left: 0.5rem;
+        padding-left: 0.4rem;
+
+        &--displaced {
+          padding-left: 1.8rem;
+        }
+      }
     }
   }
 }

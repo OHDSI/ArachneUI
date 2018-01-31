@@ -32,6 +32,8 @@ class FileTreeWrapper extends Component {
       openFile: PropTypes.func,
       data: PropTypes.array,
       selectedFilePath: PropTypes.string,
+      permissions: PropTypes.arrayOf(PropTypes.oneOf(['upload', 'remove'])),
+      doDelete: PropTypes.func,
     };
   }
 
@@ -71,6 +73,8 @@ class FileTreeWrapper extends Component {
         data={entryList}
         onNodeClick={this.onNodeClick}
         isFlat={isFlat}
+        permissions={this.props.permissions}
+        doDelete={this.props.doDelete}
       />
     );
   }

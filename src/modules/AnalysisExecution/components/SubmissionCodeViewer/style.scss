@@ -30,4 +30,11 @@
       margin-right: 0.35rem;
      }
    }
+
+   &result-file-tree-add-icon {
+     @include material-icon();
+     color: $green;
+     cursor: pointer;
+     font-size: 1.7rem;
+   }
  }

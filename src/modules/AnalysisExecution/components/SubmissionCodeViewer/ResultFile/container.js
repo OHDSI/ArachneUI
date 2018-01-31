@@ -25,10 +25,11 @@ import actions from 'actions';
 import { get } from 'services/Utils';
 import { SubmissionResultLinkBuilder } from 'modules/AnalysisExecution/ducks/linkBuilder';
 import { push as goToPage } from 'react-router-redux';
-import { paths, fileTypes } from 'modules/AnalysisExecution/const';
+import { paths, fileTypes, modal } from 'modules/AnalysisExecution/const';
 import mimeTypes from 'const/mimeTypes';
 import FileTreeUtils from 'services/FileTreeUtils';
 import SubmissionResultSelectors from './selectors';
+import { ModalUtils } from 'arachne-ui-components';
 
 class SubmissionResultFile extends SubmissionCode {
   componentWillMount() {
@@ -41,9 +42,25 @@ class SubmissionResultFile extends SubmissionCode {
       fileId: this.props.params.fileId,
       downloadFile: true,
     });
+    this.doDelete = this.doDelete.bind(this);
+    this.onUpload = this.onUpload.bind(this);
+    this.props.loadSubmission({ id: this.props.submissionId });
   }
 
-  componentWillReceiveProps(nextProps) {
+  async reloadTree(props) {
+    await this.props.loadFilesTree(
+      {
+        type: fileTypes.SUBMISSION_RESULT,
+        entityId: props.submissionId,
+      },
+      {
+        path: '/',
+      }
+    );
+    this.updateTree(props);
+  }
+
+  async componentWillReceiveProps(nextProps) {
     super.componentWillReceiveProps(nextProps);
     if (get(this.props.file, 'uuid') !== get(nextProps.file, 'uuid')) {
       this.updateTree(nextProps);
@@ -69,6 +86,32 @@ class SubmissionResultFile extends SubmissionCode {
         });
       });
   }
+
+  async doDelete(file) {
+    await this.props.deleteFile({
+      submissionId: file.submissionId,
+      fileId: file.uuid,
+    });
+    this.reloadTree(this.props);
+  }
+
+  onUpload() {
+    this.reloadTree(this.props);
+  }
+
+  getRenderParams() {
+    return {
+      ...super.getRenderParams(),
+      doDelete: this.doDelete,
+      // add a link to summary
+      summary: {
+        onClick: () => this.props.showSummary({ submissionId: this.props.submissionId }),
+        label: 'Summary',
+        isSelected: this.props.selectedFilePath === '',
+      },
+      onUpload: this.onUpload,
+    };
+  }
 }
 
 export default class SubmissionResultFileViewerBuilder extends SubmissionCodeBuilder {
@@ -82,10 +125,19 @@ export default class SubmissionResultFileViewerBuilder extends SubmissionCodeBui
   }
 
   mapStateToProps(state, ownProps) {
+    const permissions = this.selectors.getPermissions(state);
+    const submissionStatus = this.selectors.getSubmissionStatus(state);
+    const isUploadModalOpened = get(state, `modal.${modal.uploadResult}.isOpened`, false);
+
     return {
       ...super.mapStateToProps(state, ownProps),
       treeData: this.selectors.getFileTreeData(state),
       isTreeLoading: this.selectors.getIsTreeLoading(state),
+      permissions: {
+        upload: permissions.APPROVE_SUBMISSION && submissionStatus === 'IN_PROGRESS',
+        remove: permissions.APPROVE_SUBMISSION && submissionStatus === 'IN_PROGRESS',
+      },
+      isUploadModalOpened,
     };
   }
 
@@ -93,6 +145,7 @@ export default class SubmissionResultFileViewerBuilder extends SubmissionCodeBui
     return {
       ...super.getMapDispatchToProps(),
       loadFile: actions.analysisExecution.submissionResultFile.find,
+      deleteFile: actions.analysisExecution.submissionResultFile.delete,
       clearFileData: actions.analysisExecution.submissionResultFile.clear,
       showSummary: ({ submissionId }) => goToPage(paths.submissionResultSummary({ submissionId })),
 
@@ -101,6 +154,9 @@ export default class SubmissionResultFileViewerBuilder extends SubmissionCodeBui
       selectFileInTree: actions.analysisExecution.fileTreeData.selectFile,
       flushFileTree: actions.analysisExecution.fileTreeData.flush,
       goToPage: actions.router.goToPage,
+      loadSubmission: actions.analysisExecution.submissionSummary.submission.find,
+      showUploadModal: submissionId =>
+        ModalUtils.actions.toggle(modal.uploadResult, true, { submissionId }),
     };
   }
 
@@ -117,26 +173,10 @@ export default class SubmissionResultFileViewerBuilder extends SubmissionCodeBui
       );
     };
 
-    // add a link to summary
-    const treeData = {
-      ...stateProps.treeData,
-      children: [
-        {
-          docType: mimeTypes.home,
-          isExpanded: false,
-          onClick: () => dispatchProps.showSummary({ submissionId: stateProps.submissionId }),
-          relativePath: '',
-          label: 'Summary',
-        },
-        ...get(stateProps.treeData, 'children', []),
-      ],
-    };
-
     return {
       ...stateProps,
       ...dispatchProps,
       ...ownProps,
-      treeData,
       toggleFolder({ relativePath }, state, toggleParents = false) {
         let loadPromise = new Promise(resolve => resolve());
 

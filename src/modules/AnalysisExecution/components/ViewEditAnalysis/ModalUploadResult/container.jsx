@@ -50,11 +50,11 @@ const mapDispatchToProps = {
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
-  return Object.assign({
+  return {
     ...ownProps,
     ...stateProps,
     ...dispatchProps,
-    doSubmit({ result }) {
+    async doSubmit({ result }) {
       const submitPromises = [];
 
       if (Array.isArray(result)) {
@@ -70,16 +70,23 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         });
       }
 
-      const submitPromise = Promise.all(submitPromises)
-        .then(() => dispatchProps.resetForm())
-        .then(() => dispatchProps.closeModal())
-        .then(() => dispatchProps.loadAnalysis({ id: stateProps.analysisId }));
+      const submitPromise = await Promise.all(submitPromises);
+      try {
+        await dispatchProps.resetForm();
+        await dispatchProps.closeModal();
+        await dispatchProps.loadAnalysis({ id: stateProps.analysisId });
+        if (ownProps.onUpload) {
+          ownProps.onUpload();
+        }
+      } catch (er) {
+        console.error(er);
+      }
 
       // We have to return a submission promise back to redux-form
       // to allow it update the state
       return submitPromise;
     },
-  });
+  };
 }
 
 let ReduxModalUploadResult = ModalUtils.connect({

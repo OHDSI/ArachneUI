@@ -59,11 +59,15 @@ export class SubmissionCode extends FileLoader {
     this.props.clearDetailsData();
   }
 
-  render() {
-    return presenter({
+  getRenderParams() {
+    return {
       ...this.props,
       downloadLink: this.LinkBuilder.build(),
-    });
+    };
+  }
+
+  render() {
+    return presenter(this.getRenderParams());
   }
 }
 

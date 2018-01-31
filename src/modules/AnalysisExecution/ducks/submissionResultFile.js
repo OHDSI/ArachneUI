@@ -21,10 +21,23 @@
  */
 
 import DuckBuilder from 'modules/AnalysisExecution/ducks/submissionFileDuckBuilder';
+import Duck from 'services/Duck';
 import { SubmissionResultLinkBuilder } from 'modules/AnalysisExecution/ducks/linkBuilder';
+import { apiPaths } from 'modules/AnalysisExecution/const';
 
 const duck = new DuckBuilder();
 duck.LinkBuilder = SubmissionResultLinkBuilder;
 const ducks = duck.build();
 
-export default ducks;
+const deleteDuck = new Duck({
+  name: 'AE_ANALYSIS_SUBMISSION_FILE',
+  urlBuilder: apiPaths.submissionResultDelete,
+});
+
+export default {
+  actions: {
+    ...ducks.actions,
+    delete: deleteDuck.actions.delete,
+  },
+  reducer: ducks.reducer,
+};
