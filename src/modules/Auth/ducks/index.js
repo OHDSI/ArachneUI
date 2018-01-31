@@ -46,6 +46,7 @@ const authRoutingHistory = (state = {}, action) => {
 const actions = {
   login: authLogin.actions.create,
   logout: authLogout.actions.create,
+  clearToken: authLogout.actions.clearToken,
   principal: principal.actions,
   authMethod: authMethod.actions,
   register: authRegister.actions.create,

@@ -145,7 +145,7 @@ function initializeApi(store) {
     .setUserTokenGetter(() => AuthService.getToken())
     .setUnauthorizedHandler(() => {
       if (store.getState().auth.principal.queryResult !== null) {
-        store.dispatch(actions.auth.logout(store.getState().routing.locationBeforeTransitions.pathname));
+        store.dispatch(actions.auth.clearToken(store.getState().routing.locationBeforeTransitions.pathname));
       }
     });
 }

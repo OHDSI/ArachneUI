@@ -128,7 +128,7 @@ function mapStateToProps(state) {
 const mapDispatchToProps = {
   showAboutInfo: () => ModalUtils.actions.toggle(modal.portalAboutInfo, true),
   refreshToken: () => actions.auth.token.refresh(),
-  logout: (backurl) => actions.auth.logout(backurl),
+  logout: (backurl) => actions.auth.clearToken(backurl),
   getPasswordPolicies: () => actions.auth.passwordPolicy.find(),
 };
 
