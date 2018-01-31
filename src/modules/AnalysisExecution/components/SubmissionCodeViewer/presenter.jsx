@@ -69,14 +69,16 @@ function SubmissionCodeViewer({
 
   submissionId,
   submissionGroupId,
-  hasPermissions,
+  permissions,
   doDelete,
   showUploadModal,
+  onUpload,
+  summary,
 }) {
   const classes = BEMHelper('result-file-tree-add-icon');
 
   let headerBtns = null;
-  if (hasPermissions) {
+  if (permissions.upload) {
     headerBtns = (
       <div>
         <span {...classes()} onClick={() => showUploadModal(submissionId)}>
@@ -95,9 +97,10 @@ function SubmissionCodeViewer({
     isTreeLoading={isTreeLoading}
     selectedFilePath={selectedFilePath}
     urlParams={urlParams}
-    hasPermissions={hasPermissions}
+    permissions={permissions}
     doDelete={doDelete}
     headerBtns={headerBtns}
+    summary={summary}
     detailsComponent={
       isReport
         ? <ReportViewer
@@ -125,7 +128,7 @@ function SubmissionCodeViewer({
       submissionId={submissionId}
     />}
   >
-    <ModalUploadResult />
+    <ModalUploadResult onUpload={onUpload} />
   </FileBrowser>);
 
   return (

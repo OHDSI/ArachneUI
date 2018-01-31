@@ -47,44 +47,7 @@
     }
  
     &__node {
-      display: inline-block;
-      min-width: 100%;
-      position: relative;
-
-      &--selected {
-        background: $grey-light;
-      }
-
-      &-details {
-        align-items: center;
-        display: inline-flex;
-        padding: .5rem 1rem;
-        width: 100%;
-        
-        &:hover {
-          cursor: pointer;
-          background: $grey-light;
-        }
-      }
-
-      &-children {
-        padding-left: 2rem;
-      }
-
-      &-label {
-        flex: 1;
-      }
-      
-      &-toggle {
-        @include material-icon();
-        width: 1.8rem;
-        margin-right: .5rem;
-        flex-shrink: 0;
-        
-        &--spinning {
-          @include spinning();
-        }
-      }
+      @include file-tree-item();
     }
 
     &__delete-handle {

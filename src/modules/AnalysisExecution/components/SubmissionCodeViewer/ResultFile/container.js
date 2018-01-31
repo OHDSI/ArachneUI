@@ -43,7 +43,21 @@ class SubmissionResultFile extends SubmissionCode {
       downloadFile: true,
     });
     this.doDelete = this.doDelete.bind(this);
+    this.onUpload = this.onUpload.bind(this);
     this.props.loadSubmission({ id: this.props.submissionId });
+  }
+
+  async reloadTree(props) {
+    await this.props.loadFilesTree(
+      {
+        type: fileTypes.SUBMISSION_RESULT,
+        entityId: props.submissionId,
+      },
+      {
+        path: '/',
+      }
+    );
+    this.updateTree(props);
   }
 
   async componentWillReceiveProps(nextProps) {
@@ -55,18 +69,6 @@ class SubmissionResultFile extends SubmissionCode {
         fileId: nextProps.params.fileId,
         downloadFile: true,
       };
-    }
-    if (this.props.isUploadModalOpened === true && nextProps.isUploadModalOpened === false) {
-      await this.props.loadFilesTree(
-        {
-          type: fileTypes.SUBMISSION_RESULT,
-          entityId: nextProps.submissionId,
-        },
-        {
-          path: '/',
-        }
-      );
-      this.updateTree(nextProps);
     }
   }
 
@@ -90,22 +92,24 @@ class SubmissionResultFile extends SubmissionCode {
       submissionId: file.submissionId,
       fileId: file.uuid,
     });
-    await this.props.loadFilesTree(
-      {
-        type: fileTypes.SUBMISSION_RESULT,
-        entityId: this.props.submissionId,
-      },
-      {
-        path: '/',
-      }
-    );
-    this.updateTree(this.props);
+    this.reloadTree(this.props);
+  }
+
+  onUpload() {
+    this.reloadTree(this.props);
   }
 
   getRenderParams() {
     return {
       ...super.getRenderParams(),
       doDelete: this.doDelete,
+      // add a link to summary
+      summary: {
+        onClick: () => this.props.showSummary({ submissionId: this.props.submissionId }),
+        label: 'Summary',
+        isSelected: this.props.selectedFilePath === '',
+      },
+      onUpload: this.onUpload,
     };
   }
 }
@@ -122,13 +126,17 @@ export default class SubmissionResultFileViewerBuilder extends SubmissionCodeBui
 
   mapStateToProps(state, ownProps) {
     const permissions = this.selectors.getPermissions(state);
+    const submissionStatus = this.selectors.getSubmissionStatus(state);
     const isUploadModalOpened = get(state, `modal.${modal.uploadResult}.isOpened`, false);
 
     return {
       ...super.mapStateToProps(state, ownProps),
       treeData: this.selectors.getFileTreeData(state),
       isTreeLoading: this.selectors.getIsTreeLoading(state),
-      hasPermissions: permissions.APPROVE_SUBMISSION,
+      permissions: {
+        upload: permissions.APPROVE_SUBMISSION && submissionStatus === 'IN_PROGRESS',
+        remove: permissions.APPROVE_SUBMISSION && submissionStatus === 'IN_PROGRESS',
+      },
       isUploadModalOpened,
     };
   }
@@ -165,26 +173,10 @@ export default class SubmissionResultFileViewerBuilder extends SubmissionCodeBui
       );
     };
 
-    // add a link to summary
-    const treeData = {
-      ...stateProps.treeData,
-      children: [
-        {
-          docType: mimeTypes.home,
-          isExpanded: false,
-          onClick: () => dispatchProps.showSummary({ submissionId: stateProps.submissionId }),
-          relativePath: '',
-          label: 'Summary',
-        },
-        ...get(stateProps.treeData, 'children', []),
-      ],
-    };
-
     return {
       ...stateProps,
       ...dispatchProps,
       ...ownProps,
-      treeData,
       toggleFolder({ relativePath }, state, toggleParents = false) {
         let loadPromise = new Promise(resolve => resolve());
 

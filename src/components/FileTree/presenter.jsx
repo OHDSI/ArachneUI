@@ -43,7 +43,7 @@ class FileTree extends Component {
       onNodeClick: PropTypes.func,
       isNodeExpanded: PropTypes.func,
       collapseNode: PropTypes.func,
-      hasPermissions: PropTypes.bool,
+      permissions: PropTypes.arrayOf(PropTypes.oneOf(['upload', 'remove'])),
       doDelete: PropTypes.bool,
     };
   }
@@ -55,7 +55,7 @@ class FileTree extends Component {
     this.getNode = this.getNode.bind(this);
   }
 
-  getNodeToggler({ classes, docType, isLoading, isExpanded, isHome }) {
+  getNodeToggler({ classes, docType, isLoading, isExpanded }) {
     const classname = 'node-toggle';
     let element;
 
@@ -77,7 +77,6 @@ class FileTree extends Component {
           element: classname,
           modifiers: {
             'no-toggle': true,
-            home: isHome,
           },
         })} />
       );
@@ -92,12 +91,12 @@ class FileTree extends Component {
       onNodeClick,
       selectedFilePath,
       doDelete,
-      isDeletable,
+      permissions,
     } = props;
 
     const isSelected = node.relativePath === selectedFilePath;
     const mods = ['name-only', isSelected ? 'name-bold' : null];
-    const isFolder = [mimeTypes.home, mimeTypes.folder].includes(node.docType);
+    const isFolder = mimeTypes.folder === node.docType;
 
     return (
       <li {...classes('node', isSelected ? 'selected' : null)}>
@@ -110,10 +109,9 @@ class FileTree extends Component {
             this.getNodeToggler({
               ...node,
               classes,
-              isHome: isDeletable && node.docType === mimeTypes.home,
             })
           }
-          {isDeletable && !isFolder
+          {permissions.remove && !isFolder
             ? <span
               {...classes('delete-handle')}
               onClick={(e) => {
@@ -141,7 +139,7 @@ class FileTree extends Component {
               selectedFilePath={selectedFilePath}
               isRoot={false}
               doDelete={doDelete}
-              hasPermissions={isDeletable}
+              permissions={permissions}
             />
           </div>
           : null
@@ -159,7 +157,10 @@ class FileTree extends Component {
       isFlat,
       isRoot = true,
       doDelete,
-      hasPermissions = false,
+      permissions = {
+        upload: false,
+        remove: false,
+      },
     } = this.props;
 
     return (
@@ -170,7 +171,7 @@ class FileTree extends Component {
           selectedFilePath,
           onNodeClick,
           doDelete,
-          isDeletable: hasPermissions,
+          permissions,
         }))}
       </ul>
     );
