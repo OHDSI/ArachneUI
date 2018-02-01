@@ -44,6 +44,7 @@
     &--isRoot {
       /* fix for &__node width */
       position: absolute;
+      width: 100%;
     }
  
     &__node {
