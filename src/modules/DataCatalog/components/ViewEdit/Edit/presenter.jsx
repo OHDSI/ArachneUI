@@ -16,24 +16,41 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: January 26, 2017
+ * Created: January 31, 2018
  *
  */
 
-import React from 'react';
-import { Route, IndexRedirect } from 'react-router';
-import ListDataSources from './components/List';
-import ViewDataSource from './components/ViewEdit/View';
-import EditDataSource from './components/ViewEdit/Edit';
+import React, { PropTypes } from 'react';
+import BEMHelper from 'services/BemHelper';
 
-function Routes() {
-  return [
-    <Route path="data-sources" component={ListDataSources} />,
-    <Route path="data-sources/:dataSourceId" component={ViewDataSource} />,
-    <Route path="data-sources/:dataSourceId/profile" component={ViewDataSource} params={{ isProfileSelected: true }} />,
-    <Route path="data-sources/:dataSourceId/edit" component={EditDataSource} />,
-    <IndexRedirect to="data-sources"/>,
-  ]
+import {
+  PageContent,
+  LoadingPanel,
+} from 'arachne-ui-components';
+
+import Toolbar from 'modules/DataCatalog/components/ViewEdit/Toolbar';
+import AttributeList from './AttributesList';
+
+import './style.scss';
+
+function Edit(props) {
+  const classes = new BEMHelper('data-source-entry-editor');
+
+  return (
+    <PageContent title={`${props.name} | Arachne`}>
+      <div {...classes()}>
+        <Toolbar />
+        <div {...classes('content')}>
+          <AttributeList />
+        </div>
+      </div>
+      <LoadingPanel active={props.isLoading} />
+    </PageContent>
+  );
 }
 
-export default Routes;
+Edit.propTypes = {
+  isLoading: PropTypes.bool,
+};
+
+export default Edit;

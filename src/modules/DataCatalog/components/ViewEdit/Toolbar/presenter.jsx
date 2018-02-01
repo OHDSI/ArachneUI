@@ -30,7 +30,7 @@ import ToolbarActions from '../ToolbarActions';
 
 require('./style.scss');
 
-function ViewEditDataSourceToolbar({
+function ViewDataSourceToolbar({
 	backUrl,
 	name,
   healthStatus,
@@ -76,4 +76,4 @@ function ViewEditDataSourceToolbar({
   );
 }
 
-export default ViewEditDataSourceToolbar;
+export default ViewDataSourceToolbar;

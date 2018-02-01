@@ -16,7 +16,7 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: February 03, 2017
+ * Created: January 31, 2018
  *
  */
 
@@ -24,26 +24,18 @@
 import { Component, PropTypes } from 'react';
 import actions from 'actions/index';
 import get from 'lodash/get';
-import { Utils } from 'services/Utils';
+import { Utils, ContainerBuilder } from 'services/Utils';
 import presenter from './presenter';
 
-// TODO!!!
 /** @augments { Component<any, any> } */
-class StatefulViewEdit extends Component {
+class StatefulEdit extends Component {
   static propTypes() {
     return {
-      dataSourceId: PropTypes.string.isRequired,
-      loadDataSource: PropTypes.func.isRequired,
-      loadReportsList: PropTypes.func.isRequired,
-      loadCharacterization: PropTypes.func,
     };
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.dataSourceId !== nextProps.dataSourceId) {
-      this.props.loadDataSource({ id: nextProps.dataSourceId });
-      this.props.loadReportsList({ id: nextProps.dataSourceId });
-      this.props.loadCharacterization({ id: nextProps.dataSourceId });
     }
   }
 
@@ -52,54 +44,37 @@ class StatefulViewEdit extends Component {
   }
 }
 
-class DataCatalogViewEditBuilder {
+class DataCatalogEditBuilder extends ContainerBuilder {
 
   getComponent() {
-    return StatefulViewEdit;
+    return StatefulEdit;
   }
 
   mapStateToProps(state, ownProps) {
     const moduleState = get(state, 'dataCatalog');
-    const reportsAvailable = get(state, 'dataCatalog.report.queryResult.result', []) || [];
   
     return {
-      dataSourceId: ownProps.routeParams.dataSourceId,
-      isLoading: moduleState.dataSource.isLoading || false,
-      reportsAvailable,
-      isProfileSelected: ownProps.routeParams.isProfile === 'profile',
       name: `${get(moduleState, 'dataSource.data.result.dataNode.name', '')}: ${get(moduleState, 'dataSource.data.result.name', '')}`,
-      modelType: get(moduleState, 'dataSource.data.result.modelType', ''),
+      isLoading: moduleState.dataSource.isLoading || false,
     };
   }
 
   getMapDispatchToProps() {
     return {
       loadDataSource: actions.dataCatalog.dataSource.find,
-      loadReportsList: actions.dataCatalog.report.query,
-      loadCharacterization: actions.dataCatalog.characterization.find,
     };
   }
 
   getFetchers({ params, state, dispatch }) {
     const id = params.dataSourceId;
     return {
-      loadDataSource: actions.dataCatalog.dataSource.find.bind(null, { id: id }),
-      loadReportsList: actions.dataCatalog.report.query.bind(null, { id: id }),
-      loadCharacterization: actions.dataCatalog.characterization.find.bind(null, { id: id }),
+      loadDataSource: actions.dataCatalog.dataSource.find.bind(null, { id }),
     };
   }
 
-  build() {
-    return Utils.buildConnectedComponent({
-      Component: this.getComponent(),
-      mapStateToProps: this.mapStateToProps,
-      mapDispatchToProps: this.getMapDispatchToProps(),
-      getFetchers: this.getFetchers,
-    });
-  }
 }
 
-export default DataCatalogViewEditBuilder;
+export default DataCatalogEditBuilder;
 export {
-  StatefulViewEdit,
+  StatefulEdit,
 };

@@ -16,23 +16,32 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: February 07, 2017
+ * Created: January 31, 2018
  *
  */
 
 import { createSelector } from 'reselect';
-import { get } from 'services/Utils';
+import { get, Utils } from 'services/Utils';
 import dsInfoConvert from 'modules/DataCatalog/converters/dsInfoConvertor';
 import DsAttrListSelector from 'modules/DataCatalog/selectors/DsAttrListSelector';
 
-class DataCatalogListViewEditAttributesSelectorsBuilder extends DsAttrListSelector {
+class DataCatalogListViewAttributesSelectorsBuilder extends DsAttrListSelector {
 
   getRawData(state) {
     return get(state, 'dataCatalog.dataSource.data.result', {}, 'Object');
   }
 
   getData(rawDs, attrList) {
-    return dsInfoConvert(rawDs, attrList);
+    const attributes = {};
+
+    attrList.forEach((attribute) => {
+      const value = get(rawDs, attribute.name);
+      if (value) {
+        attributes[attribute.name] = Utils.castValue(value, attribute);
+      }
+    });
+
+    return attributes;
   }
 
   buildSelectorForGetData(getAttrList) {
@@ -54,4 +63,4 @@ class DataCatalogListViewEditAttributesSelectorsBuilder extends DsAttrListSelect
 
 }
 
-export default DataCatalogListViewEditAttributesSelectorsBuilder;
+export default DataCatalogListViewAttributesSelectorsBuilder;
