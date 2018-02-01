@@ -57,6 +57,7 @@ export default class SubmissionResultsummaryBuilder extends ContainerBuilder {
     const analysis = selectors.getAnalysis(state);
     const submissionGroupType = selectors.getSubmissionType(state);
     const datasource = dsConverter(get(submission, 'dataSource', {}));
+    const currentAnalysisType = get(analysis, 'type.id');
 
     return {
       analysis,
@@ -65,6 +66,7 @@ export default class SubmissionResultsummaryBuilder extends ContainerBuilder {
       submissionGroupType,
       submission,
       datasource,
+      currentAnalysisType,
     };
   }
 
