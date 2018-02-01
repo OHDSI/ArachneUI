@@ -134,6 +134,10 @@ export class SubmissionCodeBuilder extends ContainerBuilder {
       submissionId,
       isReport,
       selectedFilePath: this.selectors.getSelectedFileFromTree(state),
+      permissions: {
+        upload: false,
+        remove: false,
+      },
     };
   }
 
