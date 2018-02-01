@@ -123,7 +123,7 @@ class FileTree extends Component {
                 }
               }}
             >
-              delete_forever
+              close
             </span>
             : null
           }
