@@ -22,6 +22,7 @@
 
 import React, { PropTypes } from 'react';
 import BEMHelper from 'services/BemHelper';
+import EmptyState from 'components/EmptyState';
 
 import {
   PageContent,
@@ -33,20 +34,43 @@ import AttributeList from './AttributesList';
 
 import './style.scss';
 
-function Edit(props) {
-  const classes = new BEMHelper('data-source-entry-editor');
+class Edit {
+  getAchillesSettings() {
+    return [];
+  }
 
-  return (
-    <PageContent title={`${props.name} | Arachne`}>
-      <div {...classes()}>
-        <Toolbar />
-        <div {...classes('content')}>
-          <AttributeList />
+  render(props) {
+    const classes = new BEMHelper('data-source-entry-editor');
+    const {
+      permissions,
+    } = props;
+
+    return (
+      <PageContent title={`${props.name} | Arachne`}>
+        <div {...classes()}>
+          {permissions.DELETE_DATASOURCE
+            ? [
+              <Toolbar />,
+              <div {...classes('content')}>
+                <div className="row">
+                  <div className='col-xs-6 col-md-6'>
+                    <AttributeList />
+                  </div>
+                  <div className='col-xs-6 col-md-6'>
+                    {this.getAchillesSettings()}
+                  </div>
+                </div>
+              </div>,
+              ]
+            : <div {...classes('content', 'centered')}>
+                <EmptyState message={'You do not have rights to edit this Data Source'} />
+              </div>
+            }
         </div>
-      </div>
-      <LoadingPanel active={props.isLoading} />
-    </PageContent>
-  );
+        <LoadingPanel active={props.isLoading} />
+      </PageContent>
+    );
+  }
 }
 
 Edit.propTypes = {

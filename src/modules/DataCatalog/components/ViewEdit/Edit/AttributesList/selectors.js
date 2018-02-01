@@ -22,7 +22,6 @@
 
 import { createSelector } from 'reselect';
 import { get, Utils } from 'services/Utils';
-import dsInfoConvert from 'modules/DataCatalog/converters/dsInfoConvertor';
 import DsAttrListSelector from 'modules/DataCatalog/selectors/DsAttrListSelector';
 
 class DataCatalogListViewAttributesSelectorsBuilder extends DsAttrListSelector {

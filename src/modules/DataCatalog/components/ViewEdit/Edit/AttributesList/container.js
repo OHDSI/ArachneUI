@@ -78,7 +78,11 @@ export default class AttributeListBuilder extends ContainerBuilder {
       ...stateProps,
       ...dispatchProps,
       async doSubmit(data) {
+        const result = await dispatchProps.update({
+          id: stateProps.dataSourceId,
+        }, data);
 
+        return result;
       },
     };
   }

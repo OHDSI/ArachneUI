@@ -21,11 +21,13 @@
  */
 
 // @ts-check
-import { Component, PropTypes } from 'react';
+import { Component } from 'react';
 import actions from 'actions/index';
 import get from 'lodash/get';
-import { Utils, ContainerBuilder } from 'services/Utils';
-import presenter from './presenter';
+import { ContainerBuilder } from 'services/Utils';
+import Presenter from './presenter';
+
+const presenterComponent = new Presenter();
 
 /** @augments { Component<any, any> } */
 class StatefulEdit extends Component {
@@ -40,7 +42,7 @@ class StatefulEdit extends Component {
   }
 
   render() {
-    return presenter(this.props);
+    return presenterComponent.render(this.props);
   }
 }
 
@@ -52,10 +54,12 @@ class DataCatalogEditBuilder extends ContainerBuilder {
 
   mapStateToProps(state, ownProps) {
     const moduleState = get(state, 'dataCatalog');
+    const permissions = get(state, 'dataCatalog.dataSource.data.result.permissions', {}, 'Object');
   
     return {
       name: `${get(moduleState, 'dataSource.data.result.dataNode.name', '')}: ${get(moduleState, 'dataSource.data.result.name', '')}`,
       isLoading: moduleState.dataSource.isLoading || false,
+      permissions,
     };
   }
 

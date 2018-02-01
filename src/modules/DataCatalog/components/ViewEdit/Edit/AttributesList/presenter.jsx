@@ -93,18 +93,14 @@ function AttributesList(props) {
   };
 
   return (
-    <div className="row">
-      <div className='col-xs-6 col-md-6'>
-        <div {...classes()}>
-          <Form
-            {...props}
-            onSubmit={doSubmit}
-            fields={fields}
-            mods={['no-spacing', 'actions-inline']}
-            submitBtn={submitBtn}
-          />
-        </div>
-      </div>
+    <div {...classes()}>
+      <Form
+        {...props}
+        onSubmit={doSubmit}
+        fields={fields}
+        mods={['no-spacing', 'actions-inline']}
+        submitBtn={submitBtn}
+      />
     </div>
   );
 }

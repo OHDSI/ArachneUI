@@ -29,9 +29,15 @@
      flex-direction: column;
  
      &__content {
-       padding: 0 2rem;
-     }
- 
-     
+        padding: 0 2rem;
+
+        &--centered {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        }
+     }     
    }
  }
