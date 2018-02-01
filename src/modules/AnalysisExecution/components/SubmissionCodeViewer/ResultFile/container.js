@@ -30,6 +30,7 @@ import mimeTypes from 'const/mimeTypes';
 import FileTreeUtils from 'services/FileTreeUtils';
 import SubmissionResultSelectors from './selectors';
 import { ModalUtils } from 'arachne-ui-components';
+import { DownloadAll } from 'modules/AnalysisExecution/components/SubmissionCodeViewer/ResultFile/components/ToolbarButtons/presenter';
 
 class SubmissionResultFile extends SubmissionCode {
   componentWillMount() {
@@ -128,9 +129,10 @@ export default class SubmissionResultFileViewerBuilder extends SubmissionCodeBui
     const permissions = this.selectors.getPermissions(state);
     const submissionStatus = this.selectors.getSubmissionStatus(state);
     const isUploadModalOpened = get(state, `modal.${modal.uploadResult}.isOpened`, false);
+    const parentProps = super.mapStateToProps(state, ownProps);
 
     return {
-      ...super.mapStateToProps(state, ownProps),
+      ...parentProps,
       treeData: this.selectors.getFileTreeData(state),
       isTreeLoading: this.selectors.getIsTreeLoading(state),
       permissions: {
@@ -138,6 +140,12 @@ export default class SubmissionResultFileViewerBuilder extends SubmissionCodeBui
         remove: permissions.APPROVE_SUBMISSION && submissionStatus === 'IN_PROGRESS',
       },
       isUploadModalOpened,
+      toolbarOpts: {
+        ...parentProps.toolbarOpts,
+        children: [
+          DownloadAll({ submissionId: parentProps.submissionId }),
+        ],
+      },
     };
   }
 
