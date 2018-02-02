@@ -21,8 +21,9 @@
  */
 
 import { createSelector } from 'reselect';
-import { get, Utils } from 'services/Utils';
+import { get } from 'services/Utils';
 import DsAttrListSelector from 'modules/DataCatalog/selectors/DsAttrListSelector';
+import { modelTypesValues, staticAttrList } from 'const/dataSource';
 
 class DataCatalogListViewAttributesSelectorsBuilder extends DsAttrListSelector {
 
@@ -30,33 +31,40 @@ class DataCatalogListViewAttributesSelectorsBuilder extends DsAttrListSelector {
     return get(state, 'dataCatalog.dataSource.data.result', {}, 'Object');
   }
 
-  getData(rawDs, attrList) {
-    const attributes = {};
-
-    attrList.forEach((attribute) => {
-      const value = get(rawDs, attribute.name);
-      if (value) {
-        attributes[attribute.name] = Utils.castValue(value, attribute);
-      }
-    });
-
-    return attributes;
+  getAttrList(state) {
+    return staticAttrList.filter(el => !el.calculated);
   }
 
-  buildSelectorForGetData(getAttrList) {
+  getValues(state) {
+    return get(state, 'form.editDataSource.values', {}, 'Object');
+  }
+
+  getAttributes(attrList, values) {
+    return (values.modelType === modelTypesValues.CDM) ? attrList : attrList.filter(el => !el.cdmSpecific);
+  }
+
+  buildSelectorForGetAttrList() {
     return createSelector(
-      [this.getRawData, getAttrList],
-      this.getData
+      [this.getAttrList.bind(this), this.getValues],
+      this.getAttributes,
+    );
+  }
+  
+  getData(rawDs) {
+    return rawDs;
+  }
+
+  buildSelectorForGetData() {
+    return createSelector(
+      [this.getRawData],
+      this.getData,
     );
   }
 
   build() {
-    const getAttrList = this.buildSelectorForGetAttrList();
-    const getAttrValues = this.buildSelectorForGetData(getAttrList);
-
     return {
-      getAttrList,
-      getAttrValues,
+      getAttrList: this.buildSelectorForGetAttrList(),
+      getData: this.buildSelectorForGetData(),
     };
   }
 

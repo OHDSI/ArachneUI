@@ -26,6 +26,7 @@ import {
   Form,
   FormSelect,
   FormInput,
+  Panel,
 } from 'arachne-ui-components';
 import { fieldTypes } from 'modules/ExpertFinder/const';
 
@@ -93,7 +94,7 @@ function AttributesList(props) {
   };
 
   return (
-    <div {...classes()}>
+    <Panel {...classes()} title="Metadata">
       <Form
         {...props}
         onSubmit={doSubmit}
@@ -101,7 +102,7 @@ function AttributesList(props) {
         mods={['no-spacing', 'actions-inline']}
         submitBtn={submitBtn}
       />
-    </div>
+    </Panel>
   );
 }
 

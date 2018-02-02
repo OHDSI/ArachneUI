@@ -33,8 +33,12 @@
 		& .#{$namespace} {
 			&form {
 				&__actions {
-					padding: 0 1.5rem 1rem;
+					background: $grey-lighter;
 					justify-content: flex-end;
+					margin-top: 25px;
+					padding-bottom: 10px;
+					padding-top: 10px;
+					padding-right: 2rem;
 				}
 			}
 		}
@@ -43,7 +47,7 @@
 	&attributes-form-list-item {
 		display: flex;
 		border-bottom: 1px solid $grey-light;
-		padding: 0.75rem 1.5rem;
+		padding: 0.75rem 2rem;
 		justify-content: space-between;
 		align-items: center;
 

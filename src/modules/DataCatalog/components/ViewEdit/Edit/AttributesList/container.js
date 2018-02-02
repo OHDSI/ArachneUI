@@ -60,7 +60,7 @@ export default class AttributeListBuilder extends ContainerBuilder {
 
     return {
       attrList: selectors.getAttrList(state),
-      initialValues: selectors.getAttrValues(state),
+      initialValues: selectors.getData(state),
       dataSourceId,
     };
   }
