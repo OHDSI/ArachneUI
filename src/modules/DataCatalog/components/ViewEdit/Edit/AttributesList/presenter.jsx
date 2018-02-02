@@ -37,11 +37,13 @@ function AttributesFormListItem({ item, input, meta }) {
   let field = null;
   switch (item.type) {
     case fieldTypes.enum:
+      case fieldTypes.enumMulti:
       field = (<FormSelect
         options={item.options}
         mods={['bordered']}
         input={input}
         meta={meta}
+        isMulti={item.type === fieldTypes.enumMulti}
       />);
       break;
     case fieldTypes.string:
