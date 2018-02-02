@@ -140,7 +140,7 @@ export default class ReportViewerBuilder extends ContainerBuilder {
           type: 'result',
           submissionGroupId: ownProps.submissionGroupId,
           submissionId: ownProps.submissionId,
-          fileId: get(detailedFiles, '[0].fileId', '1'),
+          fileId: get(detailedFiles, '[0].uuid', '1'),
         }));
       },
     };

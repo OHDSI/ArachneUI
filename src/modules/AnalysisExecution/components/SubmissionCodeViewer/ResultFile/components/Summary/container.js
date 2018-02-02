@@ -31,7 +31,7 @@ const selectors = (new SelectorsBuilder()).build();
 
 class SubmissionResultSummary extends Component {
   componentWillMount() {
-    this.props.loadSubmission({ id: this.props.submissionId });
+    this.props.loadAnalysis({ id: this.props.analysisId });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -72,8 +72,7 @@ export default class SubmissionResultsummaryBuilder extends ContainerBuilder {
 
   getMapDispatchToProps() {
     return {
-      loadAnalysis: actions.analysisExecution.submissionSummary.analysis.find,
-      loadSubmission: actions.analysisExecution.submissionSummary.submission.find,
+      loadAnalysis: actions.analysisExecution.submissionSummary.analysis.find,      
     };
   }
 

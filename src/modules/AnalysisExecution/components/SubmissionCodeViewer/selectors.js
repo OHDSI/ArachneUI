@@ -32,6 +32,10 @@ export class SubmissionCodeSelectorsBuilder {
     return get(state, 'analysisExecution.analysisCode.queryResult', [], 'Array');
   }
 
+  getPermissions(state) {
+    return get(state, 'analysisExecution.submissionSummary.submission.data.permissions', {}, 'Object');
+  }
+
   buildSelectorForSubmissionFileList() {
     return createSelector(
       [this.getRawFiles],
@@ -87,6 +91,7 @@ export class SubmissionCodeSelectorsBuilder {
       getFileTreeData: this.getFileTreeData,
       getSelectedFileFromTree: this.getSelectedFileFromTree,
       getIsTreeLoading: this.getIsTreeLoading,
+      getPermissions: this.getPermissions,
     };
   }
 }

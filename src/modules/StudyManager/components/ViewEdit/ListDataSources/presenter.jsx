@@ -103,13 +103,26 @@ function DataSourceItem(props) {
           <div {...classes('comment-icon')}>chat_bubble</div>
         </Link>
       }
-      {dataSource.isVirtual && dataSource.isCurrentUserOwner && hasEditStudyPermissions
-        ? <Link {...classes('name')} onClick={() => editDataSource(dataSource.id)}>{dataSource.name}<span {...classes('ico')}>edit</span></Link>
-        : <span {...classes('name')}>{dataSource.name}</span>
+      {dataSource.isVirtual
+        ? <VirtualDatasource isEditable={dataSource.isCurrentUserOwner && hasEditStudyPermissions} classes={classes} dataSource={dataSource} editDataSource={editDataSource} />
+        : <Link {...classes('name')} to={dataSource.link}>{dataSource.name}</Link>
       }
       <span {...classes({ element: 'status', modifiers: dataSource.status.toLowerCase() })}>{dataSource.status}</span>
     </ListItem>
   );
+}
+
+function VirtualDatasource(props) {
+    const {
+      isEditable,
+      classes,
+      dataSource,
+      editDataSource,
+    } = props;
+
+    return isEditable
+      ? <Link {...classes('name')} onClick={() => editDataSource(dataSource.id)}>{dataSource.name}<span {...classes('ico')}>edit</span></Link>
+      : <span {...classes('name')}>{dataSource.name}</span>;
 }
 
 ListDataSources.propTypes = {

@@ -377,6 +377,8 @@ class Utils {
     const promise = new Promise((resolve, reject) => {
       if (confirm(message)) {
         resolve();
+      } else {
+        reject();
       }
     });
     return promise;
@@ -459,6 +461,29 @@ class Utils {
         };
       },
     };
+  }
+
+  static isOuterLink(link) {
+    const currentUri = new URI(window.location.href);
+    const givenUri = new URI(link);
+    return givenUri.domain().length !== 0 && currentUri.domain() !== givenUri.domain();
+  }
+
+  static confirmOuterLink(link) {
+    if (confirm('Are you sure you want to leave this page and navigate to external web-site?')) {
+      const win = window.open(link, '_blank');
+      win.focus();
+    }
+  }
+
+  static getSecureLink(link) {
+    let data = { link };
+
+    if (data.link && Utils.isOuterLink(data.link)) {
+      data = { onClick: Utils.confirmOuterLink.bind(null, [data.link]) };
+    }
+
+    return data;
   }
 
 }
