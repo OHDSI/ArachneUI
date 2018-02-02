@@ -28,10 +28,14 @@
     position: absolute;
     width: 100%;
 
-    &__content {
+    &__workspace, &__content {
       display: flex;
-      padding: 0;
       height: 100%;
+      width: 100%;
+    }
+
+    &__content {
+      padding: 0;
     }
   }
 }

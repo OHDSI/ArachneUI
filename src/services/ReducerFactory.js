@@ -43,6 +43,11 @@ class ReducerFactory {
     return this;
   }
 
+  setActionHandlers(list) {
+    list.forEach(entry => this.handlers[entry.action] = entry.handler);
+    return this;
+  }
+
   setRequestAction(actionType) {
     this.setActionHandler(actionType, ReducerFactory.requestHandler);
     return this;

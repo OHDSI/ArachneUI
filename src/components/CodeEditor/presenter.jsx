@@ -45,6 +45,7 @@ function CodeBar(props = {}) {
   return (
     <div {...classes()}>
       <div {...classes('info')}>
+        {title && <span {...classes('title')}>{title}</span>}
         {infoList}
       </div>
       <div {...classes('actions')}>

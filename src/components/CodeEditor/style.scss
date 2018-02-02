@@ -48,8 +48,14 @@
   	padding: 15px 30px;
 
   	&__info {
-  		
-  	}
+			display: flex;
+			flex-direction: column;
+		}
+		
+		&__title {
+			@include title();
+			margin-bottom: 0.5rem;
+		}
 
   	&__actions {
   		display: flex;

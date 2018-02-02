@@ -244,10 +244,10 @@ export default class ListCode extends Component {
           {this.codeList.length === 0 &&
             <ListItem label={'No code files available'}/>
           }
-          {this.isSubmittable &&
-            this.getActions()
-          }
         </ul>
+        {this.isSubmittable &&
+          this.getActions()
+        }
         {this.isLoading &&
           <LoadingPanel active={this.isLoading} />
         }

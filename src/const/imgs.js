@@ -40,7 +40,7 @@ const imgs = {
   modal: {
     close: '/img/icons/close.png',
   },
-  defaultAvatar: '/img/icons/icon_viewStudy_profilePic.png',
+  defaultAvatar: '/img/icons/icon_viewStudy_profilePic.svg',
 };
 
 export default imgs;

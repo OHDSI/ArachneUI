@@ -25,6 +25,7 @@ import React from 'react';
 import { PageContent, LoadingPanel } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
 import MediaViewer from 'components/MediaViewer';
+import InviteRestrictedArea from 'components/InviteRestrictedArea';
 
 import Toolbar from './Toolbar/index';
 import Editor from './Editor/index';
@@ -44,27 +45,36 @@ function AnalysisCode({
   title,
   createdAt,
   language,
+  studyId,
+  analysisId,
+  analysisCodeId,
   isEditable,
+  onBannerActed,
 }) {
   const classes = new BEMHelper('analysis-code');
 
   return (
     <PageContent title={pageTitle}>
       <div {...classes()}>
-        <Toolbar />
-        <div {...classes('content')}>
-          {isTextFile && isEditable ? <Editor language={language} /> :
-          <MediaViewer
-            language={language}
-            mimeType={mimeType}
-            data={content}
-            downloadLink={downloadLink}
-            name={name}
-            title={title}
-            createdAt={createdAt}
-          />
-          }
-        </div>
+        <InviteRestrictedArea
+          studyId={studyId}
+          onAction={onBannerActed}
+        >
+          <Toolbar />
+          <div {...classes('content')}>
+            {isTextFile && isEditable ? <Editor language={language} /> :
+            <MediaViewer
+              language={language}
+              mimeType={mimeType}
+              data={content}
+              downloadLink={downloadLink}
+              name={name}
+              title={title}
+              createdAt={createdAt}
+            />
+            }
+          </div>
+        </InviteRestrictedArea>
         <LoadingPanel active={isLoading} />
         <ConfirmDialog />
         <ModalRequestUnlock />

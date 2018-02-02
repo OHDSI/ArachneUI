@@ -35,6 +35,7 @@ import { numberFormatter } from 'services/Utils';
 import * as d3 from 'd3';
 import { chartSettings, defaultTrellisSet } from 'modules/DataCatalog/const';
 import Chart from 'components/Reports/Chart';
+import isEmpty from 'lodash/isEmpty';
 
 function DrugDetails(props) {
   const {
@@ -62,7 +63,7 @@ function DrugDetails(props) {
       <div className='col-xs-12'>
         <Chart
           title='Drug Prevalence'
-          isDataPresent={drugPrevalence}
+          isDataPresent={!isEmpty(drugPrevalence)}
           render={({ width, element }) => {
             drugPrevalenceChart.render(
               drugPrevalence,
@@ -89,7 +90,7 @@ function DrugDetails(props) {
       <div className='col-xs-12'>
         <Chart
           title='Drug exposure Prevalence by Month'
-          isDataPresent={exposureByMonth}
+          isDataPresent={!isEmpty(exposureByMonth)}
           render={({ width, element }) => {
             exposureByMonthChart.render(
               exposureByMonth,
@@ -112,7 +113,7 @@ function DrugDetails(props) {
       <div className='col-xs-6'>
         <Chart
           title='Age at First exposure'
-          isDataPresent={ageOfFirstExposure}
+          isDataPresent={!isEmpty(ageOfFirstExposure)}
           render={({ width, element }) => {
             ageOfFirstExposureChart.render(
               ageOfFirstExposure,
@@ -132,7 +133,7 @@ function DrugDetails(props) {
       <div className='col-xs-6'>
         <Chart
           title='Days supply'
-          isDataPresent={daysSupplyDistribution}
+          isDataPresent={!isEmpty(daysSupplyDistribution)}
           render={({ width, element }) => {
             daysSupplyDistributionChart.render(
               daysSupplyDistribution,
@@ -152,7 +153,7 @@ function DrugDetails(props) {
       <div className='col-xs-6'>
         <Chart
           title='Quantity'
-          isDataPresent={quantity}
+          isDataPresent={!isEmpty(quantity)}
           render={({ width, element }) => {
             quantityChart.render(
               quantity,
@@ -172,7 +173,7 @@ function DrugDetails(props) {
       <div className='col-xs-6'>
         <Chart
           title='Refills'
-          isDataPresent={refills}
+          isDataPresent={!isEmpty(refills)}
           render={({ width, element }) => {
             refillsChart.render(
               refills,
@@ -192,7 +193,7 @@ function DrugDetails(props) {
       <div className='col-xs-6'>
         <Chart
           title='Age at First exposure'
-          isDataPresent={drugsByType}
+          isDataPresent={!isEmpty(drugsByType)}
           render={({ width, element }) => {
             drugsByTypeChart.render(
               drugsByType,

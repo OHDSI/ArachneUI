@@ -28,15 +28,14 @@ import {
   Panel,
 } from 'arachne-ui-components';
 import {
-  donut,
   histogram,
-  line,
 } from '@ohdsi/atlascharts/dist/atlascharts.umd';
 import { numberFormatter, get } from 'services/Utils';
 import { chartSettings } from 'components/Reports/const';
 import moment from 'moment';
 import { commonDate } from 'const/formats';
 import Chart from 'components/Reports/Chart';
+import isEmpty from 'lodash/isEmpty';
 
 require('./style.scss');
 
@@ -49,11 +48,14 @@ function Dashboard(props) {
     summary,
     characterizationDate,
     showSummary = true,
-		genderDataChart,
-		ageAtFirstObservationChart,
-		observedByMonthChart,
-		cumulativeDurationChart,
+    detailsCharts,
   } = props;
+  const {
+    genderDataChart,
+    ageAtFirstObservationChart,
+    observedByMonthChart,
+    cumulativeDurationChart,
+  } = detailsCharts;
   const classes = new BEMHelper('report-dashboard');
   const emptyClasses = new BEMHelper('report-empty');
 
@@ -95,7 +97,7 @@ function Dashboard(props) {
       <div className='col-xs-6'>
         <Chart
           title='Population by Gender'
-          isDataPresent={genderData}
+          isDataPresent={!isEmpty(genderData)}
           render={({ width, element }) => {
             genderDataChart.render(
               genderData,
@@ -110,7 +112,7 @@ function Dashboard(props) {
       <div className='col-xs-12'>
         <Chart
           title='Age at First Observation'
-          isDataPresent={ageAtFirstObservation}
+          isDataPresent={!isEmpty(ageAtFirstObservation)}
           render={({ width, element }) => {
             ageAtFirstObservationChart.render(
               histogram.mapHistogram(ageAtFirstObservation),
@@ -130,7 +132,7 @@ function Dashboard(props) {
       <div className='col-xs-12'>
         <Chart
           title='Persons With Continuous Observation By Month'
-          isDataPresent={observedByMonth}
+          isDataPresent={!isEmpty(observedByMonth)}
           render={({ width, element }) => {
             observedByMonthChart.render(
               observedByMonth,
@@ -156,7 +158,7 @@ function Dashboard(props) {
       <div className='col-xs-12'>
         <Chart
           title='Cumulative Observation'
-          isDataPresent={cumulativeDuration}
+          isDataPresent={!isEmpty(cumulativeDuration)}
           render={({ width, element }) => {
             cumulativeDurationChart.render(
               cumulativeDuration,

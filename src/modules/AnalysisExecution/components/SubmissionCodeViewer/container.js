@@ -20,37 +20,132 @@
  *
  */
 
-import { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { get } from 'services/Utils';
+import { PropTypes } from 'react';
+import { get, ContainerBuilder } from 'services/Utils';
 import actions from 'actions/index';
-import { downloadLinkBuilder } from 'modules/AnalysisExecution/ducks/submissionFile';
 import { buildBreadcrumbList } from 'modules/AnalysisExecution/utils';
 import ReportUtils from 'components/Reports/Utils';
-import { reports, treemapReports } from 'const/reports';
-import convertDetailsDataToReportData from './components/ReportViewer/converters/reportDetailsToReportData';
-import DTO from './components/ReportViewer/converters/DTO';
+import { reports } from 'const/reports';
+import { LinkBuilder } from 'modules/AnalysisExecution/ducks/linkBuilder';
+import FileTreeUtils from 'services/FileTreeUtils';
+import { FileLoader } from 'services/FileLoader';
 import presenter from './presenter';
-import SelectorsBuilder from './selectors';
 
-const selectors = new SelectorsBuilder().build();
-
-class SubmissionCode extends Component {
+export class SubmissionCode extends FileLoader {
+  constructor() {
+    super();
+    this.LinkBuilder = new LinkBuilder();
+  }
 
   componentWillMount() {
+    if (this.props.urlParams.fileId) {
+      super.componentWillMount();
+    }
     this.props.loadBreadcrumbs({
       entityType: this.props.from,
       id: this.props.submissionGroupId || this.props.submissionId,
     });
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.params.fileId !== nextProps.params.fileId) {
+      this.loadData(nextProps);
+    }
+  }
+
   componentWillUnmount() {
+    this.props.flushFileTree();
     this.props.clearFileData();
     this.props.clearDetailsData();
   }
 
+  getRenderParams() {
+    return {
+      ...this.props,
+      downloadLink: this.LinkBuilder.build(),
+    };
+  }
+
   render() {
-    return presenter(this.props);
+    return presenter(this.getRenderParams());
+  }
+}
+
+export class SubmissionCodeBuilder extends ContainerBuilder {
+  constructor() {
+    super();
+    this.selectors = {};
+  }
+
+  getComponent() {
+    return SubmissionCode;
+  }
+
+  mapStateToProps(state, ownProps) {
+    const from = ownProps.route.from;
+    const type = ownProps.route.type;
+    const submissionGroupId = ownProps.params.submissionGroupId;
+    const submissionId = ownProps.params.submissionId;
+    const fileId = ownProps.params.fileId;
+
+    const isFileLoading = this.selectors.getIsFileLoading(state);
+    const isLoading = get(state, 'analysisExecution.breadcrumbs.isLoading', false)
+      || isFileLoading;
+
+    const pageTitle = [
+      this.selectors.getPageTitle(state),
+      ...(get(state, 'analysisExecution.breadcrumbs.data', []).map(crumb => crumb.title).reverse()),
+      'Arachne',
+    ];
+
+    const submissionFileData = this.selectors.getFileData(state);
+
+    const urlParams = {
+      type,
+      submissionGroupId,
+      submissionId,
+      fileId: fileId,
+    };
+
+    const breadcrumbList = buildBreadcrumbList(get(state, 'analysisExecution.breadcrumbs.queryResult.result'));
+    const backUrl = breadcrumbList.length > 0 ? breadcrumbList[breadcrumbList.length - 1].link : null;
+    const analysis = this.selectors.getAnalysis(state);
+
+    const toolbarOpts = {
+      backUrl,
+      breadcrumbList,
+      caption: get(analysis, 'title'),
+    };
+
+    let isReport = false;
+    if (submissionFileData && submissionFileData.content) {
+      const reportType = ReportUtils.getReportType(get(submissionFileData, 'docType'));
+      isReport = reportType !== reports.unknown;
+    }
+
+    return {
+      urlParams,
+      file: submissionFileData,
+      isLoading,
+      toolbarOpts,
+      pageTitle: pageTitle.join(' | '),
+      from,
+      submissionGroupId,
+      submissionId,
+      isReport,
+      selectedFilePath: this.selectors.getSelectedFileFromTree(state),
+      permissions: {
+        upload: false,
+        remove: false,
+      },
+    };
+  }
+
+  getMapDispatchToProps() {
+    return {
+      loadBreadcrumbs: actions.analysisExecution.breadcrumbs.query,
+      clearDetailsData: actions.analysisExecution.submissionFileDetails.clear,
+    };
   }
 }
 
@@ -60,155 +155,6 @@ SubmissionCode.propTypes = {
   submissionId: PropTypes.string,
   from: PropTypes.string,
   loadBreadcrumbs: PropTypes.func,
-  fileUuid: PropTypes.string,
+  fileId: PropTypes.number,
   type: PropTypes.string,
 };
-
-function mapStateToProps(state, ownProps) {
-  const from = ownProps.route.from;
-  const type = ownProps.route.type;
-
-  const submissionGroupId = ownProps.params.submissionGroupId;
-  const submissionId = ownProps.params.submissionId;
-  const fileUuid = ownProps.params.fileUuid;
-
-  const isFileLoading = get(state, 'analysisExecution.submissionFile.isLoading', false);
-  const isLoading = get(state, 'analysisExecution.breadcrumbs.isLoading', false)
-    || isFileLoading;
-
-  const pageTitle = [
-    get(state, 'analysisExecution.submissionFile.data.result.name', 'Code file'),
-    ...(get(state, 'analysisExecution.breadcrumbs.data', []).map(crumb => crumb.title).reverse()),
-    'Arachne',
-  ];
-
-  const downloadLink = downloadLinkBuilder({ type, submissionGroupId, submissionId, fileId: fileUuid, downloadFile: true });
-
-  const submissionFileData = get(state, 'analysisExecution.submissionFile.data.result');
-  const submissionFileDetails = get(state, 'analysisExecution.submissionFileDetails.data.result');
-  const filename = get(submissionFileData, 'name', '');
-
-  const urlParams = {
-    type,
-    submissionGroupId,
-    submissionId,
-    fileId: fileUuid,
-  };
-
-  const breadcrumbList = buildBreadcrumbList(get(state, 'analysisExecution.breadcrumbs.queryResult.result'));
-  const backUrl = breadcrumbList.length > 0 ? breadcrumbList[breadcrumbList.length - 1].link : null;
-
-  const toolbarOpts = {
-    backUrl,
-    breadcrumbList,
-    title: get(submissionFileData, 'label') || get(submissionFileData, 'name'),
-  };
-
-  let reportType = reports.unknown;
-  let isReport = false;
-  let reportDTO = {};
-  let tableData = {};
-  let tableColumns = {};
-  let details = {};
-  let isDetailsLoading = get(state, 'analysisExecution.submissionFileDetails.isLoading', false);
-  if (submissionFileData && submissionFileData.content) {
-    reportType = ReportUtils.getReportType(get(submissionFileData, 'docType'));
-    isReport = reportType !== reports.unknown;
-    if (isReport) {
-      try {
-        const file = JSON.parse(submissionFileData.content);
-
-        // change key names in JSON and it's structure
-        const structure = Object.entries(file);
-        structure.forEach(([key, value]) => {
-          reportDTO[key] = ReportUtils.arrayToDataframe(value);
-        });
-
-        if (treemapReports.includes(reportType)) {
-          reportDTO = Object.entries(reportDTO)[0][1];
-          tableData = selectors.getTableData(reportType, reportDTO);
-          tableColumns = {};
-          Object.entries(tableData[0]).forEach(([key, value]) => {
-            tableColumns[key] = value.columnName;
-          });
-        }
-      } catch (er) {}
-    }
-  }
-  if (submissionFileDetails && submissionFileDetails.content) {
-    try {
-      const file = JSON.parse(submissionFileDetails.content);
-
-      // change key names in JSON and it's structure
-      const structure = Object.entries(file);
-      structure.forEach(([key, value]) => {
-        details[key] = ReportUtils.arrayToDataframe(value);
-      });
-      details = convertDetailsDataToReportData(details, DTO[reportType]);
-    } catch (er) {}
-  }
-
-  return {
-    urlParams,
-    file: isReport
-      ? reportDTO
-      : submissionFileData,
-    isLoading,
-    toolbarOpts,
-    pageTitle: pageTitle.join(' | '),
-    downloadLink,
-    from,
-    submissionGroupId,
-    submissionId,
-
-    isReport,
-    reportType,
-    filename,
-
-    // treemap reports
-    tableData,
-    tableColumns,
-    details,
-    isDetailsLoading,
-  };
-}
-
-const mapDispatchToProps = {
-  loadBreadcrumbs: actions.analysisExecution.breadcrumbs.query,
-  loadFile: actions.analysisExecution.submissionFile.find,
-  loadDetails: actions.analysisExecution.submissionFileDetails.find,
-  loadSubmissionResultFiles: actions.analysisExecution.analysisCode.search,
-  clearFileData: actions.analysisExecution.submissionFile.clear,
-  clearDetailsData: actions.analysisExecution.submissionFileDetails.clear,
-};
-
-function mergeProps(stateProps, dispatchProps, ownProps) {
-  return {
-    ...stateProps,
-    ...dispatchProps,
-    ...ownProps,
-    loadTreemapDetails({ filename }) {
-      let path = '';
-      const isRoot = stateProps.filename.lastIndexOf('/') === -1;
-      if (!isRoot) {
-        path = `${stateProps.filename.substr(0, stateProps.filename.lastIndexOf('/'))}/`;
-      }
-      const realname = `${path}${stateProps.reportType}/${filename}.json`;
-      dispatchProps.loadSubmissionResultFiles(
-        {
-          entityId: stateProps.submissionId,
-        },
-        {
-          'real-name': realname,
-        }
-      ).then(detailedFiles => dispatchProps.loadDetails({
-        type: 'result',
-        submissionGroupId: stateProps.submissionGroupId,
-        submissionId: stateProps.submissionId,
-        fileId: get(detailedFiles, '[0].uuid', '1'),
-      }));
-    },
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(SubmissionCode);

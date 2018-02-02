@@ -23,7 +23,8 @@
 import React, { PropTypes } from 'react';
 import BEMHelper from 'services/BemHelper';
 
-import { LoadingPanel, PageContent, Link } from 'arachne-ui-components';
+import { LoadingPanel, PageContent } from 'arachne-ui-components';
+import InviteRestrictedArea from 'components/InviteRestrictedArea';
 
 import DateInterval from './DateInterval';
 import Toolbar from './Toolbar';
@@ -42,34 +43,42 @@ import RightColumn from './RightColumn';
 require('./style.scss');
 
 function ViewEditStudy(props) {
-  const { studyTitle, isLoading, id, accessGranted, goBack } = props;
+  const {
+    studyTitle,
+    isLoading,
+    id,
+    onBannerActed,
+    openedSection,
+    onTabChange,
+  } = props;
   const classes = new BEMHelper('study-manager-view');
 
   return (
     <PageContent title={`${studyTitle} | Arachne`}>
       <div {...classes()}>
-        {accessGranted
-        ? [<Toolbar studyId={id} />,
+        <InviteRestrictedArea
+          {...classes('container')}
+          studyId={id}
+          onAction={onBannerActed}
+        >
+          <Toolbar studyId={id} />
           <div {...classes('content')}>
             <div className="row">
               <div className="col-xs-12 col-lg-6">
                 <DateInterval />
                 <div className="row">
                   <div className="col-xs-12">
-                    <LeftColumn />
+                    <LeftColumn openedSection={openedSection} onTabChange={onTabChange} />
                   </div>
                 </div>
               </div>
               <div className="col-xs-12 col-lg-6">
-                <RightColumn studyId={id}/>
+                <RightColumn studyId={id} />
               </div>
             </div>
-          </div>,
-          <LoadingPanel active={isLoading} />]
-        : <div {...classes('empty-state')}>
-            <span>You do not have access rights for this study. Please contact a study lead investigator.</span>
-            <Link onClick={goBack}>Go back</Link>
-          </div>}
+          </div>
+        </InviteRestrictedArea>
+        <LoadingPanel active={isLoading} />
       </div>
       <ModalEditTitle />
       <ModalCreateAnalysis />

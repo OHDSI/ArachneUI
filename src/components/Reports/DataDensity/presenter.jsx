@@ -40,10 +40,13 @@ function DataDensity(props) {
     recordsPerPersonYears,
     totalRecords,
     totalRecordsYears,
-		totalRecordsChart,
-		recordsPerPersonChart,
-		conceptsPerPersonChart,
+    detailsCharts,
   } = props;
+  const {
+    totalRecordsChart,
+    recordsPerPersonChart,
+    conceptsPerPersonChart,
+  } = detailsCharts;
   const classes = new BEMHelper('report-observation-data-density');
 
   return (  

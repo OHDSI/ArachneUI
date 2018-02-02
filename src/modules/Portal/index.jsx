@@ -23,7 +23,6 @@
 import { combineReducers } from 'redux';
 import React from 'react';
 import ducks from './ducks';
-import InvitationList from './components/InvitationList/index';
 import AboutInfo from './components/AboutInfo/index';
 
 require('./styles/index.scss');
@@ -35,6 +34,7 @@ const module = {
 };
 
 if (__APP_TYPE_CENTRAL__) {
+  const InvitationList = require('./components/InvitationList/index').default;  // eslint-disable-line global-require,
 	module.routes = () => require('./routes').default(); // eslint-disable-line global-require,
   module.menuItems = () => [
     <InvitationList />,

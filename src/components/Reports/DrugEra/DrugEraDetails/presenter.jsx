@@ -34,6 +34,7 @@ import { numberFormatter } from 'services/Utils';
 import * as d3 from 'd3';
 import { chartSettings, defaultTrellisSet } from 'modules/DataCatalog/const';
 import Chart from 'components/Reports/Chart';
+import isEmpty from 'lodash/isEmpty';
 
 function DrugEraDetails(props) {
   const {
@@ -53,7 +54,7 @@ function DrugEraDetails(props) {
       <div className='col-xs-12'>
         <Chart
           title='Drug Prevalence'
-          isDataPresent={drugPrevalence}
+          isDataPresent={!isEmpty(drugPrevalence)}
           render={({ width, element }) => {
             drugPrevalenceChart.render(
               drugPrevalence,
@@ -80,7 +81,7 @@ function DrugEraDetails(props) {
       <div className='col-xs-12'>
         <Chart
           title='Drug exposure Prevalence by Month'
-          isDataPresent={exposureByMonth}
+          isDataPresent={!isEmpty(exposureByMonth)}
           render={({ width, element }) => {
             exposureByMonthChart.render(
               exposureByMonth,
@@ -103,7 +104,7 @@ function DrugEraDetails(props) {
       <div className='col-xs-6'>
         <Chart
           title='Age at First exposure'
-          isDataPresent={ageOfFirstExposure}
+          isDataPresent={!isEmpty(ageOfFirstExposure)}
           render={({ width, element }) => {
             ageOfFirstExposureChart.render(
               ageOfFirstExposure,
@@ -123,7 +124,7 @@ function DrugEraDetails(props) {
       <div className='col-xs-6'>
         <Chart
           title='Length of Era distribution'
-          isDataPresent={lengthOfEra}
+          isDataPresent={!isEmpty(lengthOfEra)}
           render={({ width, element }) => {
             lengthOfEraChart.render(
               lengthOfEra,

@@ -24,6 +24,9 @@ import { chart } from '@ohdsi/atlascharts/dist/atlascharts.umd';
 
 export default (data, DTO) => {
   let dataIsNormal = true;
+  if (data === undefined || data === null) {
+    return null;
+  }
   Object.values(DTO)
     .forEach((sourceKey) => {
       if (!(sourceKey in data)) {
