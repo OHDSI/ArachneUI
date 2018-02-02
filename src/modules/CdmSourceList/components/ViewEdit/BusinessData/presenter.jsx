@@ -134,7 +134,7 @@ function BusinessData(props) {
           {isRegistered &&
             <Button
               {...formClasses('btn', 'unregister')}
-              mods={['cancel']}
+              mods={['cancel', 'rounded']}
               onClick={unregisterAtCentral}
               label='unregister'
             />
@@ -144,7 +144,7 @@ function BusinessData(props) {
               {...formClasses('btn')}
               type="submit"
               label={submitting ? 'Saving...' : 'Save'}
-              mods={['success']}
+              mods={['success', 'rounded']}
               disabled={submitting}
             />
             :
@@ -152,7 +152,7 @@ function BusinessData(props) {
               {...formClasses('btn')}
               type="submit"
               label={submitting ? 'Registering...' : 'Register'}
-              mods={['submit']}
+              mods={['submit', 'rounded']}
               disabled={submitting}
             />            
           }
@@ -160,7 +160,7 @@ function BusinessData(props) {
             {...formClasses('btn')}
             label="Cancel"
             link={backUrl}
-            mods={['cancel']}
+            mods={['cancel', 'rounded']}
             disabled={submitting}
           />
         </div>
