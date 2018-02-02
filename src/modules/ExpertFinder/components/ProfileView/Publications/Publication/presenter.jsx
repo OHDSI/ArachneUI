@@ -36,7 +36,8 @@ function Publication({
   onRemove,
   publisher,
   title,
-  url,
+  link,
+  onClick,
 }) {
   const classes = new BEMHelper('profile-publication');
 
@@ -44,7 +45,7 @@ function Publication({
     <div {...classes()}>
       <div {...classes('item-data')}>
         <div {...classes('row')}>
-          <Link {...classes('title')} to={url}>
+          <Link {...classes('title')} to={link} onClick={onClick}>
             {title}
           </Link>
           <span>
