@@ -27,7 +27,6 @@ import studyList from './studyList';
 import report from './report';
 import reportDetails from './reportDetails';
 import characterization from './characterization';
-import dataSourceBusiness from './dataSourceBusiness';
 
 export default {
   actions: {
@@ -38,7 +37,6 @@ export default {
     report: report.actions,
     reportDetails: reportDetails.actions,
     characterization: characterization.actions,
-    dataSourceBusiness: dataSourceBusiness.actions,
   },
   reducer: {
     dataSourceList: dataSourceList.reducer,
@@ -48,6 +46,5 @@ export default {
     report: report.reducer,
     reportDetails: reportDetails.reducer,
     characterization: characterization.reducer,
-    dataSourceBusiness: dataSourceBusiness.reducer,
   },
 };

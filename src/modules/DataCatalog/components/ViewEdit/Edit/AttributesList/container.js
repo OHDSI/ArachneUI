@@ -21,27 +21,12 @@
  */
 
 import actions from 'actions';
-import { Component } from 'react';
 import { ContainerBuilder, get } from 'services/Utils';
 import { forms } from 'modules/DataCatalog/const';
-import presenter from './presenter';
+import AttributeList from './presenter';
 import SelectorsBuilder from './selectors';
 
 const selectors = (new SelectorsBuilder()).build();
-
-class AttributeList extends Component {
-  componentWillReceiveProps(nextProps) {
-    if (this.props.dataSourceId !== nextProps.dataSourceId && nextProps.dataSourceId) {
-      this.props.load({ id: nextProps.dataSourceId });
-    }
-  }
-
-  render() {
-    return presenter({
-      ...this.props,
-    });
-  }
-}
 
 export default class AttributeListBuilder extends ContainerBuilder {
   getComponent() {
@@ -67,8 +52,7 @@ export default class AttributeListBuilder extends ContainerBuilder {
 
   getMapDispatchToProps() {
     return {
-      load: actions.dataCatalog.dataSourceBusiness.query,
-      update: actions.dataCatalog.dataSourceBusiness.update,
+      update: actions.dataCatalog.dataSource.update,
     };
   }
 
