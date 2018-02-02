@@ -28,11 +28,12 @@ import { get } from 'services/Utils';
 import { commonDate as commonDateFormat } from 'const/formats';
 import { dsConverter } from 'components/LabelDataSource';
 import { submissionActionTypes } from 'modules/AnalysisExecution/const';
+import pick from 'lodash/pick';
 
 class SubmissionListSelectorsBuilder {
 
   getRawSubmissionGroupList(state) {
-    return get(state, 'analysisExecution.analysis.data.result.submissionGroup', [], 'Array');
+    return get(state, 'analysisExecution.submissionGroups.queryResult.content', [], 'Array');
   }
 
   convertSubmission(source) {
@@ -52,10 +53,11 @@ class SubmissionListSelectorsBuilder {
       status: source.status || {},
       actions,
       resultFilesCount: source.resultFilesCount,
+      resultInfo: source.resultInfo,
       insight: source.insight,
       hasInsight: !!source.insight,
       canUploadResult: actions[submissionActionTypes.MANUAL_UPLOAD].available
-        && actions[submissionActionTypes.MANUAL_UPLOAD].hasPermsission
+        && actions[submissionActionTypes.MANUAL_UPLOAD].hasPermsission,
     };
 
     return submission;
@@ -75,6 +77,7 @@ class SubmissionListSelectorsBuilder {
       checksum: source.checksum,
       created: source.created ? moment(source.created).tz(moment.tz.guess()).format(commonDateFormat) : '',
       submissions: this.getSubmissionList(source.submissions),
+      analysisType: source.analysisType,
     }));
   }
 
@@ -85,9 +88,21 @@ class SubmissionListSelectorsBuilder {
     );
   }
 
+  getRawPagingData(state) {
+    return get(state, 'analysisExecution.submissionGroups.queryResult', { page: 1, totalPages: 1 }, 'Object');
+  }
+
+  getPagingData() {
+    return createSelector(
+      this.getRawPagingData,
+      rawData => pick(rawData, ['number', 'totalPages'])
+    );
+  }
+
   build() {
     return {
       getSubmissionGroupList: this.buildSelectorForGetSubmissionGroupList(),
+      getPagingData: this.getPagingData(),
     };
   }
 

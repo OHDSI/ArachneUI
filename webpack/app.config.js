@@ -28,7 +28,7 @@ const argv = require('yargs').argv;
 const keyMirror = require('keymirror');
 const WebpackDevServer = require('webpack-dev-server');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const currentDir = path.resolve(__dirname, '..');
 const webapp = path.join(currentDir, 'public');
@@ -66,6 +66,7 @@ const config = {
     'react-hot-loader/patch',
     'webpack-dev-server/client?http://localhost:8001', // WebpackDevServer host and port
     'webpack/hot/only-dev-server', // "only" prevents reload on syntax errors
+    'babel-regenerator-runtime',
     entryPoint, // Appʼs entry point
   ],
   resolve: {
@@ -120,7 +121,8 @@ const config = {
   output: {
     path: webapp,
     publicPath: '/',
-    filename: 'js/app.js',
+    filename: 'js/[hash].js',
+    chunkFilename: '[name]/[hash].js',
   },
   devtool: env === ENV_TYPE.PRODUCTION ? null : 'source-map',
   plugins: [
@@ -128,7 +130,7 @@ const config = {
       __APP_TYPE_CENTRAL__: appType === APP_TYPE.CENTRAL,
       __APP_TYPE_NODE__: appType === APP_TYPE.NODE,
 
-      __DEV__: true,
+      __DEV__: env === ENV_TYPE.DEV,
       //
       'process.env': {
         NODE_ENV: env === ENV_TYPE.PRODUCTION ? '"production"' : '"development"',
@@ -150,31 +152,48 @@ const config = {
         to: path.join(webapp, 'img/icons'),
       },
     ]),
-
+    new webpack.optimize.CommonsChunkPlugin({
+      async: 'fonts/base64',
+      minChunks(module, count) {
+        return module.resource && module.resource.indexOf('fonts-base64-fallback.scss') !== -1;
+      },
+    }),
     // https://medium.com/@adamrackis/vendor-and-code-splitting-in-webpack-2-6376358f1923
     new webpack.optimize.CommonsChunkPlugin({
-      async: 'used-twice',
+      async: 'commons',
       minChunks(module, count) {
-          return count >= 2;
+        return count >= 2;
       },
     }),
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|ru/),
+    new HtmlWebpackPlugin({
+      template: path.join(appRoot, 'index.html'),
+    }),
   ],
 };
 
 if (env === ENV_TYPE.PRODUCTION) {
-  config.entry = [entryPoint];
+  config.entry = ['babel-regenerator-runtime', entryPoint];
   // minification
   config.output.publicPath = '/';
   config.plugins.push(new webpack.optimize.UglifyJsPlugin({
-    comments: false,
+    comments: true,
   }));
   config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
   config.plugins.push(new webpack.optimize.DedupePlugin());
+  // https://github.com/webpack-contrib/extract-text-webpack-plugin/issues/456
+  config.plugins.push(new webpack.optimize.CommonsChunkPlugin({
+    name: 'vendor',
+    filename: 'js/vendor/[hash].js',
+    minChunks(module) {
+      return module.context && module.context.indexOf('node_modules') !== -1;
+    },
+  }));
 }
 
 if (env === ENV_TYPE.DEV) {
   // process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+  config.plugins.push(new webpack.NamedModulesPlugin());
 
   // Webpack hot reload server
   const server = new WebpackDevServer(

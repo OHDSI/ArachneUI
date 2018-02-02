@@ -30,7 +30,8 @@ import insightComments from './insightComments';
 import insight from './insight';
 import studyDataSourceList from './studyDataSourceList';
 import statusHistory from './statusHistory';
-import submissionFile from './submissionFile';
+import submissionResultFile from './submissionResultFile';
+import submissionGroupFile from './submissionGroupFile';
 import submissionFileDetails from './submissionFileDetails';
 
 import code from './code';
@@ -40,6 +41,9 @@ import publishStatus from './publishStatus';
 import submission from './submission';
 import resultFile from './resultFile';
 import insightFile from './insightFile';
+import fileTreeData from './fileTreeData';
+import submissionSummary from './submissionSummary';
+import submissionGroups from './submissionGroups';
 
 export default {
   actions: {
@@ -53,7 +57,8 @@ export default {
     insight: insight.actions,
     studyDataSourceList: studyDataSourceList.actions,
     statusHistory: statusHistory.actions,
-    submissionFile: submissionFile.actions,
+    submissionResultFile: submissionResultFile.actions,
+    submissionGroupFile: submissionGroupFile.actions,
     submissionFileDetails: submissionFileDetails.actions,
     code: code.actions,
     codeLock: codeLock.actions,
@@ -62,6 +67,9 @@ export default {
     submission: submission.actions,
     resultFile: resultFile.actions,
     insightFile: insightFile.actions,
+    fileTreeData: fileTreeData.actions,
+    submissionSummary: submissionSummary.actions,
+    submissionGroups: submissionGroups.actions,
   },
   reducer: {
     analysis: analysis.reducer,
@@ -74,8 +82,12 @@ export default {
     insight: insight.reducer,
     studyDataSourceList: studyDataSourceList.reducer,
     statusHistory: statusHistory.reducer,
-    submissionFile: submissionFile.reducer,
+    submissionResultFile: submissionResultFile.reducer,
+    submissionGroupFile: submissionGroupFile.reducer,
     submissionFileDetails: submissionFileDetails.reducer,
     insightFile: insightFile.reducer,
+    fileTreeData: fileTreeData.reducer,
+    submissionSummary: submissionSummary.reducer,
+    submissionGroups: submissionGroups.reducer,
   },
 };

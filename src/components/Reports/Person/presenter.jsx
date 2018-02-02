@@ -26,13 +26,13 @@ import {
   Panel,
 } from 'arachne-ui-components';
 import {
-  donut,
   histogram,
 } from '@ohdsi/atlascharts/dist/atlascharts.umd';
 import { numberFormatter } from 'services/Utils';
 import * as d3 from 'd3';
 import { chartSettings } from 'modules/DataCatalog/const';
 import Chart from 'components/Reports/Chart';
+import isEmpty from 'lodash/isEmpty';
 
 require('./style.scss');
 
@@ -45,11 +45,14 @@ function Person(props) {
     race,
     summary,
     showSummary = true,
-		birthYearChart,
-		genderDataChart,
-		raceChart,
-		ethnicityChart,
+    detailsCharts,
   } = props;
+  const {
+    birthYearChart,
+    genderDataChart,
+    raceChart,
+    ethnicityChart,
+  } = detailsCharts;
   const classes = new BEMHelper('report-person');
   const emptyClasses = new BEMHelper('report-empty');
 
@@ -83,7 +86,7 @@ function Person(props) {
       <div className='col-xs-8'>
         <Chart
           title='Year of birth'
-          isDataPresent={birthYear}
+          isDataPresent={!isEmpty(birthYear)}
           render={({ width, element }) => {
             birthYearChart.render(
               histogram.mapHistogram(birthYear),
@@ -104,7 +107,7 @@ function Person(props) {
       <div className='col-xs-4'>
         <Chart
           title='Population by Gender'
-          isDataPresent={genderData}
+          isDataPresent={!isEmpty(genderData)}
           render={({ width, element }) => {
             genderDataChart.render(
               genderData,
@@ -119,7 +122,7 @@ function Person(props) {
       <div className='col-xs-4'>
         <Chart
           title='Population by Race'
-          isDataPresent={race}
+          isDataPresent={!isEmpty(race)}
           render={({ width, element }) => {
             raceChart.render(
               race,
@@ -134,7 +137,7 @@ function Person(props) {
       <div className='col-xs-4'>
         <Chart
           title='Population by Ethnicity'
-          isDataPresent={ethnicity}
+          isDataPresent={!isEmpty(ethnicity)}
           render={({ width, element }) => {
             ethnicityChart.render(
               ethnicity,

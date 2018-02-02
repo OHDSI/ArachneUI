@@ -20,13 +20,13 @@
  *
  */
 
-import { Component, PropTypes } from 'react';
+import { PropTypes } from 'react';
 import isEmpty from 'lodash/isEmpty';
-import { ContainerBuilder } from 'services/Utils';
-import Chart from './Chart';
 import { treemap } from '@ohdsi/atlascharts/dist/atlascharts.umd';
+import { BaseChart } from './BaseChart';
+import { ContainerBuilder } from 'services/Utils';
 
-class TreemapReport extends Component {
+class TreemapReport extends BaseChart {
   static get propTypes() {
     return {
       loadDetails: PropTypes.func.isRequired,
@@ -37,11 +37,12 @@ class TreemapReport extends Component {
     };
   }
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.initialZoomedConcept = null;
     this.onZoom = this.onZoom.bind(this);
     this.loadConditionDetails = this.loadConditionDetails.bind(this);
+    this.charts.push(this.props.treemap);
   }
 
   onZoom(concept) {

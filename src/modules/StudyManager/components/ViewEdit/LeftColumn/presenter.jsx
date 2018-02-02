@@ -25,10 +25,14 @@ import InsightList from 'modules/StudyManager/components/ViewEdit/InsightList';
 import Sections from 'modules/StudyManager/components/ViewEdit/Sections';
 import StudyObjective from 'modules/StudyManager/components/ViewEdit/StudyObjective';
 
-function LeftColumn() {
+function LeftColumn(props) {
+  const {
+    openedSection,
+    onTabChange,
+  } = props;
   return (<div>
     <StudyObjective />
-    <Sections />
+    <Sections openedSection={openedSection} onTabChange={onTabChange} />
     <InsightList />
   </div>);
 }

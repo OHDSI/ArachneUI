@@ -23,7 +23,7 @@ import { connect } from 'react-redux';
 import Toolbar from './presenter';
 
 function mapStateToProps(state, ownProps) {
-  return ownProps.params;
+  return ownProps.params || {};
 }
 
 export default connect(mapStateToProps)(Toolbar);

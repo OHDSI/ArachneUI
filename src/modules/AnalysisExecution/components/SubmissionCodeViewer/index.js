@@ -20,6 +20,6 @@
  *
  */
 
-import SubmissionCodeViewer from './container';
+import SubmissionCode from './container';
 
-export default SubmissionCodeViewer;
+export default SubmissionCode;

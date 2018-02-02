@@ -22,7 +22,7 @@
 
 const mimeTypes = {
   image: 'image',
-  txt: 'txt',
+  txt: 'text',
   pdf: 'pdf',
   sql: 'sql',
   zip: 'zip',
@@ -45,6 +45,7 @@ const mimeTypes = {
   link: 'link',
   report: 'report',
   folder: 'folder',
+  home: 'home',
 };
 
 export default mimeTypes;

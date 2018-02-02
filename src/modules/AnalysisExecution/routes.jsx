@@ -27,6 +27,8 @@ import ViewEditAnalysis from './components/ViewEditAnalysis/index';
 import AnalysisCodeEditor from './components/AnalysisCodeEditor/index';
 import ViewEditInsight from './components/ViewEditInsight';
 import SubmissionCodeViewer from './components/SubmissionCodeViewer';
+import SubmissionResultFile from './components/SubmissionCodeViewer/ResultFile';
+import SubmissionGroupFile from './components/SubmissionCodeViewer/GroupFile';
 
 function Routes() {
   return [
@@ -35,29 +37,35 @@ function Routes() {
     <Route path="submissions/:submissionId/insight" component={ViewEditInsight} />,
     // Show query code from Analysis page
     <Route
-    	path="submission-groups/:submissionGroupId/code/:fileUuid"
-    	component={SubmissionCodeViewer}
+    	path="submission-groups/:submissionGroupId/code/:fileId"
+    	component={SubmissionGroupFile}
     	type="query"
     	from="SUBMISSION_GROUP"
     />,
     // Show result code from Analysis page
     <Route
-    	path="submissions/:submissionId/results/:fileUuid"
-    	component={SubmissionCodeViewer}
+    	path="submissions/:submissionId/results/:fileId"
+    	component={SubmissionResultFile}
+    	type="result"
+    	from="SUBMISSION"
+    />,
+    <Route
+    	path="submissions/:submissionId/results"
+    	component={SubmissionResultFile}
     	type="result"
     	from="SUBMISSION"
     />,
     // Show query code from Insight page
     <Route
-    	path="submissions/:submissionId/insight/code/:fileUuid"
-    	component={SubmissionCodeViewer}
+    	path="submissions/:submissionId/insight/code/:fileId"
+    	component={SubmissionGroupFile}
     	type="query"
     	from="INSIGHT"
     />,
     // Show result code from Insight page
     <Route
-    	path="submissions/:submissionId/insight/results/:fileUuid"
-    	component={SubmissionCodeViewer}
+    	path="submissions/:submissionId/insight/results/:fileId"
+    	component={SubmissionResultFile}
     	type="result"
     	from="INSIGHT"
     />,

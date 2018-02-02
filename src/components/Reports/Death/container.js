@@ -20,7 +20,6 @@
  *
  */
 
-import { connect } from 'react-redux';
 import ReportUtils from 'components/Reports/Utils';
 import {
   convertDataToBoxplotData,
@@ -28,7 +27,6 @@ import {
   convertDataToMonthLineChartData,
 } from 'components/Reports/converters';
 import isEmpty from 'lodash/isEmpty';
-import Death from './presenter';
 import { ContainerBuilder } from 'services/Utils';
 import {
   boxplot,
@@ -36,6 +34,14 @@ import {
   line,
   trellisline,
 } from '@ohdsi/atlascharts/dist/atlascharts.umd';
+import { BaseChart } from 'components/Reports/BaseChart';
+import presenter from './presenter';
+
+class Death extends BaseChart {
+  render() {
+    return presenter(this.props);
+  }
+}
 
 const deathByMonthDTO = {
   dateField: 'X_CALENDAR_MONTH',
@@ -92,7 +98,7 @@ export default class DeathContainerBuilder extends ContainerBuilder {
           deathByType
         ),
       ageOfDeath,
-      ...this.detailsCharts,
+      detailsCharts: this.detailsCharts,
     };
   }
 }

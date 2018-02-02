@@ -21,8 +21,6 @@
  */
 
 import { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { asyncConnect } from 'redux-async-connect';
 import { get, ContainerBuilder } from 'services/Utils';
 import actions from 'actions';
 import presenter from './presenter';
@@ -73,6 +71,7 @@ export default class ViewEditInsightBuilder extends ContainerBuilder {
       submissionId: parseInt(ownProps.routeParams.submissionId, 10),
       insightTitle: get(insightData, 'name', ''),
       pageTitle: pageTitle.join(' | '),
+      studyId: get(insightData, 'analysis.study.id', -1),
       isEditable,
     };
   }
@@ -85,13 +84,22 @@ export default class ViewEditInsightBuilder extends ContainerBuilder {
     };
   }
 
+  mergeProps(stateProps, dispatchProps, ownProps) {
+    return {
+      ...ownProps,
+      ...stateProps,
+      ...dispatchProps,
+      onBannerActed: () => dispatchProps.loadInsight({ submissionId: stateProps.submissionId }),
+    };
+  }
+
   getFetchers({ params }) {
     const submissionId = params.submissionId;
     const load = moduleActions.insight.find;
     return {
       loadInsight: load.bind(null, { submissionId }),
       unloadComments: moduleActions.insightComments.unload,
-      unloadFile: moduleActions.insightFile.unload
+      unloadFile: moduleActions.insightFile.unload,
     };
   }
 

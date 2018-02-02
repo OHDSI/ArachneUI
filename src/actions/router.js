@@ -47,6 +47,7 @@ function reload() {
 }
 
 export default {
-   reload,
-   setSearch,
+  goToPage,
+  reload,
+  setSearch,
 };

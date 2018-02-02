@@ -106,10 +106,12 @@ class ActionFactory {
   // Legacy. For JsonResult
   buildLoadActionCreator({ resultDataPath = 'result' } = {}) {
     return (urlParams, getParams) => (dispatch) => {
+      const requestParams = { url: urlParams, query: getParams };
+
       this.safeDispatch(
         dispatch,
         this.onBeforeLoad,
-        { url: urlParams, query: getParams }
+        requestParams
       );
       return api.doGet(
         this.resolveUrl(urlParams, getParams),
@@ -118,7 +120,10 @@ class ActionFactory {
           this.safeDispatch(
             dispatch,
             this.onAfterLoad,
-            result
+            {
+              requestParams,
+              result,
+            }
           );
         }
       );

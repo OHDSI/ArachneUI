@@ -20,7 +20,7 @@
  *
  */
 
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import moment from 'moment-timezone';
 import BEMHelper from 'services/BemHelper';
 import { Link } from 'arachne-ui-components';
@@ -28,56 +28,86 @@ import { shortDate as dateFormat } from 'const/formats';
 
 require('./style.scss');
 
-function FileInfo(props) {
-  const classes = new BEMHelper('code-file-info');
-  const {
-    author,
-    createdAt,
-    docType,
-    link,
-    linkTarget,
-    label,
-    version,
-    subtitle,
-    horizontal,
-    onClick,
-  } = props;
+/** @augments{ Component<any, any>} */
+class FileInfo extends Component {
 
-  return (
-    <div {...classes({ modifiers: { horizontal } })}>
-      <div {...classes('main-container')}>
-        <i {...classes('ico', docType)} />
-        <span {...classes('main-info')} title={label}>
-          {(link || onClick)
-            ? <Link {...classes('name')} onClick={onClick} to={link} target={linkTarget}>
-              {label}
-            </Link>
-            : <span>{label}</span>
-          }
-          {createdAt &&
-            <span {...classes('datetime')}>
-              {moment(createdAt).tz(moment.tz.guess()).format(dateFormat)}
-            </span>
-          }
-          {subtitle}
-        </span>
+  static propTypes() {
+    return {
+      author: PropTypes.object,
+      createdAt: PropTypes.number,
+      docType: PropTypes.string,
+      link: PropTypes.string,
+      linkTarget: PropTypes.string,
+      mods: PropTypes.object,
+      version: PropTypes.string,
+      subtitle: PropTypes.string,
+      onClick: PropTypes.func,
+    };
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.getLabel = this.getLabel.bind(this);
+  }
+
+  getLabel() {
+    return this.props.label || this.props.name;
+  }
+
+  render() {
+    const classes = new BEMHelper('code-file-info');
+    const {
+      author,
+      createdAt,
+      docType,
+      link,
+      linkTarget,
+      mods,
+      version,
+      subtitle,
+      onClick,
+    } = this.props;
+
+    const label = this.getLabel();
+
+    return (
+      <div {...classes({ modifiers: mods })}>
+        <div {...classes('main-container')}>
+          <i {...classes('ico', docType)} />
+          <span {...classes('main-info')} title={label}>
+            {(link || onClick)
+              ? <Link {...classes('name')} onClick={onClick} to={link} target={linkTarget}>
+                {label}
+              </Link>
+              : <span {...classes('name')}>{label}</span>
+            }
+            {createdAt &&
+              <span {...classes('datetime')}>
+                {moment(createdAt).tz(moment.tz.guess()).format(dateFormat)}
+              </span>
+            }
+            {subtitle}
+          </span>
+        </div>
+        {version &&
+          <div {...classes('version-container')}>
+            V{version}
+          </div>
+        }
+        {author && author.id &&
+          <div {...classes('author-container')}>
+              <Link {...classes('author')} to={author.link} target={linkTarget}>
+                {author.firstname} {author.middlename
+                  ? `${author.middlename.substr(0, 1)}.`
+                  : ''} {author.lastname}
+              </Link>
+          </div>
+        }
       </div>
-      {version &&
-        <div {...classes('version-container')}>
-          V{version}
-        </div>
-      }
-      {author && author.id &&
-        <div {...classes('author-container')}>
-            <Link {...classes('author')} to={author.link} target={linkTarget}>
-              {author.firstname} {author.middlename
-                ? `${author.middlename.substr(0, 1)}.`
-                : ''} {author.lastname}
-            </Link>
-        </div>
-      }
-    </div>
-  );
+    );
+  }
+
 }
 
 export default FileInfo;

@@ -73,7 +73,7 @@ function CellEdit({ editDataSource, removeDataSource, value, isRegistered }) {
       <Button {...classes('btn')} onClick={() => editDataSource(value)}>
         <i {...classes('btn-ico')}>edit</i>
       </Button>
-      <Button {...classes('btn')} onClick={() => removeDataSource(value)} disabled={isRegistered}>
+      <Button {...classes('btn')} onClick={() => removeDataSource({ id: value, isRegistered })}>
         <i {...classes('btn-ico')}>delete</i>
       </Button>
     </div>
@@ -92,7 +92,7 @@ function CellName({ value, healthStatus }) {
          aria-label={healthStatuses.getTitle(healthStatus.title)}
          data-tootik-conf="right"
     ></div>
-    {value}
+    <span {...classes('name')}>{value}</span>
   </div>;
 }
 

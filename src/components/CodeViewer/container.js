@@ -27,7 +27,6 @@ function mapStateToProps(state, ownProps) {
   const {
     downloadLink,
     title,
-    name,
     value,
     createdAt,
     language,
@@ -35,7 +34,7 @@ function mapStateToProps(state, ownProps) {
 
 
   return {
-    title: title || name,
+    title,
     downloadLink,
     language,
     value,

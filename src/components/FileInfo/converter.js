@@ -20,11 +20,24 @@
  *
  */
 
-import { detectMimeTypeByExtension } from 'services/Utils';
+import { detectMimeTypeByExtension, Utils } from 'services/Utils';
 
 const profilePath = id => `/expert-finder/profile/${id}`;
 
+function getLink(file, pathBuilder) {
+  let link = null;
+
+  if (file.link) {
+    link = file.link;
+  } else if (typeof pathBuilder === 'function') {
+    link = pathBuilder(file);
+  }
+
+  return Utils.getSecureLink(link);
+}
+
 export default (file, pathBuilder) => ({
+  fileId: file.fileId,
   uuid: file.uuid,
   name: file.name,
   label: file.label,
@@ -32,7 +45,7 @@ export default (file, pathBuilder) => ({
   // doctype: file.docType === 'text/x-r-source' ? 'r' : file.docType,
   docType: detectMimeTypeByExtension(file),
   isExecutable: file.isExecutable,
-  link: file.link || pathBuilder(file),
+  ...getLink(file, pathBuilder),
   author: {
     ...file.author,
     link: (file.author && file.author.id) ? profilePath(file.author.id) : null,

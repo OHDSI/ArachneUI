@@ -27,7 +27,7 @@
 	&data-source-list-table {
 		table-layout: fixed;
 
-		&__name-td, &__dbms-type-td, &__db-name-td, &__cdm-schema-td, &__model-type-td, &__registered-td {
+		&__dbms-type-td, &__db-name-td, &__cdm-schema-td, &__model-type-td, &__registered-td {
 			@include text-ellipsis();
 		}
 
@@ -117,7 +117,11 @@
 
 	&ds-name {
 		@include health-indicator();
-  	cursor: pointer;
+		cursor: pointer;
+		
+		&__name {
+			@include text-ellipsis();
+		}
 	}
 
 }

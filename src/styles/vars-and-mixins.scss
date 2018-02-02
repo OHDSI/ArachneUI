@@ -394,3 +394,85 @@ $default-box-padding: 1.5rem 2rem;
     }
   }
 }
+
+@mixin summary-result-block() {
+  &__result-info {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  &__result-element {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 10rem;
+  }
+
+  &__result-ico {
+    @include material-icon();
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: $grey-dark;
+  }
+
+  &__count {
+    margin-bottom: 1rem;
+  }
+}
+
+@mixin bordered-table() {
+  border-top: 1px solid $grey;
+
+    & .#{$namespace} {
+      &table {
+        &__row {
+          &:last-child {
+            border-bottom: none;
+          }
+        }
+      }
+    }
+}
+
+@mixin file-tree-item() {
+  display: inline-block;
+  min-width: 100%;
+  position: relative;
+
+  &--selected {
+    background: $grey-light;
+  }
+
+  &-details {
+    align-items: center;
+    display: inline-flex;
+    padding: .5rem 1rem;
+    width: 100%;
+    
+    &:hover {
+      cursor: pointer;
+      background: $grey-light;
+    }
+  }
+
+  &-children {
+    padding-left: 2rem;
+  }
+
+  &-label {
+    flex: 1;
+  }
+  
+  &-toggle {
+    @include material-icon();
+    width: 1.8rem;
+    margin-right: .5rem;
+    flex-shrink: 0;
+    
+    &--spinning {
+      @include spinning();
+    }
+  }
+}

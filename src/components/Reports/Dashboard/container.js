@@ -20,65 +20,71 @@
  *
  */
 
-import { connect } from 'react-redux';
 import ReportUtils from 'components/Reports/Utils';
 import { convertDataToMonthLineChartData } from 'components/Reports/converters';
-import Dashboard from './presenter';
 import {
-	donut,
-	histogram,
-	line,
+  donut,
+  histogram,
+  line,
 } from '@ohdsi/atlascharts/dist/atlascharts.umd';
 import { ContainerBuilder } from 'services/Utils';
+import { BaseChart } from 'components/Reports/BaseChart';
+import presenter from './presenter';
+
+class Dashboard extends BaseChart {
+  render() {
+    return presenter(this.props);
+  }
+}
 
 const observedByMonthDTO = {
-	dateField: 'MONTH_YEAR',
-	yValue: 'COUNT_VALUE',
-	yPercent: 'PERCENT_VALUE',
+  dateField: 'MONTH_YEAR',
+  yValue: 'COUNT_VALUE',
+  yPercent: 'PERCENT_VALUE',
 };
 
 export default class DashboardContainerBuilder extends ContainerBuilder {
   constructor() {
     super();
     this.detailsCharts = {
-			genderDataChart: new donut(),
-			ageAtFirstObservationChart: new histogram(),
-			observedByMonthChart: new line(),
-			cumulativeDurationChart: new line(),
-		}
+      genderDataChart: new donut(),
+      ageAtFirstObservationChart: new histogram(),
+      observedByMonthChart: new line(),
+      cumulativeDurationChart: new line(),
+    };
   }
 
   getComponent() {
     return Dashboard;
   }
 
-	mapStateToProps(state, ownProps) {
-		const {
-			ageAtFirstObservation,
-			cumulativeDuration,
-			genderData,
-			summary,
-			characterizationDate,
-		} = ownProps;
-		let {
-			observedByMonth,
-		} = ownProps;
+  mapStateToProps(state, ownProps) {
+    const {
+      ageAtFirstObservation,
+      cumulativeDuration,
+      genderData,
+      summary,
+      characterizationDate,
+    } = ownProps;
+    let {
+      observedByMonth,
+    } = ownProps;
 
-		if (observedByMonth) {
-			observedByMonth = convertDataToMonthLineChartData(
-				observedByMonth,
-				observedByMonthDTO
-			);
-		}
+    if (observedByMonth) {
+      observedByMonth = convertDataToMonthLineChartData(
+        observedByMonth,
+        observedByMonthDTO
+      );
+    }
 
-		return {
-			ageAtFirstObservation,
-			cumulativeDuration,
-			genderData: ReportUtils.prepareChartDataForDonut(genderData),
-			observedByMonth,
-			summary,
-			characterizationDate,
-			...this.detailsCharts,
-		};
-	}
+    return {
+      ageAtFirstObservation,
+      cumulativeDuration,
+      genderData: ReportUtils.prepareChartDataForDonut(genderData),
+      observedByMonth,
+      summary,
+      characterizationDate,
+      detailsCharts: this.detailsCharts,
+    };
+  }
 }
