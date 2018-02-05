@@ -26,7 +26,7 @@ import { Table } from 'arachne-ui-components';
 import { TableCellText as Cell } from 'arachne-ui-components';
 import { Link } from 'arachne-ui-components';
 import { Button } from 'arachne-ui-components';
-import { healthStatuses } from 'const/dataSource';
+import { healthStatuses, modelTypesValues } from 'const/dataSource';
 
 require('./style.scss');
 
@@ -42,16 +42,16 @@ function CellRegistered({ value }) {
   );
 }
 
-function CellRegister({ isRegistered, onClick }) {
+function CellRegister({ isRegistered, onClick, isCdm }) {
   const classes = new BEMHelper('data-source-list-cell-register');
 
-  return (
-    <div {...classes()}>
+  return isCdm
+    ? <div {...classes()}>
       {isRegistered ?
         <Button
           {...classes('btn')}
           mods={['success', 'rounded']}
-          label="Edit metadata"
+          label="Generate reports"
           onClick={onClick}
         />
         :
@@ -63,7 +63,7 @@ function CellRegister({ isRegistered, onClick }) {
         />
       }
     </div>
-  );
+  : null;
 }
 
 function CellEdit({ editDataSource, removeDataSource, value, isRegistered }) {
@@ -153,6 +153,7 @@ function DataSourceTable(props) {
           entity => ({
             isRegistered: entity.isRegistered,
             onClick: () => goToDataSource(entity.id),
+            isCdm: entity.modelType === modelTypesValues.CDM,
           })
         }
       />

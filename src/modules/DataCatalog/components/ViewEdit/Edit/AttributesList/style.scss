@@ -24,39 +24,39 @@
 
 .#{$namespace} {
 
-	&attributes-form-list {
-		@include block-shadow();
-		flex-basis: calc(50% - 2rem);
-		margin: 2rem 0;
-		padding: 0;
+  &attributes-form-list {
+    @include block-shadow();
+    flex-basis: calc(50% - 2rem);
+    margin: 2rem 0;
+    padding: 0;
 
-		& .#{$namespace} {
-			&form {
-				&__actions {
-					background: $grey-lighter;
-					justify-content: flex-end;
-					margin-top: 25px;
-					padding-bottom: 10px;
-					padding-top: 10px;
-					padding-right: 2rem;
-				}
-			}
-		}
-	}
+    & .#{$namespace} {
+      &form {
+        &__actions {
+          background: $grey-lighter;
+          justify-content: flex-end;
+          margin-top: 25px;
+          padding-bottom: 10px;
+          padding-top: 10px;
+          padding-right: 2rem;
+        }
+      }
+    }
+  }
 
-	&attributes-form-list-item {
-		display: flex;
-		padding: 0 2rem;
-		margin-top: 5px;
-		justify-content: space-between;
-		align-items: center;
+  &attributes-form-list-item {
+    display: flex;
+    padding: 0 2rem;
+    margin-top: 5px;
+    justify-content: space-between;
+    align-items: center;
 
-		&__name {
-			@include title();
-		}
+    &__name {
+      @include title();
+    }
 
-		&__value {
-			flex-basis: 35%;
-		}
-	}
+    &__value {
+      flex-basis: 35%;
+    }
+  }
 }

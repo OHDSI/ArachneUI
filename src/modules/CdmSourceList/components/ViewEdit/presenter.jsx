@@ -28,7 +28,6 @@ import {
 } from 'arachne-ui-components';
 import { modelTypesValues } from 'const/dataSource';
 import Toolbar from './Toolbar';
-import BusinessData from './BusinessData';
 import AchillesSettings from './AchillesSettings';
 
 require('./style.scss');
@@ -42,9 +41,6 @@ function ViewEdit({ isLoading, dataSourceName, isRegistered, modelType }) {
         <Toolbar />
         <div {...classes('content')}>
           <div className="row">
-            <div className="col-xs-12 col-md-6">
-              <BusinessData />
-            </div>
             { modelType === modelTypesValues.CDM && isRegistered && <div className="col-xs-12 col-md-6">
               <AchillesSettings />
             </div> }
