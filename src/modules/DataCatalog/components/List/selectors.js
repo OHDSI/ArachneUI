@@ -35,7 +35,7 @@ class DataCatalogListTableSelectorsBuilder extends DsAttrListSelector {
   // Dummy getters
 
   getSearchStr(state) {
-    return get(state, 'routing.locationBeforeTransitions.search', '');
+    return get(state, 'routing.locationBeforeTransitions.query', '');
   }
 
   getRawDataSourceList(state) {

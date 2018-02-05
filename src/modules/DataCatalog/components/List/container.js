@@ -29,6 +29,7 @@ import {
 } from 'services/SolrQuery';
 import presenter from './presenter';
 import SelectorsBuilder from './selectors';
+import { paths } from 'modules/DataCatalog/const';
 
 const selectors = (new SelectorsBuilder()).build();
 
@@ -38,12 +39,13 @@ class DataCatalogStatefulList extends Component {
     return {
       searchStr: PropTypes.string,
       loadDsList: PropTypes.func.isRequired,
+      onlyMy: PropTypes.bool,
     };
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.searchStr !== nextProps.searchStr) {
-      this.props.loadDsList({ searchStr: nextProps.searchStr });
+      this.props.loadDsList({ searchStr: nextProps.searchStr, onlyMy: nextProps.onlyMy });
     }
   }
 
@@ -58,9 +60,10 @@ class DataCatalogListBuilder extends ContainerBuilder {
     return DataCatalogStatefulList;
   }
 
-  mapStateToProps(state) {
+  mapStateToProps(state, ownProps) {
     return {
       searchStr: selectors.getSearchStr(state),
+      onlyMy: ownProps.routeParams.my || false,
       filterFields: selectors.getFilterList(state),
       columns: selectors.getColumns(state),
       data: selectors.getData(state),
@@ -76,10 +79,11 @@ class DataCatalogListBuilder extends ContainerBuilder {
     };
   }
 
-  getFetchers({ state }) {
-    const searchStr = state.routing.locationBeforeTransitions.search;
+  getFetchers({ state, params }) {
+    const searchStr = state.routing.locationBeforeTransitions.query;
+    const onlyMy = state.routing.locationBeforeTransitions.pathname === paths.myDatasources();
     return {
-      loadDsList: actions.dataCatalog.dataSourceList.query.bind(null, { searchStr }),
+      loadDsList: actions.dataCatalog.dataSourceList.query.bind(null, { searchStr, onlyMy }),
     };
   }
 

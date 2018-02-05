@@ -68,6 +68,9 @@ function MenuDropdown(props) {
           <Link
             {...classes('dropdown-link')}
             to={paths.settings()}>Settings</Link>
+          <Link
+            {...classes('dropdown-link')}
+            to={paths.datasources()}>My datasources</Link>
         </div>
       </DropdownContent>
     </Dropdown>

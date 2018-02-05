@@ -27,10 +27,11 @@ import ViewEditDataSource from './components/ViewEdit';
 
 function Routes() {
   return [
-    <Route path="data-sources" component={ListDataSources}/>,
-    <Route path="data-sources/:dataSourceId(/:isProfile)" component={ViewEditDataSource}/>,
+    <Route path="data-sources" component={ListDataSources} />,
+    <Route path="my-data-sources" component={ListDataSources} my={true} />,
+    <Route path="data-sources/:dataSourceId(/:isProfile)" component={ViewEditDataSource} />,
     <IndexRedirect to="data-sources"/>,
-  ]
+  ];
 }
 
 export default Routes;
