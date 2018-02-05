@@ -53,6 +53,7 @@ const apiPaths = {
 const paths = {
   dataCatalog: id => `/data-catalog/data-sources${id ? `/${id}` : ''}`,
   studies: id => `/api/v1/study-management/studies${id ? `/${id}` : ''}`,
+  edit: id => `/data-catalog/data-sources/${id}/edit`,
 };
 
 const imgs = {

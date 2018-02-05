@@ -29,7 +29,7 @@ import { Utils } from 'services/Utils';
 import { paths } from 'modules/DataCatalog/const';
 import ToolbarActions from './presenter';
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   const datasourceData = get(state, 'dataCatalog.dataSource.data.result');
   const isDeleted = !!get(datasourceData, 'deleted', '');
   const isDeletable = get(datasourceData, `permissions[${dataSourcePermissions.delete}]`, false);
@@ -37,7 +37,8 @@ function mapStateToProps(state) {
   const dataSourceId = get(datasourceData, 'id', '');
 
   return {
-    canDelete,
+    canDelete: ownProps.mode === 'edit' ? canDelete : false,
+    canEdit: ownProps.mode === 'view' ? isDeletable : false,
     dataSourceId,
   };
 }

@@ -50,7 +50,7 @@ class Edit {
         <div {...classes()}>
           {permissions.DELETE_DATASOURCE
             ? [
-              <Toolbar />,
+              <Toolbar mode={'edit'} />,
               <div {...classes('content')}>
                 <div className="row">
                   <div className='col-xs-6 col-md-6'>

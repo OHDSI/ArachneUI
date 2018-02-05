@@ -44,7 +44,7 @@ function View(props) {
   return (
     <PageContent title={`${props.name} | Arachne`}>
       <div {...classes()}>
-        <Toolbar />
+        <Toolbar mode={'view'} />
         <Actions
           isProfileSelected={props.isProfileSelected}
           dataSourceId={props.dataSourceId}
