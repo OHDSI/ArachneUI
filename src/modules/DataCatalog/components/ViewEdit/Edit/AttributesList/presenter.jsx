@@ -29,36 +29,56 @@ import {
   Panel,
 } from 'arachne-ui-components';
 import { fieldTypes } from 'modules/ExpertFinder/const';
+import { immutableAttributes, fieldHints } from 'const/dataSource';
 
 require('./style.scss');
+
+function ImmutableAttribute({ name, value }) {
+  const classes = new BEMHelper('immutable-attribute');
+
+  return (
+    <div {...classes()}>
+      <div {...classes('value')}>{value}</div>
+      <div
+        {...classes('hint', null, 'ac-tooltip')}
+        aria-label={fieldHints[name]}
+        data-tootik-conf={'bottom multiline'}
+      >help</div>
+    </div>
+  );
+}
 
 function AttributesFormListItem({ item, input, meta }) {
   const itemClasses = new BEMHelper('attributes-form-list-item');
   let field = null;
-  switch (item.type) {
-    case fieldTypes.enum:
-      case fieldTypes.enumMulti:
-      field = (<FormSelect
-        options={item.options}
-        mods={['bordered']}
-        input={input}
-        meta={meta}
-        isMulti={item.type === fieldTypes.enumMulti}
-      />);
-      break;
-    case fieldTypes.string:
-    case fieldTypes.integer:
-      field = (
-        <FormInput
-          placeholder={item.label}
+  if (immutableAttributes.includes(item.name)) {
+    field = (<ImmutableAttribute name={item.name} value={input.value} />);
+  } else {
+    switch (item.type) {
+      case fieldTypes.enum:
+        case fieldTypes.enumMulti:
+        field = (<FormSelect
+          options={item.options}
           mods={['bordered']}
           input={input}
           meta={meta}
-        />
-      );
-      break;
-    default:
-      return null;
+          isMulti={item.type === fieldTypes.enumMulti}
+        />);
+        break;
+      case fieldTypes.string:
+      case fieldTypes.integer:
+        field = (
+          <FormInput
+            placeholder={item.label}
+            mods={['bordered']}
+            input={input}
+            meta={meta}
+          />
+        );
+        break;
+      default:
+        return null;
+    }
   }
 
   return (

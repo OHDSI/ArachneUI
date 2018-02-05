@@ -59,4 +59,16 @@
       flex-basis: 35%;
     }
   }
+
+  &immutable-attribute {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 1rem;
+
+    &__hint {
+      @include material-icon();
+      font-size: 1.6rem;
+      cursor: default;
+    }
+  }
 }

@@ -217,6 +217,17 @@ const staticAttrList = [
   },
 ];
 
+const immutableAttributes = [
+  attributeNames.modelType,
+];
+
+const fieldHints = {
+  [attributeNames.modelType]: `
+    Model type has been detected automatically. To update it change connection details of the data source at data node side.
+    Available model types: ${modelTypes.map(mt => mt.label).join(', ')}
+  `,
+};
+
 export {
   healthStatuses,
   modelTypes,
@@ -224,4 +235,6 @@ export {
   cdmVersionList,
   modelTypesValues,
   attributeNames,
+  immutableAttributes,
+  fieldHints,
 };
