@@ -63,9 +63,6 @@ function InviteRestrictedArea(props) {
             ({ isSticky }) => <Banner
               className={isSticky ? classes({
                 element: 'sticky-banner',
-                modifiers: {
-                  active: invitation !== null,
-                },
               }).className : null}
               invitation={invitation}
               acceptInvitation={onAccept}

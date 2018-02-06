@@ -41,6 +41,9 @@ export default function Banner(props) {
     invitation,
   } = props;
   const classes = new BEMHelper('invite-banner');
+  const modifiers = {
+    active: invitation !== null,
+  };
 
   if (!invitation) {
     invitation = {
@@ -56,7 +59,12 @@ export default function Banner(props) {
   } = invitation;
 
   return (
-    <div {...classes({ extra: className })}>
+    <div
+      {...classes({
+        extra: className,
+        modifiers,
+      })}
+    >
       <div {...classes('avatar')}>
         <Avatar img={ activityApiPaths.userpic(user.id) } />
       </div>
