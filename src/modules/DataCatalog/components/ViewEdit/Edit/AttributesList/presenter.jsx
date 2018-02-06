@@ -99,6 +99,7 @@ function AttributesList(props) {
     attrList,
     initialValues,
     doSubmit,
+    isRegistered,
   } = props;
   const fields = attrList
     .map(item => ({
@@ -111,7 +112,7 @@ function AttributesList(props) {
       },
     }));
   const submitBtn = {
-    label: 'Save',
+    label: isRegistered ? 'Save' : 'Publish',
     mods: ['success', 'rounded'],
   };
 

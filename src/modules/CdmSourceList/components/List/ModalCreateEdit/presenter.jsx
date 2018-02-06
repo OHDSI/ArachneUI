@@ -60,8 +60,8 @@ function ModalCreateEdit(props) {
 
   const cancelBtn = {
     label: 'Cancel',
-  }
-  
+  };
+
   const fields = [
     {
       name: 'name',

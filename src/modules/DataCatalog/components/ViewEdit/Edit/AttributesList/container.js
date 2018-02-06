@@ -42,11 +42,13 @@ export default class AttributeListBuilder extends ContainerBuilder {
 
   mapStateToProps(state) {
     const dataSourceId = get(state, 'dataCatalog.dataSource.data.result.id');
+    const isRegistered = get(state, 'dataCatalog.dataSource.data.result.isRegistered');
 
     return {
       attrList: selectors.getAttrList(state),
       initialValues: selectors.getData(state),
       dataSourceId,
+      isRegistered,
     };
   }
 
