@@ -89,6 +89,7 @@ export default class ViewEditAnalysis extends Component {
             {...this.classes('container')}
             studyId={this.props.studyId}
             onAction={this.props.onBannerActed}
+            disabled={isLoading}
           >
             <Toolbar isEditable={isEditable} />
             <div {...this.classes('content')}>

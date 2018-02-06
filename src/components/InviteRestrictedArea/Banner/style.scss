@@ -28,8 +28,17 @@
     align-items: center;
     background: $black;
     display: flex;
-    padding: 1.75rem 3rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
     z-index: 1;
+    height: 0;
+    transition: height 0.3s ease, padding 0.3s ease;
+
+    &--active {
+      height: 75px;
+      padding-top: 1.75rem;
+      padding-bottom: 1.75rem;
+    }
 
     &__avatar {
       height: 4rem;
