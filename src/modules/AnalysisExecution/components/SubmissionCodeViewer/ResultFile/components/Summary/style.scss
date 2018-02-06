@@ -82,6 +82,14 @@
 
       &--data-source {
         flex-shrink: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        & .#{$namespace} {
+          &label-data-source {
+            overflow: hidden;
+          }
+        }
       }
 
       &:not(:first-child) {
