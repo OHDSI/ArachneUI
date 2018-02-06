@@ -36,13 +36,14 @@ export default function Banner(props) {
     declineInvitation,
     className,
     showDeclineModal,
+    disabled,
   } = props;
   let {
     invitation,
   } = props;
   const classes = new BEMHelper('invite-banner');
   const modifiers = {
-    active: invitation !== null,
+    active: !disabled && invitation !== null,
   };
 
   if (!invitation) {

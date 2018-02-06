@@ -42,6 +42,7 @@ function InviteRestrictedArea(props) {
     invitation,
     isLoading,
     studyId,
+    disabled,
   } = props;
   const classes = new BEMHelper('invite-restricted-area');
   const emptyStateMessage = (
@@ -67,6 +68,7 @@ function InviteRestrictedArea(props) {
               invitation={invitation}
               acceptInvitation={onAccept}
               declineInvitation={onDecline}
+              disabled={disabled}
             />
           }
         </Sticky>
