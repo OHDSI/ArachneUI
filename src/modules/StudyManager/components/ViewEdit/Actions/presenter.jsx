@@ -52,8 +52,8 @@ function StudyActions(props) {
         aria-label="Go to published paper"
         data-tootik-conf="left"
       >
-        <Button {...classes('publish')}>
-          <i {...classes('publish-ico')} onClick={goToPaper}>
+        <Button {...classes('icon-wrapper')}>
+          <i {...classes('icon')} onClick={goToPaper}>
             description
           </i>
           <i {...classes('publish-ico-marker')} />
@@ -67,8 +67,8 @@ function StudyActions(props) {
         aria-label="Publish a paper based on the study"
         data-tootik-conf="left"
       >
-        <Button {...classes('publish')}>
-          <i {...classes('publish-ico')} onClick={publishPaper}>
+        <Button {...classes('icon-wrapper')}>
+          <i {...classes('icon')} onClick={publishPaper}>
             description
           </i>
         </Button>
@@ -82,10 +82,10 @@ function StudyActions(props) {
         data-tootik-conf="left"
       >
         <Button
-          {...classes('publish')}
+          {...classes('icon-wrapper')}
           disabled={true}
         >
-          <i {...classes('publish-ico', 'grey')}>
+          <i {...classes('icon', 'grey')}>
             description
           </i>
         </Button>
