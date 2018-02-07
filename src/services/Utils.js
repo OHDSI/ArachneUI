@@ -417,7 +417,6 @@ class Utils {
         const savedFilter = getSavedFilter();
         query = {
           ...savedFilter,
-          page: 1,
         };
         replace({ pathname: basePath, query });
       }
