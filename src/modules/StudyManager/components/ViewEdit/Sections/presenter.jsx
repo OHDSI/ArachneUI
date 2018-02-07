@@ -20,11 +20,9 @@
  *
  */
 
-import React, { Component } from 'react';
-import BEMHelper from 'services/BemHelper';
+import React from 'react';
 import { TabbedPane } from 'arachne-ui-components';
 import ListDocuments from '../ListDocuments/index';
-import ListParticipants from '../ListParticipants/index';
 import ListDataSources from '../ListDataSources/index';
 
 require('./style.scss');
@@ -35,11 +33,6 @@ function Sections(props) {
       id: 'study-docs',
       label: 'Documents',
       content: <ListDocuments />,
-    },
-    {
-      id: 'study-participants',
-      label: 'Participants',
-      content: <ListParticipants />,
     },
     {
       id: 'study-data-sources',

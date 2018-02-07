@@ -26,7 +26,6 @@ import BEMHelper from 'services/BemHelper';
 import { LoadingPanel, PageContent } from 'arachne-ui-components';
 import InviteRestrictedArea from 'components/InviteRestrictedArea';
 
-import DateInterval from './DateInterval';
 import Toolbar from './Toolbar';
 
 import ModalEditTitle from './ModalEditTitle';
@@ -39,6 +38,9 @@ import ModalCreateAnalysis from './ModalCreateAnalysis';
 
 import LeftColumn from './LeftColumn';
 import RightColumn from './RightColumn';
+
+import ModalStudyProperties from './components/ModalStudyProperties';
+import ParticipantsList from './components/ParticipantsList';
 
 require('./style.scss');
 
@@ -65,7 +67,6 @@ function ViewEditStudy(props) {
           <div {...classes('content')}>
             <div className="row">
               <div className="col-xs-12 col-lg-6">
-                <DateInterval />
                 <div className="row">
                   <div className="col-xs-12">
                     <LeftColumn openedSection={openedSection} onTabChange={onTabChange} />
@@ -80,6 +81,7 @@ function ViewEditStudy(props) {
         </InviteRestrictedArea>
         <LoadingPanel active={isLoading} />
       </div>
+      <ParticipantsList />
       <ModalEditTitle />
       <ModalCreateAnalysis />
       <ModalCreateDocument />
@@ -87,6 +89,7 @@ function ViewEditStudy(props) {
       <ModalConfirmParticipant />
       <ModalConfirmDatasource />
       <ModalAddDataSource />
+      <ModalStudyProperties />
     </PageContent>
   );
 }

@@ -30,7 +30,10 @@
     background: $white;
     border-radius: $block-border-radius;
 		padding: 12px 20px;
-    @include block-shadow();
+
+		&--shadow {
+			@include block-shadow();
+		}
 
 		&__title {
 			@include title();

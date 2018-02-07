@@ -36,19 +36,10 @@ class StudySettings extends Component {
     this.headerClasses = BEMHelper('study-settings-header');
   }
 
-  getHeader() {
-    const header = [
-      <span {...this.headerClasses('group')}>Permissions</span>,
-      <span {...this.headerClasses({ element: 'group', modifiers: { wide: !this.props.isEditable } })}>Type of Study</span>,
-      <span {...this.headerClasses('group')}>Status</span>,
-    ];
-
-    return header;
-  }
-
   getSettings() {
     return [
       <li {...this.classes({ element: 'group', modifiers: { uneditable: !this.props.isEditable } })}>
+        <span {...this.headerClasses('group')}>Permissions</span>
         {this.props.isEditable ?
           <Tabs
             placeholder="Privacy"
@@ -62,9 +53,11 @@ class StudySettings extends Component {
           </span>
         }
       </li>,
-      <li {...this.classes({ element: 'group', modifiers: { wide: !this.props.isEditable, uneditable: !this.props.isEditable } })}>
+      <li {...this.classes({ element: 'group', modifiers: { uneditable: !this.props.isEditable } })}>
+        <span {...this.headerClasses('group')}>Type of Study</span>
         {this.props.isEditable ?
           <Select
+            {...this.classes('type')}
             mods={['bordered']}
             placeholder="Type"
             value={this.props.typeSelected.value}
@@ -78,6 +71,7 @@ class StudySettings extends Component {
         }
       </li>,
       <li  {...this.classes({ element: 'group', modifiers: { uneditable: !this.props.isEditable } })}>
+        <span {...this.headerClasses('group')}>Status</span>
         {this.props.isEditable ?
           <Select
             {...this.classes('status')}
@@ -101,15 +95,9 @@ class StudySettings extends Component {
 
   render() {
     return (
-      <Panel title={
-          <div {...this.headerClasses()}>
-            {this.getHeader()}
-          </div>
-        }>
-        <ul {...this.classes()}>
-          {this.getSettings()}
-        </ul>
-      </Panel>
+      <ul {...this.classes()}>
+        {this.getSettings()}
+      </ul>
     );
   }
 }

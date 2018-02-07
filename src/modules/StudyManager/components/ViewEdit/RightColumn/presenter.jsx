@@ -22,11 +22,9 @@
 
 import React from 'react';
 import ListAnalyses from 'modules/StudyManager/components/ViewEdit/ListAnalyses';
-import Settings from 'modules/StudyManager/components/ViewEdit/Settings';
 
 function RightColumn() {
   return (<div>
-    <Settings />
     <ListAnalyses />
   </div>);
 }
