@@ -29,7 +29,6 @@ import InviteRestrictedArea from 'components/InviteRestrictedArea';
 import Toolbar from './Toolbar';
 
 import ModalEditTitle from './ModalEditTitle';
-import ModalAddParticipant from './ModalAddParticipant';
 import ModalConfirmParticipant from './ModalConfirmParticipant';
 import ModalAddDataSource from './ModalAddDataSource';
 import ModalConfirmDatasource from './ModalConfirmDatasource';
@@ -85,7 +84,6 @@ function ViewEditStudy(props) {
       <ModalEditTitle />
       <ModalCreateAnalysis />
       <ModalCreateDocument />
-      <ModalAddParticipant />
       <ModalConfirmParticipant />
       <ModalConfirmDatasource />
       <ModalAddDataSource />

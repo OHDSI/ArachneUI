@@ -1,37 +1,35 @@
 /*
- *
- * Copyright 2017 Observational Health Data Sciences and Informatics
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * Company: Odysseus Data Services, Inc.
- * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 13, 2016
- *
- */
+  *
+  * Copyright 2017 Observational Health Data Sciences and Informatics
+  * Licensed under the Apache License, Version 2.0 (the "License");
+  * you may not use this file except in compliance with the License.
+  * You may obtain a copy of the License at
+  *
+  *     http://www.apache.org/licenses/LICENSE-2.0
+  *
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an "AS IS" BASIS,
+  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  * See the License for the specific language governing permissions and
+  * limitations under the License.
+  *
+  * Company: Odysseus Data Services, Inc.
+  * Product Owner/Architecture: Gregory Klebanov
+  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
+  * Created: Wednesday, February 7, 2018 3:26 PM
+  *
+  */
 
-// @ts-check
+//@ts-check
 import { Component, PropTypes } from 'react';
-import { Utils } from 'services/Utils';
-import { reduxForm, reset as resetForm } from 'redux-form';
-import get from 'lodash/get';
 import actions from 'actions';
+import { ContainerBuilder, get } from 'services/Utils';
+import { form, modal, newParticipantRolesOptions } from 'modules/StudyManager/const';
 import { ModalUtils } from 'arachne-ui-components';
-import { modal, form, newParticipantRolesOptions } from 'modules/StudyManager/const';
+import { reset as resetForm } from 'redux-form';
 import presenter from './presenter';
 
-/** @augments { Component<any, any> } */
-export class ModalAddParticipant extends Component {
+export class AddParticipant extends Component {
   static get propTypes() {
     return {
       isOpened: PropTypes.bool,
@@ -51,21 +49,21 @@ export class ModalAddParticipant extends Component {
     return presenter(this.props);
   }
 }
-
-let ReduxModalAddParticipant = reduxForm({
-  form: form.addParticipant,
-})(ModalAddParticipant);
-
-ReduxModalAddParticipant = ModalUtils.connect({
-  name: modal.addParticipant,
-})(ReduxModalAddParticipant);
-
-export default class ModalAddParticipantBuilder {
+ 
+export default class AddParticipantBuilder extends ContainerBuilder {
   getComponent() {
-    return ReduxModalAddParticipant;
+    return AddParticipant;
   }
 
-  mapStateToProps(state) {
+  
+  getFormParams() {
+    return {
+      form: form.addParticipant,
+      enableReinitialize: false,
+    };
+  }
+ 
+  mapStateToProps(state) {     
     const moduleData = get(state, 'studyManager');
 
     const participantSuggestions = get(moduleData, 'participantList.data.result') || [];
@@ -86,8 +84,8 @@ export default class ModalAddParticipantBuilder {
   }
 
   /**
-  * @returns { { [x: string]: any } }
-  */
+   * @returns { { [x: string]: any } }
+   */
   getMapDispatchToProps() {
     return {
       addParticipant: actions.studyManager.study.participants.create,
@@ -100,6 +98,7 @@ export default class ModalAddParticipantBuilder {
         { user, studyName }
       ),
       closeModal: () => ModalUtils.actions.toggle(modal.addParticipant, false),
+      closeParticipantsModal: () => ModalUtils.actions.toggle(modal.participantsList, false),
       resetForm: resetForm.bind(null, form.addParticipant),
     };
   }
@@ -109,8 +108,9 @@ export default class ModalAddParticipantBuilder {
       ...ownProps,
       ...stateProps,
       ...dispatchProps,
-      doSubmit({ participantId, role }) {
-        const submitPromise = dispatchProps.addParticipant(
+      
+      async doSubmit({ participantId, role }) {
+        const submitPromise = await dispatchProps.addParticipant(
           {
             studyId: stateProps.studyId,
           },
@@ -124,18 +124,23 @@ export default class ModalAddParticipantBuilder {
           user.value === participantId
         )[0];
 
-        submitPromise
-          .then(() => dispatchProps.resetForm())
-          .then(() => dispatchProps.closeModal())
-          .then(() => dispatchProps.openConfirmParticipant(participant, stateProps.studyName))
-          .then(() => dispatchProps.loadStudy(stateProps.studyId))
-          .catch(() => {});
+        try {
+          await dispatchProps.resetForm();
+          await dispatchProps.closeModal();
+          await dispatchProps.closeParticipantsModal();
+          await dispatchProps.openConfirmParticipant(participant, stateProps.studyName);
+          await dispatchProps.loadStudy(stateProps.studyId);
+        } catch (er) {
+          if (__DEV__) {
+            console.error(er);
+          }
+        }
 
         // We have to return a submission promise back to redux-form
         // to allow it update the state
         return submitPromise;
       },
-      loadParticipantOptions: ({ query }) => {
+      loadParticipantOptions({ query }) {
         const studyId = stateProps.studyId;
         if (studyId === undefined) {
           return [];
@@ -144,13 +149,5 @@ export default class ModalAddParticipantBuilder {
       },
     };
   }
-
-  build() {
-    return Utils.buildConnectedComponent({
-      Component: this.getComponent(),
-      mapStateToProps: this.mapStateToProps,
-      mapDispatchToProps: this.getMapDispatchToProps(),
-      mergeProps: this.mergeProps,
-    });
-  }
 }
+ 

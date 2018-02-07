@@ -21,10 +21,10 @@
  */
 
 import React, { PropTypes } from 'react';
-import DraggableList from 'react-draggable-list';
 import { ListItem, Link, Select } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
 import { newParticipantRolesOptions, participantRoles } from 'modules/StudyManager/const';
+import AddParticipant from '../AddParticipant';
 
 require('./style.scss');
 
@@ -151,6 +151,9 @@ function ListParticipants(props) {
 
   return (
     <ul {...classes()}>
+      {hasEditPermissions &&
+        <AddParticipant />
+      }
       {participantList.map((participant, key) =>
         <ParticipantItem
           participant={participant}
@@ -163,9 +166,6 @@ function ListParticipants(props) {
     	)}
       {participantList.length === 0 &&
       	<ListItem label="No participants" />
-      }
-      {hasEditPermissions &&
-        <ListItem label="Add participant" mods="add" onClick={openAddParticipantModal} />
       }
     </ul>
   );

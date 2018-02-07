@@ -23,7 +23,7 @@
   import React from 'react';
   import { Modal } from 'arachne-ui-components';
   import BEMHelper from 'services/BemHelper';
-  import ListParticipants from './ListParticipants';
+  import ListParticipants from './components/ListParticipants';
 
   import './style.scss';
 

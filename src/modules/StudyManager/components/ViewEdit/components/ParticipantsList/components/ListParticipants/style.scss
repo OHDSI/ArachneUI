@@ -23,9 +23,50 @@
 @import 'styles/vars-and-mixins.scss';
 
 .#{$namespace} {
+  &study-participants-list {
+    padding-bottom: 1.5rem;
+  }
 
-	&study-form-add-participant {
-		width: 260px;
-	}
+  &study-participants-item {
+    display: flex;
+    
+    &:last-child {
+      border-bottom: none;
+    }
 
+  	&__name {
+      flex: 5;
+      padding-right: 1.5rem;
+      display: flex;
+      align-items: center;
+  	}
+
+  	&__role {
+      flex: 3;
+      min-width: 150px;
+      padding-right: 1.5rem;
+      text-align: left;
+  	}
+
+    &__role-select {
+      margin-left: -1rem;      
+    }
+
+    &__status {
+      flex: 3;
+      min-width: 100px;
+      text-align: right;
+      @include invitation-status();
+    }
+
+    @include list-item-actions();
+
+    // For case, when list is editable, so crosses can be shown,
+    // but the current line cannot be removed
+    &--displaced {
+      padding-right: 50px;
+    }
+
+    @include decline-comment();  
+  }
 }
