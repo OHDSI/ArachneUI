@@ -28,8 +28,9 @@ import {
   goBack,
   push as goToPage,
 } from 'react-router-redux';
-import { studyPermissions, studyActions } from 'modules/StudyManager/const';
+import { studyPermissions, studyActions, modal } from 'modules/StudyManager/const';
 import { paths as paperPaths } from 'modules/InsightsLibrary/const';
+import { ModalUtils } from 'arachne-ui-components';
 import StudyActions from './presenter';
 
 export default class StudyActionsBuilder {
@@ -82,6 +83,8 @@ export default class StudyActionsBuilder {
       remove: actions.studyManager.study.delete,
       goToPaper: (insightId) => goToPage(paperPaths.insights({ insightId })),
       loadSudyInvitations: actions.studyManager.studyInvitations.query,
+      showSettings: () => ModalUtils.actions.toggle(modal.modalStudyProperties, true),
+      showParticipants: () => ModalUtils.actions.toggle(modal.participantsList, true),
     };
   }
 

@@ -75,12 +75,13 @@ function DatePanel({
   isEditable,
   onChange,
   className,
+  mods = ['shadow'],
 }) {
   const classes = new BEMHelper('study-date-panel');
   const displayDate = selected ? moment(selected).format(dateFormat) : 'Empty';
 
   return (
-    <div {...classes({ extra: className })}>
+    <div {...classes({ extra: className, modifiers: mods })}>
       <span {...classes('title')}>
         {title}
       </span>

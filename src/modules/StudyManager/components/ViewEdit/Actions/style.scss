@@ -41,13 +41,13 @@
       width: 120px;
     }
 
-    &__publish, &__reload, &__remove {
+    &__icon-wrapper {
       color: $grey-dark;
       height: auto;
       padding: 0 10px;
     }
     
-    &__publish-ico, &__reload-ico, &__remove-ico {
+    &__icon {
       @include material-icon();
       font-size: 3rem;
       vertical-align: middle;

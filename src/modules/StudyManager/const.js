@@ -32,6 +32,8 @@ const modal = keyMirror({
   editStudyTitle: null,
   confirmParticipant: null,
   confirmDatasource: null,
+  modalStudyProperties: null,
+  participantsList: null,
 });
 
 const form = keyMirror({

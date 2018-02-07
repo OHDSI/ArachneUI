@@ -20,7 +20,7 @@
  *
  */
 
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import BEMHelper from 'services/BemHelper';
 import DatePanel from 'components/DatePanel';
 import moment from 'moment';
@@ -32,27 +32,25 @@ function DateInterval({ startDate, endDate, setStartDate, setEndDate, isEditable
   const dateFormat = 'MM/DD/YYYY';
 
   return (
-    <div id="study-dates" {...classes({ extra: 'row' })}>
-      <div className="col-xs-12 col-sm-6">
-        <DatePanel
-          title={'Start date'}
-          selected={startDate}
-          maxDate={moment(endDate).add(-1, 'days')}
-          dateFormat={dateFormat}
-          isEditable={isEditable}
-          onChange={setStartDate}
-        />
-      </div>
-      <div className="col-xs-12 col-sm-6">
-        <DatePanel
-          title={'End date'}
-          selected={endDate}
-          minDate={moment(startDate).add(1, 'days')}
-          dateFormat={dateFormat}
-          isEditable={isEditable}
-          onChange={setEndDate}
-        />
-      </div>
+    <div id="study-dates" {...classes()} mods={['no-padding']}>
+      <DatePanel
+        mods={['no-shadow']}
+        title={'Start date'}
+        selected={startDate}
+        maxDate={moment(endDate).add(-1, 'days')}
+        dateFormat={dateFormat}
+        isEditable={isEditable}
+        onChange={setStartDate}
+      />
+      <DatePanel
+        mods={['no-shadow']}
+        title={'End date'}
+        selected={endDate}
+        minDate={moment(startDate).add(1, 'days')}
+        dateFormat={dateFormat}
+        isEditable={isEditable}
+        onChange={setEndDate}
+      />
     </div>
   );
 }

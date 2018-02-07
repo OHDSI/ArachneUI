@@ -25,7 +25,29 @@
 .#{$namespace} {
 
 	&study-settings {
-		@include entity-settings();
+		display: flex;
+		flex-direction: column;
+
+		&__group {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin: 0 2rem 1.25rem;
+
+			&--uneditable {
+				padding: 0.75rem 0;
+			}
+		}
+
+		&__status, &__type {
+			width: 25rem;
+		}
+
+		&-header {
+			&__group {
+				@include title();
+			}
+		}
 	}
 
 }
