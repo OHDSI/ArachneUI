@@ -123,6 +123,7 @@ const apiPaths = {
 
   shortAnalysis: ({ id }) => `/api/v1/analysis-management/analyses/${id}/short`,
   submission: ({ id }) => `/api/v1/analysis-management/submissions/${id}`,
+  submissionGroups: ({ analysisId }) => `/api/v1/analysis-management/analyses/${analysisId}/submission-groups`,
 };
 
 const analysisPermissions = {
@@ -244,6 +245,8 @@ const analysisTypes = keyMirror({
   PREDICTION: null,
 });
 
+const submissionGroupsPageSize = 5;
+
 export {
   apiPaths,
   form,
@@ -264,4 +267,5 @@ export {
   fileTypes,
   breadcrumbTypes,
   analysisTypes,
+  submissionGroupsPageSize,
 };

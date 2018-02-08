@@ -61,6 +61,7 @@ function AnalysisCode({
         <InviteRestrictedArea
           studyId={studyId}
           onAction={onBannerActed}
+          disabled={isLoading}
         >
           <Toolbar />
           <div {...classes('content')}>

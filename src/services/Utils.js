@@ -377,6 +377,8 @@ class Utils {
     const promise = new Promise((resolve, reject) => {
       if (confirm(message)) {
         resolve();
+      } else {
+        reject();
       }
     });
     return promise;

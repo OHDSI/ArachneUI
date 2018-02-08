@@ -87,11 +87,11 @@ function image({ classes, container, setContainer, data }) {
         }
       }}
     />,
-    container && data ?
+    container ?
       <Viewer
         attribute={false}
         images={[{ src: `data:image;base64,${data}` }]}
-        visible
+        visible={data !== null}
         container={container}
         onClose={() => {
         }}

@@ -59,11 +59,15 @@ export class SubmissionCode extends FileLoader {
     this.props.clearDetailsData();
   }
 
-  render() {
-    return presenter({
+  getRenderParams() {
+    return {
       ...this.props,
       downloadLink: this.LinkBuilder.build(),
-    });
+    };
+  }
+
+  render() {
+    return presenter(this.getRenderParams());
   }
 }
 
@@ -130,6 +134,10 @@ export class SubmissionCodeBuilder extends ContainerBuilder {
       submissionId,
       isReport,
       selectedFilePath: this.selectors.getSelectedFileFromTree(state),
+      permissions: {
+        upload: false,
+        remove: false,
+      },
     };
   }
 

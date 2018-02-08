@@ -16,28 +16,26 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: September 27, 2017
+ * Created: January 22, 2018
  *
  */
 
-import DuckBuilder from 'modules/AnalysisExecution/ducks/submissionFileDuckBuilder';
 import Duck from 'services/Duck';
-import { SubmissionResultLinkBuilder } from 'modules/AnalysisExecution/ducks/linkBuilder';
-import { apiPaths } from 'modules/AnalysisExecution/const';
+import { apiPaths } from 'modules/Auth/const';
 
-const duck = new DuckBuilder();
-duck.LinkBuilder = SubmissionResultLinkBuilder;
-const ducks = duck.build();
+const actionCoreName = 'AU_PASSWORD_POLICY';
 
-const deleteDuck = new Duck({
-  name: 'AE_ANALYSIS_SUBMISSION_FILE',
-  urlBuilder: apiPaths.submissionResultDelete,
-});
+const duck = new Duck(
+  {
+    name: actionCoreName,
+    urlBuilder: apiPaths.passwordPolicy,
+  },
+);
+
+const actions = duck.actions;
+const reducer = duck.reducer;
 
 export default {
-  actions: {
-    ...ducks.actions,
-    delete: deleteDuck.actions.delete,
-  },
-  reducer: ducks.reducer,
+  actions,
+  reducer,
 };

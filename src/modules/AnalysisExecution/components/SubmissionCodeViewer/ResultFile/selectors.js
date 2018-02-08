@@ -35,4 +35,15 @@ export default class SubmissionResultSelectors extends SubmissionCodeSelectorsBu
     return get(state, 'analysisExecution.submissionResultFile.data.result');
   }
 
+  getSubmissionStatus(state) {
+    return get(state, 'analysisExecution.submissionSummary.submission.data.status.value', {}, 'Object');
+  }
+
+  build() {
+    return {
+      ...super.build(),
+      getSubmissionStatus: this.getSubmissionStatus,
+    };
+  }
+
 }

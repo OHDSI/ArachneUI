@@ -57,6 +57,7 @@ export default function SubmissionResultSummary(props) {
     submissionGroupType,
     submission,
     datasource,
+    currentAnalysisType,
   } = props;
   const classes = BEMHelper('submission-result-summary');
 
@@ -95,7 +96,13 @@ export default function SubmissionResultSummary(props) {
           <Panel title={'Analysis'}>
             <div {...classes('panel-content')}>
               <ul {...classes('list')}>
-                <li {...classes('list-item')}>{nameAnalysisType({ analysisType: submissionGroupType, capitalize: true })}</li>
+                <li {...classes('list-item')}>
+                  {nameAnalysisType({ analysisType: currentAnalysisType, capitalize: true })}
+                  {submissionGroupType !== currentAnalysisType
+                    ? ` (had been executed as ${nameAnalysisType({ analysisType: submissionGroupType, capitalize: true })})`
+                    : ''
+                  }
+                </li>
                 <li {...classes('list-item')}>{moment(analysis.created).tz(moment.tz.guess()).format(commonDate)}</li>
               </ul>
             </div>
@@ -111,7 +118,7 @@ export default function SubmissionResultSummary(props) {
                   </span>
                 </li>
                 <li {...classes('list-item')}>{moment(get(submission, 'createdAt', '')).tz(moment.tz.guess()).format(commonDate)}</li>
-                <li {...classes('list-item')}>
+                <li {...classes('list-item', 'data-source')}>
                   <LabelDataSource {...datasource} />
                 </li>
               </ul>

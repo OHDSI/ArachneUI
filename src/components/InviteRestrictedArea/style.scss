@@ -33,6 +33,7 @@
       position: fixed;
       top: $header-height;
       width: calc(100% - #{$sidebar-width});
+      overflow: hidden;
     }
 
     &__empty-state {

@@ -25,6 +25,7 @@ import BEMHelper from 'services/BemHelper';
 import FileInfo from 'components/FileInfo';
 import mimeTypes from 'const/mimeTypes';
 import fileInfoConverter from 'components/FileInfo/converter';
+import { Utils } from 'services/Utils';
 
 require('./style.scss');
 
@@ -42,6 +43,8 @@ class FileTree extends Component {
       onNodeClick: PropTypes.func,
       isNodeExpanded: PropTypes.func,
       collapseNode: PropTypes.func,
+      permissions: PropTypes.arrayOf(PropTypes.oneOf(['upload', 'remove'])),
+      doDelete: PropTypes.bool,
     };
   }
 
@@ -70,7 +73,12 @@ class FileTree extends Component {
       element = <i {...classes(classname, modifiers)}>{icon}</i>;
     } else {
       element = (
-        <span {...classes(classname, 'no-toggle')} />
+        <span {...classes({
+          element: classname,
+          modifiers: {
+            'no-toggle': true,
+          },
+        })} />
       );
     }
     return element;
@@ -82,10 +90,13 @@ class FileTree extends Component {
       node,
       onNodeClick,
       selectedFilePath,
+      doDelete,
+      permissions,
     } = props;
 
     const isSelected = node.relativePath === selectedFilePath;
     const mods = ['name-only', isSelected ? 'name-bold' : null];
+    const isFolder = mimeTypes.folder === node.docType;
 
     return (
       <li {...classes('node', isSelected ? 'selected' : null)}>
@@ -95,7 +106,26 @@ class FileTree extends Component {
               : onNodeClick(node)
           }>
           {
-            this.getNodeToggler({ ...node, classes })
+            this.getNodeToggler({
+              ...node,
+              classes,
+            })
+          }
+          {permissions.remove && !isFolder
+            ? <span
+              {...classes('delete-handle')}
+              onClick={(e) => {
+                e.preventDefault();
+                if (doDelete) {
+                  Utils.confirmDelete()
+                    .then(() => doDelete(node))
+                    .catch(() => {});
+                }
+              }}
+            >
+              close
+            </span>
+            : null
           }
           <span {...classes('node-label')}>
             <FileInfo {...fileInfoConverter(node)} mods={mods} />
@@ -108,6 +138,8 @@ class FileTree extends Component {
               onNodeClick={onNodeClick}
               selectedFilePath={selectedFilePath}
               isRoot={false}
+              doDelete={doDelete}
+              permissions={permissions}
             />
           </div>
           : null
@@ -124,6 +156,11 @@ class FileTree extends Component {
       onNodeClick,
       isFlat,
       isRoot = true,
+      doDelete,
+      permissions = {
+        upload: false,
+        remove: false,
+      },
     } = this.props;
 
     return (
@@ -133,6 +170,8 @@ class FileTree extends Component {
           node,
           selectedFilePath,
           onNodeClick,
+          doDelete,
+          permissions,
         }))}
       </ul>
     );
