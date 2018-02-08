@@ -28,6 +28,7 @@ const forms = keyMirror({
   inviteDataSource: null,
   report: null,
   editDataSource: null,
+  createDataNode: null,
 });
 
 const modal = keyMirror({
@@ -48,6 +49,7 @@ const apiPaths = {
   latestCharachterization: ({ id }) => `/api/v1/achilles/datasource/${id}`,
   report: ({ id, filename, path }) =>
     `/api/v1/achilles/datasource/${id}/files/${path ? `${path}/${filename}` : filename}`,
+  dataNode: () => '/api/v1/datanode',
 };
 
 const paths = {

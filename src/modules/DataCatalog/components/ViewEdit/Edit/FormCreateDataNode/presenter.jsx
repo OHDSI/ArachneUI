@@ -21,16 +21,18 @@
  */
 
 import React from 'react';
-import { Modal } from 'arachne-ui-components';
-import { LoadingPanel } from 'arachne-ui-components';
-import { Form } from 'arachne-ui-components';
-import { FormInput } from 'arachne-ui-components';
-import { FormTextarea } from 'arachne-ui-components';
+import {
+  LoadingPanel,
+  Form,
+  FormInput,
+  FormTextarea,
+  Panel,
+} from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
 
-require('./style.scss');
+import './style.scss';
 
-function ModalCreateDataNode(props) {
+function FormCreateDataNode(props) {
   const classes = new BEMHelper('data-node-list-form-create');
 
   const {
@@ -40,12 +42,8 @@ function ModalCreateDataNode(props) {
   const submitBtn = {
     label: 'Create',
     loadingLabel: 'Creating...',
-  }
+  };
 
-  const cancelBtn = {
-    label: 'Cancel',
-  }
-  
   const fields = [
     {
       name: 'name',
@@ -56,7 +54,7 @@ function ModalCreateDataNode(props) {
           mods: ['bordered'],
           placeholder: 'Name of data node',
           type: 'text',
-        }
+        },
       },
     },
     {
@@ -67,26 +65,23 @@ function ModalCreateDataNode(props) {
         props: {
           mods: ['bordered'],
           placeholder: 'Description',
-        }
+        },
       },
     },
   ];
 
   return (
-  	<Modal modal={props.modal} title='Create Data Node'>
-			<Form
-        {...classes()}
+    <Panel title={'Create Data Node'} {...classes()}>
+      <Form
         actionsClassName="col-xs-12"
-				fields={fields}
-				submitBtn={submitBtn}
-        cancelBtn={cancelBtn}
-				onSubmit={props.doSubmit}
-        onCancel={props.modal.close}
-				{...props}
-			/>
-      <LoadingPanel active={isLoading}/>
-  	</Modal>
+        fields={fields}
+        submitBtn={submitBtn}
+        onSubmit={props.doSubmit}
+        {...props}
+      />
+      <LoadingPanel active={isLoading} />
+    </Panel>
   );
 }
 
-export default ModalCreateDataNode;
+export default FormCreateDataNode;

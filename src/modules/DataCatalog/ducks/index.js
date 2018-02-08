@@ -27,6 +27,7 @@ import studyList from './studyList';
 import report from './report';
 import reportDetails from './reportDetails';
 import characterization from './characterization';
+import dataNode from './dataNode';
 
 export default {
   actions: {
@@ -37,6 +38,7 @@ export default {
     report: report.actions,
     reportDetails: reportDetails.actions,
     characterization: characterization.actions,
+    dataNode: dataNode.actions,
   },
   reducer: {
     dataSourceList: dataSourceList.reducer,
@@ -46,5 +48,6 @@ export default {
     report: report.reducer,
     reportDetails: reportDetails.reducer,
     characterization: characterization.reducer,
+    dataNode: dataNode.reducer,
   },
 };

@@ -30,6 +30,7 @@ import {
 } from 'arachne-ui-components';
 
 import Toolbar from 'modules/DataCatalog/components/ViewEdit/Toolbar';
+import FormCreateDataNode from './FormCreateDataNode';
 import AttributeList from './AttributesList';
 
 import './style.scss';
@@ -43,6 +44,8 @@ class Edit {
     const classes = new BEMHelper('data-source-entry-editor');
     const {
       permissions,
+      isDatanodeRegistered,
+      dataSourceId,
     } = props;
 
     return (
@@ -53,12 +56,16 @@ class Edit {
               <Toolbar mode={'edit'} />,
               <div {...classes('content')}>
                 <div className="row">
-                  <div className='col-xs-6 col-md-6'>
-                    <AttributeList />
-                  </div>
-                  <div className='col-xs-6 col-md-6'>
-                    {this.getAchillesSettings()}
-                  </div>
+                  {isDatanodeRegistered
+                  ? [
+                    <div className='col-xs-6 col-md-6'>
+                      <AttributeList />
+                    </div>,
+                    <div className='col-xs-6 col-md-6'>
+                      {this.getAchillesSettings()}
+                    </div>]
+                  : <FormCreateDataNode dataSourceId={dataSourceId} />
+                  }
                 </div>
               </div>,
               ]

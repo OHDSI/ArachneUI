@@ -46,7 +46,7 @@ function CellRegistered({ value }) {
 function CellRegister({ isRegistered, onClick, isCdm, id }) {
   const classes = new BEMHelper('data-source-list-cell-register');
 
-  return isCdm
+  return !isCdm
     ? <div {...classes()}>
       {isRegistered ?
         <Button
@@ -59,7 +59,7 @@ function CellRegister({ isRegistered, onClick, isCdm, id }) {
         <Button
           {...classes('btn')}
           mods={['submit', 'rounded']}
-          label="Register"
+          label="Publish"
           link={`${__CENTRAL_DOMAIN__}${centralPaths.edit(id)}`}
           target={'_blank'}
         />

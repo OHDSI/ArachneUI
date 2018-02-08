@@ -20,12 +20,6 @@
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+import FormCreateDataNode from './container';
 
-.#{$namespace} {
-
-	&data-node-list-form-create {
-		width: 400px;
-	}
-
-}
+export default (new FormCreateDataNode()).build();

@@ -26,13 +26,13 @@ import { Button } from 'arachne-ui-components';
 
 require('./style.scss');
 
-function CdmSourceListActions({ startCreatingDataSource, reloadList }) {
+function CdmSourceListActions({ openCreateDataSourceModal, reloadList }) {
   const classes = new BEMHelper('data-source-list-actions');
   
   return (
     <ul {...classes()}>
     	<li {...classes('action')}>
-    		<Button {...classes('btn')} onClick={startCreatingDataSource}>
+    		<Button {...classes('btn')} onClick={openCreateDataSourceModal}>
           <i {...classes('btn-ico')}>add_circle_outline</i>
         </Button>
     	</li>

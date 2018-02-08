@@ -22,7 +22,6 @@
 
 import achillesResults from './achillesResults';
 import characterization from './characterization';
-import dataNode from './dataNode';
 import dataSource from './dataSource';
 import dataSourceList from './dataSourceList';
 import dataSourceBusiness from './dataSourceBusiness';
@@ -33,7 +32,6 @@ export default {
   actions: {
     achillesResults: achillesResults.actions,
     characterization: characterization.actions,
-    dataNode: dataNode.actions,
     dataSource: dataSource.actions,
     dataSourceList: dataSourceList.actions,
     dataSourceBusiness: dataSourceBusiness.actions,
@@ -45,7 +43,6 @@ export default {
   reducer: {
     achillesResults: achillesResults.reducer,
     characterization: characterization.reducer,
-    dataNode: dataNode.reducer,
     dataSource: dataSource.reducer,
     dataSourceList: dataSourceList.reducer,
     dataSourceBusiness: dataSourceBusiness.reducer,

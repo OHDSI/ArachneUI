@@ -20,6 +20,17 @@
  *
  */
 
-import ModalCreateDataNode from './container';
+@import 'styles/vars-and-mixins.scss';
 
-export default ModalCreateDataNode;
+.#{$namespace} {
+
+	&data-node-list-form-create {
+		margin: 2rem 1rem;
+		width: 400px;
+
+		&__panel-content {
+			padding: 1rem;
+		}
+	}
+
+}
