@@ -129,6 +129,8 @@ function FileItem({ file, isEditable, removeResult, isHidden }) {
         link={file.link}
         onClick={file.onClick}
         linkTaret={file.linkTarget}
+        antivirusStatus={file.antivirusStatus}
+        antivirusDescription={file.antivirusDescription}
       />
     </ListItem>
   );

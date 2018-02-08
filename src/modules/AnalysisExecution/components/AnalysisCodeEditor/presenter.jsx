@@ -50,6 +50,8 @@ function AnalysisCode({
   analysisCodeId,
   isEditable,
   onBannerActed,
+  antivirusStatus,
+  antivirusDescription,
 }) {
   const classes = new BEMHelper('analysis-code');
 
@@ -72,6 +74,8 @@ function AnalysisCode({
               name={name}
               title={title}
               createdAt={createdAt}
+              antivirusStatus={antivirusStatus}
+              antivirusDescription={antivirusDescription}
             />
             }
           </div>
