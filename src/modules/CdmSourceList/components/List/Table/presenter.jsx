@@ -46,26 +46,24 @@ function CellRegistered({ value }) {
 function CellRegister({ isRegistered, onClick, isCdm, id }) {
   const classes = new BEMHelper('data-source-list-cell-register');
 
-  return isCdm
-    ? <div {...classes()}>
-      {isRegistered ?
-        <Button
-          {...classes('btn')}
-          mods={['success', 'rounded']}
-          label="Generate reports"
-          onClick={onClick}
-        />
-        :
-        <Button
-          {...classes('btn')}
-          mods={['submit', 'rounded']}
-          label="Publish"
-          link={`${__CENTRAL_DOMAIN__}${centralPaths.edit(id)}`}
-          target={'_blank'}
-        />
-      }
-    </div>
-  : null;
+  return <div {...classes()}>
+    {isRegistered ?
+      <Button
+        {...classes('btn')}
+        mods={['success', 'rounded']}
+        label="Generate reports"
+        onClick={onClick}
+      />
+      :
+      <Button
+        {...classes('btn')}
+        mods={['submit', 'rounded']}
+        label="Publish"
+        link={`${__CENTRAL_DOMAIN__}${centralPaths.edit(id)}`}
+        target={'_blank'}
+      />
+    }
+  </div>;
 }
 
 function CellEdit({ editDataSource, removeDataSource, value, isRegistered }) {
