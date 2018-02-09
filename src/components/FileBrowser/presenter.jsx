@@ -84,6 +84,8 @@ export default function FileBrowser(props) {
     doDelete,
     headerBtns,
     summary,
+    setContainer,
+    container,
   } = props;
   // main info
   const {
@@ -105,7 +107,11 @@ export default function FileBrowser(props) {
       }
       <div {...classes('content')}>
         {fileTreeData || isTreeLoading
-          ? <div {...classes('nav')}>
+          ? <div {...classes('nav')} ref={(element) => {
+            if (element && !container) {
+              setContainer(element);
+            }
+          }}>
             <div {...classes('nav-header')}>
               <span {...classes('title')}>Browse files</span>
               {headerBtns}
