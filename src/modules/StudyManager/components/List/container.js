@@ -28,7 +28,7 @@ import { Utils, ContainerBuilder, get } from 'services/Utils';
 import viewModes from 'const/viewModes';
 import { studyListPageSize, studyListPageSizeCards, paths } from 'modules/StudyManager/const';
 import Uri from 'urijs';
-
+import isEmpty from 'lodash/isEmpty';
 import getFields from './Filter/fields';
 import presenter from './presenter';
 import SelectorsBuilder from './selectors';
@@ -53,7 +53,7 @@ export class List extends Component {
   }
 
   componentDidMount() {
-    window.addEventListener('beforeunload', this.persistFilters);
+    window.addEventListener('beforeunload', () => this.persistFilters(this.props));
   }
 
   componentWillReceiveProps(nextProps) {
@@ -62,19 +62,22 @@ export class List extends Component {
         ...nextProps.query,
         pagesize: nextProps.query.view === viewModes.CARDS ? studyListPageSizeCards : studyListPageSize,
       });
+
+      if (!isEmpty(nextProps.query)) {
+        this.persistFilters(nextProps);
+      }
     }
   }
 
   componentWillUnmount() {
-    this.persistFilters();
     window.removeEventListener('beforeunload', this.persistFilters);
   }
 
-  persistFilters() {
+  persistFilters(props) {
     const filterValues = {};
-    for (const filter in this.props.query) {
-      if (!Utils.isEmpty(this.props.query[filter])) {
-        filterValues[filter] = this.props.query[filter];
+    for (const filter in props.query) {
+      if (!Utils.isEmpty(props.query[filter])) {
+        filterValues[filter] = props.query[filter];
       }
     }
     actions.studyManager.studyList.saveFilter(filterValues);
