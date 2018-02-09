@@ -46,7 +46,7 @@ function CellRegistered({ value }) {
 function CellRegister({ isRegistered, onClick, isCdm, id }) {
   const classes = new BEMHelper('data-source-list-cell-register');
 
-  return !isCdm
+  return isCdm
     ? <div {...classes()}>
       {isRegistered ?
         <Button
