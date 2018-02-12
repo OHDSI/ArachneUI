@@ -23,7 +23,7 @@
 import get from 'lodash/get';
 import { reset as resetForm } from 'redux-form';
 import actions from 'actions';
-import { form } from 'modules/DataCatalog/const';
+import { forms } from 'modules/DataCatalog/const';
 import { ContainerBuilder } from 'services/Utils';
 import CreateDataNode from './presenter';
 
@@ -34,7 +34,7 @@ export default class FormCreateDataNode extends ContainerBuilder {
 
   getFormParams() {
     return {
-      form: form.createDataNode,
+      form: forms.createDataNode,
     };
   }
 
@@ -48,7 +48,7 @@ export default class FormCreateDataNode extends ContainerBuilder {
 
   getMapDispatchToProps() {
     return {
-      reset: () => resetForm(form.createDataNode),
+      reset: () => resetForm(forms.createDataNode),
       create: actions.dataCatalog.dataNode.create,
       loadDataSource: actions.dataCatalog.dataSource.find,
     };

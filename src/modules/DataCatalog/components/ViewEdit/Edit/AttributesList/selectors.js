@@ -36,7 +36,7 @@ class DataCatalogListViewAttributesSelectorsBuilder extends DsAttrListSelector {
   }
 
   getValues(state) {
-    return get(state, 'form.editDataSource.values', {}, 'Object');
+    return get(state, 'forms.editDataSource.values', {}, 'Object');
   }
 
   getAttributes(attrList, values) {
