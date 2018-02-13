@@ -187,7 +187,7 @@ const staticAttrList = [
   },
 ];
 
-const nodeAttributes = [
+const cdmSpecificAttributes = [
   {
     label: 'Target Schema',
     name: attributeNames.targetSchema,
@@ -196,7 +196,6 @@ const nodeAttributes = [
     showInList: false,
     options: null,
     order: 2,
-    cdmSpecific: true,
   },
   {
     label: 'Result Schema',
@@ -206,7 +205,6 @@ const nodeAttributes = [
     showInList: false,
     options: null,
     order: 2,
-    cdmSpecific: true,
   },
   {
     label: 'Cohort Target Table',
@@ -216,11 +214,11 @@ const nodeAttributes = [
     showInList: false,
     options: null,
     order: 2,
-    cdmSpecific: true,
   },
 ];
 
 const immutableAttributes = [
+  attributeNames.name,
 ];
 
 const fieldHints = {
@@ -235,4 +233,5 @@ export {
   attributeNames,
   immutableAttributes,
   fieldHints,
+  cdmSpecificAttributes,
 };

@@ -40,7 +40,7 @@ class DataCatalogListViewAttributesSelectorsBuilder extends DsAttrListSelector {
   }
 
   getAttributes(attrList, values) {
-    return (values.modelType === modelTypesValues.CDM) ? attrList : attrList.filter(el => !el.cdmSpecific);
+    return attrList;
   }
 
   buildSelectorForGetAttrList() {

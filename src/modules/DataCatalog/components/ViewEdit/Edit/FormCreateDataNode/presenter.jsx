@@ -29,8 +29,10 @@ import {
   Panel,
 } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
+import { AttributesFormListItem } from '../AttributesList/presenter';
 
 import './style.scss';
+import { fieldTypes } from 'modules/ExpertFinder/const';
 
 function FormCreateDataNode(props) {
   const classes = new BEMHelper('data-node-list-form-create');
@@ -47,24 +49,27 @@ function FormCreateDataNode(props) {
   const fields = [
     {
       name: 'name',
-      className: 'col-xs-12',
       InputComponent: {
-        component: FormInput,
+        component: AttributesFormListItem,
         props: {
-          mods: ['bordered'],
-          placeholder: 'Name of data node',
-          type: 'text',
+          item: {
+            name: '',
+            label: 'Name of data node',
+            type: fieldTypes.string,
+          },
         },
       },
     },
     {
       name: 'description',
-      className: 'col-xs-12',
       InputComponent: {
-        component: FormTextarea,
+        component: AttributesFormListItem,
         props: {
-          mods: ['bordered'],
-          placeholder: 'Description',
+          item: {
+            label: 'Description',
+            type: fieldTypes.textarea,
+          },
+          isWide: true,
         },
       },
     },
@@ -73,9 +78,9 @@ function FormCreateDataNode(props) {
   return (
     <Panel title={'Create Data Node'} {...classes()}>
       <Form
-        actionsClassName="col-xs-12"
         fields={fields}
         submitBtn={submitBtn}
+        mods={['no-spacing', 'actions-inline']}
         onSubmit={props.doSubmit}
         {...props}
       />

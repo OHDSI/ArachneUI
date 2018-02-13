@@ -57,6 +57,16 @@
 
     &__value {
       flex-basis: 35%;
+      
+      &--wide {
+        width: 100%;
+        margin-top: 2rem;
+      }
+    }
+
+    &--wide {
+      flex-direction: column;
+      align-items: flex-start;
     }
   }
 

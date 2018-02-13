@@ -27,6 +27,7 @@ import {
   FormSelect,
   FormInput,
   Panel,
+  FormTextarea,
 } from 'arachne-ui-components';
 import { fieldTypes } from 'modules/ExpertFinder/const';
 import { immutableAttributes, fieldHints } from 'const/dataSource';
@@ -39,16 +40,18 @@ function ImmutableAttribute({ name, value }) {
   return (
     <div {...classes()}>
       <div {...classes('value')}>{value}</div>
-      <div
-        {...classes('hint', null, 'ac-tooltip')}
-        aria-label={fieldHints[name]}
-        data-tootik-conf={'bottom multiline'}
-      >help</div>
+      {fieldHints[name] &&
+        <div
+          {...classes('hint', null, 'ac-tooltip')}
+          aria-label={fieldHints[name]}
+          data-tootik-conf={'bottom multiline'}
+        >help</div>
+      }
     </div>
   );
 }
 
-function AttributesFormListItem({ item, input, meta }) {
+export function AttributesFormListItem({ item, input, meta, isWide = false }) {
   const itemClasses = new BEMHelper('attributes-form-list-item');
   let field = null;
   if (immutableAttributes.includes(item.name)) {
@@ -76,17 +79,27 @@ function AttributesFormListItem({ item, input, meta }) {
           />
         );
         break;
+      case fieldTypes.textarea:
+        field = (
+          <FormTextarea
+            placeholder={item.label}
+            mods={['bordered']}
+            input={input}
+            meta={meta}
+          />
+        );
+        break;
       default:
         return null;
     }
   }
 
   return (
-    <div {...itemClasses()}>
-      <div {...itemClasses('name')}>
+    <div {...itemClasses({ modifiers: { wide: isWide } })}>
+      <div {...itemClasses('name', { wide: isWide })}>
         {item.label}
       </div>
-      <div {...itemClasses('value')}>
+      <div {...itemClasses('value', { wide: isWide })}>
         {field}
       </div>
     </div>

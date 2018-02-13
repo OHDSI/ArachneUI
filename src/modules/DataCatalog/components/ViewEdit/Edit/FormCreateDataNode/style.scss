@@ -25,12 +25,21 @@
 .#{$namespace} {
 
 	&data-node-list-form-create {
-		margin: 2rem 1rem;
-		width: 400px;
-
-		&__panel-content {
-			padding: 1rem;
-		}
+    margin: 2rem 0;
+		width: 600px;
+		
+		& .#{$namespace} {
+      &form {
+        &__actions {
+          background: $grey-lighter;
+          justify-content: flex-end;
+          margin-top: 25px;
+          padding-bottom: 10px;
+          padding-top: 10px;
+          padding-right: 2rem;
+        }
+      }
+    }
 	}
 
 }

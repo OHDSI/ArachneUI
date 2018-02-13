@@ -31,18 +31,6 @@ import { paths as centralPaths } from 'modules/DataCatalog/const';
 
 require('./style.scss');
 
-function CellRegistered({ value }) {
-  const classes = new BEMHelper('data-source-list-cell-registered');
-  const isRegistered = value;
-  const modifiers = isRegistered ? 'green' : 'grey';
-
-  return (
-    <span {...classes({ modifiers })}>
-      {isRegistered ? 'Registered' : 'Not registered'}
-    </span>
-  );
-}
-
 function CellRegister({ isRegistered, onClick, isCdm, id }) {
   const classes = new BEMHelper('data-source-list-cell-register');
 
@@ -89,8 +77,8 @@ function CellName({ value, healthStatus }) {
       modifiers: [healthStatus.title],
       extra: 'ac-tooltip',
     })}
-         aria-label={healthStatuses.getTitle(healthStatus.title)}
-         data-tootik-conf="right"
+      aria-label={healthStatuses.getTitle(healthStatus.title)}
+      data-tootik-conf="right"
     ></div>
     <span {...classes('name')}>{value}</span>
   </div>;
@@ -141,11 +129,6 @@ function DataSourceTable(props) {
         {...tableClasses('model-type')}
         header="Model"
         field="modelType"
-      />
-      <CellRegistered
-        {...tableClasses('registered')}
-        header="Registered"
-        field="isRegistered"
       />
       <CellRegister
         {...tableClasses('register')}
