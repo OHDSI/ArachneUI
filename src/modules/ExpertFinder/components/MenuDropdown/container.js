@@ -86,7 +86,7 @@ export default class MenuDropdownBuilder extends ContainerBuilder {
       async setActiveTenant({ activeTenantId }) {
         await dispatchProps.updateUser({}, { activeTenantId });
         await dispatchProps.loadMyProfile;
-        await window.location.reload(true);
+        window.location.reload(true);
       },
     };
   }
