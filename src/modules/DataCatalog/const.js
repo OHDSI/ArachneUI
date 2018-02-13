@@ -50,6 +50,7 @@ const apiPaths = {
   report: ({ id, filename, path }) =>
     `/api/v1/achilles/datasource/${id}/files/${path ? `${path}/${filename}` : filename}`,
   dataNode: () => '/api/v1/datanode',
+  registerDataSource: ({ id }) => `/api/v1/data-sources/${id}/register-on-central`,
 };
 
 const paths = {

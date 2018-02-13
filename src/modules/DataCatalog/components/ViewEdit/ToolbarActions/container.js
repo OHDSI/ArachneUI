@@ -31,14 +31,14 @@ import ToolbarActions from './presenter';
 
 function mapStateToProps(state, ownProps) {
   const datasourceData = get(state, 'dataCatalog.dataSource.data.result');
-  const isDeleted = !!get(datasourceData, 'deleted', '');
-  const isDeletable = get(datasourceData, `permissions[${dataSourcePermissions.delete}]`, false);
-  const canDelete = !isDeleted && isDeletable;
+  const isPublished = get(datasourceData, 'published', '');
+  const isUnpublishable = get(datasourceData, `permissions[${dataSourcePermissions.delete}]`, false);
+  const canUnpublish = isPublished && isUnpublishable;
   const dataSourceId = get(datasourceData, 'id', '');
 
   return {
-    canDelete: ownProps.mode === 'edit' ? canDelete : false,
-    canEdit: ownProps.mode === 'view' ? isDeletable : false,
+    canUnpublish: ownProps.mode === 'edit' ? canUnpublish : false,
+    canEdit: ownProps.mode === 'view' ? isUnpublishable : false,
     dataSourceId,
   };
 }

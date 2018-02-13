@@ -16,39 +16,21 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: August 25, 2017
+ * Created: February 13, 2018
  *
  */
 
-import React from 'react';
-import BEMHelper from 'services/BemHelper';
-import { Button } from 'arachne-ui-components';
-import { paths } from 'modules/DataCatalog/const';
+import Duck from 'services/Duck';
+import { apiPaths } from '../const';
 
-require('./style.scss');
+const coreName = 'DC_REGISTER_DS';
 
-function ToolbarActions({
-    canUnpublish,
-    remove,
-    canEdit,
-    dataSourceId,
-  }) {
-  const classes = new BEMHelper('data-source-toolbar-actions');
+const registerDS = new Duck({
+  name: coreName,
+  urlBuilder: apiPaths.registerDataSource,
+});
 
-  return (
-    <div  {...classes()}>
-      {canUnpublish &&
-        <Button onClick={remove} mods={['rounded', 'purple']}>
-          Unpublish
-        </Button>
-      }
-      {canEdit &&
-        <Button {...classes('action')} link={paths.edit(dataSourceId)}>
-          <i {...classes('action-ico')}>settings</i>
-        </Button>
-      }
-    </div>
-  );
-}
-
-export default ToolbarActions;
+export default {
+  actions: registerDS.actions,
+  reducer: registerDS.reducer,
+};
