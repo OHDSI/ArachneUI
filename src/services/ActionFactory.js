@@ -192,7 +192,7 @@ class ActionFactory {
 
   buildUpdateActionCreator() {
     return (urlParams, data) => (dispatch) => {
-      this.safeDispatch(dispatch, this.onBeforeUpdate);
+      this.safeDispatch(dispatch, this.onBeforeUpdate, data);
       return api.doPut(
         this.resolveUrl(urlParams),
         data,
