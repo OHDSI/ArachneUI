@@ -40,16 +40,18 @@ export default class FormCreateDataNode extends ContainerBuilder {
 
   mapStateToProps(state) {
     const isLoading = get(state, 'dataCatalog.dataNode.isLoading', false);
+    const datanodeId = get(state, 'dataCatalog.dataSource.data.result.dataNode.id');
 
     return {
       isLoading,
+      datanodeId,
     };
   }
 
   getMapDispatchToProps() {
     return {
       reset: () => resetForm(forms.createDataNode),
-      create: actions.dataCatalog.dataNode.create,
+      update: actions.dataCatalog.dataNode.update,
       loadDataSource: actions.dataCatalog.dataSource.find,
     };
   }
@@ -60,7 +62,7 @@ export default class FormCreateDataNode extends ContainerBuilder {
       ...stateProps,
       ...dispatchProps,
       async doSubmit(data) {
-        const submitPromise = await dispatchProps.create({}, data);
+        const submitPromise = await dispatchProps.update({ id: stateProps.datanodeId }, data);
         await dispatchProps.loadDataSource({
           id: ownProps.dataSourceId,
         });
