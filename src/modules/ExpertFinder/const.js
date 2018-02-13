@@ -91,6 +91,7 @@ const apiPaths = {
     `/api/v1/user-management/state-province/search?limit=${autocompleteResultsLimit}&query=${query}&countryId=${countryId}${includeId ? `&includeId=${includeId}` : ''}`,
   studiesAutocomplete: ({ query, participantId }) =>
     `/api/v1/study-management/studies/search?region=PARTICIPANT&id=${participantId}&query=${query}`,
+  userSettings: () => `/api/v1/user-management/users/settings`,
 };
 
 const paths = {

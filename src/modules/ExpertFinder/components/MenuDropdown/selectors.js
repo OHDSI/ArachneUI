@@ -15,34 +15,23 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: September 05, 2017
+ * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon
+ * Created: February 13, 2018
  *
  */
 
-import Duck from 'services/Duck';
-import { apiPaths } from 'modules/StudyManager/const';
-import Uri from 'urijs';
+import { createSelector } from 'reselect';
+import { Utils, get } from 'services/Utils';
 
-const actionCoreName = 'SM_STUDY_PARTICIPANTS_LIST';
+const getTenants = state => get(state, 'expertFinder.myProfile.data.result.tenants') || [];
 
-const ducks = new Duck({
-  name: actionCoreName,
-  urlBuilder: ({ query, studyId }) => {
-    const url = new Uri(apiPaths.searchUser());
-    url.setSearch({
-      target: 'STUDY',
-      id: studyId,
-      query,
-    });
-    return url.href();
-  },
-});
-
-const actions = ducks.actions;
-const reducer = ducks.reducer;
+const getNewActiveTenantId = (state) => {
+  if (get(state, 'expertFinder.userSettings.isUpdating')) {
+    return get(state, 'expertFinder.userSettings.newData.activeTenantId');
+  }
+};
 
 export default {
-  actions,
-  reducer,
+  getTenants,
+  getNewActiveTenantId,
 };
