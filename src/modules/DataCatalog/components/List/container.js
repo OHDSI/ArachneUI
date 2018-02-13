@@ -39,7 +39,6 @@ class DataCatalogStatefulList extends Component {
     return {
       searchStr: PropTypes.string,
       loadDsList: PropTypes.func.isRequired,
-      onlyMy: PropTypes.bool,
     };
   }
 
@@ -60,10 +59,9 @@ class DataCatalogListBuilder extends ContainerBuilder {
     return DataCatalogStatefulList;
   }
 
-  mapStateToProps(state, ownProps) {
+  mapStateToProps(state) {
     return {
       searchStr: selectors.getSearchStr(state),
-      onlyMy: ownProps.routeParams.my || false,
       filterFields: selectors.getFilterList(state),
       columns: selectors.getColumns(state),
       data: selectors.getData(state),
@@ -79,7 +77,7 @@ class DataCatalogListBuilder extends ContainerBuilder {
     };
   }
 
-  getFetchers({ state, params }) {
+  getFetchers({ state }) {
     const searchStr = state.routing.locationBeforeTransitions.query;
     const onlyMy = state.routing.locationBeforeTransitions.pathname === paths.myDatasources();
     return {

@@ -24,11 +24,12 @@ import React from 'react';
 import { Route, IndexRedirect } from 'react-router';
 import ListDataSources from './components/List';
 import ViewEditDataSource from './components/ViewEdit';
+import MyDatasources from './components/MyDatasources';
 
 function Routes() {
   return [
     <Route path="data-sources" component={ListDataSources} />,
-    <Route path="my-data-sources" component={ListDataSources} my={true} />,
+    <Route path="my-data-sources" component={MyDatasources} />,
     <Route path="data-sources/:dataSourceId(/:isProfile)" component={ViewEditDataSource} />,
     <IndexRedirect to="data-sources"/>,
   ];
