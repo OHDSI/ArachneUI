@@ -79,9 +79,8 @@ class DataCatalogListBuilder extends ContainerBuilder {
 
   getFetchers({ state }) {
     const searchStr = state.routing.locationBeforeTransitions.query;
-    const onlyMy = state.routing.locationBeforeTransitions.pathname === paths.myDatasources();
     return {
-      loadDsList: actions.dataCatalog.dataSourceList.query.bind(null, { searchStr, onlyMy }),
+      loadDsList: actions.dataCatalog.dataSourceList.query.bind(null, { searchStr }),
     };
   }
 

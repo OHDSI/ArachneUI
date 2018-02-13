@@ -47,6 +47,7 @@ const apiPaths = {
   latestCharachterization: ({ id }) => `/api/v1/achilles/datasource/${id}`,
   report: ({ id, filename, path }) =>
     `/api/v1/achilles/datasource/${id}/files/${path ? `${path}/${filename}` : filename}`,
+  myDatasources: () => '/api/v1/my-data-sources',
 };
 
 const paths = {

@@ -35,6 +35,7 @@ const selectors = (new SelectorsBuilder()).build();
 export class MyDatasources extends Component {
   static get propTypes() {
     return {
+      loadDsList: PropTypes.func,
     };
   }
 
@@ -64,7 +65,7 @@ export default class MyDatasourcesBuilder extends ContainerBuilder {
    */
   getMapDispatchToProps() {
     return {
-      
+      loadDsList: actions.dataCatalog.myDatasources.query,
     };
   }
 
@@ -73,15 +74,13 @@ export default class MyDatasourcesBuilder extends ContainerBuilder {
       ...ownProps,
       ...stateProps,
       ...dispatchProps,
-      
     };
   }
 
   getFetchers({ params, state, dispatch }) {
-    
     return {
+      loadDsList: dispatch(actions.dataCatalog.myDatasources.query()),
     };
   }
 
 }
- 
