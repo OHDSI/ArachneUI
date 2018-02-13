@@ -218,7 +218,7 @@ const detectMimeTypeByExtension = (file) => {
       type = mimeTypes.report;
     } else if (type === mimeTypes.text) {
       const extension = file.name.split('.').pop().toLowerCase();
-      type = mimeTypes[extension];
+      type = mimeTypes[extension] ? mimeTypes[extension] : mimeTypes.txt;
     }
   }
   return type;
