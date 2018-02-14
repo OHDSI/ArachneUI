@@ -16,10 +16,21 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: January 26, 2017
+ * Created: February 13, 2018
  *
  */
 
-import DataCatalogViewEditBuilder from './container';
+import Duck from 'services/Duck';
+import { apiPaths } from '../const';
 
-export default (new DataCatalogViewEditBuilder()).build();
+const coreName = 'DC_REGISTER_DS';
+
+const registerDS = new Duck({
+  name: coreName,
+  urlBuilder: apiPaths.registerDataSource,
+});
+
+export default {
+  actions: registerDS.actions,
+  reducer: registerDS.reducer,
+};

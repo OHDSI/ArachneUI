@@ -25,7 +25,7 @@ import { get } from 'services/Utils';
 import dsInfoConvert from 'modules/DataCatalog/converters/dsInfoConvertor';
 import DsAttrListSelector from 'modules/DataCatalog/selectors/DsAttrListSelector';
 
-class DataCatalogListViewEditAttributesSelectorsBuilder extends DsAttrListSelector {
+class DataCatalogListViewAttributesSelectorsBuilder extends DsAttrListSelector {
 
   getRawData(state) {
     return get(state, 'dataCatalog.dataSource.data.result', {}, 'Object');
@@ -54,4 +54,4 @@ class DataCatalogListViewEditAttributesSelectorsBuilder extends DsAttrListSelect
 
 }
 
-export default DataCatalogListViewEditAttributesSelectorsBuilder;
+export default DataCatalogListViewAttributesSelectorsBuilder;

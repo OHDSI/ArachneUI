@@ -16,27 +16,31 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: September 08, 2017
+ * Created: January 31, 2018
  *
  */
 
 import { createSelector } from 'reselect';
 import { get } from 'services/Utils';
-import { staticAttrList } from 'const/dataSource';
-import { modelTypesValues } from '../../../../../const/dataSource';
+import DsAttrListSelector from 'modules/DataCatalog/selectors/DsAttrListSelector';
+import { modelTypesValues, staticAttrList } from 'const/dataSource';
 
-class CdmSourceListViewEditSelectorsBuilder {
+class DataCatalogListViewAttributesSelectorsBuilder extends DsAttrListSelector {
+
+  getRawData(state) {
+    return get(state, 'dataCatalog.dataSource.data.result', {}, 'Object');
+  }
 
   getAttrList(state) {
     return staticAttrList.filter(el => !el.calculated);
   }
 
   getValues(state) {
-    return get(state, 'form.editSourceBusinessData.values', {}, 'Object');
+    return get(state, 'forms.editDataSource.values', {}, 'Object');
   }
 
   getAttributes(attrList, values) {
-    return (values.modelType === modelTypesValues.CDM) ? attrList : attrList.filter(el => !el.cdmSpecific);
+    return attrList;
   }
 
   buildSelectorForGetAttrList() {
@@ -45,19 +49,7 @@ class CdmSourceListViewEditSelectorsBuilder {
       this.getAttributes,
     );
   }
-
-  getRawData(state) {
-    return get(
-      state,
-      'cdmSourceList.dataSourceBusiness.queryResult.result',
-      {
-        id: -1,
-        isRegistered: false,
-      },
-      'Object',
-    );
-  }
-
+  
   getData(rawDs) {
     return rawDs;
   }
@@ -78,4 +70,4 @@ class CdmSourceListViewEditSelectorsBuilder {
 
 }
 
-export default CdmSourceListViewEditSelectorsBuilder;
+export default DataCatalogListViewAttributesSelectorsBuilder;

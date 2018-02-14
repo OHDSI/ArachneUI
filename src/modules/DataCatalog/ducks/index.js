@@ -28,6 +28,8 @@ import report from './report';
 import reportDetails from './reportDetails';
 import characterization from './characterization';
 import myDatasources from './myDatasources';
+import dataNode from './dataNode';
+import registerDS from './registerDS';
 
 export default {
   actions: {
@@ -39,6 +41,8 @@ export default {
     reportDetails: reportDetails.actions,
     characterization: characterization.actions,
     myDatasources: myDatasources.actions,
+    dataNode: dataNode.actions,
+    registerDS: registerDS.actions,
   },
   reducer: {
     dataSourceList: dataSourceList.reducer,
@@ -49,5 +53,7 @@ export default {
     reportDetails: reportDetails.reducer,
     characterization: characterization.reducer,
     myDatasources: myDatasources.reducer,
+    dataNode: dataNode.reducer,
+    registerDS: registerDS.reducer,
   },
 };

@@ -16,10 +16,10 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 21, 2016
+ * Created: April 21, 2017
  *
  */
 
-import BusinessDataBuilder from './container';
+import FormCreateDataNode from './container';
 
-export default (new BusinessDataBuilder()).build();
+export default (new FormCreateDataNode()).build();

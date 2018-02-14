@@ -21,16 +21,20 @@
  */
 
 import React from 'react';
-import { Modal } from 'arachne-ui-components';
-import { LoadingPanel } from 'arachne-ui-components';
-import { Form } from 'arachne-ui-components';
-import { FormInput } from 'arachne-ui-components';
-import { FormTextarea } from 'arachne-ui-components';
+import {
+  LoadingPanel,
+  Form,
+  FormInput,
+  FormTextarea,
+  Panel,
+} from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
+import { AttributesFormListItem } from '../AttributesList/presenter';
 
-require('./style.scss');
+import './style.scss';
+import { fieldTypes } from 'modules/ExpertFinder/const';
 
-function ModalCreateDataNode(props) {
+function FormCreateDataNode(props) {
   const classes = new BEMHelper('data-node-list-form-create');
 
   const {
@@ -40,53 +44,49 @@ function ModalCreateDataNode(props) {
   const submitBtn = {
     label: 'Create',
     loadingLabel: 'Creating...',
-  }
+  };
 
-  const cancelBtn = {
-    label: 'Cancel',
-  }
-  
   const fields = [
     {
       name: 'name',
-      className: 'col-xs-12',
       InputComponent: {
-        component: FormInput,
+        component: AttributesFormListItem,
         props: {
-          mods: ['bordered'],
-          placeholder: 'Name of data node',
-          type: 'text',
-        }
+          item: {
+            name: '',
+            label: 'Name of data node',
+            type: fieldTypes.string,
+          },
+        },
       },
     },
     {
       name: 'description',
-      className: 'col-xs-12',
       InputComponent: {
-        component: FormTextarea,
+        component: AttributesFormListItem,
         props: {
-          mods: ['bordered'],
-          placeholder: 'Description',
-        }
+          item: {
+            label: 'Description',
+            type: fieldTypes.textarea,
+          },
+          isWide: true,
+        },
       },
     },
   ];
 
   return (
-  	<Modal modal={props.modal} title='Create Data Node'>
-			<Form
-        {...classes()}
-        actionsClassName="col-xs-12"
-				fields={fields}
-				submitBtn={submitBtn}
-        cancelBtn={cancelBtn}
-				onSubmit={props.doSubmit}
-        onCancel={props.modal.close}
-				{...props}
-			/>
-      <LoadingPanel active={isLoading}/>
-  	</Modal>
+    <Panel title={'Create Data Node'} {...classes()}>
+      <Form
+        fields={fields}
+        submitBtn={submitBtn}
+        mods={['no-spacing', 'actions-inline']}
+        onSubmit={props.doSubmit}
+        {...props}
+      />
+      <LoadingPanel active={isLoading} />
+    </Panel>
   );
 }
 
-export default ModalCreateDataNode;
+export default FormCreateDataNode;
