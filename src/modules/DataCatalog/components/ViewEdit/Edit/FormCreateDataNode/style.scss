@@ -25,11 +25,12 @@
 .#{$namespace} {
 
 	&data-node-list-form-create {
-    margin: 2rem 0;
-		width: 600px;
-		
-		& .#{$namespace} {
+    width: 600px;
+    
+    & .#{$namespace} {
       &form {
+        padding-top: 1rem;
+        
         &__actions {
           background: $grey-lighter;
           justify-content: flex-end;

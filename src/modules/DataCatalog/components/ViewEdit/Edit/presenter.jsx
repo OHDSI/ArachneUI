@@ -27,6 +27,7 @@ import EmptyState from 'components/EmptyState';
 import {
   PageContent,
   LoadingPanel,
+  Panel,
 } from 'arachne-ui-components';
 
 import Toolbar from 'modules/DataCatalog/components/ViewEdit/Toolbar';
@@ -64,7 +65,9 @@ class Edit {
                     <div className='col-xs-6 col-md-6'>
                       {this.getAchillesSettings()}
                     </div>]
-                  : <FormCreateDataNode dataSourceId={dataSourceId} />
+                  : <Panel title='Create data node' {...classes('create-form')}>
+                      <FormCreateDataNode dataSourceId={dataSourceId} />
+                    </Panel>
                   }
                 </div>
               </div>,

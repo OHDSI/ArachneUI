@@ -20,25 +20,28 @@
   *
   */
 
-  import React from 'react';
-  import { Modal } from 'arachne-ui-components';
-  import BEMHelper from 'services/BemHelper';
-  
-  import './style.scss';
-  
-  function ModalCreateDatanode(props) {
-    const classes = new BEMHelper('modal-create-datanode');    
-  
-    return (
-      <Modal modal={props.modal} title="Create Datanode">
-        <div {...classes()}>
-          
-          
-          
-        </div>
-      </Modal>
-    );
-  }
-  
-  export default ModalCreateDatanode;
-  
+import React from 'react';
+import { Modal } from 'arachne-ui-components';
+import BEMHelper from 'services/BemHelper';
+import FormCreateDataNode from 'modules/DataCatalog/components/ViewEdit/Edit/FormCreateDataNode';
+
+import './style.scss';
+
+function ModalCreateDatanode(props) {
+  const classes = new BEMHelper('modal-create-datanode');
+
+  return (
+    <Modal
+      modal={props.modal}
+      title="Create Data node"
+      mods={['no-padding']}
+      create
+    >
+      <div {...classes()}>
+        <FormCreateDataNode />
+      </div>
+    </Modal>
+  );
+}
+
+export default ModalCreateDatanode;

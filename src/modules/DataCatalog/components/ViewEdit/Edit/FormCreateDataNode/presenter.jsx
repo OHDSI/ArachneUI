@@ -24,9 +24,6 @@ import React from 'react';
 import {
   LoadingPanel,
   Form,
-  FormInput,
-  FormTextarea,
-  Panel,
 } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
 import { AttributesFormListItem } from '../AttributesList/presenter';
@@ -76,7 +73,7 @@ function FormCreateDataNode(props) {
   ];
 
   return (
-    <Panel title={'Create Data Node'} {...classes()}>
+    <div title={'Create Data Node'} {...classes()}>
       <Form
         fields={fields}
         submitBtn={submitBtn}
@@ -85,7 +82,7 @@ function FormCreateDataNode(props) {
         {...props}
       />
       <LoadingPanel active={isLoading} />
-    </Panel>
+    </div>
   );
 }
 

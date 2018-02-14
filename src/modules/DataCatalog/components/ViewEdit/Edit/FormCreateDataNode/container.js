@@ -52,6 +52,7 @@ export default class FormCreateDataNode extends ContainerBuilder {
     return {
       reset: () => resetForm(forms.createDataNode),
       update: actions.dataCatalog.dataNode.update,
+      create: actions.dataCatalog.dataNode.create,
       loadDataSource: actions.dataCatalog.dataSource.find,
     };
   }
@@ -62,7 +63,12 @@ export default class FormCreateDataNode extends ContainerBuilder {
       ...stateProps,
       ...dispatchProps,
       async doSubmit(data) {
-        const submitPromise = await dispatchProps.update({ id: stateProps.datanodeId }, data);
+        let submitPromise;
+        if (ownProps.create) {
+          submitPromise = await dispatchProps.create({ id: stateProps.datanodeId }, data);
+        } else {
+          submitPromise = await dispatchProps.update({ id: stateProps.datanodeId }, data);
+        }
         await dispatchProps.loadDataSource({
           id: ownProps.dataSourceId,
         });
