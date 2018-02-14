@@ -29,7 +29,7 @@ require('./style.scss');
 
 function ToolbarActions({
     canUnpublish,
-    remove,
+    unpublish,
     canEdit,
     dataSourceId,
   }) {
@@ -38,7 +38,7 @@ function ToolbarActions({
   return (
     <div  {...classes()}>
       {canUnpublish &&
-        <Button onClick={remove} mods={['rounded', 'purple']}>
+        <Button onClick={unpublish} mods={['rounded', 'purple']}>
           Unpublish
         </Button>
       }

@@ -55,7 +55,7 @@ class DataCatalogEditBuilder extends ContainerBuilder {
   mapStateToProps(state, ownProps) {
     const moduleState = get(state, 'dataCatalog');
     const permissions = get(state, 'dataCatalog.dataSource.data.result.permissions', {}, 'Object');
-    const isDatanodeRegistered = get(state, 'dataCatalog.dataSource.data.result.published');
+    const isDatanodeRegistered = get(state, 'dataCatalog.dataSource.data.result.dataNode.published');
   
     return {
       name: `${get(moduleState, 'dataSource.data.result.dataNode.name', '')}: ${get(moduleState, 'dataSource.data.result.name', '')}`,

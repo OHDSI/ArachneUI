@@ -45,7 +45,7 @@ function mapStateToProps(state, ownProps) {
 
 const mapDispatchToProps = {
   load: actions.dataCatalog.dataSource.find,
-  remove: actions.dataCatalog.dataSource.delete,
+  unpublish: actions.dataCatalog.dataSource.unpublish,
   goToPage,
 };
 
@@ -54,15 +54,14 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...stateProps,
     ...dispatchProps,
     ...ownProps,
-    remove: () => {
-      Utils.confirmDelete()
-        .then(() => {
-          const dataSourceId = stateProps.dataSourceId;
-          dispatchProps.remove({ id: dataSourceId })
-            .then(() => dispatchProps.load({ id: dataSourceId }))
-            .then(() => dispatchProps.goToPage(paths.dataCatalog()))
-            .catch(() => {});
-        });
+    async unpublish() {
+      try {
+        await Utils.confirmDelete();
+        const dataSourceId = stateProps.dataSourceId;
+        await dispatchProps.unpublish({ id: dataSourceId });
+        await dispatchProps.load({ id: dataSourceId });
+        await dispatchProps.goToPage(paths.dataCatalog());
+      } catch (er) {}
     },
   };
 }
