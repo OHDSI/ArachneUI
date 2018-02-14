@@ -16,7 +16,7 @@
   * Company: Odysseus Data Services, Inc.
   * Product Owner/Architecture: Gregory Klebanov
   * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
-  * Created: Tuesday, February 13, 2018 5:37 PM
+  * Created: Wednesday, February 14, 2018 3:10 PM
   *
   */
 
@@ -24,39 +24,29 @@
 import { Component, PropTypes } from 'react';
 import actions from 'actions';
 import { ContainerBuilder, get } from 'services/Utils';
-import {
-  filterListEncoderDecoder,
-} from 'services/SolrQuery';
+import { ModalUtils } from 'arachne-ui-components';
 import presenter from './presenter';
-import SelectorsBuilder from './selectors';
+import { modal } from 'modules/DataCatalog/const';
 
-const selectors = (new SelectorsBuilder()).build();
-
-export class MyDatasources extends Component {
+export class Actions extends Component {
   static get propTypes() {
     return {
-      loadDsList: PropTypes.func,
     };
-  }
+  } 
 
   render() {
     return presenter(this.props);
   }
 }
  
-export default class MyDatasourcesBuilder extends ContainerBuilder {
+export default class ActionsBuilder extends ContainerBuilder {
   getComponent() {
-    return MyDatasources;
+    return Actions;
   }  
  
-  mapStateToProps(state) {
+  mapStateToProps(state, ownProps) {     
+
     return {
-      filterFields: [], // selectors.getFilterList(state),
-      columns: selectors.getColumns(state),
-      data: selectors.getData(state),
-      isLoading: false, // get(state, 'dataCatalog.myDatasources.isLoading', false),
-      paginationDetails: selectors.getPaginationDetails(state),
-      ...filterListEncoderDecoder,
     };
   }
 
@@ -65,22 +55,7 @@ export default class MyDatasourcesBuilder extends ContainerBuilder {
    */
   getMapDispatchToProps() {
     return {
-      loadDsList: actions.dataCatalog.myDatasources.query,
+      openCreateModal: () => ModalUtils.actions.toggle(modal.modalCreateDatanode, true),
     };
   }
-
-  mergeProps(stateProps, dispatchProps, ownProps) {
-    return {
-      ...ownProps,
-      ...stateProps,
-      ...dispatchProps,
-    };
-  }
-
-  getFetchers({ params, state, dispatch }) {
-    return {
-      loadDsList: dispatch(actions.dataCatalog.myDatasources.query()),
-    };
-  }
-
 }

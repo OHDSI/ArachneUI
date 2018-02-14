@@ -25,6 +25,8 @@
   import { PageContent } from 'arachne-ui-components';
   import BEMHelper from 'services/BemHelper';
   import DataSourcesTable from '../List/Table';
+  import Actions from './components/Actions';
+  import ModalCreateDatanode from './components/ModalCreateDatanode';
   
   import './style.scss';
   
@@ -48,7 +50,7 @@
             isLoading={isLoading}
             title="My Datasources"
             filterFields={filterFields}
-            Actions={null}
+            Actions={<Actions />}
             paginationDetails={paginationDetails}
             searchQueryDecode={searchQueryDecode}
             searchQueryEncode={searchQueryEncode}
@@ -56,6 +58,7 @@
             <DataSourcesTable columns={columns} data={data} />
           </Grid>
         </div>
+        <ModalCreateDatanode />
       </PageContent>
     );
   }

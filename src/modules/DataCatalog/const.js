@@ -32,6 +32,7 @@ const forms = keyMirror({
 const modal = keyMirror({
   inviteDataSource: null,
   confirmDatasource: null,
+  modalCreateDatanode: null,
 });
 
 const apiPaths = {
