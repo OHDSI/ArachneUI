@@ -35,7 +35,7 @@ import './style.scss';
 export default function SearchResults(props) {
   const classes = BEMHelper('search-result');
   const {
-    query,
+    searchParams,
     isLoading,
     paginationDetails,
     searchQueryDecode,
@@ -54,7 +54,7 @@ export default function SearchResults(props) {
       <Grid
         {...classes()}
         isLoading={isLoading}
-        title={`Global search for '${query}'`}
+        title={`Global search ${searchParams.query ? `for '${searchParams.query}'` : ''}`}
         filterFields={filter}
         paginationDetails={paginationDetails}
         searchQueryDecode={searchQueryDecode}

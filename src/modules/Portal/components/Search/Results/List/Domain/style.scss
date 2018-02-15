@@ -29,25 +29,25 @@
     z-index: 0;
   }
 
-  &--STUDY_NOTEBOOK {
+  &--studies {
     &:after {
       background: $green;
     }
   }
 
-  &--EXPERT_FINDER {
+  &--users {
     &:after {
       background: $orange;
     }
   }
 
-  &--DATA_CATALOG {
+  &--data-sources {
     &:after {
       background: $red;
     }
   }
 
-  &--INSIGHTS_LIBRARY {
+  &--insights {
     &:after {
       background: $blue;
     }

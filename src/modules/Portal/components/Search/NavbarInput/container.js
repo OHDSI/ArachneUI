@@ -21,25 +21,24 @@
  */
 
 import { Component } from 'react';
-import actions from 'actions';
+import ducks from 'modules/Portal/ducks';
 import { ContainerBuilder, get } from 'services/Utils';
 import { form, paths } from 'modules/Portal/const';
 import { push as goToPage } from 'react-router-redux';
-import { paths as studyPaths } from 'modules/StudyManager/const';
 import presenter from './presenter';
+import SelectorsBuilder from '../Results/List/selectors';
+
+const selectors = (new SelectorsBuilder()).build();
 
 class NavbarSearchInput extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isCollapsed: true,
-      results: [],
     };
     this.input = null;
     this.setIsCollapsed = this.setIsCollapsed.bind(this);
     this.setInput = this.setInput.bind(this);
-    this.fetchResults = this.fetchResults.bind(this);
-    this.showResults = this.showResults.bind(this);
   }
 
   setIsCollapsed(isCollapsed = false) {
@@ -55,44 +54,21 @@ class NavbarSearchInput extends Component {
     this.input = element;
   }
 
-  fetchResults({ query }) {
-    const results = [];
-    if (query) {
-      for (let i=0; i<Math.ceil(Math.random() * 10); i++) {
-        results.push({
-          value: `${i}`,
-          label: `Result #${i}`,
-          caption: 'Some random caption',
-          path: studyPaths.studies(27),
-        });
-      }
-      results.push({
-        label: 'All results (105)',
-        value: 'all',
-        path: paths.search({ query }),
-      });
-    }
-
-    this.setState({
-      results,
-    });
-  }
-
-  showResults(optionValue) {
-    const option = this.state.results.find(result => result.value === optionValue);
-    if (option) {
-      this.props.redirect(option.path);
-    }
-  }
-
   render() {
+    const query = this.input ? this.input.getInputValue() : '';
+
     return presenter({
       ...this.props,
       ...this.state,
+      results: [
+        ...this.props.results,
+        {
+          label: `All results (${this.props.totalResults})`,
+          value: paths.search({ query }),
+        },
+      ],
       setIsCollapsed: this.setIsCollapsed,
       setInput: this.setInput,
-      fetchResults: this.fetchResults,
-      showResults: this.showResults,
     });
   }
 }
@@ -109,13 +85,19 @@ export default class NavbarSearchInputBuilder extends ContainerBuilder {
   }
 
   mapStateToProps(state) {
+    const results = selectors.getBriefResults(state);
+    const totalResults = get(state, 'portal.search.queryResult.result.totalElements', 0);
+
     return {
+      results,
+      totalResults,
     };
   }
 
   getMapDispatchToProps() {
     return {
-      redirect: goToPage,
+      showResults: goToPage,
+      fetchResults: ducks.actions.search.query,
     };
   }
 

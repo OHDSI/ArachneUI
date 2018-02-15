@@ -30,89 +30,27 @@ import { paths as userPaths } from 'modules/ExpertFinder/const';
 import { paths as insightsPaths } from 'modules/InsightsLibrary/const';
 import { paths as dataCatalogPaths } from 'modules/DataCatalog/const';
 
-import { searchSections, domains } from 'modules/Portal/const';
+import { domains } from 'modules/Portal/const';
 
 export default class SelectorsBuilder {
-  generateResults(count) {
-    const res = [];
-    for (let i=0; i<count; i++) {
-      const index = Math.ceil((Math.random() * 10) / 3) - 1;
-      const r = {
-        id: i,
-        title: `Result # ${i}`,
-        description: '...Some random description indicating the surrounding of the text where the desired string appeared. The string could probably be highlighted to emphasize it..',
-        domain: searchSections[0].options[index],
-        breadcrumbs: null,
-      };
-      if ([domains.STUDY_NOTEBOOK].includes(r.domain.value)) {
-        r.title = 'Analysis';
-        r.breadcrumbs = [{
-          title: 'Study',
-          id: i,
-          domain: {
-            label: 'Study',
-            value: domains.STUDY_NOTEBOOK,
-          },
-        },
-        {
-          title: 'Analysis',
-          id: i,
-          domain: {
-            label: 'Analysis',
-            value: domains.ANALYSIS,
-          },
-        },
-        {
-          title: 'Submission',
-          id: i,
-          domain: {
-            label: 'Submission',
-            value: domains.SUBMISSION,
-          },
-        }];
-      }
-      if ([domains.INSIGHTS_LIBRARY].includes(r.domain.value)) {
-        r.title = 'Insight';
-        r.breadcrumbs = [{
-          title: 'Study',
-          id: i,
-          domain: {
-            label: 'Study',
-            value: domains.STUDY_NOTEBOOK,
-          },
-        },
-        {
-          title: 'Analysis',
-          id: i,
-          domain: {
-            label: 'Analysis',
-            value: domains.ANALYSIS,
-          },
-        }];
-      }
-      res.push(r);
-    }
-
-    return res;
-  }
 
   getRawResults(state) {
-    return get(state, 'portal.searchResults.data.result.content', this.generateResults(10), 'Array');
+    return get(state, 'portal.search.queryResult.result.content', [], 'Array');
   }
 
   getPath({ id, domain }) {
     switch (domain.value) {
-      case domains.STUDY_NOTEBOOK:
+      case domains.studies:
         return studyPaths.studies(id);
-      case domains.EXPERT_FINDER:
+      case domains.users:
         return userPaths.profile(id);
-      case domains.DATA_CATALOG:
+      case domains.datasources:
         return dataCatalogPaths.dataCatalog(id);
-      case domains.INSIGHTS_LIBRARY:
+      case domains.insights:
         return insightsPaths.insights({ insightId: id });
-      case domains.ANALYSIS:
+      case domains.analyses:
         return analysisPaths.analyses(id);
-      case domains.FILE:
+      case domains.files:
         return '';
     }
   }
@@ -135,9 +73,22 @@ export default class SelectorsBuilder {
     );
   }
 
+  buildSelectorForBriefResults(getResults) {
+    return createSelector(
+      getResults,
+      results => results.map((res) => ({
+        label: res.title,
+        value: res.path,
+      }))
+    );
+  }
+
   build() {
+    const getResults = this.buildSelectorForGetResults();
+
     return {
-      getResults: this.buildSelectorForGetResults(),
+      getResults,
+      getBriefResults: this.buildSelectorForBriefResults(getResults),
     };
   }
 }

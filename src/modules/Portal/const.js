@@ -40,6 +40,7 @@ const apiPaths = {
   invitations: () => '/api/v1/user-management/users/invitations',
   invitationsSubscription: () => '/user/topic/invitations',
   userpic: id => `/api/v1/user-management/users/${id}/avatar`,
+  search: () => '/api/v1/search',
 };
 
 const paths = {
@@ -60,15 +61,15 @@ const images = {
   logo: '/img/icons/Universal_Desktop/Header/logo_odys.svg',
 };
 
-const domains = keyMirror({
-  STUDY_NOTEBOOK: null,
-  EXPERT_FINDER: null,
-  DATA_CATALOG: null,
-  INSIGHTS_LIBRARY: null,
-  ANALYSIS: null,
-  FILE: null,
-  SUBMISSION: null,
-});
+const domains = {
+  studies: 'studies',
+  users: 'users',
+  datasources: 'data-sources',
+  insights: 'insights',
+  analyses: 'analyses',
+  files: 'files',
+  submissions: 'submissions',
+};
 
 const searchSections = [
   {
@@ -80,19 +81,19 @@ const searchSections = [
     options: [
       {
         label: 'Study notebook',
-        value: domains.STUDY_NOTEBOOK,
+        value: domains.studies,
       },
       {
         label: 'Expert finder',
-        value: domains.EXPERT_FINDER,
+        value: domains.users,
       },
       {
         label: 'Data catalog',
-        value: domains.DATA_CATALOG,
+        value: domains.datasources,
       },
       {
         label: 'Insights library',
-        value: domains.INSIGHTS_LIBRARY,
+        value: domains.insights,
       },
     ],
   },
