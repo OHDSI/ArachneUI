@@ -99,6 +99,7 @@ function BusinessData(props) {
 
     if (field.disabled === true) {
       field.InputComponent.props.mods.push("disabled");
+      field.InputComponent.props.disabled = true;
     }
 
     return field;

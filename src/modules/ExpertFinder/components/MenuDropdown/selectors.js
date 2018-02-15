@@ -15,25 +15,23 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 30, 2016
+ * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon
+ * Created: February 13, 2018
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+import { createSelector } from 'reselect';
+import { Utils, get } from 'services/Utils';
 
-.#{$namespace} {
+const getTenants = state => get(state, 'expertFinder.myProfile.data.result.tenants') || [];
 
-	&form-reset-password {
-		position: relative;
-		border-radius: $block-border-radius;
-		@include form-island();
+const getNewActiveTenantId = (state) => {
+  if (get(state, 'expertFinder.userSettings.isUpdating')) {
+    return get(state, 'expertFinder.userSettings.newData.activeTenantId');
+  }
+};
 
-		&__back-url {
-			display: block;
-	    text-align: center;
-	    margin-top: 15px;
-		}
-	}
-
-}
+export default {
+  getTenants,
+  getNewActiveTenantId,
+};

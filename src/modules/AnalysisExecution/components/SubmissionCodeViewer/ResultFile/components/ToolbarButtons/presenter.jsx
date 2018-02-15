@@ -16,24 +16,28 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 30, 2016
+ * Created: February 1, 2018
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+import React from 'react';
+import {
+  Button,
+} from 'arachne-ui-components';
+import { apiPaths } from 'modules/AnalysisExecution/const';
 
-.#{$namespace} {
+export function DownloadAll(props) {
+  const {
+    submissionId,
+  } = props;
 
-	&form-reset-password {
-		position: relative;
-		border-radius: $block-border-radius;
-		@include form-island();
-
-		&__back-url {
-			display: block;
-	    text-align: center;
-	    margin-top: 15px;
-		}
-	}
-
+  return (
+    <Button
+      mods={['success', 'rounded']}
+      link={apiPaths.submissionResultAll({ submissionId })}
+      target={'_blank'}
+    >
+      Download All
+    </Button>
+  );
 }

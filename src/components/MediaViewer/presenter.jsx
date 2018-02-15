@@ -32,6 +32,7 @@ import CodeViewer from 'components/CodeViewer';
 import moment from 'moment-timezone';
 import { usDateTime as dateFormat } from 'const/formats';
 import CSV from './CsvViewer';
+import { getScanResultDescription } from 'const/antivirus';
 
 let ReactPDF;
 
@@ -43,7 +44,10 @@ export function ActionBar(props = {}) {
     downloadLink,
     title,
     createdAt,
+    antivirusStatus,
+    antivirusDescription,
   } = props;
+
   return (
     <div {...classes()}>
       <div {...classes('info')}>
@@ -54,7 +58,11 @@ export function ActionBar(props = {}) {
           Created at {moment(createdAt).tz(moment.tz.guess()).format(dateFormat)}
         </span>}
       </div>
-      <div {...classes('actions')}>
+      <div
+        {...classes('actions', '', antivirusStatus ? 'ac-tooltip' : '')}
+        aria-label={getScanResultDescription(antivirusStatus, antivirusDescription)}
+        data-tootik-conf={'left'}
+      >
         {downloadLink && <Button
           {...classes('btn', 'download')}
           label="Download"
@@ -79,11 +87,11 @@ function image({ classes, container, setContainer, data }) {
         }
       }}
     />,
-    container && data ?
+    container ?
       <Viewer
         attribute={false}
         images={[{ src: `data:image;base64,${data}` }]}
-        visible
+        visible={data !== null}
         container={container}
         onClose={() => {
         }}
@@ -194,6 +202,8 @@ function MediaViewer({
   isLoaded,
   isInitialScaleSet,
   setInitialScale,
+  antivirusStatus,
+  antivirusDescription,
 }) {
   const classes = new BEMHelper('media-viewer');
   let element;
@@ -223,6 +233,8 @@ function MediaViewer({
             title={title}
             createdAt={createdAt}
             downloadLink={downloadLink}
+            antivirusStatus={antivirusStatus}
+            antivirusDescription={antivirusDescription}
           />
         );
         isDownloadLinkWrapperNeeded = false;
@@ -234,7 +246,12 @@ function MediaViewer({
 
   return isDownloadLinkWrapperNeeded ? (
     <div {...classes()}>
-      <ActionBar downloadLink={downloadLink} title={title} />
+      <ActionBar
+        downloadLink={downloadLink}
+        title={title}
+        antivirusStatus={antivirusStatus}
+        antivirusDescription={antivirusDescription}
+      />
       {element}
     </div>
   ) : element;

@@ -16,24 +16,38 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 30, 2016
+ * Created: January 26, 2018
  *
  */
+import keyMirror from 'keymirror';
 
-@import 'styles/vars-and-mixins.scss';
+export const scanStatuses = keyMirror({
+  WILL_NOT_SCAN: null,
+  NOT_SCANNED: null,
+  SCANNING: null,
+  OK: null,
+  INFECTED: null,
+});
 
-.#{$namespace} {
+const messages = {
+  WILL_NOT_SCAN: 'File will not be scanned with anti-virus',
+  NOT_SCANNED: 'File had not been scanned with anti-virus',
+  SCANNING: 'Scanning is in progress',
+  OK: 'File had been scanned',
+  INFECTED: 'File is infected',
+};
 
-	&form-reset-password {
-		position: relative;
-		border-radius: $block-border-radius;
-		@include form-island();
+export function isScanned(status) {
+  return [
+    scanStatuses.WILL_NOT_SCAN,
+    scanStatuses.OK,
+  ].includes(status);
+}
 
-		&__back-url {
-			display: block;
-	    text-align: center;
-	    margin-top: 15px;
-		}
-	}
+export function getScanResultDescription(status, message) {
+  if (!message) {
+    return messages[status];
+  }
 
+  return message;
 }

@@ -16,24 +16,21 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 30, 2016
+ * Created: January 23, 2017
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+import Duck from 'services/Duck';
+import { apiPaths } from 'modules/ExpertFinder/const';
 
-.#{$namespace} {
+const coreName = 'EF_USER';
 
-	&form-reset-password {
-		position: relative;
-		border-radius: $block-border-radius;
-		@include form-island();
+const province = new Duck({
+  name: coreName,
+  urlBuilder: apiPaths.userSettings,
+});
 
-		&__back-url {
-			display: block;
-	    text-align: center;
-	    margin-top: 15px;
-		}
-	}
-
-}
+export default {
+  actions: province.actions,
+  reducer: province.reducer,
+};

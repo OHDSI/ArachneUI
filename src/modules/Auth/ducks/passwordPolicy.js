@@ -16,24 +16,26 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 30, 2016
+ * Created: January 22, 2018
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+import Duck from 'services/Duck';
+import { apiPaths } from 'modules/Auth/const';
 
-.#{$namespace} {
+const actionCoreName = 'AU_PASSWORD_POLICY';
 
-	&form-reset-password {
-		position: relative;
-		border-radius: $block-border-radius;
-		@include form-island();
+const duck = new Duck(
+  {
+    name: actionCoreName,
+    urlBuilder: apiPaths.passwordPolicy,
+  },
+);
 
-		&__back-url {
-			display: block;
-	    text-align: center;
-	    margin-top: 15px;
-		}
-	}
+const actions = duck.actions;
+const reducer = duck.reducer;
 
-}
+export default {
+  actions,
+  reducer,
+};

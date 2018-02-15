@@ -68,7 +68,7 @@ export default class ModalAddParticipantBuilder {
   mapStateToProps(state) {
     const moduleData = get(state, 'studyManager');
 
-    const participantSuggestions = get(moduleData, 'participantList.data.result') || [];
+    const participantSuggestions = get(moduleData, 'participantList.data') || [];
     const participantOptions = participantSuggestions.slice(0, 10).map(user => ({
       label: `${user.firstname} ${user.lastname}`,
       value: user.id,

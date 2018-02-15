@@ -24,6 +24,7 @@ import { Component, PropTypes } from 'react';
 import ducks from 'modules/ExpertFinder/ducks';
 import { get, ContainerBuilder } from 'services/Utils';
 import presenter from './presenter';
+import selectors from './selectors';
 
 class MenuDropdown extends Component {
   componentWillMount() {
@@ -65,12 +66,27 @@ export default class MenuDropdownBuilder extends ContainerBuilder {
       lastName,
       middleName,
       hash,
+      tenants: selectors.getTenants(state),
+      newActiveTenantId: selectors.getNewActiveTenantId(state),
     };
   }
 
   getMapDispatchToProps() {
     return {
       loadMyProfile: ducks.actions.myProfile.find,
-    }
+      updateUser: ducks.actions.userSettings.update,
+    };
+  }
+
+  mergeProps(stateProps, dispatchProps, ownProps) {
+    return {
+      ...stateProps,
+      ...dispatchProps,
+      ...ownProps,
+      async setActiveTenant({ activeTenantId }) {
+        await dispatchProps.updateUser({}, { activeTenantId });
+        window.location.reload(true);
+      },
+    };
   }
 }

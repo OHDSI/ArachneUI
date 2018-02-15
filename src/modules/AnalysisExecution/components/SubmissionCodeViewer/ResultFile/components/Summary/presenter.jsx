@@ -31,6 +31,7 @@ import {
   Panel,
 } from 'arachne-ui-components';
 import { get } from 'services/Utils';
+import isEmpty from 'lodash/isEmpty';
 import SummaryIncidence from './Incidence';
 import SummaryCohort from './Cohort';
 import SummaryPopulationLevel from './PopulationLevel';
@@ -56,6 +57,7 @@ export default function SubmissionResultSummary(props) {
     submissionGroupType,
     submission,
     datasource,
+    currentAnalysisType,
   } = props;
   const classes = BEMHelper('submission-result-summary');
 
@@ -94,7 +96,13 @@ export default function SubmissionResultSummary(props) {
           <Panel title={'Analysis'}>
             <div {...classes('panel-content')}>
               <ul {...classes('list')}>
-                <li {...classes('list-item')}>{nameAnalysisType({ analysisType: submissionGroupType, capitalize: true })}</li>
+                <li {...classes('list-item')}>
+                  {nameAnalysisType({ analysisType: currentAnalysisType, capitalize: true })}
+                  {submissionGroupType !== currentAnalysisType
+                    ? ` (had been executed as ${nameAnalysisType({ analysisType: submissionGroupType, capitalize: true })})`
+                    : ''
+                  }
+                </li>
                 <li {...classes('list-item')}>{moment(analysis.created).tz(moment.tz.guess()).format(commonDate)}</li>
               </ul>
             </div>
@@ -118,7 +126,7 @@ export default function SubmissionResultSummary(props) {
           </Panel>
         </div>
       </ResultInfoBlock>
-      {specificSummary && resultInfo &&
+      {specificSummary && !isEmpty(resultInfo) &&
         <ResultInfoBlock>
           <div {...classes('panel', specificSummaryMods)}>
             <Panel title={'Result summary'}>

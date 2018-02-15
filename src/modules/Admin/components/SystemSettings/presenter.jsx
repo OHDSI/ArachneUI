@@ -86,13 +86,21 @@ function SystemSettings(props) {
                 label="Reindex Expert Finder"
                 onClick={() => solrReindex({ domain: 'users' })}
               />
-            </div>,
+            	</div>,
               <div {...classes('action-bar-btn')}>
                 <Button
                   {...classes('reindex-solr')}
                   mods={['default']}
                   label="Reindex Data Catalog"
                   onClick={() => solrReindex({ domain: 'data-sources' })}
+                />
+              </div>,
+              <div {...classes('action-bar-btn')}>
+                <Button
+                  {...classes('reindex-solr')}
+                  mods={['default']}
+                  label="Reindex Study Notebook"
+                  onClick={() => solrReindex({ domain: 'studies' })}
                 />
               </div>]
             : <div {...classes('action-bar-btn')}>
