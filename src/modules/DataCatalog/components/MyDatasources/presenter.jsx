@@ -50,7 +50,7 @@
             isLoading={isLoading}
             title="My Datasources"
             filterFields={filterFields}
-            Actions={<Actions />}
+            Actions={null}
             paginationDetails={paginationDetails}
             searchQueryDecode={searchQueryDecode}
             searchQueryEncode={searchQueryEncode}

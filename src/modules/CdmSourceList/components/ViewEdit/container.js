@@ -63,7 +63,7 @@ class CdmSourceListViewEditBuilder {
       dataSourceId: parseInt(ownProps.routeParams.dataSourceId, 10),
       isLoading: moduleState.dataSourceBusiness.isLoading || false,
       dataSourceName: get(moduleState, 'dataSourceBusiness.queryResult.result.name', ''),
-      isRegistered: get(moduleState, 'dataSourceBusiness.queryResult.result.isRegistered', false),
+      isPublished: get(moduleState, 'dataSourceBusiness.queryResult.result.isPublished', false),
       modelType: get(moduleState, 'dataSourceBusiness.queryResult.result.modelType', ''),
     };
   }

@@ -78,6 +78,7 @@ function dnConverter(dataNode = {}) {
     color,
     statusTitle,
     name: get(dataNode, 'name', 'Not published'),
+    published: dataNode.published,
   };
 }
 
@@ -103,6 +104,8 @@ function dsConverter(dataSource = {}) {
     color,
     statusTitle,
     name: fullName,
+    published: dataSource.published,
+    publishedLabel: dataSource.published ? 'Yes' : 'No',
   };
 }
 

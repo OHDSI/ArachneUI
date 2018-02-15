@@ -43,7 +43,13 @@ export default class SelectorsBuilder extends DsAttrListSelector {
   }
 
   getColumns(attrList) {
-    return attrList.filter(attr => attr.showInList);
+    return [
+      ...attrList.filter(attr => attr.showInList),
+      {
+        label: 'Published',
+        name: 'publishedLabel',
+      },
+    ];
   }
 
   buildSelectorForGetColumns(getAttrList) {

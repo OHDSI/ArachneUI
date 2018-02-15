@@ -47,7 +47,6 @@ function mapStateToProps(state) {
 const mapDispatchToProps = {
   editDataSource: id => ModalUtils.actions.toggle(modal.createDataSource, true, { id }),
   remove: actions.cdmSourceList.dataSource.delete,
-  unregister: actions.cdmSourceList.unRegister,
   goToDataSource: id => goToPage(paths.dataSources(id)),
   setSearch: actions.router.setSearch,
   loadList: actions.cdmSourceList.dataSourceList.query,
@@ -58,10 +57,7 @@ function mergeProps(state, dispatch, ownProps) {
     ...state,
     ...dispatch,
     ...ownProps,
-    async remove({ id, isRegistered }) {
-      if (isRegistered) {
-        await dispatch.unregister({ id });
-      }
+    async remove({ id }) {
       await dispatch.remove({ id });
       await dispatch.loadList({}, { query: state.query });
     },

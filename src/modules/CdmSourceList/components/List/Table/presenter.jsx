@@ -31,11 +31,11 @@ import { paths as centralPaths } from 'modules/DataCatalog/const';
 
 require('./style.scss');
 
-function CellRegister({ isRegistered, onClick, isCdm, id }) {
-  const classes = new BEMHelper('data-source-list-cell-register');
+function CellPublish({ isPublished, onClick, isCdm, id }) {
+  const classes = new BEMHelper('data-source-list-cell-publish');
 
   return <div {...classes()}>
-    {isRegistered ?
+    {isPublished ?
       <Button
         {...classes('btn')}
         mods={['success', 'rounded']}
@@ -54,14 +54,14 @@ function CellRegister({ isRegistered, onClick, isCdm, id }) {
   </div>;
 }
 
-function CellEdit({ editDataSource, removeDataSource, value, isRegistered }) {
+function CellEdit({ editDataSource, removeDataSource, value }) {
   const classes = new BEMHelper('data-source-list-cell-edit');
   return (
     <div {...classes('btn-block')}>
       <Button {...classes('btn')} onClick={() => editDataSource(value)}>
         <i {...classes('btn-ico')}>edit</i>
       </Button>
-      <Button {...classes('btn')} onClick={() => removeDataSource({ id: value, isRegistered })}>
+      <Button {...classes('btn')} onClick={() => removeDataSource({ id: value })}>
         <i {...classes('btn-ico')}>delete</i>
       </Button>
     </div>
@@ -130,11 +130,11 @@ function DataSourceTable(props) {
         header="Model"
         field="modelType"
       />
-      <CellRegister
-        {...tableClasses('register')}
+      <CellPublish
+        {...tableClasses('publish')}
         props={
           entity => ({
-            isRegistered: entity.isRegistered,
+            isPublished: entity.isPublished,
             onClick: () => goToDataSource(entity.id),
             isCdm: entity.modelType === modelTypesValues.CDM,
             id: entity.id,
@@ -146,7 +146,6 @@ function DataSourceTable(props) {
         field="id"
         editDataSource={editDataSource}
         removeDataSource={remove}
-        props={entity => ({ isRegistered: entity.isRegistered })}
       />
     </Table>
   );

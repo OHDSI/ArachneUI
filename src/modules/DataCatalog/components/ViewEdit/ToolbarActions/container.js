@@ -22,11 +22,11 @@
 
 import { connect } from 'react-redux';
 import { push as goToPage } from 'react-router-redux';
-import { dataSourcePermissions } from 'modules/DataCatalog/const';
+import { dataSourcePermissions, paths } from 'modules/DataCatalog/const';
 import actions from 'actions';
 import get from 'lodash/get';
 import { Utils } from 'services/Utils';
-import { paths } from 'modules/DataCatalog/const';
+import URI from 'urijs';
 import ToolbarActions from './presenter';
 
 function mapStateToProps(state, ownProps) {
@@ -35,11 +35,19 @@ function mapStateToProps(state, ownProps) {
   const isUnpublishable = get(datasourceData, `permissions[${dataSourcePermissions.delete}]`, false);
   const canUnpublish = isPublished && isUnpublishable;
   const dataSourceId = get(datasourceData, 'id', '');
+  const isMy = get(state, 'routing.locationBeforeTransitions.query.my', false);
+  const editUrl = new URI(paths.edit(dataSourceId));
+  if (isMy) {
+    editUrl.setSearch({
+      my: true,
+    });
+  }
 
   return {
     canUnpublish: ownProps.mode === 'edit' ? canUnpublish : false,
     canEdit: ownProps.mode === 'view' ? isUnpublishable : false,
     dataSourceId,
+    editUrl: editUrl.href(),
   };
 }
 

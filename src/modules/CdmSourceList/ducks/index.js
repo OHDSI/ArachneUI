@@ -26,7 +26,6 @@ import dataSource from './dataSource';
 import dataSourceList from './dataSourceList';
 import dataSourceBusiness from './dataSourceBusiness';
 import dbmsTypes from './dbmsTypes';
-import registerDS from './registerDS';
 
 export default {
   actions: {
@@ -36,8 +35,6 @@ export default {
     dataSourceList: dataSourceList.actions,
     dataSourceBusiness: dataSourceBusiness.actions,
     dbmsTypes: dbmsTypes.actions,
-    register: registerDS.actions.create,
-    unRegister: registerDS.actions.delete,
 
   },
   reducer: {
@@ -47,6 +44,5 @@ export default {
     dataSourceList: dataSourceList.reducer,
     dataSourceBusiness: dataSourceBusiness.reducer,
     dbmsTypes: dbmsTypes.reducer,
-    registerDS: registerDS.reducer,
-  }
-}
+  },
+};

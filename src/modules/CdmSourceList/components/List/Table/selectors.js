@@ -49,7 +49,7 @@ const getTestDataSourceList = () => ([
     dbmsType: 'SQL Server',
     dbName: 'db',
     cdmSchema: 'public',
-    isRegistered: true,
+    isPublished: true,
     modelType: 'CDM',
   },
   {
@@ -58,7 +58,7 @@ const getTestDataSourceList = () => ([
     dbmsType: 'MySQL',
     dbName: 'cdm',
     cdmSchema: 'public',
-    isRegistered: false,
+    isPublished: false,
     modelType: 'OTHER',
   },
   {
@@ -67,7 +67,7 @@ const getTestDataSourceList = () => ([
     dbmsType: 'Oracle',
     dbName: 'new_cdm',
     cdmSchema: 'custom',
-    isRegistered: true,
+    isPublished: true,
     modelType: 'CDM',
   },
 ]);

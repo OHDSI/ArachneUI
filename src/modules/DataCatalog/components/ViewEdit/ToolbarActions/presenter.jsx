@@ -23,7 +23,6 @@
 import React from 'react';
 import BEMHelper from 'services/BemHelper';
 import { Button } from 'arachne-ui-components';
-import { paths } from 'modules/DataCatalog/const';
 
 require('./style.scss');
 
@@ -32,18 +31,19 @@ function ToolbarActions({
     unpublish,
     canEdit,
     dataSourceId,
+    editUrl,
   }) {
   const classes = new BEMHelper('data-source-toolbar-actions');
 
   return (
     <div  {...classes()}>
       {canUnpublish &&
-        <Button onClick={unpublish} mods={['rounded', 'purple']}>
+        <Button onClick={unpublish} mods={['rounded', 'default']}>
           Unpublish
         </Button>
       }
       {canEdit &&
-        <Button {...classes('action')} link={paths.edit(dataSourceId)}>
+        <Button {...classes('action')} link={editUrl}>
           <i {...classes('action-ico')}>settings</i>
         </Button>
       }
