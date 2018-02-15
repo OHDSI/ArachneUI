@@ -25,6 +25,7 @@ import { Component } from 'react';
 import actions from 'actions/index';
 import get from 'lodash/get';
 import { ContainerBuilder } from 'services/Utils';
+import isEmpty from 'lodash/isEmpty';
 import Presenter from './presenter';
 
 const presenterComponent = new Presenter();
@@ -56,6 +57,7 @@ class DataCatalogEditBuilder extends ContainerBuilder {
     const moduleState = get(state, 'dataCatalog');
     const permissions = get(state, 'dataCatalog.dataSource.data.result.permissions', {}, 'Object');
     const isDatanodeRegistered = get(state, 'dataCatalog.dataSource.data.result.dataNode.published');
+    const isDenied = isEmpty(get(state, 'dataCatalog.dataSource.data.result', {}, 'Object'));
   
     return {
       name: `${get(moduleState, 'dataSource.data.result.dataNode.name', '')}: ${get(moduleState, 'dataSource.data.result.name', '')}`,
@@ -63,6 +65,7 @@ class DataCatalogEditBuilder extends ContainerBuilder {
       permissions,
       isDatanodeRegistered,
       dataSourceId: ownProps.params.dataSourceId,
+      isDenied,
     };
   }
 

@@ -27,16 +27,25 @@ import { ContainerBuilder, get } from 'services/Utils';
 import {
   filterListEncoderDecoder,
 } from 'services/SolrQuery';
+import isEqual from 'lodash/isEqual';
+import isEmpty from 'lodash/isEmpty';
 import presenter from './presenter';
 import SelectorsBuilder from './selectors';
 
 const selectors = (new SelectorsBuilder()).build();
+const defaultQueryParams = { query: '', page: 1, pageSize: 10 };
 
 export class MyDatasources extends Component {
   static get propTypes() {
     return {
       loadDsList: PropTypes.func,
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!isEqual(this.props.queryParams, nextProps.queryParams)) {
+      this.props.loadDsList(null, nextProps.queryParams);
+    }
   }
 
   render() {
@@ -50,13 +59,16 @@ export default class MyDatasourcesBuilder extends ContainerBuilder {
   }  
  
   mapStateToProps(state) {
+    const queryParams = get(state, 'routing.locationBeforeTransitions.query');
+
     return {
       filterFields: [], // selectors.getFilterList(state),
       columns: selectors.getColumns(state),
       data: selectors.getData(state),
-      isLoading: false, // get(state, 'dataCatalog.myDatasources.isLoading', false),
+      isLoading: get(state, 'dataCatalog.myDatasources.isLoading', false),
       paginationDetails: selectors.getPaginationDetails(state),
       ...filterListEncoderDecoder,
+      queryParams: isEmpty(queryParams) ? defaultQueryParams : queryParams,
     };
   }
 
@@ -78,8 +90,13 @@ export default class MyDatasourcesBuilder extends ContainerBuilder {
   }
 
   getFetchers({ params, state, dispatch }) {
+    const queryParams = get(state, 'routing.locationBeforeTransitions.query');
+
     return {
-      loadDsList: dispatch(actions.dataCatalog.myDatasources.query()),
+      loadDsList: dispatch(actions.dataCatalog.myDatasources.query(
+        null,
+        isEmpty(queryParams) ? defaultQueryParams : queryParams)
+      ),
     };
   }
 

@@ -29,51 +29,51 @@ import {
 import LabelDataSource from 'components/LabelDataSource';
 
 function CellName({ dataSource, className }) {
-	return (
-		<div className={className}>
-			<LabelDataSource {...dataSource} />
-		</div>
-	);
+  return (
+    <div className={className}>
+      <LabelDataSource {...dataSource} />
+    </div>
+  );
 }
 
 function DataSourcesTable(props) {
-	const {
-		dataSourceList,
-		columns,
-		isLoading,
-		setSorting,
-		sorting,
-	} = props;
+  const {
+    dataSourceList,
+    columns,
+    isLoading,
+    setSorting,
+    sorting,
+  } = props;
   const tableClasses = new BEMHelper('data-catalog-table');
 
-	return (
-		<Table
-			{...tableClasses()}
-			data={dataSourceList}
+  return (
+    <Table
+      {...tableClasses()}
+      data={dataSourceList}
       mods={['hover', 'padded', 'selectable']}
       onRowClick={props.showDatasource}
       setSorting={setSorting}
       sorting={sorting}
-		>
-			{columns && columns.map((col, key) => {
-					if (col.name === 'name') {
-						return <CellName
-							{...tableClasses('meta')}
-							header={col.label}
-							field={col.name}
-							props={dataSource => ({ dataSource })}
-						/>
-					}
-					return <Cell
-						{...tableClasses('meta')}
-						key={key}
-						header={col.label}
-						field={col.name}
-					/>
-				}
-			)}
-		</Table>
-	)
+    >
+      {columns && columns.map((col, key) => {
+          if (col.name === 'name') {
+            return <CellName
+              {...tableClasses('meta')}
+              header={col.label}
+              field={col.name}
+              props={dataSource => ({ dataSource })}
+            />
+          }
+          return <Cell
+            {...tableClasses('meta')}
+            key={key}
+            header={col.label}
+            field={col.name}
+          />
+        }
+      )}
+    </Table>
+  )
 }
 
 export default DataSourcesTable;

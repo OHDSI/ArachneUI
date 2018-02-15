@@ -55,7 +55,7 @@
             searchQueryDecode={searchQueryDecode}
             searchQueryEncode={searchQueryEncode}
           >
-            <DataSourcesTable columns={columns} data={data} />
+            <DataSourcesTable columns={columns} data={data} my />
           </Grid>
         </div>
         <ModalCreateDatanode />

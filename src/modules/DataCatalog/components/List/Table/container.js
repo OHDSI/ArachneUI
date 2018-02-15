@@ -44,7 +44,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 const mapDispatchToProps = {
-  showDatasource: datasource => goToPage(paths.dataCatalog(datasource.id)),
+  doShowDatasource: url => goToPage(url),
   search: goToPage,
 };
 
@@ -62,6 +62,16 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         order: sortParams.sortAsc ? order.asc : order.desc,
       });
       dispatchProps.search(uri.toString());
+    },
+    showDatasource(datasource) {
+      const url = new URI(paths.dataCatalog(datasource.id));
+      if (ownProps.my) {
+        url.setSearch({
+          my: true,
+        });
+      }
+
+      dispatchProps.doShowDatasource(url.href());
     },
   };
 }

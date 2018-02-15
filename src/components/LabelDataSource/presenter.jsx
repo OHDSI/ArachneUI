@@ -77,7 +77,7 @@ function dnConverter(dataNode = {}) {
     uuid: dataNode.uuid,
     color,
     statusTitle,
-    name: get(dataNode, 'name', ''),
+    name: get(dataNode, 'name', 'Not published'),
   };
 }
 

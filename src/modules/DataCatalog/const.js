@@ -50,7 +50,7 @@ const apiPaths = {
   latestCharachterization: ({ id }) => `/api/v1/achilles/datasource/${id}`,
   report: ({ id, filename, path }) =>
     `/api/v1/achilles/datasource/${id}/files/${path ? `${path}/${filename}` : filename}`,
-  myDatasources: () => '/api/v1/my-data-sources',
+  myDatasources: () => '/api/v1/data-sources/my',
   dataNode: ({ id }) => `/api/v1/data-nodes${id ? `/${id}` : '' }`,
   registerDataSource: ({ id }) => `/api/v1/data-sources/${id}/register-on-central`,
   unpublishDatasource: ({ id }) => `/api/v1/data-sources/${id}/unpublish`,

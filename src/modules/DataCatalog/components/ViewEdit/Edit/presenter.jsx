@@ -47,12 +47,13 @@ class Edit {
       permissions,
       isDatanodeRegistered,
       dataSourceId,
+      isDenied,
     } = props;
 
     return (
       <PageContent title={`${props.name} | Arachne`}>
         <div {...classes()}>
-          {permissions.DELETE_DATASOURCE
+          {!isDenied && permissions.DELETE_DATASOURCE
             ? [
               <Toolbar mode={'edit'} />,
               <div {...classes('content')}>
