@@ -42,13 +42,13 @@ export default class AttributeListBuilder extends ContainerBuilder {
 
   mapStateToProps(state) {
     const dataSourceId = get(state, 'dataCatalog.dataSource.data.result.id');
-    const isRegistered = get(state, 'dataCatalog.dataSource.data.result.published');
+    const isPublished = get(state, 'dataCatalog.dataSource.data.result.published');
 
     return {
       attrList: selectors.getAttrList(state),
       initialValues: selectors.getData(state),
       dataSourceId,
-      isRegistered,
+      isPublished,
     };
   }
 
@@ -63,10 +63,13 @@ export default class AttributeListBuilder extends ContainerBuilder {
       ...ownProps,
       ...stateProps,
       ...dispatchProps,
-      doSubmit(data) {
-        const result = dispatchProps.update({
+      async doSubmit(data) {
+        const result = await dispatchProps.update({
           id: stateProps.dataSourceId,
         }, data);
+        if (!stateProps.isPublished) {
+          alert('Data source is successfully published');
+        }
 
         return result;
       },

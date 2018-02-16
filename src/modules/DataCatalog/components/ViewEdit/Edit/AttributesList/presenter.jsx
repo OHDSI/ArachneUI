@@ -97,7 +97,7 @@ export function AttributesFormListItem({ item, input, meta, isWide = false }) {
   return (
     <div {...itemClasses({ modifiers: { wide: isWide } })}>
       <div {...itemClasses('name', { wide: isWide })}>
-        {item.label}
+        {item.label} {item.isRequired && <span {...itemClasses('required')}>*</span>}
       </div>
       <div {...itemClasses('value', { wide: isWide })}>
         {field}
@@ -112,7 +112,7 @@ function AttributesList(props) {
     attrList,
     initialValues,
     doSubmit,
-    isRegistered,
+    isPublished,
   } = props;
   const fields = attrList
     .map(item => ({
@@ -125,7 +125,7 @@ function AttributesList(props) {
       },
     }));
   const submitBtn = {
-    label: isRegistered ? 'Save' : 'Publish',
+    label: isPublished ? 'Save' : 'Publish',
     mods: ['success', 'rounded'],
   };
 

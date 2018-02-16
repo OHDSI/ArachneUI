@@ -38,7 +38,7 @@ function ToolbarActions({
   return (
     <div  {...classes()}>
       {canUnpublish &&
-        <Button onClick={unpublish} mods={['rounded', 'purple']}>
+        <Button onClick={unpublish} mods={['rounded', 'cancel']}>
           Unpublish
         </Button>
       }
