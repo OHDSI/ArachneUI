@@ -69,7 +69,7 @@ export default function PasswordField(props) {
               }
             }}
           >
-            <DropdownTrigger {...classes('icon')}>
+            <DropdownTrigger {...classes('icon')} tabIndex={-1}>
               <div
                 {...classes('hint')}
                 onMouseOver={() => setIsCollapsed(false)}

@@ -89,7 +89,7 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
     return {
       id: parseInt(ownProps.routeParams.analysisId, 10),
       studyId,
-      isLoading: get(analysis, 'isLoading', false) || isSubmissionGroupsLoading,
+      isLoading: get(analysis, 'isLoading', false) || isSubmissionGroupsLoading || get(state, 'studyManager.studyInvitations.isLoading'),
       pageTitle: pageTitle.join(' | '),
       isEditable: get(analysisData, `permissions[${analysisPermissions.editAnalysis}]`, false),
       page: get(currentQuery, 'page', 1),
