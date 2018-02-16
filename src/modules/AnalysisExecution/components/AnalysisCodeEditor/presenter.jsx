@@ -50,6 +50,8 @@ function AnalysisCode({
   analysisCodeId,
   isEditable,
   onBannerActed,
+  antivirusStatus,
+  antivirusDescription,
 }) {
   const classes = new BEMHelper('analysis-code');
 
@@ -59,6 +61,7 @@ function AnalysisCode({
         <InviteRestrictedArea
           studyId={studyId}
           onAction={onBannerActed}
+          disabled={isLoading}
         >
           <Toolbar />
           <div {...classes('content')}>
@@ -71,6 +74,8 @@ function AnalysisCode({
               name={name}
               title={title}
               createdAt={createdAt}
+              antivirusStatus={antivirusStatus}
+              antivirusDescription={antivirusDescription}
             />
             }
           </div>

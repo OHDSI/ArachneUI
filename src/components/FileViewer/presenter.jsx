@@ -41,6 +41,8 @@ function FileViewer(props) {
     title,
     createdAt,
     toolbarOpts,
+    antivirusStatus,
+    antivirusDescription,
   } = props;
 
   return (
@@ -59,6 +61,8 @@ function FileViewer(props) {
               name={name}
               title={title}
               createdAt={createdAt}
+              antivirusStatus={antivirusStatus}
+              antivirusDescription={antivirusDescription}
             />
           </div>
         </div>

@@ -118,7 +118,7 @@ export default function SubmissionResultSummary(props) {
                   </span>
                 </li>
                 <li {...classes('list-item')}>{moment(get(submission, 'createdAt', '')).tz(moment.tz.guess()).format(commonDate)}</li>
-                <li {...classes('list-item')}>
+                <li {...classes('list-item', 'data-source')}>
                   <LabelDataSource {...datasource} />
                 </li>
               </ul>

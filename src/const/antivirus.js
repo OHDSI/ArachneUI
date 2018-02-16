@@ -16,45 +16,38 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 20, 2017
+ * Created: January 26, 2018
  *
  */
+import keyMirror from 'keymirror';
 
-import { Component } from 'react';
-import presenter from './presenter';
+export const scanStatuses = keyMirror({
+  WILL_NOT_SCAN: null,
+  NOT_SCANNED: null,
+  SCANNING: null,
+  OK: null,
+  INFECTED: null,
+});
 
-export default class FileBrowser extends Component {
+const messages = {
+  WILL_NOT_SCAN: 'File will not be scanned with anti-virus',
+  NOT_SCANNED: 'File had not been scanned with anti-virus',
+  SCANNING: 'Scanning is in progress',
+  OK: 'File had been scanned',
+  INFECTED: 'File is infected',
+};
 
-  constructor(props) {
-    super(props);
+export function isScanned(status) {
+  return [
+    scanStatuses.WILL_NOT_SCAN,
+    scanStatuses.OK,
+  ].includes(status);
+}
 
-    this.state = {
-      container: null,
-    };
-
-    this.setContainer = this.setContainer.bind(this);
+export function getScanResultDescription(status, message) {
+  if (!message) {
+    return messages[status];
   }
 
-  componentWillUnmount() {
-    this.state.container && this.state.container.removeEventListener('mousewheel', this.onScroll);
-  }
-
-  setContainer(element) {
-    this.setState({
-      container: element,
-    });
-    element.addEventListener('mousewheel', this.onScroll);
-  }
-
-  onScroll(event) {
-    event.stopImmediatePropagation();
-  }
-
-  render() {
-    return presenter({
-      ...this.props,
-      ...this.state,
-      setContainer: this.setContainer,
-    });
-  }
+  return message;
 }

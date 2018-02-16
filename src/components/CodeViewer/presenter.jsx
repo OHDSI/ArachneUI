@@ -34,6 +34,8 @@ function Viewer(props) {
     language,
     title,
     value,
+    antivirusStatus,
+    antivirusDescription,
   } = props;
 
   return (
@@ -49,6 +51,8 @@ function Viewer(props) {
       language={language}
       title={title}
       value={value}
+      antivirusStatus={antivirusStatus}
+      antivirusDescription={antivirusDescription}
     />
   );
 }
