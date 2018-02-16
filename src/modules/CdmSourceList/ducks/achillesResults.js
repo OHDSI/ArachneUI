@@ -30,7 +30,15 @@ const achillesResults = new Duck({
   urlBuilder: apiPaths.achillesResults,
 });
 
+const upload = new Duck({
+  name: `${coreName}_UPLOAD`,
+  urlBuilder: apiPaths.achillesResultsUpload,
+});
+
 export default {
-  actions: achillesResults.actions,
+  actions: {
+    ...achillesResults.actions,
+    upload: upload.actions.create,
+  },
   reducer: achillesResults.reducer,
 };

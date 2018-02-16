@@ -28,7 +28,9 @@ import {
   characterizationStatuses,
   pollTime,
 } from 'modules/CdmSourceList/const';
+import { ModalUtils } from 'arachne-ui-components';
 import presenter from './presenter';
+import { form } from 'modules/CdmSourceList/const';
 
 class Characterization extends Component {
   componentWillMount() {
@@ -86,6 +88,7 @@ const mapDispatchToProps = {
   loadResults: actions.cdmSourceList.achillesResults.query,
   doImportResults: actions.cdmSourceList.achillesResults.create,
   clearState: () => actions.cdmSourceList.characterization.reset,
+  showUploadForm: () => ModalUtils.actions.toggle(form.modalStatsUpload, true),
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
