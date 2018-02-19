@@ -68,7 +68,7 @@ class FileInfo extends Component {
           {...this.classes({
             element: 'checkmark',
             modifiers: this.props.antivirusStatus,
-          })}          
+          })}
           viewBox={'0 0 24 24'}
         >
           <use xlinkHref={`${icon}#antivirus`}></use>

@@ -43,6 +43,7 @@ function ViewEditInsight({ isLoading, submissionId, pageTitle, studyId, isEditab
           {...classes('container')}
           studyId={studyId}
           onAction={onBannerActed}
+          disabled={isLoading}
         >
           <Toolbar isEditable={isEditable}/>
           <div {...classes('content')}>

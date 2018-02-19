@@ -96,7 +96,7 @@ export default class ViewEditStudyBuilder extends ContainerBuilder {
     return {
       id: parseInt(ownProps.routeParams.studyId, 10),
       studyTitle: pageTitle.join(' | '),
-      isLoading: isStudyLoading || isTypesLoading || isParticipantsLoading,
+      isLoading: isStudyLoading || isTypesLoading || isParticipantsLoading || get(state, 'studyManager.studyInvitations.isLoading'),
     };
   }
 

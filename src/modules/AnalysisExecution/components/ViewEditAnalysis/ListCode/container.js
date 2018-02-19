@@ -48,7 +48,6 @@ export default class ListCodeBuilder {
 
     const permissions = get(analysisData, 'permissions', {});
     const isSubmittable = get(permissions, analysisPermissions.createSubmission, false);
-    const canDeleteFiles = get(permissions, analysisPermissions.deleteAnalysisFiles, false);
     const canAddFiles = get(permissions, analysisPermissions.uploadAnalysisFiles, false);
 
     const canSubmit = codeList.length > 0;
@@ -62,7 +61,6 @@ export default class ListCodeBuilder {
       isSubmittable,
       isLocked,
       isLoading,
-      canDeleteFiles,
       canSubmit,
       canAddFiles,
     };

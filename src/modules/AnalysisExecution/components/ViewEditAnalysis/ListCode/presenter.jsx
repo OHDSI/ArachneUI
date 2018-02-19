@@ -195,12 +195,12 @@ export default class ListCode extends Component {
       <CodeItem
         code={code}
         isEditable={this.isEditable}
-        canBeReimported={this.canAddFiles && this.canDeleteFiles && !this.isLocked}
+        canBeReimported={this.canAddFiles && code.removable && !this.isLocked}
         isLocked={this.isLocked}
         reimportCode={this.reimportCode}
         removeCode={this.removeCode}
         key={key}
-        removable={this.canDeleteFiles || code.removable}
+        removable={code.removable}
       />
     );
   }
@@ -224,7 +224,6 @@ export default class ListCode extends Component {
     this.reimportCode = this.props.reimportCode;
     this.removeCode = this.props.removeCode;
     this.isLocked = this.props.isLocked;
-    this.canDeleteFiles = this.props.canDeleteFiles;
     this.canSubmit = this.props.canSubmit;
     this.canAddFiles = this.props.canAddFiles;
     this.isEditable = this.props.isEditable;
