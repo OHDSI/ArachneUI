@@ -65,6 +65,7 @@ class DataCatalogListViewAttributesSelectorsBuilder extends DsAttrListSelector {
     return {
       getAttrList: this.buildSelectorForGetAttrList(),
       getData: this.buildSelectorForGetData(),
+      getValues: this.getValues,
     };
   }
 

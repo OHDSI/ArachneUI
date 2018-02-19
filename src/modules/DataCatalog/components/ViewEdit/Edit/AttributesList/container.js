@@ -44,7 +44,6 @@ export default class AttributeListBuilder extends ContainerBuilder {
   mapStateToProps(state) {
     const dataSourceId = get(state, 'dataCatalog.dataSource.data.result.id');
     const isPublished = get(state, 'dataCatalog.dataSource.data.result.published');
-    const centralId = get(state, 'dataCatalog.dataSource.data.result.centralId');
     const values = selectors.getValues(state);
     const isCDM = values[attributeNames.modelType] === modelTypesValues.CDM;
 
@@ -53,7 +52,6 @@ export default class AttributeListBuilder extends ContainerBuilder {
       initialValues: selectors.getData(state),
       dataSourceId,
       isPublished,
-      centralId,
       isCDM,
     };
   }
@@ -72,7 +70,6 @@ export default class AttributeListBuilder extends ContainerBuilder {
       async doSubmit(data) {
         const result = await dispatchProps.update({
           id: stateProps.dataSourceId,
-          centralId: stateProps.centralId,
         }, data);
         if (!stateProps.isPublished) {
           alert('Data source is successfully published');

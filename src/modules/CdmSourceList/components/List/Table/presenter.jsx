@@ -31,7 +31,7 @@ import { paths as centralPaths } from 'modules/DataCatalog/const';
 
 require('./style.scss');
 
-function CellRegister({ published, onClick, isCdm, id }) {
+function CellRegister({ published, onClick, isCdm, centralId }) {
   const classes = new BEMHelper('data-source-list-cell-register');
 
   return <div {...classes()}>
@@ -47,7 +47,7 @@ function CellRegister({ published, onClick, isCdm, id }) {
         {...classes('btn')}
         mods={['submit', 'rounded']}
         label="Publish"
-        link={`${__CENTRAL_DOMAIN__}${centralPaths.edit(id)}`}
+        link={`${__CENTRAL_DOMAIN__}${centralPaths.edit(centralId)}`}
         target={'_blank'}
       />
     }
@@ -137,7 +137,7 @@ function DataSourceTable(props) {
             published: entity.published,
             onClick: () => goToDataSource(entity.id),
             isCdm: entity.modelType === modelTypesValues.CDM,
-            id: entity.id,
+            centralId: entity.centralId,
           })
         }
       />
