@@ -30,7 +30,7 @@ import {
   FormTextarea,
 } from 'arachne-ui-components';
 import { fieldTypes } from 'modules/ExpertFinder/const';
-import { immutableAttributes, fieldHints } from 'const/dataSource';
+import { immutableAttributes, fieldHints, attributeNames } from 'const/dataSource';
 
 require('./style.scss');
 
@@ -51,7 +51,7 @@ function ImmutableAttribute({ name, value }) {
   );
 }
 
-export function AttributesFormListItem({ item, input, meta, isWide = false }) {
+export function AttributesFormListItem({ item, input, meta, isWide = false, disabled }) {
   const itemClasses = new BEMHelper('attributes-form-list-item');
   let field = null;
   if (immutableAttributes.includes(item.name)) {
@@ -66,6 +66,7 @@ export function AttributesFormListItem({ item, input, meta, isWide = false }) {
           input={input}
           meta={meta}
           isMulti={item.type === fieldTypes.enumMulti}
+          disabled={disabled}
         />);
         break;
       case fieldTypes.string:
@@ -76,6 +77,7 @@ export function AttributesFormListItem({ item, input, meta, isWide = false }) {
             mods={['bordered']}
             input={input}
             meta={meta}
+            disabled={disabled}
           />
         );
         break;
@@ -86,6 +88,7 @@ export function AttributesFormListItem({ item, input, meta, isWide = false }) {
             mods={['bordered']}
             input={input}
             meta={meta}
+            disabled={disabled}
           />
         );
         break;
@@ -95,7 +98,7 @@ export function AttributesFormListItem({ item, input, meta, isWide = false }) {
   }
 
   return (
-    <div {...itemClasses({ modifiers: { wide: isWide } })}>
+    <div {...itemClasses({ modifiers: { wide: isWide, disabled } })}>
       <div {...itemClasses('name', { wide: isWide })}>
         {item.label} {item.isRequired && <span {...itemClasses('required')}>*</span>}
       </div>
@@ -113,6 +116,7 @@ function AttributesList(props) {
     initialValues,
     doSubmit,
     isPublished,
+    isCDM,
   } = props;
   const fields = attrList
     .map(item => ({
@@ -121,6 +125,7 @@ function AttributesList(props) {
         component: AttributesFormListItem,
         props: {
           item,
+          disabled: item.name === attributeNames.cdmVersion && !isCDM,
         },
       },
     }));

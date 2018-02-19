@@ -63,7 +63,7 @@ class CdmSourceListViewEditBuilder {
       dataSourceId: parseInt(ownProps.routeParams.dataSourceId, 10),
       isLoading: moduleState.dataSourceBusiness.isLoading || false,
       dataSourceName: get(moduleState, 'dataSourceBusiness.queryResult.result.name', ''),
-      isRegistered: get(moduleState, 'dataSourceBusiness.queryResult.result.isRegistered', false),
+      published: get(moduleState, 'dataSourceBusiness.queryResult.result.published', false),
       modelType: get(moduleState, 'dataSourceBusiness.queryResult.result.modelType', ''),
     };
   }
@@ -78,8 +78,8 @@ class CdmSourceListViewEditBuilder {
     const datasourceId = parseInt(params.dataSourceId, 10);
     return {
       loadDataSourceBusiness: () => actions.cdmSourceList.dataSourceBusiness.query({ id: datasourceId }),
-      loadCharacterization: () => actions.cdmSourceList.characterization.query({ datasourceId: datasourceId }),
-      loadAchillesResults: () => actions.cdmSourceList.achillesResults.query({ datasourceId: datasourceId }),
+      loadCharacterization: () => actions.cdmSourceList.characterization.query({ datasourceId }),
+      loadAchillesResults: () => actions.cdmSourceList.achillesResults.query({ datasourceId }),
     };
   }
 

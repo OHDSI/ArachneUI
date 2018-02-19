@@ -42,37 +42,6 @@ const getDataSourceList = createSelector(
   }))
 );
 
-const getTestDataSourceList = () => ([
-  {
-    id: 1,
-    name: 'Data Source Name 1',
-    dbmsType: 'SQL Server',
-    dbName: 'db',
-    cdmSchema: 'public',
-    isRegistered: true,
-    modelType: 'CDM',
-  },
-  {
-    id: 2,
-    name: 'Data Source Name 2',
-    dbmsType: 'MySQL',
-    dbName: 'cdm',
-    cdmSchema: 'public',
-    isRegistered: false,
-    modelType: 'OTHER',
-  },
-  {
-    id: 3,
-    name: 'Data Source Name 3',
-    dbmsType: 'Oracle',
-    dbName: 'new_cdm',
-    cdmSchema: 'custom',
-    isRegistered: true,
-    modelType: 'CDM',
-  },
-]);
-
 export default {
   getDataSourceList,
-  getTestDataSourceList,
 };

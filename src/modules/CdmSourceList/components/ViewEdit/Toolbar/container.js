@@ -31,7 +31,7 @@ function mapStateToProps(state) {
 
   return {
     backUrl: paths.dataSources(),
-    isRegistered: get(dataSourceData, 'isRegistered'),
+    published: get(dataSourceData, 'published'),
     name: get(dataSourceData, 'name'),
   };
 }

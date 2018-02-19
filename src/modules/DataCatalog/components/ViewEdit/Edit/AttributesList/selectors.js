@@ -49,7 +49,7 @@ class DataCatalogListViewAttributesSelectorsBuilder extends DsAttrListSelector {
       this.getAttributes,
     );
   }
-  
+
   getData(rawDs) {
     return rawDs;
   }

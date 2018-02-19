@@ -31,11 +31,11 @@ import { paths as centralPaths } from 'modules/DataCatalog/const';
 
 require('./style.scss');
 
-function CellRegister({ isRegistered, onClick, isCdm, id }) {
+function CellRegister({ published, onClick, isCdm, id }) {
   const classes = new BEMHelper('data-source-list-cell-register');
 
   return <div {...classes()}>
-    {isRegistered ?
+    {published ?
       <Button
         {...classes('btn')}
         mods={['success', 'rounded']}
@@ -54,14 +54,14 @@ function CellRegister({ isRegistered, onClick, isCdm, id }) {
   </div>;
 }
 
-function CellEdit({ editDataSource, removeDataSource, value, isRegistered }) {
+function CellEdit({ editDataSource, removeDataSource, value, published }) {
   const classes = new BEMHelper('data-source-list-cell-edit');
   return (
     <div {...classes('btn-block')}>
       <Button {...classes('btn')} onClick={() => editDataSource(value)}>
         <i {...classes('btn-ico')}>edit</i>
       </Button>
-      <Button {...classes('btn')} onClick={() => removeDataSource({ id: value, isRegistered })}>
+      <Button {...classes('btn')} onClick={() => removeDataSource({ id: value, published })}>
         <i {...classes('btn-ico')}>delete</i>
       </Button>
     </div>
@@ -134,7 +134,7 @@ function DataSourceTable(props) {
         {...tableClasses('register')}
         props={
           entity => ({
-            isRegistered: entity.isRegistered,
+            published: entity.published,
             onClick: () => goToDataSource(entity.id),
             isCdm: entity.modelType === modelTypesValues.CDM,
             id: entity.id,
@@ -146,7 +146,7 @@ function DataSourceTable(props) {
         field="id"
         editDataSource={editDataSource}
         removeDataSource={remove}
-        props={entity => ({ isRegistered: entity.isRegistered })}
+        props={entity => ({ published: entity.published })}
       />
     </Table>
   );
