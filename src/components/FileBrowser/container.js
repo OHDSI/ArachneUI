@@ -25,7 +25,36 @@ import presenter from './presenter';
 
 export default class FileBrowser extends Component {
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      container: null,
+    };
+
+    this.setContainer = this.setContainer.bind(this);
+  }
+
+  componentWillUnmount() {
+    this.state.container && this.state.container.removeEventListener('mousewheel', this.onScroll);
+  }
+
+  setContainer(element) {
+    this.setState({
+      container: element,
+    });
+    element.addEventListener('mousewheel', this.onScroll);
+  }
+
+  onScroll(event) {
+    event.stopImmediatePropagation();
+  }
+
   render() {
-    return presenter(this.props);
+    return presenter({
+      ...this.props,
+      ...this.state,
+      setContainer: this.setContainer,
+    });
   }
 }

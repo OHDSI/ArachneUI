@@ -60,6 +60,7 @@ function ViewEditStudy(props) {
           {...classes('container')}
           studyId={id}
           onAction={onBannerActed}
+          disabled={isLoading}
         >
           <Toolbar studyId={id} />
           <div {...classes('content')}>
