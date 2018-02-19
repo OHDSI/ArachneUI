@@ -415,9 +415,10 @@ class Utils {
       let query = nextState.location.query;
       if (!query || Object.keys(query).length === 0) {
         const savedFilter = getSavedFilter();
+        const page = get(savedFilter, 'page', '1');
         query = {
           ...savedFilter,
-          page: 1,
+          page,
         };
         replace({ pathname: basePath, query });
       }
