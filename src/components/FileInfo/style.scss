@@ -152,24 +152,26 @@
       position: relative;
       top: 0.2rem;
       font-size: 1.4rem;
+      width: 14px;
+      height: 14px;
 
-      &--WILL_NOT_SCAN {
+      &--WILL_NOT_SCAN use {
         color: $grey-dark-light;
       }
 
-      &--NOT_SCANNED {
+      &--NOT_SCANNED use {
         color: $red;
       }
 
-      &--SCANNING {
+      &--SCANNING use {
         color: $orange;
       }
 
-      &--OK {
+      &--OK use {
         color: $green;
       }
 
-      &--INFECTED {
+      &--INFECTED use {
         color: $red;
       }
 
