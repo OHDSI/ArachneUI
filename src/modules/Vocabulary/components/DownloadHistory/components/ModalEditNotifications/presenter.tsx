@@ -1,6 +1,6 @@
 import * as React from 'react';
 import BEMHelper from 'services/BemHelper';
-import { Modal, ListItem, Button, LoadingPanel } from 'arachne-components';
+import { Modal, ListItem, Button, LoadingPanel } from 'arachne-ui-components';
 
 require('./style.scss');
 

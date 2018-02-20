@@ -2,7 +2,7 @@ import * as React from 'react';
 import {
   PageContent,
   LoadingPanel,
-} from 'arachne-components';
+} from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
 import Toolbar from './components/Toolbar';
 import Facets from './components/Facets';

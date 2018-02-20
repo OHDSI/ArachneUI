@@ -1,6 +1,6 @@
 import * as React from "react";
 import BEMHelper from "services/BemHelper";
-import { Button, Checkbox, Select } from "arachne-components";
+import { Button, Checkbox, Select } from "arachne-ui-components";
 import { Field } from "redux-form";
 import { push } from "react-router-redux";
 import { debounce } from 'lodash';

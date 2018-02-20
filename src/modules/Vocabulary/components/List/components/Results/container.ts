@@ -5,7 +5,7 @@ import { apiPaths, forms, modal } from 'modules/Vocabulary/const';
 import { get } from 'lodash';
 import { push as goToPage } from 'react-router-redux';
 import { reduxForm, reset, FormProps, change as reduxFormChange } from 'redux-form';
-import { ModalUtils } from 'arachne-components';
+import { ModalUtils } from 'arachne-ui-components';
 import presenter from './presenter';
 import selectors from './selectors';
 

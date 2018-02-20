@@ -3,7 +3,7 @@ import {
   Button,
   Link,
   Panel
-} from 'arachne-components';
+} from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
 import { paths, messages } from 'modules/Auth/const';
 import { get } from 'lodash';

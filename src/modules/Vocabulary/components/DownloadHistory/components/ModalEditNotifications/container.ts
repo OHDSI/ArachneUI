@@ -2,7 +2,7 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import actions from 'modules/Vocabulary/actions';
 import { reduxForm, change as reduxFormChange } from 'redux-form';
-import { ModalUtils } from 'arachne-components';
+import { ModalUtils } from 'arachne-ui-components';
 import { modal, forms } from 'modules/Vocabulary/const';
 import { get } from 'lodash';
 import selectors from 'modules/Vocabulary/components/List/components/Results/selectors';

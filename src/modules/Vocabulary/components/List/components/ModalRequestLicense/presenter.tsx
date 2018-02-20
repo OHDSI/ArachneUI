@@ -1,6 +1,6 @@
 import * as React from 'react';
 import BEMHelper from 'services/BemHelper';
-import { Modal, Button, LoadingPanel } from 'arachne-components';
+import { Modal, Button, LoadingPanel } from 'arachne-ui-components';
 import {
   Vocabulary,
 } from '../Results/selectors';

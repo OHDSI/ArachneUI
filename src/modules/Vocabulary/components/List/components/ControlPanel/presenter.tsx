@@ -4,7 +4,7 @@ import {
   Button,
   Select,
   Link,
-} from 'arachne-components';
+} from 'arachne-ui-components';
 import { paths } from 'modules/Vocabulary/const';
 import { Field, FormProps } from 'redux-form';
 

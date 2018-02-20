@@ -4,7 +4,7 @@ import {
   Button,
   Form,
   FormInput,
-} from 'arachne-components';
+} from 'arachne-ui-components';
 import { push } from 'react-router-redux';
 import { locationDescriptor } from 'modules/SearchTerms/components/List/presenter';
 import { searchParams } from 'modules/SearchTerms/actions/termList';

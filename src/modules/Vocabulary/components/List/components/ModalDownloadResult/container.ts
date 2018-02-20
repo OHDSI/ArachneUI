@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { ModalUtils } from 'arachne-components';
+import { ModalUtils } from 'arachne-ui-components';
 import { modal } from 'modules/Vocabulary/const';
 import { get } from 'lodash';
 import ModalDownloadResult from './presenter';

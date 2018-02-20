@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {
 	Link,
-} from 'arachne-components';
+} from 'arachne-ui-components';
 import IModule from '../IModule';
 import { paths } from './const';
 
