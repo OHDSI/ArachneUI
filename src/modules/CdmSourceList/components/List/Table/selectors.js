@@ -29,6 +29,7 @@ const getRawDataSourceList = state => get(state, 'cdmSourceList.dataSourceList.q
 const getDataSourceList = createSelector(
   [getRawDataSourceList, getDbmsTypeList],
   (dataSourceList, dbmsTypeList) => dataSourceList.map(item => ({
+    ...item,
     id: item.id,
     name: item.name,
     dbmsType: get(dbmsTypeList.find(el => el.value === item.dbmsType), 'label'),

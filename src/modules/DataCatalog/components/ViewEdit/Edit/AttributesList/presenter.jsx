@@ -131,6 +131,7 @@ function AttributesList(props) {
     }));
   const submitBtn = {
     label: isPublished ? 'Save' : 'Publish',
+    loadingLabel: isPublished ? 'Saving' : 'Publishing',
     mods: ['success', 'rounded'],
   };
 

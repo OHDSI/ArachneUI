@@ -71,7 +71,7 @@ function ModalCreateEdit(props) {
         component: FormInput,
         props: {
           mods: ['bordered'],
-          placeholder: 'Name of data source',
+          placeholder: 'Name of data source *',
           type: 'text',
         },
       },
@@ -95,7 +95,7 @@ function ModalCreateEdit(props) {
         component: FormInput,
         props: {
           mods: ['bordered'],
-          placeholder: 'Connection string',
+          placeholder: 'Connection string *',
           type: 'text',
         },
       },
@@ -107,7 +107,7 @@ function ModalCreateEdit(props) {
         component: FormInput,
         props: {
           mods: ['bordered'],
-          placeholder: 'CDM schema name',
+          placeholder: 'CDM schema name *',
           type: 'text',
         },
       },
@@ -119,7 +119,7 @@ function ModalCreateEdit(props) {
         component: FormInput,
         props: {
           mods: ['bordered'],
-          placeholder: 'Username',
+          placeholder: 'Username *',
           type: 'text',
         },
       },
@@ -131,7 +131,7 @@ function ModalCreateEdit(props) {
         component: FormInput,
         props: {
           mods: ['bordered'],
-          placeholder: 'Password',
+          placeholder: 'Password *',
           type: 'password',
         },
       },

@@ -59,6 +59,7 @@ export default class AttributeListBuilder extends ContainerBuilder {
   getMapDispatchToProps() {
     return {
       update: actions.dataCatalog.dataSource.update,
+      load: actions.dataCatalog.dataSource.find,
     };
   }
 
@@ -73,6 +74,7 @@ export default class AttributeListBuilder extends ContainerBuilder {
         }, data);
         if (!stateProps.isPublished) {
           alert('Data source is successfully published');
+          dispatchProps.load({ id: stateProps.dataSourceId });
         }
 
         return result;
