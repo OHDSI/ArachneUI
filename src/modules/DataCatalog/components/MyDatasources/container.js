@@ -35,10 +35,12 @@ import SelectorsBuilder from './selectors';
 const selectors = (new SelectorsBuilder()).build();
 const defaultQueryParams = { query: '', page: 1, pageSize: 10 };
 
+/** @augments { Component<any, any> } */
 export class MyDatasources extends Component {
   static get propTypes() {
     return {
       loadDsList: PropTypes.func,
+      queryParams: PropTypes.array,
     };
   }
 
