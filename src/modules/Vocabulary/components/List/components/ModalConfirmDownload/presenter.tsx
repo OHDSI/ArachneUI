@@ -1,6 +1,6 @@
 import * as React from 'react';
 import BEMHelper from 'services/BemHelper';
-import { Modal, ListItem, Button, Select, Checkbox, LoadingPanel } from 'arachne-components';
+import { Modal, ListItem, Button, Select, Checkbox, LoadingPanel } from 'arachne-ui-components';
 import { DownloadParams } from 'modules/Vocabulary/actions/download';
 import { cdmVersions } from 'modules/Vocabulary/const';
 import { Field } from 'redux-form';

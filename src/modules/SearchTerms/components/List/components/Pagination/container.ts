@@ -37,15 +37,15 @@ function mapStateToProps(state: Object, ownProps: IPaginationOwnProps): IPaginat
     .format('0,0');
   const pageSizeSelectOptions: Array<IPageSizeSelectOption> = [
     {
-      label: 15,
+      label: '15',
       value: 15
     },
     {
-      label: 30,
+      label: '30',
       value: 30
     },
     {
-      label: 50,
+      label: '50',
       value: 50
     },
   ];

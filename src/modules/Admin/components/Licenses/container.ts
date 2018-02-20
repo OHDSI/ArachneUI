@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { Component } from 'react';
 import actions from 'modules/Admin/actions';
 import { get } from 'lodash';
-import { ModalUtils } from 'arachne-components';
+import { ModalUtils } from 'arachne-ui-components';
 import { modal, paths, pageSize, forms } from 'modules/Admin/const';
 import { push } from 'react-router-redux';
 import { reduxForm } from 'redux-form';

@@ -3,7 +3,7 @@ import { Component } from 'react';
 import actions from 'modules/Vocabulary/actions';
 import { get } from 'lodash';
 import { modal } from 'modules/Vocabulary/const';
-import { ModalUtils } from 'arachne-components';
+import { ModalUtils } from 'arachne-ui-components';
 import presenter from './presenter';
 import selectors from './selectors';
 

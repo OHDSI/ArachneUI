@@ -5,7 +5,7 @@ import {
   Table,
   TableCellLink as CellLink,
   TableCellText as Cell,
-} from 'arachne-components';
+} from 'arachne-ui-components';
 import { locationDescriptor } from 'modules/SearchTerms/components/List/presenter';
 import { push } from 'react-router-redux';
 import Pagination from '../Pagination';

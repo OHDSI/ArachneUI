@@ -7,7 +7,7 @@ import {
   Pagination,
   Form,
   FormInput,
-} from 'arachne-components';
+} from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
 import Table from './components/Table';
 import ModalAddPermission from './components/ModalAddPermission';
