@@ -44,7 +44,7 @@
     "@types/redux-form": "6.3.2",
     "@types/redux-logger": "2.6.34",
     "@types/superagent": "2.0.36",
-    "arachne-ui-components": "^1.11.29",
+    "arachne-ui-components": "1.12.2",
     "classnames": "2.2.5",
     "copy-webpack-plugin": "4.0.1",
     "core-js": "2.4.1",
