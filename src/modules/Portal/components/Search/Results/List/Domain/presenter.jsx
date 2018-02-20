@@ -27,15 +27,15 @@ import './style.scss';
 
 export default function Domain(props) {
   const {
-    label,
-    value,
+    title,
+    entityType,
     forFilter = false,
   } = props;
   const classes = BEMHelper('search-result-list-item-domain');
 
   return (
-    <span {...classes({ modifiers: [value, forFilter ? 'filter' : 'list'] })}>
-      <span {...classes('text')}>{label}</span>
+    <span {...classes({ modifiers: [entityType, forFilter ? 'filter' : 'list'] })}>
+      <span {...classes('text')}>{title}</span>
     </span>
   );
 }

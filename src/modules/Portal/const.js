@@ -61,14 +61,19 @@ const images = {
   logo: '/img/icons/Universal_Desktop/Header/logo_odys.svg',
 };
 
-const domains = {
-  studies: 'studies',
-  users: 'users',
-  datasources: 'data-sources',
-  insights: 'insights',
-  analyses: 'analyses',
-  files: 'files',
-  submissions: 'submissions',
+const domains = keyMirror({
+  ANALYSIS: null,
+  STUDY: null,
+  INSIGHT: null,
+  USER: null,
+  DATA_SOURCE: null,
+});
+
+const domainNames = {
+  [domains.STUDY]: 'Study notebook',
+  [domains.USER]: 'Expert finder',
+  [domains.DATA_SOURCE]: 'Data catalog',
+  [domains.INSIGHT]: 'Insights library',
 };
 
 const searchSections = [
@@ -80,20 +85,20 @@ const searchSections = [
     hasTitle: false,
     options: [
       {
-        label: 'Study notebook',
-        value: domains.studies,
+        label: domainNames.STUDY,
+        value: domains.STUDY,
       },
       {
-        label: 'Expert finder',
-        value: domains.users,
+        label: domainNames.USER,
+        value: domains.USER,
       },
       {
-        label: 'Data catalog',
-        value: domains.datasources,
+        label: domainNames.DATA_SOURCE,
+        value: domains.DATA_SOURCE,
       },
       {
-        label: 'Insights library',
-        value: domains.insights,
+        label: domainNames.INSIGHT,
+        value: domains.INSIGHT,
       },
     ],
   },
@@ -112,4 +117,5 @@ export {
   searchSections,
   searchResultsPageSize,
   domains,
+  domainNames,
 };

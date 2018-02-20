@@ -33,8 +33,11 @@ export default class SearchResultsListBuilder extends ContainerBuilder {
   }
 
   mapStateToProps(state) {
+    const isLoading = get(state, 'portal.search.isLoading', false);
+
     return {
       results: selectors.getResults(state),
+      isLoading,
     };
   }
 

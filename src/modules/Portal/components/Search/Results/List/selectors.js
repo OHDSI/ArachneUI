@@ -22,7 +22,7 @@
 
 // @ts-check
 import { createSelector } from 'reselect';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import cloneDeep from 'lodash/cloneDeep';
 import { paths as studyPaths } from 'modules/StudyManager/const';
 import { paths as analysisPaths } from 'modules/AnalysisExecution/const';
@@ -30,7 +30,7 @@ import { paths as userPaths } from 'modules/ExpertFinder/const';
 import { paths as insightsPaths } from 'modules/InsightsLibrary/const';
 import { paths as dataCatalogPaths } from 'modules/DataCatalog/const';
 
-import { domains } from 'modules/Portal/const';
+import { domains, domainNames } from 'modules/Portal/const';
 
 export default class SelectorsBuilder {
 
@@ -38,38 +38,52 @@ export default class SelectorsBuilder {
     return get(state, 'portal.search.queryResult.result.content', [], 'Array');
   }
 
-  getPath({ id, domain }) {
-    switch (domain.value) {
-      case domains.studies:
+  getPath({ id, entityType }) {
+    switch (entityType) {
+      case domains.STUDY:
         return studyPaths.studies(id);
-      case domains.users:
+      case domains.USER:
         return userPaths.profile(id);
-      case domains.datasources:
+      case domains.DATA_SOURCE:
         return dataCatalogPaths.dataCatalog(id);
-      case domains.insights:
+      case domains.INSIGHT:
         return insightsPaths.insights({ insightId: id });
-      case domains.analyses:
+      case domains.ANALYSIS:
         return analysisPaths.analyses(id);
-      case domains.files:
-        return '';
     }
+  }
+
+  addDomain(result) {
+    const breadCrumbs = get(result, 'breadCrumbs', [{}], 'Array');
+    const domain = breadCrumbs[breadCrumbs.length - 1];
+    return {
+      ...result,
+      domain: {
+        ...domain,
+        title: domainNames[domain.entityType],
+      },
+    };
+  }
+
+  addPath(result) {
+    const res = cloneDeep(result);
+    res.path = this.getPath({ id: res.id, entityType: res.domain.entityType });
+    if (res.breadCrumbs) {
+      res.breadCrumbs = res.breadCrumbs.slice(0, res.breadCrumbs.length - 1).map(crumb => ({
+        ...crumb,
+        path: this.getPath(crumb),
+      }));
+    }
+
+    return res;
   }
 
   buildSelectorForGetResults() {
     return createSelector(
       this.getRawResults.bind(this),
-      results => results.map((result) => {
-        const res = cloneDeep(result);
-        res.path = this.getPath(res);
-        if (res.breadcrumbs) {
-          res.breadcrumbs = res.breadcrumbs.map(crumb => ({
-            ...crumb,
-            path: this.getPath(crumb),
-          }));
-        }
-
-        return res;
-      })
+      results => results
+        .map(this.addDomain)
+        .map(this.addPath.bind(this))
     );
   }
 

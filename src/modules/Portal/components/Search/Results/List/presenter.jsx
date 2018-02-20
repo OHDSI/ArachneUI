@@ -23,6 +23,7 @@
 import React from 'react';
 import BEMHelper from 'services/BemHelper';
 import EmptyState from 'components/EmptyState';
+import { LoadingPanel } from 'arachne-ui-components';
 import ResultItem from './ResultItem';
 
 import './style.scss';
@@ -31,6 +32,7 @@ export default function SearchResultsList(props) {
   const classes = BEMHelper('search-result-list');
   const {
     results,
+    isLoading,
   } = props;
 
   return (
@@ -41,6 +43,7 @@ export default function SearchResultsList(props) {
           : <EmptyState message={'No results'} />
         }
       </div>
+      <LoadingPanel active={isLoading} />
     </div>
   );
 }

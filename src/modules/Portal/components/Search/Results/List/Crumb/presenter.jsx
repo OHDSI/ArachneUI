@@ -32,7 +32,6 @@ export default function Crumb(props) {
   const {
     title,
     path,
-    domain,
   } = props;
   const classes = BEMHelper('search-result-item-crumb');
 

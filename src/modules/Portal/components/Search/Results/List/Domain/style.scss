@@ -29,25 +29,25 @@
     z-index: 0;
   }
 
-  &--studies {
+  &--STUDY {
     &:after {
       background: $green;
     }
   }
 
-  &--users {
+  &--USER {
     &:after {
       background: $orange;
     }
   }
 
-  &--data-sources {
+  &--DATA_SOURCE {
     &:after {
       background: $red;
     }
   }
 
-  &--insights {
+  &--INSIGHT {
     &:after {
       background: $blue;
     }

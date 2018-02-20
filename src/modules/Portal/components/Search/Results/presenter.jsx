@@ -45,7 +45,7 @@ export default function SearchResults(props) {
 
   const filter = cloneDeep(filterFields);
   filter[0].options = filter[0].options.map((field) => ({
-    label: <Domain forFilter label={field.label} value={field.value} />,
+    label: <Domain forFilter title={field.label} entityType={field.value} />,
     value: field.value,
   }));
 
