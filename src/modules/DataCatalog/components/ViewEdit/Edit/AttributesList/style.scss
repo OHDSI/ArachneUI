@@ -32,6 +32,7 @@
 
     & .#{$namespace} {
       &form {
+        padding: 1rem 0 0;
         &__actions {
           background: $grey-lighter;
           justify-content: flex-end;
