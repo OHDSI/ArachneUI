@@ -31,11 +31,11 @@ import { paths as centralPaths } from 'modules/DataCatalog/const';
 
 require('./style.scss');
 
-function CellPublish({ isPublished, onClick, isCdm, id }) {
-  const classes = new BEMHelper('data-source-list-cell-publish');
+function CellRegister({ published, onClick, isCdm, centralId }) {
+  const classes = new BEMHelper('data-source-list-cell-register');
 
   return <div {...classes()}>
-    {isPublished ?
+    {published ?
       <Button
         {...classes('btn')}
         mods={['success', 'rounded']}
@@ -47,21 +47,21 @@ function CellPublish({ isPublished, onClick, isCdm, id }) {
         {...classes('btn')}
         mods={['submit', 'rounded']}
         label="Publish"
-        link={`${__CENTRAL_DOMAIN__}${centralPaths.edit(id)}`}
+        link={`${__CENTRAL_DOMAIN__}${centralPaths.edit(centralId)}`}
         target={'_blank'}
       />
     }
   </div>;
 }
 
-function CellEdit({ editDataSource, removeDataSource, value }) {
+function CellEdit({ editDataSource, removeDataSource, value, published }) {
   const classes = new BEMHelper('data-source-list-cell-edit');
   return (
     <div {...classes('btn-block')}>
       <Button {...classes('btn')} onClick={() => editDataSource(value)}>
         <i {...classes('btn-ico')}>edit</i>
       </Button>
-      <Button {...classes('btn')} onClick={() => removeDataSource({ id: value })}>
+      <Button {...classes('btn')} onClick={() => removeDataSource({ id: value, published })}>
         <i {...classes('btn-ico')}>delete</i>
       </Button>
     </div>
@@ -134,10 +134,10 @@ function DataSourceTable(props) {
         {...tableClasses('publish')}
         props={
           entity => ({
-            isPublished: entity.isPublished,
+            published: entity.published,
             onClick: () => goToDataSource(entity.id),
             isCdm: entity.modelType === modelTypesValues.CDM,
-            id: entity.id,
+            centralId: entity.centralId,
           })
         }
       />
@@ -146,6 +146,7 @@ function DataSourceTable(props) {
         field="id"
         editDataSource={editDataSource}
         removeDataSource={remove}
+        props={entity => ({ published: entity.published })}
       />
     </Table>
   );

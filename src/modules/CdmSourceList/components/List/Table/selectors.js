@@ -21,7 +21,7 @@
  */
 
 import { createSelector } from 'reselect';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 
 const getDbmsTypeList = state => get(state, 'cdmSourceList.dbmsTypes.queryResult', [], 'Array');
 const getRawDataSourceList = state => get(state, 'cdmSourceList.dataSourceList.queryResult.result', [], 'Array');
@@ -29,6 +29,7 @@ const getRawDataSourceList = state => get(state, 'cdmSourceList.dataSourceList.q
 const getDataSourceList = createSelector(
   [getRawDataSourceList, getDbmsTypeList],
   (dataSourceList, dbmsTypeList) => dataSourceList.map(item => ({
+    ...item,
     id: item.id,
     name: item.name,
     dbmsType: get(dbmsTypeList.find(el => el.value === item.dbmsType), 'label'),
@@ -42,37 +43,6 @@ const getDataSourceList = createSelector(
   }))
 );
 
-const getTestDataSourceList = () => ([
-  {
-    id: 1,
-    name: 'Data Source Name 1',
-    dbmsType: 'SQL Server',
-    dbName: 'db',
-    cdmSchema: 'public',
-    isPublished: true,
-    modelType: 'CDM',
-  },
-  {
-    id: 2,
-    name: 'Data Source Name 2',
-    dbmsType: 'MySQL',
-    dbName: 'cdm',
-    cdmSchema: 'public',
-    isPublished: false,
-    modelType: 'OTHER',
-  },
-  {
-    id: 3,
-    name: 'Data Source Name 3',
-    dbmsType: 'Oracle',
-    dbName: 'new_cdm',
-    cdmSchema: 'custom',
-    isPublished: true,
-    modelType: 'CDM',
-  },
-]);
-
 export default {
   getDataSourceList,
-  getTestDataSourceList,
 };

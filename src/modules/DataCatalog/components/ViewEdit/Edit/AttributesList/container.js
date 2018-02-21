@@ -23,6 +23,7 @@
 import actions from 'actions';
 import { ContainerBuilder, get } from 'services/Utils';
 import { forms } from 'modules/DataCatalog/const';
+import { modelTypesValues, attributeNames } from 'const/dataSource';
 import AttributeList from './presenter';
 import SelectorsBuilder from './selectors';
 
@@ -42,19 +43,23 @@ export default class AttributeListBuilder extends ContainerBuilder {
 
   mapStateToProps(state) {
     const dataSourceId = get(state, 'dataCatalog.dataSource.data.result.id');
-    const isRegistered = get(state, 'dataCatalog.dataSource.data.result.published');
+    const isPublished = get(state, 'dataCatalog.dataSource.data.result.published');
+    const values = selectors.getValues(state);
+    const isCDM = values[attributeNames.modelType] === modelTypesValues.CDM;
 
     return {
       attrList: selectors.getAttrList(state),
       initialValues: selectors.getData(state),
       dataSourceId,
-      isRegistered,
+      isPublished,
+      isCDM,
     };
   }
 
   getMapDispatchToProps() {
     return {
       update: actions.dataCatalog.dataSource.update,
+      load: actions.dataCatalog.dataSource.find,
     };
   }
 
@@ -63,10 +68,14 @@ export default class AttributeListBuilder extends ContainerBuilder {
       ...ownProps,
       ...stateProps,
       ...dispatchProps,
-      doSubmit(data) {
-        const result = dispatchProps.update({
+      async doSubmit(data) {
+        const result = await dispatchProps.update({
           id: stateProps.dataSourceId,
         }, data);
+        if (!stateProps.isPublished) {
+          alert('Data source is successfully published');
+          dispatchProps.load({ id: stateProps.dataSourceId });
+        }
 
         return result;
       },

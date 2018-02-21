@@ -32,6 +32,7 @@
 
     & .#{$namespace} {
       &form {
+        padding: 1rem 0 0;
         &__actions {
           background: $grey-lighter;
           justify-content: flex-end;
@@ -51,12 +52,16 @@
     justify-content: space-between;
     align-items: center;
 
+    &--disabled {
+      display: none;
+    }
+
     &__name {
       @include title();
     }
 
     &__value {
-      flex-basis: 35%;
+      flex-basis: 60%;
       
       &--wide {
         width: 100%;

@@ -27,11 +27,11 @@ import { paths } from 'modules/CdmSourceList/const';
 import Toolbar from './presenter';
 
 function mapStateToProps(state) {
-  const dataSourceData = get(state, 'cdmSourceList.dataSourceBusiness.queryResult.result', {});
+  const dataSourceData = get(state, 'cdmSourceList.dataSource.queryResult.result', {});
 
   return {
     backUrl: paths.dataSources(),
-    isPublished: get(dataSourceData, 'isPublished'),
+    published: get(dataSourceData, 'published'),
     name: get(dataSourceData, 'name'),
   };
 }

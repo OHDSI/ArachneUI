@@ -31,7 +31,7 @@ class StatefulViewEdit extends Component {
   static propTypes() {
     return {
       dataSourceId: PropTypes.number.isRequired,
-      loadDataSourceBusiness: PropTypes.func.isRequired,
+      loadDataSource: PropTypes.func.isRequired,
       loadCharacterization: PropTypes.func.isRequired,
       loadAchillesResults: PropTypes.func.isRequired,
     };
@@ -39,7 +39,7 @@ class StatefulViewEdit extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.dataSourceId !== nextProps.dataSourceId) {
-      this.props.loadDataSourceBusiness({ id: nextProps.dataSourceId });
+      this.props.loadDataSource({ id: nextProps.dataSourceId });
       this.props.loadCharacterization({ datasourceId: nextProps.dataSourceId });
       this.props.loadAchillesResults({ datasourceId: nextProps.dataSourceId });
     }
@@ -61,25 +61,25 @@ class CdmSourceListViewEditBuilder {
 
     return {
       dataSourceId: parseInt(ownProps.routeParams.dataSourceId, 10),
-      isLoading: moduleState.dataSourceBusiness.isLoading || false,
-      dataSourceName: get(moduleState, 'dataSourceBusiness.queryResult.result.name', ''),
-      isPublished: get(moduleState, 'dataSourceBusiness.queryResult.result.isPublished', false),
-      modelType: get(moduleState, 'dataSourceBusiness.queryResult.result.modelType', ''),
+      isLoading: moduleState.dataSource.isLoading || false,
+      dataSourceName: get(moduleState, 'dataSource.queryResult.result.name', ''),
+      published: get(moduleState, 'dataSource.queryResult.result.published', false),
+      modelType: get(moduleState, 'dataSource.queryResult.result.modelType', ''),
     };
   }
 
   getMapDispatchToProps() {
     return {
-      loadDataSourceBusiness: actions.cdmSourceList.dataSourceBusiness.query,
+      loadDataSource: actions.cdmSourceList.dataSource.query,
     };
   }
 
   getFetchers({ params, state, dispatch }) {
     const datasourceId = parseInt(params.dataSourceId, 10);
     return {
-      loadDataSourceBusiness: () => actions.cdmSourceList.dataSourceBusiness.query({ id: datasourceId }),
-      loadCharacterization: () => actions.cdmSourceList.characterization.query({ datasourceId: datasourceId }),
-      loadAchillesResults: () => actions.cdmSourceList.achillesResults.query({ datasourceId: datasourceId }),
+      loadDataSource: () => actions.cdmSourceList.dataSource.query({ id: datasourceId }),
+      loadCharacterization: () => actions.cdmSourceList.characterization.query({ datasourceId }),
+      loadAchillesResults: () => actions.cdmSourceList.achillesResults.query({ datasourceId }),
     };
   }
 
