@@ -31,8 +31,8 @@ import { paths as centralPaths } from 'modules/DataCatalog/const';
 
 require('./style.scss');
 
-function CellRegister({ published, onClick, isCdm, centralId }) {
-  const classes = new BEMHelper('data-source-list-cell-register');
+function CellPublish({ published, onClick, isCdm, centralId }) {
+  const classes = new BEMHelper('data-source-list-cell-publish');
 
   return <div {...classes()}>
     {published ?

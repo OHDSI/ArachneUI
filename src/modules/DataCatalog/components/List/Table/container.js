@@ -64,7 +64,8 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
       dispatchProps.search(uri.toString());
     },
     showDatasource(datasource) {
-      const url = new URI(paths.dataCatalog(datasource.id));
+      const pathBuilder = ownProps.my ? paths.edit : paths.dataCatalog;
+      const url = new URI(pathBuilder(datasource.id));
       if (ownProps.my) {
         url.setSearch({
           my: true,
