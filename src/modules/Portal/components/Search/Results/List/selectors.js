@@ -54,8 +54,8 @@ export default class SelectorsBuilder {
   }
 
   addDomain(result) {
-    const breadCrumbs = get(result, 'breadCrumbs', [{}], 'Array');
-    const domain = breadCrumbs[breadCrumbs.length - 1];
+    const breadcrumbs = get(result, 'breadcrumbs', [{}], 'Array');
+    const domain = breadcrumbs[breadcrumbs.length - 1];
     return {
       ...result,
       domain: {
@@ -68,8 +68,8 @@ export default class SelectorsBuilder {
   addPath(result) {
     const res = cloneDeep(result);
     res.path = this.getPath({ id: res.id, entityType: res.domain.entityType });
-    if (res.breadCrumbs) {
-      res.breadCrumbs = res.breadCrumbs.slice(0, res.breadCrumbs.length - 1).map(crumb => ({
+    if (res.breadcrumbs) {
+      res.breadcrumbs = res.breadcrumbs.map(crumb => ({
         ...crumb,
         path: this.getPath(crumb),
       }));

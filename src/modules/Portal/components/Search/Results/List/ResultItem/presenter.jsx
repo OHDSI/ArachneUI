@@ -36,7 +36,7 @@ export default function ResultItem(props) {
     description,
     path,
     domain,
-    breadCrumbs,
+    breadcrumbs,
   } = props;
   const classes = BEMHelper('search-result-list-item');
 
@@ -45,9 +45,9 @@ export default function ResultItem(props) {
       <Domain {...domain} />
       <Link {...classes('title')} to={path}>{title}</Link>
       <div {...classes('description')}>{description}</div>
-      {breadCrumbs &&
+      {breadcrumbs &&
         <ul {...classes('breadcrumbs')}>
-          {breadCrumbs.map(crumb => <Crumb {...crumb} />)}
+          {breadcrumbs.map(crumb => <Crumb {...crumb} />)}
         </ul>
       }
     </div>

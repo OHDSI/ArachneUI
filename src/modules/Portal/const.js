@@ -74,6 +74,7 @@ const domainNames = {
   [domains.USER]: 'Expert finder',
   [domains.DATA_SOURCE]: 'Data catalog',
   [domains.INSIGHT]: 'Insights library',
+  [domains.ANALYSIS]: 'Analyses',
 };
 
 const searchSections = [
@@ -97,8 +98,8 @@ const searchSections = [
         value: domains.DATA_SOURCE,
       },
       {
-        label: domainNames.INSIGHT,
-        value: domains.INSIGHT,
+        label: domainNames.ANALYSIS,
+        value: domains.ANALYSIS,
       },
     ],
   },
