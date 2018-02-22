@@ -23,6 +23,7 @@
 import React from 'react';
 import BEMHelper from 'services/BemHelper';
 import filterTypes from 'const/filterTypes';
+import isEmpty from 'lodash/isEmpty';
 import numeral from 'numeral';
 import {
   LoadingPanel,
@@ -66,7 +67,7 @@ function Grid(props) {
     queryDecode: searchQueryDecode,
   };
 
-  const filtersExist = filterProps && filterProps.fields && filterProps.fields.length;
+  const filtersExist = filterProps && !isEmpty(filterProps.fields);
 
   return (
     <div {...classes()}>

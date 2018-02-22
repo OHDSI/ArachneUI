@@ -1,10 +1,14 @@
 import React from 'react';
-import { BadgedIcon, Link } from 'arachne-ui-components';
+import BemHelper from 'services/BemHelper';
+import { Link } from 'arachne-ui-components';
+
+import './style.scss';
 
 function CellRemove({ id, remove }) {
+  const classes = new BemHelper('table-cell-remove');
   return (
-    <Link onClick={() => remove(id)}>
-      <BadgedIcon icon="delete" />
+    <Link {...classes()} onClick={() => remove(id)}>
+      <i {...classes('icon')}>delete</i>
     </Link>
   );
 }
