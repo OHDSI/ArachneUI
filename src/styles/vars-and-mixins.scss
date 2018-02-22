@@ -476,3 +476,10 @@ $default-box-padding: 1.5rem 2rem;
     }
   }
 }
+
+@mixin navbar-btn() {
+  @include material-icon();
+  color: $grey-dark;
+  font-size: 3rem;
+  vertical-align: middle;
+}
