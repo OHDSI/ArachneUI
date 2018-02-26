@@ -5,12 +5,9 @@ import thunk from 'redux-thunk';
 import reduxPromiseMiddleware from 'redux-promise-middleware'; // for feathersjs
 import createAppReducer from 'reducers';
 
-const createLogger = require('redux-logger');
-
-const logger = createLogger();
 const router = routerMiddleware(browserHistory);
 
-const appMiddleware: Middleware[] = [thunk, router, reduxPromiseMiddleware(), logger];
+const appMiddleware: Middleware[] = [thunk, router, reduxPromiseMiddleware()];
 
 interface IStoreAsync extends Store<any> {
   asyncReducers: {[key: string]: Reducer<any>};
