@@ -29,7 +29,7 @@ function NumberOfLevels({ options, input }) {
   for (let i=1; i <= defaultLevels; i++) {
     conceptLayers.push({
       value: i,
-      label: i,
+      label: `${i}`,
     });
   }
 
