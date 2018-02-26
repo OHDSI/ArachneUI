@@ -16,28 +16,10 @@
   * Company: Odysseus Data Services, Inc.
   * Product Owner/Architecture: Gregory Klebanov
   * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
-  * Created: Wednesday, February 14, 2018 3:10 PM
+  * Created: Thursday, February 22, 2018 2:56 PM
   *
   */
 
-import React from 'react';
-import { Button } from 'arachne-ui-components';
-import BEMHelper from 'services/BemHelper';
+  import ModalCreateDataSourceBuilder from './container';
 
-import './style.scss';
-
-function Actions(props) {
-  const classes = new BEMHelper('actions');
-  const {
-    openCreateModal,
-  } = props;
-
-  return (
-    <div {...classes()}>
-      <Button mods={['rounded', 'submit']} onClick={openCreateModal}>Create Datsource</Button>
-    </div>
-  );
-}
-
-export default Actions;
-
+  export default (new ModalCreateDataSourceBuilder()).build();

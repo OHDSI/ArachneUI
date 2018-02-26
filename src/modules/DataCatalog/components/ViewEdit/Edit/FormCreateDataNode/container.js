@@ -59,7 +59,6 @@ export default class FormCreateDataNode extends ContainerBuilder {
 
   mergeProps(stateProps, dispatchProps, ownProps) {
     return {
-      ...ownProps,
       ...stateProps,
       ...dispatchProps,
       async doSubmit(data) {
@@ -72,9 +71,10 @@ export default class FormCreateDataNode extends ContainerBuilder {
         await dispatchProps.loadDataSource({
           id: ownProps.dataSourceId,
         });
-
+        
         return submitPromise;
       },
+      ...ownProps, // allow redefining of the doSubmit method via own props
     };
   }
 }

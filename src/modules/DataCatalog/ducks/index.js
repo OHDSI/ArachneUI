@@ -30,6 +30,7 @@ import characterization from './characterization';
 import myDatasources from './myDatasources';
 import dataNode from './dataNode';
 import registerDS from './registerDS';
+import dbmsTypes from './dbmsTypes';
 
 export default {
   actions: {
@@ -43,6 +44,7 @@ export default {
     myDatasources: myDatasources.actions,
     dataNode: dataNode.actions,
     registerDS: registerDS.actions,
+    dbmsTypes: dbmsTypes.actions,
   },
   reducer: {
     dataSourceList: dataSourceList.reducer,
@@ -55,5 +57,6 @@ export default {
     myDatasources: myDatasources.reducer,
     dataNode: dataNode.reducer,
     registerDS: registerDS.reducer,
+    dbmsTypes: dbmsTypes.reducer,
   },
 };

@@ -29,12 +29,14 @@ const forms = keyMirror({
   report: null,
   editDataSource: null,
   createDataNode: null,
+  modalCreateDataSource: null,
 });
 
 const modal = keyMirror({
   inviteDataSource: null,
   confirmDatasource: null,
   modalCreateDatanode: null,
+  modalCreateDataSource: null,
 });
 
 const apiPaths = {
@@ -54,6 +56,7 @@ const apiPaths = {
   dataNode: ({ id }) => `/api/v1/data-nodes${id ? `/${id}` : '' }`,
   registerDataSource: ({ id }) => `/api/v1/data-sources/${id}/register-on-central`,
   unpublishDatasource: ({ id }) => `/api/v1/data-sources/${id}/unpublish`,
+  dbmsTypes: () => '/api/v1/data-sources/dbms-types',
 };
 
 const paths = {

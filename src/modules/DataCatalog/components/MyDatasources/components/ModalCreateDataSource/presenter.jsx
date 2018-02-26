@@ -16,28 +16,45 @@
   * Company: Odysseus Data Services, Inc.
   * Product Owner/Architecture: Gregory Klebanov
   * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
-  * Created: Wednesday, February 14, 2018 3:10 PM
+  * Created: Thursday, February 22, 2018 2:56 PM
   *
   */
 
 import React from 'react';
-import { Button } from 'arachne-ui-components';
+import { Modal, Form } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
 
 import './style.scss';
+import { getDataSourceCreationFields } from 'const/dataSource';
 
-function Actions(props) {
-  const classes = new BEMHelper('actions');
-  const {
-    openCreateModal,
-  } = props;
+function ModalCreateDataSource(props) {
+  const classes = new BEMHelper('modal-create-data-source');
+  const { dbmsTypeList = [] } = props;
+    
+  const submitBtn = {
+    label: 'Add',
+    loadingLabel: 'Adding...',
+    mods: ['success', 'rounded'],
+  }
+
+  const cancelBtn = {
+    label: 'Cancel',
+  }
 
   return (
-    <div {...classes()}>
-      <Button mods={['rounded', 'submit']} onClick={openCreateModal}>Create Datsource</Button>
-    </div>
+    <Modal modal={props.modal} title="Create manual data source">
+      <div {...classes()}>          
+        <Form
+          fields={getDataSourceCreationFields(dbmsTypeList)}
+          submitBtn={submitBtn}
+          cancelBtn={cancelBtn}
+          onSubmit={props.doSubmit}
+          {...props}
+        />          
+      </div>
+    </Modal>
   );
 }
 
-export default Actions;
+export default ModalCreateDataSource;
 

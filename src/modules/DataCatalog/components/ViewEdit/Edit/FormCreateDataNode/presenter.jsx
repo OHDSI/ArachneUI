@@ -36,12 +36,25 @@ function FormCreateDataNode(props) {
 
   const {
     isLoading,
+    dataSourceId,
+    doSubmit,
   } = props;
 
   const submitBtn = {
     label: 'Create',
     loadingLabel: 'Creating...',
   };
+
+  const useAutocomplete = dataSourceId !== null;
+  let autocompleteOptions = {};
+  if (useAutocomplete) {
+    autocompleteOptions = {
+      options: [],
+      fetchOptions: () => {},
+      promptTextCreator: label => `Create dananode ${label}`,
+      onNewOptionClick: ({ value }) => doSubmit({ name: value, description: '' }),
+    };
+  }
 
   const fields = [
     {
@@ -54,6 +67,8 @@ function FormCreateDataNode(props) {
             label: 'Name of data node',
             type: fieldTypes.string,
           },
+          useAutocomplete,
+          autocompleteOptions,
         },
       },
     },
@@ -78,7 +93,7 @@ function FormCreateDataNode(props) {
         fields={fields}
         submitBtn={submitBtn}
         mods={['no-spacing', 'actions-inline']}
-        onSubmit={props.doSubmit}
+        onSubmit={doSubmit}
         {...props}
       />
       <LoadingPanel active={isLoading} />

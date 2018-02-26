@@ -16,7 +16,7 @@
   * Company: Odysseus Data Services, Inc.
   * Product Owner/Architecture: Gregory Klebanov
   * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
-  * Created: Wednesday, February 14, 2018 3:07 PM
+  * Created: Thursday, February 22, 2018 2:56 PM
   *
   */
 
@@ -24,37 +24,55 @@
 import { Component, PropTypes } from 'react';
 import actions from 'actions';
 import { ContainerBuilder, get } from 'services/Utils';
-import { modal } from 'modules/DataCatalog/const';
+import { form, modal } from 'modules/DataCatalog/const';
 import { ModalUtils } from 'arachne-ui-components';
-
+import { executionPolicy } from 'const/dataSource';
 import presenter from './presenter';
+import SelectorsBuilder from './selectors';
 
+const selectors = new SelectorsBuilder().build();
 
-export class ModalCreateDatanode extends Component {
+/** @augments { Component<any, any> } */
+export class ModalCreateDataSource extends Component {
   static get propTypes() {
     return {
+      getDbmsTypes: PropTypes.func,
     };
-  } 
+  }
+
+  componentWillMount() {
+    this.props.getDbmsTypes();
+  }
 
   render() {
     return presenter(this.props);
   }
 }
  
-export default class ModalCreateDatanodeBuilder extends ContainerBuilder {
+export default class ModalCreateDataSourceBuilder extends ContainerBuilder {
   getComponent() {
-    return ModalCreateDatanode;
+    return ModalCreateDataSource;
+  }
+  
+  getFormParams() {
+    return {
+      form: form.modalCreateDataSource,
+      enableReinitialize: false,
+    };
   }
   
   getModalParams() {
     return {
-      name: modal.modalCreateDatanode,
+      name: modal.modalCreateDataSource,
     };
   }  
  
-  mapStateToProps(state, ownProps) {     
+  mapStateToProps(state, ownProps) {
+    const dbmsTypeList = selectors.getDbmsTypes(state);
 
     return {
+      // TODO: pass query params to use in createDS callback
+      dbmsTypeList,
     };
   }
 
@@ -63,23 +81,27 @@ export default class ModalCreateDatanodeBuilder extends ContainerBuilder {
    */
   getMapDispatchToProps() {
     return {
-      closeModal: () => ModalUtils.actions.toggle(modal.modalCreateDatanode, false),
-      createDN: actions.dataCatalog.dataNode.create,
-      openCreateDataSourceModal: dataNodeId => ModalUtils.actions.toggle(modal.modalCreateDataSource, true, { dataNodeId }),
+      closeModal: () => ModalUtils.actions.toggle(modal.modalCreateDataSource, false),
+      createDS: actions.dataCatalog.dataSource.create,
+      loadList: actions.dataCatalog.dataSource.query,
+      getDbmsTypes: actions.dataCatalog.dbmsTypes.query,
     };
   }
 
   mergeProps(stateProps, dispatchProps, ownProps) {
     return {
+      ...ownProps,
       ...stateProps,
       ...dispatchProps,
-      ...ownProps,
-      async createDataNode({ name, description }) {
-        const dataNode = await dispatchProps.createDN({}, { name, description });
+      async doSubmit(data) {
+        await dispatchProps.createDS({
+          ...data,
+          executionPolicy: executionPolicy.MANUAL,
+        });
         await dispatchProps.closeModal();
-        dispatchProps.openCreateDataSourceModal(dataNode.centralId);
-        return dataNode;
+        dispatchProps.loadList();
       },
     };
   }
-}
+
+} 

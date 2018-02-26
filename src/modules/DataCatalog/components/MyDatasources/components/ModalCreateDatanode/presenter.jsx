@@ -29,6 +29,9 @@ import './style.scss';
 
 function ModalCreateDatanode(props) {
   const classes = new BEMHelper('modal-create-datanode');
+  const {
+    createDataNode,
+  } = props;
 
   return (
     <Modal
@@ -38,7 +41,7 @@ function ModalCreateDatanode(props) {
       create
     >
       <div {...classes()}>
-        <FormCreateDataNode />
+        <FormCreateDataNode doSubmit={createDataNode} />
       </div>
     </Modal>
   );

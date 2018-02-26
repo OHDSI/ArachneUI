@@ -23,6 +23,12 @@
 import { types as fieldTypes } from 'const/modelAttributes';
 import keyMirror from 'keymirror';
 
+import {
+  FormInput,
+  FormSelect,
+} from 'arachne-ui-components';
+import PasswordField from 'components/PasswordField/connected';
+
 const attributeNames = keyMirror({
   name: null,
   organization: null,
@@ -224,6 +230,95 @@ const immutableAttributes = [
 const fieldHints = {
 };
 
+function getDataSourceCreationFields(dbmsTypeList) {
+  return [
+    {
+      name: 'name',
+      className: 'col-xs-12',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Name of data source *',
+          type: 'text',
+        },
+      },
+    },
+    {
+      name: 'dbmsType',
+      className: 'col-xs-12',
+      InputComponent: {
+        component: FormSelect,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'DBMS Type',
+          options: dbmsTypeList,
+        },
+      },
+    },
+    {
+      name: 'connectionString',
+      className: 'col-md-12',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Connection string *',
+          type: 'text',
+        },
+      },
+    },
+    {
+      name: 'cdmSchema',
+      className: 'col-xs-12',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'CDM schema name *',
+          type: 'text',
+        },
+      },
+    },
+    {
+      name: 'dbUsername',
+      className: 'col-md-12',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Username *',
+          type: 'text',
+        },
+      },
+    },
+    {
+      name: 'dbPassword',
+      className: 'col-md-12',
+      InputComponent: {
+        component: PasswordField,
+        props: {
+          mods: ['bordered'],
+          showHint: false,
+          placeholder: 'Password *',
+          type: 'password',
+        },
+      },
+    },
+    ...cdmSpecificAttributes.map(attribute => ({
+      name: attribute.name,
+      className: 'col-md-12',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: attribute.label,
+        },
+      },
+    })),
+  ];
+}
+
 export {
   healthStatuses,
   modelTypes,
@@ -234,4 +329,5 @@ export {
   immutableAttributes,
   fieldHints,
   cdmSpecificAttributes,
+  getDataSourceCreationFields,
 };

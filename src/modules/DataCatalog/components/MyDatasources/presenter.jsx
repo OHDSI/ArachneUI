@@ -27,6 +27,7 @@
   import DataSourcesTable from '../List/Table';
   import Actions from './components/Actions';
   import ModalCreateDatanode from './components/ModalCreateDatanode';
+  import ModalCreateDataSource from './components/ModalCreateDataSource';
   
   import './style.scss';
   
@@ -50,7 +51,7 @@
             isLoading={isLoading}
             title="My Datasources"
             filterFields={filterFields}
-            Actions={null}
+            Actions={<Actions />}
             paginationDetails={paginationDetails}
             searchQueryDecode={searchQueryDecode}
             searchQueryEncode={searchQueryEncode}
@@ -59,6 +60,7 @@
           </Grid>
         </div>
         <ModalCreateDatanode />
+        <ModalCreateDataSource />
       </PageContent>
     );
   }

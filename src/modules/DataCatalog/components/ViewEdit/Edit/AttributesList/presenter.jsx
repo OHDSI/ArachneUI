@@ -28,6 +28,7 @@ import {
   FormInput,
   Panel,
   FormTextarea,
+  FormAutocomplete,
 } from 'arachne-ui-components';
 import { fieldTypes } from 'modules/ExpertFinder/const';
 import { immutableAttributes, fieldHints, attributeNames } from 'const/dataSource';
@@ -51,11 +52,29 @@ function ImmutableAttribute({ name, value }) {
   );
 }
 
-export function AttributesFormListItem({ item, input, meta, isWide = false, disabled }) {
+export function AttributesFormListItem({
+  item,
+  input,
+  meta,
+  isWide = false,
+  disabled,
+  useAutocomplete,
+  autocompleteOptions,
+}) {
   const itemClasses = new BEMHelper('attributes-form-list-item');
   let field = null;
   if (immutableAttributes.includes(item.name)) {
     field = (<ImmutableAttribute name={item.name} value={input.value} />);
+  } else if (useAutocomplete) {
+    field = (<FormAutocomplete
+      input={input}
+      mods={['bordered']}
+      placeholder={item.placeholder}
+      fetchOptions={autocompleteOptions.fetchOptions}
+      canCreateNewOptions
+      promptTextCreator={autocompleteOptions.promptTextCreator}
+      onNewOptionClick={autocompleteOptions.onNewOptionClick}
+    />);
   } else {
     switch (item.type) {
       case fieldTypes.enum:
