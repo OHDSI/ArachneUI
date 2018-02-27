@@ -34,7 +34,7 @@ function Status({ published }) {
     <div {...classes({ modifiers })}>
       <span {...classes('label')}>Status:</span>
       <span {...classes('value')}>
-        {published ? 'Registered' : 'Not registered'}
+        {published ? 'Published' : 'Not published'}
       </span>
     </div>
   );

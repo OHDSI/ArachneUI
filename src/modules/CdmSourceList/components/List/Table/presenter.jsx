@@ -54,14 +54,14 @@ function CellPublish({ published, onClick, isCdm, centralId }) {
   </div>;
 }
 
-function CellEdit({ editDataSource, removeDataSource, value, published }) {
+function CellEdit({ editDataSource, removeDataSource, value }) {
   const classes = new BEMHelper('data-source-list-cell-edit');
   return (
     <div {...classes('btn-block')}>
       <Button {...classes('btn')} onClick={() => editDataSource(value)}>
         <i {...classes('btn-ico')}>edit</i>
       </Button>
-      <Button {...classes('btn')} onClick={() => removeDataSource({ id: value, published })}>
+      <Button {...classes('btn')} onClick={() => removeDataSource({ id: value })}>
         <i {...classes('btn-ico')}>delete</i>
       </Button>
     </div>
@@ -146,7 +146,6 @@ function DataSourceTable(props) {
         field="id"
         editDataSource={editDataSource}
         removeDataSource={remove}
-        props={entity => ({ published: entity.published })}
       />
     </Table>
   );

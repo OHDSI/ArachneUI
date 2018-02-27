@@ -57,10 +57,7 @@ function mergeProps(state, dispatch, ownProps) {
     ...state,
     ...dispatch,
     ...ownProps,
-    async remove({ id, published }) {
-      if (published) {
-        await dispatch.unregister({ id });
-      }
+    async remove({ id }) {
       await dispatch.remove({ id });
       await dispatch.loadList({}, { query: state.query });
     },
