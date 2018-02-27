@@ -44,8 +44,7 @@ export default class AttributeListBuilder extends ContainerBuilder {
   mapStateToProps(state) {
     const dataSourceId = get(state, 'dataCatalog.dataSource.data.result.id');
     const isPublished = get(state, 'dataCatalog.dataSource.data.result.published');
-    const values = selectors.getValues(state);
-    const isCDM = values[attributeNames.modelType] === modelTypesValues.CDM;
+    const isCDM = get(state, `dataCatalog.dataSource.data.result.${attributeNames.modelType}`) === modelTypesValues.CDM;
 
     return {
       attrList: selectors.getAttrList(state),
