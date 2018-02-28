@@ -33,6 +33,7 @@ import {
 import LabelDataSource from 'components/LabelDataSource';
 import LabelSubmissionStatus from 'components/LabelSubmissionStatus';
 import Results from './Results';
+import SubmissionsTableFilter from 'modules/AnalysisExecution/components/ViewEditAnalysis/ListSubmissions/components/SubmissionsTableFilter';
 
 require('./style.scss');
 
@@ -330,6 +331,7 @@ function ListSubmissions(props) {
     totalPages,
     page,
     path,
+    showFilters,
   } = props;
 
   const groupCount = submissionGroupList.length;
@@ -368,24 +370,28 @@ function ListSubmissions(props) {
   return (
     <div {...classes()}>
       <div {...classes('submissions-wrapper')}>
-        {data.length ?
-          <StickyContainer>
-            <Sticky topOffset={-56}>
-              { SubmissionsHeader }
-            </Sticky>
-            { data }
-          </StickyContainer>
-          :
-          <div {...classes('empty')}>
-            No queries were submitted yet...
-          </div>
-        }
+        <Button {...classes('filters-btn')} mods={['submit', 'rounded']} onClick={showFilters}>Filter</Button>
+        <div {...classes('shadow-container')}>
+          {data.length ?
+            <StickyContainer>
+              <Sticky topOffset={-56}>
+                {() => <SubmissionsHeader />}
+              </Sticky>
+              { data }
+            </StickyContainer>
+            :
+            <div {...classes('empty')}>
+              No queries were submitted yet...
+            </div>
+          }
+        </div>
       </div>
       {isPaginationAvailable &&
         <div {...classes('pagination')}>
           <Pagination pages={totalPages} currentPage={page} path={path} />
         </div>
       }
+      <SubmissionsTableFilter />
     </div>
   );
 }

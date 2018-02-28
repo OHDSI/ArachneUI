@@ -35,6 +35,7 @@ const modal = keyMirror({
   submitCode: null,
   uploadResult: null,
   rejectSubmission: null,
+  submissionsTableFilter: null,
 });
 
 const form = keyMirror({
@@ -53,6 +54,7 @@ const form = keyMirror({
   importNodeSelector: null,
   importCodeList: null,
   rejectSubmission: null,
+  submissionsTableFilter: null,
 });
 
 const paths = {
@@ -247,6 +249,53 @@ const analysisTypes = keyMirror({
 
 const submissionGroupsPageSize = 5;
 
+const submissionStatuses = [
+  {
+    value: 'PENDING',
+    label: 'Pending execution',
+  },
+  {
+    value: 'NOT_APPROVED',
+    label: 'Not approved',
+  },
+  {
+    value: 'STARTING',
+    label: 'In queue',
+  },
+  {
+    value: 'QUEUE_PROCESSING',
+    label: 'Queue processing',
+  },
+  {
+    value: 'IN_PROGRESS',
+    label: 'In progress',
+  },
+  {
+    value: 'EXECUTED',
+    label: 'Avaiting approval (success)',
+  },
+  {
+    value: 'FAILED',
+    label: 'Awaiting approval (failed)',
+  },
+  {
+    value: 'EXECUTED_REJECTED',
+    label: 'Rejected (executed)',
+  },
+  {
+    value: 'FAILED_REJECTED',
+    label: 'Rejected (failed)',
+  },
+  {
+    value: 'EXECUTED_PUBLISHED',
+    label: 'Finished',
+  },
+  {
+    value: 'FAILED_PUBLISHED',
+    label: 'Failed (published)',
+  },
+];
+
 export {
   apiPaths,
   form,
@@ -268,4 +317,5 @@ export {
   breadcrumbTypes,
   analysisTypes,
   submissionGroupsPageSize,
+  submissionStatuses,
 };

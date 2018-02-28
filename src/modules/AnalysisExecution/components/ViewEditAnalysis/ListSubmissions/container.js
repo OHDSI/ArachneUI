@@ -67,6 +67,7 @@ const mapDispatchToProps = {
     ModalUtils.actions.toggle(modal.rejectSubmission, true, { submissionId, type, analysisId }),
   showResults: ({ submissionId }) =>
     actions.router.goToPage(paths.submissionResultSummary({ submissionId })),
+  showFilters: () => ModalUtils.actions.toggle(modal.submissionsTableFilter, true),
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
