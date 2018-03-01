@@ -370,7 +370,7 @@ function ListSubmissions(props) {
   return (
     <div {...classes()}>
       <div {...classes('submissions-wrapper')}>
-        <Button {...classes('filters-btn')} mods={['submit', 'rounded']} onClick={showFilters}>Filter</Button>
+        <Button {...classes('filters-btn')} mods={['submit', 'rounded']} onClick={showFilters}>Filter submissions</Button>
         <div {...classes('shadow-container')}>
           {data.length ?
             <StickyContainer>

@@ -45,35 +45,25 @@ function SubmissionsTableFilter(props) {
   const fields = [
     {
       type: 'TOGGLE', // TODO: const
-      name: 'INSIGHT',
+      name: 'hasInsight',
       label: 'Has insight',
       forceOpened: true,
     },
     {
       type: 'ENUM', // TODO: const
-      name: 'DATASOURCE',
+      name: 'dataSourceIds',
       options: dataSourceList,
       label: 'Data source',
       forceOpened: true,
     },
     {
       type: 'ENUM', // TODO: const
-      name: 'STATUS',
+      name: 'submissionStatuses',
       options: statusList,
       label: 'Status',
       forceOpened: true,
     },
   ];
-
-  const submitBtn = {
-    label: 'Filter',
-    loadingLabel: 'Filtering...',
-    mods: ['success', 'rounded'],
-  }
-
-  const cancelBtn = {
-    label: 'Cancel',
-  }
 
   return (
     <Modal
@@ -97,4 +87,4 @@ function SubmissionsTableFilter(props) {
   );
 }
 
-export default SubmissionsTableFilter;  
+export default SubmissionsTableFilter;
