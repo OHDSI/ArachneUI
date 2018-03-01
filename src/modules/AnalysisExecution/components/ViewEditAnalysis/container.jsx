@@ -129,8 +129,10 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
   getFilter(search) {
     let filter = qs.parse(search.replace(/^\?/, ''), { parseArrays: true }) || {};
     filter = get(filter, 'filter', {}, 'Object');
+    if ('hasInsight' in filter && filter.hasInsight === 'false') {
+      delete filter.hasInsight;
+    }
     filter = qs.stringify(filter, { arrayFormat: 'repeat' });
-    console.log(filter);
     return filter;
   }
 
