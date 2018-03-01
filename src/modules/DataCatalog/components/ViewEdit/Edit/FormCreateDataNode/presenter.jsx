@@ -45,7 +45,7 @@ function FormCreateDataNode(props) {
     loadingLabel: 'Creating...',
   };
 
-  const useAutocomplete = dataSourceId !== undefined;
+  const useAutocomplete = dataSourceId === undefined;
   let autocompleteOptions = {};
   if (useAutocomplete) {
     autocompleteOptions = {
