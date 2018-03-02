@@ -40,7 +40,9 @@
           component: FormFileInput,
           props: {
             mods: ['bordered'],
-            placeholder: 'archive',
+            placeholder: 'Archive',
+            filePlaceholder: 'Archive',
+            dropzonePlaceholder: 'Drag and drop zip file',
           }
         },
       },

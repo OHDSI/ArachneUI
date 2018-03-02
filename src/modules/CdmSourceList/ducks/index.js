@@ -20,7 +20,6 @@
  *
  */
 
-import achillesResults from './achillesResults';
 import characterization from './characterization';
 import dataSource from './dataSource';
 import dataSourceList from './dataSourceList';
@@ -29,7 +28,6 @@ import dbmsTypes from './dbmsTypes';
 
 export default {
   actions: {
-    achillesResults: achillesResults.actions,
     characterization: characterization.actions,
     dataSource: dataSource.actions,
     dataSourceList: dataSourceList.actions,
@@ -38,7 +36,6 @@ export default {
 
   },
   reducer: {
-    achillesResults: achillesResults.reducer,
     characterization: characterization.reducer,
     dataSource: dataSource.reducer,
     dataSourceList: dataSourceList.reducer,

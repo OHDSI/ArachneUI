@@ -30,6 +30,7 @@ const forms = keyMirror({
   editDataSource: null,
   createDataNode: null,
   modalCreateDataSource: null,
+  modalStatsUpload: null,
 });
 
 const modal = keyMirror({
@@ -37,6 +38,7 @@ const modal = keyMirror({
   confirmDatasource: null,
   modalCreateDatanode: null,
   modalCreateDataSource: null,
+  modalStatsUpload: null,
 });
 
 const apiPaths = {
@@ -57,6 +59,7 @@ const apiPaths = {
   registerDataSource: ({ id }) => `/api/v1/data-sources/${id}/register-on-central`,
   unpublishDatasource: ({ id }) => `/api/v1/data-sources/${id}/unpublish`,
   dbmsTypes: () => '/api/v1/data-sources/dbms-types',
+  achillesResultsUpload: () => '/api/v1/achilles/upload',
 };
 
 const paths = {

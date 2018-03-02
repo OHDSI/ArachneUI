@@ -28,7 +28,6 @@ import {
 } from 'arachne-ui-components';
 import moment from 'moment';
 import { commonDate } from 'const/formats';
-import ModalStatsUpload from 'modules/CdmSourceList/components/ViewEdit/Characterization/components/ModalStatsUpload';
 
 require('./style.scss');
 
@@ -42,7 +41,6 @@ function Characterization(props) {
     update,
     importResults,
     characterizationSource,
-    showUploadForm,
   } = props;
 
   const isImporting = isCharacterizationStarted && characterizationSource === 'IMPORT';
@@ -77,14 +75,7 @@ function Characterization(props) {
             disabled={isCharacterizationStarted}
             onClick={update}
           />
-          <Button
-            {...classes('btn')}
-            label={'Upload'}
-            mods={['rounded', 'submit']}
-            onClick={showUploadForm}
-          />
         </div>
-        <ModalStatsUpload />
       </Panel>
     </div>
   );

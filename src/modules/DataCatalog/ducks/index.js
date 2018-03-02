@@ -20,6 +20,7 @@
  *
  */
 
+import achillesResults from './achillesResults';
 import dataSourceList from './dataSourceList';
 import dataSourceMetadataAttrs from './dataSourceMetadataAttrs';
 import dataSource from './dataSource';
@@ -34,6 +35,7 @@ import dbmsTypes from './dbmsTypes';
 
 export default {
   actions: {
+    achillesResults: achillesResults.actions,
     dataSourceList: dataSourceList.actions,
     dataSourceMetadataAttrs: dataSourceMetadataAttrs.actions,
     dataSource: dataSource.actions,
@@ -47,6 +49,7 @@ export default {
     dbmsTypes: dbmsTypes.actions,
   },
   reducer: {
+    achillesResults: achillesResults.reducer,
     dataSourceList: dataSourceList.reducer,
     dataSourceMetadataAttrs: dataSourceMetadataAttrs.reducer,
     dataSource: dataSource.reducer,

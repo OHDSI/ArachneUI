@@ -25,7 +25,6 @@ import keyMirror from 'keymirror';
 const modal = keyMirror({
   createDataSource: null,
   createDataNode: null,
-  modalStatsUpload: null,
 });
 
 const form = keyMirror({
@@ -33,7 +32,6 @@ const form = keyMirror({
   editSourceTechData: null,
   editSourceBusinessData: null,
   createDataNode: null,
-  modalStatsUpload: null,
 });
 
 const paths = {
@@ -47,7 +45,6 @@ const apiPaths = {
   characterization: ({ datasourceId, limit }) =>
     `/api/v1/achilles/${datasourceId}/jobs${limit ? '?size='+limit : ''}`,
   achillesResults: ({ datasourceId }) => `/api/v1/achilles/${datasourceId}/pull`,
-  achillesResultsUpload: () => '/api/v1/achilles/upload',
   dbmsTypes: () => '/api/v1/data-sources/dbms-types',
 };
 
