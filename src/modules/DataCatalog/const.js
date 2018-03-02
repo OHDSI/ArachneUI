@@ -55,7 +55,7 @@ const apiPaths = {
   myDatasources: () => '/api/v1/data-sources/my',
   dataNode: ({ id }) => `/api/v1/data-nodes${id ? `/${id}` : '' }`,
   registerDataSource: ({ id }) => `/api/v1/data-sources/${id}/register-on-central`,
-  unpublishDatasource: ({ id }) => `/api/v1/data-sources/${id}/unpublish`,
+  registration: ({ id }) => `/api/v1/data-sources/${id}/registration`,
   dbmsTypes: () => '/api/v1/data-sources/dbms-types',
 };
 

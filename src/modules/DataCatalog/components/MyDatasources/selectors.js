@@ -30,11 +30,11 @@ import dsInfoConvertor from 'modules/DataCatalog/converters/dsInfoConvertor';
 export default class SelectorsBuilder extends DsAttrListSelector {
 
   getRawDataSourceList(state) {
-    return get(state, 'dataCatalog.myDatasources.queryResult.result.content', [], 'Array');
+    return get(state, 'dataCatalog.myDatasources.queryResult.content', [], 'Array');
   }
 
   getPaginationDetails(state) {
-    const searchResults = get(state, 'dataCatalog.myDatasources.queryResult.result');
+    const searchResults = get(state, 'dataCatalog.myDatasources.queryResult');
     return extractPaginationData({
       searchResults,
       numOfElsPerPage: viewModePageSize.DEFAULT,

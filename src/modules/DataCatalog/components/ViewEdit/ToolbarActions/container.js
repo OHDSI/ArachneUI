@@ -53,7 +53,7 @@ function mapStateToProps(state, ownProps) {
 
 const mapDispatchToProps = {
   load: actions.dataCatalog.dataSource.find,
-  unpublish: actions.dataCatalog.dataSource.unpublish,
+  unpublish: actions.dataCatalog.registration.delete,
   goToPage,
 };
 
@@ -69,7 +69,9 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         await dispatchProps.unpublish({ id: dataSourceId });
         await dispatchProps.load({ id: dataSourceId });
         await dispatchProps.goToPage(paths.dataCatalog());
-      } catch (er) {}
+      } catch (er) {
+        console.error(er);
+      }
     },
   };
 }
