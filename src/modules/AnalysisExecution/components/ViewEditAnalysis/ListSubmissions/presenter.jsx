@@ -207,7 +207,6 @@ function SubmissionsHeader(props) {
     <div {...classes({ modifiers: { 'sticky': isSticky } })} style={style}>
       <div {...classes('row')}>
         <div {...classes('cell', 'source')}>
-          <Link {...classes('filters-btn')} onClick={showFilters}>filter_list</Link>
           Data sources
         </div>
         <div {...classes('cell', 'status')}>
@@ -223,11 +222,16 @@ function SubmissionsHeader(props) {
           Publish
         </div>
       </div>
-      {isFiltered && <div {...classes('row', 'filters')}>Filtered by: {
-        selectedFilters.map(
-          ([filterId, filter]) => `${submissionFilters[filterId].label} ${Array.isArray(filter) ? `(${filter.length})` : ''}`
-        ).join(', ')
-      }</div>}
+      <div {...classes('row', 'filters')}>
+        <div>
+          {isFiltered && <span>Filtered by: {
+            selectedFilters.map(
+              ([filterId, filter]) => `${submissionFilters[filterId].label} ${Array.isArray(filter) ? `(${filter.length})` : ''}`
+            ).join(', ')
+          }</span>}
+        </div>
+        <Button {...classes('filters-btn')} onClick={showFilters} mods={['success', 'rounded']}>Filter</Button>
+      </div>
     </div>
   );
 }

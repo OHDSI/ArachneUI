@@ -28,9 +28,9 @@ import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import actions from 'actions';
 import Uri from 'urijs';
+import { Utils } from 'services/Utils';
 import ListSubmissions from './presenter';
 import SelectorsBuilder from './selectors';
-import Utils from 'services/Utils';
 
 const selectors = (new SelectorsBuilder()).build();
 
