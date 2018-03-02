@@ -31,6 +31,7 @@ import {
   Panel,
 } from 'arachne-ui-components';
 import { get } from 'services/Utils';
+import isEmpty from 'lodash/isEmpty';
 import SummaryIncidence from './Incidence';
 import SummaryCohort from './Cohort';
 import SummaryPopulationLevel from './PopulationLevel';
@@ -117,7 +118,7 @@ export default function SubmissionResultSummary(props) {
                   </span>
                 </li>
                 <li {...classes('list-item')}>{moment(get(submission, 'createdAt', '')).tz(moment.tz.guess()).format(commonDate)}</li>
-                <li {...classes('list-item')}>
+                <li {...classes('list-item', 'data-source')}>
                   <LabelDataSource {...datasource} />
                 </li>
               </ul>
@@ -125,7 +126,7 @@ export default function SubmissionResultSummary(props) {
           </Panel>
         </div>
       </ResultInfoBlock>
-      {specificSummary && resultInfo &&
+      {specificSummary && !isEmpty(resultInfo) &&
         <ResultInfoBlock>
           <div {...classes('panel', specificSummaryMods)}>
             <Panel title={'Result summary'}>

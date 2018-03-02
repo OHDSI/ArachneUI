@@ -28,9 +28,13 @@ const actionCoreName = 'SM_STUDY_PARTICIPANTS_LIST';
 
 const ducks = new Duck({
   name: actionCoreName,
-  urlBuilder: (params) => {
+  urlBuilder: ({ query, studyId }) => {
     const url = new Uri(apiPaths.searchUser());
-    url.setSearch(params);
+    url.setSearch({
+      target: 'STUDY',
+      id: studyId,
+      query,
+    });
     return url.href();
   },
 });

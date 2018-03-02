@@ -47,23 +47,28 @@ function removePrincipal() {
 const actions = authLogoutDuck.actions;
 const reducer = authLogoutDuck.reducer;
 
+function clearToken(backurl = '/', dispatch) {
+  AuthService.clearToken();
+  dispatch(removePrincipal());
+  if (actionsGlobal.studyManager) {
+    actionsGlobal.studyManager.studyList.dropFilter();
+  }
+  // Redirect to auth screen if not already there
+  const uri = new URI(backurl);
+  if (!isAuthModulePath(uri.pathname())) {
+    dispatch(goToPage(paths.login()));
+  }
+}
+
 export default {
   actions: {
     create: (backurl = '/') => {
       return (dispatch) => {
-        dispatch(actions.create()).then(() => {
-          AuthService.clearToken();
-          dispatch(removePrincipal());
-          if (actionsGlobal.studyManager) {
-            actionsGlobal.studyManager.studyList.dropFilter();
-          }
-          // Redirect to auth screen if not already there
-          const uri = new URI(backurl);
-          if (!isAuthModulePath(uri.pathname())) {
-            dispatch(goToPage(paths.login()));
-          }
-        });
-      }
+        dispatch(actions.create()).then(() => clearToken(backurl, dispatch));
+      };
+    },
+    clearToken: (backurl = '/') => {
+      return dispatch => clearToken(backurl, dispatch);
     },
   },
   reducer,

@@ -218,7 +218,7 @@ const detectMimeTypeByExtension = (file) => {
       type = mimeTypes.report;
     } else if (type === mimeTypes.text) {
       const extension = file.name.split('.').pop().toLowerCase();
-      type = mimeTypes[extension];
+      type = mimeTypes[extension] ? mimeTypes[extension] : mimeTypes.text;
     }
   }
   return type;
@@ -377,6 +377,8 @@ class Utils {
     const promise = new Promise((resolve, reject) => {
       if (confirm(message)) {
         resolve();
+      } else {
+        reject();
       }
     });
     return promise;
@@ -413,9 +415,10 @@ class Utils {
       let query = nextState.location.query;
       if (!query || Object.keys(query).length === 0) {
         const savedFilter = getSavedFilter();
+        const page = get(savedFilter, 'page', '1');
         query = {
           ...savedFilter,
-          page: 1,
+          page,
         };
         replace({ pathname: basePath, query });
       }
@@ -461,6 +464,36 @@ class Utils {
     };
   }
 
+  static isOuterLink(link) {
+    const currentUri = new URI(window.location.href);
+    const givenUri = new URI(link);
+    return givenUri.domain().length !== 0 && currentUri.domain() !== givenUri.domain();
+  }
+
+  static confirmOuterLink(link) {
+    if (confirm('Are you sure you want to leave this page and navigate to external web-site?')) {
+      const win = window.open(link, '_blank');
+      win.focus();
+    }
+  }
+
+  static getSecureLink(link) {
+    let data = { link };
+
+    if (data.link && Utils.isOuterLink(data.link)) {
+      data = { onClick: Utils.confirmOuterLink.bind(null, [data.link]) };
+    }
+
+    return data;
+  }
+
+  static getSorting(location) {
+    return {
+      sortBy: location.query.sortBy,
+      sortAsc: location.query.sortAsc === 'true',
+    };
+  }
+
 }
 
 class ContainerBuilder {
@@ -469,13 +502,19 @@ class ContainerBuilder {
     return Utils.buildConnectedComponent({
       Component: this.getComponent(),
       mapStateToProps: this.mapStateToProps ?
-        this.mapStateToProps.bind(this):
-        this.mapStateToProps,
-      getMapDispatchToProps: this.getMapDispatchToProps,
+        this.mapStateToProps.bind(this)
+        : this.mapStateToProps,
+      getMapDispatchToProps: this.getMapDispatchToProps ?
+        this.getMapDispatchToProps.bind(this)
+        : this.getMapDispatchToProps,
       mapDispatchToProps: this.mapDispatchToProps,
       mergeProps: this.mergeProps,
-      getModalParams: this.getModalParams,
-      getFormParams: this.getFormParams,
+      getModalParams: this.getModalParams
+        ? this.getModalParams.bind(this)
+        : this.getModalParams,
+      getFormParams: this.getFormParams
+        ? this.getFormParams.bind(this)
+        : this.getFormParams,
       getFetchers: this.getFetchers
         ? this.getFetchers.bind(this)
         : this.getFetchers,

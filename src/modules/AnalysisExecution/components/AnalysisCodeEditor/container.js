@@ -74,7 +74,7 @@ function mapStateToProps(state, ownProps) {
   const name = get(fileData, 'name', '');
   const createdAt = get(fileData, 'created');
   const language = detectLanguageByExtension(fileData);
-  const isLoading = get(moduleState, 'analysisCode.isLoading');
+  const isLoading = get(moduleState, 'analysisCode.isLoading') || get(state, 'studyManager.studyInvitations.isLoading');
   const studyId = get(moduleState, 'analysis.data.result.study.id', -1);
   const antivirusStatus = get(fileData, 'antivirusStatus', false);
   const antivirusDescription = get(fileData, 'antivirusDescription');

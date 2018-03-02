@@ -27,7 +27,7 @@ import get from 'lodash/get';
 
 import actions from 'actions/index';
 import { ModalUtils } from 'arachne-ui-components';
-import { modal, form } from 'modules/AnalysisExecution/const';
+import { modal, form, submissionGroupsPageSize } from 'modules/AnalysisExecution/const';
 import presenter from './presenter';
 import selectors from './selectors';
 
@@ -55,7 +55,7 @@ function mapStateToProps(state) {
     }
   }
   const isAllSelected = dataSourceOptions.length === selectedDN.length;
-
+  const currentQuery = state.routing.locationBeforeTransitions.query;
 
   return {
     analysisId: get(analysisData, 'id'),
@@ -63,6 +63,7 @@ function mapStateToProps(state) {
     dataSourceOptions: selectors.getDataSourceOptions(state),
     isOpened,
     isAllSelected,
+    page: get(currentQuery, 'page', 1),
   };
 }
 
@@ -73,6 +74,10 @@ const mapDispatchToProps = {
   resetForm: resetForm.bind(null, form.submitCode),
   toggle: (id, isSelected) => change(form.submitCode, `dataSources[${id}]`, isSelected),
   loadStudyDataSources: actions.analysisExecution.studyDataSourceList.query,
+  loadSubmissionGroups: ({ page = 1, analysisId }) => {
+    const pageSize = submissionGroupsPageSize;
+    return actions.analysisExecution.submissionGroups.query({ page, pageSize, analysisId });
+  },
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
@@ -80,28 +85,33 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...ownProps,
     ...stateProps,
     ...dispatchProps,
-    doSubmit({ dataSources = [] }) {
+    async doSubmit({ dataSources = [] }) {
       const dataSourceIds = [];
       dataSources.forEach((ds, id) => // eslint-disable-line no-confusing-arrow
           ds === true ? dataSourceIds.push(id) : null);
       if (!dataSourceIds.length) {
         return false;
       }
+      let submitPromise;
 
-      const submitPromise = dispatchProps.submitCode(
-        {
-          analysisId: stateProps.analysisId,
-        },
-        {
-          dataSources: dataSourceIds,
-        }
-      );
+      try {
+        submitPromise = await dispatchProps.submitCode(
+          {
+            analysisId: stateProps.analysisId,
+          },
+          {
+            dataSources: dataSourceIds,
+          }
+        );
 
-      submitPromise
-        .then(() => dispatchProps.resetForm())
-        .then(() => dispatchProps.closeModal())
-        .then(() => dispatchProps.loadAnalysis(({ id: stateProps.analysisId })))
-        .catch(() => {});
+        await dispatchProps.resetForm();
+        await dispatchProps.closeModal();
+        await dispatchProps.loadAnalysis(({ id: stateProps.analysisId }));
+        await dispatchProps.loadSubmissionGroups({ analysisId: stateProps.analysisId, page: stateProps.page });
+      } catch (er) {
+        console.error(er);
+      }
+      
 
       // We have to return a submission promise back to redux-form
       // to allow it update the state

@@ -36,6 +36,8 @@ const appRoot = path.resolve(currentDir, 'src');
 
 const entryPoint = path.resolve(appRoot, 'index.js');
 
+const package = require('../package.json');
+const components = require('arachne-ui-components/package.json');
 
 const APP_TYPE = {
   CENTRAL: 'central',
@@ -131,6 +133,8 @@ const config = {
       __APP_TYPE_NODE__: appType === APP_TYPE.NODE,
 
       __DEV__: env === ENV_TYPE.DEV,
+      __VERSION__: JSON.stringify(package.version),
+      __VERSION_COMPONENTS__: JSON.stringify(components.version),
       //
       'process.env': {
         NODE_ENV: env === ENV_TYPE.PRODUCTION ? '"production"' : '"development"',

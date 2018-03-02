@@ -27,8 +27,47 @@ import {
   LoadingPanel,
 } from 'arachne-ui-components';
 import FileTree from 'components/FileTree';
+import FileInfo from 'components/FileInfo';
+import mimeTypes from 'const/mimeTypes';
+import fileInfoConverter from 'components/FileInfo/converter';
 
 import './style.scss';
+
+function SummaryItem(props) {
+  const {
+    classes,
+    onClick,
+    label,
+    isSelected,
+    displaced,
+  } = props;
+  const mods = ['name-only'];
+  if (isSelected) {
+    mods.push('name-bold');
+  }
+
+  return (
+    <li {...classes('summary', isSelected ? 'selected' : null)} onClick={onClick}>
+      <div {...classes('summary-details')}>
+        <span {...classes({
+          element: 'summary-label',
+          modifiers: {
+            displaced,
+          },
+        }
+      )}>
+          <FileInfo
+            {...fileInfoConverter({
+              ...props,
+              docType: mimeTypes.home,
+            })}
+            mods={mods}
+          />
+        </span>
+      </div>
+    </li>
+  );
+}
 
 export default function FileBrowser(props) {
   const {
@@ -37,10 +76,16 @@ export default function FileBrowser(props) {
     selectedFile,
     toolbarOpts,
     isTreeLoading = false,
-    fileTreeData,
+    fileTreeData = { children: [] },
     selectedFilePath,
     toggleFolder,
     openFile,
+    permissions,
+    doDelete,
+    headerBtns,
+    summary,
+    setContainer,
+    container,
   } = props;
   // main info
   const {
@@ -52,6 +97,8 @@ export default function FileBrowser(props) {
   } = props;
 
   const classes = BEMHelper('file-browser');
+  const isFlat = fileTreeData.children.find(entry => entry.docType === mimeTypes.folder) === undefined;
+  const isSummaryDisplaced = permissions.remove || (!permissions.remove && !isFlat);
 
   return (
     <div {...classes({ extra: className })}>
@@ -60,16 +107,24 @@ export default function FileBrowser(props) {
       }
       <div {...classes('content')}>
         {fileTreeData || isTreeLoading
-          ? <div {...classes('nav')}>
+          ? <div {...classes('nav')} ref={(element) => {
+            if (element && !container) {
+              setContainer(element);
+            }
+          }}>
             <div {...classes('nav-header')}>
-              Browse files
+              <span {...classes('title')}>Browse files</span>
+              {headerBtns}
             </div>
             <div {...classes('nav-content')}>
+              {summary && <SummaryItem {...summary} classes={classes} displaced={isSummaryDisplaced} />}
               <FileTree
                 data={fileTreeData}
                 selectedFilePath={selectedFilePath}
                 toggleFolder={toggleFolder}
                 openFile={openFile}
+                permissions={permissions}
+                doDelete={doDelete}
               />
             </div>
             <LoadingPanel active={isTreeLoading} label={'Loading files tree'} />
@@ -83,6 +138,7 @@ export default function FileBrowser(props) {
           }
         </div>
       </div>
+      {children}
     </div>
   );
 }

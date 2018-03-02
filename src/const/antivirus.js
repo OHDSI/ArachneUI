@@ -44,6 +44,8 @@ export function isScanned(status) {
   ].includes(status);
 }
 
+export const icon = '/img/icons/documents/antivirus.svg';
+
 export function getScanResultDescription(status, message) {
   if (!message) {
     return messages[status];

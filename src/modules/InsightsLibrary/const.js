@@ -34,7 +34,7 @@ const apiPaths = {
   insightFiles: ({ insightId, fileUuid, query }) => Utils.setUrlParams(`/api/v1/papers/${insightId}/files${fileUuid ? `/${fileUuid}` : '' }`, query),
   insightFilesDownload: ({ insightId, fileUuid, query }) => Utils.setUrlParams(`/api/v1/papers/${insightId}/files/${fileUuid}/download`, query),
   insightUsers: ({ insightId, userId } = {}) => `/api/v1/papers/${insightId}/participants${userId ? `/${userId}` : '' }`,
-  insightUserOptions: ({ insightId, query } = {}) => `/api/v1/user-management/users/search-user?paperId=${insightId}&query=${query}`,
+  insightUserOptions: ({ insightId, query } = {}) => `/api/v1/user-management/users/suggest?target=PAPER&id=${insightId}&query=${query}`,
   setFavourite: insightId => `/api/v1/papers/${insightId}/favourite`,
 };
 

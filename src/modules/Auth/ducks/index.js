@@ -33,6 +33,7 @@ import resendEmail from  './resendEmail';
 import token from './token';
 import { isAuthModulePath } from 'modules/Auth/utils';
 import { LOCATION_CHANGE } from 'react-router-redux';
+import passwordPolicy from './passwordPolicy';
 
 function setBackUrl(state, action) {
   return !isAuthModulePath(action.payload.pathname) ? { ...state, backUrl: action.payload.pathname } : state;
@@ -45,6 +46,7 @@ const authRoutingHistory = (state = {}, action) => {
 const actions = {
   login: authLogin.actions.create,
   logout: authLogout.actions.create,
+  clearToken: authLogout.actions.clearToken,
   principal: principal.actions,
   authMethod: authMethod.actions,
   register: authRegister.actions.create,
@@ -53,6 +55,7 @@ const actions = {
   resetPassword: resetPassword.actions,
   resendEmail: resendEmail.actions.create,
   token: token.actions,
+  passwordPolicy: passwordPolicy.actions,
 };
 
 const reducer = combineReducers({
@@ -67,6 +70,7 @@ const reducer = combineReducers({
   resendEmail: resendEmail.reducer,
   authRoutingHistory,
   token: token.reducer,
+  passwordPolicy: passwordPolicy.reducer,
 });
 
 export default {

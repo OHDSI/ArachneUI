@@ -49,6 +49,7 @@ function StudyToolbar(props) {
         </span>
       </div>}
       onEdit={isEditable ? openEditTitleModal : null}
+      isEditable={isEditable}
       breadcrumbList={breadcrumbList}
       backUrl={backurl}
     >

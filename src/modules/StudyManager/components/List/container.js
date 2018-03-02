@@ -28,7 +28,7 @@ import { Utils, ContainerBuilder, get } from 'services/Utils';
 import viewModes from 'const/viewModes';
 import { studyListPageSize, studyListPageSizeCards, paths } from 'modules/StudyManager/const';
 import Uri from 'urijs';
-
+import isEmpty from 'lodash/isEmpty';
 import getFields from './Filter/fields';
 import presenter from './presenter';
 import SelectorsBuilder from './selectors';
@@ -53,7 +53,7 @@ export class List extends Component {
   }
 
   componentDidMount() {
-    window.addEventListener('beforeunload', this.persistFilters);
+    window.addEventListener('beforeunload', this.onUnmount);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -63,18 +63,31 @@ export class List extends Component {
         pagesize: nextProps.query.view === viewModes.CARDS ? studyListPageSizeCards : studyListPageSize,
       });
     }
+    if (nextProps.pathname !== this.props.pathname) {
+      const toDetails = new RegExp(paths.studies()).test(nextProps.pathname);
+      this.persistFilters({
+        ...nextProps.query,
+        page: toDetails ? nextProps.query.page : 1,
+      });
+    }
   }
 
   componentWillUnmount() {
-    this.persistFilters();
-    window.removeEventListener('beforeunload', this.persistFilters);
+    window.removeEventListener('beforeunload', this.onUnmount);
   }
 
-  persistFilters() {
+  onUnmount() {
+    this.persistFilters({
+      ...this.props.query,
+      page: 1,
+    });
+  }
+
+  persistFilters(query) {
     const filterValues = {};
-    for (const filter in this.props.query) {
-      if (!Utils.isEmpty(this.props.query[filter])) {
-        filterValues[filter] = this.props.query[filter];
+    for (const filter in query) {
+      if (!Utils.isEmpty(query[filter])) {
+        filterValues[filter] = query[filter];
       }
     }
     actions.studyManager.studyList.saveFilter(filterValues);
@@ -90,10 +103,11 @@ export default class ListBuilder extends ContainerBuilder {
     return List;
   }
 
-  mapStateToProps(state) {
+  mapStateToProps(state, ownProps) {
     const moduleState = state.studyManager;
-    const query = state.routing.locationBeforeTransitions.query;
+    const query = ownProps.location.query;
     const isFilteredByMy = query.my;
+    const pathname = get(state, 'routing.locationBeforeTransitions.pathname', '', 'String');
 
     return {
       query,
@@ -104,6 +118,7 @@ export default class ListBuilder extends ContainerBuilder {
         statusOptions: selectors.getStatusOptions(state),
       }),
       paginationDetails: selectors.getPaginationDetails(state),
+      pathname,
       ...Utils.getPlainFiltersEncodeDecoder(),
     };
   }

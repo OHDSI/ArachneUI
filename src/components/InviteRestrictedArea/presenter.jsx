@@ -42,6 +42,7 @@ function InviteRestrictedArea(props) {
     invitation,
     isLoading,
     studyId,
+    disabled,
   } = props;
   const classes = new BEMHelper('invite-restricted-area');
   const emptyStateMessage = (
@@ -55,25 +56,26 @@ function InviteRestrictedArea(props) {
     return null;
   }
 
-  const content = invitation === null
-    ? <div {...classes('wrapper')}>{children}</div>
-    : (
-      <div {...classes()}>
-        <StickyContainer>
-          <Sticky>
-            {
-              ({ isSticky }) => <Banner
-                className={isSticky ? classes('sticky-banner').className : null}
-                invitation={invitation}
-                acceptInvitation={onAccept}
-                declineInvitation={onDecline}
-              />
-            }
-          </Sticky>
-          {children}
-        </StickyContainer>
-      </div>
-    );
+  const content = (
+    <div {...classes()}>
+      <StickyContainer>
+        <Sticky>
+          {
+            ({ isSticky }) => <Banner
+              className={isSticky ? classes({
+                element: 'sticky-banner',
+              }).className : null}
+              invitation={invitation}
+              acceptInvitation={onAccept}
+              declineInvitation={onDecline}
+              disabled={disabled}
+            />
+          }
+        </Sticky>
+        {children}
+      </StickyContainer>
+    </div>
+  );
 
   return (
       accessGranted

@@ -30,7 +30,7 @@ import MimeTypes from 'const/mimeTypes';
 export default class SelectorsBuilder {
   getSelectableMimeTypes() {
     return [
-      MimeTypes.r,      
+      MimeTypes.r,
       MimeTypes.sql,
       MimeTypes.cohort,
       MimeTypes.cohortdefinitionjson,
@@ -57,7 +57,7 @@ export default class SelectorsBuilder {
     return get(state, 'auth.principal.queryResult.result.id', -1);
   }
 
-  getCode(analysis, currentUserId, code) {
+  getCode(analysis, code) {
     const converted = fileConverter(
       code,
       codeFile => paths.analysisCode({
@@ -65,7 +65,7 @@ export default class SelectorsBuilder {
         codeFileId: codeFile.uuid,
       })
     );
-    converted.removable = currentUserId === get(code, 'author.id', -1);
+    converted.removable = get(code, 'permissions.DELETE_ANALYSIS_FILES', false);
     
     const mimeType = detectMimeTypeByExtension(code);
     converted.selectable = this.getSelectableMimeTypes().includes(mimeType);
@@ -74,8 +74,8 @@ export default class SelectorsBuilder {
 
   createSelectorForCodeList() {
     return createSelector(
-      [this.getAnalysis, this.getRawCodeList, this.getLoggedUserId],
-      (analysis, codeList, currentUserId) => codeList.map(this.getCode.bind(this, analysis, currentUserId)),
+      [this.getAnalysis, this.getRawCodeList],
+      (analysis, codeList) => codeList.map(this.getCode.bind(this, analysis)),
     );
   }
 

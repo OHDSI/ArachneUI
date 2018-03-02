@@ -25,6 +25,7 @@ import { reduxForm, reset as resetForm } from 'redux-form';
 import get from 'lodash/get';
 import actions from 'actions';
 import { forms } from 'modules/ExpertFinder/const';
+import { Utils } from 'services/Utils';
 import Links from './presenter';
 
 function mapStateToProps(state) {
@@ -33,10 +34,12 @@ function mapStateToProps(state) {
   const id = get(moduleState, 'data.result.id', '');
   const editable = get(moduleState, 'data.result.isEditable', false);
 
+  const items = data.map(item => ({ ...item, ...Utils.getSecureLink(item.url) }));
+
   return {
     id,
     isLoading: get(moduleState, 'isLoading', false),
-    items: data,
+    items,
     editable,
   };
 }

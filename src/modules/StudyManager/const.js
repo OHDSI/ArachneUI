@@ -69,7 +69,7 @@ const apiPaths = {
   analysisTypes: () => '/api/v1/analysis-management/analyses/types',
   moveAnalysis: () => '/api/v1/study-management/move-analysis',
   // Participants
-  searchUser: () => '/api/v1/user-management/users/search-user',
+  searchUser: () => '/api/v1/user-management/users/suggest',
   studyParticipants: ({ studyId, userId }) => `/api/v1/study-management/studies/${studyId}/participants${userId ? `/${userId}` : ''}`,
   // Documents
   uploadStudyDocument: ({ studyId }) => `/api/v1/study-management/studies/${studyId}/upload`,
