@@ -22,29 +22,38 @@
 
 import { connect } from 'react-redux';
 import { push as goToPage } from 'react-router-redux';
-import { dataSourcePermissions } from 'modules/DataCatalog/const';
+import { dataSourcePermissions, paths } from 'modules/DataCatalog/const';
 import actions from 'actions';
 import get from 'lodash/get';
 import { Utils } from 'services/Utils';
-import { paths } from 'modules/DataCatalog/const';
+import URI from 'urijs';
 import ToolbarActions from './presenter';
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   const datasourceData = get(state, 'dataCatalog.dataSource.data.result');
-  const isDeleted = !!get(datasourceData, 'deleted', '');
-  const isDeletable = get(datasourceData, `permissions[${dataSourcePermissions.delete}]`, false);
-  const canDelete = !isDeleted && isDeletable;
+  const isPublished = get(datasourceData, 'published', '');
+  const isUnpublishable = get(datasourceData, `permissions[${dataSourcePermissions.delete}]`, false);
+  const canUnpublish = isPublished && isUnpublishable;
   const dataSourceId = get(datasourceData, 'id', '');
+  const isMy = get(state, 'routing.locationBeforeTransitions.query.my', false);
+  const editUrl = new URI(paths.edit(dataSourceId));
+  if (isMy) {
+    editUrl.setSearch({
+      my: true,
+    });
+  }
 
   return {
-    canDelete,
+    canUnpublish: ownProps.mode === 'edit' ? canUnpublish : false,
+    canEdit: ownProps.mode === 'view' ? isUnpublishable : false,
     dataSourceId,
+    editUrl: editUrl.href(),
   };
 }
 
 const mapDispatchToProps = {
   load: actions.dataCatalog.dataSource.find,
-  remove: actions.dataCatalog.dataSource.delete,
+  unpublish: actions.dataCatalog.dataSource.unpublish,
   goToPage,
 };
 
@@ -53,15 +62,14 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...stateProps,
     ...dispatchProps,
     ...ownProps,
-    remove: () => {
-      Utils.confirmDelete()
-        .then(() => {
-          const dataSourceId = stateProps.dataSourceId;
-          dispatchProps.remove({ id: dataSourceId })
-            .then(() => dispatchProps.load({ id: dataSourceId }))
-            .then(() => dispatchProps.goToPage(paths.dataCatalog()))
-            .catch(() => {});
-        });
+    async unpublish() {
+      try {
+        await Utils.confirmDelete();
+        const dataSourceId = stateProps.dataSourceId;
+        await dispatchProps.unpublish({ id: dataSourceId });
+        await dispatchProps.load({ id: dataSourceId });
+        await dispatchProps.goToPage(paths.dataCatalog());
+      } catch (er) {}
     },
   };
 }

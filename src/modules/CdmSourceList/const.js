@@ -21,7 +21,6 @@
  */
 
 import keyMirror from 'keymirror';
-import { Utils } from 'services/Utils';
 
 const modal = keyMirror({
   createDataSource: null,
@@ -45,7 +44,6 @@ const apiPaths = {
   dataSources: ({ id }) => `/api/v1/data-sources${id ? `/${id}` : ''}`,
   dataSourceBusiness: ({ id }) => `/api/v1/data-sources/${id}/business`,
   registerDataSource: ({ id }) => `/api/v1/data-sources/${id}/register-on-central`,
-  dataNode: () => '/api/v1/datanode',
   characterization: ({ datasourceId, limit }) =>
     `/api/v1/achilles/${datasourceId}/jobs${limit ? '?size='+limit : ''}`,
   achillesResults: ({ datasourceId }) => `/api/v1/achilles/${datasourceId}/pull`,

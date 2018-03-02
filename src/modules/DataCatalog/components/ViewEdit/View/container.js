@@ -24,12 +24,13 @@
 import { Component, PropTypes } from 'react';
 import actions from 'actions/index';
 import get from 'lodash/get';
-import { Utils } from 'services/Utils';
+import isEmpty from 'lodash/isEmpty';
+import { Utils, ContainerBuilder } from 'services/Utils';
 import presenter from './presenter';
 
 // TODO!!!
 /** @augments { Component<any, any> } */
-class StatefulViewEdit extends Component {
+class StatefulView extends Component {
   static propTypes() {
     return {
       dataSourceId: PropTypes.string.isRequired,
@@ -52,23 +53,25 @@ class StatefulViewEdit extends Component {
   }
 }
 
-class DataCatalogViewEditBuilder {
+class DataCatalogViewBuilder extends ContainerBuilder {
 
   getComponent() {
-    return StatefulViewEdit;
+    return StatefulView;
   }
 
   mapStateToProps(state, ownProps) {
     const moduleState = get(state, 'dataCatalog');
     const reportsAvailable = get(state, 'dataCatalog.report.queryResult.result', []) || [];
+    const isDenied = isEmpty(get(state, 'dataCatalog.dataSource.data.result', {}, 'Object'));
   
     return {
       dataSourceId: ownProps.routeParams.dataSourceId,
       isLoading: moduleState.dataSource.isLoading || false,
       reportsAvailable,
-      isProfileSelected: ownProps.routeParams.isProfile === 'profile',
-      name: `${get(moduleState, 'dataSource.data.result.dataNode.name', '')}: ${get(moduleState, 'dataSource.data.result.name', '')}`,
+      isProfileSelected: get(ownProps, 'route.params.isProfileSelected', false),
+      name: `${get(moduleState, 'dataSource.data.result.dataNode.name', 'Not published')}: ${get(moduleState, 'dataSource.data.result.name', '')}`,
       modelType: get(moduleState, 'dataSource.data.result.modelType', ''),
+      isDenied,
     };
   }
 
@@ -89,17 +92,9 @@ class DataCatalogViewEditBuilder {
     };
   }
 
-  build() {
-    return Utils.buildConnectedComponent({
-      Component: this.getComponent(),
-      mapStateToProps: this.mapStateToProps,
-      mapDispatchToProps: this.getMapDispatchToProps(),
-      getFetchers: this.getFetchers,
-    });
-  }
 }
 
-export default DataCatalogViewEditBuilder;
+export default DataCatalogViewBuilder;
 export {
-  StatefulViewEdit,
+  StatefulView,
 };

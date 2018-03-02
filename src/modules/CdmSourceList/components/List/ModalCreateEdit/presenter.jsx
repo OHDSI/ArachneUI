@@ -21,14 +21,13 @@
  */
 
 import React from 'react';
-import { Modal } from 'arachne-ui-components';
-import { LoadingPanel } from 'arachne-ui-components';
-import { Form } from 'arachne-ui-components';
-import { FormInput } from 'arachne-ui-components';
-import { FormSelect } from 'arachne-ui-components';
-import { FormTextarea } from 'arachne-ui-components';
+import {
+  Modal,
+  LoadingPanel,
+  Form,
+} from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
-import PasswordField from 'components/PasswordField/connected';
+import { getDataSourceCreationFields } from 'const/dataSource';
 
 require('./style.scss');
 
@@ -56,101 +55,27 @@ function ModalCreateEdit(props) {
     submitBtn = {
       label: 'Create',
       loadingLabel: 'Creating...',
-    }
+    };
   }
 
   const cancelBtn = {
     label: 'Cancel',
-  }
-  
-  const fields = [
-    {
-      name: 'name',
-      className: 'col-xs-12',
-      InputComponent: {
-        component: FormInput,
-        props: {
-          mods: ['bordered'],
-          placeholder: 'Name of data source',
-          type: 'text',
-        }
-      },
-    },
-    {
-      name: 'dbmsType',
-      className: 'col-xs-12',
-      InputComponent: {
-        component: FormSelect,
-        props: {
-          mods: ['bordered'],
-          placeholder: 'DBMS Type',
-          options: dbmsTypeList,
-        }
-      },
-    },
-    {
-      name: 'connectionString',
-      className: 'col-md-12',
-      InputComponent: {
-        component: FormInput,
-        props: {
-          mods: ['bordered'],
-          placeholder: 'Connection string',
-          type: 'text',
-        }
-      },
-    },
-    {
-      name: 'cdmSchema',
-      className: 'col-xs-12',
-      InputComponent: {
-        component: FormInput,
-        props: {
-          mods: ['bordered'],
-          placeholder: 'CDM schema name',
-          type: 'text',
-        }
-      },
-    },
-    {
-      name: 'dbUsername',
-      className: 'col-md-12',
-      InputComponent: {
-        component: FormInput,
-        props: {
-          mods: ['bordered'],
-          placeholder: 'Username',
-          type: 'text',
-        }
-      },
-    },
-    {
-      name: 'dbPassword',
-      className: 'col-md-12',
-      InputComponent: {
-        component: PasswordField,
-        props: {
-          mods: ['bordered'],
-          showHint: false,
-        },
-      },
-    }
-  ];
+  };
 
   return (
-  	<Modal modal={props.modal} title={modalTitle}>
-			<Form
+    <Modal modal={props.modal} title={modalTitle}>
+      <Form
         {...classes({ extra: 'row' })}
         actionsClassName="col-xs-12"
-				fields={fields}
-				submitBtn={submitBtn}
+        fields={getDataSourceCreationFields(dbmsTypeList)}
+        submitBtn={submitBtn}
         cancelBtn={cancelBtn}
-				onSubmit={props.doSubmit}
+        onSubmit={props.doSubmit}
         onCancel={props.modal.close}
-				{...props}
-			/>
-      <LoadingPanel active={isLoading}/>
-  	</Modal>
+        {...props}
+      />
+      <LoadingPanel active={isLoading} />
+    </Modal>
   );
 }
 

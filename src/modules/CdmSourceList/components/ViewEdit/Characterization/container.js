@@ -63,7 +63,7 @@ class Characterization extends Component {
 }
 
 function mapStateToProps(state) {
-  const datasourceId = get(state, 'cdmSourceList.dataSourceBusiness.queryResult.result.id');
+  const datasourceId = get(state, 'cdmSourceList.dataSource.queryResult.result.id');
   const characterizationStatus = get(state, 'cdmSourceList.characterization.queryResult.result.content[0].status');
   const characterizationSource = get(state, 'cdmSourceList.characterization.queryResult.result.content[0].source');
   const thisCharacterization = get(state, 'cdmSourceList.characterization.queryResult.result.content[0].finished', null);

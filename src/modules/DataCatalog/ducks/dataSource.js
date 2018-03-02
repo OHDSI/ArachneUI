@@ -36,6 +36,10 @@ const invite = new Duck({
   name: 'DC_DATA_SOURCE_INVITE',
   urlBuilder: apiPaths.inviteDataSource,
 });
+const unpublish = new Duck({
+  name: 'DC_DATA_SOURCE_UNPUBLISH',
+  urlBuilder: apiPaths.unpublishDatasource,
+});
 
 export default {
   actions: {
@@ -43,6 +47,8 @@ export default {
       dataSource.actions.find({ isComplete: true, ...urlParams }, data),
     delete: (urlParams, data) =>
       dataSource.actions.delete({ isComplete: false, ...urlParams }, data),
+    update: dataSource.actions.update,
+    unpublish: unpublish.actions.update,
     invite: invite.actions,
   },
   reducer: dataSource.reducer,
