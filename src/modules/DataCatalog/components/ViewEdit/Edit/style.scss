@@ -16,28 +16,28 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 21, 2016
+ * Created: February 03, 2017
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+ @import 'styles/vars-and-mixins.scss';
 
-.#{$namespace} {
+ .#{$namespace} {
+   &data-source-entry-editor {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+ 
+    &__content {
+      padding: 0 2rem;
 
-	&cdm-data-source {
-		@include view-edit-page();
-
-		&__content {
-			&--empty {
-				display: flex;
-			}
-		}
-
-		&__row {
-			&--empty {
-				flex: 1;
-			}
-		}
-	}
-
-}
+      &--centered {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+    }     
+   }
+ }

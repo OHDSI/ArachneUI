@@ -41,7 +41,7 @@ function Actions({
   const tabList = [
     {
       label: 'General',
-      value: 'general',
+      value: '',
     },
     {
       label: 'Datasource profile',
@@ -54,7 +54,7 @@ function Actions({
   }
 
   return (
-    <div  {...classes()}>
+    <div {...classes()}>
       <Button
         {...classes('invite-button')}
         mods={['success']}

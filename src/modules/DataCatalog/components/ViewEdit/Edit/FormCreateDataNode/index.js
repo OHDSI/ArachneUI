@@ -16,59 +16,10 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 21, 2016
+ * Created: April 21, 2017
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+import FormCreateDataNode from './container';
 
-.#{$namespace} {
-
-	&cdm-data-source-business-data {
-	}
-
-	&cdm-data-source-form {
-		margin-top: 20px;
-
-		&__row {
-    	display: flex;
-			margin-top: 15px;
-    	padding-left: 20px;
-    	padding-right: 20px;
-
-			&--actions {
-      	background: $grey-lighter;
-				justify-content: flex-end;
-				margin-top: 25px;
-				padding-bottom: 10px;
-				padding-top: 10px;
-			}
-		}
-
-		&__label {
-			@include title();
-			padding-top: 7px;
-		}
-
-		&__required-mark {
-			padding-left: 3px;
-		}
-
-		&__required-notification {
-			font-style: italic;
-			margin-top: 5px;
-		}
-
-		&__btn {
-			margin-left: 10px;
-			padding-left: 15px;
-			padding-right: 15px;
-
-			&--unregister {
-				margin-right: auto;
-				margin-left: 0;
-			}
-		}
-	}
-
-}
+export default (new FormCreateDataNode()).build();

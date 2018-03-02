@@ -27,6 +27,7 @@ const types = {
   enumMulti: 'ENUM_MULTI',
   toggle: 'TOGGLE',
   date: 'DATE',
+  textarea: 'TEXTAREA',
 };
 
 export default types;

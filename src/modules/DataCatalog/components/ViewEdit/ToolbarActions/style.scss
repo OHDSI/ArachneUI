@@ -26,13 +26,13 @@
   &data-source-toolbar-actions {
     display: flex;
 
-    &__remove-ico {
+    &__action-ico {
       @include material-icon();
       font-size: 3rem;
       vertical-align: middle;
     }
 
-    &__remove {
+    &__action {
       color: $grey-dark;
       height: auto;
       padding: 0 10px;
