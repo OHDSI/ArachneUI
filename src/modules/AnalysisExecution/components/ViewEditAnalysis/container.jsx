@@ -21,7 +21,7 @@
  */
 
 import React, { Component, PropTypes } from 'react';
-import { get, ContainerBuilder } from 'services/Utils';
+import { get, ContainerBuilder, Utils } from 'services/Utils';
 import { refreshTime, analysisPermissions, submissionGroupsPageSize } from 'modules/AnalysisExecution/const';
 import actions from 'actions/index';
 import isEqual from 'lodash/isEqual';
@@ -127,8 +127,7 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
   }
 
   getFilter(search) {
-    let filter = qs.parse(search.replace(/^\?/, ''), { parseArrays: true }) || {};
-    filter = get(filter, 'filter', {}, 'Object');
+    let filter = Utils.getFilterValues(search);
     if ('hasInsight' in filter && filter.hasInsight === 'false') {
       delete filter.hasInsight;
     }

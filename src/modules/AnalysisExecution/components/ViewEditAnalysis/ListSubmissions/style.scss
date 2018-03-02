@@ -39,10 +39,6 @@
 			background: $white;
 			@include block-shadow();
 		}
-
-		&__filters-btn {
-			margin-bottom: 1rem;
-		}
 		
     &__list {
       padding: 0.3rem 0;
@@ -88,10 +84,24 @@
 
   &submissions-header {
 
-    display: flex;
-    background: $grey-lighter;
-    z-index: 1;
+		&__row {
+			display: flex;
+			background: $grey-lighter;
+			z-index: 1;
 
+			&--filters {
+				display: flex;
+				align-items: center;
+				padding: 0 1.5rem 1.75rem;
+			}			
+		}
+
+		&__filters-btn {
+			@include material-icon();
+			margin-right: 1rem;
+			line-height: 0.5;
+		}
+		
     &--sticky {
       @include block-shadow();
     }
@@ -108,7 +118,9 @@
     	}
 
     	&--source {
-    	  padding-left: 2rem;
+				padding-left: 2rem;
+				display: flex;
+				align-items: center;
     	}
 
     	&--insight {

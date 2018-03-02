@@ -29,6 +29,7 @@ import {
   paths,
   statusColors,
   submissionActionTypes,
+  submissionFilters,
 } from 'modules/AnalysisExecution/const';
 import LabelDataSource from 'components/LabelDataSource';
 import LabelSubmissionStatus from 'components/LabelSubmissionStatus';
@@ -193,6 +194,9 @@ function SubmissionsHeader(props) {
   const {
     isSticky,
     style,
+    isFiltered,
+    selectedFilters,
+    showFilters,
   } = props;
 
   if (isSticky) {
@@ -201,21 +205,29 @@ function SubmissionsHeader(props) {
 
   return (
     <div {...classes({ modifiers: { 'sticky': isSticky } })} style={style}>
-      <div {...classes('cell', 'source')}>
-        Data sources
+      <div {...classes('row')}>
+        <div {...classes('cell', 'source')}>
+          <Link {...classes('filters-btn')} onClick={showFilters}>filter_list</Link>
+          Data sources
+        </div>
+        <div {...classes('cell', 'status')}>
+          Status
+        </div>
+        <div {...classes('cell', 'execute')}>
+          Execute
+        </div>
+        <div {...classes('cell', 'result')}>
+          Result
+        </div>
+        <div {...classes('cell', 'publish')}>
+          Publish
+        </div>
       </div>
-      <div {...classes('cell', 'status')}>
-        Status
-      </div>
-      <div {...classes('cell', 'execute')}>
-        Execute
-      </div>
-      <div {...classes('cell', 'result')}>
-        Result
-      </div>
-      <div {...classes('cell', 'publish')}>
-        Publish
-      </div>
+      {isFiltered && <div {...classes('row', 'filters')}>Filtered by: {
+        selectedFilters.map(
+          ([filterId, filter]) => `${submissionFilters[filterId].label} ${Array.isArray(filter) ? `(${filter.length})` : ''}`
+        ).join(', ')
+      }</div>}
     </div>
   );
 }
@@ -332,6 +344,9 @@ function ListSubmissions(props) {
     page,
     path,
     showFilters,
+
+    isFiltered,
+    selectedFilters,
   } = props;
 
   const groupCount = submissionGroupList.length;
@@ -370,16 +385,18 @@ function ListSubmissions(props) {
   return (
     <div {...classes()}>
       <div {...classes('submissions-wrapper')}>
-        <Button {...classes('filters-btn')} mods={['submit', 'rounded']} onClick={showFilters}>Filter submissions</Button>
         <div {...classes('shadow-container')}>
-          {data.length ?
-            <StickyContainer>
-              <Sticky topOffset={-56}>
-                {() => <SubmissionsHeader />}
-              </Sticky>
-              { data }
-            </StickyContainer>
-            :
+          <StickyContainer>
+            <Sticky topOffset={-56}>
+              {() => <SubmissionsHeader
+                isFiltered={isFiltered}
+                selectedFilters={selectedFilters}
+                showFilters={showFilters}
+                />}
+            </Sticky>
+            { data }
+          </StickyContainer>
+          {!data.length &&
             <div {...classes('empty')}>
               No queries were submitted yet...
             </div>

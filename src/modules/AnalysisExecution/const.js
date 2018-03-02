@@ -296,6 +296,21 @@ const submissionStatuses = [
   },
 ];
 
+const submissionFilters = {
+  hasInsight: {
+    name: 'hasInsight',
+    label: 'Has insight',
+  },
+  dataSourceIds: {
+    name: 'dataSourceIds',
+    label: 'Datasource',
+  },
+  submissionStatuses: {
+    name: 'submissionStatuses',
+    label: 'Status',
+  },
+};
+
 export {
   apiPaths,
   form,
@@ -318,4 +333,5 @@ export {
   analysisTypes,
   submissionGroupsPageSize,
   submissionStatuses,
+  submissionFilters,
 };

@@ -25,10 +25,12 @@ import { connect } from 'react-redux';
 import { ModalUtils } from 'arachne-ui-components';
 import { modal, paths } from 'modules/AnalysisExecution/const';
 import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 import actions from 'actions';
 import Uri from 'urijs';
 import ListSubmissions from './presenter';
 import SelectorsBuilder from './selectors';
+import Utils from 'services/Utils';
 
 const selectors = (new SelectorsBuilder()).build();
 
@@ -42,6 +44,8 @@ function mapStateToProps(state) {
   const url = new Uri(cleanPath);
   url.setSearch(currentQuery);
 
+  const selectedFilters = Utils.getFilterValues(get(state, 'routing.locationBeforeTransitions.search', '', 'String'));
+
   return {
     analysisId: get(analysisData, 'id'),
     submissionGroupList: selectors.getSubmissionGroupList(state),
@@ -49,6 +53,8 @@ function mapStateToProps(state) {
     totalPages,
     page: number + 1,
     path: url.href(),
+    isFiltered: !isEmpty(selectedFilters),
+    selectedFilters: Object.entries(selectedFilters),
   };
 }
 

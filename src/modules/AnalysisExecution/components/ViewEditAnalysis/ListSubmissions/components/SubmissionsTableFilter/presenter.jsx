@@ -28,6 +28,7 @@ import {
 } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
 import { addAnyOption } from 'components/FiltersList/presenter';
+import { submissionFilters } from 'modules/AnalysisExecution/const';
 
 import './style.scss';
 
@@ -44,23 +45,23 @@ function SubmissionsTableFilter(props) {
   
   const fields = [
     {
-      type: 'TOGGLE', // TODO: const
-      name: 'hasInsight',
-      label: 'Has insight',
+      type: 'TOGGLE',
+      name: submissionFilters.hasInsight.name,
+      label: submissionFilters.hasInsight.label,
       forceOpened: true,
     },
     {
-      type: 'ENUM', // TODO: const
-      name: 'dataSourceIds',
+      type: 'ENUM',
+      name: submissionFilters.dataSourceIds.name,
       options: dataSourceList,
-      label: 'Data source',
+      label: submissionFilters.dataSourceIds.label,
       forceOpened: true,
     },
     {
-      type: 'ENUM', // TODO: const
-      name: 'submissionStatuses',
+      type: 'ENUM',
+      name: submissionFilters.submissionStatuses.name,
       options: statusList,
-      label: 'Status',
+      label: submissionFilters.submissionStatuses.label,
       forceOpened: true,
     },
   ];

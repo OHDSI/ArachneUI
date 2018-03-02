@@ -23,7 +23,7 @@
 import { Component, PropTypes } from 'react';
 import actions from 'actions';
 import { reset } from 'redux-form';
-import { ContainerBuilder, get } from 'services/Utils';
+import { ContainerBuilder, get, Utils } from 'services/Utils';
 import { form, modal, submissionStatuses, paths } from 'modules/AnalysisExecution/const';
 import { ModalUtils } from 'arachne-ui-components';
 import URI from 'urijs';
@@ -53,7 +53,7 @@ export default class SubmissionsTableFilterBuilder extends ContainerBuilder {
   getFormParams() {
     return {
       form: form.submissionsTableFilter,
-      enableReinitialize: false,
+      enableReinitialize: true,
     };
   }
   
@@ -67,11 +67,17 @@ export default class SubmissionsTableFilterBuilder extends ContainerBuilder {
     const dataSourceList = selectors.getDatasourceList(state);
     const statusList = submissionStatuses;
     const analysisId = get(state, 'analysisExecution.analysis.data.result.id');
-
+    const initialValues = Utils.getFilterValues(
+      get(state, 'routing.locationBeforeTransitions.search', '', 'String')
+    );
+    
     return {
       dataSourceList,
       statusList,
       analysisId,
+      initialValues: {
+        filter: initialValues,
+      },
     };
   }
 
