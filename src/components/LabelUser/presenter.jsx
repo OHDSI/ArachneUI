@@ -59,4 +59,14 @@ function LabelUser(props) {
   );
 }
 
+function userInfoConvert(data) {
+  return {
+    ...data,
+    name: `${data.firstname} ${data.middlename ? (data.middlename + ' ') : ''} ${data.lastname}`,
+  };
+}
+
 export default LabelUser;
+export {
+  userInfoConvert,
+};

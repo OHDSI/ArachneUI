@@ -93,6 +93,7 @@ function image({ classes, container, setContainer, data }) {
         images={[{ src: `data:image;base64,${data}` }]}
         visible={data !== null}
         container={container}
+        zIndex={10}
         onClose={() => {
         }}
       /> : null,

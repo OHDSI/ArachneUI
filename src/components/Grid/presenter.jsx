@@ -23,6 +23,7 @@
 import React from 'react';
 import BEMHelper from 'services/BemHelper';
 import filterTypes from 'const/filterTypes';
+import isEmpty from 'lodash/isEmpty';
 import numeral from 'numeral';
 import {
   LoadingPanel,
@@ -66,29 +67,40 @@ function Grid(props) {
     queryDecode: searchQueryDecode,
   };
 
+  const filtersExist = filterProps && !isEmpty(filterProps.fields);
+
   return (
     <div {...classes()}>
-      <div {...classes('filter-col')}>
+      {filtersExist ?
+        <div {...classes('filter-col')}>
           <FilterForm {...filterProps} type={filterTypes.column} />
         </div>
-        <div {...classes('main-area')}>
+        : null
+      }
+      <div {...classes('main-area')}>
+        {(title || Actions || filtersExist) ?
           <Toolbar caption={title}>
-            <FilterForm {...filterProps} type={filterTypes.dropdown} />
+            {filtersExist ?
+              <FilterForm {...filterProps} type={filterTypes.dropdown} />
+              : null
+            }
             {Actions}
           </Toolbar>
-          <div {...classes('content-wrapper')}>
-            {children}
-            <div {...classes('pagination-wrapper')}>
-              <div {...classes('pagination')}>
-                <Pagination pages={pages} currentPage={currentPage} path={path} />
-              </div>
-              <div {...classes('results-count')}>
-                <span>{resultsCountMessage}</span>
-              </div>
+          : null
+        }
+        <div {...classes('content-wrapper')}>
+          {children}
+          <div {...classes('pagination-wrapper')}>
+            <div {...classes('pagination')}>
+              <Pagination pages={pages} currentPage={currentPage} path={path} />
+            </div>
+            <div {...classes('results-count')}>
+              <span>{resultsCountMessage}</span>
             </div>
           </div>
-          <LoadingPanel active={isLoading} />
         </div>
+        <LoadingPanel active={isLoading} />
+      </div>
     </div>
   );
 }

@@ -30,51 +30,33 @@
           &__node-toggle {
             width: 0.4rem;
           }
+          &__node-toggle {
+            &--home {
+              margin-left: 1.5rem;
+            }
+          }
+          &__delete-handle {
+            margin-left: -1rem;
+          }
         }
       }
     }
     &--isRoot {
       /* fix for &__node width */
       position: absolute;
+      width: 100%;
     }
  
     &__node {
+      @include file-tree-item();
+    }
+
+    &__delete-handle {
+      @include material-icon();
       display: inline-block;
-      min-width: 100%;
-
-      &--selected {
-        background: $grey-light;
-      }
-
-      &-details {
-        align-items: center;
-        display: flex;
-        padding: .5rem 1rem;
-        
-        &:hover {
-          cursor: pointer;
-          background: $grey-light;
-        }
-      }
-
-      &-children {
-        padding-left: 2rem;
-      }
-
-      &-label {
-        flex: 1;
-      }
-      
-      &-toggle {
-        @include material-icon();
-        width: 1.8rem;
-        margin-right: .5rem;
-        flex-shrink: 0;
-        
-        &--spinning {
-          @include spinning();
-        }
-      }
+      margin-left: -2.3rem;
+      margin-right: 0.7rem;
+      cursor: pointer;
     }
   }
 }
