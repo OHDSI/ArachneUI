@@ -28,7 +28,7 @@ import report from './report';
 import reportDetails from './reportDetails';
 import characterization from './characterization';
 import dataNode from './dataNode';
-import registerDS from './registerDS';
+import registration from './registration';
 
 export default {
   actions: {
@@ -40,7 +40,7 @@ export default {
     reportDetails: reportDetails.actions,
     characterization: characterization.actions,
     dataNode: dataNode.actions,
-    registerDS: registerDS.actions,
+    registration: registration.actions,
   },
   reducer: {
     dataSourceList: dataSourceList.reducer,
@@ -51,6 +51,6 @@ export default {
     reportDetails: reportDetails.reducer,
     characterization: characterization.reducer,
     dataNode: dataNode.reducer,
-    registerDS: registerDS.reducer,
+    registration: registration.reducer,
   },
 };

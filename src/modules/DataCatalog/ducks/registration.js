@@ -27,7 +27,7 @@ const coreName = 'DC_REGISTER_DS';
 
 const registerDS = new Duck({
   name: coreName,
-  urlBuilder: apiPaths.registerDataSource,
+  urlBuilder: apiPaths.registration,
 });
 
 export default {

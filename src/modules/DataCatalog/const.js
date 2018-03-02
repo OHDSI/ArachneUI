@@ -51,7 +51,7 @@ const apiPaths = {
     `/api/v1/achilles/datasource/${id}/files/${path ? `${path}/${filename}` : filename}`,
   dataNode: ({ id }) => `/api/v1/data-nodes${id ? `/${id}` : '' }`,
   registerDataSource: ({ id }) => `/api/v1/data-sources/${id}/register-on-central`,
-  unpublishDatasource: ({ id }) => `/api/v1/data-sources/${id}/unpublish`,
+  registration: ({ id }) => `/api/v1/data-sources/${id}/registration`,
 };
 
 const paths = {

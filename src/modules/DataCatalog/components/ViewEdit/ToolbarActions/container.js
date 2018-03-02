@@ -45,7 +45,7 @@ function mapStateToProps(state, ownProps) {
 
 const mapDispatchToProps = {
   load: actions.dataCatalog.dataSource.find,
-  unpublish: actions.dataCatalog.dataSource.unpublish,
+  unpublish: actions.dataCatalog.registration.delete,
   goToPage,
 };
 
