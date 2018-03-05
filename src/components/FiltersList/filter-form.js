@@ -69,14 +69,16 @@ class Filter extends Component {
       const selectedFilters = {};
       Object.keys(nextProps.selectedFilters)
         .forEach((filterName) => {
-          let nextFilterValue = get(nextProps.selectedFilters, filterName, [], 'Array');
-          const existingFilterValue = get(this.props.selectedFilters, filterName, [], 'Array');
-          if (existingFilterValue.includes('')) {
-            // 'Any' option had been previously selected, then just ignore it
-            nextFilterValue = nextFilterValue.filter(value => value);
-          } else if (nextFilterValue.includes('')) {
-            // We're just selected it, cancel all other selected options
-            return false;
+          let nextFilterValue = get(nextProps.selectedFilters, filterName, [], 'Array|Boolean');
+          const existingFilterValue = get(this.props.selectedFilters, filterName, [], 'Array|Boolean');
+          if (Array.isArray(existingFilterValue) && Array.isArray(nextFilterValue)) {
+            if (existingFilterValue.includes('')) {
+              // 'Any' option had been previously selected, then just ignore it
+              nextFilterValue = nextFilterValue.filter(value => value);
+            } else if (nextFilterValue.includes('')) {
+              // We're just selected it, cancel all other selected options
+              return false;
+            }
           }
           
           selectedFilters[filterName] = nextFilterValue;

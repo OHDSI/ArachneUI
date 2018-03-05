@@ -30,7 +30,7 @@ import reportDetails from './reportDetails';
 import characterization from './characterization';
 import myDatasources from './myDatasources';
 import dataNode from './dataNode';
-import registerDS from './registerDS';
+import registration from './registration';
 import dbmsTypes from './dbmsTypes';
 
 export default {
@@ -45,7 +45,7 @@ export default {
     characterization: characterization.actions,
     myDatasources: myDatasources.actions,
     dataNode: dataNode.actions,
-    registerDS: registerDS.actions,
+    registration: registration.actions,
     dbmsTypes: dbmsTypes.actions,
   },
   reducer: {
@@ -59,7 +59,7 @@ export default {
     characterization: characterization.reducer,
     myDatasources: myDatasources.reducer,
     dataNode: dataNode.reducer,
-    registerDS: registerDS.reducer,
+    registration: registration.reducer,
     dbmsTypes: dbmsTypes.reducer,
   },
 };

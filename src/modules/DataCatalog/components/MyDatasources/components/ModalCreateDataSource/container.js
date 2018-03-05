@@ -24,7 +24,7 @@
 import { Component, PropTypes } from 'react';
 import actions from 'actions';
 import { ContainerBuilder, get } from 'services/Utils';
-import { form, modal } from 'modules/DataCatalog/const';
+import { forms, modal } from 'modules/DataCatalog/const';
 import { ModalUtils } from 'arachne-ui-components';
 import { executionPolicy } from 'const/dataSource';
 import presenter from './presenter';
@@ -56,7 +56,7 @@ export default class ModalCreateDataSourceBuilder extends ContainerBuilder {
   
   getFormParams() {
     return {
-      form: form.modalCreateDataSource,
+      form: forms.modalCreateDataSource,
       enableReinitialize: false,
     };
   }

@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,22 +15,11 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: February 13, 2018
+ * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon
+ * Created: February 21, 2018
  *
  */
 
-import Duck from 'services/Duck';
-import { apiPaths } from '../const';
+import CellRemove from './presenter';
 
-const coreName = 'DC_REGISTER_DS';
-
-const registerDS = new Duck({
-  name: coreName,
-  urlBuilder: apiPaths.registerDataSource,
-});
-
-export default {
-  actions: registerDS.actions,
-  reducer: registerDS.reducer,
-};
+export default CellRemove;

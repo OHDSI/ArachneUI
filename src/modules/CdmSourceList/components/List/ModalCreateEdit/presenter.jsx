@@ -55,26 +55,28 @@ function ModalCreateEdit(props) {
     submitBtn = {
       label: 'Create',
       loadingLabel: 'Creating...',
-    };
+    }
   }
 
   const cancelBtn = {
     label: 'Cancel',
   };
 
+  const fields = getDataSourceCreationFields(dbmsTypeList);
+
   return (
     <Modal modal={props.modal} title={modalTitle}>
       <Form
         {...classes({ extra: 'row' })}
         actionsClassName="col-xs-12"
-        fields={getDataSourceCreationFields(dbmsTypeList)}
+        fields={fields}
         submitBtn={submitBtn}
         cancelBtn={cancelBtn}
         onSubmit={props.doSubmit}
         onCancel={props.modal.close}
         {...props}
       />
-      <LoadingPanel active={isLoading} />
+      <LoadingPanel active={isLoading}/>
     </Modal>
   );
 }

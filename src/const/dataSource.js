@@ -239,7 +239,8 @@ function getDataSourceCreationFields(dbmsTypeList) {
         component: FormInput,
         props: {
           mods: ['bordered'],
-          placeholder: 'Name of data source *',
+          placeholder: 'Name of data source',
+          required: true,
           type: 'text',
         },
       },
@@ -263,7 +264,8 @@ function getDataSourceCreationFields(dbmsTypeList) {
         component: FormInput,
         props: {
           mods: ['bordered'],
-          placeholder: 'Connection string *',
+          placeholder: 'Connection string',
+          required: true,
           type: 'text',
         },
       },
@@ -275,7 +277,8 @@ function getDataSourceCreationFields(dbmsTypeList) {
         component: FormInput,
         props: {
           mods: ['bordered'],
-          placeholder: 'CDM schema name *',
+          placeholder: 'CDM schema name',
+          required: true,
           type: 'text',
         },
       },
@@ -287,7 +290,8 @@ function getDataSourceCreationFields(dbmsTypeList) {
         component: FormInput,
         props: {
           mods: ['bordered'],
-          placeholder: 'Username *',
+          placeholder: 'Username',
+          required: true,
           type: 'text',
         },
       },
@@ -300,7 +304,8 @@ function getDataSourceCreationFields(dbmsTypeList) {
         props: {
           mods: ['bordered'],
           showHint: false,
-          placeholder: 'Password *',
+          placeholder: 'Password',
+          required: true,
           type: 'password',
         },
       },

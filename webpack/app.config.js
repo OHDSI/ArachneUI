@@ -36,6 +36,8 @@ const appRoot = path.resolve(currentDir, 'src');
 
 const entryPoint = path.resolve(appRoot, 'index.js');
 
+const package = require('../package.json');
+const components = require('arachne-ui-components/package.json');
 
 const APP_TYPE = {
   CENTRAL: 'central',
@@ -51,15 +53,6 @@ const ENV_TYPE = {
 const appType = argv.app || APP_TYPE.CENTRAL;
 const env = argv.env || ENV_TYPE.PRODUCTION;
 const isSilent = argv.silent || false;
-
-let centralDomain = 'https://community.arachnenetwork.com';
-if (env === ENV_TYPE.DEV) {
-  centralDomain = 'http://localhost:8010';
-} else if (env === ENV_TYPE.TEST) {
-  centralDomain = 'https://testcommunity.aracnhenetwork.com';
-} else if (env === ENV_TYPE.QA) {
-  centralDomain = 'https://qacommunity.arachnenetwork.com';
-}
 
 const preLoaders = [];
 if (!isSilent) {
@@ -140,8 +133,8 @@ const config = {
       __APP_TYPE_NODE__: appType === APP_TYPE.NODE,
 
       __DEV__: env === ENV_TYPE.DEV,
-
-      __CENTRAL_DOMAIN__: JSON.stringify(centralDomain),
+      __VERSION__: JSON.stringify(package.version),
+      __VERSION_COMPONENTS__: JSON.stringify(components.version),
       //
       'process.env': {
         NODE_ENV: env === ENV_TYPE.PRODUCTION ? '"production"' : '"development"',

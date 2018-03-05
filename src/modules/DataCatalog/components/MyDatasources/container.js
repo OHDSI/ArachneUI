@@ -64,7 +64,7 @@ export default class MyDatasourcesBuilder extends ContainerBuilder {
     const queryParams = get(state, 'routing.locationBeforeTransitions.query');
 
     return {
-      filterFields: [], // selectors.getFilterList(state),
+      filterFields: [],
       columns: selectors.getColumns(state),
       data: selectors.getData(state),
       isLoading: get(state, 'dataCatalog.myDatasources.isLoading', false),

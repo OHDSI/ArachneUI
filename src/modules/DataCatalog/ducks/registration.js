@@ -16,45 +16,21 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 20, 2017
+ * Created: February 13, 2018
  *
  */
 
-import { Component } from 'react';
-import presenter from './presenter';
+import Duck from 'services/Duck';
+import { apiPaths } from '../const';
 
-export default class FileBrowser extends Component {
+const coreName = 'DC_REGISTER_DS';
 
-  constructor(props) {
-    super(props);
+const registerDS = new Duck({
+  name: coreName,
+  urlBuilder: apiPaths.registration,
+});
 
-    this.state = {
-      container: null,
-    };
-
-    this.setContainer = this.setContainer.bind(this);
-  }
-
-  componentWillUnmount() {
-    this.state.container && this.state.container.removeEventListener('mousewheel', this.onScroll);
-  }
-
-  setContainer(element) {
-    this.setState({
-      container: element,
-    });
-    element.addEventListener('mousewheel', this.onScroll);
-  }
-
-  onScroll(event) {
-    event.stopImmediatePropagation();
-  }
-
-  render() {
-    return presenter({
-      ...this.props,
-      ...this.state,
-      setContainer: this.setContainer,
-    });
-  }
-}
+export default {
+  actions: registerDS.actions,
+  reducer: registerDS.reducer,
+};
