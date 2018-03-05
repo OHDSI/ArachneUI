@@ -25,6 +25,7 @@ import dataSource from './dataSource';
 import dataSourceList from './dataSourceList';
 import dataSourceBusiness from './dataSourceBusiness';
 import dbmsTypes from './dbmsTypes';
+import achillesResults from './achillesResults';
 
 export default {
   actions: {
@@ -33,6 +34,7 @@ export default {
     dataSourceList: dataSourceList.actions,
     dataSourceBusiness: dataSourceBusiness.actions,
     dbmsTypes: dbmsTypes.actions,
+    achillesResults: achillesResults.actions,
 
   },
   reducer: {
@@ -41,5 +43,6 @@ export default {
     dataSourceList: dataSourceList.reducer,
     dataSourceBusiness: dataSourceBusiness.reducer,
     dbmsTypes: dbmsTypes.reducer,
+    achillesResults: achillesResults.reducer,
   },
 };

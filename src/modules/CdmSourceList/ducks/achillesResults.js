@@ -23,16 +23,14 @@
 import Duck from 'services/Duck';
 import { apiPaths } from '../const';
 
-const coreName = 'DC_ACHILLES_RESULTS';
+const coreName = 'CSL_ACHILLES_RESULTS';
 
 const achillesResults = new Duck({
   name: coreName,
-  urlBuilder: apiPaths.achillesResultsUpload,
+  urlBuilder: apiPaths.achillesResults,
 });
 
 export default {
-  actions: {
-    upload: achillesResults.actions.create,
-  },
+  actions: achillesResults.actions,
   reducer: achillesResults.reducer,
 };
