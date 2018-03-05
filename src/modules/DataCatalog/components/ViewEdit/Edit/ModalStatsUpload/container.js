@@ -24,7 +24,7 @@
 import { Component, PropTypes } from 'react';
 import actions from 'actions';
 import { ContainerBuilder, get, buildFormData } from 'services/Utils';
-import { form, modal } from 'modules/DataCatalog/const';
+import { forms, modal } from 'modules/DataCatalog/const';
 import { ModalUtils } from 'arachne-ui-components';
 
 import presenter from './presenter';
@@ -49,7 +49,7 @@ export default class ModalStatsUploadBuilder extends ContainerBuilder {
   
   getFormParams() {
     return {
-      form: form.modalStatsUpload,
+      form: forms.modalStatsUpload,
       enableReinitialize: false,
     };
   }
