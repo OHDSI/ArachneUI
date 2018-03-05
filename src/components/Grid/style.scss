@@ -45,8 +45,9 @@
     }
 
     &__results-count {
-      margin-right: 2.5rem;
-      margin-bottom: 1rem;
+      margin-right: calc( 2.5rem + 16px );
+      margin-bottom: calc( 1rem + 16px );
+      position: fixed;
     }
   }
   
