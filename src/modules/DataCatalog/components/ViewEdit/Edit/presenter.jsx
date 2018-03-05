@@ -27,6 +27,7 @@ import EmptyState from 'components/EmptyState';
 import {
   PageContent,
   LoadingPanel,
+  Panel,
 } from 'arachne-ui-components';
 
 import Toolbar from 'modules/DataCatalog/components/ViewEdit/Toolbar';
@@ -46,12 +47,13 @@ class Edit {
       permissions,
       isDatanodeRegistered,
       dataSourceId,
+      isDenied,
     } = props;
 
     return (
       <PageContent title={`${props.name} | Arachne`}>
         <div {...classes()}>
-          {permissions.DELETE_DATASOURCE
+          {!isDenied && permissions.DELETE_DATASOURCE
             ? [
               <Toolbar mode={'edit'} />,
               <div {...classes('content')}>
@@ -64,7 +66,9 @@ class Edit {
                     <div className='col-xs-6 col-md-6'>
                       {this.getAchillesSettings()}
                     </div>]
-                  : <FormCreateDataNode dataSourceId={dataSourceId} />
+                  : <Panel title='Create data node' {...classes('create-form')}>
+                      <FormCreateDataNode dataSourceId={dataSourceId} />
+                    </Panel>
                   }
                 </div>
               </div>,

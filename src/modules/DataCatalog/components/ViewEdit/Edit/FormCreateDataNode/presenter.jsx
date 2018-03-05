@@ -24,9 +24,6 @@ import React from 'react';
 import {
   LoadingPanel,
   Form,
-  FormInput,
-  FormTextarea,
-  Panel,
 } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
 import { AttributesFormListItem } from '../AttributesList/presenter';
@@ -39,12 +36,25 @@ function FormCreateDataNode(props) {
 
   const {
     isLoading,
+    dataSourceId,
+    doSubmit,
   } = props;
 
   const submitBtn = {
     label: 'Create',
     loadingLabel: 'Creating...',
   };
+
+  const useAutocomplete = dataSourceId === undefined;
+  let autocompleteOptions = {};
+  if (useAutocomplete) {
+    autocompleteOptions = {
+      options: [],
+      fetchOptions: () => {},
+      promptTextCreator: label => `Create dananode ${label}`,
+      onNewOptionClick: ({ value }) => doSubmit({ name: value, description: '' }),
+    };
+  }
 
   const fields = [
     {
@@ -57,6 +67,8 @@ function FormCreateDataNode(props) {
             label: 'Name of data node',
             type: fieldTypes.string,
           },
+          useAutocomplete,
+          autocompleteOptions,
         },
       },
     },
@@ -76,16 +88,16 @@ function FormCreateDataNode(props) {
   ];
 
   return (
-    <Panel title={'Create Data Node'} {...classes()}>
+    <div title={'Create Data Node'} {...classes()}>
       <Form
         fields={fields}
         submitBtn={submitBtn}
         mods={['no-spacing', 'actions-inline']}
-        onSubmit={props.doSubmit}
+        onSubmit={doSubmit}
         {...props}
       />
       <LoadingPanel active={isLoading} />
-    </Panel>
+    </div>
   );
 }
 

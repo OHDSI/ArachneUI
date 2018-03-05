@@ -29,6 +29,7 @@ import {
 } from 'services/SolrQuery';
 import presenter from './presenter';
 import SelectorsBuilder from './selectors';
+import { paths } from 'modules/DataCatalog/const';
 
 const selectors = (new SelectorsBuilder()).build();
 
@@ -43,7 +44,7 @@ class DataCatalogStatefulList extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.searchStr !== nextProps.searchStr) {
-      this.props.loadDsList({ searchStr: nextProps.searchStr });
+      this.props.loadDsList({ searchStr: nextProps.searchStr, onlyMy: nextProps.onlyMy });
     }
   }
 
@@ -77,7 +78,7 @@ class DataCatalogListBuilder extends ContainerBuilder {
   }
 
   getFetchers({ state }) {
-    const searchStr = state.routing.locationBeforeTransitions.search;
+    const searchStr = state.routing.locationBeforeTransitions.query;
     return {
       loadDsList: actions.dataCatalog.dataSourceList.query.bind(null, { searchStr }),
     };

@@ -24,6 +24,7 @@
 import { Component, PropTypes } from 'react';
 import actions from 'actions/index';
 import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 import { Utils, ContainerBuilder } from 'services/Utils';
 import presenter from './presenter';
 
@@ -61,14 +62,16 @@ class DataCatalogViewBuilder extends ContainerBuilder {
   mapStateToProps(state, ownProps) {
     const moduleState = get(state, 'dataCatalog');
     const reportsAvailable = get(state, 'dataCatalog.report.queryResult.result', []) || [];
+    const isDenied = isEmpty(get(state, 'dataCatalog.dataSource.data.result', {}, 'Object'));
   
     return {
       dataSourceId: ownProps.routeParams.dataSourceId,
       isLoading: moduleState.dataSource.isLoading || false,
       reportsAvailable,
       isProfileSelected: get(ownProps, 'route.params.isProfileSelected', false),
-      name: `${get(moduleState, 'dataSource.data.result.dataNode.name', '')}: ${get(moduleState, 'dataSource.data.result.name', '')}`,
+      name: `${get(moduleState, 'dataSource.data.result.dataNode.name', 'Not published')}: ${get(moduleState, 'dataSource.data.result.name', '')}`,
       modelType: get(moduleState, 'dataSource.data.result.modelType', ''),
+      isDenied,
     };
   }
 
