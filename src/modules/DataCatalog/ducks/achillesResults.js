@@ -20,29 +20,19 @@
  *
  */
 
-import characterization from './characterization';
-import dataSource from './dataSource';
-import dataSourceList from './dataSourceList';
-import dataSourceBusiness from './dataSourceBusiness';
-import dbmsTypes from './dbmsTypes';
-import achillesResults from './achillesResults';
+import Duck from 'services/Duck';
+import { apiPaths } from '../const';
+
+const coreName = 'DC_ACHILLES_RESULTS';
+
+const achillesResults = new Duck({
+  name: coreName,
+  urlBuilder: apiPaths.achillesResultsUpload,
+});
 
 export default {
   actions: {
-    characterization: characterization.actions,
-    dataSource: dataSource.actions,
-    dataSourceList: dataSourceList.actions,
-    dataSourceBusiness: dataSourceBusiness.actions,
-    dbmsTypes: dbmsTypes.actions,
-    achillesResults: achillesResults.actions,
-
+    upload: achillesResults.actions.create,
   },
-  reducer: {
-    characterization: characterization.reducer,
-    dataSource: dataSource.reducer,
-    dataSourceList: dataSourceList.reducer,
-    dataSourceBusiness: dataSourceBusiness.reducer,
-    dbmsTypes: dbmsTypes.reducer,
-    achillesResults: achillesResults.reducer,
-  },
+  reducer: achillesResults.reducer,
 };

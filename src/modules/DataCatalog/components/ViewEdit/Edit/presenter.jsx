@@ -28,9 +28,11 @@ import {
   PageContent,
   LoadingPanel,
   Panel,
+  Button,
 } from 'arachne-ui-components';
 
 import Toolbar from 'modules/DataCatalog/components/ViewEdit/Toolbar';
+import ModalStatsUpload from 'modules/DataCatalog/components/ViewEdit/Edit/ModalStatsUpload';
 import FormCreateDataNode from './FormCreateDataNode';
 import AttributeList from './AttributesList';
 
@@ -48,6 +50,8 @@ class Edit {
       isDatanodeRegistered,
       dataSourceId,
       isDenied,
+      isVirtual,
+      showUploadForm,
     } = props;
 
     return (
@@ -55,7 +59,16 @@ class Edit {
         <div {...classes()}>
           {!isDenied && permissions.DELETE_DATASOURCE
             ? [
-              <Toolbar mode={'edit'} />,
+              <Toolbar mode={'edit'}>
+                {isDatanodeRegistered && !isVirtual
+                  ? <Button
+                    label={'Upload Achilles results'}
+                    mods={['rounded', 'submit']}
+                    onClick={showUploadForm}
+                  />
+                  : null
+                }
+              </Toolbar>,
               <div {...classes('content')}>
                 <div className="row">
                   {isDatanodeRegistered
@@ -78,6 +91,7 @@ class Edit {
               </div>
             }
         </div>
+        <ModalStatsUpload />
         <LoadingPanel active={props.isLoading} />
       </PageContent>
     );
