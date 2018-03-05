@@ -127,7 +127,7 @@ export class ActionsLine extends Component {
     const submit = (
       <Button
         {...this.submitClasses()}
-        mods={['success']}
+        mods={['success', 'rounded']}
         label="Submit"
         onClick={this.openSubmitModal}
         disabled={!this.props.canSubmit}

@@ -23,7 +23,7 @@
 import { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { ModalUtils } from 'arachne-ui-components';
-import { modal, paths } from 'modules/AnalysisExecution/const';
+import { modal, paths, submissionFilters, submissionStatuses } from 'modules/AnalysisExecution/const';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import actions from 'actions';
@@ -44,7 +44,31 @@ function mapStateToProps(state) {
   const url = new Uri(cleanPath);
   url.setSearch(currentQuery);
 
-  const selectedFilters = Utils.getFilterValues(get(state, 'routing.locationBeforeTransitions.search', '', 'String'));
+  const rawSelectedFilters = Utils.getFilterValues(get(state, 'routing.locationBeforeTransitions.search', '', 'String'));
+  const selectedFilters = {};
+  const datasources = get(state, 'studyManager.study.data.result.dataSources', [], 'Array');
+  Object.entries(rawSelectedFilters)
+    .forEach(([filterId, filter]) => {
+      switch (filterId) {
+        case submissionFilters.hasInsight.name:
+          selectedFilters[filterId] = [filter ? 'Only with insights' : ''];
+          break;
+        case submissionFilters.submissionStatuses.name:
+          selectedFilters[filterId] = filter.map((f) => {
+            const status = submissionStatuses.find(s => s.value === f);
+            return status.label;
+          });
+          break;
+        case submissionFilters.dataSourceIds.name:
+          selectedFilters[filterId] = filter.map((f) => {
+            const datasource = datasources.find(ds => ds.id === parseInt(f, 10));
+            if (datasource) {
+              return `${datasource.dataNode.name}: ${datasource.name}`;
+            }
+          });
+          break;
+      }
+    });
 
   return {
     analysisId: get(analysisData, 'id'),

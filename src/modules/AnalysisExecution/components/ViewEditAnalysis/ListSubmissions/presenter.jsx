@@ -224,13 +224,16 @@ function SubmissionsHeader(props) {
       </div>
       <div {...classes('row', 'filters')}>
         <div>
-          {isFiltered && <span>Filtered by: {
-            selectedFilters.map(
-              ([filterId, filter]) => `${submissionFilters[filterId].label} ${Array.isArray(filter) ? `(${filter.length})` : ''}`
-            ).join(', ')
-          }</span>}
+          {isFiltered
+            ? <div><span {...classes('filter-message')}>Filtered by</span>: {
+              selectedFilters.map(
+                ([filterId, filter]) => `${submissionFilters[filterId].label} (${filter.join(', ')})`
+              ).join(', ')
+            }</div>
+            : <span>No filters applied</span>
+          }
         </div>
-        <Button {...classes('filters-btn')} onClick={showFilters} mods={['success', 'rounded']}>Filter</Button>
+        <Button {...classes('filters-btn')} onClick={showFilters} mods={['submit', 'rounded']}>Filter</Button>
       </div>
     </div>
   );

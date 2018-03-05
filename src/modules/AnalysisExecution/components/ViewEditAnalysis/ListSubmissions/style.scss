@@ -93,9 +93,13 @@
 				border-top: 1px solid $grey;
 				display: flex;
 				align-items: center;
-				padding: 1rem 2rem;
+				padding: 1rem 1rem 1rem 2rem;
 				justify-content: space-between;
 			}			
+		}
+
+		&__filter-message {
+			font-weight: 600;
 		}
 
 		&__filters-btn {
