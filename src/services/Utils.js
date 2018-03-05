@@ -218,7 +218,7 @@ const detectMimeTypeByExtension = (file) => {
       type = mimeTypes.report;
     } else if (type === mimeTypes.text) {
       const extension = file.name.split('.').pop().toLowerCase();
-      type = mimeTypes[extension];
+      type = mimeTypes[extension] ? mimeTypes[extension] : mimeTypes.text;
     }
   }
   return type;
@@ -415,9 +415,10 @@ class Utils {
       let query = nextState.location.query;
       if (!query || Object.keys(query).length === 0) {
         const savedFilter = getSavedFilter();
+        const page = get(savedFilter, 'page', '1');
         query = {
           ...savedFilter,
-          page: 1,
+          page,
         };
         replace({ pathname: basePath, query });
       }
@@ -486,6 +487,13 @@ class Utils {
     return data;
   }
 
+  static getSorting(location) {
+    return {
+      sortBy: location.query.sortBy,
+      sortAsc: location.query.sortAsc === 'true',
+    };
+  }
+
 }
 
 class ContainerBuilder {
@@ -494,13 +502,19 @@ class ContainerBuilder {
     return Utils.buildConnectedComponent({
       Component: this.getComponent(),
       mapStateToProps: this.mapStateToProps ?
-        this.mapStateToProps.bind(this):
-        this.mapStateToProps,
-      getMapDispatchToProps: this.getMapDispatchToProps,
+        this.mapStateToProps.bind(this)
+        : this.mapStateToProps,
+      getMapDispatchToProps: this.getMapDispatchToProps ?
+        this.getMapDispatchToProps.bind(this)
+        : this.getMapDispatchToProps,
       mapDispatchToProps: this.mapDispatchToProps,
       mergeProps: this.mergeProps,
-      getModalParams: this.getModalParams,
-      getFormParams: this.getFormParams,
+      getModalParams: this.getModalParams
+        ? this.getModalParams.bind(this)
+        : this.getModalParams,
+      getFormParams: this.getFormParams
+        ? this.getFormParams.bind(this)
+        : this.getFormParams,
       getFetchers: this.getFetchers
         ? this.getFetchers.bind(this)
         : this.getFetchers,

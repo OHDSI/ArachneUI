@@ -31,8 +31,8 @@ import { paths as centralPaths } from 'modules/DataCatalog/const';
 
 require('./style.scss');
 
-function CellPublish({ published, onClick, isCdm, centralId }) {
-  const classes = new BEMHelper('data-source-list-cell-publish');
+function CellRegister({ published, onClick, isCdm, centralId, centralDomain }) {
+  const classes = new BEMHelper('data-source-list-cell-register');
 
   return <div {...classes()}>
     {published ?
@@ -47,21 +47,21 @@ function CellPublish({ published, onClick, isCdm, centralId }) {
         {...classes('btn')}
         mods={['submit', 'rounded']}
         label="Publish"
-        link={`${__CENTRAL_DOMAIN__}${centralPaths.edit(centralId)}`}
+        link={`${centralDomain}/${centralPaths.edit(centralId)}`}
         target={'_blank'}
       />
     }
   </div>;
 }
 
-function CellEdit({ editDataSource, removeDataSource, value }) {
+function CellEdit({ editDataSource, removeDataSource, value, published }) {
   const classes = new BEMHelper('data-source-list-cell-edit');
   return (
     <div {...classes('btn-block')}>
       <Button {...classes('btn')} onClick={() => editDataSource(value)}>
         <i {...classes('btn-ico')}>edit</i>
       </Button>
-      <Button {...classes('btn')} onClick={() => removeDataSource({ id: value })}>
+      <Button {...classes('btn')} onClick={() => removeDataSource({ id: value, published })}>
         <i {...classes('btn-ico')}>delete</i>
       </Button>
     </div>
@@ -93,6 +93,7 @@ function DataSourceTable(props) {
     goToDataSource,
     setSearch,
     sorting,
+    centralDomain,
   } = props;
 
   return (
@@ -130,14 +131,15 @@ function DataSourceTable(props) {
         header="Model"
         field="modelType"
       />
-      <CellPublish
-        {...tableClasses('publish')}
+      <CellRegister
+        {...tableClasses('register')}
         props={
           entity => ({
             published: entity.published,
             onClick: () => goToDataSource(entity.id),
             isCdm: entity.modelType === modelTypesValues.CDM,
             centralId: entity.centralId,
+            centralDomain,
           })
         }
       />
@@ -146,6 +148,7 @@ function DataSourceTable(props) {
         field="id"
         editDataSource={editDataSource}
         removeDataSource={remove}
+        props={entity => ({ published: entity.published })}
       />
     </Table>
   );
