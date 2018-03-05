@@ -47,7 +47,7 @@ function CellRegister({ published, onClick, isCdm, centralId, centralDomain }) {
         {...classes('btn')}
         mods={['submit', 'rounded']}
         label="Publish"
-        link={`${centralDomain}/${centralPaths.edit(centralId)}`}
+        link={`${centralDomain}${centralPaths.edit(centralId)}`}
         target={'_blank'}
       />
     }
