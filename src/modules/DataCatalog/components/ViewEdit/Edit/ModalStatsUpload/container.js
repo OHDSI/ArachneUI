@@ -23,7 +23,7 @@
 //@ts-check
 import { Component, PropTypes } from 'react';
 import actions from 'actions';
-import { ContainerBuilder, get } from 'services/Utils';
+import { ContainerBuilder, get, buildFormData } from 'services/Utils';
 import { form, modal } from 'modules/DataCatalog/const';
 import { ModalUtils } from 'arachne-ui-components';
 
@@ -61,9 +61,11 @@ export default class ModalStatsUploadBuilder extends ContainerBuilder {
   }
   
  
-  mapStateToProps(state, ownProps) {     
+  mapStateToProps(state, ownProps) {
+      const id = get(state, 'dataCatalog.dataSource.data.result.id');
 
     return {
+      id,
     };
   }
 
@@ -83,7 +85,8 @@ export default class ModalStatsUploadBuilder extends ContainerBuilder {
       ...stateProps,
       ...dispatchProps,
       async doSubmit(data) {
-        const promise = await dispatchProps.upload(null, data);
+        const file = buildFormData({ file: get(data, 'archive[0]', {}) });
+        const promise = await dispatchProps.upload({ id: stateProps.id }, file);
         dispatchProps.closeModal();
 
         return promise;
