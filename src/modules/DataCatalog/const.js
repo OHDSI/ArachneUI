@@ -27,6 +27,8 @@ const forms = keyMirror({
   facetedSearch: null,
   inviteDataSource: null,
   report: null,
+  editDataSource: null,
+  createDataNode: null,
 });
 
 const modal = keyMirror({
@@ -47,11 +49,15 @@ const apiPaths = {
   latestCharachterization: ({ id }) => `/api/v1/achilles/datasource/${id}`,
   report: ({ id, filename, path }) =>
     `/api/v1/achilles/datasource/${id}/files/${path ? `${path}/${filename}` : filename}`,
+  dataNode: ({ id }) => `/api/v1/data-nodes${id ? `/${id}` : '' }`,
+  registerDataSource: ({ id }) => `/api/v1/data-sources/${id}/register-on-central`,
+  registration: ({ id }) => `/api/v1/data-sources/${id}/registration`,
 };
 
 const paths = {
   dataCatalog: id => `/data-catalog/data-sources${id ? `/${id}` : ''}`,
   studies: id => `/api/v1/study-management/studies${id ? `/${id}` : ''}`,
+  edit: id => `/data-catalog/data-sources/${id}/edit`,
 };
 
 const imgs = {

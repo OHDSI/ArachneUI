@@ -23,13 +23,10 @@
 import React, { PropTypes } from 'react';
 import BEMHelper from 'services/BemHelper';
 
-import { PageContent } from 'arachne-ui-components';
-import { LoadingPanel } from 'arachne-ui-components';
-import { Toolbar } from 'arachne-ui-components';
+import { PageContent, LoadingPanel, Toolbar } from 'arachne-ui-components';
 import Actions from './Actions/index';
 import Table from './Table/index';
 import ModalCreateEdit from './ModalCreateEdit/index';
-import ModalCreateDataNode from './ModalCreateDataNode';
 
 require('./style.scss');
 
@@ -44,7 +41,6 @@ function List({ isLoading }) {
         </Toolbar>
         <Table />
         <ModalCreateEdit />
-        <ModalCreateDataNode />
         <LoadingPanel active={isLoading} />
       </div>
     </PageContent>

@@ -23,12 +23,15 @@
 import React from 'react';
 import { Route, IndexRedirect } from 'react-router';
 import ListDataSources from './components/List';
-import ViewEditDataSource from './components/ViewEdit';
+import ViewDataSource from './components/ViewEdit/View';
+import EditDataSource from './components/ViewEdit/Edit';
 
 function Routes() {
   return [
-    <Route path="data-sources" component={ListDataSources}/>,
-    <Route path="data-sources/:dataSourceId(/:isProfile)" component={ViewEditDataSource}/>,
+    <Route path="data-sources" component={ListDataSources} />,
+    <Route path="data-sources/:dataSourceId" component={ViewDataSource} />,
+    <Route path="data-sources/:dataSourceId/profile" component={ViewDataSource} params={{ isProfileSelected: true }} />,
+    <Route path="data-sources/:dataSourceId/edit" component={EditDataSource} />,
     <IndexRedirect to="data-sources"/>,
   ]
 }

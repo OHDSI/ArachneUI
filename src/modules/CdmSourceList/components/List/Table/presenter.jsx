@@ -26,54 +26,42 @@ import { Table } from 'arachne-ui-components';
 import { TableCellText as Cell } from 'arachne-ui-components';
 import { Link } from 'arachne-ui-components';
 import { Button } from 'arachne-ui-components';
-import { healthStatuses } from 'const/dataSource';
+import { healthStatuses, modelTypesValues } from 'const/dataSource';
+import { paths as centralPaths } from 'modules/DataCatalog/const';
 
 require('./style.scss');
 
-function CellRegistered({ value }) {
-  const classes = new BEMHelper('data-source-list-cell-registered');
-  const isRegistered = value;
-  const modifiers = isRegistered ? 'green' : 'grey';
-
-  return (
-    <span {...classes({ modifiers })}>
-      {isRegistered ? 'Registered' : 'Not registered'}
-    </span>
-  );
-}
-
-function CellRegister({ isRegistered, onClick }) {
+function CellRegister({ published, onClick, isCdm, centralId, centralDomain }) {
   const classes = new BEMHelper('data-source-list-cell-register');
 
-  return (
-    <div {...classes()}>
-      {isRegistered ?
-        <Button
-          {...classes('btn')}
-          mods={['success', 'rounded']}
-          label="Edit metadata"
-          onClick={onClick}
-        />
-        :
-        <Button
-          {...classes('btn')}
-          mods={['submit', 'rounded']}
-          label="Register"
-          onClick={onClick}
-        />
-      }
-    </div>
-  );
+  return <div {...classes()}>
+    {published ?
+      <Button
+        {...classes('btn')}
+        mods={['success', 'rounded']}
+        label="Generate reports"
+        onClick={onClick}
+      />
+      :
+      <Button
+        {...classes('btn')}
+        mods={['submit', 'rounded']}
+        label="Publish"
+        link={`${centralDomain}/${centralPaths.edit(centralId)}`}
+        target={'_blank'}
+      />
+    }
+  </div>;
 }
 
-function CellEdit({ editDataSource, removeDataSource, value, isRegistered }) {
+function CellEdit({ editDataSource, removeDataSource, value, published }) {
   const classes = new BEMHelper('data-source-list-cell-edit');
   return (
     <div {...classes('btn-block')}>
       <Button {...classes('btn')} onClick={() => editDataSource(value)}>
         <i {...classes('btn-ico')}>edit</i>
       </Button>
-      <Button {...classes('btn')} onClick={() => removeDataSource({ id: value, isRegistered })}>
+      <Button {...classes('btn')} onClick={() => removeDataSource({ id: value, published })}>
         <i {...classes('btn-ico')}>delete</i>
       </Button>
     </div>
@@ -89,8 +77,8 @@ function CellName({ value, healthStatus }) {
       modifiers: [healthStatus.title],
       extra: 'ac-tooltip',
     })}
-         aria-label={healthStatuses.getTitle(healthStatus.title)}
-         data-tootik-conf="right"
+      aria-label={healthStatuses.getTitle(healthStatus.title)}
+      data-tootik-conf="right"
     ></div>
     <span {...classes('name')}>{value}</span>
   </div>;
@@ -105,6 +93,7 @@ function DataSourceTable(props) {
     goToDataSource,
     setSearch,
     sorting,
+    centralDomain,
   } = props;
 
   return (
@@ -142,17 +131,15 @@ function DataSourceTable(props) {
         header="Model"
         field="modelType"
       />
-      <CellRegistered
-        {...tableClasses('registered')}
-        header="Registered"
-        field="isRegistered"
-      />
       <CellRegister
         {...tableClasses('register')}
         props={
           entity => ({
-            isRegistered: entity.isRegistered,
+            published: entity.published,
             onClick: () => goToDataSource(entity.id),
+            isCdm: entity.modelType === modelTypesValues.CDM,
+            centralId: entity.centralId,
+            centralDomain,
           })
         }
       />
@@ -161,7 +148,7 @@ function DataSourceTable(props) {
         field="id"
         editDataSource={editDataSource}
         removeDataSource={remove}
-        props={entity => ({ isRegistered: entity.isRegistered })}
+        props={entity => ({ published: entity.published })}
       />
     </Table>
   );

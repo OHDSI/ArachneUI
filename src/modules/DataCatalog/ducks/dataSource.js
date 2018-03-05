@@ -43,6 +43,7 @@ export default {
       dataSource.actions.find({ isComplete: true, ...urlParams }, data),
     delete: (urlParams, data) =>
       dataSource.actions.delete({ isComplete: false, ...urlParams }, data),
+    update: dataSource.actions.update,
     invite: invite.actions,
   },
   reducer: dataSource.reducer,

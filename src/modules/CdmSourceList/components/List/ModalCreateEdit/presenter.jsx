@@ -28,6 +28,7 @@ import { FormInput } from 'arachne-ui-components';
 import { FormSelect } from 'arachne-ui-components';
 import { FormTextarea } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
+import { cdmSpecificAttributes } from 'const/dataSource';
 import PasswordField from 'components/PasswordField/connected';
 
 require('./style.scss');
@@ -61,8 +62,8 @@ function ModalCreateEdit(props) {
 
   const cancelBtn = {
     label: 'Cancel',
-  }
-  
+  };
+
   const fields = [
     {
       name: 'name',
@@ -71,9 +72,9 @@ function ModalCreateEdit(props) {
         component: FormInput,
         props: {
           mods: ['bordered'],
-          placeholder: 'Name of data source',
+          placeholder: 'Name of data source *',
           type: 'text',
-        }
+        },
       },
     },
     {
@@ -85,7 +86,7 @@ function ModalCreateEdit(props) {
           mods: ['bordered'],
           placeholder: 'DBMS Type',
           options: dbmsTypeList,
-        }
+        },
       },
     },
     {
@@ -95,9 +96,9 @@ function ModalCreateEdit(props) {
         component: FormInput,
         props: {
           mods: ['bordered'],
-          placeholder: 'Connection string',
+          placeholder: 'Connection string *',
           type: 'text',
-        }
+        },
       },
     },
     {
@@ -107,9 +108,9 @@ function ModalCreateEdit(props) {
         component: FormInput,
         props: {
           mods: ['bordered'],
-          placeholder: 'CDM schema name',
+          placeholder: 'CDM schema name *',
           type: 'text',
-        }
+        },
       },
     },
     {
@@ -119,9 +120,9 @@ function ModalCreateEdit(props) {
         component: FormInput,
         props: {
           mods: ['bordered'],
-          placeholder: 'Username',
+          placeholder: 'Username *',
           type: 'text',
-        }
+        },
       },
     },
     {
@@ -131,26 +132,39 @@ function ModalCreateEdit(props) {
         component: PasswordField,
         props: {
           mods: ['bordered'],
+          placeholder: 'Password *',
+          type: 'password',
           showHint: false,
         },
       },
-    }
+    },
+    ...cdmSpecificAttributes.map(attribute => ({
+      name: attribute.name,
+      className: 'col-md-12',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: attribute.label,
+        },
+      },
+    })),
   ];
 
   return (
-  	<Modal modal={props.modal} title={modalTitle}>
-			<Form
+    <Modal modal={props.modal} title={modalTitle}>
+      <Form
         {...classes({ extra: 'row' })}
         actionsClassName="col-xs-12"
-				fields={fields}
-				submitBtn={submitBtn}
+        fields={fields}
+        submitBtn={submitBtn}
         cancelBtn={cancelBtn}
-				onSubmit={props.doSubmit}
+        onSubmit={props.doSubmit}
         onCancel={props.modal.close}
-				{...props}
-			/>
+        {...props}
+      />
       <LoadingPanel active={isLoading}/>
-  	</Modal>
+    </Modal>
   );
 }
 

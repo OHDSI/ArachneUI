@@ -27,10 +27,9 @@ import { modelTypesValues } from 'const/dataSource'
 import {
   PageContent,
   LoadingPanel,
-  Tabs,
 } from 'arachne-ui-components';
 
-import Toolbar from './Toolbar/index';
+import Toolbar from 'modules/DataCatalog/components/ViewEdit/Toolbar';
 import AttributesList from './AttributesList';
 import ModalInviteToStudy from './ModalInviteToStudy';
 import ModalConfirmDatasource from './ModalConfirmDatasource';
@@ -39,13 +38,13 @@ import Actions from './Actions';
 
 require('./style.scss');
 
-function ViewEdit(props) {
+function View(props) {
   const classes = new BEMHelper('data-source-entry');
 
   return (
     <PageContent title={`${props.name} | Arachne`}>
       <div {...classes()}>
-        <Toolbar />
+        <Toolbar mode={'view'} />
         <Actions
           isProfileSelected={props.isProfileSelected}
           dataSourceId={props.dataSourceId}
@@ -67,8 +66,8 @@ function ViewEdit(props) {
   );
 }
 
-ViewEdit.propTypes = {
+View.propTypes = {
   isLoading: PropTypes.bool,
 };
 
-export default ViewEdit;
+export default View;

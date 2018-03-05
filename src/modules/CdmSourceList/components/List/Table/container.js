@@ -25,6 +25,7 @@ import { push as goToPage } from 'react-router-redux';
 import { ModalUtils } from 'arachne-ui-components';
 import { modal, paths } from 'modules/CdmSourceList/const';
 import actions from 'actions';
+import { get } from 'services/Utils';
 import Table from './presenter';
 import selectors from './selectors';
 
@@ -37,10 +38,13 @@ function getSorting(location) {
 
 function mapStateToProps(state) {
   const query = state.routing.locationBeforeTransitions.query;
+  const centralDomain = get(state, 'portal.buildInfo.data.centralUrl');
+
   return {
     query,
     dataSourceList: selectors.getDataSourceList(state),
     sorting: getSorting(state.routing.locationBeforeTransitions),
+    centralDomain,
   };
 }
 
@@ -58,8 +62,8 @@ function mergeProps(state, dispatch, ownProps) {
     ...state,
     ...dispatch,
     ...ownProps,
-    async remove({ id, isRegistered }) {
-      if (isRegistered) {
+    async remove({ id, published }) {
+      if (published) {
         await dispatch.unregister({ id });
       }
       await dispatch.remove({ id });

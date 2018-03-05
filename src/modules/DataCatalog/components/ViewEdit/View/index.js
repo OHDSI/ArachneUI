@@ -20,6 +20,6 @@
  *
  */
 
-import DataCatalogViewEditBuilder from './container';
+import DataCatalogViewBuilder from './container';
 
-export default (new DataCatalogViewEditBuilder()).build();
+export default (new DataCatalogViewBuilder()).build();
