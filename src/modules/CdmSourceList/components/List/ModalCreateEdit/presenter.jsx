@@ -21,15 +21,13 @@
  */
 
 import React from 'react';
-import { Modal } from 'arachne-ui-components';
-import { LoadingPanel } from 'arachne-ui-components';
-import { Form } from 'arachne-ui-components';
-import { FormInput } from 'arachne-ui-components';
-import { FormSelect } from 'arachne-ui-components';
-import { FormTextarea } from 'arachne-ui-components';
+import {
+  Modal,
+  LoadingPanel,
+  Form,
+} from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
-import { cdmSpecificAttributes } from 'const/dataSource';
-import PasswordField from 'components/PasswordField/connected';
+import { getDataSourceCreationFields } from 'const/dataSource';
 
 require('./style.scss');
 
@@ -64,97 +62,7 @@ function ModalCreateEdit(props) {
     label: 'Cancel',
   };
 
-  const fields = [
-    {
-      name: 'name',
-      className: 'col-xs-12',
-      InputComponent: {
-        component: FormInput,
-        props: {
-          mods: ['bordered'],
-          placeholder: 'Name of data source',
-          type: 'text',
-          required: true,
-        },
-      },
-    },
-    {
-      name: 'dbmsType',
-      className: 'col-xs-12',
-      InputComponent: {
-        component: FormSelect,
-        props: {
-          mods: ['bordered'],
-          placeholder: 'DBMS Type',
-          options: dbmsTypeList,
-        },
-      },
-    },
-    {
-      name: 'connectionString',
-      className: 'col-md-12',
-      InputComponent: {
-        component: FormInput,
-        props: {
-          mods: ['bordered'],
-          placeholder: 'Connection string',
-          type: 'text',
-          required: true,
-        },
-      },
-    },
-    {
-      name: 'cdmSchema',
-      className: 'col-xs-12',
-      InputComponent: {
-        component: FormInput,
-        props: {
-          mods: ['bordered'],
-          placeholder: 'CDM schema name',
-          type: 'text',
-          required: true,
-        },
-      },
-    },
-    {
-      name: 'dbUsername',
-      className: 'col-md-12',
-      InputComponent: {
-        component: FormInput,
-        props: {
-          mods: ['bordered'],
-          placeholder: 'Username',
-          type: 'text',
-          required: true,
-        },
-      },
-    },
-    {
-      name: 'dbPassword',
-      className: 'col-md-12',
-      InputComponent: {
-        component: PasswordField,
-        props: {
-          mods: ['bordered'],
-          placeholder: 'Password',
-          type: 'password',
-          required: true,
-          showHint: false,
-        },
-      },
-    },
-    ...cdmSpecificAttributes.map(attribute => ({
-      name: attribute.name,
-      className: 'col-md-12',
-      InputComponent: {
-        component: FormInput,
-        props: {
-          mods: ['bordered'],
-          placeholder: attribute.label,
-        },
-      },
-    })),
-  ];
+  const fields = getDataSourceCreationFields(dbmsTypeList);
 
   return (
     <Modal modal={props.modal} title={modalTitle}>
