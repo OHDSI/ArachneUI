@@ -98,13 +98,11 @@ $list-item-height: 53px;
     position: relative;
     align-items: center;
     flex-shrink: 0;
+    padding-left: 1rem;
   }
 
   &analysis-add-code {
-    height: initial;
-    padding: 0 15px 0 17px;
-    margin-right: auto;
-
+    margin-left: 1rem;
     &--disabled {
       & .#{$namespace}analysis-add-code {
         &__ico, &__label {
@@ -140,5 +138,9 @@ $list-item-height: 53px;
 
   &analysis-submit-code {
     margin-right: 17px;
+
+    &--autoMargin {
+      margin-left: auto;
+    }
   }  
 }
