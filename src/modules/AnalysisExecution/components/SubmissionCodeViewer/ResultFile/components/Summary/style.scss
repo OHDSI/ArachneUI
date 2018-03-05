@@ -67,25 +67,39 @@
     }
 
     &__status {
-			@include title();
-			@include colored();
+      @include title();
+      @include colored();
     }
 
     &__list {
-			align-items: center;
-			display: flex;
-		}
-		&__list-item {
+      align-items: center;
       display: flex;
+      overflow: hidden;
+    }
+    &__list-item {
+      display: flex;
+      flex-shrink: 0;
 
-			&:not(:first-child) {
-				&:before {
-					content: "\2022";
-					padding-left: 1.5rem;
-					padding-right: 1.5rem;
-				}
-			}
-		}
+      &--data-source {
+        flex-shrink: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        & .#{$namespace} {
+          &label-data-source {
+            overflow: hidden;
+          }
+        }
+      }
+
+      &:not(:first-child) {
+        &:before {
+          content: "\2022";
+          padding-left: 1.5rem;
+          padding-right: 1.5rem;
+        }
+      }
+    }
   }
     
 }

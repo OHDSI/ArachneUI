@@ -138,6 +138,13 @@ function MenuDropdown(props) {
         url: paths.settings(),
       },
     },
+    {
+      link: {
+        sectionIco: 'storage',
+        text: 'My datasources',
+        url: paths.datasources(),
+      },
+    },
   ];
 
   return (

@@ -30,19 +30,29 @@ import DeclineModal from 'modules/Portal/components/InvitationList/ModalRejectIn
 
 import './style.scss';
 
-export default function Banner({
-  invitation,
-  acceptInvitation,
-  declineInvitation,
-  className,
-  showDeclineModal,
-}) {
+export default function Banner(props) {
+  const {
+    acceptInvitation,
+    declineInvitation,
+    className,
+    showDeclineModal,
+    disabled,
+  } = props;
+  let {
+    invitation,
+  } = props;
   const classes = new BEMHelper('invite-banner');
+  const modifiers = {
+    active: !disabled && invitation !== null,
+  };
 
   if (!invitation) {
-    return null;
+    invitation = {
+      user: {},
+      actionType: '',
+      entity: '',
+    };
   }
-
   const {
     user,
     actionType,
@@ -50,7 +60,12 @@ export default function Banner({
   } = invitation;
 
   return (
-    <div {...classes({ extra: className })}>
+    <div
+      {...classes({
+        extra: className,
+        modifiers,
+      })}
+    >
       <div {...classes('avatar')}>
         <Avatar img={ activityApiPaths.userpic(user.id) } />
       </div>

@@ -100,6 +100,7 @@ const paths = {
   settings: () => '/portal/settings',
   study: id => `/study-manager/studies/${id}`,
   logout: () => '/auth/logout',
+  datasources: () => '/data-catalog/my-data-sources',
 };
 
 const roles = {

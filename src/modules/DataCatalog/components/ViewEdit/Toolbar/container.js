@@ -27,9 +27,11 @@ import Toolbar from './presenter';
 
 function mapStateToProps(state) {
   const dataSourceData = get(state, 'dataCatalog.dataSource.data.result');
+  const isMy = get(state, 'routing.locationBeforeTransitions.query.my', false);
+  const backUrl = isMy ? paths.myDatasources() : paths.dataCatalog();
 
   return {
-    backUrl: paths.dataCatalog(),
+    backUrl,
     name: `${get(dataSourceData, 'dataNode.name', '')}: ${get(dataSourceData, 'name')}`,
     healthStatus: {
       title: get(dataSourceData, 'healthStatusTitle'),

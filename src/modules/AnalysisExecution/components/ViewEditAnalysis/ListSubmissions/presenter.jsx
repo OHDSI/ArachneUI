@@ -29,10 +29,12 @@ import {
   paths,
   statusColors,
   submissionActionTypes,
+  submissionFilters,
 } from 'modules/AnalysisExecution/const';
 import LabelDataSource from 'components/LabelDataSource';
 import LabelSubmissionStatus from 'components/LabelSubmissionStatus';
 import Results from './Results';
+import SubmissionsTableFilter from 'modules/AnalysisExecution/components/ViewEditAnalysis/ListSubmissions/components/SubmissionsTableFilter';
 
 require('./style.scss');
 
@@ -192,6 +194,9 @@ function SubmissionsHeader(props) {
   const {
     isSticky,
     style,
+    isFiltered,
+    selectedFilters,
+    showFilters,
   } = props;
 
   if (isSticky) {
@@ -200,20 +205,35 @@ function SubmissionsHeader(props) {
 
   return (
     <div {...classes({ modifiers: { 'sticky': isSticky } })} style={style}>
-      <div {...classes('cell', 'source')}>
-        Data sources
+      <div {...classes('row')}>
+        <div {...classes('cell', 'source')}>
+          Data sources
+        </div>
+        <div {...classes('cell', 'status')}>
+          Status
+        </div>
+        <div {...classes('cell', 'execute')}>
+          Execute
+        </div>
+        <div {...classes('cell', 'result')}>
+          Result
+        </div>
+        <div {...classes('cell', 'publish')}>
+          Publish
+        </div>
       </div>
-      <div {...classes('cell', 'status')}>
-        Status
-      </div>
-      <div {...classes('cell', 'execute')}>
-        Execute
-      </div>
-      <div {...classes('cell', 'result')}>
-        Result
-      </div>
-      <div {...classes('cell', 'publish')}>
-        Publish
+      <div {...classes('row', 'filters')}>
+        <div>
+          {isFiltered
+            ? <div><span {...classes('filter-message')}>Filtered by</span>: {
+              selectedFilters.map(
+                ([filterId, filter]) => `${submissionFilters[filterId].label} (${filter.join(', ')})`
+              ).join(', ')
+            }</div>
+            : <span>No filters applied</span>
+          }
+        </div>
+        <Button {...classes('filters-btn')} onClick={showFilters} mods={['submit', 'rounded']}>Filter</Button>
       </div>
     </div>
   );
@@ -330,6 +350,10 @@ function ListSubmissions(props) {
     totalPages,
     page,
     path,
+    showFilters,
+
+    isFiltered,
+    selectedFilters,
   } = props;
 
   const groupCount = submissionGroupList.length;
@@ -368,24 +392,30 @@ function ListSubmissions(props) {
   return (
     <div {...classes()}>
       <div {...classes('submissions-wrapper')}>
-        {data.length ?
+        <div {...classes('shadow-container')}>
           <StickyContainer>
             <Sticky topOffset={-56}>
-              { SubmissionsHeader }
+              {() => <SubmissionsHeader
+                isFiltered={isFiltered}
+                selectedFilters={selectedFilters}
+                showFilters={showFilters}
+                />}
             </Sticky>
             { data }
           </StickyContainer>
-          :
-          <div {...classes('empty')}>
-            No queries were submitted yet...
-          </div>
-        }
+          {!data.length &&
+            <div {...classes('empty')}>
+              No queries were submitted yet...
+            </div>
+          }
+        </div>
       </div>
       {isPaginationAvailable &&
         <div {...classes('pagination')}>
           <Pagination pages={totalPages} currentPage={page} path={path} />
         </div>
       }
+      <SubmissionsTableFilter />
     </div>
   );
 }

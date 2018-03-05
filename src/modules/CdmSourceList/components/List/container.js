@@ -68,7 +68,7 @@ export default asyncConnect([{
     const state = getState();
     const query = state.routing.locationBeforeTransitions.query;
     const fetchers = {
-      load: () => actions.cdmSourceList.dataSourceList.query({}, { query: query }),
+      load: () => actions.cdmSourceList.dataSourceList.query({}, { query }),
       loadDbmsTypes: actions.cdmSourceList.dbmsTypes.query,
     };
     return Utils.fetchAll({ fetchers, dispatch });

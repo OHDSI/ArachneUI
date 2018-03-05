@@ -31,10 +31,13 @@
     justify-content: space-between;
 
 		&__submissions-wrapper {
-			@include block-shadow();
-			background: $white;
 			border-radius: $block-border-radius;
 			margin-bottom: 30px;
+		}
+		
+		&__shadow-container {
+			background: $white;
+			@include block-shadow();
 		}
 		
     &__list {
@@ -81,10 +84,28 @@
 
   &submissions-header {
 
-    display: flex;
-    background: $grey-lighter;
-    z-index: 1;
+		&__row {
+			display: flex;
+			background: $grey-lighter;
+			z-index: 1;
 
+			&--filters {
+				border-top: 1px solid $grey;
+				display: flex;
+				align-items: center;
+				padding: 1rem 1rem 1rem 2rem;
+				justify-content: space-between;
+			}			
+		}
+
+		&__filter-message {
+			font-weight: 600;
+		}
+
+		&__filters-btn {
+			margin-right: 1rem;
+		}
+		
     &--sticky {
       @include block-shadow();
     }
@@ -101,7 +122,9 @@
     	}
 
     	&--source {
-    	  padding-left: 2rem;
+				padding-left: 2rem;
+				display: flex;
+				align-items: center;
     	}
 
     	&--insight {

@@ -27,17 +27,25 @@ import { Button } from 'arachne-ui-components';
 require('./style.scss');
 
 function ToolbarActions({
-                          canDelete,
-                          remove,
-                        }) {
+    canUnpublish,
+    unpublish,
+    canEdit,
+    dataSourceId,
+    editUrl,
+  }) {
   const classes = new BEMHelper('data-source-toolbar-actions');
 
   return (
     <div  {...classes()}>
-      {canDelete &&
-      <Button {...classes('remove')} onClick={remove}>
-        <i {...classes('remove-ico')}>delete</i>
-      </Button>
+      {canUnpublish &&
+        <Button onClick={unpublish} mods={['rounded', 'cancel']}>
+          Unpublish
+        </Button>
+      }
+      {canEdit &&
+        <Button {...classes('action')} link={editUrl}>
+          <i {...classes('action-ico')}>settings</i>
+        </Button>
       }
     </div>
   );
