@@ -40,7 +40,7 @@ function CellRegister({ published, onClick, isCdm, centralId, centralDomain }) {
       <Button
         {...classes('btn')}
         mods={['success', 'rounded']}
-        label="Generate reports"
+        label="Reports"
         onClick={onClick}
       />
     }
