@@ -32,7 +32,7 @@
 		}
 
 		&__name-th {
-			width: 15%;
+			width: 24%;
 		}
 
 		&__dbms-type-th {
@@ -40,7 +40,7 @@
 		}
 
 		&__db-name-th {
-			width: 15%;
+			width: 24%;
 		}
 
 		&__db-name-td {
@@ -55,14 +55,6 @@
 			width: 8%;
 		}
 
-		&__published-th {
-			width: 15%;
-		}
-
-		&__publish-th {
-			width: 15%;
-		}
-
 		&__edit-th {
 			width: 10%;
 		}
@@ -74,13 +66,13 @@
 		max-width: 100%;
 	}
 
-	&data-source-list-cell-publish {
-		&__btn {
-			padding-left: 2rem;
-			padding-right: 2rem;
-			width: 100%;
-			display: inline-block;
-			text-align: center;
+	&data-source-list-cell-register {
+		display: flex;
+    flex-direction: column;
+		text-align: center;
+		
+		&__btn:not(:last-child) {
+			margin-bottom: 0.5rem;
 		}
 	}
 
