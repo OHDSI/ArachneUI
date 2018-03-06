@@ -22,14 +22,16 @@
 
 import Duck from 'services/Duck';
 import { apiPaths } from 'modules/DataCatalog/const';
+import URI from 'urijs';
 
 const dsList = new Duck({
   name: 'DC_DATA_SOURCE_LIST',
-  urlBuilder: ({ searchStr }) => {
-    if (!searchStr) {
-      return apiPaths.dataSources();
-    }
-    return `${apiPaths.dataSources()}${searchStr}`;
+  urlBuilder: ({ searchStr, onlyMy = false }) => {
+    const uri = new URI(apiPaths.dataSources());
+    uri.setSearch(searchStr);
+    uri.setSearch({ onlyMy });
+
+    return uri.href();
   },
 });
 

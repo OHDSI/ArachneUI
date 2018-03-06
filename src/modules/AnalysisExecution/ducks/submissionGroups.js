@@ -28,9 +28,10 @@ const actionCoreName = 'SM_STUDY_ANALYSIS_SUBMISSION_GROUPS';
 
 const ducks = new Duck({
   name: actionCoreName,
-  urlBuilder: ({ analysisId, page, pageSize }) => {
+  urlBuilder: ({ analysisId, page, pageSize, filter = '' }) => {
     const url = new Uri(apiPaths.submissionGroups({ analysisId }));
-    return url.setSearch({ page, pageSize });
+    url.setSearch({ page, pageSize });
+    return `${url.href()}&${filter}`;
   },
 });
 

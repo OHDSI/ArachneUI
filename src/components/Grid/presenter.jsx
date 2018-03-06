@@ -23,6 +23,7 @@
 import React from 'react';
 import BEMHelper from 'services/BemHelper';
 import filterTypes from 'const/filterTypes';
+import isEmpty from 'lodash/isEmpty';
 import numeral from 'numeral';
 import {
   LoadingPanel,
@@ -67,58 +68,34 @@ function Grid(props) {
     queryDecode: searchQueryDecode,
   };
 
-  let extraClasses = () => ({});
-  if (className) {
-    extraClasses = BEMHelper(className, false);
-  }
+  const filtersExist = filterProps && !isEmpty(filterProps.fields);
 
   return (
-    <div {...classes({ extra: extraClasses().className })}>
-      <div
-        {...classes({
-          element: 'filter-col',
-          extra: extraClasses('filter-col').className,
-        })}
-      >
-        <FilterForm {...filterProps} type={filterTypes.column} />
-      </div>
-      <div
-        {...classes({
-          element: 'main-area',
-          extra: extraClasses('main-area').className,
-        })}
-      >
-        <Toolbar caption={title}>
-          <FilterForm {...filterProps} type={filterTypes.dropdown} />
-          {Actions}
-        </Toolbar>
-        <div
-          {...classes({
-            element: 'content-wrapper',
-            extra: extraClasses('content-wrapper').className,
-          })}
-        >
+    <div {...classes()}>
+      {filtersExist ?
+        <div {...classes('filter-col')}>
+          <FilterForm {...filterProps} type={filterTypes.column} />
+        </div>
+        : null
+      }
+      <div {...classes('main-area')}>
+        {(title || Actions || filtersExist) ?
+          <Toolbar caption={title}>
+            {filtersExist ?
+              <FilterForm {...filterProps} type={filterTypes.dropdown} />
+              : null
+            }
+            {Actions}
+          </Toolbar>
+          : null
+        }
+        <div {...classes('content-wrapper')}>
           {children}
-          <div
-            {...classes({
-              element: 'pagination-wrapper',
-              extra: extraClasses('pagination-wrapper').className,
-            })}
-          >
-            <div
-              {...classes({
-                element: 'pagination',
-                extra: extraClasses('pagination').className,
-              })}
-            >
+          <div {...classes('pagination-wrapper')}>
+            <div {...classes('pagination')}>
               <Pagination pages={pages} currentPage={currentPage} path={path} />
             </div>
-            <div
-              {...classes({
-                element: 'results-count',
-                extra: extraClasses('results-count').className,
-              })}
-            >
+            <div {...classes('results-count')}>
               <span>{resultsCountMessage}</span>
             </div>
           </div>

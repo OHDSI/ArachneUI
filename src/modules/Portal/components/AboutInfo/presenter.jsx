@@ -59,6 +59,12 @@ function AboutInfo(props) {
             Version { projectVersion }.{ buildNumber }.{ buildId }
           </p>
         }
+        <p {...classes('line', 'additional')}>
+          Frontend version { __VERSION__ }
+        </p>
+        <p {...classes('line', 'additional')}>
+          Components version { __VERSION_COMPONENTS__ }
+        </p>
         <LoadingPanel active={isLoading}/>
       </div>
     </Modal>

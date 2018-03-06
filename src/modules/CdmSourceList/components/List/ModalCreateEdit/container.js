@@ -33,6 +33,9 @@ import selectors from './selectors';
 
 class ModalCreateEdit extends Component {
   componentWillReceiveProps(nextProps) {
+    if (this.props.isOpened === true && nextProps.isOpened === false) {
+      this.props.resetForm();
+    }
     if (nextProps.dataSourceId !== this.props.dataSourceId) {
       if (nextProps.dataSourceId) {
         // If was selected editing of some Data Source - load its data
@@ -57,6 +60,7 @@ ModalCreateEdit.propTypes = {
 
 function mapStateToProps(state) {
   const dataSourceData = get(state, 'cdmSourceList.dataSource.queryResult.result', [], 'Array');
+  const isOpened = get(state, 'modal.createDataSource.isOpened', false);
 
   return {
     dbmsTypeList: selectors.getDbmsTypeList(state),
@@ -68,6 +72,7 @@ function mapStateToProps(state) {
       ...dataSourceData,
       dbmsType: get(dataSourceData, 'dbmsType'),
     },
+    isOpened,
   };
 }
 

@@ -26,24 +26,24 @@ import BEMHelper from 'services/BemHelper';
 
 require('./style.scss');
 
-function Status({ isRegistered }) {
+function Status({ published }) {
   const classes = new BEMHelper('cdm-data-source-status');
-  const modifiers = { registered: isRegistered };
+  const modifiers = { registered: published };
 
   return (
     <div {...classes({ modifiers })}>
       <span {...classes('label')}>Status:</span>
       <span {...classes('value')}>
-        {isRegistered ? 'Registered' : 'Not registered'}
+        {published ? 'Published' : 'Not published'}
       </span>
     </div>
   );
 }
 
-function ViewEditSourceToolbar({ backUrl, isRegistered, name }) {
+function ViewEditSourceToolbar({ backUrl, published, name }) {
   return (
     <Toolbar caption={name} backUrl={backUrl}>
-      <Status isRegistered={isRegistered} />
+      <Status published={published} />
     </Toolbar>
   );
 }

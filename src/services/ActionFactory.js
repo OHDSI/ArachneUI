@@ -216,6 +216,7 @@ class ActionFactory {
       this.safeDispatch(dispatch, this.onBeforeDelete);
       return api.doDelete(
         this.resolveUrl(urlParams),
+        {},
         () => {
           this.safeDispatch(dispatch, this.onAfterDelete);
         }
