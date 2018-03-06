@@ -125,14 +125,15 @@ const apiPaths = {
 
   shortAnalysis: ({ id }) => `/api/v1/analysis-management/analyses/${id}/short`,
   submission: ({ id }) => `/api/v1/analysis-management/submissions/${id}`,
+  submissionVisibility: ({ submissionId }) => `/api/v1/analysis-management/submissions/${submissionId}/hide`,
   submissionGroups: ({ analysisId }) => `/api/v1/analysis-management/analyses/${analysisId}/submission-groups`,
 };
 
 const analysisPermissions = {
   editAnalysis: 'EDIT_ANALYSIS',
-  createSubmission :'CREATE_SUBMISSION',
-  deleteAnalysisFiles :'DELETE_ANALYSIS_FILES',
-  uploadAnalysisFiles :'UPLOAD_ANALYSIS_FILES',
+  createSubmission: 'CREATE_SUBMISSION',
+  deleteAnalysisFiles: 'DELETE_ANALYSIS_FILES',
+  uploadAnalysisFiles: 'UPLOAD_ANALYSIS_FILES',
 };
 
 const fileTypes = keyMirror({
@@ -188,6 +189,7 @@ const submissionActionTypes = keyMirror({
   EXECUTE: null,
   MANUAL_UPLOAD: null,
   PUBLISH: null,
+  HIDE: null,
 });
 
 const importableAnalysisTypes = ['COHORT', 'ESTIMATION', 'PREDICTION', 'COHORT_CHARACTERIZATION', 'INCIDENCE'];
@@ -297,6 +299,10 @@ const submissionStatuses = [
 ];
 
 const submissionFilters = {
+  showHidden: {
+    name: 'showHidden',
+    label: 'Show hidden',
+  },
   hasInsight: {
     name: 'hasInsight',
     label: 'Has insight',

@@ -46,6 +46,12 @@ function SubmissionsTableFilter(props) {
   const fields = [
     {
       type: 'TOGGLE',
+      name: submissionFilters.showHidden.name,
+      label: submissionFilters.showHidden.label,
+      forceOpened: true,
+    },
+    {
+      type: 'TOGGLE',
       name: submissionFilters.hasInsight.name,
       label: submissionFilters.hasInsight.label,
       forceOpened: true,

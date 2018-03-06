@@ -58,11 +58,11 @@
   @mixin cell-sizing() {
 
     &--source {
-      width: 30%;
+      width: 27.5%;
     }
 
     &--status {
-      width: 20%; 
+      width: 19%; 
     }
 
     &--execute {
@@ -70,7 +70,7 @@
     }
 
     &--result {
-      width: 20%;
+      width: 18%;
     }
 
     &--publish {
@@ -78,6 +78,10 @@
     }
 
     &--insight {
+      width: 5%;
+		}
+		
+    &--visibility {
       width: 5%;
     }
   }
@@ -329,6 +333,11 @@
     display: block;
     height: 2.4rem;
     width: 2.4rem;
+	}
+
+	&submissions-visibility-ico {
+		@include material-icon();
+		color: $grey-placeholder;
 	}
 
 }

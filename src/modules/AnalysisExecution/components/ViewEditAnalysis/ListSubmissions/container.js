@@ -23,7 +23,7 @@
 import { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { ModalUtils } from 'arachne-ui-components';
-import { modal, paths, submissionFilters, submissionStatuses } from 'modules/AnalysisExecution/const';
+import { modal, paths, submissionFilters, submissionStatuses, submissionGroupsPageSize } from 'modules/AnalysisExecution/const';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import actions from 'actions';
@@ -31,6 +31,7 @@ import Uri from 'urijs';
 import { Utils } from 'services/Utils';
 import ListSubmissions from './presenter';
 import SelectorsBuilder from './selectors';
+import { getFilter } from 'modules/AnalysisExecution/components/ViewEditAnalysis/container';
 
 const selectors = (new SelectorsBuilder()).build();
 
@@ -40,6 +41,7 @@ function mapStateToProps(state) {
   const { number, totalPages } = selectors.getPagingData(state); 
   const cleanPath = get(state, 'routing.locationBeforeTransitions.pathname');
   const currentQuery = state.routing.locationBeforeTransitions.query;
+  const search = get(state, 'routing.locationBeforeTransitions.search');
 
   const url = new Uri(cleanPath);
   url.setSearch(currentQuery);
@@ -79,6 +81,7 @@ function mapStateToProps(state) {
     path: url.href(),
     isFiltered: !isEmpty(selectedFilters),
     selectedFilters: Object.entries(selectedFilters),
+    filter: getFilter(search),
   };
 }
 
@@ -98,6 +101,11 @@ const mapDispatchToProps = {
   showResults: ({ submissionId }) =>
     actions.router.goToPage(paths.submissionResultSummary({ submissionId })),
   showFilters: () => ModalUtils.actions.toggle(modal.submissionsTableFilter, true),
+  setVisibility: actions.analysisExecution.submission.setVisibility,
+  loadSubmissionGroups: ({ page = 1, analysisId, filter }) => {
+    const pageSize = submissionGroupsPageSize;
+    return actions.analysisExecution.submissionGroups.query({ page, pageSize, analysisId, filter });
+  },
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
@@ -118,15 +126,29 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         submissionId: submission.id,
       });
     },
-    onChangeExecutionStatus(submissionId, status) {
-      dispatchProps.changeExecutionStatus({ submissionId }, { id: submissionId, isApproved: status })
-        .then(() => dispatchProps.loadAnalysis({ id: stateProps.analysisId }))
-        .catch(() => {});
+    async onChangeExecutionStatus(submissionId, status) {
+      await dispatchProps.changeExecutionStatus({ submissionId }, { id: submissionId, isApproved: status })
+      dispatchProps.loadSubmissionGroups({
+        analysisId: stateProps.analysisId,
+        page: stateProps.page,
+        filter: stateProps.filter,
+      });
     },
-    onChangePublishStatus(submissionId, status) {
-      dispatchProps.changePublishStatus({ submissionId }, { id: submissionId, isApproved: status })
-        .then(() => dispatchProps.loadAnalysis({ id: stateProps.analysisId }))
-        .catch(() => {});
+    async onChangePublishStatus(submissionId, status) {
+      await dispatchProps.changePublishStatus({ submissionId }, { id: submissionId, isApproved: status });
+      dispatchProps.loadSubmissionGroups({
+        analysisId: stateProps.analysisId,
+        page: stateProps.page,
+        filter: stateProps.filter,
+      });
+    },
+    async toggleVisibility(hidden, submissionId) {
+      await dispatchProps.setVisibility({ submissionId }, { hidden });
+      dispatchProps.loadSubmissionGroups({
+        analysisId: stateProps.analysisId,
+        page: stateProps.page,
+        filter: stateProps.filter,
+      });
     },
   };
 }

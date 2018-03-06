@@ -28,6 +28,14 @@ const submission = new Duck({
   urlBuilder: apiPaths.submissions,
 });
 
+const submissionVisiblity = new Duck({
+  name: 'AE_ANALYSIS_SUBMISSION_VISIBILITY',
+  urlBuilder: apiPaths.submissionVisibility,
+});
+
 export default {
-  actions: submission.actions,
+  actions: {
+    ...submission.actions,
+    setVisibility: submissionVisiblity.actions.create,
+  },
 };
