@@ -35,7 +35,7 @@ import { domains, domainNames } from 'modules/Portal/const';
 export default class SelectorsBuilder {
 
   getRawResults(state) {
-    return get(state, 'portal.search.queryResult.result.content', [], 'Array');
+    return get(state, 'portal.search.queryResult.content', [], 'Array');
   }
 
   getPath({ id, entityType }) {
@@ -58,6 +58,7 @@ export default class SelectorsBuilder {
     const domain = breadcrumbs[breadcrumbs.length - 1];
     return {
       ...result,
+      title: domain.title,
       domain: {
         ...domain,
         title: domainNames[domain.entityType],
@@ -80,7 +81,7 @@ export default class SelectorsBuilder {
 
   buildSelectorForGetResults() {
     return createSelector(
-      this.getRawResults.bind(this),
+      [this.getRawResults],
       results => results
         .map(this.addDomain)
         .map(this.addPath.bind(this))
@@ -89,7 +90,7 @@ export default class SelectorsBuilder {
 
   buildSelectorForBriefResults(getResults) {
     return createSelector(
-      getResults,
+      [getResults],
       results => results.map((res) => ({
         label: res.title,
         value: res.path,

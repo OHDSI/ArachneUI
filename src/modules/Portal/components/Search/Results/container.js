@@ -21,12 +21,10 @@
  */
 
 import { Component } from 'react';
-import { get } from 'services/Utils';
 import actions from 'actions';
-import { ContainerBuilder } from 'services/Utils';
+import { ContainerBuilder, get, Utils } from 'services/Utils';
 import { searchSections, searchResultsPageSize } from 'modules/Portal/const';
 import { extractPaginationData } from 'components/Grid';
-import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 import presenter from './presenter';
 //import SelectorsBuiler from './selectors';
@@ -34,6 +32,8 @@ import presenter from './presenter';
 //const selectors = (new SelectorsBuilder()).build();
 const defaultParams = {
   query: '',
+  page: 1,
+  pageSize: searchResultsPageSize,
 };
 
 class SearchResults extends Component {
@@ -43,8 +43,21 @@ class SearchResults extends Component {
     }
   }
 
+  searchQueryDecode({ searchParams, filterFields }) {
+    const filter = get(searchParams, 'filter.domain', {}, 'Object');
+    return {
+      query: searchParams.query,
+      filter: {
+        domain: Object.values(filter),
+      },
+    };
+  }
+
   render() {
-    return presenter(this.props);
+    return presenter({
+      ...this.props,
+      searchQueryDecode: this.searchQueryDecode,
+    });
   }
 }
 
@@ -54,11 +67,11 @@ export default class SearchResultsBuilder extends ContainerBuilder {
   }
 
   mapStateToProps(state) {
-    // TODO: sanitize query
     const searchResults = get(state, 'portal.search.queryResult.result.content', [], 'Array');
-    let searchParams = get(state, 'routing.locationBeforeTransitions.query');
+    const search = get(state, 'routing.locationBeforeTransitions.search', '', 'String');
+    const query = get(state, 'routing.locationBeforeTransitions.query.query', '', 'String');
     const numOfElsPerPage = searchResultsPageSize;
-    searchParams = isEmpty(searchParams) ? defaultParams : searchParams;
+    const searchParams = this.getSearchParams(search, query);
 
     return {
       paginationDetails: extractPaginationData({ searchResults, numOfElsPerPage }),
@@ -81,11 +94,18 @@ export default class SearchResultsBuilder extends ContainerBuilder {
     };
   }
 
+  getSearchParams(search, query) {
+    const searchParams = Utils.getFilterValues(search);
+
+    return { ...defaultParams, ...searchParams, query };
+  }
+
   getFetchers({ params, state, dispatch }) {
-    const searchParams = get(state, 'routing.locationBeforeTransitions.query');
+    const search = get(state, 'routing.locationBeforeTransitions.search', '', 'String');
+    const query = get(state, 'routing.locationBeforeTransitions.query.query', '', 'String');
 
      return {
-       search: () => actions.portal.search.query(isEmpty(searchParams) ? defaultParams : searchParams),
+       search: () => actions.portal.search.query(this.getSearchParams(search, query)),
      };
   }
 }
