@@ -118,9 +118,10 @@ $list-item-height: 53px;
 
     &__ico {
       @include material-icon();
-      color: $grey-dark-light;
+      color: $green;
       font-size: 2rem;
-      margin-right: 1rem;
+      font-weight: 600;
+      margin-right: 0.5rem;
     }
     &__label {
       color: $grey-dark-light;
