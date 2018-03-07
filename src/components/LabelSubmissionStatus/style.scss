@@ -25,46 +25,46 @@
 .#{$namespace} {
 
   &label-submissions-status {
-		
-		@include colored();
+    
+    @include colored();
 
-		&--default {
-			@include title();
-		}
+    &--default {
+      @include title();
+    }
 
-		&--dot {
-			& .#{$namespace}label-submissions-status__title {
-				color: $black;
-			}
-		}
-		
-		align-items: center;
-		display: flex;
-		overflow: hidden;
-		
-		&--detailed {
-			.#{$namespace}label-submissions-status__icon {
-				display: inline-block;
-			}
-		}
-		
-		&__icon {
-			@include material-icon();
-			color: $grey-dark;
-			display: none;
-			font-size: 2rem;
-    	margin-right: 1rem;
-		}
-		
-		&__title {
-			@include text-ellipsis();
-		}
+    &--dot {
+      & .#{$namespace}label-submissions-status__title {
+        color: $black;
+      }
+    }
+    
+    align-items: center;
+    display: flex;
+    overflow: hidden;
+    
+    &--detailed {
+      .#{$namespace}label-submissions-status__icon {
+        display: inline-block;
+      }
+    }
+    
+    &__icon {
+      @include material-icon();
+      color: $grey-dark;
+      display: none;
+      font-size: 2rem;
+      margin-right: 1rem;
+    }
+    
+    &__title {
+      @include text-ellipsis();
+    }
 
-		&__dot {
-			@include material-icon();
-			font-size: 1.5rem;	
-			margin-right: 1rem;
-		}
+    &__dot {
+      @include material-icon();
+      font-size: 1.5rem;	
+      margin-right: 1rem;
+    }
   }
 
 }
