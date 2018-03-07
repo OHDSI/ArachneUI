@@ -31,9 +31,9 @@ export const scanStatuses = keyMirror({
 
 const messages = {
   WILL_NOT_SCAN: 'File will not be scanned with anti-virus',
-  NOT_SCANNED: 'File had not been scanned with anti-virus',
+  NOT_SCANNED: 'File was not scanned with anti-virus',
   SCANNING: 'Scanning is in progress',
-  OK: 'File had been scanned',
+  OK: 'File was scanned',
   INFECTED: 'File is infected',
 };
 
