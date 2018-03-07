@@ -24,9 +24,9 @@ import React from 'react';
 import BEMHelper from 'services/BemHelper';
 import {
   Link,
+  Breadcrumbs,
 } from 'arachne-ui-components';
 import Domain from '../Domain';
-import Crumb from '../Crumb';
 
 import './style.scss';
 
@@ -46,9 +46,7 @@ export default function ResultItem(props) {
       <Link {...classes('title')} to={path}>{title}</Link>
       <div {...classes('description')}>{description}</div>
       {breadcrumbs &&
-        <ul {...classes('breadcrumbs')}>
-          {breadcrumbs.map(crumb => <Crumb {...crumb} />)}
-        </ul>
+        <Breadcrumbs {...classes('breadcrumbs')} data={breadcrumbs} />
       }
     </div>
   );

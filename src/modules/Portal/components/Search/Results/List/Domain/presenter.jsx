@@ -27,7 +27,7 @@ import './style.scss';
 
 export default function Domain(props) {
   const {
-    title,
+    label,
     entityType,
     forFilter = false,
   } = props;
@@ -35,7 +35,7 @@ export default function Domain(props) {
 
   return (
     <span {...classes({ modifiers: [entityType, forFilter ? 'filter' : 'list'] })}>
-      <span {...classes('text')}>{title}</span>
+      <span {...classes('text')}>{label}</span>
     </span>
   );
 }

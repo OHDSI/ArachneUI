@@ -61,7 +61,7 @@ export default class SelectorsBuilder {
       title: domain.title,
       domain: {
         ...domain,
-        title: domainNames[domain.entityType],
+        label: domainNames[domain.entityType],
       },
     };
   }
@@ -72,7 +72,8 @@ export default class SelectorsBuilder {
     if (res.breadcrumbs) {
       res.breadcrumbs = res.breadcrumbs.map(crumb => ({
         ...crumb,
-        path: this.getPath(crumb),
+        link: this.getPath(crumb),
+        label: crumb.title,
       }));
     }
 

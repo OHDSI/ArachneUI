@@ -86,7 +86,7 @@ export default class NavbarSearchInputBuilder extends ContainerBuilder {
 
   mapStateToProps(state) {
     const results = selectors.getBriefResults(state);
-    const totalResults = get(state, 'portal.search.queryResult.result.totalElements', 0);
+    const totalResults = get(state, 'portal.search.queryResult.totalElements', 0);
 
     return {
       results,
