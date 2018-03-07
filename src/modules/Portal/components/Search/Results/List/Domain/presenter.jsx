@@ -16,22 +16,26 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: January 30, 2017
+ * Created: january 23, 2018
  *
  */
 
 import React from 'react';
-import { Route, IndexRedirect } from 'react-router';
+import BEMHelper from 'services/BemHelper';
 
-import Settings from './components/Settings';
-import Results from './components/Search/Results';
+import './style.scss';
 
-function Routes() {
-  return [
-    <Route path="settings" component={Settings}/>,
-    <Route path="search" component={Results} />,
-    <IndexRedirect to="settings"/>,
-  ];
+export default function Domain(props) {
+  const {
+    label,
+    entityType,
+    forFilter = false,
+  } = props;
+  const classes = BEMHelper('search-result-list-item-domain');
+
+  return (
+    <span {...classes({ modifiers: [entityType, forFilter ? 'filter' : 'list'] })}>
+      <span {...classes('text')}>{label}</span>
+    </span>
+  );
 }
-
-export default Routes;

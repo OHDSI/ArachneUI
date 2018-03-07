@@ -25,7 +25,7 @@ import bem from 'const/bem';
 
 function AppBEMHelper(params, usePrefix = true) {
   let appParams = {
-    prefix: usePrefix ? bem.prefix : null,
+    prefix: usePrefix ? bem.prefix : '',
   };
 
   if (typeof params === 'string') {

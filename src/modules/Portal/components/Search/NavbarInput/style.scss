@@ -16,22 +16,45 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: January 30, 2017
+ * Created: January 22, 2018
  *
  */
 
-import React from 'react';
-import { Route, IndexRedirect } from 'react-router';
+ @import 'styles/vars-and-mixins.scss';
+ 
+.#{$namespace} {
+  &search-navbar-input {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-import Settings from './components/Settings';
-import Results from './components/Search/Results';
+    &__input-wrapper {
+      width: 40rem;
+      opacity: 1;
+      transition: opacity 0.2s ease, width 0.3s ease;
 
-function Routes() {
-  return [
-    <Route path="settings" component={Settings}/>,
-    <Route path="search" component={Results} />,
-    <IndexRedirect to="settings"/>,
-  ];
+      &--collapsed {
+        width: 20rem;
+        opacity: 0;
+      }
+    }
+
+    &__icon {
+      height: 26px;
+      width: 26px;
+      position: relative;
+      margin-left: 1.25rem;
+      cursor: pointer;
+    }
+
+    &-result {
+      display: flex;
+      flex-direction: column;
+      height: 3rem;
+
+      &__caption {
+        font-size: 0.9rem;
+      }
+    }
+  }
 }
-
-export default Routes;

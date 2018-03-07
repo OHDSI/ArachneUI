@@ -27,57 +27,57 @@ import PageWrapper from 'modules/Admin/components/PageWrapper';
 // import DynamicDataForm from 'components/DynamicDataForm';
 import formFactory from 'components/DynamicDataForm/factory';
 import {
-	LoadingPanel,
+  LoadingPanel,
 } from 'arachne-ui-components';
 
 require('./style.scss');
 
 function SystemSettings(props) {
-	const classes = new BEMHelper('admin-panel-sys-settings');
-	const {
-		isApplied,
-		applySettings,
-		isLoading,
-		doSubmit,
+  const classes = new BEMHelper('admin-panel-sys-settings');
+  const {
+    isApplied,
+    applySettings,
+    isLoading,
+    doSubmit,
     settingGroupList,
     solrReindex,
     checkAtlas,
-	} = props;
+  } = props;
 
-	const formComponentList = settingGroupList.map((formData, index) => {
-		const Form = formFactory({
-			name: formData.name,
-			initialValues: formData.initialValues,
-		});
-		return (
-			<div className="col-xs-12 col-md-6" key={index}>
-				<div {...classes('panel')}>
-			    <Panel title={formData.label}>
-			    	<Form
-							dynamicFields={formData.fieldList}
-							doSubmit={(data) => doSubmit(formData.name, data)}
-						/>
-					</Panel>
-				</div>
-			</div>
-		)
-	})
+  const formComponentList = settingGroupList.map((formData, index) => {
+    const Form = formFactory({
+      name: formData.name,
+      initialValues: formData.initialValues,
+    });
+    return (
+      <div className="col-xs-12 col-md-6" key={index}>
+        <div {...classes('panel')}>
+          <Panel title={formData.label}>
+            <Form
+              dynamicFields={formData.fieldList}
+              doSubmit={(data) => doSubmit(formData.name, data)}
+            />
+          </Panel>
+        </div>
+      </div>
+    )
+  })
 
-	return (
-		<PageWrapper>
-			<div {...classes()}>
-				{!isApplied &&
-					<div {...classes('apply-banner')}>
-						<span {...classes('apply-banner-hint')}>
-							Some settings were changed, but have not been applied yet. To apply settings, you need to restart server.
-						</span>
-						<Button
-							{...classes('apply-banner-btn')}
-							label={'Restart server'}
-							onClick={applySettings}
-						/>
-					</div>
-				}
+  return (
+    <PageWrapper>
+      <div {...classes()}>
+        {!isApplied &&
+          <div {...classes('apply-banner')}>
+            <span {...classes('apply-banner-hint')}>
+              Some settings were changed, but have not been applied yet. To apply settings, you need to restart server.
+            </span>
+            <Button
+              {...classes('apply-banner-btn')}
+              label={'Restart server'}
+              onClick={applySettings}
+            />
+          </div>
+        }
         <div {...classes('action-bar')}>
           {__APP_TYPE_CENTRAL__
             ? [<div {...classes('action-bar-btn')}>
@@ -86,13 +86,29 @@ function SystemSettings(props) {
                 label="Reindex Expert Finder"
                 onClick={() => solrReindex({ domain: 'users' })}
               />
-            </div>,
+              </div>,
               <div {...classes('action-bar-btn')}>
                 <Button
                   {...classes('reindex-solr')}
                   mods={['default']}
                   label="Reindex Data Catalog"
                   onClick={() => solrReindex({ domain: 'data-sources' })}
+                />
+              </div>,
+              <div {...classes('action-bar-btn')}>
+                <Button
+                  {...classes('reindex-solr')}
+                  mods={['default']}
+                  label="Reindex Study Notebook"
+                  onClick={() => solrReindex({ domain: 'studies' })}
+                />
+              </div>,
+              <div {...classes('action-bar-btn')}>
+                <Button
+                  {...classes('reindex-solr')}
+                  mods={['default']}
+                  label="Reindex Analyses"
+                  onClick={() => solrReindex({ domain: 'analyses' })}
                 />
               </div>]
             : <div {...classes('action-bar-btn')}>
@@ -103,15 +119,15 @@ function SystemSettings(props) {
               />
             </div>}
         </div>
-				<div {...classes('content')}>
-					<div className="row">
-						{formComponentList}
-					</div>
-				</div>
-			</div>
+        <div {...classes('content')}>
+          <div className="row">
+            {formComponentList}
+          </div>
+        </div>
+      </div>
       <LoadingPanel active={ isLoading } />
-		</PageWrapper>
-	);
+    </PageWrapper>
+  );
 }
 
 export default SystemSettings;
