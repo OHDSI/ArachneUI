@@ -27,17 +27,26 @@ import statusColors from 'const/statusColors';
 
 require('./style.scss');
 
-function LabelSubmissionStatus({ className, mods, status }) {
+function LabelSubmissionStatus({ className, mods, status, type = 'default' }) {
   const classes = new BEMHelper('label-submissions-status');
   const modifiers = classNames(
     status.value ? statusColors[status.value] : null,
-    mods
+    type,
+    mods,
   );
+  const defaultLabel = [
+    <span {...classes('icon')}>open_in_new</span>,
+    <span {...classes('title')}>{status.title}</span>,
+  ];
+  const dotLabel = [
+    <span {...classes('dot', status.value)}>brightness_1</span>,
+    <span {...classes('title')}>{status.title}</span>,
+  ];
 
   return (
     <span {...classes({ modifiers, extra: className })} title={`Submission status: ${status.title}`}>
-      <span {...classes('icon')}>open_in_new</span>
-      <span {...classes('title')}>{status.title}</span>
+      {type === 'default' && defaultLabel}
+      {type === 'dot' && dotLabel}
     </span>
   );
 }

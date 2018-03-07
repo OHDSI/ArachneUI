@@ -24,7 +24,11 @@
  
 .#{$namespace} { 
   &submissions-table-filter {
-
+    & .ac-form {
+      &-checkbox-list {
+        column-count: 2;
+      }
+    }
   }
 }
   
