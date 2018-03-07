@@ -16,39 +16,23 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 20, 2016
+ * Created: November 24, 2017
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+import Duck from 'services/Duck';
+import { apiPaths } from '../const';
 
-.#{$namespace} {
+const coreName = 'DC_ACHILLES_RESULTS';
 
-	&data-source-list-form-create {
-		flex-direction: row;
-		width: 400px;
+const achillesResults = new Duck({
+  name: coreName,
+  urlBuilder: apiPaths.achillesResultsUpload,
+});
 
-		&__field {
-
-			&--hidden {
-				display: none;
-			}
-		}
-
-		& .ac-form__error {
-    	width: 100%;
-		}
-
-		& .ac-form {
-			&__group-title {
-				@include title();
-				margin: 1rem;
-
-				&:first-child {
-					margin-top: 0;
-				}
-			}
-		}
-	}
-
-}
+export default {
+  actions: {
+    upload: achillesResults.actions.create,
+  },
+  reducer: achillesResults.reducer,
+};

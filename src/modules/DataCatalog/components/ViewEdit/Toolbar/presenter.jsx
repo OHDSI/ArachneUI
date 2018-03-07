@@ -36,6 +36,7 @@ function ViewDataSourceToolbar({
   healthStatus,
   isDeleted,
   mode,
+  children = null,
 }) {
   const classes = new BEMHelper('data-source-toolbar-caption');
   const tooltipClass = new BEMHelper('tooltip');
@@ -73,6 +74,7 @@ function ViewDataSourceToolbar({
   return (
     <Toolbar caption={title} backUrl={backUrl} breadcrumbList={breadcrumbList} >
       <ToolbarActions mode={mode} />
+      {children}
     </Toolbar>
   );
 }

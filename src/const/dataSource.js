@@ -242,6 +242,7 @@ function getDataSourceCreationFields(dbmsTypeList) {
           placeholder: 'Name of data source',
           required: true,
           type: 'text',
+          title: 'General',
         },
       },
     },
@@ -310,7 +311,7 @@ function getDataSourceCreationFields(dbmsTypeList) {
         },
       },
     },
-    ...cdmSpecificAttributes.map(attribute => ({
+    ...cdmSpecificAttributes.map((attribute, index) => ({
       name: attribute.name,
       className: 'col-md-12',
       InputComponent: {
@@ -318,6 +319,7 @@ function getDataSourceCreationFields(dbmsTypeList) {
         props: {
           mods: ['bordered'],
           placeholder: attribute.label,
+          title: index === 0 ? 'CDM settings' : null,
         },
       },
     })),
