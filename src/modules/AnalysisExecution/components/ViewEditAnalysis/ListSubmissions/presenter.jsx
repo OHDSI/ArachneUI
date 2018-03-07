@@ -300,6 +300,8 @@ function SubmissionLine(props) {
     toggleVisibility,
   } = props;
 
+  const isVisibilityTogglable = submission.actions[submissionActionTypes.HIDE].available === true;
+
   return (
     <div {...classes()}>
       <div {...classes('cell', 'source')}>
@@ -340,7 +342,7 @@ function SubmissionLine(props) {
           doCancel={() => showRejectionModal(submission.id, submissionActionTypes.PUBLISH, analysisId)}
         />
       </div>
-      <div {...classes('cell', 'insight')}>
+      <div {...classes('cell', ['insight', isVisibilityTogglable ? '' : 'wide'])}>
         <CellInsight
           isDisabled={submission.actions[submissionActionTypes.PUBLISH].result !== true}
           isEditable={isEditable}
@@ -350,9 +352,9 @@ function SubmissionLine(props) {
           submissionId={submission.id}
         />
       </div>
-      <div {...classes('cell', 'visibility')}>
+      <div {...classes('cell', ['visibility', isVisibilityTogglable ? '' : 'hidden'])}>
         <CellVisibility
-          isDisabled={submission.actions[submissionActionTypes.HIDE].available !== true}
+          isDisabled={!isVisibilityTogglable}
           isHidden={submission.hidden}
           submissionId={submission.id}
           toggleVisibility={toggleVisibility}
