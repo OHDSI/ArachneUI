@@ -102,7 +102,7 @@ $list-item-height: 53px;
   }
 
   &analysis-add-code {
-    margin-left: 1rem;
+    margin-left: 0.5rem;
     &--disabled {
       & .#{$namespace}analysis-add-code {
         &__ico, &__label {
@@ -118,9 +118,9 @@ $list-item-height: 53px;
 
     &__ico {
       @include material-icon();
-      color: $green;
-      font-size: 2.2rem;
-      padding-right: 17px;      
+      color: $grey-dark-light;
+      font-size: 2rem;
+      margin-right: 1rem;
     }
     &__label {
       color: $grey-dark-light;
