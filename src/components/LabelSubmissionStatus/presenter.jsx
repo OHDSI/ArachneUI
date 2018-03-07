@@ -39,7 +39,7 @@ function LabelSubmissionStatus({ className, mods, status, type = 'default' }) {
     <span {...classes('title')}>{status.title}</span>,
   ];
   const dotLabel = [
-    <span {...classes('dot', status.value)}>brightness_1</span>,
+    <span {...classes('dot')}>brightness_1</span>,
     <span {...classes('title')}>{status.title}</span>,
   ];
 
