@@ -70,7 +70,7 @@ const paths = {
   profile: id => `/expert-finder/profile/${id}`,
 };
 
-function importEntityPathByType(type){
+function importEntityPathByType(type) {
   switch (type) {
     case 'COHORT': return 'cohorts';
     case 'COHORT_CHARACTERIZATION': return 'cohorts';
@@ -125,7 +125,6 @@ const apiPaths = {
 
   shortAnalysis: ({ id }) => `/api/v1/analysis-management/analyses/${id}/short`,
   submission: ({ id }) => `/api/v1/analysis-management/submissions/${id}`,
-  submissionVisibility: ({ submissionId }) => `/api/v1/analysis-management/submissions/${submissionId}/hide`,
   submissionGroups: ({ analysisId }) => `/api/v1/analysis-management/analyses/${analysisId}/submission-groups`,
 };
 
