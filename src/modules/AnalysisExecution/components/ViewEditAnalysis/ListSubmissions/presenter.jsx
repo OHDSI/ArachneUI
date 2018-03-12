@@ -24,7 +24,7 @@ import React from 'react';
 import BEMHelper from 'services/BemHelper';
 import { Button, Link, Pagination } from 'arachne-ui-components';
 import { StickyContainer, Sticky } from 'react-sticky';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import {
   paths,
   statusColors,
@@ -192,7 +192,7 @@ function CellInsight({ hasInsight, isDisabled, name, showCreateInsight, submissi
 function CellVisibility({
   isDisabled,
   isHidden,
-  submissionId,
+  submission,
   toggleVisibility,
 }) {
   const classes = new BEMHelper('submissions-visibility-ico');
@@ -202,7 +202,7 @@ function CellVisibility({
     return null;
   }
 
-  return (<Link onClick={() => toggleVisibility(!isHidden, submissionId)}>
+  return (<Link onClick={() => toggleVisibility(!isHidden, submission)}>
     <i
       {...classes({ extra: tooltipClass().className })}
       aria-label={isHidden ? 'Set visible' : 'Hide submission'}
@@ -300,7 +300,7 @@ function SubmissionLine(props) {
     toggleVisibility,
   } = props;
 
-  const isVisibilityTogglable = submission.actions[submissionActionTypes.HIDE].available === true;
+  const isVisibilityTogglable = get(submission, `actions[${submissionActionTypes.HIDE}].available`, false) === true;
 
   return (
     <div {...classes()}>
@@ -356,7 +356,7 @@ function SubmissionLine(props) {
         <CellVisibility
           isDisabled={!isVisibilityTogglable}
           isHidden={submission.hidden}
-          submissionId={submission.id}
+          submission={submission}
           toggleVisibility={toggleVisibility}
         />
       </div>

@@ -38,7 +38,7 @@ const selectors = (new SelectorsBuilder()).build();
 function mapStateToProps(state) {
   const analysisData = get(state, 'analysisExecution.analysis.data.result');
   const isPaginationAvailable = true;
-  const { number, totalPages } = selectors.getPagingData(state); 
+  const { number, totalPages } = selectors.getPagingData(state);
   const cleanPath = get(state, 'routing.locationBeforeTransitions.pathname');
   const currentQuery = state.routing.locationBeforeTransitions.query;
   const search = get(state, 'routing.locationBeforeTransitions.search');
@@ -101,7 +101,7 @@ const mapDispatchToProps = {
   showResults: ({ submissionId }) =>
     actions.router.goToPage(paths.submissionResultSummary({ submissionId })),
   showFilters: () => ModalUtils.actions.toggle(modal.submissionsTableFilter, true),
-  setVisibility: actions.analysisExecution.submission.setVisibility,
+  update: actions.analysisExecution.submission.update,
   loadSubmissionGroups: ({ page = 1, analysisId, filter }) => {
     const pageSize = submissionGroupsPageSize;
     return actions.analysisExecution.submissionGroups.query({ page, pageSize, analysisId, filter });
@@ -127,7 +127,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
       });
     },
     async onChangeExecutionStatus(submissionId, status) {
-      await dispatchProps.changeExecutionStatus({ submissionId }, { id: submissionId, isApproved: status })
+      await dispatchProps.changeExecutionStatus({ submissionId }, { id: submissionId, isApproved: status });
       dispatchProps.loadSubmissionGroups({
         analysisId: stateProps.analysisId,
         page: stateProps.page,
@@ -142,8 +142,8 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         filter: stateProps.filter,
       });
     },
-    async toggleVisibility(hidden, submissionId) {
-      await dispatchProps.setVisibility({ submissionId }, { hidden });
+    async toggleVisibility(hidden, submission) {
+      await dispatchProps.update({ id: submission.id }, { ...submission, hidden });
       dispatchProps.loadSubmissionGroups({
         analysisId: stateProps.analysisId,
         page: stateProps.page,

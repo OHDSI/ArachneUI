@@ -25,17 +25,9 @@ import { apiPaths } from 'modules/AnalysisExecution/const';
 
 const submission = new Duck({
   name: 'AE_ANALYSIS_SUBMISSION',
-  urlBuilder: apiPaths.submissions,
-});
-
-const submissionVisiblity = new Duck({
-  name: 'AE_ANALYSIS_SUBMISSION_VISIBILITY',
-  urlBuilder: apiPaths.submissionVisibility,
+  urlBuilder: apiPaths.submission,
 });
 
 export default {
-  actions: {
-    ...submission.actions,
-    setVisibility: submissionVisiblity.actions.create,
-  },
+  actions: submission.actions,
 };
