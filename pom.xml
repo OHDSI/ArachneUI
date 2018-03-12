@@ -147,8 +147,8 @@
                         <configuration>
                             <executable>node_modules/.bin/webpack</executable>
                             <arguments>
-                                <argument>--app=${app}</argument>
-                                <argument>--env=${env}</argument>
+                                <argument>--env.app=${app}</argument>
+                                <argument>--env.mode=${env}</argument>
                                 <argument>--config=webpack/app.config.js</argument>
                             </arguments>
                         </configuration>
