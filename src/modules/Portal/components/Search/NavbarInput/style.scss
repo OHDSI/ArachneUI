@@ -45,6 +45,7 @@
       position: relative;
       margin-left: 1.25rem;
       cursor: pointer;
+      user-select: none;
     }
 
     &-result {

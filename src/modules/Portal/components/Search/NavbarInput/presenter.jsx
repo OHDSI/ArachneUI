@@ -118,7 +118,11 @@ export default function NavbarSearchInput(props) {
       <BadgedIcon
         {...classes('icon')}
         icon='search'
-        onClick={() => setIsCollapsed(!isCollapsed)}
+        onClick={() => {
+          if (isCollapsed) {
+            setIsCollapsed(false);
+          }
+        }}
       />
     </div>
   );
