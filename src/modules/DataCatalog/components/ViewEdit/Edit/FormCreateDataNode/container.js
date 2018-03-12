@@ -20,11 +20,10 @@
  *
  */
 
-import get from 'lodash/get';
 import { reset as resetForm } from 'redux-form';
 import actions from 'actions';
 import { forms } from 'modules/DataCatalog/const';
-import { ContainerBuilder } from 'services/Utils';
+import { ContainerBuilder, get } from 'services/Utils';
 import CreateDataNode from './presenter';
 
 export default class FormCreateDataNode extends ContainerBuilder {
@@ -41,10 +40,12 @@ export default class FormCreateDataNode extends ContainerBuilder {
   mapStateToProps(state) {
     const isLoading = get(state, 'dataCatalog.dataNode.isLoading', false);
     const datanodeId = get(state, 'dataCatalog.dataSource.data.result.dataNode.id');
+    const dataNodes = get(state, 'dataCatalog.dataNode.queryResult.result', [], 'Array');
 
     return {
       isLoading,
       datanodeId,
+      dataNodes,
     };
   }
 
@@ -54,6 +55,7 @@ export default class FormCreateDataNode extends ContainerBuilder {
       update: actions.dataCatalog.dataNode.update,
       create: actions.dataCatalog.dataNode.create,
       loadDataSource: actions.dataCatalog.dataSource.find,
+      loadDataNodes: actions.dataCatalog.dataNode.find,
     };
   }
 
@@ -71,8 +73,11 @@ export default class FormCreateDataNode extends ContainerBuilder {
         await dispatchProps.loadDataSource({
           id: ownProps.dataSourceId,
         });
-        
+
         return submitPromise;
+      },
+      loadDataNodes(query) {
+        dispatchProps.loadDataNodes(null, { query });
       },
       ...ownProps, // allow redefining of the doSubmit method via own props
     };
