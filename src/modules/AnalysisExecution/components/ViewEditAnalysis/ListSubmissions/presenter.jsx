@@ -300,7 +300,7 @@ function SubmissionLine(props) {
     toggleVisibility,
   } = props;
 
-  const isVisibilityTogglable = get(submission, `actions[${submissionActionTypes.HIDE}].available`, false) === true;
+  const isVisibilityTogglable = submission.canHide;
 
   return (
     <div {...classes()}>
