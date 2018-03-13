@@ -36,6 +36,10 @@ const invite = new Duck({
   name: 'DC_DATA_SOURCE_INVITE',
   urlBuilder: apiPaths.inviteDataSource,
 });
+const dataSourceCreator = new Duck({
+  name: 'DC_DATA_SOURCE',
+  urlBuilder: apiPaths.dataSourceCreate,
+});
 
 export default {
   actions: {
@@ -45,6 +49,7 @@ export default {
       dataSource.actions.delete({ isComplete: false, ...urlParams }, data),
     update: dataSource.actions.update,
     invite: invite.actions,
+    create: dataSourceCreator.actions.create,
   },
   reducer: dataSource.reducer,
 };

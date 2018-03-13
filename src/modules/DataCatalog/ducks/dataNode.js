@@ -30,7 +30,15 @@ const dataNode = new Duck({
   urlBuilder: apiPaths.dataNode,
 });
 
+const dataNodeCreator = new Duck({
+  name: coreName,
+  urlBuilder: apiPaths.dataNodeCreate,
+});
+
 export default {
-  actions: dataNode.actions,
+  actions: {
+    ...dataNode.actions,
+    create: dataNodeCreator.actions.create,
+  },
   reducer: dataNode.reducer,
 };

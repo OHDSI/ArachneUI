@@ -54,7 +54,7 @@ function FormCreateDataNode(props) {
       options: dataNodes,
       fetchOptions: loadDataNodes,
       promptTextCreator: label => `Create dananode ${label}`,
-      onNewOptionClick: ({ value }) => doSubmit({ name: value, description: 'New Data Node' }),
+      onNewOptionClick: ({ value }) => doSubmit({ name: value, description: 'New Data Node', doCreate: true }),
     };
   }
 

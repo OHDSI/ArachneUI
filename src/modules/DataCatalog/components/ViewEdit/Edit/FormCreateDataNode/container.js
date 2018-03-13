@@ -40,7 +40,10 @@ export default class FormCreateDataNode extends ContainerBuilder {
   mapStateToProps(state) {
     const isLoading = get(state, 'dataCatalog.dataNode.isLoading', false);
     const datanodeId = get(state, 'dataCatalog.dataSource.data.result.dataNode.id');
-    const dataNodes = get(state, 'dataCatalog.dataNode.queryResult.result', [], 'Array');
+    const dataNodes = get(state, 'dataCatalog.dataNode.data', [], 'Array').map((node) => ({
+      value: node.centralId,
+      label: node.name,
+    }));
 
     return {
       isLoading,
@@ -77,7 +80,7 @@ export default class FormCreateDataNode extends ContainerBuilder {
         return submitPromise;
       },
       loadDataNodes(query) {
-        dispatchProps.loadDataNodes(null, { query });
+        dispatchProps.loadDataNodes({}, { query });
       },
       ...ownProps, // allow redefining of the doSubmit method via own props
     };

@@ -23,7 +23,7 @@
 import { createSelector } from 'reselect';
 import { get } from 'services/Utils';
 import DsAttrListSelector from 'modules/DataCatalog/selectors/DsAttrListSelector';
-import { modelTypesValues, staticAttrList } from 'const/dataSource';
+import { staticAttrList, immutableAttributes } from 'const/dataSource';
 
 class DataCatalogListViewAttributesSelectorsBuilder extends DsAttrListSelector {
 
@@ -36,17 +36,24 @@ class DataCatalogListViewAttributesSelectorsBuilder extends DsAttrListSelector {
   }
 
   getValues(state) {
-    return get(state, 'forms.editDataSource.values', {}, 'Object');
+    return get(state, 'form.editDataSource.values', {}, 'Object');
+  }
+
+  checkImmutability(attrList, immutableAttributesList) {
+    return attrList.map(attr => ({
+      ...attr,
+      isImmutable: immutableAttributesList.includes(attr.name),
+    }));
   }
 
   getAttributes(attrList, values) {
-    return attrList;
+    return this.checkImmutability(attrList, immutableAttributes);
   }
 
   buildSelectorForGetAttrList() {
     return createSelector(
       [this.getAttrList.bind(this), this.getValues],
-      this.getAttributes,
+      this.getAttributes.bind(this),
     );
   }
 

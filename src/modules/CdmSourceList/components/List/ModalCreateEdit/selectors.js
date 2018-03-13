@@ -23,7 +23,11 @@
 import { get } from 'services/Utils';
 import { cdmVersionList } from 'modules/CdmSourceList/const';
 
-const getDbmsTypeList = state => get(state, 'cdmSourceList.dbmsTypes.queryResult', [], 'Array');
+const getDbmsTypeList = state => get(state, 'cdmSourceList.dbmsTypes.queryResult', [], 'Array')
+  .map(type => ({
+    label: type.name,
+    value: type.id,
+  }));
 const getCDMVersionList = () => cdmVersionList;
 
 export default {

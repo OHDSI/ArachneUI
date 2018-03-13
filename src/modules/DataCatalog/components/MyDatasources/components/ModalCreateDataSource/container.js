@@ -69,10 +69,12 @@ export default class ModalCreateDataSourceBuilder extends ContainerBuilder {
  
   mapStateToProps(state, ownProps) {
     const dbmsTypeList = selectors.getDbmsTypes(state);
+    const dataNodeId = get(state, `modal.${modal.modalCreateDataSource}.data.dataNodeId`);
 
     return {
       // TODO: pass query params to use in createDS callback
       dbmsTypeList,
+      dataNodeId,
     };
   }
 
@@ -83,8 +85,8 @@ export default class ModalCreateDataSourceBuilder extends ContainerBuilder {
     return {
       closeModal: () => ModalUtils.actions.toggle(modal.modalCreateDataSource, false),
       createDS: actions.dataCatalog.dataSource.create,
-      loadList: actions.dataCatalog.dataSource.query,
-      getDbmsTypes: actions.dataCatalog.dbmsTypes.query,
+      loadList: actions.dataCatalog.myDatasources.query,
+      getDbmsTypes: actions.dataCatalog.dbmsTypes.find,
     };
   }
 
@@ -94,12 +96,21 @@ export default class ModalCreateDataSourceBuilder extends ContainerBuilder {
       ...stateProps,
       ...dispatchProps,
       async doSubmit(data) {
-        await dispatchProps.createDS({
-          ...data,
-          executionPolicy: executionPolicy.MANUAL,
-        });
-        await dispatchProps.closeModal();
-        dispatchProps.loadList();
+        const result = await dispatchProps.createDS(
+          {
+            dataNodeId: stateProps.dataNodeId,
+          },
+          {
+            ...data,
+            executionPolicy: executionPolicy.MANUAL,
+          }
+        );
+        if (result) {
+          await dispatchProps.closeModal();
+          dispatchProps.loadList({}, { query: '' });
+        }
+
+        return result;
       },
     };
   }
