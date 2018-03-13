@@ -16,22 +16,38 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: January 30, 2017
+ * Created: january 23, 2018
  *
  */
 
 import React from 'react';
-import { Route, IndexRedirect } from 'react-router';
+import BEMHelper from 'services/BemHelper';
+import {
+  Link,
+  Breadcrumbs,
+} from 'arachne-ui-components';
+import Domain from '../Domain';
 
-import Settings from './components/Settings';
-import Results from './components/Search/Results';
+import './style.scss';
 
-function Routes() {
-  return [
-    <Route path="settings" component={Settings}/>,
-    <Route path="search" component={Results} />,
-    <IndexRedirect to="settings"/>,
-  ];
+export default function ResultItem(props) {
+  const {
+    title,
+    description,
+    path,
+    domain,
+    breadcrumbs,
+  } = props;
+  const classes = BEMHelper('search-result-list-item');
+
+  return (
+    <div {...classes()}>
+      <Domain {...domain} />
+      <Link {...classes('title')} to={path}>{title}</Link>
+      <div {...classes('description')}>{description}</div>
+      {breadcrumbs &&
+        <Breadcrumbs {...classes('breadcrumbs')} data={breadcrumbs} />
+      }
+    </div>
+  );
 }
-
-export default Routes;

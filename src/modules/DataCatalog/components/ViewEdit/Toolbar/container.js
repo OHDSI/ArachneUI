@@ -21,7 +21,7 @@
  */
 
 import { connect } from 'react-redux';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { paths } from 'modules/DataCatalog/const';
 import Toolbar from './presenter';
 
@@ -32,7 +32,7 @@ function mapStateToProps(state) {
 
   return {
     backUrl,
-    name: `${get(dataSourceData, 'dataNode.name', '')}: ${get(dataSourceData, 'name')}`,
+    name: `${get(dataSourceData, 'dataNode.name', 'Unpublished', 'String')}: ${get(dataSourceData, 'name')}`,
     healthStatus: {
       title: get(dataSourceData, 'healthStatusTitle'),
       value: get(dataSourceData, 'healthStatus'),

@@ -23,12 +23,12 @@
 import React from 'react';
 import {
   Modal,
-  Form,
   FacetedSearchPanel as FacetedSearch,
 } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
 import { addAnyOption } from 'components/FiltersList/presenter';
 import { submissionFilters } from 'modules/AnalysisExecution/const';
+import LabelSubmissionStatus from 'components/LabelSubmissionStatus';
 
 import './style.scss';
 
@@ -46,9 +46,17 @@ function SubmissionsTableFilter(props) {
   const fields = [
     {
       type: 'TOGGLE',
+      name: submissionFilters.showHidden.name,
+      label: submissionFilters.showHidden.label,
+      forceOpened: true,
+      hasTitle: false,
+    },
+    {
+      type: 'TOGGLE',
       name: submissionFilters.hasInsight.name,
       label: submissionFilters.hasInsight.label,
       forceOpened: true,
+      hasTitle: false,
     },
     {
       type: 'ENUM',
@@ -60,7 +68,12 @@ function SubmissionsTableFilter(props) {
     {
       type: 'ENUM',
       name: submissionFilters.submissionStatuses.name,
-      options: statusList,
+      options: statusList.map(({ label, value }) =>
+        ({
+          label: <LabelSubmissionStatus status={{ title: label, value }} type={'dot'} />,
+          value,
+        })
+      ),
       label: submissionFilters.submissionStatuses.label,
       forceOpened: true,
     },

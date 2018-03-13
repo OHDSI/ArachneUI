@@ -16,22 +16,34 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: January 30, 2017
+ * Created: january 23, 2018
  *
  */
 
 import React from 'react';
-import { Route, IndexRedirect } from 'react-router';
+import BEMHelper from 'services/BemHelper';
+import EmptyState from 'components/EmptyState';
+import { LoadingPanel } from 'arachne-ui-components';
+import ResultItem from './ResultItem';
 
-import Settings from './components/Settings';
-import Results from './components/Search/Results';
+import './style.scss';
 
-function Routes() {
-  return [
-    <Route path="settings" component={Settings}/>,
-    <Route path="search" component={Results} />,
-    <IndexRedirect to="settings"/>,
-  ];
+export default function SearchResultsList(props) {
+  const classes = BEMHelper('search-result-list');
+  const {
+    results,
+    isLoading,
+  } = props;
+
+  return (
+    <div {...classes()}>
+      <div {...classes('list')}>
+        {results && results.length
+          ? results.map(result => <ResultItem {...result} />)
+          : <EmptyState message={'No results'} />
+        }
+      </div>
+      <LoadingPanel active={isLoading} />
+    </div>
+  );
 }
-
-export default Routes;

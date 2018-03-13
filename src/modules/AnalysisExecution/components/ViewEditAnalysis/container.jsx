@@ -28,6 +28,18 @@ import isEqual from 'lodash/isEqual';
 import qs from 'qs';
 import Presenter from './presenter';
 
+export function getFilter(search) {
+  let filter = Utils.getFilterValues(search);
+  if ('hasInsight' in filter && filter.hasInsight === 'false') {
+    delete filter.hasInsight;
+  }
+  if ('showHidden' in filter && filter.showHidden === 'false') {
+    delete filter.showHidden;
+  }
+  filter = qs.stringify(filter, { arrayFormat: 'repeat' });
+  return filter;
+}
+
 class ViewEditAnalysis extends Component {
   get propTypes() {
     return {
@@ -88,7 +100,7 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
     ];
     const studyId = get(analysisData, 'study.id', -1);
     const currentQuery = state.routing.locationBeforeTransitions.query;
-    const filter = this.getFilter(state.routing.locationBeforeTransitions.search);
+    const filter = getFilter(state.routing.locationBeforeTransitions.search);
 
     return {
       id: parseInt(ownProps.routeParams.analysisId, 10),
@@ -126,20 +138,11 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
     };
   }
 
-  getFilter(search) {
-    let filter = Utils.getFilterValues(search);
-    if ('hasInsight' in filter && filter.hasInsight === 'false') {
-      delete filter.hasInsight;
-    }
-    filter = qs.stringify(filter, { arrayFormat: 'repeat' });
-    return filter;
-  }
-
   getFetchers({ params, dispatch, getState }) {
     const componentActions = this.getMapDispatchToProps();
     const currentQuery = getState().routing.locationBeforeTransitions.query;
     const page = get(currentQuery, 'page', 1);
-    const filter = this.getFilter(getState().routing.locationBeforeTransitions.search);
+    const filter = getFilter(getState().routing.locationBeforeTransitions.search);
     return {
       loadAnalysisWDataSources: dispatch(componentActions.loadAnalysis({ id: params.analysisId }))
         .then(() => {

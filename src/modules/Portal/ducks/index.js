@@ -23,16 +23,19 @@
 import invitation from './invitations';
 import buildInfo from './buildInfo';
 import settings from './settings';
+import search from './search';
 
 export default {
   actions: {
     buildInfo: buildInfo.actions,
     invitation: invitation.actions,
     settings: settings.actions,
+    search: search.actions,
   },
   reducer: {
     buildInfo: buildInfo.reducer,
     invitation: invitation.reducer,
     settings: settings.reducer,
+    search: search.reducer,
   },
 };

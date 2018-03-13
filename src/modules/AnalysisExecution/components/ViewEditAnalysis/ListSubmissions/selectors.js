@@ -56,6 +56,7 @@ class SubmissionListSelectorsBuilder {
       resultInfo: source.resultInfo,
       insight: source.insight,
       hasInsight: !!source.insight,
+      hidden: source.hidden,
       canUploadResult: actions[submissionActionTypes.MANUAL_UPLOAD].available
         && actions[submissionActionTypes.MANUAL_UPLOAD].hasPermsission,
     };

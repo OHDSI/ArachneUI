@@ -16,22 +16,25 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: January 30, 2017
+ * Created: February 15, 2018
  *
  */
 
-import React from 'react';
-import { Route, IndexRedirect } from 'react-router';
+import Duck from 'services/Duck';
+import URI from 'urijs';
+import { apiPaths } from '../const';
 
-import Settings from './components/Settings';
-import Results from './components/Search/Results';
+const build = new Duck({
+  name: 'GLOBAL_SEARCH',
+  urlBuilder: (searchParams) => {
+    const uri = new URI(apiPaths.search());
+    uri.setSearch(searchParams);
 
-function Routes() {
-  return [
-    <Route path="settings" component={Settings}/>,
-    <Route path="search" component={Results} />,
-    <IndexRedirect to="settings"/>,
-  ];
-}
+    return uri.href();
+  },
+});
 
-export default Routes;
+export default {
+  actions: build.actions,
+  reducer: build.reducer,
+};

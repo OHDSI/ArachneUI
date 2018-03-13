@@ -24,7 +24,7 @@ import React from 'react';
 import BEMHelper from 'services/BemHelper';
 import { Button, Link, Pagination } from 'arachne-ui-components';
 import { StickyContainer, Sticky } from 'react-sticky';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import {
   paths,
   statusColors,
@@ -189,6 +189,28 @@ function CellInsight({ hasInsight, isDisabled, name, showCreateInsight, submissi
   }
 }
 
+function CellVisibility({
+  isDisabled,
+  isHidden,
+  submission,
+  toggleVisibility,
+}) {
+  const classes = new BEMHelper('submissions-visibility-ico');
+  const tooltipClass = new BEMHelper('tooltip');
+
+  if (isDisabled) {
+    return null;
+  }
+
+  return (<Link onClick={() => toggleVisibility(!isHidden, submission)}>
+    <i
+      {...classes({ extra: tooltipClass().className })}
+      aria-label={isHidden ? 'Set visible' : 'Hide submission'}
+      data-tootik-conf="left"
+    >{isHidden ? 'visibility' : 'visibility_off'}</i>
+  </Link>);
+}
+
 function SubmissionsHeader(props) {
   const classes = new BEMHelper('submissions-header');
   const {
@@ -275,7 +297,10 @@ function SubmissionLine(props) {
     analysisId,
     isEditable,
     analysisType,
+    toggleVisibility,
   } = props;
+
+  const isVisibilityTogglable = get(submission, `actions[${submissionActionTypes.HIDE}].available`, false) === true;
 
   return (
     <div {...classes()}>
@@ -317,7 +342,7 @@ function SubmissionLine(props) {
           doCancel={() => showRejectionModal(submission.id, submissionActionTypes.PUBLISH, analysisId)}
         />
       </div>
-      <div {...classes('cell', 'insight')}>
+      <div {...classes('cell', ['insight', isVisibilityTogglable ? '' : 'wide'])}>
         <CellInsight
           isDisabled={submission.actions[submissionActionTypes.PUBLISH].result !== true}
           isEditable={isEditable}
@@ -325,6 +350,14 @@ function SubmissionLine(props) {
           name={get(submission, 'insight.name')}
           showCreateInsight={showCreateInsight}
           submissionId={submission.id}
+        />
+      </div>
+      <div {...classes('cell', ['visibility', isVisibilityTogglable ? '' : 'hidden'])}>
+        <CellVisibility
+          isDisabled={!isVisibilityTogglable}
+          isHidden={submission.hidden}
+          submission={submission}
+          toggleVisibility={toggleVisibility}
         />
       </div>
     </div>
@@ -354,6 +387,7 @@ function ListSubmissions(props) {
 
     isFiltered,
     selectedFilters,
+    toggleVisibility,
   } = props;
 
   const groupCount = submissionGroupList.length;
@@ -382,6 +416,7 @@ function ListSubmissions(props) {
             analysisId={analysisId}
             isEditable={isEditable}
             analysisType={item.analysisType}
+            toggleVisibility={toggleVisibility}
           />
         )}
         </div>

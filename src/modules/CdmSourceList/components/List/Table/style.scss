@@ -32,7 +32,7 @@
 		}
 
 		&__name-th {
-			width: 15%;
+			width: 20%;
 		}
 
 		&__dbms-type-th {
@@ -40,7 +40,7 @@
 		}
 
 		&__db-name-th {
-			width: 15%;
+			width: 22%;
 		}
 
 		&__db-name-td {
@@ -55,16 +55,8 @@
 			width: 8%;
 		}
 
-		&__published-th {
-			width: 15%;
-		}
-
-		&__publish-th {
-			width: 15%;
-		}
-
 		&__edit-th {
-			width: 10%;
+			width: 16%;
 		}
 	}
 
@@ -74,13 +66,26 @@
 		max-width: 100%;
 	}
 
-	&data-source-list-cell-publish {
+	&data-source-list-cell-register {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-end;
+		
 		&__btn {
-			padding-left: 2rem;
-			padding-right: 2rem;
-			width: 100%;
-			display: inline-block;
 			text-align: center;
+			flex-basis: 50%;
+
+			&--publish {
+				background: $purple;
+
+				&:hover {
+					background: $purple-darker;
+				}
+			}
+
+			&:not(:last-child) {
+				margin-right: 1rem;
+			}
 		}
 	}
 

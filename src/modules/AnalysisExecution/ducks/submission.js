@@ -25,7 +25,7 @@ import { apiPaths } from 'modules/AnalysisExecution/const';
 
 const submission = new Duck({
   name: 'AE_ANALYSIS_SUBMISSION',
-  urlBuilder: apiPaths.submissions,
+  urlBuilder: apiPaths.submission,
 });
 
 export default {
