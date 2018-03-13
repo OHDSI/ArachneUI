@@ -28,6 +28,15 @@ const submission = new Duck({
   urlBuilder: apiPaths.submission,
 });
 
+// different endpoints
+const submissionCreator = new Duck({
+  name: 'AE_ANALYSIS_SUBMISSION',
+  urlBuilder: apiPaths.submissions,
+});
+
 export default {
-  actions: submission.actions,
+  actions: {
+    ...submission.actions,
+    create: submissionCreator.actions.create,
+  },
 };
