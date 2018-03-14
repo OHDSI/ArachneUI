@@ -42,6 +42,7 @@ import ReportUtils from 'components/Reports/Utils';
 import { reports } from 'const/reports';
 import URI from 'urijs';
 import { createSelector } from 'reselect';
+import qs from 'qs';
 
 function buildFormData(obj) {
   const formData = new FormData();
@@ -492,6 +493,11 @@ class Utils {
       sortBy: location.query.sortBy,
       sortAsc: location.query.sortAsc === 'true',
     };
+  }
+
+  static getFilterValues(search) {
+    const filter = qs.parse(search.replace(/^\?/, ''), { parseArrays: true }) || {};
+    return get(filter, 'filter', {}, 'Object');
   }
 
 }

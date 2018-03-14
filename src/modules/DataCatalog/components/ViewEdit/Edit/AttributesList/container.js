@@ -24,6 +24,7 @@ import actions from 'actions';
 import { ContainerBuilder, get } from 'services/Utils';
 import { forms } from 'modules/DataCatalog/const';
 import { modelTypesValues, attributeNames } from 'const/dataSource';
+import isEmpty from 'lodash/isEmpty';
 import AttributeList from './presenter';
 import SelectorsBuilder from './selectors';
 
@@ -44,11 +45,16 @@ export default class AttributeListBuilder extends ContainerBuilder {
   mapStateToProps(state) {
     const dataSourceId = get(state, 'dataCatalog.dataSource.data.result.id');
     const isPublished = get(state, 'dataCatalog.dataSource.data.result.published');
-    const isCDM = get(state, `form.${forms.editDataSource}.values.${attributeNames.modelType}`) === modelTypesValues.CDM;
+    const values = selectors.getValues(state);
+    const initialValues = selectors.getData(state);
+    let isCDM = initialValues[attributeNames.modelType] === modelTypesValues.CDM;
+    if (!isEmpty(values)) {
+      isCDM = values[attributeNames.modelType] === modelTypesValues.CDM;
+    }
 
     return {
       attrList: selectors.getAttrList(state),
-      initialValues: selectors.getData(state),
+      initialValues,
       dataSourceId,
       isPublished,
       isCDM,

@@ -24,12 +24,14 @@ import keyMirror from 'keymirror';
 
 const modal = keyMirror({
   createDataSource: null,
+  createDataNode: null,
 });
 
 const form = keyMirror({
   createDataSource: null,
   editSourceTechData: null,
   editSourceBusinessData: null,
+  createDataNode: null,
 });
 
 const paths = {

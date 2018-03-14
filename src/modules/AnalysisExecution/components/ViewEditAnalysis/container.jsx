@@ -21,10 +21,24 @@
  */
 
 import React, { Component, PropTypes } from 'react';
-import { get, ContainerBuilder } from 'services/Utils';
+import { get, ContainerBuilder, Utils } from 'services/Utils';
 import { refreshTime, analysisPermissions, submissionGroupsPageSize } from 'modules/AnalysisExecution/const';
 import actions from 'actions/index';
+import isEqual from 'lodash/isEqual';
+import qs from 'qs';
 import Presenter from './presenter';
+
+export function getFilter(search) {
+  let filter = Utils.getFilterValues(search);
+  if ('hasInsight' in filter && filter.hasInsight === 'false') {
+    delete filter.hasInsight;
+  }
+  if ('showHidden' in filter && filter.showHidden === 'false') {
+    delete filter.showHidden;
+  }
+  filter = qs.stringify(filter, { arrayFormat: 'repeat' });
+  return filter;
+}
 
 class ViewEditAnalysis extends Component {
   get propTypes() {
@@ -36,6 +50,7 @@ class ViewEditAnalysis extends Component {
       studyId: PropTypes.number,
       unloadAnalysis: PropTypes.func.isRequired,
       loadSubmissionGroups: PropTypes.func,
+      filter: PropTypes.object,
     };
   }
 
@@ -44,7 +59,7 @@ class ViewEditAnalysis extends Component {
     this.refreshInterval = setInterval(() => {
       this.isPolledData = true;
       this.props.loadAnalysis({ id: this.props.id });
-      this.props.loadSubmissionGroups({ analysisId: this.props.id, page: this.props.page });
+      this.props.loadSubmissionGroups({ analysisId: this.props.id, page: this.props.page, filter: this.props.filter });
     }, refreshTime);
   }
 
@@ -54,8 +69,8 @@ class ViewEditAnalysis extends Component {
       const studyId = analysis.result.study.id;
       this.props.loadStudyDataSources({ studyId });
     }
-    if (nextProps.id !== this.props.id || nextProps.page !== this.props.page) {
-      this.props.loadSubmissionGroups({ analysisId: nextProps.id, page: nextProps.page });
+    if (nextProps.id !== this.props.id || nextProps.page !== this.props.page || !isEqual(this.props.filter, nextProps.filter)) {
+      this.props.loadSubmissionGroups({ analysisId: nextProps.id, page: nextProps.page, filter: nextProps.filter });
     }
   }
 
@@ -85,6 +100,7 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
     ];
     const studyId = get(analysisData, 'study.id', -1);
     const currentQuery = state.routing.locationBeforeTransitions.query;
+    const filter = getFilter(state.routing.locationBeforeTransitions.search);
 
     return {
       id: parseInt(ownProps.routeParams.analysisId, 10),
@@ -93,6 +109,7 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
       pageTitle: pageTitle.join(' | '),
       isEditable: get(analysisData, `permissions[${analysisPermissions.editAnalysis}]`, false),
       page: get(currentQuery, 'page', 1),
+      filter,
     };
   }
 
@@ -102,9 +119,9 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
       loadTypeList: actions.analysisExecution.analysisTypes.query,
       unloadAnalysis: actions.analysisExecution.analysis.unload,
       loadStudyDataSources: actions.analysisExecution.studyDataSourceList.query,
-      loadSubmissionGroups: ({ page = 1, analysisId }) => {
+      loadSubmissionGroups: ({ page = 1, analysisId, filter }) => {
         const pageSize = submissionGroupsPageSize;
-        return actions.analysisExecution.submissionGroups.query({ page, pageSize, analysisId });
+        return actions.analysisExecution.submissionGroups.query({ page, pageSize, analysisId, filter });
       },
     };
   }
@@ -116,7 +133,7 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
       ...dispatchProps,
       onBannerActed: async () => {
         await dispatchProps.loadAnalysis({ id: stateProps.id });
-        return dispatchProps.loadSubmissionGroups({ analysisId: stateProps.id, page: stateProps.page });
+        return dispatchProps.loadSubmissionGroups({ analysisId: stateProps.id, page: stateProps.page, filter: stateProps.filter });
       },
     };
   }
@@ -125,11 +142,12 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
     const componentActions = this.getMapDispatchToProps();
     const currentQuery = getState().routing.locationBeforeTransitions.query;
     const page = get(currentQuery, 'page', 1);
+    const filter = getFilter(getState().routing.locationBeforeTransitions.search);
     return {
       loadAnalysisWDataSources: dispatch(componentActions.loadAnalysis({ id: params.analysisId }))
         .then(() => {
           const studyId = getState().analysisExecution.analysis.data.result.study.id;
-          dispatch(componentActions.loadSubmissionGroups({ analysisId: params.analysisId, page }));
+          dispatch(componentActions.loadSubmissionGroups({ analysisId: params.analysisId, page, filter }));
           return dispatch(componentActions.loadStudyDataSources({ studyId }));
         }),
       loadTypeList: componentActions.loadTypeList,

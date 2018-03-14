@@ -54,6 +54,7 @@ function Grid(props) {
       pageStart = null,
     },
     path,
+    className,
   } = props;
 
   const format = '0,0';
