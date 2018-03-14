@@ -24,11 +24,24 @@
  
 .#{$namespace} { 
   &submissions-table-filter {
+    max-width: 600px;
+
+    &__datasource {
+      @include text-ellipsis();
+      width: 90%;
+    }
+
     & .ac-form {
       &-checkbox-list {
         column-count: 2;
+
+        & .ac-checkbox {
+          &__checkbox-label {
+            display: flex;
+            width: 100%;
+          }
+        }
       }
     }
   }
 }
-  
