@@ -38,6 +38,7 @@ function FormCreateDataNode(props) {
     isLoading,
     dataSourceId,
     doSubmit,
+    doCreate,
     dataNodes = [],
     loadDataNodes = () => {},
   } = props;
@@ -54,13 +55,13 @@ function FormCreateDataNode(props) {
       options: dataNodes,
       fetchOptions: loadDataNodes,
       promptTextCreator: label => `Create dananode ${label}`,
-      onNewOptionClick: ({ value }) => doSubmit({ name: value, description: 'New Data Node', doCreate: true }),
+      onNewOptionClick: ({ value }) => doCreate({ name: value, description: 'New Data Node' }),
     };
   }
 
   const fields = [
     {
-      name: 'name',
+      name: 'node',
       InputComponent: {
         component: AttributesFormListItem,
         props: {

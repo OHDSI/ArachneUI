@@ -69,9 +69,9 @@ export default class FormCreateDataNode extends ContainerBuilder {
       async doSubmit(data) {
         let submitPromise;
         if (ownProps.create) {
-          submitPromise = await dispatchProps.create({ id: stateProps.datanodeId }, data);
+          submitPromise = await dispatchProps.create({ id: stateProps.datanodeId }, { ...data, name: data.node });
         } else {
-          submitPromise = await dispatchProps.update({ id: stateProps.datanodeId }, data);
+          submitPromise = await dispatchProps.update({ id: stateProps.datanodeId }, { ...data, name: data.node });
         }
         await dispatchProps.loadDataSource({
           id: ownProps.dataSourceId,

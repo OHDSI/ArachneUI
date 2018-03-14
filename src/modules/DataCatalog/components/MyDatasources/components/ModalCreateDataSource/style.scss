@@ -25,6 +25,13 @@
 .#{$namespace} { 
   &modal-create-data-source {
     width: 400px;
+
+    & .ac-form {
+      &__group-title {
+        @include title();
+        margin-bottom: 1rem;
+      }
+    }
   }
 }
   
