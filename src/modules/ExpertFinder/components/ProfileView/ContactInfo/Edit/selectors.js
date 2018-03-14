@@ -23,8 +23,8 @@
 import { createSelector } from 'reselect';
 import get from 'lodash/get';
 
-const getRawProvinces = state => get(state, 'expertFinder.provinces.data') || [];
-const getRawCountries = state => get(state, 'expertFinder.countries.data') || [];
+const getRawProvinces = state => get(state, 'expertFinder.provinces.queryResult.result') || [];
+const getRawCountries = state => get(state, 'expertFinder.countries.queryResult.result') || [];
 
 const getProvinces = createSelector(
   [getRawProvinces],
