@@ -230,8 +230,8 @@ const immutableAttributes = [
 const fieldHints = {
 };
 
-function getDataSourceCreationFields(dbmsTypeList, isShortList = false) {
-  const shortList = [
+function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false) {
+  const virtualSourceFields = [
     {
       name: 'name',
       className: 'col-xs-12',
@@ -259,8 +259,8 @@ function getDataSourceCreationFields(dbmsTypeList, isShortList = false) {
       },
     },
   ];
-  const longList = [
-    ...shortList,
+  const physicalSourceFields = [
+    ...virtualSourceFields,
     {
       name: 'connectionString',
       className: 'col-md-12',
@@ -328,7 +328,7 @@ function getDataSourceCreationFields(dbmsTypeList, isShortList = false) {
     })),
   ];
 
-  return isShortList ? shortList : longList;
+  return useOnlyVirtual ? virtualSourceFields : physicalSourceFields;
 }
 
 export {
