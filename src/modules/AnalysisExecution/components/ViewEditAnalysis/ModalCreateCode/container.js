@@ -30,9 +30,11 @@ import ModalCreateCode from './presenter';
 
 function mapStateToProps(state) {
   const isLoading = get(state, 'analysisExecution.analysis.isLoading', false);
+  const activeSection = get(state, `modal.${modal.createCode}.data.activeSection`);
 
   return {
     isLoading,
+    activeSection,
   };
 }
 
