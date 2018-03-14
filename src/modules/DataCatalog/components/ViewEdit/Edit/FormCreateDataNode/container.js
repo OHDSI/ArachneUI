@@ -20,11 +20,10 @@
  *
  */
 
-import get from 'lodash/get';
 import { reset as resetForm } from 'redux-form';
 import actions from 'actions';
 import { forms } from 'modules/DataCatalog/const';
-import { ContainerBuilder } from 'services/Utils';
+import { ContainerBuilder, get } from 'services/Utils';
 import CreateDataNode from './presenter';
 
 export default class FormCreateDataNode extends ContainerBuilder {
@@ -41,10 +40,15 @@ export default class FormCreateDataNode extends ContainerBuilder {
   mapStateToProps(state) {
     const isLoading = get(state, 'dataCatalog.dataNode.isLoading', false);
     const datanodeId = get(state, 'dataCatalog.dataSource.data.result.dataNode.id');
+    const dataNodes = get(state, 'dataCatalog.dataNode.data', [], 'Array').map((node) => ({
+      value: node.centralId,
+      label: node.name,
+    }));
 
     return {
       isLoading,
       datanodeId,
+      dataNodes,
     };
   }
 
@@ -52,8 +56,8 @@ export default class FormCreateDataNode extends ContainerBuilder {
     return {
       reset: () => resetForm(forms.createDataNode),
       update: actions.dataCatalog.dataNode.update,
-      create: actions.dataCatalog.dataNode.create,
       loadDataSource: actions.dataCatalog.dataSource.find,
+      loadDataNodes: actions.dataCatalog.dataNode.find,
     };
   }
 
@@ -62,17 +66,15 @@ export default class FormCreateDataNode extends ContainerBuilder {
       ...stateProps,
       ...dispatchProps,
       async doSubmit(data) {
-        let submitPromise;
-        if (ownProps.create) {
-          submitPromise = await dispatchProps.create({ id: stateProps.datanodeId }, data);
-        } else {
-          submitPromise = await dispatchProps.update({ id: stateProps.datanodeId }, data);
-        }
+        const submitPromise = await dispatchProps.update({ id: stateProps.datanodeId }, { ...data, name: data.node });
         await dispatchProps.loadDataSource({
           id: ownProps.dataSourceId,
         });
-        
+
         return submitPromise;
+      },
+      loadDataNodes(query) {
+        dispatchProps.loadDataNodes({}, { query });
       },
       ...ownProps, // allow redefining of the doSubmit method via own props
     };

@@ -45,6 +45,7 @@ const apiPaths = {
   dataSources: ({ id } = {}) => `/api/v1/data-sources${id ? `/${id}/extended` : ''}`,
   dataSourceComplete: ({ id }) => `/api/v1/data-sources${id ? `/${id}/complete` : ''}`,
   dataSourceBase: ({ id }) => `/api/v1/data-sources/${id}`,
+  dataSourceCreate: ({ dataNodeId }) => `/api/v1/data-nodes/${dataNodeId}/data-sources`,
   dataSourcesMetadataAttrs: () => '/api/v1/metadata/data-source/attributes',
   studies: ({ query, dataSourceId }) =>
     `/api/v1/study-management/studies/search?region=DATASOURCE&id=${dataSourceId}&query=${query}`,
@@ -55,7 +56,8 @@ const apiPaths = {
   report: ({ id, filename, path }) =>
     `/api/v1/achilles/datasource/${id}/files/${path ? `${path}/${filename}` : filename}`,
   myDatasources: () => '/api/v1/data-sources/my',
-  dataNode: ({ id }) => `/api/v1/data-nodes${id ? `/${id}` : '' }`,
+  dataNode: ({ id }) => `/api/v1/data-nodes${id ? `/${id}` : ''}`,
+  dataNodeCreate: () => `/api/v1/data-nodes/manual`,
   registerDataSource: ({ id }) => `/api/v1/data-sources/${id}/register-on-central`,
   registration: ({ id }) => `/api/v1/data-sources/${id}/registration`,
   dbmsTypes: () => '/api/v1/data-sources/dbms-types',

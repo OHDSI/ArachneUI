@@ -63,7 +63,7 @@ export function AttributesFormListItem({
 }) {
   const itemClasses = new BEMHelper('attributes-form-list-item');
   let field = null;
-  if (immutableAttributes.includes(item.name)) {
+  if (item.isImmutable) {
     field = (<ImmutableAttribute name={item.name} value={input.value} />);
   } else if (useAutocomplete) {
     field = (<FormAutocomplete
@@ -74,6 +74,7 @@ export function AttributesFormListItem({
       canCreateNewOptions
       promptTextCreator={autocompleteOptions.promptTextCreator}
       onNewOptionClick={autocompleteOptions.onNewOptionClick}
+      options={autocompleteOptions.options}
     />);
   } else {
     switch (item.type) {
@@ -136,6 +137,7 @@ function AttributesList(props) {
     doSubmit,
     isPublished,
     isCDM,
+    isManual = false,
   } = props;
   const fields = attrList
     .map(item => ({

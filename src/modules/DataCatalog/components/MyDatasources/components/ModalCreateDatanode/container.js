@@ -74,8 +74,16 @@ export default class ModalCreateDatanodeBuilder extends ContainerBuilder {
       ...stateProps,
       ...dispatchProps,
       ...ownProps,
+      async chooseDataNode({ node }) {
+        await dispatchProps.closeModal();
+        dispatchProps.openCreateDataSourceModal(node);
+      },
       async createDataNode({ name, description }) {
         const dataNode = await dispatchProps.createDN({}, { name, description });
+        if (!dataNode) {
+          // TODO: add notification (ARACHNE-2016)
+          return false;
+        }
         await dispatchProps.closeModal();
         dispatchProps.openCreateDataSourceModal(dataNode.centralId);
         return dataNode;

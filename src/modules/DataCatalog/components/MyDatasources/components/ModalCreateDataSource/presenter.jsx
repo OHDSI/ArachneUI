@@ -45,7 +45,7 @@ function ModalCreateDataSource(props) {
     <Modal modal={props.modal} title="Create manual data source">
       <div {...classes()}>          
         <Form
-          fields={getDataSourceCreationFields(dbmsTypeList)}
+          fields={getDataSourceCreationFields(dbmsTypeList, true)}
           submitBtn={submitBtn}
           cancelBtn={cancelBtn}
           onSubmit={props.doSubmit}

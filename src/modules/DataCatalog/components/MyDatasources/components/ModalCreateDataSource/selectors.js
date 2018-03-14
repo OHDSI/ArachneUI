@@ -25,7 +25,10 @@ import { get } from 'services/Utils';
 
 export default class SelectorsBuilder {
   getDbmsTypes(state) {
-    return get(state, 'dataCatalog.dbmsTypes.queryResult', [], 'Array');
+    return get(state, 'dataCatalog.dbmsTypes.data', [], 'Array').map(type => ({
+      label: type.name,
+      value: type.id,
+    }));
   }
 
   build() {

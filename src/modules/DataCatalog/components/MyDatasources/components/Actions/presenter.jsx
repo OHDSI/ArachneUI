@@ -34,7 +34,7 @@ function Actions(props) {
 
   return (
     <div {...classes()}>
-      {/*<Button mods={['rounded', 'submit']} onClick={openCreateModal}>Create Datsource</Button>*/}
+      <Button mods={['rounded', 'submit']} onClick={openCreateModal}>Create Datasource</Button>
     </div>
   );
 }
