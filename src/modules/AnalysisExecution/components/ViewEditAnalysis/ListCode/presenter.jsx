@@ -140,7 +140,7 @@ export class ActionsLine extends Component {
         onClick={() => this.openCreateCodeModal(submissionFileUploadModes.COMPUTER)}
         disabled={!this.canAddFiles}
       >
-        <span {...this.addClasses('ico')}>file_upload</span>
+        <span {...this.addClasses('ico', 'upload')}>file_upload</span>
         <span {...this.addClasses('label')}>Upload</span>
       </Button>
     );
@@ -150,7 +150,7 @@ export class ActionsLine extends Component {
         onClick={() => this.openCreateCodeModal(submissionFileUploadModes.IMPORT)}
         disabled={!this.canAddFiles}
       >
-        <span {...this.addClasses('ico')}>import_export</span>
+        <span {...this.addClasses('ico', 'import')}>import_export</span>
         <span {...this.addClasses('label')}>Import</span>
       </Button>
     );

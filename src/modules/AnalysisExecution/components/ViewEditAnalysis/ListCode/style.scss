@@ -102,7 +102,9 @@ $list-item-height: 53px;
   }
 
   &analysis-add-code {
-    margin-left: 0.5rem;
+    padding-left: 7px;
+    padding-right: 7px;
+    margin-right: 0.5rem;
     &--disabled {
       & .#{$namespace}analysis-add-code {
         &__ico, &__label {
@@ -122,11 +124,18 @@ $list-item-height: 53px;
       font-size: 2rem;
       font-weight: 600;
       margin-right: 0.5rem;
+      &--upload {
+        color: $blue-light;
+      }
+  
+      &--import {
+        color: $orange;
+      }
     }
     &__label {
       color: $grey-dark-light;
       font-size: 1.2rem;
-    }
+    }    
   }
 
   &analysis-code-list-download-all {
