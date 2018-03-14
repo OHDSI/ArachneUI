@@ -61,7 +61,10 @@ function SubmissionsTableFilter(props) {
     {
       type: 'ENUM',
       name: submissionFilters.dataSourceIds.name,
-      options: dataSourceList,
+      options: dataSourceList.map(source => ({
+        label: <span {...classes('datasource')} title={source.label}>{source.label}</span>,
+        value: source.value,
+      })),
       label: submissionFilters.dataSourceIds.label,
       forceOpened: true,
     },
