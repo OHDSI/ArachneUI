@@ -38,6 +38,8 @@ const attributeNames = keyMirror({
   targetSchema: null,
   resultSchema: null,
   cohortTargetTable: null,
+  dbmsType: null,
+  executionPolicy: null,
 });
 
 const modelTypesValues = keyMirror({
@@ -45,6 +47,12 @@ const modelTypesValues = keyMirror({
   I2B2: null,
   CDISK: null,
   OTHER: null,
+});
+
+const executionPolicy = keyMirror({
+  SUPERVISED: null,
+  UNSUPERVISED: null,
+  MANUAL: null,
 });
 
 const healthStatuses = {
@@ -147,6 +155,17 @@ const staticAttrList = [
     options: null,
     order: 0,
     isRequired: true,
+  },
+  {
+    label: 'DBMS Type',
+    name: attributeNames.dbmsType,
+    type: fieldTypes.enum,
+    faceted: false,
+    showInList: false,
+    options: null,
+    order: 1,
+    isRequired: true,
+    onlyManual: true,
   },
   {
     label: 'Organization',
@@ -342,4 +361,5 @@ export {
   fieldHints,
   cdmSpecificAttributes,
   getDataSourceCreationFields,
+  executionPolicy,
 };

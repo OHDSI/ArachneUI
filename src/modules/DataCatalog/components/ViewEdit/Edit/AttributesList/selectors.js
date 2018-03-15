@@ -39,6 +39,13 @@ class DataCatalogListViewAttributesSelectorsBuilder extends DsAttrListSelector {
     return get(state, 'form.editDataSource.values', {}, 'Object');
   }
 
+  getDbmsTypes(state) {
+    return get(state, 'dataCatalog.dbmsTypes.data', [], 'Array').map(type => ({
+      label: type.name,
+      value: type.id,
+    }));
+  }
+
   checkImmutability(attrList, immutableAttributesList) {
     return attrList.map(attr => ({
       ...attr,
@@ -73,6 +80,7 @@ class DataCatalogListViewAttributesSelectorsBuilder extends DsAttrListSelector {
       getAttrList: this.buildSelectorForGetAttrList(),
       getData: this.buildSelectorForGetData(),
       getValues: this.getValues,
+      getDbmsTypes: this.getDbmsTypes,
     };
   }
 

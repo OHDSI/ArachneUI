@@ -32,7 +32,7 @@ const getDataSourceList = createSelector(
     ...item,
     id: item.id,
     name: item.name,
-    dbmsType: get(dbmsTypeList.find(el => el.value === item.dbmsType), 'label'),
+    dbmsType: get(dbmsTypeList.find(el => el.id === item.dbmsType), 'name'),
     connectionString: item.connectionString,
     cdmSchema: item.cdmSchema,
     modelType: item.modelType,
