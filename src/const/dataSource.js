@@ -50,8 +50,6 @@ const modelTypesValues = keyMirror({
 });
 
 const executionPolicy = keyMirror({
-  SUPERVISED: null,
-  UNSUPERVISED: null,
   MANUAL: null,
 });
 

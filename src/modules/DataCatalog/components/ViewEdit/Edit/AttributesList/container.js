@@ -66,7 +66,7 @@ export default class AttributeListBuilder extends ContainerBuilder {
     const values = selectors.getValues(state);
     const initialValues = selectors.getData(state);
     let isCDM = initialValues[attributeNames.modelType] === modelTypesValues.CDM;
-    let isManual = initialValues[attributeNames.executionPolicy] === executionPolicy.MANUAL;
+    const isManual = initialValues[attributeNames.executionPolicy] === executionPolicy.MANUAL;
     if (!isEmpty(values)) {
       isCDM = values[attributeNames.modelType] === modelTypesValues.CDM;
     }
