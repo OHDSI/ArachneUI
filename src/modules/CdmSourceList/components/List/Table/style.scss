@@ -90,27 +90,7 @@
 	}
 
 	&data-source-list-cell-edit {
-		&__btn-block {
-			display: flex;
-			flex-direction: row;
-			justify-content: center;
-		}
-		&__btn {
-			color: $blue-link;
-			&:disabled {
-				color: $grey-dark-light;
-			}
-			display: flex;
-			padding:.25rem;
-			&:not(:first-child) {
-				margin-left: 1rem;
-			}
-
-		}
-		&__btn-ico {
-			@include material-icon();
-
-		}
+		@include edit-btns-cell();
 	}
 
 	&ds-name {
