@@ -76,6 +76,8 @@ class Report extends Component {
 
   selectReport(report) {
     this.props.resetPage();
+    this.props.clearReportData();
+    this.props.clearReportDetails();
     this.setState({
       selectedReport: report,
     });
