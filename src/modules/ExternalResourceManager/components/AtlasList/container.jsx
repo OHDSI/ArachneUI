@@ -79,6 +79,7 @@ export default class ListBuilder extends ContainerBuilder {
         return goToPage(url.href());
       },
       loadAtlasList: actions.externalResourceManager.atlases.query,
+      checkConnection: id => actions.externalResourceManager.atlases.checkConnection({ id }),
       editAtlas: id => ModalUtils.actions.toggle(modal.atlasDetails, true, { id }),
       deleteAtlas: actions.externalResourceManager.atlases.delete,
     };

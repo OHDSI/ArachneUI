@@ -41,7 +41,6 @@ function SystemSettings(props) {
     doSubmit,
     settingGroupList,
     solrReindex,
-    checkAtlas,
   } = props;
 
   const formComponentList = settingGroupList.map((formData, index) => {
@@ -78,15 +77,16 @@ function SystemSettings(props) {
             />
           </div>
         }
-        <div {...classes('action-bar')}>
-          {__APP_TYPE_CENTRAL__
-            ? [<div {...classes('action-bar-btn')}>
-              <Button
-                mods={['default']}
-                label="Reindex Expert Finder"
-                onClick={() => solrReindex({ domain: 'users' })}
-              />
-              </div>,
+        {__APP_TYPE_CENTRAL__
+          ?
+            <div {...classes('action-bar')}>
+              <div {...classes('action-bar-btn')}>
+                <Button
+                  mods={['default']}
+                  label="Reindex Expert Finder"
+                  onClick={() => solrReindex({ domain: 'users' })}
+                />
+              </div>
               <div {...classes('action-bar-btn')}>
                 <Button
                   {...classes('reindex-solr')}
@@ -94,7 +94,7 @@ function SystemSettings(props) {
                   label="Reindex Data Catalog"
                   onClick={() => solrReindex({ domain: 'data-sources' })}
                 />
-              </div>,
+              </div>
               <div {...classes('action-bar-btn')}>
                 <Button
                   {...classes('reindex-solr')}
@@ -102,7 +102,7 @@ function SystemSettings(props) {
                   label="Reindex Study Notebook"
                   onClick={() => solrReindex({ domain: 'studies' })}
                 />
-              </div>,
+              </div>
               <div {...classes('action-bar-btn')}>
                 <Button
                   {...classes('reindex-solr')}
@@ -110,15 +110,10 @@ function SystemSettings(props) {
                   label="Reindex Analyses"
                   onClick={() => solrReindex({ domain: 'analyses' })}
                 />
-              </div>]
-            : <div {...classes('action-bar-btn')}>
-              <Button
-                mods={['default']}
-                label="Check Atlas Connection"
-                onClick={checkAtlas}
-              />
-            </div>}
-        </div>
+              </div>
+            </div>
+          : null
+        }
         <div {...classes('content')}>
           <div className="row">
             {formComponentList}

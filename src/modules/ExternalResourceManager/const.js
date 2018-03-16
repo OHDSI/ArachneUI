@@ -36,6 +36,7 @@ const paths = {
 
 const apiPaths = {
   atlases: ({ id } = {}) => `/api/v1/atlases${id ? `/${id}` : ''}`,
+  atlasConnection: ({ id }) => `/api/v1/admin/atlases/${id}/connection`,
 };
 
 const imgs = {

@@ -31,14 +31,17 @@ import CellRemove from 'components/CellRemove';
 
 import './style.scss';
 
-function CellEdit({ id, edit, remove }) {
+function CellEdit({ id, checkConnection, edit, remove }) {
   const classes = new BEMHelper('atlas-table-cell-edit');
   return (
     <div {...classes('btn-block')}>
-      <Button {...classes('btn')} onClick={() => edit(id)}>
+      <Button {...classes('btn')} title="Check connection" onClick={() => checkConnection(id)}>
+        <i {...classes('btn-ico')}>cast_connected</i>
+      </Button>
+      <Button {...classes('btn')} title="Edit" onClick={() => edit(id)}>
         <i {...classes('btn-ico')}>edit</i>
       </Button>
-      <Button {...classes('btn')} onClick={() => remove(id)}>
+      <Button {...classes('btn')} title="Delete" onClick={() => remove(id)}>
         <i {...classes('btn-ico')}>delete</i>
       </Button>
     </div>
@@ -49,6 +52,7 @@ function AtlasTable(props) {
   const classes = new BEMHelper('atlases-table');
   const {
     data,
+    checkConnection,
     editAtlas,
     deleteAtlas,
     sorting,
@@ -84,6 +88,7 @@ function AtlasTable(props) {
         props={
           entity => ({
             id: entity.id,
+            checkConnection,
             edit: editAtlas,
             remove: deleteAtlas,
           })

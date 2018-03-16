@@ -34,6 +34,7 @@ function AtlasList(props) {
   const classes = new BEMHelper('atlases');
   const {
     atlasList,
+    checkConnection,
     editAtlas,
     deleteAtlas,
     isLoading,
@@ -50,7 +51,14 @@ function AtlasList(props) {
         paginationDetails={paginationDetails}
         Actions={<Actions />}
       >
-        <List data={atlasList} sorting={sorting} setSorting={setSorting} editAtlas={editAtlas} deleteAtlas={deleteAtlas} />
+        <List
+          data={atlasList}
+          sorting={sorting}
+          setSorting={setSorting}
+          checkConnection={checkConnection}
+          editAtlas={editAtlas}
+          deleteAtlas={deleteAtlas}
+        />
       </Grid>
       <ModalCreateEdit />
     </PageWrapper>
