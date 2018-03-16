@@ -23,7 +23,7 @@
 import React from 'react';
 import BEMHelper from 'services/BemHelper';
 import Grid from 'components/Grid';
-import PageWrapper from 'modules/Admin/components/PageWrapper';
+import { PageContent } from 'arachne-ui-components';
 import Actions from './Actions';
 import List from './List';
 import ModalCreateEdit from './ModalCreateEdit';
@@ -39,17 +39,18 @@ function AtlasList(props) {
     deleteAtlas,
     isLoading,
     paginationDetails,
+    reload,
     setSorting,
     sorting,
   } = props;
 
   return (
-    <PageWrapper>
+    <PageContent title="Atlases | Arachne">
       <Grid
         title="Atlases"
         isLoading={isLoading}
         paginationDetails={paginationDetails}
-        Actions={<Actions />}
+        Actions={<Actions reload={reload} />}
       >
         <List
           data={atlasList}
@@ -61,7 +62,7 @@ function AtlasList(props) {
         />
       </Grid>
       <ModalCreateEdit />
-    </PageWrapper>
+    </PageContent>
   );
 }
 

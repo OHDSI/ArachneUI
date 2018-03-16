@@ -35,7 +35,6 @@ class ActionsBuilder extends ContainerBuilder {
   getMapDispatchToProps() {
     return {
       openNewAtlasModal: () => ModalUtils.actions.toggle(modal.atlasDetails, true),
-      refresh: actions.router.reload,
     };
   }
 

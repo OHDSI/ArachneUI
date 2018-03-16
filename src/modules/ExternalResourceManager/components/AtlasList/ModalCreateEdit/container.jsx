@@ -91,18 +91,17 @@ class ModalCreateEditBuilder extends ContainerBuilder {
         dispatchProps.resetForm();
         dispatchProps.clearAtlasData();
       },
-      doSubmit(data) {
+      async doSubmit(data) {
         let createOrUpdate;
         if (stateProps.id) {
-          createOrUpdate = dispatchProps.updateAtlas({ id: stateProps.id }, data);
+          createOrUpdate = await dispatchProps.updateAtlas({ id: stateProps.id }, data);
         } else {
-          createOrUpdate = dispatchProps.createAtlas({}, data);
+          createOrUpdate = await dispatchProps.createAtlas({}, data);
         }
 
-        createOrUpdate
-          .then(dispatchProps.resetForm)
-          .then(dispatchProps.closeModal)
-          .then(dispatchProps.refreshList);
+        await dispatchProps.resetForm();
+        await dispatchProps.closeModal();
+        await dispatchProps.refreshList();
 
         return createOrUpdate;
       },

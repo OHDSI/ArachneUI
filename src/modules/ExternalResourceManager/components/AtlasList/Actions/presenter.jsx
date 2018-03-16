@@ -10,7 +10,7 @@ function AtlasesActions(props) {
   const classes = new BEMHelper('atlases-actions');
   const {
     openNewAtlasModal,
-    refresh,
+    reload,
   } = props;
 
   return (
@@ -21,7 +21,7 @@ function AtlasesActions(props) {
         </Button>
       </li>
       <li {...classes('action')}>
-        <Button {...classes('btn')} onClick={refresh}>
+        <Button {...classes('btn')} onClick={reload}>
           <i {...classes('btn-ico')}>refresh</i>
         </Button>
       </li>

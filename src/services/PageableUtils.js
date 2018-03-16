@@ -4,7 +4,7 @@ export default class PageableUtils {
 
   static getSorting(state, defaultSortField = 'name', defaultSortOrder = PageableUtils.SORT_ASC) {
     const location = state.routing.locationBeforeTransitions;
-    const sort = get(location, 'query.sort', `${defaultSortField},${defaultSortOrder}`).split(',');
+    const sort = get(location, 'query.sort', `${defaultSortField},${defaultSortOrder}`, 'string').split(',');
 
     return {
       sortBy: sort[0],

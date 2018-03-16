@@ -91,6 +91,7 @@ export default class ListBuilder extends ContainerBuilder {
       ...dispatchProps,
       ...ownProps,
       setSorting: PageableUtils.setSorting.bind(null, dispatchProps.search, stateProps.query),
+      reload: () => dispatchProps.loadAtlasList({}, stateProps.query),
       async deleteAtlas(id) {
         await dispatchProps.deleteAtlas({ id });
         dispatchProps.loadAtlasList();
