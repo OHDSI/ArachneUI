@@ -40,7 +40,7 @@ const apiPaths = {
 };
 
 const imgs = {
-  sidebarIco: '/img/icons/Universal_Desktop/Navigation/Arachne_Desktop_icon-Data_Catalog.png',
+  sidebarIco: '/img/icons/externalResources.png',
 };
 
 const atlasAuthTypeList = {
