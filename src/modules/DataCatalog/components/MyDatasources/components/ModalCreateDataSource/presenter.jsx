@@ -29,7 +29,7 @@ import { getDataSourceCreationFields } from 'const/dataSource';
 
 function ModalCreateDataSource(props) {
   const classes = new BEMHelper('modal-create-data-source');
-  const { dbmsTypeList = [] } = props;
+  const { dbmsTypeList = [], closeModal } = props;
     
   const submitBtn = {
     label: 'Add',
@@ -49,6 +49,7 @@ function ModalCreateDataSource(props) {
           submitBtn={submitBtn}
           cancelBtn={cancelBtn}
           onSubmit={props.doSubmit}
+          onCancel={closeModal}
           {...props}
         />          
       </div>

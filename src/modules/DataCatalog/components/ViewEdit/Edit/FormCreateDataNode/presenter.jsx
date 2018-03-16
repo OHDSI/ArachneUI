@@ -69,6 +69,7 @@ function FormCreateDataNode(props) {
             name: '',
             label: 'Name of data node',
             type: fieldTypes.string,
+            isRequired: true,
           },
           useAutocomplete,
           autocompleteOptions,
@@ -83,6 +84,7 @@ function FormCreateDataNode(props) {
           item: {
             label: 'Description',
             type: fieldTypes.textarea,
+            isRequired: true,
           },
           isWide: true,
         },
