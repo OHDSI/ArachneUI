@@ -108,10 +108,10 @@ class SystemSettingsBuilder extends ContainerBuilder {
       checkAtlas: () => {
         dispatchProps.checkAtlas()
           .then((result) => {
-            alert(result.errorMessage)
+            Notifier.alert(result.errorMessage)
           })
           .catch((error) => {
-            alert(error.errors._error);
+            Notifier.alert(error.errors._error);
             dispatchProps.closeLoader()
           })
       },

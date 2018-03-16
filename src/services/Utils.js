@@ -43,6 +43,7 @@ import { reports } from 'const/reports';
 import URI from 'urijs';
 import { createSelector } from 'reselect';
 import qs from 'qs';
+import { Notifier } from 'community/services/Notifier';
 
 function buildFormData(obj) {
   const formData = new FormData();
@@ -375,14 +376,15 @@ class Utils {
   }
 
   static confirmDelete({ message = 'Are you sure?' } = {}) {
-    const promise = new Promise((resolve, reject) => {
+    /*const promise = new Promise((resolve, reject) => {
       if (confirm(message)) {
         resolve();
       } else {
         reject();
       }
     });
-    return promise;
+    return promise;*/
+    return Notifier.confirm(message);
   }
 
   static extendReducer(originalReducer, newReducerMap) {
