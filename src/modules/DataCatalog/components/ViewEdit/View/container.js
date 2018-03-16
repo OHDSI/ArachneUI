@@ -23,7 +23,7 @@
 // @ts-check
 import { Component, PropTypes } from 'react';
 import actions from 'actions/index';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import isEmpty from 'lodash/isEmpty';
 import { Utils, ContainerBuilder } from 'services/Utils';
 import presenter from './presenter';
@@ -61,7 +61,7 @@ class DataCatalogViewBuilder extends ContainerBuilder {
 
   mapStateToProps(state, ownProps) {
     const moduleState = get(state, 'dataCatalog');
-    const reportsAvailable = get(state, 'dataCatalog.report.queryResult.result', []) || [];
+    const reportsAvailable = get(state, 'dataCatalog.report.queryResult.result', [], 'Array').length > 0;
     const isDenied = isEmpty(get(state, 'dataCatalog.dataSource.data.result', {}, 'Object'));
   
     return {
