@@ -20,15 +20,33 @@
  *
  */
 
+import { Component, PropTypes } from 'react';
 import actions from 'actions';
 import { ContainerBuilder, get } from 'services/Utils';
 import { forms } from 'modules/DataCatalog/const';
-import { modelTypesValues, attributeNames } from 'const/dataSource';
+import { modelTypesValues, attributeNames, executionPolicy } from 'const/dataSource';
 import isEmpty from 'lodash/isEmpty';
-import AttributeList from './presenter';
+import presenter from './presenter';
 import SelectorsBuilder from './selectors';
 
 const selectors = (new SelectorsBuilder()).build();
+
+/** @augments { Component<any, any> } */
+export class AttributeList extends Component {
+  static get propTypes() {
+    return {
+      getDbmsTypes: PropTypes.func,
+    };
+  }
+
+  componentWillMount() {
+    this.props.getDbmsTypes();
+  }
+
+  render() {
+    return presenter(this.props);
+  }
+}
 
 export default class AttributeListBuilder extends ContainerBuilder {
   getComponent() {
@@ -48,12 +66,24 @@ export default class AttributeListBuilder extends ContainerBuilder {
     const values = selectors.getValues(state);
     const initialValues = selectors.getData(state);
     let isCDM = initialValues[attributeNames.modelType] === modelTypesValues.CDM;
+    const isManual = initialValues[attributeNames.executionPolicy] === executionPolicy.MANUAL;
     if (!isEmpty(values)) {
       isCDM = values[attributeNames.modelType] === modelTypesValues.CDM;
     }
 
+    const attrList = selectors.getAttrList(state)
+    .filter((attr) => isManual ? true : !attr.onlyManual)
+    .map((attr) => {
+      const attribute = { ...attr };
+      if (attr.name === attributeNames.dbmsType) {
+        attribute.options = selectors.getDbmsTypes(state);
+      }
+
+      return attribute;
+    });
+
     return {
-      attrList: selectors.getAttrList(state),
+      attrList,
       initialValues,
       dataSourceId,
       isPublished,
@@ -65,6 +95,7 @@ export default class AttributeListBuilder extends ContainerBuilder {
     return {
       update: actions.dataCatalog.dataSource.update,
       load: actions.dataCatalog.dataSource.find,
+      getDbmsTypes: actions.dataCatalog.dbmsTypes.find,
     };
   }
 

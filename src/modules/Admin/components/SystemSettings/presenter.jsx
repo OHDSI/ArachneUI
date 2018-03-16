@@ -111,6 +111,14 @@ function SystemSettings(props) {
                   onClick={() => solrReindex({ domain: 'analyses' })}
                 />
               </div>
+              <div {...classes('action-bar-btn')}>
+                <Button
+                  {...classes('reindex-solr')}
+                  mods={['default']}
+                  label="Reindex Papers"
+                  onClick={() => solrReindex({ domain: 'papers' })}
+                />
+              </div>
             </div>
           : null
         }
