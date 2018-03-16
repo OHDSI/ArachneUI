@@ -133,16 +133,16 @@ function MenuDropdown(props) {
     },
     {
       link: {
-        sectionIco: 'settings',
-        text: 'Settings',
-        url: paths.settings(),
+        sectionIco: 'storage',
+        text: 'My datasources',
+        url: paths.datasources(),
       },
     },
     {
       link: {
-        sectionIco: 'storage',
-        text: 'My datasources',
-        url: paths.datasources(),
+        sectionIco: 'settings',
+        text: 'Settings',
+        url: paths.settings(),
       },
     },
   ];
