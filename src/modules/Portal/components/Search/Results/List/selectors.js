@@ -46,7 +46,7 @@ export default class SelectorsBuilder {
         return userPaths.profile(id);
       case domains.DATA_SOURCE:
         return dataCatalogPaths.dataCatalog(id);
-      case domains.INSIGHT:
+      case domains.PAPER:
         return insightsPaths.insights({ insightId: id });
       case domains.ANALYSIS:
         return analysisPaths.analyses(id);

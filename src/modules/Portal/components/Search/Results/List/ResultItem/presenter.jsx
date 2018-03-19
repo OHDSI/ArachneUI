@@ -27,16 +27,17 @@ import {
   Breadcrumbs,
 } from 'arachne-ui-components';
 import Domain from '../Domain';
+import Highlight from './components/Highlight';
 
 import './style.scss';
 
 export default function ResultItem(props) {
   const {
     title,
-    description,
     path,
     domain,
     breadcrumbs,
+    highlight,
   } = props;
   const classes = BEMHelper('search-result-list-item');
 
@@ -44,7 +45,9 @@ export default function ResultItem(props) {
     <div {...classes()}>
       <Domain {...domain} />
       <Link {...classes('title')} to={path}>{title}</Link>
-      <div {...classes('description')}>{description}</div>
+      <div {...classes('description')}>{highlight.map(match =>
+        <Highlight {...match} />
+      )}</div>
       {breadcrumbs &&
         <Breadcrumbs {...classes('breadcrumbs')} data={breadcrumbs} />
       }

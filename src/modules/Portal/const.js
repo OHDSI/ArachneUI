@@ -64,23 +64,23 @@ const images = {
 const domains = keyMirror({
   ANALYSIS: null,
   STUDY: null,
-  INSIGHT: null,
   USER: null,
   DATA_SOURCE: null,
+  PAPER: null,
 });
 
 const domainNames = {
   [domains.STUDY]: 'Study notebook',
   [domains.USER]: 'Expert finder',
   [domains.DATA_SOURCE]: 'Data catalog',
-  [domains.INSIGHT]: 'Insights library',
+  [domains.PAPER]: 'Insights library',
   [domains.ANALYSIS]: 'Analyses',
 };
 
 const searchSections = [
   {
     label: 'Domain',
-    name: 'domain',
+    name: 'collections',
     type: types.enumMulti,
     forceOpened: true,
     hasTitle: false,
@@ -100,6 +100,10 @@ const searchSections = [
       {
         label: domainNames.ANALYSIS,
         value: domains.ANALYSIS,
+      },
+      {
+        label: domainNames.PAPER,
+        value: domains.PAPER,
       },
     ],
   },
