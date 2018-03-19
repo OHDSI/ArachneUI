@@ -57,11 +57,14 @@ function Input({
   optionRenderer,
   showResults,
 }) {
+  const resultsFetcher = isCollapsed
+    ? () => {}
+    : fetchResults;
   return (
     <div {...classes({ element: 'input-wrapper', modifiers: { collapsed: isCollapsed } })}>
       <Autocomplete
         placeholder='Search...'
-        fetchOptions={fetchResults}
+        fetchOptions={resultsFetcher}
         value={input.value}
         onChange={(value) => {
           if (value !== null) {

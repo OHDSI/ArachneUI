@@ -24,9 +24,12 @@
 
 .#{$namespace} {
   &search-result-list {
-    overflow: auto;
-    flex: 1;
-    display: flex;
+
+    &--empty {
+      overflow: auto;
+      flex: 1;
+      display: flex;
+    }
     
     &__filter {
       padding: 1rem 2rem;
