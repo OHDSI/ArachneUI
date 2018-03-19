@@ -81,14 +81,26 @@ export default class SelectorsBuilder {
   }
 
   parseHightlights({ field, value }) {
-    console.warn('selector');
+    let match;
+    const newValue = [];
+    let lastIndex = 0;
+    while (match = detectorRegexp.exec(value)) {
+      newValue.push({
+        isHighlighted: false,
+        text: value.substr(lastIndex, match.index - lastIndex),
+      });
+
+      newValue.push({
+        isHighlighted: true,
+        text: match[1].replace(highlightTagsRegexp, ' '),
+      });
+
+      lastIndex = detectorRegexp.lastIndex;
+    }
+
     return {
       field,
-      value: value.split(detectorRegexp)
-        .map(match => ({
-          text: match.replace(highlightTagsRegexp, ' '),
-          isHighlighted: detectorRegexp.test(match),
-        })),
+      value: newValue,
     };
   }
 
@@ -98,7 +110,7 @@ export default class SelectorsBuilder {
       results => (results || [])
         .map(result => ({
           ...result,
-          highlight: result.highlight.map(this.parseHightlights)
+          highlight: result.highlight.map(this.parseHightlights),
         }))
         .map(this.addDomain)
         .map(this.addPath.bind(this))
