@@ -44,7 +44,7 @@ class TreemapReport extends BaseChart {
     this.loadConditionDetails = this.loadConditionDetails.bind(this);
     this.charts.push(this.props.treemap);
   }
-
+  
   onZoom(concept) {
     this.initialZoomedConcept = concept;
   }
@@ -78,6 +78,7 @@ class TreemapReport extends BaseChart {
       onZoom: this.onZoom,
       initialZoomedConcept: this.initialZoomedConcept,
       loadConditionDetails: this.loadConditionDetails,
+      dataPresent: !this.isEmpty(this.props.conditions),
     });
   }
 }

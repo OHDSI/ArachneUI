@@ -59,7 +59,10 @@ function mapStateToProps(state) {
   const id = get(moduleState, 'data.result.id', '');
   const countryId = get(data, 'country.id', null);
   const stateProvinceId = get(data, 'stateProvince.id', null);
-
+  const countries = selectors.getCountries(state);
+  const provinces = selectors.getProvinces(state);
+  const contactInfoFormState = get(state, 'form.contactInfo.values', {}); 
+  
   return {
     initialValues: {
       address1: data.address1,
@@ -72,12 +75,12 @@ function mapStateToProps(state) {
       mobile: data.mobile,
       contactEmail: data.contactEmail,
     },
-    contactInfoFormState: get(state, 'form.contactInfo.values', {}),
+    contactInfoFormState,
     id,
     countryId,
     stateProvinceId,
-    provinces: selectors.getProvinces(state),
-    countries: selectors.getCountries(state),
+    provinces,
+    countries,
   };
 }
 
@@ -96,7 +99,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...dispatchProps,
     cancel: () => ownProps.setViewMode(),
     searchCountries: (data) => {
-      const query = get(data, 'query', null);
+      const query = get(data, 'query', '') || '';
 
       return dispatchProps.searchCountries({
         query,
@@ -104,7 +107,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
       });
     },
     searchProvinces: (data) => {
-      const query = get(data, 'query', null);
+      const query = get(data, 'query', '') || '';
 
       return dispatchProps.searchProvinces({
         countryId: stateProps.contactInfoFormState.country || stateProps.countryId,
@@ -113,7 +116,13 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
       });
     },
     doSubmit: (data) => {
-      const submitPromise = dispatchProps.updateGeneralInfo(null, data);
+      const submitPromise = dispatchProps.updateGeneralInfo(null, 
+        {...data,
+          country: {
+            id: data.country
+          }
+        }
+      );
       submitPromise.then(() => dispatchProps.resetForm())
         .then(() => ownProps.setViewMode())
         .then(() => dispatchProps.loadInfo({ id: stateProps.id }))
