@@ -30,7 +30,7 @@ import { paths as userPaths } from 'modules/ExpertFinder/const';
 import { paths as insightsPaths } from 'modules/InsightsLibrary/const';
 import { paths as dataCatalogPaths } from 'modules/DataCatalog/const';
 
-import { domains, domainNames, detectorRegexp, highlightTagsRegexp } from 'modules/Portal/const';
+import { domains, domainNames, detectorRegexp } from 'modules/Portal/const';
 
 export default class SelectorsBuilder {
 
@@ -92,7 +92,7 @@ export default class SelectorsBuilder {
 
       newValue.push({
         isHighlighted: true,
-        text: match[1].replace(highlightTagsRegexp, ' '),
+        text: ` ${match[1]} `,
       });
 
       lastIndex = detectorRegexp.lastIndex;
