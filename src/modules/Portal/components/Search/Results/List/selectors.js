@@ -30,12 +30,12 @@ import { paths as userPaths } from 'modules/ExpertFinder/const';
 import { paths as insightsPaths } from 'modules/InsightsLibrary/const';
 import { paths as dataCatalogPaths } from 'modules/DataCatalog/const';
 
-import { domains, domainNames } from 'modules/Portal/const';
+import { domains, domainNames, detectorRegexp, highlightTagsRegexp } from 'modules/Portal/const';
 
 export default class SelectorsBuilder {
 
   getRawResults(state) {
-    return get(state, 'portal.search.queryResult.content', [], 'Array');
+    return get(state, 'portal.search.queryResult.content');
   }
 
   getPath({ id, entityType }) {
@@ -80,10 +80,26 @@ export default class SelectorsBuilder {
     return res;
   }
 
+  parseHightlights({ field, value }) {
+    console.warn('selector');
+    return {
+      field,
+      value: value.split(detectorRegexp)
+        .map(match => ({
+          text: match.replace(highlightTagsRegexp, ' '),
+          isHighlighted: detectorRegexp.test(match),
+        })),
+    };
+  }
+
   buildSelectorForGetResults() {
     return createSelector(
       [this.getRawResults],
-      results => results
+      results => (results || [])
+        .map(result => ({
+          ...result,
+          highlight: result.highlight.map(this.parseHightlights)
+        }))
         .map(this.addDomain)
         .map(this.addPath.bind(this))
     );

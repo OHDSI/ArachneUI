@@ -110,6 +110,8 @@ const searchSections = [
 ];
 
 const searchResultsPageSize = 10;
+const detectorRegexp = /(\[b\][^\[]*\[\/b\])/g;
+const highlightTagsRegexp = /\[\/?b\]/g;
 
 export {
   apiPaths,
@@ -123,4 +125,6 @@ export {
   searchResultsPageSize,
   domains,
   domainNames,
+  detectorRegexp,
+  highlightTagsRegexp,
 };

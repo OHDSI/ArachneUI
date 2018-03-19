@@ -25,14 +25,11 @@ import BEMHelper from 'services/BemHelper';
 
 import './style.scss';
 
-const detectorRegexp = /(\[b\][^\[]*\[\/b\])/g;
-const isHighlightedRegexp = /^(\[b\])[^\[]*(\[\/b\])$/g;
 const classes = new BEMHelper('highlight');
 
-function Part({ value }) {
-  const isMatch = isHighlightedRegexp.test(value);
-  return (<span {...classes('part', { matched: isMatch })}>
-    {value.replace(/\[\/?b\]/g, ' ')}
+function Part({ text, isHighlighted }) {
+  return (<span {...classes('part', { matched: isHighlighted })}>
+    {text}
   </span>);
 }
 
@@ -43,10 +40,10 @@ function Highlight(props) {
     <div {...classes()}>
       <span {...classes('field')}>{field}</span>
       <div {...classes('value')}>
-        {value.split(detectorRegexp).map(part => <Part value={part} />)}
+        {value.map(part => <Part {...part} />)}
       </div>
     </div>    
   );
 }
 
-export default Highlight;  
+export default Highlight;
