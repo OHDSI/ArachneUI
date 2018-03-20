@@ -92,26 +92,19 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
       if (!dataSourceIds.length) {
         return false;
       }
-      let submitPromise;
+      const submitPromise = await dispatchProps.submitCode(
+        {
+          analysisId: stateProps.analysisId,
+        },
+        {
+          dataSources: dataSourceIds,
+        }
+      );
 
-      try {
-        submitPromise = await dispatchProps.submitCode(
-          {
-            analysisId: stateProps.analysisId,
-          },
-          {
-            dataSources: dataSourceIds,
-          }
-        );
-
-        await dispatchProps.resetForm();
-        await dispatchProps.closeModal();
-        await dispatchProps.loadAnalysis(({ id: stateProps.analysisId }));
-        await dispatchProps.loadSubmissionGroups({ analysisId: stateProps.analysisId, page: stateProps.page });
-      } catch (er) {
-        console.error(er);
-      }
-      
+      await dispatchProps.resetForm();
+      await dispatchProps.closeModal();
+      await dispatchProps.loadAnalysis(({ id: stateProps.analysisId }));
+      await dispatchProps.loadSubmissionGroups({ analysisId: stateProps.analysisId, page: stateProps.page });      
 
       // We have to return a submission promise back to redux-form
       // to allow it update the state
