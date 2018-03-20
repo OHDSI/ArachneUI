@@ -110,7 +110,7 @@ const searchSections = [
 ];
 
 const searchResultsPageSize = 10;
-const detectorRegexp = /(\[b\][^\[]*\[\/b\])/g;
+const detectorRegexp = /\[b\]([^\[]*)\[\/b\]/g;
 
 export {
   apiPaths,
