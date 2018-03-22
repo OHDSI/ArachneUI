@@ -41,6 +41,12 @@ function AboutInfo(props: IAboutInfo) {
             Version { projectVersion }.{ buildNumber }.{ buildId }
           </p>
         }
+        <p {...classes('line', 'additional')}>
+          <Link href={'mailto:support@odysseusinc.com'}>support@odysseusinc.com</Link>
+        </p>
+        <p {...classes('line', 'additional')}>
+          <Link href={'https://github.com/OHDSI/Athena'} target={'_blank'}>Github</Link>
+        </p>
         <LoadingPanel active={isLoading}/>
       </div>
     </Modal>
