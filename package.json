@@ -19,6 +19,7 @@
     "@types/react-router-redux": "4.0.39",
     "@types/webpack": "2.2.4",
     "@types/webpack-env": "1.13.0",
+    "@types/tapable": "^0.2.5",
     "awesome-typescript-loader": "3.0.8",
     "babel-core": "6.23.1",
     "babel-loader": "6.3.2",
