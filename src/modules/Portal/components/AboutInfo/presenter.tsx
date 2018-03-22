@@ -37,14 +37,14 @@ function AboutInfo(props: IAboutInfo) {
           @ 2015-2017, Odysseus Data Services, Inc. All rights reserved
         </p>
         {projectVersion && buildNumber &&
-          <p {...classes('line', 'additional')}>
+          <p {...classes('line', ['additional', 'padded'])}>
             Version { projectVersion }.{ buildNumber }.{ buildId }
           </p>
         }
-        <p {...classes('line', 'additional')}>
+        <p {...classes('line', 'padded')}>
           <Link href={'mailto:support@odysseusinc.com'}>support@odysseusinc.com</Link>
         </p>
-        <p {...classes('line', 'additional')}>
+        <p {...classes('line', 'padded')}>
           <Link href={'https://github.com/OHDSI/Athena'} target={'_blank'}>Github</Link>
         </p>
         <LoadingPanel active={isLoading}/>
