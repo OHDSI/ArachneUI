@@ -35,8 +35,6 @@ const package = require('../package.json');
 const components = require('arachne-ui-components/package.json');
 
 module.exports = function (env) {
-
-
   const APP_TYPE = {
     CENTRAL: 'central',
     NODE: 'node',
@@ -110,7 +108,7 @@ module.exports = function (env) {
     plugins.push(new webpack.optimize.UglifyJsPlugin());
   } else {
     if (mode === ENV_TYPE.QA) {
-      config.plugins.push(
+      plugins.push(
         new BundleAnalyzerPlugin({
           analyzerMode: 'static',
         })

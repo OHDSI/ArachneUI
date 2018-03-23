@@ -21,67 +21,21 @@
  */
 
 import React from 'react';
-import {
-  Table,
-} from 'arachne-ui-components';
+import VirtualTable from 'components/VirtualTable';
 import BEMHelper from 'services/BemHelper';
 
 import './style.scss';
-
-function TableCellText({ className, value }) {
-
-  return (
-    <span className={className}>
-      {value}
-    </span>
-  );
-}
-
-function CsvTable({ columns, rows, sticky = false, reference }) {
-  const classes = BEMHelper('csv-viewer');
-
-  return (
-    <Table
-      {...classes({ element: 'table', modifiers: { sticky } })}
-      data={rows}
-      mods={['hover']}
-      reference={reference}
-    >
-      {columns.map((col, i) =>
-        <TableCellText
-          key={i}
-          {...classes('header')}
-          header={col.header}
-          field={col.field}
-        />
-      )}
-    </Table>
-  );
-}
 
 function CsvViewer(props) {
   const classes = BEMHelper('csv-viewer');
   const {
     columns,
     rows,
-    widths,
-    setThWidths,
   } = props;
 
   return (
     <div {...classes()}>
-      <CsvTable columns={columns} rows={[]} sticky reference={(el) => {
-        if (el && Array.isArray(widths) && widths.length) {
-          el.querySelectorAll('th').forEach((th, index) => {
-            th.width = widths[index];
-          });
-        }
-      }} />
-      <CsvTable columns={columns} rows={rows} reference={(el) => {
-        if (el) {
-          setThWidths(el.querySelectorAll('th'));
-        }
-      }} />
+      <VirtualTable columns={columns} data={rows} />
     </div>
   );
 }
