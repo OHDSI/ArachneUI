@@ -33,10 +33,6 @@ const generalInfo = new Duck({
   name: `${coreName}_GENERAL`,
   urlBuilder: apiPaths.updateUserProfile,
 });
-const skills = new Duck({
-  name: `${coreName}_SKILL`,
-  urlBuilder: apiPaths.userSkill,
-});
 const publications = new Duck({
   name: `${coreName}_PUIBLICATION`,
   urlBuilder: apiPaths.userPublication,
@@ -63,7 +59,6 @@ export default {
     generalInfo: {
       update: generalInfo.actions.create,
     },
-    skills: skills.actions,
     publications: publications.actions,
     links: links.actions,
     userPic: {

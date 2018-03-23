@@ -272,6 +272,7 @@ function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false) {
           mods: ['bordered'],
           placeholder: 'DBMS Type',
           options: dbmsTypeList,
+          required: true,
         },
       },
     },
