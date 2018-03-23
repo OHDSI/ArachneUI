@@ -28,33 +28,48 @@ import { modal } from 'modules/DataCatalog/const';
 import { ModalUtils } from 'arachne-ui-components';
 
 import presenter from './presenter';
+import SelectorsBuilder from './selectors';
 
+const selectors = (new SelectorsBuilder()).build();
 
 export class ModalCreateDatanode extends Component {
   static get propTypes() {
     return {
     };
-  } 
+  }
 
   render() {
     return presenter(this.props);
   }
 }
- 
+
 export default class ModalCreateDatanodeBuilder extends ContainerBuilder {
   getComponent() {
     return ModalCreateDatanode;
   }
-  
+
   getModalParams() {
     return {
       name: modal.modalCreateDatanode,
     };
-  }  
- 
-  mapStateToProps(state, ownProps) {     
+  }
+
+  mapStateToProps(state, ownProps) {
+
+    const formValues = selectors.getValues(state);
+    const selectedOrganizationId = get(formValues, 'organization');
+    const selectedNodeId = get(formValues, 'node');
+
+    const selectedNode = get(state, 'dataCatalog.dataNode.data', [], 'Array').filter((node) => {
+      return node.centralId === selectedNodeId
+    })[0];
+
+    const selectedOrganization = get(state, 'dataCatalog.organization.data', [], 'Array').filter((organization) => {
+      return organization.id === selectedOrganizationId;
+    })[0];
 
     return {
+      selectedObjects: { selectedNode, selectedOrganization },
     };
   }
 
@@ -65,6 +80,8 @@ export default class ModalCreateDatanodeBuilder extends ContainerBuilder {
     return {
       closeModal: () => ModalUtils.actions.toggle(modal.modalCreateDatanode, false),
       createDN: actions.dataCatalog.dataNode.create,
+      selectNewDataNode: actions.dataCatalog.dataNode.selectNewDataNode,
+      selectNewOrganization: actions.dataCatalog.organization.selectNewOrganization,
       openCreateDataSourceModal: dataNodeId => ModalUtils.actions.toggle(modal.modalCreateDataSource, true, { dataNodeId }),
     };
   }
@@ -83,15 +100,35 @@ export default class ModalCreateDatanodeBuilder extends ContainerBuilder {
         await dispatchProps.closeModal();
         dispatchProps.openCreateDataSourceModal(node);
       },
-      async createDataNode({ name, description }) {
-        const dataNode = await dispatchProps.createDN({}, { name, description });
-        if (!dataNode) {
-          // TODO: add notification (ARACHNE-2016)
-          return false;
+      createDataNode({ name }) {
+        dispatchProps.selectNewDataNode(name);
+        return { name, id: 0 };
+      },
+      createOrganization({ name }) {
+        dispatchProps.selectNewOrganization(name);
+        return { name, id: 0 }
+      },
+      async doSubmit(data) {
+        const selectedObjects = stateProps.selectedObjects;
+        const selectedNode = selectedObjects.selectedNode;
+
+        let id = selectedNode.centralId;
+        if (id === -1) {
+          const selectedOrganization = selectedObjects.selectedOrganization;
+          const organizationId = selectedOrganization.id;
+          let dataNode = {
+            name: selectedNode.name,
+            description: data.description,
+            organization: {
+              id: organizationId !== -1 ? organizationId : null,
+              name: selectedOrganization.name,
+            },
+          };
+          dataNode = await dispatchProps.createDN({}, dataNode);
+          id = dataNode.centralId;
         }
-        await dispatchProps.closeModal();
-        dispatchProps.openCreateDataSourceModal(dataNode.centralId);
-        return dataNode;
+        dispatchProps.closeModal();
+        dispatchProps.openCreateDataSourceModal(id);
       },
     };
   }

@@ -38,27 +38,45 @@ function FormCreateDataNode(props) {
     isLoading,
     dataSourceId,
     doSubmit,
-    doCreate,
+    doCreateDataNode,
     dataNodes = [],
     loadDataNodes = () => {},
+    doCreateOrganization,
+    organizations = [],
+    loadOrganizations = () => {},
+    fullFilled,
+    existedDataNode,
   } = props;
 
-  const submitBtn = {
-    label: 'Create',
-    loadingLabel: 'Creating...',
-  };
+  const submitBtn = existedDataNode ?
+    {
+      label: 'Select',
+      loadingLabel: 'Selecting...',
+      mods: ['success' , 'rounded'],
+    } :
+    {
+      label: 'Create',
+      loadingLabel: 'Creating...',
+      disabled: !fullFilled,
+    };
 
   const useAutocomplete = dataSourceId === undefined;
+  const disabledAdditionalFields = existedDataNode && dataSourceId === undefined;
   let autocompleteOptions = {};
   if (useAutocomplete) {
     autocompleteOptions = {
       options: dataNodes,
       fetchOptions: loadDataNodes,
-      promptTextCreator: label => `Create dananode ${label}`,
-      onNewOptionClick: ({ value }) => doCreate({ name: value, description: 'New Data Node' }),
+      promptTextCreator: label => `Create datanode ${label}`,
+      onNewOptionClick: ({ value }) => doCreateDataNode({ name: value }),
     };
   }
-
+  const organizationAutocompleteOptions = {
+    options: organizations,
+    fetchOptions: loadOrganizations,
+    promptTextCreator: label => `Create organization ${label}`,
+    onNewOptionClick: ({ value }) => doCreateOrganization({ name: value }),
+  };
   const fields = [
     {
       name: 'node',
@@ -77,6 +95,23 @@ function FormCreateDataNode(props) {
       },
     },
     {
+      name: 'organization',
+      InputComponent: {
+        component: AttributesFormListItem,
+        props: {
+          item: {
+            name: '',
+            label: 'Organization',
+            type: fieldTypes.string,
+            isRequired: true,
+          },
+          useAutocomplete: true,
+          disabled: disabledAdditionalFields,
+          autocompleteOptions: organizationAutocompleteOptions,
+        },
+      },
+    },
+    {
       name: 'description',
       InputComponent: {
         component: AttributesFormListItem,
@@ -86,6 +121,7 @@ function FormCreateDataNode(props) {
             type: fieldTypes.textarea,
             isRequired: true,
           },
+          disabled: disabledAdditionalFields,
           isWide: true,
         },
       },

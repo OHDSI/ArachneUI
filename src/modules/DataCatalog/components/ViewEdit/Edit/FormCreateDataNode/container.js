@@ -25,6 +25,9 @@ import actions from 'actions';
 import { forms } from 'modules/DataCatalog/const';
 import { ContainerBuilder, get } from 'services/Utils';
 import CreateDataNode from './presenter';
+import SelectorsBuilder from './selectors';
+
+const selectors = (new SelectorsBuilder()).build();
 
 export default class FormCreateDataNode extends ContainerBuilder {
   getComponent() {
@@ -40,15 +43,35 @@ export default class FormCreateDataNode extends ContainerBuilder {
   mapStateToProps(state) {
     const isLoading = get(state, 'dataCatalog.dataNode.isLoading', false);
     const datanodeId = get(state, 'dataCatalog.dataSource.data.result.dataNode.id');
+
+    const formValues = selectors.getValues(state);
+
+    let fullFilled = false;
+    let existedDataNode = false;
+    if (!!formValues) {
+      if (!datanodeId) {
+        const selectedNodeId = formValues.node;
+        existedDataNode = selectedNodeId !== -1;
+      }
+      if (!existedDataNode) {
+        fullFilled = !!formValues.node && !!formValues.organization && !!formValues.description;
+      }
+    }
     const dataNodes = get(state, 'dataCatalog.dataNode.data', [], 'Array').map((node) => ({
       value: node.centralId,
       label: node.name,
     }));
-
+    const organizations = get(state, 'dataCatalog.organization.data', [], 'Array').map((organization) => ({
+      value: organization.id,
+      label: organization.name,
+    }));
     return {
       isLoading,
       datanodeId,
       dataNodes,
+      organizations,
+      existedDataNode,
+      fullFilled,
     };
   }
 
@@ -58,6 +81,7 @@ export default class FormCreateDataNode extends ContainerBuilder {
       update: actions.dataCatalog.dataNode.update,
       loadDataSource: actions.dataCatalog.dataSource.find,
       loadDataNodes: actions.dataCatalog.dataNode.find,
+      loadOrganizations: actions.dataCatalog.organization.find,
     };
   }
 
@@ -66,15 +90,22 @@ export default class FormCreateDataNode extends ContainerBuilder {
       ...stateProps,
       ...dispatchProps,
       async doSubmit(data) {
-        const submitPromise = await dispatchProps.update({ id: stateProps.datanodeId }, { ...data, name: data.node });
+        const dataNode = await dispatchProps.update({ id: stateProps.datanodeId },
+          { name: data.node,
+            description: data.description,
+            organization: { id: data.organization }
+          });
         await dispatchProps.loadDataSource({
           id: ownProps.dataSourceId,
         });
 
-        return submitPromise;
+        return dataNode;
       },
       loadDataNodes(query) {
         dispatchProps.loadDataNodes({}, { query });
+      },
+      loadOrganizations(query) {
+        dispatchProps.loadOrganizations({}, { query })
       },
       ...ownProps, // allow redefining of the doSubmit method via own props
     };

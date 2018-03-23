@@ -31,7 +31,8 @@ function ModalCreateDatanode(props) {
   const classes = new BEMHelper('modal-create-datanode');
   const {
     createDataNode,
-    chooseDataNode,
+    createOrganization,
+    doSubmit,
   } = props;
 
   return (
@@ -42,7 +43,7 @@ function ModalCreateDatanode(props) {
       create
     >
       <div {...classes()}>
-        <FormCreateDataNode doSubmit={chooseDataNode} doCreate={createDataNode} />
+        <FormCreateDataNode doSubmit={doSubmit} doCreateDataNode={createDataNode} doCreateOrganization={createOrganization} />
       </div>
     </Modal>
   );
