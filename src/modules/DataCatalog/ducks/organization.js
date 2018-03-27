@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,56 +15,50 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: November 24, 2017
+ * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Konstantin Yaroshovets
+ * Created: March 23, 2018
  *
  */
 
 import Duck from 'services/Duck';
 import { apiPaths } from '../const';
 
-const coreName = 'CSL_DATA_NODE';
-const addNewDataNodeActionName = `${coreName}_NEW`;
+const coreName = 'CSL_ORGANIZATION';
+const addNewOrganizationActionName = `${coreName}_NEW`;
 
-const dataNode = new Duck({
+const organization = new Duck({
   name: coreName,
-  urlBuilder: apiPaths.dataNode,
+  urlBuilder: apiPaths.organization,
 });
 
-const dataNodeCreator = new Duck({
-  name: coreName,
-  urlBuilder: apiPaths.dataNodeCreate,
-});
-
-function newDataNode(name) {
+function createOrganization(name) {
   return {
-    type: addNewDataNodeActionName,
+    type: addNewOrganizationActionName,
     payload: { name },
   };
 }
 
-function dataNodeReducer(state, action) {
-  if (action.type === addNewDataNodeActionName) {
+function organizationReducer(state, action) {
+  if (action.type === addNewOrganizationActionName) {
     return {
       ...state,
       data: [
         ...state.data,
-        { ...action.payload, centralId: -1 }
+        { ...action.payload, id: -1 },
       ],
     };
   };
-  return dataNode.reducer(state, action);
+  return organization.reducer(state, action);
 }
 
-function selectNewDataNode(name) {
-  return dispatch => dispatch(newDataNode(name));
+function selectNewOrganization(name) {
+  return dispatch => dispatch(createOrganization(name));
 }
 
 export default {
   actions: {
-    ...dataNode.actions,
-    create: dataNodeCreator.actions.create,
-    selectNewDataNode: selectNewDataNode,
+    ...organization.actions,
+    selectNewOrganization: selectNewOrganization,
   },
-  reducer: dataNodeReducer,
+  reducer: organizationReducer,
 };
