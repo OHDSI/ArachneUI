@@ -60,13 +60,13 @@ export default class ModalCreateDatanodeBuilder extends ContainerBuilder {
     const selectedOrganizationId = get(formValues, 'organization');
     const selectedNodeId = get(formValues, 'node');
 
-    const selectedNode = get(state, 'dataCatalog.dataNode.data', [], 'Array').filter((node) => {
+    const selectedNode = get(state, 'dataCatalog.dataNode.data', [], 'Array').find((node) => {
       return node.centralId === selectedNodeId
-    })[0];
+    });
 
-    const selectedOrganization = get(state, 'dataCatalog.organization.data', [], 'Array').filter((organization) => {
+    const selectedOrganization = get(state, 'dataCatalog.organization.data', [], 'Array').find((organization) => {
       return organization.id === selectedOrganizationId;
-    })[0];
+    });
 
     return {
       selectedObjects: { selectedNode, selectedOrganization },
@@ -102,11 +102,9 @@ export default class ModalCreateDatanodeBuilder extends ContainerBuilder {
       },
       createDataNode({ name }) {
         dispatchProps.selectNewDataNode(name);
-        return { name, id: 0 };
       },
       createOrganization({ name }) {
         dispatchProps.selectNewOrganization(name);
-        return { name, id: 0 }
       },
       async doSubmit(data) {
         const selectedObjects = stateProps.selectedObjects;

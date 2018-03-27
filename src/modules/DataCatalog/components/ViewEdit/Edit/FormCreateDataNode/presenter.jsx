@@ -44,11 +44,10 @@ function FormCreateDataNode(props) {
     doCreateOrganization,
     organizations = [],
     loadOrganizations = () => {},
-    fullFilled,
-    existedDataNode,
+    dataNodeExists,
   } = props;
 
-  const submitBtn = existedDataNode ?
+  const submitBtn = dataNodeExists ?
     {
       label: 'Select',
       loadingLabel: 'Selecting...',
@@ -57,11 +56,10 @@ function FormCreateDataNode(props) {
     {
       label: 'Create',
       loadingLabel: 'Creating...',
-      disabled: !fullFilled,
     };
 
   const useAutocomplete = dataSourceId === undefined;
-  const disabledAdditionalFields = existedDataNode && dataSourceId === undefined;
+  const disabledAdditionalFields = dataNodeExists && dataSourceId === undefined;
   let autocompleteOptions = {};
   if (useAutocomplete) {
     autocompleteOptions = {

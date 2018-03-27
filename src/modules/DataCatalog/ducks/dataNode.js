@@ -24,6 +24,7 @@ import Duck from 'services/Duck';
 import { apiPaths } from '../const';
 
 const coreName = 'CSL_DATA_NODE';
+const addNewDataNodeActionName = `${coreName}_NEW`;
 
 const dataNode = new Duck({
   name: coreName,
@@ -37,13 +38,13 @@ const dataNodeCreator = new Duck({
 
 function newDataNode(name) {
   return {
-    type: 'CSL_DATA_NODE_NEW',
+    type: addNewDataNodeActionName,
     payload: { name },
   };
 }
 
-function handleNewDataNode(state, action) {
-  if (action.type === 'CSL_DATA_NODE_NEW') {
+function dataNodeReducer(state, action) {
+  if (action.type === addNewDataNodeActionName) {
     return {
       ...state,
       data: [
@@ -65,5 +66,5 @@ export default {
     create: dataNodeCreator.actions.create,
     selectNewDataNode: selectNewDataNode,
   },
-  reducer: handleNewDataNode,
+  reducer: dataNodeReducer,
 };

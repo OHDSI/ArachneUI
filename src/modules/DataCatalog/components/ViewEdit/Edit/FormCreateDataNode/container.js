@@ -26,6 +26,7 @@ import { forms } from 'modules/DataCatalog/const';
 import { ContainerBuilder, get } from 'services/Utils';
 import CreateDataNode from './presenter';
 import SelectorsBuilder from './selectors';
+import isEmpty from 'lodash/isEmpty';
 
 const selectors = (new SelectorsBuilder()).build();
 
@@ -37,7 +38,22 @@ export default class FormCreateDataNode extends ContainerBuilder {
   getFormParams() {
     return {
       form: forms.createDataNode,
+      validate: this.fieldValidator,
     };
+  }
+
+  fieldValidator({ node, organization, description }) {
+    let result = {};
+    if (!node) {
+      result.node = 'DataNode must be defined';
+    }
+    if (!organization && node === -1) {
+      result.organization = 'Organization must be defined';
+    }
+    if (!description && node === -1) {
+      result.description = 'Description must be defined';
+    }
+    return isEmpty(result) ? undefined : result;
   }
 
   mapStateToProps(state) {
@@ -46,15 +62,11 @@ export default class FormCreateDataNode extends ContainerBuilder {
 
     const formValues = selectors.getValues(state);
 
-    let fullFilled = false;
-    let existedDataNode = false;
-    if (!!formValues) {
+    let dataNodeExists = false;
+    if (formValues) {
       if (!datanodeId) {
         const selectedNodeId = formValues.node;
-        existedDataNode = selectedNodeId !== -1;
-      }
-      if (!existedDataNode) {
-        fullFilled = !!formValues.node && !!formValues.organization && !!formValues.description;
+        dataNodeExists = selectedNodeId !== -1;
       }
     }
     const dataNodes = get(state, 'dataCatalog.dataNode.data', [], 'Array').map((node) => ({
@@ -70,8 +82,7 @@ export default class FormCreateDataNode extends ContainerBuilder {
       datanodeId,
       dataNodes,
       organizations,
-      existedDataNode,
-      fullFilled,
+      dataNodeExists,
     };
   }
 

@@ -24,6 +24,7 @@ import Duck from 'services/Duck';
 import { apiPaths } from '../const';
 
 const coreName = 'CSL_ORGANIZATION';
+const addNewOrganizationActionName = `${coreName}_NEW`;
 
 const organization = new Duck({
   name: coreName,
@@ -32,13 +33,13 @@ const organization = new Duck({
 
 function createOrganization(name) {
   return {
-    type: 'CSL_ORGANIZATION_NEW',
+    type: addNewOrganizationActionName,
     payload: { name },
   };
 }
 
-function handleNewOrganiztion(state, action) {
-  if (action.type === 'CSL_ORGANIZATION_NEW') {
+function organizationReducer(state, action) {
+  if (action.type === addNewOrganizationActionName) {
     return {
       ...state,
       data: [
@@ -46,8 +47,7 @@ function handleNewOrganiztion(state, action) {
         { ...action.payload, id: -1 },
       ],
     };
-  }
-  ;
+  };
   return organization.reducer(state, action);
 }
 
@@ -60,5 +60,5 @@ export default {
     ...organization.actions,
     selectNewOrganization: selectNewOrganization,
   },
-  reducer: handleNewOrganiztion,
+  reducer: organizationReducer,
 };
