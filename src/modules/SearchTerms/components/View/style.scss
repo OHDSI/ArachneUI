@@ -22,6 +22,7 @@
       align-items: center;
       display: flex;
       padding: 1.5rem 3rem;
+      flex-shrink: 0;
     }
 
     &__subheader-back-btn {
