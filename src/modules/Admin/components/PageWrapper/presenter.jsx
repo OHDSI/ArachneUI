@@ -27,7 +27,8 @@ import Toolbar from './Toolbar';
 
 require('./style.scss');
 
-function AdminWrapper({ children }) {
+function AdminWrapper(props) {
+	const { children } = props;
 	const classes = new BEMHelper('admin-panel-page');
 	return (
 		<PageContent title='Admin settings | Arachne'>
