@@ -285,21 +285,22 @@ class Utils {
     return ConnectedComponent;
   }
 
-  static castValue(rawValue, { type, options }) {
+  static castValue(rawValue, { type, options = [] }) {
     let parsedValue;
+    const optionsList = options || [];
 
     // If enum - use label
     switch (type) {
       case fieldTypes.enum: {
         parsedValue = _get(
-          options.filter(o => o.value.toString() === rawValue.toString()),
+          optionsList.filter(o => o.value.toString() === rawValue.toString()),
           '[0].label',
           null,
         );
         break;
       }
       case fieldTypes.enumMulti: {
-        parsedValue = options.filter(o => rawValue.indexOf(o.value) !== -1).map(option => option.label).join(', ');
+        parsedValue = optionsList.filter(o => rawValue.indexOf(o.value) !== -1).map(option => option.label).join(', ');
         break;
       }
       case fieldTypes.date: {

@@ -43,5 +43,12 @@
         }
       }
     }
+
+    &__ds-list-container {
+      & .ac-checkbox {
+        display: inline-flex;
+        width: 100%;
+      }
+    }
   }
 }

@@ -27,8 +27,9 @@ import get from 'lodash/get';
 import { ContainerBuilder } from 'services/Utils';
 import isEmpty from 'lodash/isEmpty';
 import { ModalUtils } from 'arachne-ui-components';
-import { form } from 'modules/DataCatalog/const';
+import { forms } from 'modules/DataCatalog/const';
 import Presenter from './presenter';
+import { modelTypesValues } from 'const/dataSource';
 
 const presenterComponent = new Presenter();
 
@@ -61,6 +62,7 @@ class DataCatalogEditBuilder extends ContainerBuilder {
     const isDatanodeRegistered = get(state, 'dataCatalog.dataSource.data.result.dataNode.published');
     const isDenied = isEmpty(get(state, 'dataCatalog.dataSource.data.result', {}, 'Object'));
     const isVirtual = get(state, 'dataCatalog.dataSource.data.result.dataNode.virtual', false);
+    const isCDM = get(state, 'dataCatalog.dataSource.data.result.modelType', '') === modelTypesValues.CDM;
   
     return {
       name: `${get(moduleState, 'dataSource.data.result.dataNode.name', '')}: ${get(moduleState, 'dataSource.data.result.name', '')}`,
@@ -70,13 +72,14 @@ class DataCatalogEditBuilder extends ContainerBuilder {
       dataSourceId: ownProps.params.dataSourceId,
       isDenied,
       isVirtual,
+      isCDM,
     };
   }
 
   getMapDispatchToProps() {
     return {
       loadDataSource: actions.dataCatalog.dataSource.find,
-      showUploadForm: () => ModalUtils.actions.toggle(form.modalStatsUpload, true),
+      showUploadForm: () => ModalUtils.actions.toggle(forms.modalStatsUpload, true),
     };
   }
 

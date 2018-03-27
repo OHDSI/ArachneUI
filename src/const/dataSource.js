@@ -102,27 +102,27 @@ const modelTypes = [
 
 const cdmVersionList = [
   {
-    label: 'v4.0',
+    label: '4.0',
     value: 'V4_0',
   },
   {
-    label: 'v5.0.0',
+    label: '5.0.0',
     value: 'V5_0',
   },
   {
-    label: 'v5.0.1',
+    label: '5.0.1',
     value: 'V5_0_1',
   },
   {
-    label: 'v5.1',
+    label: '5.1',
     value: 'V5_1',
   },
   {
-    label: 'v5.2',
+    label: '5.2',
     value: 'V5_2',
   },
   {
-    label: 'v5.3',
+    label: '5.3',
     value: 'V5_3',
   },
 ];
@@ -272,6 +272,7 @@ function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false) {
           mods: ['bordered'],
           placeholder: 'DBMS Type',
           options: dbmsTypeList,
+          required: true,
         },
       },
     },

@@ -51,8 +51,10 @@ class Edit {
       dataSourceId,
       isDenied,
       isVirtual,
+      isCDM,
       showUploadForm,
     } = props;
+    const canUploadAchillesResults = isDatanodeRegistered && !isVirtual && isCDM;
 
     return (
       <PageContent title={`${props.name} | Arachne`}>
@@ -60,7 +62,7 @@ class Edit {
           {!isDenied && permissions.DELETE_DATASOURCE
             ? [
               <Toolbar mode={'edit'}>
-                {isDatanodeRegistered && !isVirtual
+                {canUploadAchillesResults
                   ? <Button
                     label={'Upload Achilles results'}
                     mods={['rounded', 'submit']}

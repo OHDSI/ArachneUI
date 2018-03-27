@@ -93,10 +93,14 @@ function MenuDropdown(props) {
   } = props;
 
   let dropdownInstance;
+  let activeTenant = 'Everyone';
 
   const tenantMenuItems = tenants.map((t) => {
     let statusIco;
-
+    
+    if (t.active) {
+      activeTenant = t.name;
+    }
     if (newActiveTenantId) {
       if (t.id === newActiveTenantId) {
         statusIco = 'hourglass_empty';
@@ -119,7 +123,7 @@ function MenuDropdown(props) {
       link: {
         sectionIco: 'people',
         text: 'Context',
-        subtext: 'Everyone',
+        subtext: activeTenant,
         rightIco: 'keyboard_arrow_right',
       },
       innerMenuItems: tenantMenuItems,
