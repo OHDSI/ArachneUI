@@ -176,17 +176,17 @@ function Term(props: ITermProps) {
                   </ListItem>
                 : null
               }
-              {invalidReason !== 'Valid' && validStart
+              {validStart
                 ? <ListItem>
                     <span {...classes('attribute-name')}>Valid start</span>
-                    <span>{moment(validStart).format(commonDateFormat)}</span>
+                    <span>{moment(validStart, 'x').format(commonDateFormat)}</span>
                   </ListItem>
                 : null
               }
-              {invalidReason !== 'Valid' && validEnd
+              {validEnd
                 ? <ListItem>
                     <span {...classes('attribute-name')}>Valid end</span>
-                    <span>{validEnd}</span>
+                    <span>{moment(validEnd, 'x').format(commonDateFormat)}</span>
                   </ListItem>
                 : null
               }
