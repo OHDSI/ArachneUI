@@ -22,8 +22,8 @@
 
 import {
   Utils,
+  get,
 } from 'services/Utils';
-import get from 'lodash/get';
 import { dsConverter as basicDsConverter } from 'components/LabelDataSource';
 
 function dsInfoConvert(dataSource, attrList) {
