@@ -115,6 +115,7 @@
     "react-text-mask": "^5.0.1",
     "react-toggle": "^2.2.1",
     "react-viewer": "^2.2.6",
+    "react-virtualized": "^9.18.5",
     "redux": "^3.6.0",
     "redux-async-connect": "git+https://github.com/odysseusinc/redux-async-connect.git#ac7726d",
     "redux-form": "^6.1.0",

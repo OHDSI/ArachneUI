@@ -28,11 +28,12 @@ import ProgressDots from 'components/ProgressDots';
 import { nameAnalysisType } from 'modules/AnalysisExecution/const';
 import Fuse from 'fuse.js';
 import searchSettings from 'const/search';
+import { VirtualList } from 'components/VirtualScroller';
 
 require('./style.scss');
+const classes = new BEMHelper('code-import-list');
 
 function ImportList(props) {
-  const classes = new BEMHelper('code-import-list');
   const {
     isAnySelected,
     selectedSource,
@@ -98,27 +99,32 @@ function ImportList(props) {
         {...classes('form')}
         onSubmit={handleSubmit(doSubmit)}
       >
-        <ul {...classes('list')}>
-          {entities.map((entity, key) => 
-            <li
-              key={key}
-              {...classes({
-                element: 'item',
-                modifiers: {
-                  hidden: !filteredEntitiesIds[entity.guid],
-                },
-              })}
-            >
-              <Field
-                component={FormCheckbox}
-                options={{
-                  label: entity.name,
-                }}
-                name={`entities[${entity.guid}]`}
-              />
-            </li>
+        <VirtualList
+          {...classes({
+            element: 'list',
+            modifiers: {
+              hidden: filteredEntities && !filteredEntities.length,
+            },
+          })}
+          data={entities}
+          rowRenderer={(entity) => (
+            <Field
+              component={FormCheckbox}
+              options={{
+                label: entity.name,
+              }}
+              name={`entities[${entity.guid}]`}
+            />
           )}
-        </ul>
+          rowClassesResolver={(entity) => {
+            return classes({
+              element: 'item',
+              modifiers: {
+                hidden: !filteredEntitiesIds[entity.guid],
+              },
+            });
+          }}
+        />
         {filteredEntities && filteredEntities.length
           ? null
           : <span {...classes('empty-state')}>

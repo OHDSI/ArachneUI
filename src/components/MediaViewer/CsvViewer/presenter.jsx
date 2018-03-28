@@ -21,7 +21,7 @@
  */
 
 import React from 'react';
-import VirtualTable from 'components/VirtualTable';
+import { VirtualTable } from 'components/VirtualScroller';
 import BEMHelper from 'services/BemHelper';
 
 import './style.scss';

@@ -33,8 +33,13 @@
     }
 
     &__list {
-      max-height: 600px;
-      overflow-y: auto;
+      height: 600px;
+      width: 100%;
+      outline: none;
+
+      &--hidden {
+        height: 0;
+      }
     }
 
     &__filter {
