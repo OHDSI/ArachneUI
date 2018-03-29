@@ -95,7 +95,7 @@ function mapStateToProps(state: Object, ownProps: ITermRoute): ITermStateProps {
   const isStandard = get(details, 'standardConcept') === 'Standard';
   const relationshipsCount = get(state, 'searchTerms.relationships.data.count', 0);
   const connectionsCount = get(state, 'searchTerms.relations.data.connectionsCount', 0);
-  const isTableMode = ownProps.routeParams.displayMode === 'table' || !connectionsCount;
+  const isTableMode = ownProps.routeParams.displayMode !== 'graph' || !connectionsCount;
   const termFilters = getTermFilters(state);
 
   return {
@@ -129,7 +129,7 @@ function mergeProps(
     ...dispatchProps,
     ...ownProps,
     changeTab: (tab) => {
-      const address = new URI(paths.term(stateProps.details.id, tab === 'table'));
+      const address = new URI(paths.term(stateProps.details.id, tab === 'graph'));
       address.search({
         fullscreen: stateProps.isFullscreen ? 'true' : 'false',
         ...stateProps.termFilters
