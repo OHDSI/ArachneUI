@@ -21,79 +21,35 @@
   */
 
 import React from 'react';
-import { AutoSizer, CellMeasurer, List, CellMeasurerCache } from 'react-virtualized';
 import BEMHelper from 'services/BemHelper';
+import Table from '../Table';
 
 import './style.scss';
 
-const cache = new CellMeasurerCache({
-  defaultHeight: 46,
-  fixedWidth: true,
-});
+function VirtualList(props) {
+  const classes = new BEMHelper('virtual-list');
+  const {
+    className,
+    rowClassesResolver,
+    rowRenderer = ({ value }) => <span>{JSON.stringify(value)}</span>,
+    data = [],
+  } = props;
 
-function VirtualListRow({
-  index,
-  isScrolling,
-  isVisible,
-  key,
-  parent,
-  style,
+  const parsedData = data.map(row => ({
+    row,
+  }));
 
-  entity,
-  renderer,
-  rowClassesResolver = () => ({}),
-}) {
   return (
-    <CellMeasurer
-      cache={cache}
-      columnIndex={0}
-      key={key}
-      parent={parent}
-      rowIndex={index}
-    >
-      {({ measure }) => (
-        <div
-          key={key}
-          style={style}
-          {...rowClassesResolver(entity)}
-        >
-          {renderer(entity)}
-        </div>
-      )}
-    </CellMeasurer>
+      <div
+        {...classes({ extra: className })}
+      >
+        <Table
+          columns={[{ key: 'row', name: '', formatter: rowRenderer }]}
+          data={parsedData}
+          list
+        />
+      </div>
   );
 }
 
-export default function VirtualList({
-  className,
-  rowClassesResolver,
-  rowRenderer,
-  data = [],
-}) {
-  return (
-    <div className={className}>
-      <AutoSizer>
-        {({ height, width }) => (
-          <List
-            rowRenderer={(props) => {
-              const entity = data[props.index];
-              return (
-                <VirtualListRow
-                  {...props}
-                  renderer={rowRenderer}
-                  entity={entity}
-                  rowClassesResolver={rowClassesResolver}
-                />
-              );
-            }}
-            deferredMeasurementCache={cache}
-            width={width}
-            height={height}
-            rowCount={data.length}
-            rowHeight={cache.rowHeight}
-          />
-        )}
-      </AutoSizer>
-    </div>
-  );
-} 
+export default VirtualList;

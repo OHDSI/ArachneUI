@@ -106,24 +106,16 @@ function ImportList(props) {
               hidden: filteredEntities && !filteredEntities.length,
             },
           })}
-          data={entities}
-          rowRenderer={(entity) => (
+          data={filteredEntities}
+          rowRenderer={({ value }) => (
             <Field
               component={FormCheckbox}
               options={{
-                label: entity.name,
+                label: value.name,
               }}
-              name={`entities[${entity.guid}]`}
+              name={`entities[${value.guid}]`}
             />
           )}
-          rowClassesResolver={(entity) => {
-            return classes({
-              element: 'item',
-              modifiers: {
-                hidden: !filteredEntitiesIds[entity.guid],
-              },
-            });
-          }}
         />
         {filteredEntities && filteredEntities.length
           ? null

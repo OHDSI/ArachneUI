@@ -39,25 +39,13 @@
 
       &--hidden {
         height: 0;
+        display: none;
       }
     }
 
     &__filter {
       @include input();
       @include input-border();
-    }
-
-    &__item {
-      border-bottom: 1px solid $grey;
-      padding: 1.5rem 2rem;
-
-      &:first-child {
-        border-top: 1px solid $grey;
-      }
-
-      &--hidden {
-        display: none;
-      }
     }
 
     &__submit {

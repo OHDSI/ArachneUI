@@ -23,8 +23,16 @@
 @import 'styles/vars-and-mixins.scss';
  
 .#{$namespace} { 
-  &list {
+  &virtual-list {
+    & .react-grid-Header {
+      display: none;
+      height: 0 !important;
+    }
 
+    & .react-grid-Viewport {
+      /* compensate hidden header */
+      top: 0 !important;
+    }
   }
 }
   

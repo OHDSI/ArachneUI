@@ -44,7 +44,7 @@
     }
   ],
   "dependencies": {
-    "@ohdsi/atlascharts": "git+https://github.com/agackovka/Visualizations.git",
+    "@ohdsi/atlascharts": "^1.0.0",
     "@stomp/stompjs": "github:stomp-js/stomp-websocket",
     "arachne-ui-components": "^1.12.0",
     "autoprefixer": "^6.7.6",
@@ -109,13 +109,12 @@
     "react-router": "^2.8.1",
     "react-router-redux": "^4.0.6",
     "react-sanfona": "^0.1.0",
-    "react-select": "git+https://github.com/pavgra/react-select.git",
+    "react-select": "^1.2.1",
     "react-simple-dropdown": "^1.1.5",
     "react-sticky": "^6.0.0",
     "react-text-mask": "^5.0.1",
     "react-toggle": "^2.2.1",
     "react-viewer": "^2.2.6",
-    "react-virtualized": "^9.18.5",
     "redux": "^3.6.0",
     "redux-async-connect": "git+https://github.com/odysseusinc/redux-async-connect.git#ac7726d",
     "redux-form": "^6.1.0",

@@ -20,12 +20,13 @@
   *
   */
 
-import { Component } from 'react';
+import { Component, PropTypes } from 'react';
 import presenter from './presenter';
 
 export default class VirtualTable extends Component {
   static get propTypes() {
     return {
+      list: PropTypes.bool,
     };
   }
 
@@ -41,6 +42,9 @@ export default class VirtualTable extends Component {
   setContainer(container) {
     if (container && !this.state.container) {
       const rect = container.getBoundingClientRect();
+      if (this.props.list === true) {
+        rect.height += 47; // compensate forcibly hidden header
+      }
       this.setState({
         container,
         containerHeight: rect.height,

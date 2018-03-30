@@ -25,7 +25,6 @@
 .#{$namespace} { 
   &virtual-table {
     height: 100%;
-    overflow: auto;
 
     & .react-grid {
       &-HeaderCell {
