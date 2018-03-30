@@ -28,32 +28,7 @@ import presenter from './presenter';
 class CsvViewer extends Component {
   constructor() {
     super();
-    this.state = {
-      widths: null,
-    };
-    this.headerWidthsNeedRefresh = true;
-    this.setThWidths = this.setThWidths.bind(this);
     this.parseData = this.parseData.bind(this);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.data !== nextProps.data) {
-      this.headerWidthsNeedRefresh = true;
-    }
-  }
-
-  setThWidths(headers) {
-    if (headers instanceof NodeList && headers.length && this.headerWidthsNeedRefresh) {
-      const widths = [];
-      headers.forEach((header, index) => {
-        const bounds = header.getBoundingClientRect();
-        widths[index] = `${bounds.width}px`;
-      });
-      this.headerWidthsNeedRefresh = false;
-      this.setState({
-        widths,
-      });
-    }
   }
 
   parseCsvTextData({ data }) {
@@ -67,8 +42,9 @@ class CsvViewer extends Component {
           isHeaderRead = true;
           array.forEach((cell, idx) => {
             columns.push({
-              field: `key${idx}`,
-              header: cell,
+              key: `key${idx}`,
+              name: cell,
+              resizable: true,
             });
           });
         } else {
@@ -123,7 +99,6 @@ class CsvViewer extends Component {
       ...this.props,
       ...this.state,
       ...this.parseData(),
-      setThWidths: this.setThWidths,
     });
   }
 }
