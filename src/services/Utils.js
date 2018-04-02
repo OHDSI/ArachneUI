@@ -239,6 +239,15 @@ class Utils {
           option.facetCount = get(facets, `${field.name}.${facetId}`, 0);
         });
       }
+      if (field.type === fieldTypes.string) {
+        const fieldFacets = get(facets, field.name, {}, 'Object');
+        const options = Object.keys(fieldFacets).map(key => ({
+          label: key,
+          value: key,
+          facetCount: fieldFacets[key],
+        }));
+        field.options = options;
+      }
     });
   }
 

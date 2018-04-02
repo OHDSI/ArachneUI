@@ -35,13 +35,15 @@ function FormCreateDataNode(props) {
   const classes = new BEMHelper('data-node-list-form-create');
 
   const {
+    NODE_FIELD,
+    ORG_FIELD,
     isLoading,
     dataSourceId,
     doSubmit,
-    doCreateDataNode,
+    createDataNode,
+    createOrganization,
     dataNodes = [],
     loadDataNodes = () => {},
-    doCreateOrganization,
     organizations = [],
     loadOrganizations = () => {},
     dataNodeExists,
@@ -66,18 +68,18 @@ function FormCreateDataNode(props) {
       options: dataNodes,
       fetchOptions: loadDataNodes,
       promptTextCreator: label => `Create datanode ${label}`,
-      onNewOptionClick: ({ value }) => doCreateDataNode({ name: value }),
+      onNewOptionClick: ({ value }) => createDataNode({ name: value }),
     };
   }
   const organizationAutocompleteOptions = {
     options: organizations,
     fetchOptions: loadOrganizations,
     promptTextCreator: label => `Create organization ${label}`,
-    onNewOptionClick: ({ value }) => doCreateOrganization({ name: value }),
+    onNewOptionClick: ({ value }) => createOrganization({ name: value }),
   };
   const fields = [
     {
-      name: 'node',
+      name: NODE_FIELD,
       InputComponent: {
         component: AttributesFormListItem,
         props: {
@@ -93,7 +95,7 @@ function FormCreateDataNode(props) {
       },
     },
     {
-      name: 'organization',
+      name: ORG_FIELD,
       InputComponent: {
         component: AttributesFormListItem,
         props: {

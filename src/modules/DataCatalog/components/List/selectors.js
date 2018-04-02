@@ -76,8 +76,8 @@ class DataCatalogListTableSelectorsBuilder extends DsAttrListSelector {
           // hide enum attributes with no options
           return Object.values(attr.options).length !== 0;
         }
-        // also hide text attributes (temporary)
-        return attr.type !== fieldTypes.string;
+
+        return true;
       });
 
     // Assign facets

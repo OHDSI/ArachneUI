@@ -67,8 +67,7 @@ function ModalCreateEdit(props) {
   return (
     <Modal modal={props.modal} title={modalTitle}>
       <Form
-        {...classes({ extra: 'row' })}
-        actionsClassName="col-xs-12"
+        {...classes()}
         fields={fields}
         submitBtn={submitBtn}
         cancelBtn={cancelBtn}

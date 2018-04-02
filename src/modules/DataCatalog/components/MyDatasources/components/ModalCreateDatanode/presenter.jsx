@@ -43,7 +43,7 @@ function ModalCreateDatanode(props) {
       create
     >
       <div {...classes()}>
-        <FormCreateDataNode doSubmit={doSubmit} doCreateDataNode={createDataNode} doCreateOrganization={createOrganization} />
+        <FormCreateDataNode doSubmit={doSubmit} />
       </div>
     </Modal>
   );
