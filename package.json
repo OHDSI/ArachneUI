@@ -44,7 +44,7 @@
     }
   ],
   "dependencies": {
-    "@ohdsi/atlascharts": "^1.0.0",
+    "@ohdsi/atlascharts": "https://github.com/agackovka/Visualizations",
     "@stomp/stompjs": "github:stomp-js/stomp-websocket",
     "arachne-ui-components": "^1.12.0",
     "autoprefixer": "^6.7.6",
