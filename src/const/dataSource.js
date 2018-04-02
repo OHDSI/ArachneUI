@@ -134,7 +134,7 @@ const cdmVersionList = [
       label: string,
       name: string,
       type: string,
-      getValue?: function,
+      getValue?: Function,
       faceted: boolean,
       showInList: boolean,
       options: Array<{label: string, value: string | number}>,
