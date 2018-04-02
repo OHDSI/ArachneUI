@@ -22,13 +22,11 @@
 
 import React from 'react';
 import { Route, IndexRedirect } from 'react-router';
-import AdminList from './components/AdminList';
 import SystemSettings from './components/SystemSettings';
 
 class AdminRoutes {
 	static build() {
     return [
-      <Route path="admins" component={AdminList} />,
       <Route path="system-settings" component={SystemSettings} />,
       <IndexRedirect to="admins" />,
     ];

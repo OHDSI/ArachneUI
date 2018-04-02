@@ -29,7 +29,7 @@ class AdminNodeRoutes extends AdminRoutes {
 
   static buildNodeRoutes() {
     return [
-      <Route path="users" component={UserList} />,
+      <Route path="admins" component={UserList} />,
       <IndexRedirect to="admins"/>,
     ];
   }
