@@ -69,15 +69,25 @@ class DataCatalogListTableSelectorsBuilder extends DsAttrListSelector {
 
   getFilterList(attrList, facets) {
     const filterList = attrList
+      // Remove attributes that should not be shown in Filter panel
       .filter(attr => attr.faceted)
       .map(cloneDeep)
+      // Compute options for filter sections
+      .map((attr) => {
+        if (attr.type === fieldTypes.string && facets) {
+          attr.options = Object.keys(facets[attr.name] || {}).map(key => ({ label: key, value: key }));
+        }
+        return attr;
+      })
+      // Assign facet counts
       .filter((attr) => {
         if ([fieldTypes.enum, fieldTypes.enumMulti].includes(attr.type)) {
           // hide enum attributes with no options
           return Object.values(attr.options).length !== 0;
         }
 
-        return true;
+        // also hide text attributes (temporary)
+        return attr.type !== fieldTypes.string || Array.isArray(attr.options);
       });
 
     // Assign facets

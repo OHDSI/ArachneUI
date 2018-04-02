@@ -229,7 +229,7 @@ class Utils {
 
   static assignFacets(filterList, facets) {
     filterList.forEach((field) => {
-      if ([fieldTypes.enum, fieldTypes.enumMulti].includes(field.type)) {
+      if ([fieldTypes.enum, fieldTypes.enumMulti].includes(field.type) || (field.type === fieldTypes.string && Array.isArray(field.options))) {
         field.options.forEach((option) => {
           let facetId = option.value;
           if (isNaN(facetId)) {
@@ -238,15 +238,6 @@ class Utils {
           option.value = option.value.toString();
           option.facetCount = get(facets, `${field.name}.${facetId}`, 0);
         });
-      }
-      if (field.type === fieldTypes.string) {
-        const fieldFacets = get(facets, field.name, {}, 'Object');
-        const options = Object.keys(fieldFacets).map(key => ({
-          label: key,
-          value: key,
-          facetCount: fieldFacets[key],
-        }));
-        field.options = options;
       }
     });
   }
