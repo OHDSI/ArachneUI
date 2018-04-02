@@ -72,6 +72,7 @@ function Report(props) {
         }))}
         onChange={selectReport}
         value={selectedReport}
+        unselectable={false}
         {...classes('select')}
       />
       {reports.Dashboard && selectedReport === reportConst.dashboard &&
