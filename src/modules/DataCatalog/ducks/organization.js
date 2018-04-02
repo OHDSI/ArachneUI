@@ -42,10 +42,7 @@ function organizationReducer(state, action) {
   if (action.type === addNewOrganizationActionName) {
     return {
       ...state,
-      data: [
-        ...state.data,
-        { ...action.payload, id: -1 },
-      ],
+      tempData: { ...action.payload, id: -1 },
     };
   };
   return organization.reducer(state, action);

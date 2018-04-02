@@ -229,7 +229,7 @@ class Utils {
 
   static assignFacets(filterList, facets) {
     filterList.forEach((field) => {
-      if ([fieldTypes.enum, fieldTypes.enumMulti].includes(field.type)) {
+      if ([fieldTypes.enum, fieldTypes.enumMulti].includes(field.type) || (field.type === fieldTypes.string && Array.isArray(field.options))) {
         field.options.forEach((option) => {
           let facetId = option.value;
           if (isNaN(facetId)) {

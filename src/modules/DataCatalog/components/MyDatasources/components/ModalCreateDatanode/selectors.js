@@ -22,8 +22,9 @@
 
 import { createSelector } from 'reselect';
 import { get } from 'services/Utils';
+import NewDatanodeSelectors from 'modules/DataCatalog/selectors/NewDatanodeSelectors';
 
-export default class SelectorsBuilder {
+export default class SelectorsBuilder extends NewDatanodeSelectors {
 
   getValues(state) {
     return get(state, 'form.createDataNode.values');
@@ -38,6 +39,7 @@ export default class SelectorsBuilder {
 
   build() {
     return {
+      ...super.build(),
       getValues: this.buildSelectorForFormValues(),
     };
   }
