@@ -42,6 +42,9 @@ export default class VirtualTable extends Component {
   setContainer(container) {
     if (container && !this.state.container) {
       const rect = container.getBoundingClientRect();
+      if (rect.height === 0) {
+        return false;
+      }
       if (this.props.list === true) {
         rect.height += 47; // compensate forcibly hidden header
       }
