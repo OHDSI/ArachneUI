@@ -61,7 +61,10 @@ export default class SelectorsBuilder {
       objective: get(entity, 'study.description'),
       leadList: (get(entity, 'study.studyLeads') || []).map(this.userConverter),
       participants: (get(entity, 'study.studyParticipants') || []).map(this.extendedUserConverter),
-      dataSourceList: (get(entity, 'study.studyDataSources') || []).map(dsConverter),
+      dataSourceList: (get(entity, 'study.studyDataSources') || []).map(v => ({
+        ...v,
+        uuid: v.id
+      })).map(dsConverter),
       studyCreated: moment(get(entity, 'study.created')).format(humanDate),
       studyStartDate: moment(get(entity, 'study.startDate')).format(humanDate),
       studyEndDate: moment(get(entity, 'study.endDate')).format(humanDate),
