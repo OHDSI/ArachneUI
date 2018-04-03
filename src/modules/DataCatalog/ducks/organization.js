@@ -31,10 +31,10 @@ const organization = new Duck({
   urlBuilder: apiPaths.organization,
 });
 
-function createOrganization(name) {
+function createOrganization({ name, id }) {
   return {
     type: addNewOrganizationActionName,
-    payload: { name },
+    payload: { name, id },
   };
 }
 
@@ -42,14 +42,14 @@ function organizationReducer(state, action) {
   if (action.type === addNewOrganizationActionName) {
     return {
       ...state,
-      tempData: { ...action.payload, id: -1 },
+      tempData: { name: action.payload.name, id: action.payload.id },
     };
-  };
+  }
   return organization.reducer(state, action);
 }
 
-function selectNewOrganization(name) {
-  return dispatch => dispatch(createOrganization(name));
+function selectNewOrganization({ name, id }) {
+  return dispatch => dispatch(createOrganization({ name, id }));
 }
 
 export default {

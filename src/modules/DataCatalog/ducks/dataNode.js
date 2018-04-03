@@ -36,10 +36,10 @@ const dataNodeCreator = new Duck({
   urlBuilder: apiPaths.dataNodeCreate,
 });
 
-function newDataNode(name) {
+function newDataNode(data) {
   return {
     type: addNewDataNodeActionName,
-    payload: { name },
+    payload: data,
   };
 }
 
@@ -47,14 +47,14 @@ function dataNodeReducer(state, action) {
   if (action.type === addNewDataNodeActionName) {
     return {
       ...state,
-      tempData: { ...action.payload, centralId: -1 },
+      tempData: { name: action.payload.name, centralId: action.payload.centralId },
     };
   };
   return dataNode.reducer(state, action);
 }
 
-function selectNewDataNode(name) {
-  return dispatch => dispatch(newDataNode(name));
+function selectNewDataNode({ name, centralId }) {
+  return dispatch => dispatch(newDataNode({ name, centralId }));
 }
 
 export default {
