@@ -25,12 +25,6 @@
 .#{$namespace} {
 
   &code-import {
-    position: relative;
-    
-    &__panel--hidden {
-      visibility: hidden;
-      position: absolute;
-    }
   }
 
 }

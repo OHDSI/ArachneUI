@@ -30,8 +30,6 @@ function VirtualTable(props) {
   const classes = new BEMHelper('virtual-table');
   const {
     containerHeight,
-    containerWidth,
-    columnWidth,
     setContainer,
     data = [],
     columns = [],
@@ -47,12 +45,11 @@ function VirtualTable(props) {
           rowGetter={key => data[key]}
           rowsCount={data.length}
           minHeight={containerHeight}
-          minWidth={containerWidth}
-          minColumnWidth={columnWidth}
           enableCellSelect={false}
           enableRowSelect={false}
           enableCellAutoFocus={false}
           rowHeight={47}
+          minColumnWidth={200}
         />
       </div>
   );
