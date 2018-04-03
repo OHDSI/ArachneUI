@@ -45,7 +45,6 @@ function ImportList(props) {
     analysisType,
     filterText,
     filter,
-    isVisible,
     /* redux-forms */
     handleSubmit,
     submitting,
@@ -100,26 +99,24 @@ function ImportList(props) {
         {...classes('form')}
         onSubmit={handleSubmit(doSubmit)}
       >
-        {isVisible &&
-          <VirtualList
-            {...classes({
-              element: 'list',
-              modifiers: {
-                hidden: filteredEntities && !filteredEntities.length,
-              },
-            })}
-            data={filteredEntities}
-            rowRenderer={({ value }) => (
-              <Field
-                component={FormCheckbox}
-                options={{
-                  label: value.name,
-                }}
-                name={`entities[${value.guid}]`}
-              />
-            )}
-          />
-          }
+        <VirtualList
+          {...classes({
+            element: 'list',
+            modifiers: {
+              hidden: filteredEntities && !filteredEntities.length,
+            },
+          })}
+          data={filteredEntities}
+          rowRenderer={({ value }) => (
+            <Field
+              component={FormCheckbox}
+              options={{
+                label: value.name,
+              }}
+              name={`entities[${value.guid}]`}
+            />
+          )}
+        />
         {filteredEntities && filteredEntities.length
           ? null
           : <span {...classes('empty-state')}>

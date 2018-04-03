@@ -89,7 +89,6 @@ function ImportCode(props) {
                 totalSteps: panels[panels.length - 1].order,
                 order: panel.order,
                 step: panel.order,
-                isVisible: panel.showIf(),
               }
             )}
           </div>

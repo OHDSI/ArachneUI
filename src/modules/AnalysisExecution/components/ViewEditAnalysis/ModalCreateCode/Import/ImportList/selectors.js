@@ -27,7 +27,9 @@ import { form } from 'modules/AnalysisExecution/const';
 const getList = state => get(
   state,
   'analysisExecution.importEntityOptionList.queryResult',
-  [],
+  [
+    //{"originId":1,"localId":1,"guid":"1","name":"Atlas: test cohort","description":null,"modified":1504743748008,"type":"COHORT"},
+  ],
   'Array'
 );
 

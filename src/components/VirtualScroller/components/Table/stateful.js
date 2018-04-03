@@ -34,32 +34,41 @@ export default class VirtualTable extends Component {
     super(props);
     this.state = {
       container: null,
-      containerHeight: 500,
     };
+    this.defaultContainerHeight = 500;
+    this.defaultContainerWidth = 200;
     this.setContainer = this.setContainer.bind(this);
   }
-  
+
   setContainer(container) {
     if (container && !this.state.container) {
-      const rect = container.getBoundingClientRect();
-      if (rect.height === 0) {
-        return false;
-      }
-      if (this.props.list === true) {
-        rect.height += 47; // compensate forcibly hidden header
-      }
       this.setState({
         container,
-        containerHeight: rect.height,
       });
     }
   }
-  
+
   render() {
+    let height = this.defaultContainerHeight;
+    let width = null;
+    const columnWidth = this.defaultContainerWidth;
+    if (this.state.container) {
+      const rect = this.state.container.getBoundingClientRect();
+      if (rect.height !== 0) {
+        height = rect.height;
+      }
+      if (this.props.list) {
+        height += 47;
+        width = rect.width;
+      }
+    }
     return presenter({
       ...this.props,
       ...this.state,
       setContainer: this.setContainer,
+      containerHeight: height,
+      containerWidth: width,
+      columnWidth,
     });
   }
 }
