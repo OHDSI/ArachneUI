@@ -16,23 +16,32 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: September 06, 2017
+ * Created: April 12, 2017
  *
  */
 
-import React from 'react';
-import { Route, IndexRedirect } from 'react-router';
-import AdminList from './components/AdminList';
-import SystemSettings from './components/SystemSettings';
+@import 'styles/vars-and-mixins.scss';
 
-class AdminRoutes {
-	static build() {
-    return [
-      <Route path="admins" component={AdminList} />,
-      <Route path="system-settings" component={SystemSettings} />,
-      <IndexRedirect to="admins" />,
-    ];
+.#{$namespace} {
+
+	&admin-panel-admin-list-table {
+		table-layout: fixed;
+
+		&__name-th {
+			width: 30%;
+		}
+		
+		&__email-th {
+			width: 30%;
+		}
+
+		&__roles-th {
+			width: 20%;
+		}
+
+		&__remove-th {
+			width: 20%;
+		}
 	}
-}
 
-export default AdminRoutes;
+}

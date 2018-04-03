@@ -16,23 +16,26 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: September 06, 2017
+ * Created: October 02, 2017
  *
  */
 
-import React from 'react';
-import { Route, IndexRedirect } from 'react-router';
-import AdminList from './components/AdminList';
-import SystemSettings from './components/SystemSettings';
+import Duck from 'services/Duck';
+import { apiPaths } from 'modules/Admin/const';
 
-class AdminRoutes {
-	static build() {
-    return [
-      <Route path="admins" component={AdminList} />,
-      <Route path="system-settings" component={SystemSettings} />,
-      <IndexRedirect to="admins" />,
-    ];
-	}
-}
+const actionCoreName = 'AD_ADMIN_LIST';
 
-export default AdminRoutes;
+const adminListDuck = new Duck(
+  {
+    name: actionCoreName,
+    urlBuilder: apiPaths.admins,
+  }
+);
+
+const actions = adminListDuck.actions;
+const reducer = adminListDuck.reducer;
+
+export default {
+  actions,
+  reducer,
+};

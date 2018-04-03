@@ -16,23 +16,35 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: September 06, 2017
+ * Created: April 12, 2017
  *
  */
 
 import React from 'react';
-import { Route, IndexRedirect } from 'react-router';
-import AdminList from './components/AdminList';
-import SystemSettings from './components/SystemSettings';
+import BEMHelper from 'services/BemHelper';
+import PageWrapper from 'modules/Admin/components/PageWrapper';
+import Table from './Table';
+import ModalAddUser from './ModalAddUser';
+import {
+	LoadingPanel,
+} from 'arachne-ui-components';
 
-class AdminRoutes {
-	static build() {
-    return [
-      <Route path="admins" component={AdminList} />,
-      <Route path="system-settings" component={SystemSettings} />,
-      <IndexRedirect to="admins" />,
-    ];
-	}
+require('./style.scss');
+
+function AdminList({ isLoading, openModal }) {
+	const classes = new BEMHelper('admin-panel-admin-list');
+
+	return (
+		<PageWrapper>
+				<Table/>
+				<div {...classes('add')} onClick={openModal}>
+					<span {...classes('add-icon')}>add_circle_outline</span>
+					<span {...classes('add-label')}>Add admin user</span>
+				</div>
+				<ModalAddUser />
+        <LoadingPanel active={ isLoading } />
+		</PageWrapper>
+	);
 }
 
-export default AdminRoutes;
+export default AdminList;

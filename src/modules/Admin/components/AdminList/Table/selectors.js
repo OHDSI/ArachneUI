@@ -16,23 +16,27 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: September 06, 2017
+ * Created: April 12, 2017
  *
  */
 
-import React from 'react';
-import { Route, IndexRedirect } from 'react-router';
-import AdminList from './components/AdminList';
-import SystemSettings from './components/SystemSettings';
+import { createSelector } from 'reselect';
+import get from 'lodash/get';
 
-class AdminRoutes {
-	static build() {
-    return [
-      <Route path="admins" component={AdminList} />,
-      <Route path="system-settings" component={SystemSettings} />,
-      <IndexRedirect to="admins" />,
-    ];
-	}
-}
+const getRawAdminList = state => get(state, 'adminSettings.adminList.queryResult.result') || [];
 
-export default AdminRoutes;
+const getAdminList = createSelector(
+  [getRawAdminList],
+  rawAdminList => rawAdminList.map(item => ({
+    ...item,
+    name: [
+      item.firstname || '',
+      item.middlename || '',
+      item.lastname || '',
+    ].filter(o => o).join(' '),
+  }))
+);
+
+export default {
+  getAdminList,
+};
