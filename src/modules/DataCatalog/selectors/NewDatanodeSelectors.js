@@ -24,7 +24,7 @@ import { get } from 'services/Utils';
 class NewDatanodeSelectors {
 
   getDataNodes(state) {
-    const dataNodes = get(state, 'dataCatalog.dataNode.data', [], 'Array');
+    const dataNodes = get(state, 'dataCatalog.dataNode.queryResult', [], 'Array');
     const tempDataNode = get(state, 'dataCatalog.dataNode.tempData');
 
     return [...dataNodes, tempDataNode].filter(val => val);;
@@ -38,7 +38,7 @@ class NewDatanodeSelectors {
   }
 
   getOrganizations(state) {
-    const orgs = get(state, 'dataCatalog.organization.data', [], 'Array');
+    const orgs = get(state, 'dataCatalog.organization.queryResult', [], 'Array');
     const tempOrg = get(state, 'dataCatalog.organization.tempData');
 
     return [...orgs, tempOrg].filter(val => val);

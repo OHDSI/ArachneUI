@@ -92,8 +92,8 @@ export default class FormCreateDataNode extends ContainerBuilder {
       changeField: (field, value) => changeField(forms.createDataNode, field, value),
       update: actions.dataCatalog.dataNode.update,
       loadDataSource: actions.dataCatalog.dataSource.find,
-      loadDataNodes: actions.dataCatalog.dataNode.find,
-      loadOrganizations: actions.dataCatalog.organization.find,
+      loadDataNodes: ({ query }) => actions.dataCatalog.dataNode.query({}, { query }),
+      loadOrganizations: ({ query }) => actions.dataCatalog.organization.query({}, { query }),
       selectNewDataNode: actions.dataCatalog.dataNode.selectNewDataNode,
       selectNewOrganization: actions.dataCatalog.organization.selectNewOrganization,
     };
@@ -116,20 +116,14 @@ export default class FormCreateDataNode extends ContainerBuilder {
         return dataNode;
       },
       createDataNode({ name }) {
-        dispatchProps.selectNewDataNode(name);
-        dispatchProps.changeField(NODE_FIELD, -1);
-        return new Promise(res => res());
+        const newNodeId = -1;
+        dispatchProps.selectNewDataNode({ name, centralId: newNodeId });
+        return new Promise(res => res(newNodeId));
       },
       createOrganization({ name }) {
-        dispatchProps.selectNewOrganization(name);
-        dispatchProps.changeField(ORG_FIELD, -1);
-        return new Promise(res => res());
-      },
-      loadDataNodes(query) {
-        dispatchProps.loadDataNodes({}, { query });
-      },
-      loadOrganizations(query) {
-        dispatchProps.loadOrganizations({}, { query });
+        const newOrgId = -1;
+        dispatchProps.selectNewOrganization({ name, id: newOrgId });
+        return new Promise(res => res(newOrgId));
       },
       ...ownProps, // allow redefining of the doSubmit method via own props
     };
