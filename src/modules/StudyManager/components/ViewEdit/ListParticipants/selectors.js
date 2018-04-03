@@ -87,7 +87,7 @@ export default class selectorsBuilder {
   }
 
   canBeRecreated(participant) {
-    return this.isDeleted(participant) && participant.role.id !== participantRoles.DATA_SET_OWNER;
+    return participant.canBeRecreated && this.isDeleted(participant) && participant.role.id !== participantRoles.DATA_SET_OWNER;
   }
 
   getParticipantList(participantList, editPermissions, dataSourceList) {
