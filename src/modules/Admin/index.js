@@ -33,5 +33,5 @@ export default {
     name: 'Admin settings',
     path: '/admin-settings',
   },
-  indexRedirect: '/users',
+  indexRedirect: '/admins',
 };
