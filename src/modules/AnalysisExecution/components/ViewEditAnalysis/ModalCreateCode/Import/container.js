@@ -22,13 +22,20 @@
 
 import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { change as reduxFormChange } from 'redux-form';
 import { get } from 'services/Utils';
-import { form } from 'modules/AnalysisExecution/const';
+import actions from 'actions';
 import presenter from './presenter';
 import selectors from './selectors';
 
 class ImportCode extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedSource: null,
+    };
+    this.resetSource = this.resetSource.bind(this);
+    this.selectSource = this.selectSource.bind(this);
+  }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.isOpened !== nextProps.isOpened && nextProps.isOpened === true) {
@@ -36,29 +43,53 @@ class ImportCode extends Component {
     }
   }
 
+  resetSource() {
+    this.setState({
+      selectedSource: null,
+    });
+  }
+
+  selectSource(selectedSource) {
+    this.setState({
+      selectedSource,
+    });
+    this.props.loadList({
+      dataNodeId: selectedSource.id,
+      type: this.props.analysisType,
+    });
+  }
+
   render() {
-    return presenter(this.props);
+    return presenter({
+      ...this.props,
+      ...this.state,
+      resetSource: this.resetSource,
+      selectSource: this.selectSource,
+    });
   }
 }
 
 ImportCode.propTypes = {
   isOpened: PropTypes.bool,
   resetSource: PropTypes.func,
+  loadList: PropTypes.bool,
+  analysisType: PropTypes.string,
 };
 
 function mapStateToProps(state) {
   const isOpened = get(state, 'modal.createCode.isOpened', false);
+  const analysisType = get(state, 'analysisExecution.analysis.data.result.type.id', '', 'String');
 
   return {
-    selectedSource: get(state, `form.${form.importNodeSelector}.values.dataNode`, null, 'Object'),
     isImportRunning: selectors.isImportRunning(state),
     isImportAvailable: selectors.isImportAvailable(state),
     isOpened,
+    analysisType,
   };
 }
 
 const mapDispatchToProps = {
-  resetSource: () => reduxFormChange(form.importNodeSelector, 'dataNode', null),
+  loadList: actions.analysisExecution.importEntityOptionList.query,
 };
 
 export default connect(
