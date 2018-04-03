@@ -16,7 +16,7 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: April 24, 2017
+ * Created: April 12, 2017
  *
  */
 
@@ -24,17 +24,14 @@ import { Component, PropTypes } from 'react';
 import { ModalUtils } from 'arachne-ui-components';
 import { modal } from 'modules/Admin/const';
 import { ContainerBuilder, get } from 'services/Utils';
-import actions from 'actions/index';
+import actions from 'actions';
 import presenter from './presenter';
 
-class UserList extends Component {
-  static propTypes = {
-    loadUserList: PropTypes.func,
-  };
+class AdminList extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.query !== this.props.query) {
-      this.props.loadUserList({ query: nextProps.query });
+      this.props.loadAdminList({ query: nextProps.query });
     }
   }
 
@@ -43,32 +40,36 @@ class UserList extends Component {
   }
 }
 
-class UserListBuilder extends ContainerBuilder {
+class AdminListBuilder extends ContainerBuilder {
 
-  getComponent(){
-    return UserList;
+  getComponent() {
+    return AdminList;
   }
 
   mapStateToProps(state) {
     return {
-      isLoading: state.adminSettings.userList.isLoading,
+      isLoading: state.adminSettings.adminList.isLoading,
       query: state.routing.locationBeforeTransitions.query,
     };
   }
 
   getMapDispatchToProps() {
     return {
-      loadUserList: actions.adminSettings.userList.query,
-      openModal: () => ModalUtils.actions.toggle(modal.addUser, true),
+      loadAdminList: actions.adminSettings.adminList.query,
+      openModal: () => ModalUtils.actions.toggle(modal.addAdminUser, true),
     };
   }
 
-  getFetchers({ params, state, dispatch }){
+  getFetchers({ params, state, dispatch }) {
     const query = get(state, 'routing.locationBeforeTransitions.query', {}, 'Object');
     return {
-      promise: actions.adminSettings.userList.query.bind(null, { query }),
-    };
+      loadAdminList: actions.adminSettings.adminList.query.bind(null, { query }),
+    }
   }
+
+  static propTypes = {
+    loadAdminList: PropTypes.func,
+  };
 }
 
-export default UserListBuilder;
+export default AdminListBuilder;

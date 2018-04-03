@@ -34,6 +34,14 @@ const modal = keyMirror({
 });
 
 const apiPaths = {
+  admins: ({ id, query }) => {
+    const uri = new URI(`/api/v1/admin/admins${id ? `/${id}` : ''}`);
+    if (query) {
+      uri.setSearch(query);
+    }
+    return uri.toString();
+  },
+  adminOptions: ({ query }) => `/api/v1/admin/admins/suggest?query=${query}`,
   solrIndex: ({ domain }) => `/api/v1/admin/${domain}/reindex-solr`,
   users: ({ id, query }) => {
     const uri = new URI(`/api/v1/admin/users${id ? `/${id}` : ''}`);
@@ -62,24 +70,30 @@ const apiPaths = {
 };
 
 const paths = {
-  systemSettings: () => '/admin-settings/system-settings',
   admins: () => '/admin-settings/admins',
+  systemSettings: () => '/admin-settings/system-settings',
+  users: () => '/admin-settings/users',
 };
 
 const imgs = {
   sidebarIco: '/img/icons/Universal_Desktop/Navigation/Arachne_Desktop_icon-Data_Catalog.png',
 };
 
-let adminPages = [ // eslint-disable-line import/no-mutable-exports
+const adminPages = [ // eslint-disable-line import/no-mutable-exports
+  { 
+    label: 'Admin users',
+    value: paths.admins() 
+  },
+  
   {
     label: 'System Settings',
     value: paths.systemSettings(),
   },
-  {
-    label: 'Admins',
-    value: paths.admins(),
-  },
 ];
+
+if (__APP_TYPE_CENTRAL__) {
+  adminPages.push({ label: 'Users', value: paths.users() });
+}
 
 export {
   adminPages,

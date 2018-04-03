@@ -16,15 +16,15 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: April 24, 2017
+ * Created: April 12, 2017
  *
  */
 
 import actions from 'actions/index';
-import { ContainerBuilder, Utils } from 'services/Utils';
-import UserTable from './presenter';
+import { Utils } from 'services/Utils';
+import AdminTable from './presenter';
 import selectors from './selectors';
-import cloneDeep from 'lodash/cloneDeep';
+import { ContainerBuilder } from 'services/Utils';
 
 function getSorting(location) {
   return {
@@ -36,24 +36,23 @@ function getSorting(location) {
   };
 }
 
-class UserListTableBuilder extends ContainerBuilder {
+class AdminTableBuilder extends ContainerBuilder {
 
-  getComponent(){
-    return UserTable;
+  getComponent() {
+    return AdminTable;
   }
 
   mapStateToProps(state) {
     return {
-      userList: selectors.getUserList(state),
+      adminList: selectors.getAdminList(state),
       sorting: getSorting(state.routing.locationBeforeTransitions),
     };
   }
 
   getMapDispatchToProps() {
     return {
-      loadList: actions.adminSettings.userList.query,
-      removeUser: actions.adminSettings.userList.delete,
-      updateUser: actions.adminSettings.userList.update,
+      loadList: actions.adminSettings.adminList.query,
+      removeAdmin: actions.adminSettings.adminList.delete,
       setSearch: actions.router.setSearch,
     };
   }
@@ -63,18 +62,11 @@ class UserListTableBuilder extends ContainerBuilder {
       ...stateProps,
       ...ownProps,
       ...dispatchProps,
-      updateUser: (id, enabled, entity) => {
-        let entityClone = cloneDeep(entity);
-        entityClone.enabled = enabled;
-        dispatchProps.updateUser({ id }, entityClone)
-          .then(dispatchProps.loadList)
-          .catch(() => {});
-      },
-      removeUser: (id) => {
+      removeAdmin: (id) => {
         Utils.confirmDelete()
           .then(() => {
             dispatchProps
-              .removeUser({ id })
+              .removeAdmin({ id })
               .then(dispatchProps.loadList)
               .catch(() => {
               });
@@ -82,6 +74,7 @@ class UserListTableBuilder extends ContainerBuilder {
       },
     };
   }
+
 }
 
-export default UserListTableBuilder;
+export default AdminTableBuilder;

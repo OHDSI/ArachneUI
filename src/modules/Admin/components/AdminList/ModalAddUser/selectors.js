@@ -16,23 +16,23 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: April 24, 2017
+ * Created: April 12, 2017
  *
  */
 
 import { createSelector } from 'reselect';
 import get from 'lodash/get';
 
-const getRawUserOptionList = state => get(state, 'adminSettings.userOptionList.queryResult.result') || [];
+const getRawAdminOptionList = state => get(state, 'adminSettings.adminOptionList.queryResult.result') || [];
 
-const getUserOptionList = createSelector(
-  [getRawUserOptionList],
-  rawUserOptionList => rawUserOptionList.map(user => ({
+const getAdminOptionList = createSelector(
+  [getRawAdminOptionList],
+  rawAdminOptionList => rawAdminOptionList.map(user => ({
     label: `${user.firstname} ${user.lastname}`,
     value: user.id,
   }))
 );
 
 export default {
-  getUserOptionList,
+  getAdminOptionList,
 };

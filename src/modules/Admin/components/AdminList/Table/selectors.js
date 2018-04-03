@@ -16,16 +16,27 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: April 24, 2017
+ * Created: April 12, 2017
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+import { createSelector } from 'reselect';
+import get from 'lodash/get';
 
-.#{$namespace} {
+const getRawAdminList = state => get(state, 'adminSettings.adminList.queryResult.result') || [];
 
-	&admin-panel-modal-add-user {
-		width: 260px;
-	}
+const getAdminList = createSelector(
+  [getRawAdminList],
+  rawAdminList => rawAdminList.map(item => ({
+    ...item,
+    name: [
+      item.firstname || '',
+      item.middlename || '',
+      item.lastname || '',
+    ].filter(o => o).join(' '),
+  }))
+);
 
-}
+export default {
+  getAdminList,
+};

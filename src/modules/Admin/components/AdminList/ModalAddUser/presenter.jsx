@@ -16,7 +16,7 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: April 24, 2017
+ * Created: April 12, 2017
  *
  */
 
@@ -30,7 +30,7 @@ import BEMHelper from 'services/BemHelper';
 require('./style.scss');
 
 function ModalAddUser(props) {
-  const classes = new BEMHelper('admin-panel-modal-add-user');
+  const classes = new BEMHelper('admin-panel-modal-add-admin');
   
   const fields = [
     {
@@ -40,8 +40,8 @@ function ModalAddUser(props) {
         props: {
           mods: ['bordered'],
           placeholder: 'Search by name',
-          options: props.userOptions,
-          fetchOptions: props.loadUserOptions,
+          options: props.adminOptions,
+          fetchOptions: props.loadAdminOptions,
           clearable: false,
         }
       }
@@ -59,7 +59,7 @@ function ModalAddUser(props) {
   }
 
   return (
-  	<Modal modal={props.modal} title="Add user">
+  	<Modal modal={props.modal} title="Add Admin user">
   		<div {...classes()}>
   			<Form
           mods="spacing-sm"

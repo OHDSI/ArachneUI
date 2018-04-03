@@ -16,32 +16,10 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: April 24, 2017
+ * Created: April 12, 2017
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+import ModalAddUserBuilder from './container';
 
-.#{$namespace} {
-
-	&admin-panel-user-list-table {
-		table-layout: fixed;
-
-		&__name-th {
-			width: 30%;
-		}
-		
-		&__email-th {
-			width: 30%;
-		}
-
-		&__enabled-th {
-			width: 20%;
-		}
-
-		&__remove-th {
-			width: 20%;
-		}
-	}
-
-}
+export default new ModalAddUserBuilder().build();
