@@ -47,10 +47,7 @@ function dataNodeReducer(state, action) {
   if (action.type === addNewDataNodeActionName) {
     return {
       ...state,
-      data: [
-        ...state.data,
-        { ...action.payload, centralId: -1 }
-      ],
+      tempData: { ...action.payload, centralId: -1 },
     };
   };
   return dataNode.reducer(state, action);
@@ -64,7 +61,7 @@ export default {
   actions: {
     ...dataNode.actions,
     create: dataNodeCreator.actions.create,
-    selectNewDataNode: selectNewDataNode,
+    selectNewDataNode,
   },
   reducer: dataNodeReducer,
 };

@@ -60,13 +60,8 @@ export default class ModalCreateDatanodeBuilder extends ContainerBuilder {
     const selectedOrganizationId = get(formValues, 'organization');
     const selectedNodeId = get(formValues, 'node');
 
-    const selectedNode = get(state, 'dataCatalog.dataNode.data', [], 'Array').find((node) => {
-      return node.centralId === selectedNodeId
-    });
-
-    const selectedOrganization = get(state, 'dataCatalog.organization.data', [], 'Array').find((organization) => {
-      return organization.id === selectedOrganizationId;
-    });
+    const selectedNode = selectors.getDataNodes(state).find(node => node.centralId === selectedNodeId);
+    const selectedOrganization = selectors.getOrganizations(state).find(organization => organization.id === selectedOrganizationId);
 
     return {
       selectedObjects: { selectedNode, selectedOrganization },
@@ -80,8 +75,6 @@ export default class ModalCreateDatanodeBuilder extends ContainerBuilder {
     return {
       closeModal: () => ModalUtils.actions.toggle(modal.modalCreateDatanode, false),
       createDN: actions.dataCatalog.dataNode.create,
-      selectNewDataNode: actions.dataCatalog.dataNode.selectNewDataNode,
-      selectNewOrganization: actions.dataCatalog.organization.selectNewOrganization,
       openCreateDataSourceModal: dataNodeId => ModalUtils.actions.toggle(modal.modalCreateDataSource, true, { dataNodeId }),
     };
   }
@@ -99,12 +92,6 @@ export default class ModalCreateDatanodeBuilder extends ContainerBuilder {
         }
         await dispatchProps.closeModal();
         dispatchProps.openCreateDataSourceModal(node);
-      },
-      createDataNode({ name }) {
-        dispatchProps.selectNewDataNode(name);
-      },
-      createOrganization({ name }) {
-        dispatchProps.selectNewOrganization(name);
       },
       async doSubmit(data) {
         const selectedObjects = stateProps.selectedObjects;
