@@ -80,18 +80,20 @@ function ImportCode(props) {
 
   return (
     <div {...classes()}>
-      {panels.map((panel, key) =>
-        <div {...classes('panel', {'hidden': !panel.showIf() })}>
-          {React.cloneElement(
-            panel.element,
-            {
-              totalSteps: panels[panels.length - 1].order,
-              order: panel.order,
-              step: panel.order,
-            }
-          )}
-        </div>
-      )}
+      {panels
+        .map(panel =>
+          <div {...classes('panel', { hidden: !panel.showIf() })}>
+            {React.cloneElement(
+              panel.element,
+              {
+                totalSteps: panels[panels.length - 1].order,
+                order: panel.order,
+                step: panel.order,
+                isVisible: panel.showIf(),
+              }
+            )}
+          </div>
+        )}
     </div>
   );
 }
