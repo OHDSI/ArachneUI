@@ -233,7 +233,7 @@ class Utils {
         field.options.forEach((option) => {
           let facetId = option.value;
           if (isNaN(facetId)) {
-            facetId = facetId.toString().toLowerCase();
+            facetId = facetId.toString();
           }
           option.value = option.value.toString();
           option.facetCount = get(facets, `${field.name}.${facetId}`, 0);
