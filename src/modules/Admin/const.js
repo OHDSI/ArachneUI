@@ -79,11 +79,7 @@ const imgs = {
   sidebarIco: '/img/icons/Universal_Desktop/Navigation/Arachne_Desktop_icon-Data_Catalog.png',
 };
 
-let adminPages = [ // eslint-disable-line import/no-mutable-exports
-  {
-    label: 'Admin users',
-    value: paths.admins(),
-  },
+const adminPages = [ // eslint-disable-line import/no-mutable-exports
   {
     label: 'System Settings',
     value: paths.systemSettings(),
@@ -93,6 +89,10 @@ let adminPages = [ // eslint-disable-line import/no-mutable-exports
     value: paths.users(),
   },
 ];
+
+if (__APP_TYPE_CENTRAL__) {
+  adminPages.push({ label: 'Admin users', value: paths.admins() });
+}
 
 export {
   adminPages,
