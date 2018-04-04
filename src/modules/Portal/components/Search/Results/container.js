@@ -67,14 +67,14 @@ export default class SearchResultsBuilder extends ContainerBuilder {
   }
 
   mapStateToProps(state) {
-    const searchResults = get(state, 'portal.search.queryResult.result.content', [], 'Array');
+    const searchResults = get(state, 'portal.search.queryResult', {}, 'Object');
     const search = get(state, 'routing.locationBeforeTransitions.search', '', 'String');
     const query = get(state, 'routing.locationBeforeTransitions.query.query', '', 'String');
     const numOfElsPerPage = searchResultsPageSize;
     const searchParams = this.getSearchParams(search, query);
 
     return {
-      paginationDetails: extractPaginationData({ searchResults, numOfElsPerPage }),
+      paginationDetails: extractPaginationData({ searchResults, numOfElsPerPage, startsFromOne: true }),
       filterFields: searchSections,
       searchParams,
     };
