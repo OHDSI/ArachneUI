@@ -121,7 +121,7 @@ export default class SelectorsBuilder {
     return createSelector(
       [getResults],
       results => results.map((res) => ({
-        label: res.title,
+        label: `${res.title} (${res.domain.label})`,
         value: res.path,
       }))
     );

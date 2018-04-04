@@ -24,5 +24,10 @@ import { chart } from '@ohdsi/atlascharts/dist/atlascharts.umd';
 
 export default (data) => {
   const normalizedData = chart.normalizeDataframe(data);
-  return chart.prepareData(normalizedData, chart.chartTypes.BOXPLOT);
+  let preparedData = null;
+  try {
+    preparedData = chart.prepareData(normalizedData, chart.chartTypes.BOXPLOT);
+  } catch (er) {}
+
+  return preparedData;
 };

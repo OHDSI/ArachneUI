@@ -43,10 +43,6 @@
 			&__group-title {
 				@include title();
 				margin: 1rem;
-
-				&:first-child {
-					margin-top: 0;
-				}
 			}
 		}
 	}

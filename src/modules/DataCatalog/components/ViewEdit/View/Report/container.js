@@ -25,7 +25,6 @@ import actions from 'actions/index';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 import { reportFilenames, paths } from 'modules/DataCatalog/const';
-import { reports } from 'const/reports';
 import { push as goToPage } from 'react-router-redux';
 import presenter from './presenter';
 
@@ -33,7 +32,7 @@ class Report extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedReport: reports.dashboard,
+      selectedReport: get(props.list, '[0].label', ''),
     };
     this.selectReport = this.selectReport.bind(this);
   }
@@ -46,7 +45,7 @@ class Report extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.characterization.length !== nextProps.characterization.length) {
-      this.loadReport(nextProps.characterization, this.state.selectedReport);
+      this.selectReport(this.state.selectedReport);
     }
   }
   loadReport(characterization, report) {
@@ -100,7 +99,10 @@ Report.propTypes = {
   dataSourceId: PropTypes.string,
   resetPage: PropTypes.func,
   loadReport: PropTypes.func,
-
+  list: PropTypes.arrayOf(PropTypes.shape({
+    label: PropTypes.string,
+    name: PropTypes.string,
+  })),
 };
 
 function mapStateToProps(state, ownProps) {
@@ -116,7 +118,7 @@ function mapStateToProps(state, ownProps) {
     list,
     isLoading,
     initialValues: {
-      report: reports.dashboard,
+      report: get(list, '[0].label', ''),
     },
   };
 }
