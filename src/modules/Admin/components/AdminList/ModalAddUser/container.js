@@ -16,7 +16,7 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: April 24, 2017
+ * Created: April 12, 2017
  *
  */
 
@@ -31,14 +31,15 @@ import selectors from './selectors';
 import { ContainerBuilder } from 'services/Utils';
 
 class ModalAddUser extends Component {
+
   static propTypes = {
     isOpened: PropTypes.bool,
-    loadUserOptions: PropTypes.func,
+    loadAdminOptions: PropTypes.func,
   };
 
   componentWillReceiveProps(props) {
     if (this.props.isOpened === false && props.isOpened === true) {
-      this.props.loadUserOptions({
+      this.props.loadAdminOptions({
         query: '',
       });
     }
@@ -57,18 +58,18 @@ class ModalAddUserBuilder extends ContainerBuilder {
 
   mapStateToProps(state) {
     return {
-      isOpened: get(state, `modal.${modal.addUser}.isOpened`, false),
-      userOptions: selectors.getUserOptionList(state),
+      isOpened: get(state, `modal.${modal.addAdminUser}.isOpened`, false),
+      adminOptions: selectors.getAdminOptionList(state),
     };
   }
 
   getMapDispatchToProps() {
     return {
-      addUser: actions.adminSettings.userList.create,
-      loadUserOptions: actions.adminSettings.userOptionList.query,
-      loadUserList: actions.adminSettings.userList.query,
-      closeModal: () => ModalUtils.actions.toggle(modal.addUser, false),
-      resetForm: resetForm.bind(null, forms.addUser),
+      addAdmin: actions.adminSettings.adminList.create,
+      loadAdminOptions: actions.adminSettings.adminOptionList.query,
+      loadAdminList: actions.adminSettings.adminList.query,
+      closeModal: () => ModalUtils.actions.toggle(modal.addAdminUser, false),
+      resetForm: resetForm.bind(null, forms.addAdminUser),
     };
   }
 
@@ -78,10 +79,10 @@ class ModalAddUserBuilder extends ContainerBuilder {
       ...stateProps,
       ...dispatchProps,
       doSubmit({ userId }) {
-        const submitPromise = dispatchProps.addUser({ id: userId });
+        const submitPromise = dispatchProps.addAdmin({ id: userId });
 
         submitPromise
-          .then(dispatchProps.loadUserList)
+          .then(dispatchProps.loadAdminList)
           .then(dispatchProps.resetForm)
           .then(dispatchProps.closeModal)
           .catch(() => {
@@ -94,15 +95,16 @@ class ModalAddUserBuilder extends ContainerBuilder {
 
   getModalParams() {
     return {
-      name: modal.addUser,
+      name: modal.addAdminUser,
     }
   }
 
   getFormParams() {
     return {
-      form: forms.addUser,
+      form: forms.addAdminUser,
     }
   }
 }
+
 
 export default ModalAddUserBuilder;

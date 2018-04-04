@@ -16,35 +16,26 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: April 24, 2017
+ * Created: October 02, 2017
  *
  */
 
-import React from 'react';
-import BEMHelper from 'services/BemHelper';
-import PageWrapper from 'modules/Admin/components/PageWrapper';
-import Table from './Table';
-import ModalAddUser from './ModalAddUser';
-import {
-	LoadingPanel,
-} from 'arachne-ui-components';
+import Duck from 'services/Duck';
+import { apiPaths } from 'modules/Admin/const';
 
-require('./style.scss');
+const actionCoreName = 'AD_ADMIN_LIST';
 
-function UserList({ isLoading, openModal }) {
-	const classes = new BEMHelper('admin-panel-user-list');
+const adminListDuck = new Duck(
+  {
+    name: actionCoreName,
+    urlBuilder: apiPaths.admins,
+  }
+);
 
-	return (
-		<PageWrapper>
-				<Table/>
-				<div {...classes('add')} onClick={openModal}>
-					<span {...classes('add-icon')}>add_circle_outline</span>
-					<span {...classes('add-label')}>Add user</span>
-				</div>
-				<ModalAddUser />
-        <LoadingPanel active={ isLoading } />
-		</PageWrapper>
-	);
-}
+const actions = adminListDuck.actions;
+const reducer = adminListDuck.reducer;
 
-export default UserList;
+export default {
+  actions,
+  reducer,
+};

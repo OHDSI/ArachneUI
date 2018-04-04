@@ -16,35 +16,10 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: April 24, 2017
+ * Created: April 12, 2017
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+import AdminListBuilder from './container';
 
-.#{$namespace} {
-
-	&admin-panel-user-list {
-		&__add {
-      align-items: center;
-			cursor: pointer;
-      display: flex;
-      padding: 15px 27px;
-			width: 100%;
-		}
-
-		&__add-icon {
-		  @include material-icon();
-		  color: $green;
-		  display: inline-block;
-		  margin-right: 1rem;
-		  font-size: 2.5rem;
-		}
-
-		&__add-label {
-		  @include title();
-		  color: $grey-dark-light;
-		}
-	}
-
-}
+export default new AdminListBuilder().build();

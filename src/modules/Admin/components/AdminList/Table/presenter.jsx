@@ -16,7 +16,7 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: April 24, 2017
+ * Created: April 12, 2017
  *
  */
 
@@ -25,32 +25,24 @@ import BEMHelper from 'services/BemHelper';
 import {
 	Link,
 	Table,
-	TableCellText as Cell,
-	Checkbox
+	TableCellText as Cell
 } from 'arachne-ui-components';
 
 require('./style.scss');
 
-function CellRemove({ id, removeUser }) {
+function CellRemove({ id, removeAdmin }) {
 	return (
-		<Link onClick={() => removeUser(id)}>
+		<Link onClick={() => removeAdmin(id)}>
 			Remove
 		</Link>
 	);
 }
 
-function CellCheck({ id, value, entity, toggle }) {
-  return (
-		<Checkbox isChecked={value} onChange={(e) => toggle(id, e.target.checked, entity)} />
-  );
-}
-
 function AdminTable(props) {
-	const tableClasses = new BEMHelper('admin-panel-user-list-table');
+	const tableClasses = new BEMHelper('admin-panel-admin-list-table');
   const {
-    userList,
-    removeUser,
-		updateUser,
+    adminList,
+    removeAdmin,
     sorting,
     setSearch,
   } = props;
@@ -59,7 +51,7 @@ function AdminTable(props) {
 		<Table
         {...tableClasses()}
         mods={['hover', 'padded']}
-        data={userList}
+        data={adminList}
         sorting={sorting}
         setSorting={setSearch}
       >
@@ -73,19 +65,12 @@ function AdminTable(props) {
           header="Email"
           field="email"
         />
-				<CellCheck
-					{...tableClasses('enabled')}
-					header="Enabled"
-					field="enabled"
-					isSortable={false}
-					props={
-						entity => ({
-							id: entity.id,
-							entity: entity,
-							toggle: updateUser,
-						})
-					}
-				/>
+        <Cell
+          {...tableClasses('roles')}
+          header="Roles"
+          field="roles"
+          format={roles => roles.join(', ')}
+        />
         <CellRemove
           {...tableClasses('remove')}
         	header="Remove"
@@ -93,7 +78,7 @@ function AdminTable(props) {
         	props={
 						entity => ({
 							id: entity.id,
-							removeUser,
+							removeAdmin,
 						})
 					}
         />
