@@ -55,7 +55,7 @@ class NavbarSearchInput extends Component {
   }
 
   render() {
-    const query = this.input ? this.input.value : '';
+    const query = get(this.input, 'input.props.value', '');
 
     return presenter({
       ...this.props,

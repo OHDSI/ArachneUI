@@ -64,7 +64,7 @@ class CsvViewer extends Component {
   }
 
   parseHeadersAndRecordsData({ headers, records }) {
-    const columns = headers.map(h => ({ field: h, header: h }));
+    const columns = headers.map(h => ({ key: h, name: h, resizable: true }));
     return {
       columns,
       rows: records,
