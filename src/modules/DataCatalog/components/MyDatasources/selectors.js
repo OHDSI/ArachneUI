@@ -38,7 +38,7 @@ export default class SelectorsBuilder extends DsAttrListSelector {
     return extractPaginationData({
       searchResults,
       numOfElsPerPage: viewModePageSize.DEFAULT,
-      startsFromOne: true,
+      startsFromOne: false,
     });
   }
 
