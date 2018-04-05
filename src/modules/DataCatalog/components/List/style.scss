@@ -27,7 +27,7 @@
 		@include filterable-list();
 
 		&-table {
-			&__meta-th {
+			&__ds-name {
 				min-width: 200px;
 			}
 		}
