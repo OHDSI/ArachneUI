@@ -22,15 +22,15 @@
 
 import {
   Utils,
+  get,
 } from 'services/Utils';
-import get from 'lodash/get';
 import { dsConverter as basicDsConverter } from 'components/LabelDataSource';
 
 function dsInfoConvert(dataSource, attrList) {
   const attributes = {};
 
   attrList.forEach((attribute) => {
-    const value = get(dataSource, attribute.name);
+    const value = typeof attribute.getValue === 'function' ? attribute.getValue(dataSource) : get(dataSource, attribute.name);
     if (value) {
       attributes[attribute.name] = Utils.castValue(value, attribute);
     }

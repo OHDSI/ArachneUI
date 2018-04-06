@@ -26,6 +26,12 @@
 	&data-catalog {
 		@include filterable-list();
 
+		&-table {
+			&__ds-name {
+				min-width: 200px;
+			}
+		}
+
 		&__table {
 			flex-grow: 1;
 			overflow-x: auto;

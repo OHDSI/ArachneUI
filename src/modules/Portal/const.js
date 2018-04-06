@@ -21,10 +21,12 @@
  */
 
 import keyMirror from 'keymirror';
+import types from 'const/modelAttributes';
 
 const form = keyMirror({
   changePassword: null,
   rejectInvitation: null,
+  search: null,
 });
 
 const modal = keyMirror({
@@ -38,12 +40,14 @@ const apiPaths = {
   invitations: () => '/api/v1/user-management/users/invitations',
   invitationsSubscription: () => '/user/topic/invitations',
   userpic: id => `/api/v1/user-management/users/${id}/avatar`,
+  search: () => '/api/v1/search',
 };
 
 const paths = {
   study: id => `/study-manager/studies/${id}`,
   userProfile: id => `/expert-finder/profile/${id}`,
   odysseus: () => 'http://odysseusinc.com/',
+  search: ({ query }) => `/portal/search?query=${query}`,
 };
 
 const inviteActionTypes = keyMirror({
@@ -57,6 +61,57 @@ const images = {
   logo: '/img/icons/Universal_Desktop/Header/logo_odys.svg',
 };
 
+const domains = keyMirror({
+  ANALYSIS: null,
+  STUDY: null,
+  USER: null,
+  DATA_SOURCE: null,
+  PAPER: null,
+});
+
+const domainNames = {
+  [domains.STUDY]: 'Study notebook',
+  [domains.USER]: 'Expert finder',
+  [domains.DATA_SOURCE]: 'Data catalog',
+  [domains.PAPER]: 'Insights library',
+  [domains.ANALYSIS]: 'Analyses',
+};
+
+const searchSections = [
+  {
+    label: 'Domain',
+    name: 'collections',
+    type: types.enumMulti,
+    forceOpened: true,
+    hasTitle: false,
+    options: [
+      {
+        label: domainNames.STUDY,
+        value: domains.STUDY,
+      },
+      {
+        label: domainNames.USER,
+        value: domains.USER,
+      },
+      {
+        label: domainNames.DATA_SOURCE,
+        value: domains.DATA_SOURCE,
+      },
+      {
+        label: domainNames.ANALYSIS,
+        value: domains.ANALYSIS,
+      },
+      {
+        label: domainNames.PAPER,
+        value: domains.PAPER,
+      },
+    ],
+  },
+];
+
+const searchResultsPageSize = 10;
+const detectorRegexp = /\[b\]([^\[]*)\[\/b\]/g;
+
 export {
   apiPaths,
   form,
@@ -65,4 +120,9 @@ export {
   inviteActionTypes,
   pollingTime,
   images,
+  searchSections,
+  searchResultsPageSize,
+  domains,
+  domainNames,
+  detectorRegexp,
 };

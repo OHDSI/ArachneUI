@@ -21,7 +21,7 @@
  */
 
 import React, { PropTypes } from 'react';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import BEMHelper from 'services/BemHelper';
 import {
   Link,
@@ -77,7 +77,8 @@ function dnConverter(dataNode = {}) {
     uuid: dataNode.uuid,
     color,
     statusTitle,
-    name: get(dataNode, 'name', ''),
+    name: get(dataNode, 'name', 'Not published', 'String'),
+    published: dataNode.published,
   };
 }
 
@@ -103,6 +104,8 @@ function dsConverter(dataSource = {}) {
     color,
     statusTitle,
     name: fullName,
+    published: dataSource.published,
+    publishedLabel: dataSource.published ? 'Yes' : 'No',
   };
 }
 

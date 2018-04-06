@@ -105,6 +105,7 @@ class Duck {
         (state, action) => ({
           ...state,
           isUpdating: true,
+          newData: get(action, 'payload'),
         })
       )
       // UPDATE_FULFILLED
@@ -113,6 +114,7 @@ class Duck {
         (state, action) => ({
           ...state,
           isUpdating: false,
+          newData: null,
         })
       )
       // DELETE_PENDING

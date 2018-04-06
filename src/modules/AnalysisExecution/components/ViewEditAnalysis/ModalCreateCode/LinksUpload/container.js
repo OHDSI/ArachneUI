@@ -62,6 +62,7 @@ function mapStateToProps(state) {
     links,
     addButtonTitle,
     fieldName,
+    canSubmit: links.filter(link => link.label && link.value).length > 0,
   };
 }
 
@@ -90,11 +91,13 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
           })
         )
       );
-      const submitPromise = Promise.all(submitPromises)
-        .then(() => dispatchProps.reset())
+      const submitPromise = Promise.all(submitPromises);
+      submitPromise.then(() => dispatchProps.reset())
         .then(() => dispatchProps.closeModal())
         .then(() => dispatchProps.loadAnalysis({ id: stateProps.analysisId }))
-        .catch(() => {});
+        .catch((er) => {
+          console.error(er)
+        });
 
       // We have to return a submission promise back to redux-form
       // to allow it update the state

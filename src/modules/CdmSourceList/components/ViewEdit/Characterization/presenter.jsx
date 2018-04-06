@@ -64,14 +64,14 @@ function Characterization(props) {
           <Button
             {...classes('btn')}
             label={isImporting ? 'Importing' : lastCharacterization ? 'Re-import' : 'Import'}
-            mods={['success']}
+            mods={['success', 'rounded']}
             disabled={isCharacterizationStarted || !hasResults}
             onClick={importResults}
           />
           <Button
             {...classes('btn')}
             label={isGenerating ? 'Generating' : lastCharacterization ? 'Re-generate' : 'Generate'}
-            mods={['submit']}
+            mods={['submit', 'rounded']}
             disabled={isCharacterizationStarted}
             onClick={update}
           />

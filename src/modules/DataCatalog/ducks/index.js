@@ -20,6 +20,7 @@
  *
  */
 
+import achillesResults from './achillesResults';
 import dataSourceList from './dataSourceList';
 import dataSourceMetadataAttrs from './dataSourceMetadataAttrs';
 import dataSource from './dataSource';
@@ -27,9 +28,15 @@ import studyList from './studyList';
 import report from './report';
 import reportDetails from './reportDetails';
 import characterization from './characterization';
+import myDatasources from './myDatasources';
+import dataNode from './dataNode';
+import registration from './registration';
+import dbmsTypes from './dbmsTypes';
+import organization from './organization';
 
 export default {
   actions: {
+    achillesResults: achillesResults.actions,
     dataSourceList: dataSourceList.actions,
     dataSourceMetadataAttrs: dataSourceMetadataAttrs.actions,
     dataSource: dataSource.actions,
@@ -37,8 +44,14 @@ export default {
     report: report.actions,
     reportDetails: reportDetails.actions,
     characterization: characterization.actions,
+    myDatasources: myDatasources.actions,
+    dataNode: dataNode.actions,
+    registration: registration.actions,
+    dbmsTypes: dbmsTypes.actions,
+    organization: organization.actions,
   },
   reducer: {
+    achillesResults: achillesResults.reducer,
     dataSourceList: dataSourceList.reducer,
     dataSourceMetadataAttrs: dataSourceMetadataAttrs.reducer,
     dataSource: dataSource.reducer,
@@ -46,5 +59,10 @@ export default {
     report: report.reducer,
     reportDetails: reportDetails.reducer,
     characterization: characterization.reducer,
+    myDatasources: myDatasources.reducer,
+    dataNode: dataNode.reducer,
+    registration: registration.reducer,
+    dbmsTypes: dbmsTypes.reducer,
+    organization: organization.reducer,
   },
 };

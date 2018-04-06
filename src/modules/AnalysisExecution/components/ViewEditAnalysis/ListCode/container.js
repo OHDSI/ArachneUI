@@ -68,7 +68,7 @@ export default class ListCodeBuilder {
 
   getMapDispatchToProps() {
     return {
-      openCreateCodeModal: ModalUtils.actions.toggle.bind(null, modal.createCode, true),
+      openCreateCodeModal: activeSection => ModalUtils.actions.toggle(modal.createCode, true, { activeSection }),
       openSubmitModal: ModalUtils.actions.toggle.bind(null, modal.submitCode, true),
       loadAnalysis: actions.analysisExecution.analysis.find,
       removeCode: actions.analysisExecution.code.delete,

@@ -30,6 +30,7 @@ import studies from './studies';
 import provinces from './provinces';
 import countries from './countries';
 import facets from './facets';
+import userSettings from './userSettings';
 
 export default {
   actions: {
@@ -43,6 +44,7 @@ export default {
     provinces: provinces.actions,
     countries: countries.actions,
     facets: facets.actions,
+    userSettings: userSettings.actions,
   },
   reducer: {
     expertsList: expertsList.reducer,
@@ -55,5 +57,6 @@ export default {
     provinces: provinces.reducer,
     countries: countries.reducer,
     facets: facets.reducer,
+    userSettings: userSettings.reducer,
   },
 };

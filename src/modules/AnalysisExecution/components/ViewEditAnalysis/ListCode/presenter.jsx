@@ -30,6 +30,7 @@ import {
 } from 'arachne-ui-components';
 import FileInfo from 'components/FileInfo';
 import BEMHelper from 'services/BemHelper';
+import { submissionFileUploadModes } from 'modules/AnalysisExecution/components/ViewEditAnalysis/ModalCreateCode/presenter';
 
 import './style.scss';
 
@@ -123,11 +124,11 @@ export class ActionsLine extends Component {
     this.tooltipClass = BEMHelper('tooltip');
   }
 
-  getComponents() {
+  getComponents(useMarginForLastComponent = true) {
     const submit = (
       <Button
-        {...this.submitClasses()}
-        mods={['success']}
+        {...this.submitClasses({ modifiers: { autoMargin: useMarginForLastComponent} })}
+        mods={['success', 'rounded']}
         label="Submit"
         onClick={this.openSubmitModal}
         disabled={!this.props.canSubmit}
@@ -136,22 +137,27 @@ export class ActionsLine extends Component {
     const add = (
       <Button
         {...this.addClasses({ modifiers: { disabled: !this.canAddFiles } })}
-        onClick={this.openCreateCodeModal}
+        onClick={() => this.openCreateCodeModal(submissionFileUploadModes.COMPUTER)}
         disabled={!this.canAddFiles}
       >
-        <span {...this.addClasses('content')}>
-          <i {...this.addClasses('ico')}>
-            add_circle_outline
-          </i>
-          <span {...this.addClasses('label')}>
-            Add code file
-          </span>
-        </span>
+        <span {...this.addClasses('ico', 'upload')}>file_upload</span>
+        <span {...this.addClasses('label')}>Upload</span>
+      </Button>
+    );
+    const importFromAchilles = (
+      <Button
+        {...this.addClasses({ modifiers: { disabled: !this.canAddFiles } })}
+        onClick={() => this.openCreateCodeModal(submissionFileUploadModes.IMPORT)}
+        disabled={!this.canAddFiles}
+      >
+        <span {...this.addClasses('ico', 'import')}>import_export</span>
+        <span {...this.addClasses('label')}>Import</span>
       </Button>
     );
 
     return {
       add,
+      importFromAchilles,
       submit,
     };
   }

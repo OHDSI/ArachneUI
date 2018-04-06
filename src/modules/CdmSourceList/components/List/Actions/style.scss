@@ -25,24 +25,7 @@
 .#{$namespace} {
 
 	&data-source-list-actions {
-		display: flex;
-
-		&__action {
-			&:not(:last-child) {
-				margin-right: 5px;
-			}
-		}
-
-		&__btn {
-			padding: 0 5px;
-		}
-
-		&__btn-ico {
-			@include material-icon();
-			color: $grey-dark;
-			font-size: 3rem;
-			vertical-align: middle;
-		}
+		@include navbar-actions();
 	}
 
 }

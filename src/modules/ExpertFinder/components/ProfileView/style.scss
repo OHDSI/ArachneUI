@@ -26,6 +26,10 @@
 	&profile-view {
 		@include view-edit-page();
 
+		&__content {
+			overflow-y: auto;
+		}
+
 		&__user-name {
 			margin-right: 0.5rem;
 		}

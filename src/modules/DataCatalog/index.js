@@ -24,13 +24,21 @@ import { combineReducers } from 'redux';
 import ducks from './ducks';
 import { paths, imgs } from './const';
 
+function getRoutes() {
+  return require('./routes').default(); // eslint-disable-line global-require
+}
+
+function getRoutesAsChunk() {
+  return (location, cb) => {
+    require.ensure([], (require) => {
+      cb(null, getRoutes(require));
+    });
+  };
+}
+
 export default {
   actions: () => ducks.actions,
-  routes: () => (location, cb) => {
-    require.ensure([], (require) => {
-      cb(null, require('./routes').default()); // eslint-disable-line global-require
-    });
-  },
+  routes: () => __DEV__ ? getRoutes() : getRoutesAsChunk(),
   reducer: () => combineReducers(ducks.reducer),
   sidebarElement: {
     ico: imgs.sidebarIco,

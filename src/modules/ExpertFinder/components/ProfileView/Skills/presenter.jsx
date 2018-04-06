@@ -46,19 +46,19 @@ function Skills(props) {
   const formFields = [
     {
       name: 'skill',
-	    InputComponent: {
-	    	component: FormAutocomplete,
-	      props: {
-	        placeholder: 'Add Skill (3 letters minimum)',
-	        required: true,
+      InputComponent: {
+        component: FormAutocomplete,
+        props: {
+          placeholder: 'Add Skill (3 letters minimum)',
+          required: true,
           fetchOptions: props.getSkills,
           options: skillsDict,
           canCreateNewOptions: true,
           promptTextCreator: (skill) => `Create skill '${skill}'`,
           onNewOptionClick: (skill) => props.createSkill(skill),
-	      },
-	    },
-	  },
+        },
+      },
+    },
   ];
 
   return (
@@ -75,7 +75,7 @@ function Skills(props) {
                 {...skill}
                 onRemove={ props.doRemove }
               />
-    				)}
+            )}
           </div>
           <FormExpansible
             fields={formFields}

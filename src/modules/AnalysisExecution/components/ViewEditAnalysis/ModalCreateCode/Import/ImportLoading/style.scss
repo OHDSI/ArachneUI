@@ -36,6 +36,8 @@
 
     & .#{$namespace} {
     	&loading-panel {
+        display: flex;
+        
     		&__label {
     			position: absolute;
     			bottom: 20px;

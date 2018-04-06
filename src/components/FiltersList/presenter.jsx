@@ -123,7 +123,7 @@ function getOptions(field) {
   }
 }
 
-function addAnyOption(field) {
+export function addAnyOption(field) {
   if (field.type === types.enum && !field.isMulti) {
     return {
       ...field,

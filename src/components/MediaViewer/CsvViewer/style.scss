@@ -25,26 +25,10 @@
 .#{$namespace} {
   &csv-viewer {
     $table-header-height: 47px;
-    background: $white;
-
+    background: $white;    
     height: 100%;
     overflow: auto;
     position: relative;
-
-    &__table {
-      position: relative;
-      top: -1 * $table-header-height;
-      &--sticky {
-        position: sticky;
-        top: 0px;
-        z-index: 100;
-        table-layout: fixed;
-
-        & tbody {
-          display: none;
-        }
-      }
-    }
 
     & .#{$namespace}table {
       &__cell:not(:last-child),

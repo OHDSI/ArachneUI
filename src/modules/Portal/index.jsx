@@ -24,6 +24,7 @@ import { combineReducers } from 'redux';
 import React from 'react';
 import ducks from './ducks';
 import AboutInfo from './components/AboutInfo/index';
+import SearchInput from './components/Search/NavbarInput';
 
 require('./styles/index.scss');
 
@@ -37,6 +38,7 @@ if (__APP_TYPE_CENTRAL__) {
   const InvitationList = require('./components/InvitationList/index').default;  // eslint-disable-line global-require,
 	module.routes = () => require('./routes').default(); // eslint-disable-line global-require,
   module.menuItems = () => [
+    <SearchInput />,
     <InvitationList />,
   ];
 }

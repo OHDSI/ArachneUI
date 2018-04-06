@@ -29,16 +29,17 @@ import { Utils } from 'services/Utils';
 import Skills from './presenter';
 
 function mapStateToProps(state) {
-  const moduleState = state.expertFinder.userProfile;
-  const data = get(moduleState, 'data.result.skills', []);
-  const id = get(moduleState, 'data.result.id', '');
-  const editable = get(moduleState, 'data.result.isEditable', false);
-  const isCreating = get(moduleState, 'isLoading', false);
-  const skillsDictionary = get(state, 'expertFinder.skills.queryResult.result', []);
+  const moduleState = state.expertFinder;
+  const data = get(moduleState, 'userProfile.data.result.skills', []);
+  const id = get(moduleState, 'userProfile.data.result.id', '');
+  const editable = get(moduleState, 'userProfile.data.result.isEditable', false);
+  const isCreating = get(moduleState, 'skills.isSaving', false);
+  const isLoading = get(moduleState, 'skills.isLoading', false);
+  const skillsDictionary = get(moduleState, 'skills.queryResult.result', []);
 
   return {
     id,
-    isLoading: get(moduleState, 'isLoading', false),
+    isLoading: isLoading || isCreating,
     items: data,
     skillsDictionary,
     editable,
@@ -47,8 +48,8 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  addSkill: actions.expertFinder.userProfile.skills.create,
-  removeSkill: actions.expertFinder.userProfile.skills.delete,
+  addSkill: actions.expertFinder.skills.add,
+  removeSkill: actions.expertFinder.skills.delete,
   getSkills: actions.expertFinder.skills.query,
   createSkillAction: actions.expertFinder.skills.create,
   resetForm: () => resetForm(forms.skills),

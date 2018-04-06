@@ -21,12 +21,9 @@
  */
 
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const path = require('path');
+const fs = require('fs');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const argv = require('yargs').argv;
-const keyMirror = require('keymirror');
-const WebpackDevServer = require('webpack-dev-server');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -34,110 +31,40 @@ const currentDir = path.resolve(__dirname, '..');
 const webapp = path.join(currentDir, 'public');
 const appRoot = path.resolve(currentDir, 'src');
 
-const entryPoint = path.resolve(appRoot, 'index.js');
+const package = require('../package.json');
+const components = require('arachne-ui-components/package.json');
 
+module.exports = function (env) {
+  const APP_TYPE = {
+    CENTRAL: 'central',
+    NODE: 'node',
+  };
+  const ENV_TYPE = {
+    DEV: 'dev',
+    TEST: 'test',
+    QA: 'qa',
+    PRODUCTION: 'production',
+  };
 
-const APP_TYPE = {
-  CENTRAL: 'central',
-  NODE: 'node',
-};
-const ENV_TYPE = {
-  DEV: 'dev',
-  TEST: 'test',
-  QA: 'qa',
-  PRODUCTION: 'production',
-};
+  const appType = env.app || APP_TYPE.CENTRAL;
+  const mode = env.mode || ENV_TYPE.PRODUCTION;
+  const isSilent = env.silent || false;
 
-const appType = argv.app || APP_TYPE.CENTRAL;
-const env = argv.env || ENV_TYPE.PRODUCTION;
-const isSilent = argv.silent || false;
+  const babelOptions = JSON.parse(fs.readFileSync('.babelrc'));
 
-const preLoaders = [];
-if (!isSilent) {
-  preLoaders.push({
+  const preLoaders = [];
+  if (!isSilent) {
+    preLoaders.push({
       test: /\.js$/,
       exclude: /(node_modules|ArachneUIComponents)/,
       loader: 'eslint-loader',
     });
-}
+  }
 
-const config = {
-  entry: [
-    'react-hot-loader/patch',
-    'webpack-dev-server/client?http://localhost:8001', // WebpackDevServer host and port
-    'webpack/hot/only-dev-server', // "only" prevents reload on syntax errors
-    'babel-regenerator-runtime',
-    entryPoint, // Appʼs entry point
-  ],
-  resolve: {
-    root: appRoot,
-    extensions: ['', '.js', '.jsx'],
-    fallback: path.join(currentDir, 'node_modules'),
-    alias: {
-      get: 'lodash/get'
-    }
-  },
-  sassLoader: {
-    includePaths: [appRoot, path.resolve(currentDir, 'node_modules')],
-    data: `$isAppCentral: ${appType === APP_TYPE.CENTRAL}; $isAppNode: ${appType === APP_TYPE.NODE};`,
-  },
-  eslint: {
-    configFile: './.eslintrc',
-    // fix: true,
-  },
-  externals: [{
-    xmlhttprequest: '{XMLHttpRequest:XMLHttpRequest}',
-  }],
-  module: {
-    // preLoaders,
-    loaders: [
-      {
-        test: /\.jsx?$/,
-        exclude: /(node_modules|ArachneUIComponents)/,
-        loader: 'babel',
-      },
-      {
-        test: /atlascharts\.js$/,
-        loader: 'babel',
-      },
-      {
-        test: /\.json?$/,
-        loader: 'json',
-      },
-      {
-        test: /\.scss$/,
-        loader: ExtractTextPlugin.extract('style-loader', 'css!postcss!sass'), // 'style!css!postcss!sass',
-      },
-      {
-        test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-        loader: 'url-loader?limit=100000',
-      },
-    ],
-  },
-  postcss: () => [
-    require('precss'),
-    require('autoprefixer'),
-  ],
-  output: {
-    path: webapp,
-    publicPath: '/',
-    filename: 'js/[hash].js',
-    chunkFilename: '[name]/[hash].js',
-  },
-  devtool: env === ENV_TYPE.PRODUCTION ? null : 'source-map',
-  plugins: [
-    new webpack.DefinePlugin({
-      __APP_TYPE_CENTRAL__: appType === APP_TYPE.CENTRAL,
-      __APP_TYPE_NODE__: appType === APP_TYPE.NODE,
-
-      __DEV__: env === ENV_TYPE.DEV,
-      //
-      'process.env': {
-        NODE_ENV: env === ENV_TYPE.PRODUCTION ? '"production"' : '"development"',
-      },
+  const plugins = [
+    new HtmlWebpackPlugin({
+      template: 'index.html'
     }),
-    new ExtractTextPlugin('css/app.css'),
-    new webpack.HotModuleReplacementPlugin(),
     new CopyWebpackPlugin([
       {
         from: path.join(currentDir, 'node_modules/arachne-ui-components/lib/resources/fonts'),
@@ -152,95 +79,144 @@ const config = {
         to: path.join(webapp, 'img/icons'),
       },
     ]),
-    new webpack.optimize.CommonsChunkPlugin({
-      async: 'fonts/base64',
-      minChunks(module, count) {
-        return module.resource && module.resource.indexOf('fonts-base64-fallback.scss') !== -1;
+    new webpack.DefinePlugin({
+      __APP_TYPE_CENTRAL__: appType === APP_TYPE.CENTRAL,
+      __APP_TYPE_NODE__: appType === APP_TYPE.NODE,
+
+      __DEV__: true,
+      __VERSION__: JSON.stringify(package.version),
+      __VERSION_COMPONENTS__: JSON.stringify(components.version),
+      //
+      'process.env': {
+        NODE_ENV: mode === ENV_TYPE.PRODUCTION ? '"production"' : '"development"',
       },
     }),
+
     // https://medium.com/@adamrackis/vendor-and-code-splitting-in-webpack-2-6376358f1923
+
     new webpack.optimize.CommonsChunkPlugin({
-      async: 'commons',
+      async: 'used-twice',
       minChunks(module, count) {
         return count >= 2;
       },
     }),
+
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|ru/),
-    new HtmlWebpackPlugin({
-      template: path.join(appRoot, 'index.html'),
-    }),
-  ],
-};
+  ];
 
-if (env === ENV_TYPE.PRODUCTION) {
-  config.entry = ['babel-regenerator-runtime', entryPoint];
-  // minification
-  config.output.publicPath = '/';
-  config.plugins.push(new webpack.optimize.UglifyJsPlugin({
-    comments: true,
-  }));
-  config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin());
-  config.plugins.push(new webpack.optimize.DedupePlugin());
-  // https://github.com/webpack-contrib/extract-text-webpack-plugin/issues/456
-  config.plugins.push(new webpack.optimize.CommonsChunkPlugin({
-    name: 'vendor',
-    filename: 'js/vendor/[hash].js',
-    minChunks(module) {
-      return module.context && module.context.indexOf('node_modules') !== -1;
+  if (mode === ENV_TYPE.PRODUCTION) {
+    plugins.push(new webpack.optimize.UglifyJsPlugin());
+  } else {
+    if (mode === ENV_TYPE.QA) {
+      plugins.push(
+        new BundleAnalyzerPlugin({
+          analyzerMode: 'static',
+        })
+      );
+    }
+  }
+
+  const config = {
+    context: appRoot,
+    entry: {
+      main: ['babel-regenerator-runtime', './index.js'],
     },
-  }));
-}
-
-if (env === ENV_TYPE.DEV) {
-  // process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-  config.plugins.push(new webpack.NamedModulesPlugin());
-
-  // Webpack hot reload server
-  const server = new WebpackDevServer(
-    webpack(config),
-    {
+    output: {
+      path: webapp,
+      publicPath: '/',
+      filename: 'js/[hash].js',
+      chunkFilename: '[name]/[hash].js',
+    },
+    devtool: mode === ENV_TYPE.PRODUCTION ? null : 'source-map',
+    resolve: {
+      // root: appRoot,
+      extensions: ['.js', '.jsx'],
+      modules: [
+        appRoot,
+        path.join(currentDir, 'node_modules'),
+      ],
+      // fallback: path.join(currentDir, 'node_modules'),
+      alias: {
+        get: 'lodash/get'
+      }
+    },
+    externals: [{
+      xmlhttprequest: '{XMLHttpRequest:XMLHttpRequest}',
+    }],
+    module: {
+      // preLoaders,
+      rules: [
+        {
+          test: /\.jsx?$/,
+          exclude: /(node_modules|ArachneUIComponents)/i,
+          loaders: 'babel-loader',
+          options: Object.assign(
+            {},
+            babelOptions,
+            { babelrc: false }
+          )
+        },
+        {
+          test: /atlascharts\.js$/,
+          loaders: 'babel-loader',
+        },
+        {
+          test: /\.scss$/,
+          use: [
+            {
+              loader: "style-loader"
+            },
+            {
+              loader: "css-loader"
+            },
+            {
+              loader: "sass-loader",
+              options: {
+                includePaths: [
+                  appRoot,
+                  path.join(currentDir, 'node_modules'),
+                  currentDir,
+                ],
+                data: "$isAppNode: false;"
+              },
+            },
+          ]
+        },
+      ],
+    },
+    plugins: plugins,
+    devServer: {
       contentBase: webapp,
-      hot: true,
       historyApiFallback: true,
+      port: appType === APP_TYPE.CENTRAL ? 8010 : 8020,
       stats: {
-        colors: true,
+        warnings: false
       },
-      proxy: {
-        // json-server db.json --routes routes.json --port 9999
-        '/api-dev/**': {
-          target: 'http://localhost:9999/',
-          changeOrigin: true,
-        },
-        '/arachne-websocket/**': {
-          target: appType === APP_TYPE.NODE
-            ? 'ws://localhost:8090/'
-            : 'ws://localhost:8080/',
-          changeOrigin: true,
-          ws: true,
-        },
-        '/api/**': {
-          target: appType === APP_TYPE.NODE
-            ? 'https://localhost:8880/'
-            : 'https://localhost:8080/',
-          changeOrigin: true,
+      proxy: [
+        {
+          context: ['/api', '/arachne-websocket'],
+          target: {
+            "host": "localhost",
+            "protocol": 'https:',
+            "port": appType === APP_TYPE.CENTRAL ? 8080 : 8880,
+          },
           secure: false,
         },
-      },
-    }
-  );
+        {
+          context: [
+            'ws:**/arachne-websocket',
+            'wss:**/arachne-websocket'
+          ],
+          target: {
+            host: 'localhost',
+            protocol: 'wss:',
+            port: appType === APP_TYPE.CENTRAL ? 8080 : 8880,
+          },
+          secure: true,
+        },
+      ]
+    },
+  };
 
-  server.listen(
-    appType === APP_TYPE.NODE ? 8020 : 8010,
-    'localhost'
-  );
-}
-
-if (env === ENV_TYPE.QA) {
-  config.plugins.push(
-    new BundleAnalyzerPlugin({
-      analyzerMode: 'static',
-    })
-  );
-}
-
-module.exports = config;
+  return config;
+};
