@@ -13,7 +13,7 @@ import {
   Accordion,
   AccordionItem,
 } from 'react-sanfona';
-import { commonDateFormat } from 'const/formats';
+import { fullDateFormat } from 'const/formats';
 import ModalEditNotifications from './components/ModalEditNotifications';
 
 require('./style.scss');
@@ -64,7 +64,7 @@ interface IDownloadHistoryStatefulProps {
 };
 
 function BundleName({ name, date, onClick, isOpened }) {
-  const dateFormat = commonDateFormat;
+  const dateFormat = fullDateFormat;
   const classes = BEMHelper('bundle-caption');
 
   return <div {...classes()} onClick={onClick}>

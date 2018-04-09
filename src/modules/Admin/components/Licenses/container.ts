@@ -42,7 +42,7 @@ class Licenses extends Component<ILicensesProps, void> {
 
 	componentWillReceiveProps(nextProps: ILicensesStateProps) {
 		if (this.props.pendingOnly !== nextProps.pendingOnly || this.props.page !== nextProps.page) {
-			this.props.load(this.props.page, pageSize, this.props.username, nextProps.pendingOnly);
+			this.props.load(nextProps.page, pageSize, this.props.username, nextProps.pendingOnly);
 		}
 		if (this.props.username !== nextProps.username) {
 			this.filterByName(nextProps.username);
