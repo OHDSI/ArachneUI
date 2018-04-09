@@ -234,6 +234,7 @@ export default class ListCode extends Component {
     this.canAddFiles = this.props.canAddFiles;
     this.isEditable = this.props.isEditable;
     this.canBeReimported = this.props.canBeReimported;
+    this.isExecutableSelected = this.props.isExecutableSelected;
 
     return (
       <Panel
