@@ -63,6 +63,7 @@ export default class ListCodeBuilder {
       isLoading,
       canSubmit,
       canAddFiles,
+      isExecutableSelected: codeList.find(file => file.isExecutable),
     };
   }
 
