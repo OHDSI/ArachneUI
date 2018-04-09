@@ -17,7 +17,7 @@ const actionTypes = keyMirror({
 
 const paths = {
 	termsList: () => '/search-terms/terms',
-	term: (id: number, isTableMode: boolean = false) => `/search-terms/terms/${id}${isTableMode ? '/table' : ''}`,
+	term: (id: number, isGraphMode: boolean = false) => `/search-terms/terms/${id}${isGraphMode ? '/graph' : ''}`,
 };
 
 const apiPaths = {
