@@ -26,12 +26,6 @@
 	&data-catalog {
 		@include filterable-list();
 
-		&-table {
-			&__ds-name {
-				min-width: 200px;
-			}
-		}
-
 		&__table {
 			flex-grow: 1;
 			overflow-x: auto;
@@ -39,6 +33,14 @@
 
 		&__pagination {
 			margin: 0 auto;
+		}
+
+		& .ac-grid {
+			&__results-count {
+				position: fixed;
+				right: 16px;
+				bottom: 16px;
+			}
 		}
 	}
 }
