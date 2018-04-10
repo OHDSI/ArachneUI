@@ -101,10 +101,10 @@ class FileInfo extends Component {
           {this.getAntivirusIcon()}
           <span {...this.classes('main-info')}>
             {(link || onClick)
-              ? <Link {...this.classes('name')} onClick={onClick} to={link} target={linkTarget}>
+              ? <Link {...this.classes('name')} onClick={onClick} to={link} target={linkTarget} title={label}>
                 {label}
               </Link>
-              : <span {...this.classes('name')}>{label}</span>
+              : <span {...this.classes('name')} title={label}>{label}</span>
             }
             {createdAt &&
               <span {...this.classes('datetime')}>
