@@ -40,15 +40,15 @@ function ContactInfoEdit(props) {
   const formFields = [
     {
       name: 'address1',
-	    InputComponent: {
-	    	component: FormInput,
-	      props: {
-	        placeholder: 'Address line 1',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          placeholder: 'Address line 1',
           type: 'text',
           mods: 'bordered'
-	      },
-	    },
-	  },
+        },
+      },
+    },
     {
       name: 'address2',
       InputComponent: {
@@ -96,7 +96,7 @@ function ContactInfoEdit(props) {
       }
     },
     {
-      name: 'stateProvince',
+      name: 'stateProvinceId',
       InputComponent: {
         component: FormAutocomplete,
         props: {
@@ -151,9 +151,13 @@ function ContactInfoEdit(props) {
       mods={['actions-inline']}
       onSubmit={ props.doSubmit }
       onCancel={props.cancel}
-      submitBtn={submitBtnConfig}
+      submitBtn={{
+        ...submitBtnConfig,
+        label: 'Save',
+        loadingLabel: 'Saving...',
+      }}
       {...props}
-  	/>
+    />
   );
 }
 
