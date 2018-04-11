@@ -25,6 +25,7 @@
 .#{$namespace} { 
   &virtual-table {
     height: 100%;
+    line-height: 1.2;
 
     & .react-grid {
       &-Main {
