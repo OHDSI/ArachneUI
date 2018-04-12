@@ -87,24 +87,24 @@ function ProfileView(props) {
               </div>
             </div>
             <div className="col-xs-12 col-lg-5">
-              <div {...classes('card')}>
+              <div {...classes('card', 'shadowed')}>
                 <Info/>
               </div>
-              <div {...classes('card')}>
+              <div {...classes('card', 'shadowed')}>
                 <ContactInfo/>
               </div>
-              <div {...classes('card')}>
+              <div {...classes('card', 'shadowed')}>
                 <Summary/>
               </div>
-              <div {...classes('card')}>
+              <div {...classes('card', 'uncut')}>
                 <Skills/>
               </div>
             </div>
             <div className="col-xs-12 col-lg-5">
-              <div {...classes('card')}>
+              <div {...classes('card', 'shadowed')}>
                 <Publications/>
               </div>
-              <div {...classes('card')}>
+              <div {...classes('card', 'shadowed')}>
                 <Links/>
               </div>
             </div>
