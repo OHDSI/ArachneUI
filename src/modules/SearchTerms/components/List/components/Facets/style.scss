@@ -31,19 +31,12 @@
 
   &facet-tag {
     @include input-border();
-    background: $blue;
+    @include facet-badge();
+    background-color: $blue;
     color: $white;
     display: flex;
     align-items: center;
-    overflow: hidden;
-
-    &--facet {
-      background: $blue;
-    }
-
-    &--purple {
-      background: $purple;
-    }
+    overflow: hidden;    
 
     &__title {
       @include text-ellipsis();
