@@ -74,6 +74,7 @@ export default class FormCreateDataNode extends ContainerBuilder {
     }
     const dataNodes = selectors.getDataNodeOptions(state);
     const organizations = selectors.getOrganizationOptions(state);
+    const createdOrganization = selectors.getNewOrganization(state);
 
     return {
       NODE_FIELD,
@@ -83,6 +84,7 @@ export default class FormCreateDataNode extends ContainerBuilder {
       dataNodes,
       organizations,
       dataNodeExists,
+      createdOrganization,
     };
   }
 
@@ -104,10 +106,15 @@ export default class FormCreateDataNode extends ContainerBuilder {
       ...stateProps,
       ...dispatchProps,
       async doSubmit(data) {
+        const organization = {
+          id: data.organization === -1 ? null : data.organization,
+          name: data.organization === -1 ? stateProps.createdOrganization.name : null,
+        };
         const dataNode = await dispatchProps.update({ id: stateProps.datanodeId },
-          { name: data.node,
+          {
+            name: data.node,
             description: data.description,
-            organization: { id: data.organization }
+            organization,
           });
         await dispatchProps.loadDataSource({
           id: ownProps.dataSourceId,

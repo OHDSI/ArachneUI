@@ -63,8 +63,11 @@ export default class ModalCreateDatanodeBuilder extends ContainerBuilder {
     const selectedNode = selectors.getDataNodes(state).find(node => node.centralId === selectedNodeId);
     const selectedOrganization = selectors.getOrganizations(state).find(organization => organization.id === selectedOrganizationId);
 
+    const createdOrganization = selectors.getNewOrganization(state);
+
     return {
       selectedObjects: { selectedNode, selectedOrganization },
+      createdObjects: { createdOrganization },
     };
   }
 
@@ -101,13 +104,19 @@ export default class ModalCreateDatanodeBuilder extends ContainerBuilder {
         if (id === -1) {
           const selectedOrganization = selectedObjects.selectedOrganization;
           const organizationId = selectedOrganization.id;
+          const organization = organizationId === -1
+            ? {
+              id: null,
+              name: stateProps.createdObjects.createdOrganization.name,
+            }
+            : {
+              id: organizationId,
+              name: null,
+            };
           let dataNode = {
             name: selectedNode.name,
             description: data.description,
-            organization: {
-              id: organizationId !== -1 ? organizationId : null,
-              name: selectedOrganization.name,
-            },
+            organization,
           };
           dataNode = await dispatchProps.createDN({}, dataNode);
           id = dataNode.centralId;
