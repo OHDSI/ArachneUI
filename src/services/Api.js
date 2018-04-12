@@ -25,7 +25,7 @@
 import URI from 'urijs';
 import SockJS from 'sockjs-client/dist/sockjs';
 import { Stomp } from '@stomp/stompjs/lib/stomp';
-import { Notifier } from 'community/services/Notifier';
+import { Notifier } from 'services/Notifier';
 
 const STATUS = {
   OK: 200,

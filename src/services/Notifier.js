@@ -21,36 +21,13 @@
  */
 import keyMirror from 'keymirror';
 
-function showNotification(message, title = 'Arachne', showButtons = false) {
-  const actions = [];
-  if (showButtons) {
-    actions.push({
-      action: 'y',
-      title: 'Yes',
-    });
-    actions.push({
-      action: 'n',
-      title: 'No',
-    });
-  }
+const duration = 5000;
 
+function showNotification(message, title = 'Arachne') {
   const notification = new Notification(title, {
     type: 'basic',
-    message,
-    actions,
+    body: message,
   });
-
-  if (showButtons) {
-    return new Promise((resolve, reject) => {
-      notification.onclick = (id, buttonIndex) => {
-        if (buttonIndex === 0) {
-          resolve();
-        } else {
-          reject();
-        }
-      };
-    });
-  }
 
   return notification;
 }
@@ -82,11 +59,10 @@ export class Notifier {
   }
 
   static alert(message, title) {
-    Notifier.checkPermission().then(() => showNotification(message, title));
+    Notifier.checkPermission().then(() => {
+      const notification = showNotification(message, title);
+      setTimeout(() => notification.close(), duration);
+    });
   }
 
-  static async confirm(message, title) {
-    await Notifier.checkPermission();
-    return showNotification(message, title, true);
-  }
 }
