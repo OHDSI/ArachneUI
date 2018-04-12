@@ -70,7 +70,7 @@ function mergeProps(stateProps: ITermConnectionsStateProps,
     ...dispatchProps,
     ...ownProps,
     goToTerm: (id) => {
-      const address = new URI(paths.term(id));
+      const address = new URI(paths.term(id, true));
       address.search(stateProps.termFilters);
       dispatchProps.goToAddress(address.href());
     }
