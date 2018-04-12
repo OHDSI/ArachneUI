@@ -37,10 +37,15 @@ export default class SelectorsBuilder extends NewDatanodeSelectors {
     );
   }
 
+  getNewOrganization(state) {
+    return get(state, 'dataCatalog.organization.tempData', { id: -1, name: null }, 'Object');
+  }
+
   build() {
     return {
       ...super.build(),
       getValues: this.buildSelectorForFormValues(),
+      getNewOrganization: this.getNewOrganization,
     };
   }
 }
