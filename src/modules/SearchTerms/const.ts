@@ -54,6 +54,13 @@ const facetKeys = keyMirror({
   vocabulary: null,
   invalidReason: null,
 });
+const facetTitles = {
+  [facetKeys.domain]: 'Domain',
+  [facetKeys.standardConcept]: 'Standard concept',
+  [facetKeys.conceptClass]: 'Class',
+  [facetKeys.vocabulary]: 'Vocabulary',
+  [facetKeys.invalidReason]: 'Invalid reason',
+};
 const zoomLevels = [
   {
     label: 'Minimum',
@@ -99,6 +106,7 @@ export {
   defaultLevels,
   defaultStandardsOnly,
   facetKeys,
+  facetTitles,
   zoomLevels,
   defaultZoomLevel,
   circleHeight,

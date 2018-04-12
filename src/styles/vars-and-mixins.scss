@@ -5,3 +5,25 @@
 @import 'arachne-ui-components/lib/styles/vars-and-mixins.scss';
 
 $namespace: 'at-';
+
+@mixin facet-badge() {
+  &--domain {      
+    background-color: $red;  
+  }
+  &--standardConcept {      
+    background-color: $blue;  
+  }
+  &--conceptClass {      
+    background-color: $violet-light;  
+  }
+  &--vocabulary {      
+    background-color: $orange;  
+  }
+  &--invalidReason {      
+    background-color: $purple-darker;  
+  }
+
+  &--purple {
+    background-color: $purple;
+  }
+}
