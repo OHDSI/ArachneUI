@@ -63,6 +63,9 @@ export default class ModalSettingsBuilder {
       ...dispatchProps,
       ...ownProps,
       changePublishState(publishState) {
+        if (!stateProps.canPublishPaper) {
+          return false;
+        }
         dispatchProps
           .updateInsight({ insightId: stateProps.insightId }, { publishState })
           .then(() => dispatchProps.loadInsight({ insightId: stateProps.insightId }))

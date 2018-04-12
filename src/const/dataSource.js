@@ -22,6 +22,7 @@
 
 import { types as fieldTypes } from 'const/modelAttributes';
 import keyMirror from 'keymirror';
+import { get } from 'services/Utils';
 
 import {
   FormInput,
@@ -102,27 +103,27 @@ const modelTypes = [
 
 const cdmVersionList = [
   {
-    label: 'v4.0',
+    label: '4.0',
     value: 'V4_0',
   },
   {
-    label: 'v5.0.0',
+    label: '5.0.0',
     value: 'V5_0',
   },
   {
-    label: 'v5.0.1',
+    label: '5.0.1',
     value: 'V5_0_1',
   },
   {
-    label: 'v5.1',
+    label: '5.1',
     value: 'V5_1',
   },
   {
-    label: 'v5.2',
+    label: '5.2',
     value: 'V5_2',
   },
   {
-    label: 'v5.3',
+    label: '5.3',
     value: 'V5_3',
   },
 ];
@@ -133,6 +134,7 @@ const cdmVersionList = [
       label: string,
       name: string,
       type: string,
+      getValue?: Function,
       faceted: boolean,
       showInList: boolean,
       options: Array<{label: string, value: string | number}>,
@@ -169,11 +171,13 @@ const staticAttrList = [
     label: 'Organization',
     name: attributeNames.organization,
     type: fieldTypes.string,
+    getValue: ds => get(ds, 'dataNode.organization.name'),
     faceted: true,
     showInList: true,
     options: null,
     order: 2,
     isRequired: true,
+    calculated: true,
   },
   {
     label: 'Model Type',
@@ -251,7 +255,6 @@ function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false) {
   const virtualSourceFields = [
     {
       name: 'name',
-      className: 'col-xs-12',
       InputComponent: {
         component: FormInput,
         props: {
@@ -265,13 +268,13 @@ function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false) {
     },
     {
       name: 'dbmsType',
-      className: 'col-xs-12',
       InputComponent: {
         component: FormSelect,
         props: {
           mods: ['bordered'],
           placeholder: 'DBMS Type',
           options: dbmsTypeList,
+          required: true,
         },
       },
     },
@@ -280,7 +283,6 @@ function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false) {
     ...virtualSourceFields,
     {
       name: 'connectionString',
-      className: 'col-md-12',
       InputComponent: {
         component: FormInput,
         props: {
@@ -293,7 +295,6 @@ function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false) {
     },
     {
       name: 'cdmSchema',
-      className: 'col-xs-12',
       InputComponent: {
         component: FormInput,
         props: {
@@ -306,7 +307,6 @@ function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false) {
     },
     {
       name: 'dbUsername',
-      className: 'col-md-12',
       InputComponent: {
         component: FormInput,
         props: {
@@ -319,7 +319,6 @@ function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false) {
     },
     {
       name: 'dbPassword',
-      className: 'col-md-12',
       InputComponent: {
         component: PasswordField,
         props: {
@@ -333,7 +332,6 @@ function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false) {
     },
     ...cdmSpecificAttributes.map((attribute, index) => ({
       name: attribute.name,
-      className: 'col-md-12',
       InputComponent: {
         component: FormInput,
         props: {

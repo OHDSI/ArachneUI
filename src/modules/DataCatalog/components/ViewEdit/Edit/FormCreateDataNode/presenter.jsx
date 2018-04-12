@@ -35,33 +35,51 @@ function FormCreateDataNode(props) {
   const classes = new BEMHelper('data-node-list-form-create');
 
   const {
+    NODE_FIELD,
+    ORG_FIELD,
     isLoading,
     dataSourceId,
     doSubmit,
-    doCreate,
+    createDataNode,
+    createOrganization,
     dataNodes = [],
     loadDataNodes = () => {},
+    organizations = [],
+    loadOrganizations = () => {},
+    dataNodeExists,
   } = props;
 
-  const submitBtn = {
-    label: 'Create',
-    loadingLabel: 'Creating...',
-  };
+  const submitBtn = dataNodeExists ?
+    {
+      label: 'Select',
+      loadingLabel: 'Selecting...',
+      mods: ['success' , 'rounded'],
+    } :
+    {
+      label: 'Create',
+      loadingLabel: 'Creating...',
+    };
 
   const useAutocomplete = dataSourceId === undefined;
+  const disabledAdditionalFields = dataNodeExists && dataSourceId === undefined;
   let autocompleteOptions = {};
   if (useAutocomplete) {
     autocompleteOptions = {
       options: dataNodes,
       fetchOptions: loadDataNodes,
-      promptTextCreator: label => `Create dananode ${label}`,
-      onNewOptionClick: ({ value }) => doCreate({ name: value, description: 'New Data Node' }),
+      promptTextCreator: label => `Create datanode ${label}`,
+      onNewOptionClick: ({ value }) => createDataNode({ name: value }),
     };
   }
-
+  const organizationAutocompleteOptions = {
+    options: organizations,
+    fetchOptions: loadOrganizations,
+    promptTextCreator: label => `Create organization ${label}`,
+    onNewOptionClick: ({ value }) => createOrganization({ name: value }),
+  };
   const fields = [
     {
-      name: 'node',
+      name: NODE_FIELD,
       InputComponent: {
         component: AttributesFormListItem,
         props: {
@@ -69,9 +87,27 @@ function FormCreateDataNode(props) {
             name: '',
             label: 'Name of data node',
             type: fieldTypes.string,
+            isRequired: true,
           },
           useAutocomplete,
           autocompleteOptions,
+        },
+      },
+    },
+    {
+      name: ORG_FIELD,
+      InputComponent: {
+        component: AttributesFormListItem,
+        props: {
+          item: {
+            name: '',
+            label: 'Organization',
+            type: fieldTypes.string,
+            isRequired: true,
+          },
+          useAutocomplete: true,
+          disabled: disabledAdditionalFields,
+          autocompleteOptions: organizationAutocompleteOptions,
         },
       },
     },
@@ -83,7 +119,9 @@ function FormCreateDataNode(props) {
           item: {
             label: 'Description',
             type: fieldTypes.textarea,
+            isRequired: true,
           },
+          disabled: disabledAdditionalFields,
           isWide: true,
         },
       },

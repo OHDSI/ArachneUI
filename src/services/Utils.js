@@ -230,11 +230,11 @@ class Utils {
 
   static assignFacets(filterList, facets) {
     filterList.forEach((field) => {
-      if ([fieldTypes.enum, fieldTypes.enumMulti].includes(field.type)) {
+      if ([fieldTypes.enum, fieldTypes.enumMulti].includes(field.type) || (field.type === fieldTypes.string && Array.isArray(field.options))) {
         field.options.forEach((option) => {
           let facetId = option.value;
           if (isNaN(facetId)) {
-            facetId = facetId.toString().toLowerCase();
+            facetId = facetId.toString();
           }
           option.value = option.value.toString();
           option.facetCount = get(facets, `${field.name}.${facetId}`, 0);
@@ -286,21 +286,22 @@ class Utils {
     return ConnectedComponent;
   }
 
-  static castValue(rawValue, { type, options }) {
+  static castValue(rawValue, { type, options = [] }) {
     let parsedValue;
+    const optionsList = options || [];
 
     // If enum - use label
     switch (type) {
       case fieldTypes.enum: {
         parsedValue = _get(
-          options.filter(o => o.value.toString() === rawValue.toString()),
+          optionsList.filter(o => o.value.toString() === rawValue.toString()),
           '[0].label',
           null,
         );
         break;
       }
       case fieldTypes.enumMulti: {
-        parsedValue = options.filter(o => rawValue.indexOf(o.value) !== -1).map(option => option.label).join(', ');
+        parsedValue = optionsList.filter(o => rawValue.indexOf(o.value) !== -1).map(option => option.label).join(', ');
         break;
       }
       case fieldTypes.date: {

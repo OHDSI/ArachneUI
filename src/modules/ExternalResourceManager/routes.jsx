@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,17 +15,20 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: April 24, 2017
+ * Authors: Pavel Grafkin
+ * Created: March 14, 2018
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+import React from 'react';
+import { Route, IndexRedirect } from 'react-router';
+import AtlasList from './components/AtlasList';
 
-.#{$namespace} {
-
-	&admin-panel-modal-add-user {
-		width: 260px;
-	}
-
+function Routes() {
+  return [
+    <Route path="atlases" component={AtlasList} />,
+    <IndexRedirect to="atlases" />,
+  ];
 }
+
+export default Routes;

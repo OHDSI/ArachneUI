@@ -25,7 +25,7 @@
 .#{$namespace} {
 
 	&data-source-list-form-create {
-		flex-direction: row;
+		flex-direction: column;
 		width: 400px;
 
 		&__field {
@@ -43,10 +43,6 @@
 			&__group-title {
 				@include title();
 				margin: 1rem;
-
-				&:first-child {
-					margin-top: 0;
-				}
 			}
 		}
 	}

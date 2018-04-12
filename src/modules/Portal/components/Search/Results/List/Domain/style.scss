@@ -52,6 +52,12 @@
       background: $blue;
     }
   }
+
+  &--PAPER {
+    &:after {
+      background: $purple-darker;
+    }
+  }
 }
 
 .#{$namespace} {

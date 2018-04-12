@@ -58,7 +58,7 @@ function DataSourcesTable(props) {
       {columns && columns.map((col, key) => {
           if (col.name === 'name') {
             return <CellName
-              {...tableClasses('meta')}
+              {...tableClasses('ds-name', '', tableClasses('meta').className)}
               header={col.label}
               field={col.name}
               props={dataSource => ({ dataSource })}

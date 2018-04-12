@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,24 +15,11 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: April 24, 2017
+ * Authors: Pavel Grafkin
+ * Created: March 14, 2018
  *
  */
 
-import { createSelector } from 'reselect';
-import get from 'lodash/get';
+import AtlasListBuilder from './container';
 
-const getRawUserOptionList = state => get(state, 'adminSettings.userOptionList.queryResult.result') || [];
-
-const getUserOptionList = createSelector(
-  [getRawUserOptionList],
-  rawUserOptionList => rawUserOptionList.map(user => ({
-    label: `${user.firstname} ${user.lastname}`,
-    value: user.id,
-  }))
-);
-
-export default {
-  getUserOptionList,
-};
+export default (new AtlasListBuilder()).build();

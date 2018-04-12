@@ -67,6 +67,7 @@ function SubmissionsTableFilter(props) {
       })),
       label: submissionFilters.dataSourceIds.label,
       forceOpened: true,
+      ...classes('ds-list-container'),
     },
     {
       type: 'ENUM',

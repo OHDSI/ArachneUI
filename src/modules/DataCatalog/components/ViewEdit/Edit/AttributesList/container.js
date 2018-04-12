@@ -28,7 +28,6 @@ import { modelTypesValues, attributeNames, executionPolicy } from 'const/dataSou
 import isEmpty from 'lodash/isEmpty';
 import presenter from './presenter';
 import SelectorsBuilder from './selectors';
-import { Notifier } from 'community/services/Notifier';
 
 const selectors = (new SelectorsBuilder()).build();
 
@@ -110,7 +109,7 @@ export default class AttributeListBuilder extends ContainerBuilder {
           id: stateProps.dataSourceId,
         }, data);
         if (!stateProps.isPublished) {
-          Notifier.alert('Data source is successfully published');
+          alert('Data source was successfully published');
           dispatchProps.load({ id: stateProps.dataSourceId });
         }
 

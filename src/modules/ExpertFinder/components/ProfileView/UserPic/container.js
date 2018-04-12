@@ -30,7 +30,7 @@ function mapStateToProps(state) {
   const moduleState = state.expertFinder.userProfile;
   const editable = get(moduleState, 'data.result.isEditable', false);
   const id = get(moduleState, 'data.result.id', 1);
-  const hash = get(moduleState, 'data.result.hash', '');
+  const hash = get(moduleState, 'data.result.updated', '');
 
   return {
     userpic: apiPaths.userpic({ id, hash }),

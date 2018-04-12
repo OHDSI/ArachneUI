@@ -42,17 +42,6 @@ class ImportList extends Component {
     this.filter = this.filter.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.selectedSource.id !== nextProps.selectedSource.id &&
-      !!nextProps.selectedSource.id
-    ) {
-      this.props.loadList({
-        dataNodeId: nextProps.selectedSource.id,
-        type: this.props.analysisType,
-      });
-    }
-  }
-
   filter(filterText) {
     this.setState({
       filterText,
@@ -72,7 +61,6 @@ ImportList.propTypes = {
   selectedSource: PropTypes.shape({
     id: PropTypes.number,
   }),
-  loadList: PropTypes.func,
   analysisType: PropTypes.string,
 };
 
@@ -93,7 +81,6 @@ function mapStateToProps(state, ownProps) {
 }
 
 const mapDispatchToProps = {
-  loadList: actions.analysisExecution.importEntityOptionList.query,
   importEntities: actions.analysisExecution.importEntity.create,
   closeModal: () => ModalUtils.actions.toggle(modal.createCode, false),
   loadAnalysis: actions.analysisExecution.analysis.find,

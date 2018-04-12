@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,36 +15,18 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: April 24, 2017
+ * Authors: Pavel Grafkin
+ * Created: March 14, 2018
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+import atlases from './atlases';
 
-.#{$namespace} {
-
-	&admin-panel-user-list {
-		&__add {
-      align-items: center;
-			cursor: pointer;
-      display: flex;
-      padding: 15px 27px;
-			width: 100%;
-		}
-
-		&__add-icon {
-		  @include material-icon();
-		  color: $green;
-		  display: inline-block;
-		  margin-right: 1rem;
-		  font-size: 2.5rem;
-		}
-
-		&__add-label {
-		  @include title();
-		  color: $grey-dark-light;
-		}
-	}
-
-}
+export default {
+  actions: {
+    atlases: atlases.actions,
+  },
+  reducer: {
+    atlases: atlases.reducer,
+  },
+};

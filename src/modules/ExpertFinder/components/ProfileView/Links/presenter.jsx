@@ -31,42 +31,41 @@ import { submitBtnConfig, cancelBtnConfig } from 'modules/ExpertFinder/const';
 require('./style.scss');
 
 function Links(props) {
-	const { items, editable } = props;
+  const { items, editable } = props;
   const classes = new BEMHelper('profile-links');
   const formFields = [
     {
       name: 'title',
-	    InputComponent: {
-	    	component: FormInput,
-	      props: {
-	        placeholder: 'Name of Link',
-	        required: true,
-	        type: 'text',
-	      },
-	    },
-	  },
+      InputComponent: {
+        component: FormInput,
+        props: {
+          placeholder: 'Name of Link',
+          required: true,
+          type: 'text',
+        },
+      },
+    },
     {
       name: 'url',
-	    InputComponent: {
-	    	component: FormInput,
-	      props: {
-	        placeholder: 'Link',
-	        required: true,
-	        type: 'text',
-	      },
-	    },
-	  },
+      InputComponent: {
+        component: FormInput,
+        props: {
+          placeholder: 'Link',
+          required: true,
+          type: 'text',
+        },
+      },
+    },
     {
       name: 'description',
-	    InputComponent: {
-	    	component: FormInput,
-	      props: {
-	        placeholder: 'Description',
-	        required: true,
-	        type: 'text',
-	      },
-	    },
-	  },
+      InputComponent: {
+        component: FormInput,
+        props: {
+          placeholder: 'Description',
+          type: 'text',
+        },
+      },
+    },
   ];
 
   return (
@@ -77,23 +76,23 @@ function Links(props) {
         }
         {items.map((record, key) =>
           <LinkListItem
-	          {...record}
-	          key={key}
-	          onRemove={props.doRemove}
-	          editable={props.editable}
-         	/>
-				)}
+            {...record}
+            key={key}
+            onRemove={props.doRemove}
+            editable={props.editable}
+           />
+        )}
       </div>      
-	  	{editable &&
-	      <FormExpansible
-	        fields={formFields}
-	        addButtonTitle="Add Link"
-	        formTitle="Add Link"
-	        onSubmit={ props.doSubmit }
-	        submitBtnConfig={submitBtnConfig}
+      {editable &&
+        <FormExpansible
+          fields={formFields}
+          addButtonTitle="Add Link"
+          formTitle="Add Link"
+          onSubmit={ props.doSubmit }
+          submitBtnConfig={submitBtnConfig}
           cancelBtnConfig={cancelBtnConfig}
-	        {...props}
-	      />
+          {...props}
+        />
      }
     </Panel>
   );

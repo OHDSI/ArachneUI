@@ -50,8 +50,7 @@ class SystemSettingsBuilder extends ContainerBuilder {
   mapStateToProps(state) {
     return {
       isApplied: get(state, 'adminSettings.systemSettings.queryResult.result.applied', true),
-      isLoading: state.adminSettings.systemSettings.isLoading || state.adminSettings.solrIndex.isSaving
-      || state.adminSettings.atlasConnection.isSaving,
+      isLoading: state.adminSettings.systemSettings.isLoading || state.adminSettings.solrIndex.isSaving,
       settingGroupList: selectors.getSystemSettings(state),
     };
   }
@@ -62,7 +61,6 @@ class SystemSettingsBuilder extends ContainerBuilder {
       saveData: actions.adminSettings.systemSettings.create,
       applySettings: applySettings,
       solrReindex: actions.adminSettings.solrIndex.create,
-      checkAtlas: actions.adminSettings.atlasConnection.create,
       closeLoader: () => actions.adminSettings.atlasConnection.reset,
     };
   }
@@ -104,16 +102,6 @@ class SystemSettingsBuilder extends ContainerBuilder {
       },
       applySettings: () => {
         dispatchProps.applySettings(() => dispatchProps.loadSystemSettings());
-      },
-      checkAtlas: () => {
-        dispatchProps.checkAtlas()
-          .then((result) => {
-            Notifier.alert(result.errorMessage)
-          })
-          .catch((error) => {
-            Notifier.alert(error.errors._error);
-            dispatchProps.closeLoader()
-          })
       },
     };
   }

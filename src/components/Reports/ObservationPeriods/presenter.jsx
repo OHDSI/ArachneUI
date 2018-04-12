@@ -202,7 +202,7 @@ function ObservationPeriods(props) {
               width/3,
               {
                 ...chartSettings,
-                xFormat: d3.timeFormat('%Y'),
+                xFormat: d3.timeFormat('%B %Y'),
                 xLabel: 'Year',
                 yLabel: 'People',
                 yFormat: d => numberFormatter.format(d, 'short')
@@ -248,7 +248,7 @@ function ObservationPeriods(props) {
                 xLabel: 'Date',
                 yLabel: 'People',                  
                 xFormat: d3.timeFormat('%m/%Y'),
-                tickFormat: d3.timeFormat('%Y'),
+                tickFormat: d3.timeFormat('%B %Y'),
                 yFormat: d => numberFormatter.format(d, 'short')
               }
             );

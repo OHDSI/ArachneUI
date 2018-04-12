@@ -20,11 +20,18 @@
  *
  */
 
-import { reset as resetForm } from 'redux-form';
+import { reset as resetForm, change as changeField } from 'redux-form';
 import actions from 'actions';
 import { forms } from 'modules/DataCatalog/const';
 import { ContainerBuilder, get } from 'services/Utils';
 import CreateDataNode from './presenter';
+import SelectorsBuilder from './selectors';
+import isEmpty from 'lodash/isEmpty';
+
+const selectors = (new SelectorsBuilder()).build();
+
+const NODE_FIELD = 'node';
+const ORG_FIELD = 'organization';
 
 export default class FormCreateDataNode extends ContainerBuilder {
   getComponent() {
@@ -34,30 +41,61 @@ export default class FormCreateDataNode extends ContainerBuilder {
   getFormParams() {
     return {
       form: forms.createDataNode,
+      validate: this.fieldValidator,
     };
+  }
+
+  fieldValidator({ node, organization, description }) {
+    let result = {};
+    if (!node) {
+      result.node = 'Data node must be defined';
+    }
+    if (!organization && node === -1) {
+      result.organization = 'Organization must be defined';
+    }
+    if (!description && node === -1) {
+      result.description = 'Description must be defined';
+    }
+    return isEmpty(result) ? undefined : result;
   }
 
   mapStateToProps(state) {
     const isLoading = get(state, 'dataCatalog.dataNode.isLoading', false);
     const datanodeId = get(state, 'dataCatalog.dataSource.data.result.dataNode.id');
-    const dataNodes = get(state, 'dataCatalog.dataNode.data', [], 'Array').map((node) => ({
-      value: node.centralId,
-      label: node.name,
-    }));
+
+    const formValues = selectors.getValues(state);
+
+    let dataNodeExists = false;
+    if (formValues) {
+      if (!datanodeId) {
+        const selectedNodeId = formValues.node;
+        dataNodeExists = parseInt(selectedNodeId || -1, 10) !== -1;
+      }
+    }
+    const dataNodes = selectors.getDataNodeOptions(state);
+    const organizations = selectors.getOrganizationOptions(state);
 
     return {
+      NODE_FIELD,
+      ORG_FIELD,
       isLoading,
       datanodeId,
       dataNodes,
+      organizations,
+      dataNodeExists,
     };
   }
 
   getMapDispatchToProps() {
     return {
       reset: () => resetForm(forms.createDataNode),
+      changeField: (field, value) => changeField(forms.createDataNode, field, value),
       update: actions.dataCatalog.dataNode.update,
       loadDataSource: actions.dataCatalog.dataSource.find,
-      loadDataNodes: actions.dataCatalog.dataNode.find,
+      loadDataNodes: ({ query }) => actions.dataCatalog.dataNode.query({}, { query }),
+      loadOrganizations: ({ query }) => actions.dataCatalog.organization.query({}, { query }),
+      selectNewDataNode: actions.dataCatalog.dataNode.selectNewDataNode,
+      selectNewOrganization: actions.dataCatalog.organization.selectNewOrganization,
     };
   }
 
@@ -66,15 +104,26 @@ export default class FormCreateDataNode extends ContainerBuilder {
       ...stateProps,
       ...dispatchProps,
       async doSubmit(data) {
-        const submitPromise = await dispatchProps.update({ id: stateProps.datanodeId }, { ...data, name: data.node });
+        const dataNode = await dispatchProps.update({ id: stateProps.datanodeId },
+          { name: data.node,
+            description: data.description,
+            organization: { id: data.organization }
+          });
         await dispatchProps.loadDataSource({
           id: ownProps.dataSourceId,
         });
 
-        return submitPromise;
+        return dataNode;
       },
-      loadDataNodes(query) {
-        dispatchProps.loadDataNodes({}, { query });
+      createDataNode({ name }) {
+        const newNodeId = -1;
+        dispatchProps.selectNewDataNode({ name, centralId: newNodeId });
+        return new Promise(res => res(newNodeId));
+      },
+      createOrganization({ name }) {
+        const newOrgId = -1;
+        dispatchProps.selectNewOrganization({ name, id: newOrgId });
+        return new Promise(res => res(newOrgId));
       },
       ...ownProps, // allow redefining of the doSubmit method via own props
     };

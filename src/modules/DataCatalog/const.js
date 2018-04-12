@@ -62,6 +62,7 @@ const apiPaths = {
   registration: ({ id }) => `/api/v1/data-sources/${id}/registration`,
   dbmsTypes: () => '/api/v1/data-sources/dbms-types',
   achillesResultsUpload: ({ id }) => `/api/v1/achilles/datanode/datasource/${id}`,
+  organization: ({ id }) => `/api/v1/user-management/organizations${id ? `/${id}` : ''}`,
 };
 
 const paths = {

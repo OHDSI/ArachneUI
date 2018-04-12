@@ -36,7 +36,7 @@ export default function SearchResultsList(props) {
   } = props;
 
   return (
-    <div {...classes()}>
+    <div {...classes({ modifiers: { empty: results.length === 0 } })}>
       <div {...classes('list')}>
         {results && results.length
           ? results.map(result => <ResultItem {...result} />)

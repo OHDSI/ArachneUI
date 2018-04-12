@@ -69,8 +69,8 @@ class Filter extends Component {
       const selectedFilters = {};
       Object.keys(nextProps.selectedFilters)
         .forEach((filterName) => {
-          let nextFilterValue = get(nextProps.selectedFilters, filterName, [], 'Array|Boolean');
-          const existingFilterValue = get(this.props.selectedFilters, filterName, [], 'Array|Boolean');
+          let nextFilterValue = get(nextProps.selectedFilters, filterName, [], 'Array|Boolean|String');
+          const existingFilterValue = get(this.props.selectedFilters, filterName, [], 'Array|Boolean|String');
           if (Array.isArray(existingFilterValue) && Array.isArray(nextFilterValue)) {
             if (existingFilterValue.includes('')) {
               // 'Any' option had been previously selected, then just ignore it
@@ -148,7 +148,10 @@ export default class FilterBuilder extends ContainerBuilder {
 
     const selectedQuery = get(state, `form.${this.formName}.values.query`, '');
     const selectedFilters = get(state, `form.${this.formName}.values.filter`, {});
-    const selectedFiltersCount = Utils.countNonEmptyValues(selectedFilters);
+    const selectedFiltersCount = Utils.countNonEmptyValues({
+      ...selectedFilters,
+      selectedQuery,
+    });
     const filteredByList = Utils.getFilterTooltipText(
       selectedFilters,
       fields.reduce((accumulator, entry) => {

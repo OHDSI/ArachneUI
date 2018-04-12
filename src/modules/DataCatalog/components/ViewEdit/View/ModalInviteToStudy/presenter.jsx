@@ -66,8 +66,11 @@ function ModalInviteDataSource(props = {}) {
   };
 
   return (
-    <Modal modal={modal} title={modalTitle}>
+    <Modal modal={modal} title={'Request access'}>
       <div {...classes()}>
+        <p {...classes('preface')}>
+          Select study to request access to this Data Source
+        </p>
         <Form
           mods="spacing-sm"
           fields={fields}

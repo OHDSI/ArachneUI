@@ -39,12 +39,14 @@ function parseSolrValue(value, { type }) {
       }
       break;
     }
-    case fieldTypes.enum: case fieldTypes.enumMulti:
-      parsedValue = value
-        .replace(/[\(,\)]/g, '') // eslint-disable-line no-useless-escape
-        .split(' OR ');
-      break;
+    case fieldTypes.enum:
+    case fieldTypes.enumMulti:
     case fieldTypes.string:
+      parsedValue = value
+        .replace(/(^\(|\)$)/g, '') // eslint-disable-line no-useless-escape
+        .split(' OR ')
+        .map(entry => entry.replace(/(^"|"$)/g, ''));
+      break;
     default:
       parsedValue = value;
       break;
@@ -80,7 +82,7 @@ function convertToSolrValue(value) {
   }
   // array -> list of options
   if (Array.isArray(value) && value.length > 0) {
-    convertedValue = `(${value.join(' OR ')})`;
+    convertedValue = `("${value.join('" OR "')}")`;
   }
   return convertedValue;
 }

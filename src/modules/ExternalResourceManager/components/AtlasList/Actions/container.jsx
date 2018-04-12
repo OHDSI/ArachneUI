@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,11 +15,29 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: April 24, 2017
+ * Authors: Pavel Grafkin
+ * Created: March 15, 2018
  *
  */
 
-import ModalAddUserBuilder from './container';
+import { ContainerBuilder } from 'services/Utils';
+import { ModalUtils } from 'arachne-ui-components';
+import { modal } from 'modules/ExternalResourceManager/const';
+import actions from 'actions';
+import Actions from './presenter';
 
-export default new ModalAddUserBuilder().build();
+class ActionsBuilder extends ContainerBuilder {
+
+  getComponent() {
+    return Actions;
+  }
+
+  getMapDispatchToProps() {
+    return {
+      openNewAtlasModal: () => ModalUtils.actions.toggle(modal.atlasDetails, true),
+    };
+  }
+
+}
+
+export default ActionsBuilder;

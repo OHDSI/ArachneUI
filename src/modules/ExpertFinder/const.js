@@ -22,6 +22,7 @@
 
 import keyMirror from 'keymirror';
 import { types as fieldTypes } from 'const/modelAttributes';
+import URI from 'urijs';
 
 const submitBtnConfig = {
   label: 'Add',
@@ -68,12 +69,17 @@ const apiPaths = {
   userPublication: ({ id } = {}) => `/api/v1/user-management/users/publications${id ? `/${id}` : ''}`,
   userLink: ({ id } = {}) => `/api/v1/user-management/users/links${id ? `/${id}` : ''}`,
   professionalTypes: () => '/api/v1/user-management/professional-types',
-  skills: ({ q, limit } = {}) => {
-    let url = '/api/v1/user-management/skills';
-    if (q || limit) {
-      url = `${url}?query=${q}&limit=${limit}`;
+  skills: ({ query, limit = 10 } = {}) => {
+    const baseUrl = '/api/v1/user-management/skills';
+    let url = new URI(baseUrl);
+    if (query) {
+      url = new URI(`${baseUrl}/search`);
+      url.setSearch({
+        query,
+        limit,
+      });
     }
-    return url;
+    return url.href();
   },
   updateUserProfile: () => '/api/v1/user-management/users/profile',
   userpic: ({ id, hash }) => `/api/v1/user-management/users/${id}/avatar${hash ? `?${hash}` : ''}`,
