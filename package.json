@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "main": "public/index.js",
   "scripts": {
-    "build": "webpack -p --progress --colors",
-    "start": "webpack-dev-server --hot --inline",
+    "build": "webpack -p --progress --colors --env.mode production",
+    "start": "webpack-dev-server --hot --inline --env.mode dev",
     "postinstall": "node helpers/typingsControl"
   },
   "author": "Odysseus Team",
@@ -59,6 +59,7 @@
     "feathers-client": "1.9.0",
     "feathers-reduxify-services": "0.3.0",
     "feathers-rest-arachne": "1.7.3",
+    "gtagger": "^1.0.1",
     "jquery-param": "0.2.0",
     "lodash": "4.17.4",
     "moment": "^2.20.1",
