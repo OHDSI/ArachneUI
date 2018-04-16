@@ -1,24 +1,38 @@
+/*
+ *
+ * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ * Company: Odysseus Data Services, Inc.
+ * Product Owner/Architecture: Gregory Klebanov
+ * Authors: Alexandr Saltykov, Pavel Grafkin, Vitaly Koulakov, Anton Gackovka
+ * Created: March 3, 2017
+ *
+ */
+
 import { createSelector } from 'reselect';
 import { get } from 'lodash';
 import * as URI from 'urijs';
 import types from 'const/metadataTypes';
 import { facetKeys } from 'modules/SearchTerms/const';
+import { FacetTitles } from '../FacetTitles';
 
 type map = {
   [key: string]: any;
 };
 
 function getFacetTitle(facetId: string): string {
-  let title = facetId;
-  switch(facetId.toLowerCase()) {
-    case 'domain_id': title = 'Domain'; break;
-    case 'standard_concept': title = 'Standard concept'; break;
-    case 'concept_class_id': title = 'Class'; break;
-    case 'vocabulary_id': title = 'Vocabulary'; break;
-    case 'invalid_reason': title = 'Invalid reason'; break;
-  }
-
-  return title;
+  return FacetTitles[getFacetKey(facetId)];
 }
 
 function getFacetKey(facetId: string): string {
