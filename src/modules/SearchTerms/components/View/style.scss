@@ -16,6 +16,7 @@
     &__subheader-wrapper {
       background: $black;
       color: $white;
+      flex-shrink: 0;
     }
 
     &__subheader {
@@ -141,6 +142,10 @@
         display: flex;
         flex-direction: column;
         flex-grow: 1;
+
+        &__panel-header {
+          flex-shrink: 0;
+        }
       }
     }
 
