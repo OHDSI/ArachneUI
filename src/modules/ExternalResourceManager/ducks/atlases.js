@@ -34,9 +34,9 @@ function checkConnection({ id }) {
     {},
     (res) => {
       if (res.errorCode === errors.NO_ERROR) {
-        Notifier.alert(`Connection is OK. ${res.errorMessage}`);
+        Notifier.alert({ message: `Connection is OK. ${res.errorMessage}` });
       } else {
-        Notifier.alert(`Connection check failed. ${res.errorMessage}`);
+        Notifier.alert({ message: `Connection check failed. ${res.errorMessage}` });
       }
     }
   );

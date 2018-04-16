@@ -76,7 +76,7 @@ class Api {
 
   // eslint-disable-next-line class-methods-use-this
   handleUnexpectedError() {
-    Notifier.alert('Oooops!.. Something went wrong :(');
+    Notifier.alert({ message: 'Oooops!.. Something went wrong :(' });
   }
 
   getHeaders() {

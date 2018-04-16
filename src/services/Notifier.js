@@ -23,10 +23,11 @@ import keyMirror from 'keymirror';
 
 const duration = 5000;
 
-function showNotification(message, title = 'Arachne') {
+function showNotification({ message, title = 'Arachne', icon }) {
   const notification = new Notification(title, {
     type: 'basic',
     body: message,
+    icon,
   });
 
   return notification;
@@ -40,17 +41,24 @@ export class Notifier {
     });
   }
 
+  static get errors() {
+    return keyMirror({
+      UNAVAILABLE: null,
+      FORBIDDEN: null,
+    });
+  }
+
   static checkPermission() {
     const result = new Promise((resolve, reject) => {
       if (!('Notification' in window)) {
-        reject();
+        reject(Notifier.errors.UNAVAILABLE);
       } else if (Notification.permission === Notifier.permissions.granted) {
         resolve();
       } else if (Notification.permission !== Notifier.permissions.denied) {
         Notification.requestPermission((permission) => {
           permission === Notifier.permissions.granted
             ? resolve()
-            : reject();
+            : reject(Notifier.errors.FORBIDDEN);
         });
       }
     });
@@ -58,10 +66,14 @@ export class Notifier {
     return result;
   }
 
-  static alert(message, title) {
+  static alert({ message, title = 'Arachne', useFallback = true, icon = null }) {
     Notifier.checkPermission().then(() => {
-      const notification = showNotification(message, title);
+      const notification = showNotification({ message, title, icon });
       setTimeout(() => notification.close(), duration);
+    }).catch((error) => {
+      if (error === Notifier.errors.FORBIDDEN && useFallback) {
+        alert(message);
+      }
     });
   }
 

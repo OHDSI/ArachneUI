@@ -87,8 +87,7 @@ export default class ModalCreateDatanodeBuilder extends ContainerBuilder {
       ...ownProps,
       async chooseDataNode({ node }) {
         if (!node) {
-          // TODO: add notification (ARACHNE-2016)
-          Notifier.alert('You should create or choose existing Data Node first');
+          Notifier.alert({ message: 'You should create or choose existing Data Node first' });
           return false;
         }
         await dispatchProps.closeModal();
