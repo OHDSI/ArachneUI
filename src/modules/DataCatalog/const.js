@@ -108,6 +108,7 @@ const defaultTrellisSet = [
 
 const dataSourcePermissions = {
   delete: 'DELETE_DATASOURCE',
+  edit: 'EDIT_DATASOURCE',
 };
 
 export {
