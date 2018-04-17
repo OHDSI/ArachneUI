@@ -119,7 +119,7 @@ function Facets(props: IFacets) {
 
   selectedFacets.forEach((facet) => {
     filterFormState.filter[facet].forEach((value, index) => {
-      tags.push(generateElement(classes('selected-facet').className, facet.toLocaleLowerCase(), value, () : void => {removeFacetValue(facet, index)}));
+      tags.push(generateElement(classes('selected-facet').className, facet, value, () : void => {removeFacetValue(facet, index)}));
     })
   });
 
