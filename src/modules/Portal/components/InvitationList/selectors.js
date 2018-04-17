@@ -27,7 +27,7 @@ import { paths, apiPaths } from 'modules/Portal/const';
 import { paths as analysisPaths } from 'modules/AnalysisExecution/const';
 import { paths as paperPaths } from 'modules/InsightsLibrary/const';
 
-const getRawInvitations = state => get(state, 'portal.invitation.queryResult.result', []) || [];
+const getRawInvitations = state => get(state, 'portal.invitation.list.queryResult.result', []) || [];
 
 const getInvitations = createSelector(
   [getRawInvitations],

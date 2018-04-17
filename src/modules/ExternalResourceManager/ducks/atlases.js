@@ -24,6 +24,7 @@ import Duck from 'services/Duck';
 import api from 'services/Api';
 import errors from 'const/errors';
 import { apiPaths } from '../const';
+import { Notifier } from 'services/Notifier';
 
 const coreName = 'ERM_ATLASES';
 
@@ -33,9 +34,9 @@ function checkConnection({ id }) {
     {},
     (res) => {
       if (res.errorCode === errors.NO_ERROR) {
-        alert(`Connection is OK. ${res.errorMessage}`);
+        Notifier.alert({ message: `Connection is OK. ${res.errorMessage}` });
       } else {
-        alert(`Connection check failed. ${res.errorMessage}`);
+        Notifier.alert({ message: `Connection check failed. ${res.errorMessage}` });
       }
     }
   );
