@@ -22,11 +22,12 @@
 
 import { Component, PropTypes } from 'react';
 import actions from 'actions';
-import { reset } from 'redux-form';
+import { reset, change } from 'redux-form';
 import { ContainerBuilder, get, Utils } from 'services/Utils';
-import { form, modal, submissionStatuses, paths } from 'modules/AnalysisExecution/const';
+import { form, modal, submissionStatuses, paths, submissionFilters } from 'modules/AnalysisExecution/const';
 import { ModalUtils } from 'arachne-ui-components';
 import URI from 'urijs';
+import difference from 'lodash/difference';
 import presenter from './presenter';
 import SelectorsBuilder from './selectors';
 
@@ -37,7 +38,23 @@ export class SubmissionsTableFilter extends Component {
   static get propTypes() {
     return {
     };
-  } 
+  }
+
+  componentWillReceiveProps(nextProps) {
+    [submissionFilters.dataSourceIds.name, submissionFilters.submissionStatuses.name].forEach(
+      (fieldName) => {
+        const diff = difference(
+          nextProps.selectedValues[fieldName],
+          this.props.selectedValues[fieldName]
+        );
+        const newValue = get(diff, '[0]', null, 'String');
+        if (newValue === '') {
+          // any option selected
+          this.props.flush(fieldName);
+        }
+      }
+    );
+  }
 
   render() {
     return presenter(this.props);
@@ -70,6 +87,7 @@ export default class SubmissionsTableFilterBuilder extends ContainerBuilder {
     const initialValues = Utils.getFilterValues(
       get(state, 'routing.locationBeforeTransitions.search', '', 'String')
     );
+    const selectedValues = get(state, `form.${form.submissionsTableFilter}.values.filter`, {}, 'Object');
     
     return {
       dataSourceList,
@@ -78,6 +96,7 @@ export default class SubmissionsTableFilterBuilder extends ContainerBuilder {
       initialValues: {
         filter: initialValues,
       },
+      selectedValues,
     };
   }
 
@@ -92,11 +111,19 @@ export default class SubmissionsTableFilterBuilder extends ContainerBuilder {
           return false;
         }
         const url = new URI(paths.analyses(analysisId));
-        url.setSearch(params);
+        const filteredParams = {
+          filter: {},
+        };
+        Object.entries(params.filter)
+          .forEach(([filter, values]) => {
+            filteredParams.filter[filter] = values.filter(val => val.length);
+          });
+        url.setSearch(filteredParams);
         url.setSearch('page', '1');
         return actions.router.goToPage(url.href());
       },
       reset: () => reset(form.submissionsTableFilter),
+      flush: field => change(form.submissionsTableFilter, `filter[${field}]`, []),
     };
   }
 

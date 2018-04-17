@@ -66,7 +66,7 @@ class DataCatalogViewBuilder extends ContainerBuilder {
   
     return {
       dataSourceId: ownProps.routeParams.dataSourceId,
-      isLoading: moduleState.dataSource.isLoading || false,
+      isLoading: moduleState.dataSource.isLoading || moduleState.characterization.isLoading,
       reportsAvailable,
       isProfileSelected: get(ownProps, 'route.params.isProfileSelected', false),
       name: `${get(moduleState, 'dataSource.data.result.dataNode.name', 'Not published')}: ${get(moduleState, 'dataSource.data.result.name', '')}`,
