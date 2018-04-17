@@ -81,6 +81,7 @@ function mapStateToProps(state) {
     stateProvinceId,
     provinces,
     countries,
+    canSelectState: contactInfoFormState.country !== null,
   };
 }
 

@@ -31,7 +31,7 @@ export default {
   sidebarElement: {
     ico: imgs.sidebarIco,
     name: 'Admin settings',
-    path: '/admin-settings',
+    path: '/admin-settings/admins',
   },
   indexRedirect: '/admins',
 };

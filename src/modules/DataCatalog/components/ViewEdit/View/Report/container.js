@@ -37,7 +37,7 @@ class Report extends Component {
     this.selectReport = this.selectReport.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (this.props.characterization) {
       this.loadReport(this.props.characterization, this.state.selectedReport);
     }

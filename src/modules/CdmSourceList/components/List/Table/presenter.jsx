@@ -29,6 +29,7 @@ import {
 } from 'arachne-ui-components';
 import { healthStatuses, modelTypesValues } from 'const/dataSource';
 import { paths as centralPaths } from 'modules/DataCatalog/const';
+import { Utils } from 'services/Utils';
 
 require('./style.scss');
 
@@ -47,7 +48,7 @@ function CellRegister({ published, onClick, isCdm, centralId, centralDomain }) {
       <Button
         {...classes('btn')}
         mods={['success', 'rounded']}
-        label="Reports"
+        label="Achilles"
         onClick={onClick}
       />
     }
@@ -61,7 +62,11 @@ function CellEdit({ editDataSource, removeDataSource, value, published }) {
       <Button {...classes('btn')} onClick={() => editDataSource(value)}>
         <i {...classes('btn-ico')}>edit</i>
       </Button>
-      <Button {...classes('btn')} onClick={() => removeDataSource({ id: value, published })}>
+      <Button {...classes('btn')} onClick={() => {
+        Utils.confirmDelete('Delete Data Source')
+          .then(() => removeDataSource({ id: value, published }))
+          .catch(() => {});
+      }}>
         <i {...classes('btn-ico')}>delete</i>
       </Button>
     </div>
