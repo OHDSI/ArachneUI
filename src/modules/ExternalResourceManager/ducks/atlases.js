@@ -23,23 +23,51 @@
 import Duck from 'services/Duck';
 import api from 'services/Api';
 import errors from 'const/errors';
+import { combineReducers } from 'redux';
 import { apiPaths } from '../const';
 import { Notifier } from 'services/Notifier';
 
 const coreName = 'ERM_ATLASES';
+const connectionName = `${coreName}_CONNECTION`;
+
+const atlases = new Duck({
+  name: coreName,
+  urlBuilder: apiPaths.atlases,
+});
+
+const connection = new Duck({
+  name: connectionName,
+  urlBuilder: () => '',
+});
+
+function startChecking() {
+  return {
+    type: `${connectionName}_FIND_PENDING`,
+  };
+}
+
+function endChecking() {
+  return {
+    type: `${connectionName}_FIND_FULFILLED`,
+  };
+}
 
 function checkConnection({ id }) {
-  return dispatch => api.doPost(
-    apiPaths.atlasConnection({ id }),
-    {},
-    (res) => {
-      if (res.errorCode === errors.NO_ERROR) {
-        Notifier.alert({ message: `Connection is OK. ${res.errorMessage}` });
-      } else {
-        Notifier.alert({ message: `Connection check failed. ${res.errorMessage}` });
+  return (dispatch) => {
+    dispatch(startChecking());
+    api.doPost(
+      apiPaths.atlasConnection({ id }),
+      {},
+      (res) => {
+        dispatch(endChecking());
+        if (res.errorCode === errors.NO_ERROR) {
+          Notifier.alert({ message: `Connection is OK. ${res.errorMessage}` });
+        } else {
+          Notifier.alert({ message: `Connection check failed. ${res.errorMessage}` });
+        }
       }
-    }
-  );
+    )
+  };
 }
 
 function clear() {
@@ -49,16 +77,14 @@ function clear() {
   });
 }
 
-const atlases = new Duck({
-  name: coreName,
-  urlBuilder: apiPaths.atlases,
-});
-
 export default {
   actions: {
     ...atlases.actions,
     checkConnection,
     clear,
   },
-  reducer: atlases.reducer,
+  reducer: combineReducers({
+    list: atlases.reducer,
+    connection: connection.reducer,
+  }),
 };
