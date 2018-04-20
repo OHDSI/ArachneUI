@@ -116,7 +116,7 @@ export default class SubmissionsTableFilterBuilder extends ContainerBuilder {
         };
         Object.entries(params.filter)
           .forEach(([filter, values]) => {
-            filteredParams.filter[filter] = values.filter(val => val.length);
+            filteredParams.filter[filter] = Array.isArray(values) ? values.filter(val => val.length) : values;
           });
         url.setSearch(filteredParams);
         url.setSearch('page', '1');
