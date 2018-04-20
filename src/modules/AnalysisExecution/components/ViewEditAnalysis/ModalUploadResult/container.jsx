@@ -32,7 +32,7 @@ import { ModalUtils } from 'arachne-ui-components';
 import { modal, form, submissionGroupsPageSize } from 'modules/AnalysisExecution/const';
 import { buildFormData } from 'services/Utils';
 import ModalUploadResult from './presenter';
-import { getFilter } from 'community/modules/AnalysisExecution/components/ViewEditAnalysis/container';
+import { getFilter } from 'modules/AnalysisExecution/components/ViewEditAnalysis/container';
 
 function mapStateToProps(state) {
   const analysisData = get(state, 'analysisExecution.analysis.data.result');
