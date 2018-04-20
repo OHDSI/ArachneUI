@@ -29,21 +29,31 @@ import get from 'lodash/get';
 
 import actions from 'actions/index';
 import { ModalUtils } from 'arachne-ui-components';
-import { modal, form } from 'modules/AnalysisExecution/const';
+import { modal, form, submissionGroupsPageSize } from 'modules/AnalysisExecution/const';
 import { buildFormData } from 'services/Utils';
 import ModalUploadResult from './presenter';
+import { getFilter } from 'community/modules/AnalysisExecution/components/ViewEditAnalysis/container';
 
 function mapStateToProps(state) {
   const analysisData = get(state, 'analysisExecution.analysis.data.result');
   const modalData = state.modal.uploadResult;
+  const currentQuery = state.routing.locationBeforeTransitions.query;
+  const filter = getFilter(state.routing.locationBeforeTransitions.search);
+
   return {
     analysisId: get(analysisData, 'id'),
     submissionId: get(modalData, 'data.submissionId'),
+    page: get(currentQuery, 'page', 1),
+    filter,
   };
 }
 
 const mapDispatchToProps = {
   loadAnalysis: actions.analysisExecution.analysis.find,
+  loadSubmissionGroups: ({ page = 1, analysisId, filter }) => {
+    const pageSize = submissionGroupsPageSize;
+    return actions.analysisExecution.submissionGroups.query({ page, pageSize, analysisId, filter });
+  },
   closeModal: () => ModalUtils.actions.toggle(modal.uploadResult, false),
   resetForm: resetForm.bind(null, form.uploadResult),
   uploadResultFile: actions.analysisExecution.resultFile.create,
@@ -72,9 +82,14 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
 
       const submitPromise = await Promise.all(submitPromises);
       try {
-        await dispatchProps.resetForm();
-        await dispatchProps.closeModal();
+        dispatchProps.resetForm();
+        dispatchProps.closeModal();
         await dispatchProps.loadAnalysis({ id: stateProps.analysisId });
+        dispatchProps.loadSubmissionGroups({
+          analysisId: stateProps.analysisId,
+          page: stateProps.page,
+          filter: stateProps.filter,
+        });
         if (ownProps.onUpload) {
           ownProps.onUpload();
         }

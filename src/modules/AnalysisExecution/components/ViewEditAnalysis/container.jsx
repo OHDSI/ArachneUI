@@ -22,10 +22,12 @@
 
 import React, { Component, PropTypes } from 'react';
 import { get, ContainerBuilder, Utils } from 'services/Utils';
-import { refreshTime, analysisPermissions, submissionGroupsPageSize } from 'modules/AnalysisExecution/const';
+import { refreshTime, analysisPermissions, submissionGroupsPageSize, modal } from 'modules/AnalysisExecution/const';
+import { modal as studyModal } from 'modules/StudyManager/const';
 import actions from 'actions/index';
 import isEqual from 'lodash/isEqual';
 import qs from 'qs';
+import { ModalUtils } from 'arachne-ui-components';
 import Presenter from './presenter';
 
 export function getFilter(search) {
@@ -123,6 +125,8 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
         const pageSize = submissionGroupsPageSize;
         return actions.analysisExecution.submissionGroups.query({ page, pageSize, analysisId, filter });
       },
+      hideInviteModal: () => ModalUtils.actions.toggle(studyModal.addDataSource, false),
+      showSubmitModal: () => ModalUtils.actions.toggle(modal.submitCode, true),
     };
   }
 
@@ -135,6 +139,11 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
         await dispatchProps.loadAnalysis({ id: stateProps.id });
         return dispatchProps.loadSubmissionGroups({ analysisId: stateProps.id, page: stateProps.page, filter: stateProps.filter });
       },
+      refreshStudyDataSources() {
+        dispatchProps.hideInviteModal();
+        dispatchProps.showSubmitModal();
+        dispatchProps.loadStudyDataSources({ studyId: stateProps.studyId });
+      }
     };
   }
 

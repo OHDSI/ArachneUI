@@ -23,7 +23,7 @@
 import React from 'react';
 import BEMHelper from 'services/BemHelper';
 import { Modal } from 'arachne-ui-components';
-import { Form, Checkbox, ListItem } from 'arachne-ui-components';
+import { Form, Checkbox, ListItem, Button } from 'arachne-ui-components';
 import DataSources from 'modules/AnalysisExecution/components/ViewEditAnalysis/DataSources';
 
 require('./style.scss');
@@ -65,12 +65,18 @@ function ModalSubmitCode(props) {
     <Modal modal={props.modal} title="Submit code to data nodes" mods={['no-padding']}>
       <div {...classes()}>
         <ListItem>
-          <Checkbox
-            {...classes('toggle-btn')}
-            label='Select all'
-            isChecked={props.isAllSelected}
-            onChange={props.toggleAll}
-          />
+          <div {...classes('top-line')}>
+            <Checkbox
+              {...classes('toggle-btn')}
+              label='Select all'
+              isChecked={props.isAllSelected}
+              onChange={props.toggleAll}
+            />
+            <Button {...classes('invite-button')} onClick={props.inviteDatasource}>
+              <span {...classes('invite-button-icon')}>add_circle_outline</span>
+              Invite Data Sources
+            </Button>
+          </div>
         </ListItem>
         <Form
           mods="spacing-sm"
