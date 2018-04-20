@@ -28,6 +28,7 @@ import get from 'lodash/get';
 import actions from 'actions/index';
 import { ModalUtils } from 'arachne-ui-components';
 import { modal, form, submissionGroupsPageSize } from 'modules/AnalysisExecution/const';
+import { modal as studyModal } from 'modules/StudyManager/const';
 import presenter from './presenter';
 import selectors from './selectors';
 
@@ -78,6 +79,8 @@ const mapDispatchToProps = {
     const pageSize = submissionGroupsPageSize;
     return actions.analysisExecution.submissionGroups.query({ page, pageSize, analysisId });
   },
+  showInviteModal: () => ModalUtils.actions.toggle(studyModal.addDataSource, true),
+  showSubmitModal: () => ModalUtils.actions.toggle(modal.submitCode, true),
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
@@ -113,6 +116,10 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     toggleAll: () =>
       stateProps.dataSourceOptions.forEach(dataSource =>
         dispatchProps.toggle(dataSource.value, !stateProps.isAllSelected)),
+    inviteDatasource() {
+      dispatchProps.showInviteModal();
+      dispatchProps.closeModal();
+    },
   };
 }
 

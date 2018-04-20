@@ -167,6 +167,7 @@ export default class AddVirtualSourceBuilder {
           .then(() => dispatchProps.resetForm())
           .then(() => dispatchProps.closeModal())
           .then(() => dispatchProps.loadStudy(stateProps.studyId))
+          .then(ownProps.onAdd)
           .catch(() => {});
 
         return submitPromise;

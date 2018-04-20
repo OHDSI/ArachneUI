@@ -127,7 +127,8 @@ export default class AddDataCatalogSourceBuilder {
               return dispatchProps.openConfirmDatasource(dataSources, stateProps.studyName);
             }
             return null;
-          });
+          })
+          .then(ownProps.onAdd);
 
         return submitPromise;
       },

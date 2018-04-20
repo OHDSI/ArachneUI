@@ -24,9 +24,10 @@
 import { Component, PropTypes } from 'react';
 import actions from 'actions';
 import { ContainerBuilder, get } from 'services/Utils';
-import { forms, modal } from 'modules/DataCatalog/const';
+import { forms, modal, paths } from 'modules/DataCatalog/const';
 import { ModalUtils } from 'arachne-ui-components';
 import { executionPolicy } from 'const/dataSource';
+import { push } from 'react-redux';
 import presenter from './presenter';
 import SelectorsBuilder from './selectors';
 
@@ -85,8 +86,8 @@ export default class ModalCreateDataSourceBuilder extends ContainerBuilder {
     return {
       closeModal: () => ModalUtils.actions.toggle(modal.modalCreateDataSource, false),
       createDS: actions.dataCatalog.dataSource.create,
-      loadList: actions.dataCatalog.myDatasources.query,
       getDbmsTypes: actions.dataCatalog.dbmsTypes.find,
+      showDs: id => push(paths.dataCatalog(id)),
     };
   }
 
@@ -107,7 +108,7 @@ export default class ModalCreateDataSourceBuilder extends ContainerBuilder {
         );
         if (result) {
           await dispatchProps.closeModal();
-          dispatchProps.loadList({}, { query: '' });
+          dispatchProps.showDs(result.id);
         }
 
         return result;
