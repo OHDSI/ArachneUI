@@ -59,7 +59,7 @@ class Edit {
     return (
       <PageContent title={`${props.name} | Arachne`}>
         <div {...classes()}>
-          {!isDenied && permissions.DELETE_DATASOURCE
+          {!isDenied && permissions.EDIT_DATASOURCE && permissions.EDIT_ACHILLES_REPORT_PERMISSION
             ? [
               <Toolbar mode={'edit'}>
                 {canUploadAchillesResults
