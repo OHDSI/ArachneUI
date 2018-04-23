@@ -45,7 +45,7 @@ class Report extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.characterization.length !== nextProps.characterization.length) {
-      this.selectReport(this.state.selectedReport);
+      this.loadReport(nextProps.characterization, this.state.selectedReport);
     }
   }
   loadReport(characterization, report) {
