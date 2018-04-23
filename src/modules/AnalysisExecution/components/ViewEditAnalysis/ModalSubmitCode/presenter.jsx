@@ -49,6 +49,7 @@ function ModalSubmitCode(props) {
     toggleAll,
     closeModal,
     inviteDatasource,
+    error,
   } = props;
 
   const fields = [
@@ -86,6 +87,7 @@ function ModalSubmitCode(props) {
         </ListItem>
         <form {...props} onSubmit={handleSubmit(doSubmit)}>
           {fields.map(field => <Field {...field} component={Fieldset} />)}
+          {error && <div {...classes('error')}>{error}</div>}
           <div {...classes('actions')}>
             <Button {...classes('invite-button')} onClick={inviteDatasource}>
               <span {...classes('invite-button-icon')}>add_circle_outline</span>

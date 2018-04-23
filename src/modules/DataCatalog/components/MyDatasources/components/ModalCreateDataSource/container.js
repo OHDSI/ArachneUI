@@ -27,7 +27,7 @@ import { ContainerBuilder, get } from 'services/Utils';
 import { forms, modal, paths } from 'modules/DataCatalog/const';
 import { ModalUtils } from 'arachne-ui-components';
 import { executionPolicy } from 'const/dataSource';
-import { push } from 'react-redux';
+import { push } from 'react-router-redux';
 import presenter from './presenter';
 import SelectorsBuilder from './selectors';
 
