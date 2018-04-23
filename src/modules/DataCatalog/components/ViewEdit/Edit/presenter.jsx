@@ -54,12 +54,12 @@ class Edit {
       isCDM,
       showUploadForm,
     } = props;
-    const canUploadAchillesResults = isDatanodeRegistered && !isVirtual && isCDM;
+    const canUploadAchillesResults = isDatanodeRegistered && !isVirtual && isCDM && permissions.UPLOAD_ACHILLES_REPORTS;
 
     return (
       <PageContent title={`${props.name} | Arachne`}>
         <div {...classes()}>
-          {!isDenied && permissions.EDIT_DATASOURCE && permissions.EDIT_ACHILLES_REPORT_PERMISSION
+          {!isDenied && permissions.EDIT_DATASOURCE
             ? [
               <Toolbar mode={'edit'}>
                 {canUploadAchillesResults
@@ -78,9 +78,9 @@ class Edit {
                     <div className='col-xs-6 col-md-6'>
                       <AttributeList />
                     </div>,
-                    <div className='col-xs-6 col-md-6'>
+                    permissions.EDIT_ACHILLES_REPORT_PERMISSION ? <div className='col-xs-6 col-md-6'>
                       {this.getAchillesSettings()}
-                    </div>]
+                    </div> : [] ]
                   : <Panel title='Create data node' {...classes('create-form')}>
                       <FormCreateDataNode dataSourceId={dataSourceId} />
                     </Panel>
