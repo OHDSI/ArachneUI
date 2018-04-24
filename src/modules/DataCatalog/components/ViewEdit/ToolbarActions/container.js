@@ -65,7 +65,9 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...ownProps,
     async unpublish() {
       try {
-        await Utils.confirmDelete();
+        await Utils.confirmDelete({
+          message: 'Are you really want to unpublish this Data Source?',
+        });
         const dataSourceId = stateProps.dataSourceId;
         await dispatchProps.unpublish({ id: dataSourceId });
         await dispatchProps.load({ id: dataSourceId });

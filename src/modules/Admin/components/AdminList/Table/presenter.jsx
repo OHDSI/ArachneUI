@@ -30,9 +30,9 @@ import {
 
 require('./style.scss');
 
-function CellRemove({ id, removeAdmin }) {
+function CellRemove({ id, name, removeAdmin }) {
 	return (
-		<Link onClick={() => removeAdmin(id)}>
+		<Link onClick={() => removeAdmin(id, name)}>
 			Remove
 		</Link>
 	);
@@ -77,7 +77,8 @@ function AdminTable(props) {
         	field="id"
         	props={
 						entity => ({
-							id: entity.id,
+              id: entity.id,
+              name: entity.name,
 							removeAdmin,
 						})
 					}
