@@ -56,7 +56,7 @@
 		}
 
 		&__edit-th {
-			width: 16%;
+			width: 10%;
 		}
 	}
 
@@ -91,6 +91,7 @@
 
 	&data-source-list-cell-edit {
 		@include edit-btns-cell();
+		@include text-ellipsis();
 	}
 
 	&ds-name {

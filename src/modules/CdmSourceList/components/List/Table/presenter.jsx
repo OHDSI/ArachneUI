@@ -40,7 +40,7 @@ function CellRegister({ published, onClick, isCdm, centralId, centralDomain }) {
     <Button
       {...classes('btn', { publish: !published })}
       mods={['submit', 'rounded']}
-      label={published ? 'Edit' : 'Publish'}
+      label={published ? 'Catalog' : 'Publish'}
       link={`${centralDomain}${centralPaths.edit(centralId)}`}
       target={'_blank'}
     />
