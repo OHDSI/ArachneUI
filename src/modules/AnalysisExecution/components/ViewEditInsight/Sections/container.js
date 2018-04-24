@@ -28,7 +28,7 @@ import selectors from './selectors';
 
 function mapStateToProps(state) {
   const path =
-      `${get(state, 'routing.locationBeforeTransitions.pathname', '')} ${
+      `${get(state, 'routing.locationBeforeTransitions.pathname', '')}${
       get(state, 'routing.locationBeforeTransitions.search', '')}`;
 
   const codeFiles = selectors.getCodeList(state);
