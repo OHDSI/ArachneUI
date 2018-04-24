@@ -105,7 +105,7 @@ module.exports = function (env) {
   ];
 
   if (mode === ENV_TYPE.PRODUCTION) {
-    plugins.push(new webpack.optimize.UglifyJsPlugin());
+    // plugins.push(new webpack.optimize.UglifyJsPlugin());
   } else {
     if (mode === ENV_TYPE.QA) {
       plugins.push(
@@ -127,7 +127,7 @@ module.exports = function (env) {
       filename: 'js/[hash].js',
       chunkFilename: '[name]/[hash].js',
     },
-    devtool: mode === ENV_TYPE.PRODUCTION ? false : 'source-map',
+    devtool: /*mode === ENV_TYPE.PRODUCTION ? false : */'source-map',
     resolve: {
       // root: appRoot,
       extensions: ['.js', '.jsx'],
