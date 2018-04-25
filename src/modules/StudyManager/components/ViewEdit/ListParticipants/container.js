@@ -85,8 +85,10 @@ export default class ListParticipantsBuilder {
           )
           .then(() => dispatchProps.loadStudy(stateProps.studyId));
       },
-      removeParticipant(userId) {
-        Utils.confirmDelete()
+      removeParticipant(userId, name) {
+        Utils.confirmDelete({
+          message: `Are you sure want to remove ${name} from participants?`,
+        })
           .then(() => {
             dispatchProps
               .removeParticipant({ studyId: stateProps.studyId, userId })

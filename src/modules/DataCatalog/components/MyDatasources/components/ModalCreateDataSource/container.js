@@ -108,7 +108,7 @@ export default class ModalCreateDataSourceBuilder extends ContainerBuilder {
         );
         if (result) {
           await dispatchProps.closeModal();
-          dispatchProps.showDs(result.id);
+          dispatchProps.showDs(get(result, 'result.id'));
         }
 
         return result;

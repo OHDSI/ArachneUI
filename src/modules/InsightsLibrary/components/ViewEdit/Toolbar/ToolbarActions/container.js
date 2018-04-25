@@ -70,7 +70,9 @@ export default class ToolbarBuilder {
       ...dispatchProps,
       ...ownProps,
       remove: () => {
-        Utils.confirmDelete()
+        Utils.confirmDelete({
+          message: 'Are you sure want to delete this file?',
+        })
           .then(() => {
             dispatchProps
               .remove({ insightId: stateProps.insightId })
