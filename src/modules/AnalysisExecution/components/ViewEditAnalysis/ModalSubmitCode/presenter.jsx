@@ -93,7 +93,7 @@ function ModalSubmitCode(props) {
               <span {...classes('invite-button-icon')}>add_circle_outline</span>
               Invite Data Sources
             </Button>
-            <Button {...classes('submit')} type={'submit'} mods={['success', 'rounded']}>
+            <Button {...classes('submit')} type={'submit'} mods={['success', 'rounded']} disabled={submitting}>
               {submitting ? 'Submitting...' : 'Submit'}
             </Button>
             <Button {...classes('cancel')} mods={['cancel', 'rounded']} onClick={closeModal}>

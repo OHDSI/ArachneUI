@@ -47,7 +47,9 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...dispatchProps,
     ...ownProps,
     remove: () => {
-      Utils.confirmDelete()
+      Utils.confirmDelete({
+        message: 'Are you sure want to delete insight?',
+      })
         .then(() => {
           dispatchProps.remove({ submissionId: stateProps.submissionId })
             .then(dispatchProps.goToAnalysisPage(stateProps.analysisId));

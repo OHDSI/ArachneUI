@@ -63,7 +63,9 @@ function CellEdit({ editDataSource, removeDataSource, value, published }) {
         <i {...classes('btn-ico')}>edit</i>
       </Button>
       <Button {...classes('btn')} onClick={() => {
-        Utils.confirmDelete('Delete Data Source')
+        Utils.confirmDelete({
+          message: 'Delete Data Source?',
+        })
           .then(() => removeDataSource({ id: value, published }))
           .catch(() => {});
       }}>

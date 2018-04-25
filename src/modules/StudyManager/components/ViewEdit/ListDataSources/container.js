@@ -69,8 +69,10 @@ export default class ListDataSourcesBuilder {
           .addDataSource({ studyId: stateProps.studyId, dataSourceId })
           .then(() => dispatchProps.loadStudy(stateProps.studyId));
       },
-      removeDataSource(dataSourceId) {
-        Utils.confirmDelete()
+      removeDataSource(dataSourceId, title) {
+        Utils.confirmDelete({
+          message: `Are you sure want to delete this Data Source (${title}) from study?`,
+        })
           .then(() => {
             dispatchProps
               .removeDataSource({ studyId: stateProps.studyId, dataSourceId })
