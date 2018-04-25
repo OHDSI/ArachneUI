@@ -31,24 +31,52 @@
       width: 90%;
     }
 
-    & .ac-form {
-      &-checkbox-list {
-        column-count: 2;
+    &__ds-list-container {
+      & .ac-checkbox {
+        display: inline-flex;
+        width: 100%;
+      }
+    }
 
+    &__actions {
+      padding: 1.5rem 2rem;
+      background: $grey-light;
+      border-top: 1px solid $grey-medium;
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__any-button {
+      margin-bottom: 1.5rem;
+    }
+
+    &__cancel {
+      margin-top: 10px;
+    }
+
+    &__section {
+      padding: 1.5rem 2rem;
+      border-top: 1px solid $grey-medium;
+
+      &--cols {
+        column-count: 2;
+        border-top: none;
+        
         & .ac-checkbox {
           &__checkbox-label {
             display: flex;
             width: 100%;
           }
         }
+
       }
     }
 
-    &__ds-list-container {
-      & .ac-checkbox {
-        display: inline-flex;
-        width: 100%;
-      }
+    &__section-title {
+      @include title();
+      padding: 1.5rem 2rem;
+      background: $grey-light;
+      border-top: 1px solid $grey-medium;
     }
   }
 }
