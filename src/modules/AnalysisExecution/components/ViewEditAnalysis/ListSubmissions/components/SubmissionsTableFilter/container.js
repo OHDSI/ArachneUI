@@ -103,7 +103,7 @@ export default class SubmissionsTableFilterBuilder extends ContainerBuilder {
   getMapDispatchToProps() {
     return {
       closeModal: () => ModalUtils.actions.toggle(modal.submissionsTableFilter, false),
-      redirect: (analysisId, params) => {
+      redirect: (analysisId, params, canonicalValues) => {
         if (!analysisId) {
           return false;
         }
@@ -114,7 +114,16 @@ export default class SubmissionsTableFilterBuilder extends ContainerBuilder {
         if (params.filter) {
           Object.entries(params.filter)
             .forEach(([filter, values]) => {
-              filteredParams.filter[filter] = Array.isArray(values) ? values.filter(val => val.length) : values;
+              if (Array.isArray(values)) {
+                // checkbox list
+                if (values.length === canonicalValues[filter].length) {
+                  // checked all values
+                  return false;
+                }
+              }
+              filteredParams.filter[filter] = Array.isArray(values)
+                ? values.filter(val => val.length)
+                : values;
             });
         }
         url.setSearch(filteredParams);
@@ -133,7 +142,7 @@ export default class SubmissionsTableFilterBuilder extends ContainerBuilder {
       ...stateProps,
       ...dispatchProps,
       doSubmit(data) {
-        dispatchProps.redirect(stateProps.analysisId, data);
+        dispatchProps.redirect(stateProps.analysisId, data, stateProps.fieldValues);
         dispatchProps.closeModal();
       },
       doClear() {
