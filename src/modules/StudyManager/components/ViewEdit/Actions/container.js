@@ -67,6 +67,7 @@ export default class StudyActionsBuilder {
       isEditable,
       isFilledForPaper,
       canCreatePaper,
+      title: studyData.title,
     };
   }
 
@@ -106,7 +107,9 @@ export default class StudyActionsBuilder {
         dispatchProps.loadSudyInvitations({ studyId: stateProps.studyId });
       },
       remove: () => {
-        Utils.confirmDelete()
+        Utils.confirmDelete({
+          message: `Are you sure want to delete study ${stateProps.title}?`,
+        })
           .then(() => {
             dispatchProps.remove(stateProps.studyId)
               .then(() => dispatchProps.goBack())

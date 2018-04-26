@@ -28,6 +28,7 @@ import { form, modal, submissionStatuses, paths, submissionFilters } from 'modul
 import { ModalUtils } from 'arachne-ui-components';
 import URI from 'urijs';
 import difference from 'lodash/difference';
+import isEmpty from 'lodash/isEmpty';
 import presenter from './presenter';
 import SelectorsBuilder from './selectors';
 
@@ -38,22 +39,6 @@ export class SubmissionsTableFilter extends Component {
   static get propTypes() {
     return {
     };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    [submissionFilters.dataSourceIds.name, submissionFilters.submissionStatuses.name].forEach(
-      (fieldName) => {
-        const diff = difference(
-          nextProps.selectedValues[fieldName],
-          this.props.selectedValues[fieldName]
-        );
-        const newValue = get(diff, '[0]', null, 'String');
-        if (newValue === '') {
-          // any option selected
-          this.props.flush(fieldName);
-        }
-      }
-    );
   }
 
   render() {
@@ -81,22 +66,34 @@ export default class SubmissionsTableFilterBuilder extends ContainerBuilder {
   }
 
   mapStateToProps(state) {
-    const dataSourceList = selectors.getDatasourceList(state);
-    const statusList = submissionStatuses;
+    const dataSourceIds = selectors.getDatasourceList(state);
     const analysisId = get(state, 'analysisExecution.analysis.data.result.id');
     const initialValues = Utils.getFilterValues(
       get(state, 'routing.locationBeforeTransitions.search', '', 'String')
     );
     const selectedValues = get(state, `form.${form.submissionsTableFilter}.values.filter`, {}, 'Object');
-    
+    const fieldValues = {
+      dataSourceIds,
+      submissionStatuses,
+    };
+    ['dataSourceIds', 'submissionStatuses'].forEach((fieldName) => {
+      const value = initialValues[fieldName];
+      if (isEmpty(value)) {
+        initialValues[fieldName] = fieldValues[fieldName].map(option => option.value);
+      }
+    });
+    const isAnyDatasourceId = get(selectedValues, 'dataSourceIds.length', 0, 'Number') === dataSourceIds.length;
+    const isAnySubmissionStatus = get(selectedValues, 'submissionStatuses.length', 0, 'Number') === submissionStatuses.length;
+
     return {
-      dataSourceList,
-      statusList,
+      fieldValues,
       analysisId,
       initialValues: {
         filter: initialValues,
       },
       selectedValues,
+      isAnyDatasourceId,
+      isAnySubmissionStatus,
     };
   }
 
@@ -106,7 +103,7 @@ export default class SubmissionsTableFilterBuilder extends ContainerBuilder {
   getMapDispatchToProps() {
     return {
       closeModal: () => ModalUtils.actions.toggle(modal.submissionsTableFilter, false),
-      redirect: (analysisId, params) => {
+      redirect: (analysisId, params, canonicalValues) => {
         if (!analysisId) {
           return false;
         }
@@ -117,7 +114,16 @@ export default class SubmissionsTableFilterBuilder extends ContainerBuilder {
         if (params.filter) {
           Object.entries(params.filter)
             .forEach(([filter, values]) => {
-              filteredParams.filter[filter] = Array.isArray(values) ? values.filter(val => val.length) : values;
+              if (Array.isArray(values)) {
+                // checkbox list
+                if (values.length === canonicalValues[filter].length) {
+                  // checked all values
+                  return false;
+                }
+              }
+              filteredParams.filter[filter] = Array.isArray(values)
+                ? values.filter(val => val.length)
+                : values;
             });
         }
         url.setSearch(filteredParams);
@@ -125,7 +131,8 @@ export default class SubmissionsTableFilterBuilder extends ContainerBuilder {
         return actions.router.goToPage(url.href());
       },
       reset: () => reset(form.submissionsTableFilter),
-      flush: field => change(form.submissionsTableFilter, `filter[${field}]`, []),
+      selectAll: (field, values) =>
+        change(form.submissionsTableFilter, `filter[${field}]`, values),
     };
   }
 
@@ -135,13 +142,25 @@ export default class SubmissionsTableFilterBuilder extends ContainerBuilder {
       ...stateProps,
       ...dispatchProps,
       doSubmit(data) {
-        dispatchProps.redirect(stateProps.analysisId, data);
+        dispatchProps.redirect(stateProps.analysisId, data, stateProps.fieldValues);
         dispatchProps.closeModal();
       },
       doClear() {
         dispatchProps.reset();
         dispatchProps.redirect(stateProps.analysisId, {});
         dispatchProps.closeModal();
+      },
+      checkAll(fieldName) {
+        dispatchProps.selectAll(
+          fieldName,
+          stateProps.fieldValues[fieldName].map(option => option.value)
+        );
+      },
+      uncheckAll(fieldName) {
+        dispatchProps.selectAll(
+          fieldName,
+          []
+        );
       },
     };
   }

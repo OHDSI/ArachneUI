@@ -40,7 +40,7 @@ function CellRegister({ published, onClick, isCdm, centralId, centralDomain }) {
     <Button
       {...classes('btn', { publish: !published })}
       mods={['submit', 'rounded']}
-      label={published ? 'Edit' : 'Publish'}
+      label={published ? 'Edit catalog' : 'Publish'}
       link={`${centralDomain}${centralPaths.edit(centralId)}`}
       target={'_blank'}
     />
@@ -63,7 +63,9 @@ function CellEdit({ editDataSource, removeDataSource, value, published }) {
         <i {...classes('btn-ico')}>edit</i>
       </Button>
       <Button {...classes('btn')} onClick={() => {
-        Utils.confirmDelete('Delete Data Source')
+        Utils.confirmDelete({
+          message: 'Delete Data Source?',
+        })
           .then(() => removeDataSource({ id: value, published }))
           .catch(() => {});
       }}>
