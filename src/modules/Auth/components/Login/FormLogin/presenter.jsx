@@ -60,6 +60,7 @@ function FormLogin(props) {
     resendEmail,
     isLoading,
     authMethod,
+    userRequest,
   } = props;
 
   const fields = {
@@ -70,6 +71,7 @@ function FormLogin(props) {
         props: {
           placeholder: 'Email address',
           type: 'text',
+          disabled: Boolean(userRequest),
         }
       },
     },
