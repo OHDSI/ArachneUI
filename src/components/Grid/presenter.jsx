@@ -91,7 +91,7 @@ function Grid(props) {
         }
         <div {...classes('content-wrapper')}>
           {children}
-          {pages &&
+          {pages > 0 &&
             <div {...classes('pagination-wrapper')}>
               <div {...classes('pagination')}>
                 <Pagination pages={pages} currentPage={currentPage} path={path} />
