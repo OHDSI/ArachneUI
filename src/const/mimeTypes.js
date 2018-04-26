@@ -24,6 +24,8 @@ const mimeTypes = {
   image: 'image',
   txt: 'text',
   pdf: 'pdf',
+  word: 'word',
+  ppt: 'ppt',
   sql: 'sql',
   zip: 'zip',
   rar: 'rar',
