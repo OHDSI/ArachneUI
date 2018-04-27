@@ -27,6 +27,7 @@
 	&form-login-container {
 		position: relative;
 		@include form-island();
+		border-radius: $block-border-radius;
 
 		&__register-caption {
 			display: block;

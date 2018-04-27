@@ -23,21 +23,17 @@
 import React from 'react';
 import BEMHelper from 'services/BemHelper';
 import { Field } from 'redux-form';
-import { Button } from 'arachne-ui-components';
 import LabelDataSource from 'components/LabelDataSource';
 import ProgressDots from 'components/ProgressDots';
 import { nameAnalysisType } from 'modules/AnalysisExecution/const';
 
 require('./style.scss');
 
-function Node({ options, input }) {
+function Node({ dataNode, onChange }) {
   const classes = new BEMHelper('code-import-node');
-  const {
-    dataNode
-  } = options;
 
   return (
-    <div {...classes()} onClick={() => input.onChange(dataNode)}>
+    <div {...classes()} onClick={() => onChange(dataNode)}>
       <LabelDataSource {...dataNode} />
       <i {...classes('select-ico')}>
         keyboard_arrow_right
@@ -46,7 +42,7 @@ function Node({ options, input }) {
   );
 }
 
-function NodeSelector({ dataNodeList, totalSteps, step, analysisType }) {
+function NodeSelector({ dataNodeList, totalSteps, step, analysisType, onSelect }) {
   const classes = new BEMHelper('code-import-node-selector');
 
   if (dataNodeList.length > 0) {
@@ -55,24 +51,16 @@ function NodeSelector({ dataNodeList, totalSteps, step, analysisType }) {
         <span {...classes('descr')}>
           {`Choose data node to import ${nameAnalysisType({ analysisType })} from`}
         </span>
-        <form>
-          <ul {...classes('list')}>
-            {dataNodeList.map((dn, key) => 
-              <li
-                key={key}
-                {...classes('item')}
-              >
-                <Field
-                component={Node}
-                options={{
-                  dataNode: dn,
-                }}
-                name={`dataNode`}
-              />
-              </li>
-            )}
-          </ul>
-        </form>
+        <ul {...classes('list')}>
+          {dataNodeList.map((dn, key) => 
+            <li
+              key={key}
+              {...classes('item')}
+            >
+              <Node dataNode={dn} onChange={onSelect} />
+            </li>
+          )}
+        </ul>
         <div {...classes('progress')}>
           <ProgressDots totalSteps={totalSteps} step={step} />
         </div>

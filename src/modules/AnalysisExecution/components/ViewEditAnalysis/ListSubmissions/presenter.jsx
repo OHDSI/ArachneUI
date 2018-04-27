@@ -24,15 +24,17 @@ import React from 'react';
 import BEMHelper from 'services/BemHelper';
 import { Button, Link, Pagination } from 'arachne-ui-components';
 import { StickyContainer, Sticky } from 'react-sticky';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import {
   paths,
   statusColors,
   submissionActionTypes,
+  submissionFilters,
 } from 'modules/AnalysisExecution/const';
 import LabelDataSource from 'components/LabelDataSource';
 import LabelSubmissionStatus from 'components/LabelSubmissionStatus';
 import Results from './Results';
+import SubmissionsTableFilter from 'modules/AnalysisExecution/components/ViewEditAnalysis/ListSubmissions/components/SubmissionsTableFilter';
 
 require('./style.scss');
 
@@ -187,11 +189,36 @@ function CellInsight({ hasInsight, isDisabled, name, showCreateInsight, submissi
   }
 }
 
+function CellVisibility({
+  isDisabled,
+  isHidden,
+  submission,
+  toggleVisibility,
+}) {
+  const classes = new BEMHelper('submissions-visibility-ico');
+  const tooltipClass = new BEMHelper('tooltip');
+
+  if (isDisabled) {
+    return null;
+  }
+
+  return (<Link onClick={() => toggleVisibility(!isHidden, submission)}>
+    <i
+      {...classes({ extra: tooltipClass().className })}
+      aria-label={isHidden ? 'Set visible' : 'Hide submission'}
+      data-tootik-conf="left"
+    >{isHidden ? 'visibility' : 'visibility_off'}</i>
+  </Link>);
+}
+
 function SubmissionsHeader(props) {
   const classes = new BEMHelper('submissions-header');
   const {
     isSticky,
     style,
+    isFiltered,
+    selectedFilters,
+    showFilters,
   } = props;
 
   if (isSticky) {
@@ -200,20 +227,35 @@ function SubmissionsHeader(props) {
 
   return (
     <div {...classes({ modifiers: { 'sticky': isSticky } })} style={style}>
-      <div {...classes('cell', 'source')}>
-        Data sources
+      <div {...classes('row')}>
+        <div {...classes('cell', 'source')}>
+          Data sources
+        </div>
+        <div {...classes('cell', 'status')}>
+          Status
+        </div>
+        <div {...classes('cell', 'execute')}>
+          Execute
+        </div>
+        <div {...classes('cell', 'result')}>
+          Result
+        </div>
+        <div {...classes('cell', 'publish')}>
+          Publish
+        </div>
       </div>
-      <div {...classes('cell', 'status')}>
-        Status
-      </div>
-      <div {...classes('cell', 'execute')}>
-        Execute
-      </div>
-      <div {...classes('cell', 'result')}>
-        Result
-      </div>
-      <div {...classes('cell', 'publish')}>
-        Publish
+      <div {...classes('row', 'filters')}>
+        <div>
+          {isFiltered
+            ? <div><span {...classes('filter-message')}>Filtered by</span>: {
+              selectedFilters.map(
+                ([filterId, filter]) => `${submissionFilters[filterId].label} (${filter.join(', ')})`
+              ).join(', ')
+            }</div>
+            : <span>No filters applied</span>
+          }
+        </div>
+        <Button {...classes('filters-btn')} onClick={showFilters} mods={['submit', 'rounded']}>Filter</Button>
       </div>
     </div>
   );
@@ -255,7 +297,10 @@ function SubmissionLine(props) {
     analysisId,
     isEditable,
     analysisType,
+    toggleVisibility,
   } = props;
+
+  const isVisibilityTogglable = submission.canHide;
 
   return (
     <div {...classes()}>
@@ -297,7 +342,7 @@ function SubmissionLine(props) {
           doCancel={() => showRejectionModal(submission.id, submissionActionTypes.PUBLISH, analysisId)}
         />
       </div>
-      <div {...classes('cell', 'insight')}>
+      <div {...classes('cell', ['insight', isVisibilityTogglable ? '' : 'wide'])}>
         <CellInsight
           isDisabled={submission.actions[submissionActionTypes.PUBLISH].result !== true}
           isEditable={isEditable}
@@ -305,6 +350,14 @@ function SubmissionLine(props) {
           name={get(submission, 'insight.name')}
           showCreateInsight={showCreateInsight}
           submissionId={submission.id}
+        />
+      </div>
+      <div {...classes('cell', ['visibility', isVisibilityTogglable ? '' : 'hidden'])}>
+        <CellVisibility
+          isDisabled={!isVisibilityTogglable}
+          isHidden={submission.hidden}
+          submission={submission}
+          toggleVisibility={toggleVisibility}
         />
       </div>
     </div>
@@ -330,6 +383,11 @@ function ListSubmissions(props) {
     totalPages,
     page,
     path,
+    showFilters,
+
+    isFiltered,
+    selectedFilters,
+    toggleVisibility,
   } = props;
 
   const groupCount = submissionGroupList.length;
@@ -358,6 +416,7 @@ function ListSubmissions(props) {
             analysisId={analysisId}
             isEditable={isEditable}
             analysisType={item.analysisType}
+            toggleVisibility={toggleVisibility}
           />
         )}
         </div>
@@ -368,24 +427,30 @@ function ListSubmissions(props) {
   return (
     <div {...classes()}>
       <div {...classes('submissions-wrapper')}>
-        {data.length ?
+        <div {...classes('shadow-container')}>
           <StickyContainer>
             <Sticky topOffset={-56}>
-              { SubmissionsHeader }
+              {() => <SubmissionsHeader
+                isFiltered={isFiltered}
+                selectedFilters={selectedFilters}
+                showFilters={showFilters}
+                />}
             </Sticky>
             { data }
           </StickyContainer>
-          :
-          <div {...classes('empty')}>
-            No queries were submitted yet...
-          </div>
-        }
+          {!data.length &&
+            <div {...classes('empty')}>
+              No queries were submitted yet...
+            </div>
+          }
+        </div>
       </div>
       {isPaginationAvailable &&
         <div {...classes('pagination')}>
           <Pagination pages={totalPages} currentPage={page} path={path} />
         </div>
       }
+      <SubmissionsTableFilter />
     </div>
   );
 }

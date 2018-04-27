@@ -68,7 +68,7 @@ function ParticipantItem(props) {
     actions.push(
       <span
         {...classes('action')}
-        onClick={() => removeParticipant(participant.id)}
+        onClick={() => removeParticipant(participant.id, participant.fullName)}
       >
         <i {...classes('action-ico', 'remove')}>
           close

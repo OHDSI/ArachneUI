@@ -27,12 +27,12 @@
 	&data-source-list-table {
 		table-layout: fixed;
 
-		&__dbms-type-td, &__db-name-td, &__cdm-schema-td, &__model-type-td, &__registered-td {
+		&__dbms-type-td, &__db-name-td, &__cdm-schema-td, &__model-type-td, &__published-td {
 			@include text-ellipsis();
 		}
 
 		&__name-th {
-			width: 15%;
+			width: 18%;
 		}
 
 		&__dbms-type-th {
@@ -40,7 +40,7 @@
 		}
 
 		&__db-name-th {
-			width: 15%;
+			width: 22%;
 		}
 
 		&__db-name-td {
@@ -52,19 +52,11 @@
 		}
 
 		&__model-type-th {
-			width: 8%;
-		}
-
-		&__registered-th {
-			width: 15%;
-		}
-
-		&__register-th {
-			width: 15%;
+			width: 6%;
 		}
 
 		&__edit-th {
-			width: 10%;
+			width: 6%;
 		}
 	}
 
@@ -74,45 +66,33 @@
 		max-width: 100%;
 	}
 
-	&data-source-list-cell-registered {
-		@include title();
-		color: $grey-placeholder;
-
-		&--registered {
-			color: $green;
-		}
-	}
-
 	&data-source-list-cell-register {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-end;
+		
 		&__btn {
-			padding-left: 5px;
-			padding-right: 5px;
-			width: 100%;
+			text-align: center;
+			flex-basis: 50%;
+			white-space: nowrap;
+
+			&--publish {
+				background: $purple;
+
+				&:hover {
+					background: $purple-darker;
+				}
+			}
+
+			&:not(:last-child) {
+				margin-right: 1rem;
+			}
 		}
 	}
 
 	&data-source-list-cell-edit {
-		&__btn-block {
-			display: flex;
-			flex-direction: row;
-			justify-content: center;
-		}
-		&__btn {
-			color: $blue-link;
-			&:disabled {
-				color: $grey-dark-light;
-			}
-			display: flex;
-			padding:.25rem;
-			&:not(:first-child) {
-				margin-left: 1rem;
-			}
-
-		}
-		&__btn-ico {
-			@include material-icon();
-
-		}
+		@include edit-btns-cell();
+		@include text-ellipsis();
 	}
 
 	&ds-name {

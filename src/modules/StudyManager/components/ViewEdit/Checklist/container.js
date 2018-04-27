@@ -69,6 +69,8 @@ function mapStateToProps(state) {
       position: s.position,
       intro: s.title,
     })),
+    hidePrev: true,
+    hideNext: true,
   });
 
   return {

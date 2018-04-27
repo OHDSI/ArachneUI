@@ -476,3 +476,54 @@ $default-box-padding: 1.5rem 2rem;
     }
   }
 }
+
+@mixin navbar-btn() {
+  @include material-icon();
+  color: $grey-dark;
+  font-size: 3rem;
+  vertical-align: middle;
+}
+
+@mixin edit-btns-cell() {
+  &__btn-block {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+  &__btn {
+    color: $blue-link;
+    &:disabled {
+      color: $grey-dark-light;
+    }
+    display: flex;
+    padding:.25rem;
+    &:not(:first-child) {
+      margin-left: 1rem;
+    }
+
+  }
+  &__btn-ico {
+    @include material-icon();
+  }
+}
+
+@mixin navbar-actions() {
+  display: flex;
+  
+  &__action {
+    &:not(:last-child) {
+      margin-right: 5px;
+    }
+  }
+
+  &__btn {
+    padding: 0 5px;
+  }
+
+  &__btn-ico {
+    @include material-icon();
+    color: $grey-dark;
+    font-size: 3rem;
+    vertical-align: middle;
+  }
+}

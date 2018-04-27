@@ -22,16 +22,134 @@
 
 import React, { PropTypes } from 'react';
 import BEMHelper from 'services/BemHelper';
-import { Avatar } from 'arachne-ui-components';
+import { Avatar, Link } from 'arachne-ui-components';
 import { apiPaths, paths } from 'modules/ExpertFinder/const';
-import { Link } from 'arachne-ui-components';
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
 
 require('./style.scss');
 
+function MenuBlock({ menuItems, mods }) {
+  const classes = new BEMHelper('profile-menu-block');
+
+  return (
+    <ul {...classes({ modifiers: mods })}>
+      {menuItems.map(item =>
+        <MenuItem {...item} classes={classes} />
+      )}
+    </ul>
+  );
+}
+
+function MenuItem({ classes, link, innerMenuItems }) {
+  return (
+    <li {...classes('item')}>
+      <MenuLink {...link} classes={classes} />
+      {(innerMenuItems && innerMenuItems.length) ?
+        <MenuBlock menuItems={innerMenuItems} mods={'inner'} />
+        : null
+      }
+    </li>
+  );
+}
+
+function MenuLink(props) {
+  const {
+    classes,
+    sectionIco,
+    text,
+    url,
+    onClick,
+    subtext,
+    rightIco,
+  } = props;
+
+  return (
+    <Link {...classes('link')} to={url} onClick={onClick}>
+      {sectionIco ?
+        <i {...classes('link-ico', 'section')}>{sectionIco}</i>
+        : null
+      }
+      <span {...classes('caption')}>
+        <span {...classes('text')}>{text}</span>
+        <span {...classes('subtext')}>
+          {subtext}
+        </span>
+      </span>
+      {rightIco ?
+        <i {...classes('link-ico', 'right')}>{rightIco}</i>
+        : null
+      }
+    </Link>
+  );
+}
+
 function MenuDropdown(props) {
-  const classes = new BEMHelper('profile-menu-item');
+  const classes = new BEMHelper('profile-menu');
+  const {
+    isLoading,
+    tenants,
+    newActiveTenantId,
+    setActiveTenant,
+  } = props;
+
   let dropdownInstance;
+  let activeTenant = 'Everyone';
+
+  const tenantMenuItems = tenants.map((t) => {
+    let statusIco;
+    
+    if (t.active) {
+      activeTenant = t.name;
+    }
+    if (newActiveTenantId) {
+      if (t.id === newActiveTenantId) {
+        statusIco = 'hourglass_empty';
+      }
+    } else if (t.active) {
+      statusIco = 'check';
+    }
+
+    return {
+      link: {
+        text: t.name,
+        rightIco: statusIco,
+        onClick: () => setActiveTenant({ activeTenantId: t.id }),
+      },
+    };
+  });
+
+  const menuItems = [
+    {
+      link: {
+        sectionIco: 'people',
+        text: 'Context',
+        subtext: activeTenant,
+        rightIco: 'keyboard_arrow_right',
+      },
+      innerMenuItems: tenantMenuItems,
+    },
+    {
+      link: {
+        sectionIco: 'portrait',
+        text: 'User Profile',
+        url: paths.profile(props.id),
+      },
+    },
+    {
+      link: {
+        sectionIco: 'storage',
+        text: 'My datasources',
+        url: paths.datasources(),
+      },
+    },
+    {
+      link: {
+        sectionIco: 'settings',
+        text: 'Settings',
+        url: paths.settings(),
+      },
+    },
+  ];
 
   return (
     <Dropdown
@@ -56,19 +174,7 @@ function MenuDropdown(props) {
         <span {...classes('arrow')}>play_arrow</span>
       </DropdownTrigger>
       <DropdownContent {...classes('content-wrapper')}>
-        <div
-          {...classes('content')}
-          onClick={() => {
-            dropdownInstance.hide();
-          }}
-          >
-          <Link
-            {...classes('dropdown-link')}
-            to={paths.profile(props.id)}>User Profile</Link>
-          <Link
-            {...classes('dropdown-link')}
-            to={paths.settings()}>Settings</Link>
-        </div>
+        <MenuBlock menuItems={menuItems} />
       </DropdownContent>
     </Dropdown>
   );

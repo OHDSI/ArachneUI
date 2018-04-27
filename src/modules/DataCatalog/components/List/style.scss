@@ -34,5 +34,13 @@
 		&__pagination {
 			margin: 0 auto;
 		}
+
+		& .ac-grid {
+			&__results-count {
+				position: fixed;
+				right: 16px;
+				bottom: 16px;
+			}
+		}
 	}
 }

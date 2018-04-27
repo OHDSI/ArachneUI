@@ -98,13 +98,13 @@ $list-item-height: 53px;
     position: relative;
     align-items: center;
     flex-shrink: 0;
+    padding-left: 1rem;
   }
 
   &analysis-add-code {
-    height: initial;
-    padding: 0 15px 0 17px;
-    margin-right: auto;
-
+    padding-left: 7px;
+    padding-right: 7px;
+    margin-right: 0.5rem;
     &--disabled {
       & .#{$namespace}analysis-add-code {
         &__ico, &__label {
@@ -121,13 +121,21 @@ $list-item-height: 53px;
     &__ico {
       @include material-icon();
       color: $green;
-      font-size: 2.2rem;
-      padding-right: 17px;      
+      font-size: 2rem;
+      font-weight: 600;
+      margin-right: 0.5rem;
+      &--upload {
+        color: $blue-light;
+      }
+  
+      &--import {
+        color: $orange;
+      }
     }
     &__label {
       color: $grey-dark-light;
       font-size: 1.2rem;
-    }
+    }    
   }
 
   &analysis-code-list-download-all {
@@ -140,5 +148,9 @@ $list-item-height: 53px;
 
   &analysis-submit-code {
     margin-right: 17px;
+
+    &--autoMargin {
+      margin-left: auto;
+    }
   }  
 }

@@ -38,12 +38,12 @@ function ModalAddDataSource(props) {
   if (!dataSourceId) {
     sections.push({
       label: 'Data catalog',
-      content: <DataCatalogSource/>,
+      content: <DataCatalogSource onAdd={props.onAdd} />,
     });
   }
   sections.push({
     label: 'Virtual source',
-    content: <VirtualSource dataSourceId={dataSourceId}/>,
+    content: <VirtualSource dataSourceId={dataSourceId} onAdd={props.onAdd} />,
   });
   return (
     <div {...classes()}>

@@ -71,8 +71,8 @@ class UserListTableBuilder extends ContainerBuilder {
       ...stateProps,
       ...ownProps,
       ...dispatchProps,
-      removeUser: (id) => {
-        Utils.confirmDelete()
+      removeUser: (id, name) => {
+        Utils.confirmDelete({ message: `Are you sure want to delete ${name}?` })
           .then(() => {
             dispatchProps
               .removeUser({ id })

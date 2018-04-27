@@ -42,6 +42,7 @@ import ReportUtils from 'components/Reports/Utils';
 import { reports } from 'const/reports';
 import URI from 'urijs';
 import { createSelector } from 'reselect';
+import qs from 'qs';
 
 function buildFormData(obj) {
   const formData = new FormData();
@@ -228,11 +229,11 @@ class Utils {
 
   static assignFacets(filterList, facets) {
     filterList.forEach((field) => {
-      if ([fieldTypes.enum, fieldTypes.enumMulti].includes(field.type)) {
+      if ([fieldTypes.enum, fieldTypes.enumMulti].includes(field.type) || (field.type === fieldTypes.string && Array.isArray(field.options))) {
         field.options.forEach((option) => {
           let facetId = option.value;
           if (isNaN(facetId)) {
-            facetId = facetId.toString().toLowerCase();
+            facetId = facetId.toString();
           }
           option.value = option.value.toString();
           option.facetCount = get(facets, `${field.name}.${facetId}`, 0);
@@ -284,21 +285,22 @@ class Utils {
     return ConnectedComponent;
   }
 
-  static castValue(rawValue, { type, options }) {
+  static castValue(rawValue, { type, options = [] }) {
     let parsedValue;
+    const optionsList = options || [];
 
     // If enum - use label
     switch (type) {
       case fieldTypes.enum: {
         parsedValue = _get(
-          options.filter(o => o.value.toString() === rawValue.toString()),
+          optionsList.filter(o => o.value.toString() === rawValue.toString()),
           '[0].label',
           null,
         );
         break;
       }
       case fieldTypes.enumMulti: {
-        parsedValue = options.filter(o => rawValue.indexOf(o.value) !== -1).map(option => option.label).join(', ');
+        parsedValue = optionsList.filter(o => rawValue.indexOf(o.value) !== -1).map(option => option.label).join(', ');
         break;
       }
       case fieldTypes.date: {
@@ -415,9 +417,10 @@ class Utils {
       let query = nextState.location.query;
       if (!query || Object.keys(query).length === 0) {
         const savedFilter = getSavedFilter();
+        const page = get(savedFilter, 'page', '1');
         query = {
           ...savedFilter,
-          page: 1,
+          page,
         };
         replace({ pathname: basePath, query });
       }
@@ -486,6 +489,18 @@ class Utils {
     return data;
   }
 
+  static getSorting(location) {
+    return {
+      sortBy: location.query.sortBy,
+      sortAsc: location.query.sortAsc === 'true',
+    };
+  }
+
+  static getFilterValues(search) {
+    const filter = qs.parse(search.replace(/^\?/, ''), { parseArrays: true }) || {};
+    return get(filter, 'filter', {}, 'Object');
+  }
+
 }
 
 class ContainerBuilder {
@@ -494,13 +509,19 @@ class ContainerBuilder {
     return Utils.buildConnectedComponent({
       Component: this.getComponent(),
       mapStateToProps: this.mapStateToProps ?
-        this.mapStateToProps.bind(this):
-        this.mapStateToProps,
-      getMapDispatchToProps: this.getMapDispatchToProps,
+        this.mapStateToProps.bind(this)
+        : this.mapStateToProps,
+      getMapDispatchToProps: this.getMapDispatchToProps ?
+        this.getMapDispatchToProps.bind(this)
+        : this.getMapDispatchToProps,
       mapDispatchToProps: this.mapDispatchToProps,
       mergeProps: this.mergeProps,
-      getModalParams: this.getModalParams,
-      getFormParams: this.getFormParams,
+      getModalParams: this.getModalParams
+        ? this.getModalParams.bind(this)
+        : this.getModalParams,
+      getFormParams: this.getFormParams
+        ? this.getFormParams.bind(this)
+        : this.getFormParams,
       getFetchers: this.getFetchers
         ? this.getFetchers.bind(this)
         : this.getFetchers,

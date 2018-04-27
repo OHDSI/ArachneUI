@@ -21,16 +21,18 @@
  */
 
 import { connect } from 'react-redux';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { paths } from 'modules/DataCatalog/const';
 import Toolbar from './presenter';
 
 function mapStateToProps(state) {
   const dataSourceData = get(state, 'dataCatalog.dataSource.data.result');
+  const isMy = get(state, 'routing.locationBeforeTransitions.query.my', false);
+  const backUrl = isMy ? paths.myDatasources() : paths.dataCatalog();
 
   return {
-    backUrl: paths.dataCatalog(),
-    name: `${get(dataSourceData, 'dataNode.name', '')}: ${get(dataSourceData, 'name')}`,
+    backUrl,
+    name: `${get(dataSourceData, 'dataNode.name', 'Unpublished', 'String')}: ${get(dataSourceData, 'name')}`,
     healthStatus: {
       title: get(dataSourceData, 'healthStatusTitle'),
       value: get(dataSourceData, 'healthStatus'),

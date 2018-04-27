@@ -96,12 +96,19 @@ if (__APP_TYPE_CENTRAL__) {
 
 if (__APP_TYPE_NODE__) {
   const CdmSourceList = require('./CdmSourceList/index').default;
+  const ExternalResourceManager = require('./ExternalResourceManager').default;
 
   modules.push({
     ...CdmSourceList,
     path: 'cdm-source-list',
     namespace: 'cdmSourceList',
     isRoot: true,
+  });
+
+  modules.push({
+    ...ExternalResourceManager,
+    path: 'external-resource-manager',
+    namespace: 'externalResourceManager',
   });
 
   modules.push({

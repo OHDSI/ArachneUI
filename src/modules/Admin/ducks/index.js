@@ -20,10 +20,8 @@
  *
  */
 
-import { combineReducers } from 'redux';
 import adminList from './adminList';
 import adminOptionList from './adminOptionList';
-import atlasConnection from './atlasConnection';
 import portalUserConfirmEmail from './portalUserConfirmEmail';
 import portalUserEnable from './portalUserEnable';
 import portalUserList from './portalUserList';
@@ -35,7 +33,6 @@ import userList from './userList';
 const actions = {
   adminList: adminList.actions,
   adminOptionList: adminOptionList.actions,
-  atlasConnection: atlasConnection.actions,
   portalUserConfirmEmail: portalUserConfirmEmail.actions,
   portalUserEnable: portalUserEnable.actions,
   portalUserList: portalUserList.actions,
@@ -45,10 +42,9 @@ const actions = {
   userList: userList.actions,
 };
 
-const reducer = combineReducers({
+const reducer = {
   adminList: adminList.reducer,
   adminOptionList: adminOptionList.reducer,
-  atlasConnection: atlasConnection.reducer,
   portalUserConfirmEmail: portalUserConfirmEmail.reducer,
   portalUserEnable: portalUserEnable.reducer,
   portalUserList: portalUserList.reducer,
@@ -56,7 +52,7 @@ const reducer = combineReducers({
   systemSettings: systemSettings.reducer,
   userOptionList: userOptionList.reducer,
   userList: userList.reducer,
-});
+};
 
 export default {
   actions,

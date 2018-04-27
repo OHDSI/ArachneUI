@@ -25,7 +25,7 @@ import moment from 'moment-timezone';
 import BEMHelper from 'services/BemHelper';
 import { Link } from 'arachne-ui-components';
 import { shortDate as dateFormat } from 'const/formats';
-import { getScanResultDescription, scanStatuses } from 'const/antivirus';
+import { getScanResultDescription, scanStatuses, icon } from 'const/antivirus';
 
 require('./style.scss');
 
@@ -61,15 +61,18 @@ class FileInfo extends Component {
     const tooltipText = getScanResultDescription(this.props.antivirusStatus, this.props.antivirusDescription);
 
     return (
-    <div {...this.classes('antivirus-icon')}>
+    <div {...this.classes('antivirus-icon')} title={tooltipText}>
       {this.props.antivirusStatus &&
-        <span
+        <svg
+          type='image/svg+xml'
           {...this.classes({
             element: 'checkmark',
             modifiers: this.props.antivirusStatus,
           })}
-          title={tooltipText}
-        >verified_user</span>
+          viewBox={'0 0 24 24'}
+        >
+          <use xlinkHref={`${icon}#antivirus`}></use>
+        </svg>
       }
     </div>);
   }
@@ -98,10 +101,10 @@ class FileInfo extends Component {
           {this.getAntivirusIcon()}
           <span {...this.classes('main-info')}>
             {(link || onClick)
-              ? <Link {...this.classes('name')} onClick={onClick} to={link} target={linkTarget}>
+              ? <Link {...this.classes('name')} onClick={onClick} to={link} target={linkTarget} title={label}>
                 {label}
               </Link>
-              : <span {...this.classes('name')}>{label}</span>
+              : <span {...this.classes('name')} title={label}>{label}</span>
             }
             {createdAt &&
               <span {...this.classes('datetime')}>

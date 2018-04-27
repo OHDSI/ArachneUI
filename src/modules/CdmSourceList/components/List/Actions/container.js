@@ -26,7 +26,6 @@ import actions from 'actions';
 import { ModalUtils } from 'arachne-ui-components';
 import { modal } from 'modules/CdmSourceList/const';
 import Actions from './presenter';
-import errors from 'const/errors';
 
 function mapStateToProps(state) {
   return {
@@ -35,10 +34,8 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  openCreateSourceModal: () => ModalUtils.actions.toggle(modal.createDataSource, true, { id: null }),
-  openCreateDataNodeModal: () => ModalUtils.actions.toggle(modal.createDataNode, true),
+  openCreateDataSourceModal: () => ModalUtils.actions.toggle(modal.createDataSource, true),
   loadList: actions.cdmSourceList.dataSourceList.query,
-  loadDataNode: actions.cdmSourceList.dataNode.query,
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
@@ -47,15 +44,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...stateProps,
     ...dispatchProps,
     reloadList() {
-      dispatchProps.loadList({}, {query: stateProps.currentQuery});
-    },
-    startCreatingDataSource: () => {
-      dispatchProps.loadDataNode()
-        .then((result) => {
-        if (result.errorCode !== errors.NO_ERROR) { throw 'Not found'; }
-        })
-        .then(dispatchProps.openCreateSourceModal)
-        .catch(dispatchProps.openCreateDataNodeModal);
+      dispatchProps.loadList({}, { query: stateProps.currentQuery });
     },
   };
 }

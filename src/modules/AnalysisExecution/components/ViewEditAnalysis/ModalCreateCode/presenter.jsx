@@ -21,7 +21,6 @@
  */
 
 import React, { Component } from 'react';
-import get from 'lodash/get';
 import BEMHelper from 'services/BemHelper';
 import { Modal, TabbedPane, LoadingPanel } from 'arachne-ui-components';
 import FilesUpload from './FilesUpload';
@@ -30,20 +29,26 @@ import Import from './Import';
 
 require('./style.scss');
 
+export const submissionFileUploadModes = {
+  COMPUTER: 'Computer',
+  LINKS: 'Links',
+  IMPORT: 'Import',
+};
+
 export default class ModalCreateCode extends Component {
 
   getSections() {
     return [
       {
-        label: 'Computer',
+        label: submissionFileUploadModes.COMPUTER,
         content: <FilesUpload />,
       },
       {
-        label: 'Links',
+        label: submissionFileUploadModes.LINKS,
         content: <LinksUpload />,
       },
       {
-        label: 'Import',
+        label: submissionFileUploadModes.IMPORT,
         content: <Import />,
       },
     ];
@@ -51,14 +56,14 @@ export default class ModalCreateCode extends Component {
 
   render() {
     const classes = BEMHelper('analysis-form-create-code');
-    const { modal, isLoading } = this.props;
+    const { modal, isLoading, activeSection } = this.props;
     const sections = this.getSections();
 
     return (
       <div {...classes()}>
         <Modal modal={modal} title="Add code file">
           <div {...classes('content')}>
-            <TabbedPane sections={sections} />
+            <TabbedPane sections={sections} value={activeSection} />
             <LoadingPanel isActive={isLoading} />
           </div>
         </Modal>
