@@ -37,6 +37,7 @@ function ModalInviteDataSource(props = {}) {
     modalTitle = 'Attach data source',
     studyOptions,
     modal,
+    canRequest,
   } = props;
 
   const fields = [
@@ -59,6 +60,7 @@ function ModalInviteDataSource(props = {}) {
     label: 'Add',
     loadingLabel: 'Adding...',
     mods: ['success', 'rounded'],
+    disabled: props.submitting || !canRequest,
   };
 
   const cancelBtn = {
