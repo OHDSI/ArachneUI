@@ -20,7 +20,6 @@
  *
  */
 
-import { combineReducers } from 'redux';
 import adminList from './adminList';
 import adminOptionList from './adminOptionList';
 import portalUserConfirmEmail from './portalUserConfirmEmail';
@@ -43,7 +42,7 @@ const actions = {
   userList: userList.actions,
 };
 
-const reducer = combineReducers({
+const reducer = {
   adminList: adminList.reducer,
   adminOptionList: adminOptionList.reducer,
   portalUserConfirmEmail: portalUserConfirmEmail.reducer,
@@ -53,7 +52,7 @@ const reducer = combineReducers({
   systemSettings: systemSettings.reducer,
   userOptionList: userOptionList.reducer,
   userList: userList.reducer,
-});
+};
 
 export default {
   actions,
