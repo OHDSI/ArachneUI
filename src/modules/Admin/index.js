@@ -20,6 +20,7 @@
  *
  */
 
+import { combineReducers } from 'redux';
 import { imgs } from './const';
 import ducks from './ducks';
 
@@ -27,7 +28,7 @@ import ducks from './ducks';
 // routes are resolved in modules/index
 export default {
   actions: () => ducks.actions,
-  reducer: () => ducks.reducer,
+  reducer: () => combineReducers(ducks.reducer),
   sidebarElement: {
     ico: imgs.sidebarIco,
     name: 'Admin settings',

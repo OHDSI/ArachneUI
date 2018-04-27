@@ -32,8 +32,21 @@
 		}
 
 		&__name {
-			@include text-ellipsis();
+      @include text-ellipsis();
+      
+      &--with-subtitle {
+        display: flex;
+        flex-direction: column;
+        overflow: visible;
+      }
 		}
+
+    &__subtitle {
+      font-size: 1.15rem;
+      margin-top: 1.3rem;
+      line-height: 0;
+      color: $grey-dark-light;
+    }
   }
 
 }
