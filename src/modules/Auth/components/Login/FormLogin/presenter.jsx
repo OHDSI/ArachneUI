@@ -51,6 +51,7 @@ function RemindPasswordLink({ className, link }) {
 function FormLogin(props) {
   const {
     doSubmit,
+    doCancel,
     remindPasswordLink,
     // redux-form
     error,
@@ -140,6 +141,14 @@ function FormLogin(props) {
             label={submitting ? 'Logging in...' : 'Login'}
             mods={['submit', 'rounded']}
             disabled={submitting}
+          />
+          <Button
+            {...formClasses('cancel')}
+            type="button"
+            label="Cancel"
+            mods={['submit', 'rounded']}
+            disabled={submitting}
+            onClick={doCancel}
           />
         </div>
       </form>
