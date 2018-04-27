@@ -30,11 +30,13 @@ import ToolbarActions from '../ToolbarActions';
 
 require('./style.scss');
 
-function ViewEditDataSourceToolbar({
+function ViewDataSourceToolbar({
 	backUrl,
 	name,
   healthStatus,
-  isDeleted
+  isDeleted,
+  mode,
+  children = null,
 }) {
   const classes = new BEMHelper('data-source-toolbar-caption');
   const tooltipClass = new BEMHelper('tooltip');
@@ -71,9 +73,10 @@ function ViewEditDataSourceToolbar({
 
   return (
     <Toolbar caption={title} backUrl={backUrl} breadcrumbList={breadcrumbList} >
-      <ToolbarActions />
+      <ToolbarActions mode={mode} />
+      {children}
     </Toolbar>
   );
 }
 
-export default ViewEditDataSourceToolbar;
+export default ViewDataSourceToolbar;

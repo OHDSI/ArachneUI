@@ -21,22 +21,9 @@
  */
 
 import React from 'react';
-import { Route, IndexRedirect } from 'react-router';
-import UserList from './components/UserList';
 import AdminRoutes from './routesCommon';
 
 class AdminNodeRoutes extends AdminRoutes {
-
-  static buildNodeRoutes() {
-    return [
-      <Route path="users" component={UserList} />,
-      <IndexRedirect to="admins"/>,
-    ];
-  }
-
-  static build() {
-    return super.build().concat(this.buildNodeRoutes());
-  }
 }
 
 export default AdminNodeRoutes;

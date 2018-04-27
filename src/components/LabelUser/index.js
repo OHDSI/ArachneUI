@@ -20,6 +20,9 @@
  *
  */
 
-import LabelUser from './presenter';
+import LabelUser, { userInfoConvert } from './presenter';
 
 export default LabelUser;
+export {
+  userInfoConvert,
+};

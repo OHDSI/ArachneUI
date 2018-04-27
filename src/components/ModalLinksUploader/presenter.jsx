@@ -23,7 +23,7 @@
 import React, { PropTypes } from 'react';
 import BEMHelper from 'services/BemHelper';
 import { Field } from 'redux-form';
-import { Button, Link, ListItem } from 'arachne-ui-components';
+import { Button, Link, ListItem, Form } from 'arachne-ui-components';
 
 require('./style.scss');
 
@@ -110,16 +110,6 @@ function Links(props) {
       </Link>
     :
       null}
-    <div {...wrapperClasses('actions')}>
-      <Button
-        {...wrapperClasses('submit')}
-        mods={['rounded', 'success']}
-        onClick={options.doSubmit}
-        disabled={meta.submitting || !canSubmit}
-      >
-        Add
-      </Button>
-    </div>
   </div>;
 }
 
@@ -129,22 +119,37 @@ function ModalLinksUploader(props) {
   const modifiers = {
     single: !props.isMultiple,
   };
+  const submitBtn = {
+    label: 'Add',
+    loadingLabel: 'Adding...',
+    mods: ['success', 'rounded'],
+    disabled: !props.canSubmit,
+  };
 
   return <div {...classes({ modifiers })}>
-    <form {...props}>
-      <Field
-        component={Links}
-        options={{
-          placeholder: 'Name document',
-          isMultiple,
-          ...classes('links'),
-          addLink: props.addLink,
-          addButtonTitle: props.addButtonTitle,
-          doSubmit: props.doSubmit,
-        }}
-        name={props.fieldName}
-      />
-    </form>
+    <Form
+      {...props}
+      onSubmit={props.doSubmit}
+      fields={[
+        {
+          name: props.fieldName,
+          InputComponent: {
+            component: Links,
+            props: {
+              options: {
+                placeholder: 'Name document',
+                isMultiple,
+                ...classes('links'),
+                addLink: props.addLink,
+                addButtonTitle: props.addButtonTitle,
+                doSubmit: props.doSubmit,
+              },
+            },
+          },
+        },
+      ]}
+      submitBtn={submitBtn}
+    />
   </div>;
 }
 

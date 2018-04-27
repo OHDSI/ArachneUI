@@ -23,7 +23,8 @@
 import React from 'react';
 import BEMHelper from 'services/BemHelper';
 import { Modal } from 'arachne-ui-components';
-import { Form, Checkbox, ListItem } from 'arachne-ui-components';
+import { Fieldset, Checkbox, ListItem, Button } from 'arachne-ui-components';
+import { Field } from 'redux-form';
 import DataSources from 'modules/AnalysisExecution/components/ViewEditAnalysis/DataSources';
 
 require('./style.scss');
@@ -38,6 +39,18 @@ function ToggleAll(props) {
 
 function ModalSubmitCode(props) {
   const classes = new BEMHelper('analysis-form-submit-code');
+  const {
+    handleSubmit,
+    doSubmit,
+    submitting,
+    dataSourceOptions,
+    modal,
+    isAllSelected,
+    toggleAll,
+    closeModal,
+    inviteDatasource,
+    error,
+  } = props;
 
   const fields = [
     {
@@ -62,25 +75,32 @@ function ModalSubmitCode(props) {
   };
 
   return (
-    <Modal modal={props.modal} title="Submit code to data nodes" mods={['no-padding']}>
+    <Modal modal={modal} title="Submit code to data nodes" mods={['no-padding']}>
       <div {...classes()}>
         <ListItem>
           <Checkbox
             {...classes('toggle-btn')}
             label='Select all'
-            isChecked={props.isAllSelected}
-            onChange={props.toggleAll}
+            isChecked={isAllSelected}
+            onChange={toggleAll}
           />
         </ListItem>
-        <Form
-          mods="spacing-sm"
-          fields={fields}
-          submitBtn={submitBtn}
-          cancelBtn={cancelBtn}
-          onSubmit={props.doSubmit}
-          onCancel={props.modal.close}
-          {...props}
-        />
+        <form {...props} onSubmit={handleSubmit(doSubmit)}>
+          {fields.map(field => <Field {...field} component={Fieldset} />)}
+          {error && <div {...classes('error')}>{error}</div>}
+          <div {...classes('actions')}>
+            <Button {...classes('invite-button')} onClick={inviteDatasource}>
+              <span {...classes('invite-button-icon')}>add_circle_outline</span>
+              Invite Data Sources
+            </Button>
+            <Button {...classes('submit')} type={'submit'} mods={['success', 'rounded']} disabled={submitting}>
+              {submitting ? 'Submitting...' : 'Submit'}
+            </Button>
+            <Button {...classes('cancel')} mods={['cancel', 'rounded']} onClick={closeModal}>
+              Cancel
+            </Button>
+          </div>
+        </form>
       </div>
     </Modal>
   );

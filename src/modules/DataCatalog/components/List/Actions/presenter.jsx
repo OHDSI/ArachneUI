@@ -28,20 +28,20 @@ import { Button } from 'arachne-ui-components';
 require('./style.scss');
 
 function ToolbarActions(props) {
-	const {
-		reload,
-	} = props;
-	const classes = new BEMHelper('data-catalog-list-actions');
-	
-	return (
-	  <ul {...classes()}>
-	    <li {...classes('action')}>
-	      <Button {...classes('btn')} onClick={reload}>
-	        <i {...classes('btn-ico')}>refresh</i>
-	      </Button>
-	    </li>
-	  </ul>
-	);
+  const {
+    reload,
+  } = props;
+  const classes = new BEMHelper('data-catalog-list-actions');
+  
+  return (
+    <ul {...classes()}>
+      <li {...classes('action')}>
+        <Button {...classes('btn')} onClick={reload}>
+          <i {...classes('btn-ico')}>refresh</i>
+        </Button>
+      </li>
+    </ul>
+  );
 }
 
 export default ToolbarActions;

@@ -21,7 +21,7 @@
  */
 
 import React from 'react';
-import { Route, IndexRedirect } from 'react-router';
+import { Route } from 'react-router';
 import AdminRoutes from './routesCommon';
 import PortalUserList from './components/PortalUserList';
 
@@ -30,7 +30,6 @@ class AdminCentralRoutes extends AdminRoutes {
   static buildCentralRoutes() {
     return [
       <Route path="users" component={PortalUserList} />,
-      <IndexRedirect to="admins"/>,
     ];
   }
 

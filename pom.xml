@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.odysseusinc.arachne</groupId>
     <artifactId>${final.artifactId}</artifactId>
-    <version>1.11.3</version>
+    <version>1.12.0</version>
     <packaging>pom</packaging>
     <name>Frontend Resources Bundle</name>
 
@@ -147,8 +147,8 @@
                         <configuration>
                             <executable>node_modules/.bin/webpack</executable>
                             <arguments>
-                                <argument>--app=${app}</argument>
-                                <argument>--env=${env}</argument>
+                                <argument>--env.app=${app}</argument>
+                                <argument>--env.mode=${env}</argument>
                                 <argument>--config=webpack/app.config.js</argument>
                             </arguments>
                         </configuration>

@@ -80,7 +80,7 @@ export default class selectorsBuilder {
           title: dataSource.healthStatusTitle,
         },
         canBeRemoved: !this.isDeleted(dataSource) && deletePermissions,
-        canBeRecreated: this.isDeleted(dataSource) && attachPermissions,
+        canBeRecreated: dataSource.canBeRecreated && this.isDeleted(dataSource) && attachPermissions,
         comment: dataSource.comment,
         isVirtual: dataSource.dataNode.virtual,
         isCurrentUserOwner: dataSource.dataNode.currentUserDataOwner,

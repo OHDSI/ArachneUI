@@ -25,12 +25,20 @@ import { apiPaths } from 'modules/ExpertFinder/const';
 
 const coreName = 'EF_SKILL';
 
-const province = new Duck({
+const skill = new Duck({
   name: coreName,
   urlBuilder: apiPaths.skills,
 });
+const skills = new Duck({
+  name: coreName,
+  urlBuilder: apiPaths.userSkill,
+});
 
 export default {
-  actions: province.actions,
-  reducer: province.reducer,
+  actions: {
+    ...skill.actions,
+    delete: skills.actions.delete,
+    add: skills.actions.create,
+  },
+  reducer: skill.reducer,
 };

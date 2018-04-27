@@ -27,27 +27,28 @@ import {
   PageContent,
 } from 'arachne-ui-components';
 import { modelTypesValues } from 'const/dataSource';
+import EmptyState from 'components/EmptyState';
 import Toolbar from './Toolbar';
-import BusinessData from './BusinessData';
 import AchillesSettings from './AchillesSettings';
 
 require('./style.scss');
 
-function ViewEdit({ isLoading, dataSourceName, isRegistered, modelType }) {
+function ViewEdit({ isLoading, dataSourceName, published, modelType }) {
   const classes = new BEMHelper('cdm-data-source');
+  const reportsAvailable = modelType === modelTypesValues.CDM && published;
 
   return (
     <PageContent title={`${dataSourceName} | Arachne`}>
       <div {...classes()}>
         <Toolbar />
-        <div {...classes('content')}>
-          <div className="row">
-            <div className="col-xs-12 col-md-6">
-              <BusinessData />
-            </div>
-            { modelType === modelTypesValues.CDM && isRegistered && <div className="col-xs-12 col-md-6">
-              <AchillesSettings />
-            </div> }
+        <div {...classes({ element: 'content', modifiers: { empty: !reportsAvailable } })}>
+          <div{...classes({ element: 'row', modifiers: { empty: !reportsAvailable }, extra: 'row' })}>
+            {reportsAvailable
+              ? <div className="col-xs-12 col-md-6">
+                  <AchillesSettings />
+                </div>
+              : <EmptyState message={'Generating reports is unavailable for non-CDM data sources'} />
+            }
           </div>
         </div>
         <LoadingPanel active={isLoading} />

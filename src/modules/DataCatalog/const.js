@@ -27,17 +27,25 @@ const forms = keyMirror({
   facetedSearch: null,
   inviteDataSource: null,
   report: null,
+  editDataSource: null,
+  createDataNode: null,
+  modalCreateDataSource: null,
+  modalStatsUpload: null,
 });
 
 const modal = keyMirror({
   inviteDataSource: null,
   confirmDatasource: null,
+  modalCreateDatanode: null,
+  modalCreateDataSource: null,
+  modalStatsUpload: null,
 });
 
 const apiPaths = {
   dataSources: ({ id } = {}) => `/api/v1/data-sources${id ? `/${id}/extended` : ''}`,
   dataSourceComplete: ({ id }) => `/api/v1/data-sources${id ? `/${id}/complete` : ''}`,
   dataSourceBase: ({ id }) => `/api/v1/data-sources/${id}`,
+  dataSourceCreate: ({ dataNodeId }) => `/api/v1/data-nodes/${dataNodeId}/data-sources`,
   dataSourcesMetadataAttrs: () => '/api/v1/metadata/data-source/attributes',
   studies: ({ query, dataSourceId }) =>
     `/api/v1/study-management/studies/search?region=DATASOURCE&id=${dataSourceId}&query=${query}`,
@@ -47,11 +55,21 @@ const apiPaths = {
   latestCharachterization: ({ id }) => `/api/v1/achilles/datasource/${id}`,
   report: ({ id, filename, path }) =>
     `/api/v1/achilles/datasource/${id}/files/${path ? `${path}/${filename}` : filename}`,
+  myDatasources: () => '/api/v1/data-sources/my',
+  dataNode: ({ id }) => `/api/v1/data-nodes${id ? `/${id}` : ''}`,
+  dataNodeCreate: () => `/api/v1/data-nodes/manual`,
+  registerDataSource: ({ id }) => `/api/v1/data-sources/${id}/register-on-central`,
+  registration: ({ id }) => `/api/v1/data-sources/${id}/registration`,
+  dbmsTypes: () => '/api/v1/data-sources/dbms-types',
+  achillesResultsUpload: ({ id }) => `/api/v1/achilles/datanode/datasource/${id}`,
+  organization: ({ id }) => `/api/v1/user-management/organizations${id ? `/${id}` : ''}`,
 };
 
 const paths = {
   dataCatalog: id => `/data-catalog/data-sources${id ? `/${id}` : ''}`,
   studies: id => `/api/v1/study-management/studies${id ? `/${id}` : ''}`,
+  myDatasources: () => '/data-catalog/my-data-sources',
+  edit: id => `/data-catalog/data-sources/${id}/edit`,
 };
 
 const imgs = {
@@ -59,19 +77,19 @@ const imgs = {
 };
 
 const reportFilenames = {
-  [reports.dashboard]: /dashboard\.json/gi,
-  [reports.person]: /person\.json/gi,
-  [reports.observationperiods]: /observationperiod\.json/gi,
-  [reports.datadensity]: /datadensity\.json/gi,
-  [reports.death]: /death\.json/gi,
-  [reports.conditions]: /condition_treemap\.json/gi,
-  [reports.conditionera]: /conditionera_treemap\.json/gi,
-  [reports.observations]: /observation_treemap\.json/gi,
-  [reports.drugeras]: /drugera_treemap\.json/gi,
-  [reports.drugexposures]: /drug_treemap\.json/gi,
-  [reports.procedures]: /procedure_treemap\.json/gi,
-  [reports.visits]: /visit_treemap\.json/gi,
-  [reports.achillesheel]: /achillesheel\.json/gi,
+  [reports.dashboard]: /dashboard\.json/i,
+  [reports.person]: /person\.json/i,
+  [reports.observationperiods]: /observationperiod\.json/i,
+  [reports.datadensity]: /datadensity\.json/i,
+  [reports.death]: /death\.json/i,
+  [reports.conditions]: /condition_treemap\.json/i,
+  [reports.conditionera]: /conditionera_treemap\.json/i,
+  [reports.observations]: /observation_treemap\.json/i,
+  [reports.drugeras]: /drugera_treemap\.json/i,
+  [reports.drugexposures]: /drug_treemap\.json/i,
+  [reports.procedures]: /procedure_treemap\.json/i,
+  [reports.visits]: /visit_treemap\.json/i,
+  [reports.achillesheel]: /achillesheel\.json/i,
 };
 
 const chartSettings = {
@@ -90,6 +108,7 @@ const defaultTrellisSet = [
 
 const dataSourcePermissions = {
   delete: 'DELETE_DATASOURCE',
+  edit: 'EDIT_DATASOURCE',
 };
 
 export {

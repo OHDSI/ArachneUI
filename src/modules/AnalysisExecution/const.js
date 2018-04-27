@@ -35,6 +35,7 @@ const modal = keyMirror({
   submitCode: null,
   uploadResult: null,
   rejectSubmission: null,
+  submissionsTableFilter: null,
 });
 
 const form = keyMirror({
@@ -53,6 +54,7 @@ const form = keyMirror({
   importNodeSelector: null,
   importCodeList: null,
   rejectSubmission: null,
+  submissionsTableFilter: null,
 });
 
 const paths = {
@@ -68,7 +70,7 @@ const paths = {
   profile: id => `/expert-finder/profile/${id}`,
 };
 
-function importEntityPathByType(type){
+function importEntityPathByType(type) {
   switch (type) {
     case 'COHORT': return 'cohorts';
     case 'COHORT_CHARACTERIZATION': return 'cohorts';
@@ -128,9 +130,9 @@ const apiPaths = {
 
 const analysisPermissions = {
   editAnalysis: 'EDIT_ANALYSIS',
-  createSubmission :'CREATE_SUBMISSION',
-  deleteAnalysisFiles :'DELETE_ANALYSIS_FILES',
-  uploadAnalysisFiles :'UPLOAD_ANALYSIS_FILES',
+  createSubmission: 'CREATE_SUBMISSION',
+  deleteAnalysisFiles: 'DELETE_ANALYSIS_FILES',
+  uploadAnalysisFiles: 'UPLOAD_ANALYSIS_FILES',
 };
 
 const fileTypes = keyMirror({
@@ -186,6 +188,7 @@ const submissionActionTypes = keyMirror({
   EXECUTE: null,
   MANUAL_UPLOAD: null,
   PUBLISH: null,
+  HIDE: null,
 });
 
 const importableAnalysisTypes = ['COHORT', 'ESTIMATION', 'PREDICTION', 'COHORT_CHARACTERIZATION', 'INCIDENCE'];
@@ -247,6 +250,72 @@ const analysisTypes = keyMirror({
 
 const submissionGroupsPageSize = 5;
 
+const submissionStatuses = [
+  {
+    value: 'PENDING',
+    label: 'Pending execution',
+  },
+  {
+    value: 'NOT_APPROVED',
+    label: 'Not approved',
+  },
+  {
+    value: 'STARTING',
+    label: 'In queue',
+  },
+  {
+    value: 'QUEUE_PROCESSING',
+    label: 'Queue processing',
+  },
+  {
+    value: 'IN_PROGRESS',
+    label: 'In progress',
+  },
+  {
+    value: 'EXECUTED',
+    label: 'Avaiting approval (success)',
+  },
+  {
+    value: 'FAILED',
+    label: 'Awaiting approval (failed)',
+  },
+  {
+    value: 'EXECUTED_REJECTED',
+    label: 'Rejected (executed)',
+  },
+  {
+    value: 'FAILED_REJECTED',
+    label: 'Rejected (failed)',
+  },
+  {
+    value: 'EXECUTED_PUBLISHED',
+    label: 'Finished',
+  },
+  {
+    value: 'FAILED_PUBLISHED',
+    label: 'Failed (published)',
+  },
+];
+
+const submissionFilters = {
+  showHidden: {
+    name: 'showHidden',
+    label: 'Show hidden',
+  },
+  hasInsight: {
+    name: 'hasInsight',
+    label: 'Has insight',
+  },
+  dataSourceIds: {
+    name: 'dataSourceIds',
+    label: 'Datasource',
+  },
+  submissionStatuses: {
+    name: 'submissionStatuses',
+    label: 'Status',
+  },
+};
+
 export {
   apiPaths,
   form,
@@ -268,4 +337,6 @@ export {
   breadcrumbTypes,
   analysisTypes,
   submissionGroupsPageSize,
+  submissionStatuses,
+  submissionFilters,
 };

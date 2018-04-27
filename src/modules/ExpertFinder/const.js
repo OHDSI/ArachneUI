@@ -22,6 +22,7 @@
 
 import keyMirror from 'keymirror';
 import { types as fieldTypes } from 'const/modelAttributes';
+import URI from 'urijs';
 
 const submitBtnConfig = {
   label: 'Add',
@@ -68,12 +69,17 @@ const apiPaths = {
   userPublication: ({ id } = {}) => `/api/v1/user-management/users/publications${id ? `/${id}` : ''}`,
   userLink: ({ id } = {}) => `/api/v1/user-management/users/links${id ? `/${id}` : ''}`,
   professionalTypes: () => '/api/v1/user-management/professional-types',
-  skills: ({ q, limit } = {}) => {
-    let url = '/api/v1/user-management/skills';
-    if (q || limit) {
-      url = `${url}?query=${q}&limit=${limit}`;
+  skills: ({ query, limit = 10 } = {}) => {
+    const baseUrl = '/api/v1/user-management/skills';
+    let url = new URI(baseUrl);
+    if (query) {
+      url = new URI(`${baseUrl}/search`);
+      url.setSearch({
+        query,
+        limit,
+      });
     }
-    return url;
+    return url.href();
   },
   updateUserProfile: () => '/api/v1/user-management/users/profile',
   userpic: ({ id, hash }) => `/api/v1/user-management/users/${id}/avatar${hash ? `?${hash}` : ''}`,
@@ -91,6 +97,7 @@ const apiPaths = {
     `/api/v1/user-management/state-province/search?limit=${autocompleteResultsLimit}&query=${query}&countryId=${countryId}${includeId ? `&includeId=${includeId}` : ''}`,
   studiesAutocomplete: ({ query, participantId }) =>
     `/api/v1/study-management/studies/search?region=PARTICIPANT&id=${participantId}&query=${query}`,
+  userSettings: () => `/api/v1/user-management/users/settings`,
 };
 
 const paths = {
@@ -99,6 +106,7 @@ const paths = {
   settings: () => '/portal/settings',
   study: id => `/study-manager/studies/${id}`,
   logout: () => '/auth/logout',
+  datasources: () => '/data-catalog/my-data-sources',
 };
 
 const roles = {

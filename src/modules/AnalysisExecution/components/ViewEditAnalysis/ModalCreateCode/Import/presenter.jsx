@@ -36,6 +36,7 @@ function ImportCode(props) {
     isImportAvailable,
     selectedSource,
     resetSource,
+    selectSource,
     analysisType,
   } = props;
 
@@ -46,7 +47,7 @@ function ImportCode(props) {
       // First step - select Data node to import data from
       {
         order: 1,
-        element: <NodeSelector />,
+        element: <NodeSelector onSelect={selectSource} />,
         showIf: () => !selectedSource,
       },
       // Second - wait while list of Cohorts is loaded
@@ -65,7 +66,7 @@ function ImportCode(props) {
           selectedSource={selectedSource}
           goBack={resetSource}
         />,
-        showIf: () => selectedSource && !isImportRunning,			
+        showIf: () => selectedSource && !isImportRunning,
       }
     ];
   } else {
@@ -80,18 +81,20 @@ function ImportCode(props) {
 
   return (
     <div {...classes()}>
-      {panels.map((panel, key) =>
-        <div {...classes('panel', {'hidden': !panel.showIf() })}>
-          {React.cloneElement(
-            panel.element,
-            {
-              totalSteps: panels[panels.length - 1].order,
-              order: panel.order,
-              step: panel.order,
-            }
-          )}
-        </div>
-      )}
+      {panels
+        .filter(panel => panel.showIf())
+        .map(panel =>
+          <div {...classes('panel')}>
+            {React.cloneElement(
+              panel.element,
+              {
+                totalSteps: panels[panels.length - 1].order,
+                order: panel.order,
+                step: panel.order,
+              }
+            )}
+          </div>
+        )}
     </div>
   );
 }
