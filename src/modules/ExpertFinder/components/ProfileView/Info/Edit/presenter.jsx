@@ -36,16 +36,16 @@ function BasicInfoEdit(props) {
   const formFields = [
       {
         name: 'professionalType',
-		    InputComponent: {
-		    	component: FormSelect,
-		      props: {
-		        placeholder: 'Professional Type',
-		        required: false,
-		        options: professionalTypes,
+        InputComponent: {
+          component: FormSelect,
+          props: {
+            placeholder: 'Professional Type',
+            required: true,
+            options: professionalTypes,
             mods: 'bordered',
-		      },
-		    },
-		  },
+          },
+        },
+      },
       {
         name: 'affiliation',
         InputComponent: {
@@ -70,7 +70,7 @@ function BasicInfoEdit(props) {
       onCancel={props.cancel}
       submitBtn={submitBtnConfig}
       {...props}
-  	/>
+    />
   );
 }
 

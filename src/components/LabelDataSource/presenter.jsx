@@ -31,9 +31,13 @@ import { paths as dataCatalogPaths } from 'modules/DataCatalog/const';
 
 require('./style.scss');
 
-function LabelDataSource({ className, color, statusTitle, name, uuid, isLink = false }) {
+function LabelDataSource({ className, color, statusTitle, subtitle, name, uuid, isLink = false }) {
   const classes = new BEMHelper('label-data-source');
   const tooltipClass = new BEMHelper('tooltip');
+  const modifier = subtitle ? 'with-subtitle' : '';
+  const content = subtitle
+    ? [<span>{name}</span>, <span {...classes('subtitle')}>{subtitle}</span>]
+    : name;
 
   return (
     <div {...classes({ extra: className })}>
@@ -48,8 +52,8 @@ function LabelDataSource({ className, color, statusTitle, name, uuid, isLink = f
       >
       </div>
       {isLink
-        ? <Link {...classes('name')} to={dataCatalogPaths.dataCatalog(uuid)}>{name}</Link>
-        : <span {...classes('name')} title={name}>{name}</span>
+        ? <Link {...classes('name')} to={dataCatalogPaths.dataCatalog(uuid)}>{content}</Link>
+        : <span {...classes('name', modifier)} title={name}>{content}</span>
       }
     </div>
   );

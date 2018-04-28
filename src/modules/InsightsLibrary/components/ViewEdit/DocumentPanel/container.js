@@ -59,7 +59,9 @@ export default class DocumentPanelBuilder {
         return dispatchProps.openModal(modals.insightFile, true, { type: ownProps.type });
       },
       deleteFile: (file) => {
-        Utils.confirmDelete()
+        Utils.confirmDelete({
+          message: 'Are you sure want to delete this file?',
+        })
           .then(() => {
             dispatchProps
               .deleteFile({

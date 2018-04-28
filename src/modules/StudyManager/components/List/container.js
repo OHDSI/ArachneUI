@@ -69,6 +69,11 @@ export class List extends Component {
         ...nextProps.query,
         page: toDetails ? nextProps.query.page : 1,
       });
+    } else if (nextProps.query.view !== this.props.query.view
+      || nextProps.pathname === paths.studies()
+    ) {
+      // if we changed view mode or clicked on study manager in side bar
+      this.persistFilters(nextProps.query);
     }
   }
 

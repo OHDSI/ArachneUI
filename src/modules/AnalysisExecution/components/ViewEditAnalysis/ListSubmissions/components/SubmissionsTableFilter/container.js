@@ -22,11 +22,13 @@
 
 import { Component, PropTypes } from 'react';
 import actions from 'actions';
-import { reset } from 'redux-form';
+import { reset, change } from 'redux-form';
 import { ContainerBuilder, get, Utils } from 'services/Utils';
-import { form, modal, submissionStatuses, paths } from 'modules/AnalysisExecution/const';
+import { form, modal, submissionStatuses, paths, submissionFilters } from 'modules/AnalysisExecution/const';
 import { ModalUtils } from 'arachne-ui-components';
 import URI from 'urijs';
+import difference from 'lodash/difference';
+import isEmpty from 'lodash/isEmpty';
 import presenter from './presenter';
 import SelectorsBuilder from './selectors';
 
@@ -37,7 +39,7 @@ export class SubmissionsTableFilter extends Component {
   static get propTypes() {
     return {
     };
-  } 
+  }
 
   render() {
     return presenter(this.props);
@@ -64,20 +66,34 @@ export default class SubmissionsTableFilterBuilder extends ContainerBuilder {
   }
 
   mapStateToProps(state) {
-    const dataSourceList = selectors.getDatasourceList(state);
-    const statusList = submissionStatuses;
+    const dataSourceIds = selectors.getDatasourceList(state);
     const analysisId = get(state, 'analysisExecution.analysis.data.result.id');
     const initialValues = Utils.getFilterValues(
       get(state, 'routing.locationBeforeTransitions.search', '', 'String')
     );
-    
+    const selectedValues = get(state, `form.${form.submissionsTableFilter}.values.filter`, {}, 'Object');
+    const fieldValues = {
+      dataSourceIds,
+      submissionStatuses,
+    };
+    ['dataSourceIds', 'submissionStatuses'].forEach((fieldName) => {
+      const value = initialValues[fieldName];
+      if (isEmpty(value)) {
+        initialValues[fieldName] = fieldValues[fieldName].map(option => option.value);
+      }
+    });
+    const isAnyDatasourceId = get(selectedValues, 'dataSourceIds.length', 0, 'Number') === dataSourceIds.length;
+    const isAnySubmissionStatus = get(selectedValues, 'submissionStatuses.length', 0, 'Number') === submissionStatuses.length;
+
     return {
-      dataSourceList,
-      statusList,
+      fieldValues,
       analysisId,
       initialValues: {
         filter: initialValues,
       },
+      selectedValues,
+      isAnyDatasourceId,
+      isAnySubmissionStatus,
     };
   }
 
@@ -87,16 +103,36 @@ export default class SubmissionsTableFilterBuilder extends ContainerBuilder {
   getMapDispatchToProps() {
     return {
       closeModal: () => ModalUtils.actions.toggle(modal.submissionsTableFilter, false),
-      redirect: (analysisId, params) => {
+      redirect: (analysisId, params, canonicalValues) => {
         if (!analysisId) {
           return false;
         }
         const url = new URI(paths.analyses(analysisId));
-        url.setSearch(params);
+        const filteredParams = {
+          filter: {},
+        };
+        if (params.filter) {
+          Object.entries(params.filter)
+            .forEach(([filter, values]) => {
+              if (Array.isArray(values)) {
+                // checkbox list
+                if (values.length === canonicalValues[filter].length) {
+                  // checked all values
+                  return false;
+                }
+              }
+              filteredParams.filter[filter] = Array.isArray(values)
+                ? values.filter(val => val.length)
+                : values;
+            });
+        }
+        url.setSearch(filteredParams);
         url.setSearch('page', '1');
         return actions.router.goToPage(url.href());
       },
       reset: () => reset(form.submissionsTableFilter),
+      selectAll: (field, values) =>
+        change(form.submissionsTableFilter, `filter[${field}]`, values),
     };
   }
 
@@ -106,13 +142,25 @@ export default class SubmissionsTableFilterBuilder extends ContainerBuilder {
       ...stateProps,
       ...dispatchProps,
       doSubmit(data) {
-        dispatchProps.redirect(stateProps.analysisId, data);
+        dispatchProps.redirect(stateProps.analysisId, data, stateProps.fieldValues);
         dispatchProps.closeModal();
       },
       doClear() {
         dispatchProps.reset();
         dispatchProps.redirect(stateProps.analysisId, {});
         dispatchProps.closeModal();
+      },
+      checkAll(fieldName) {
+        dispatchProps.selectAll(
+          fieldName,
+          stateProps.fieldValues[fieldName].map(option => option.value)
+        );
+      },
+      uncheckAll(fieldName) {
+        dispatchProps.selectAll(
+          fieldName,
+          []
+        );
       },
     };
   }

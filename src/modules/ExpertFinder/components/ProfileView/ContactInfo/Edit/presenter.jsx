@@ -27,6 +27,17 @@ import { FormSelect } from 'arachne-ui-components';
 import { FormAutocomplete } from 'arachne-ui-components';
 import { submitBtnConfig, cancelBtnConfig } from 'modules/ExpertFinder/const';
 
+function getStateFieldProps(canSelectState) {
+  const wrapperClassName = canSelectState
+    ? ''
+    : 'ac-tooltip';
+
+  return {
+    wrapperClassName,
+    ariaLabel: 'Select country first',
+  };
+}
+
 function ContactInfoEdit(props) {
   const {
     className,
@@ -35,20 +46,21 @@ function ContactInfoEdit(props) {
     provinces,
     searchCountries,
     searchProvinces,
+    canSelectState,
   } = props;
 
   const formFields = [
     {
       name: 'address1',
-	    InputComponent: {
-	    	component: FormInput,
-	      props: {
-	        placeholder: 'Address line 1',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          placeholder: 'Address line 1',
           type: 'text',
           mods: 'bordered'
-	      },
-	    },
-	  },
+        },
+      },
+    },
     {
       name: 'address2',
       InputComponent: {
@@ -96,7 +108,7 @@ function ContactInfoEdit(props) {
       }
     },
     {
-      name: 'stateProvince',
+      name: 'stateProvinceId',
       InputComponent: {
         component: FormAutocomplete,
         props: {
@@ -105,6 +117,8 @@ function ContactInfoEdit(props) {
           options: provinces,
           fetchOptions: searchProvinces,
           clearable: false,
+          disabled: !canSelectState,
+          ...getStateFieldProps(canSelectState),
         }
       }
     },
@@ -151,9 +165,13 @@ function ContactInfoEdit(props) {
       mods={['actions-inline']}
       onSubmit={ props.doSubmit }
       onCancel={props.cancel}
-      submitBtn={submitBtnConfig}
+      submitBtn={{
+        ...submitBtnConfig,
+        label: 'Save',
+        loadingLabel: 'Saving...',
+      }}
       {...props}
-  	/>
+    />
   );
 }
 

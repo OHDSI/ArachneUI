@@ -43,6 +43,7 @@ export default class ListAnalysesBuilder {
       studyId: get(studyData, 'id'),
       analysisList: selectors.getAnalysisList(state),
       isEditable: get(studyData, `permissions[${studyPermissions.createAnalysis}]`, false),
+
     };
   }
   
@@ -72,8 +73,10 @@ export default class ListAnalysesBuilder {
           })
           .then(() => dispatchProps.loadStudy(stateProps.studyId));
       },
-      removeAnalysis(id) {
-        Utils.confirmDelete()
+      removeAnalysis(id, title) {
+        Utils.confirmDelete({
+          message: `Are you sure want to delete analysis ${title}?`,
+        })
           .then(() => {
             dispatchProps
               .removeAnalysis(id)

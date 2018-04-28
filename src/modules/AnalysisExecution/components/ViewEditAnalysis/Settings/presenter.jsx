@@ -56,7 +56,7 @@ function AnalysisSettings(props) {
         <li 
           {...classes({
             element: 'group',
-            modifiers: { wide: !isEditable, uneditable: !isEditable } 
+            modifiers: { uneditable: !isEditable } 
           })}
         >
             {isEditable ?

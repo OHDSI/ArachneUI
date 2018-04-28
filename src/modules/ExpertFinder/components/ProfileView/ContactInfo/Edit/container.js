@@ -48,7 +48,7 @@ function mapStateToProps(state) {
     address1: '',
     address2: '',
     city: '',
-    stateProvince: { id: -1, name: '' },
+    stateProvinceId,
     zipCode: '',
     country: { id: -1, name: '' },
     phone: '',
@@ -58,7 +58,7 @@ function mapStateToProps(state) {
 
   const id = get(moduleState, 'data.result.id', '');
   const countryId = get(data, 'country.id', null);
-  const stateProvinceId = get(data, 'stateProvince.id', null);
+  const stateProvinceId = get(data, 'stateProvinceId', null);
   const countries = selectors.getCountries(state);
   const provinces = selectors.getProvinces(state);
   const contactInfoFormState = get(state, 'form.contactInfo.values', {}); 
@@ -68,7 +68,7 @@ function mapStateToProps(state) {
       address1: data.address1,
       address2: data.address2,
       city: data.city,
-      stateProvince: stateProvinceId,
+      stateProvinceId,
       zipCode: data.zipCode,
       country: countryId,
       phone: data.phone,
@@ -81,6 +81,7 @@ function mapStateToProps(state) {
     stateProvinceId,
     provinces,
     countries,
+    canSelectState: contactInfoFormState.country !== null,
   };
 }
 

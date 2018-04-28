@@ -53,7 +53,9 @@ function DataCatalogList(props) {
           searchQueryDecode={searchQueryDecode}
           searchQueryEncode={searchQueryEncode}
         >
-          <DataSourcesTable columns={columns} data={data} />
+          <div>
+            <DataSourcesTable columns={columns} data={data} />
+          </div>
         </Grid>
       </div>
     </PageContent>

@@ -112,7 +112,7 @@ export default class AddDataCatalogSourceBuilder {
 
         let allApproved = false;
         const dataSources = stateProps.dataSourceOptions.filter(datasource =>
-          ids.includes(datasource.value)
+          ids.includes(datasource.value.toString())
         );
 
         const submitPromise = Promise.all(promises)
@@ -127,7 +127,8 @@ export default class AddDataCatalogSourceBuilder {
               return dispatchProps.openConfirmDatasource(dataSources, stateProps.studyName);
             }
             return null;
-          });
+          })
+          .then(ownProps.onAdd);
 
         return submitPromise;
       },
