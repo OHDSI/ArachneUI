@@ -112,7 +112,7 @@ class SystemSettingsBuilder extends ContainerBuilder {
         dispatchProps
           .solrReindex({ domain: domain.value })
           .then(() => alert(`${domain.label} reindex completed`))
-          .catch(() => alert(`${domain.label} reindex filed`))
+          .catch(() => alert(`${domain.label} reindex failed`))
           .finally(() => dispatchProps.toggleButton(domain.value, false));
       },
     };
