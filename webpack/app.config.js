@@ -127,7 +127,7 @@ module.exports = function (env) {
       filename: 'js/[hash].js',
       chunkFilename: '[name]/[hash].js',
     },
-    devtool: mode === ENV_TYPE.PRODUCTION ? null : 'source-map',
+    devtool: mode === ENV_TYPE.PRODUCTION ? false : 'source-map',
     resolve: {
       // root: appRoot,
       extensions: ['.js', '.jsx'],

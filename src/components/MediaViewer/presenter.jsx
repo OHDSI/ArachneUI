@@ -214,6 +214,9 @@ function MediaViewer({
     case MimeTypes.image:
       element = image({ classes, container, setContainer, data });
       break;
+    case MimeTypes.word:
+    case MimeTypes.excel:
+    case MimeTypes.ppt:
     case MimeTypes.pdf:
       element = (
         <LazyPDF { ...{ classes, container, data, setContainer, totalPages, path, pageIndex, onPDFLoaded, scale, zoomIn, zoomOut, isLoaded, isInitialScaleSet, setInitialScale } } />

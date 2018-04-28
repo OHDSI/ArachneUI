@@ -42,8 +42,7 @@
       isLoading,
       paginationDetails,
     } = props;
-    
-  
+
     return (
       <PageContent title="My Datasources | Arachne">
         <div {...classes()}>
@@ -56,7 +55,9 @@
             searchQueryDecode={searchQueryDecode}
             searchQueryEncode={searchQueryEncode}
           >
-            <DataSourcesTable columns={columns} data={data} my />
+            <div>
+              <DataSourcesTable columns={columns} data={data} my />
+            </div>
           </Grid>
         </div>
         <ModalCreateDatanode />

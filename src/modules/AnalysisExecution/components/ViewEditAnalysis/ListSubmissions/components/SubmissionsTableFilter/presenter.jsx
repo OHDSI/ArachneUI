@@ -24,9 +24,14 @@ import React from 'react';
 import {
   Modal,
   FacetedSearchPanel as FacetedSearch,
+  Button,
+  Checkbox,
+  FormCheckboxList,
+  FormToggle,
+  Fieldset,
 } from 'arachne-ui-components';
+import { Field } from 'redux-form';
 import BEMHelper from 'services/BemHelper';
-import { addAnyOption } from 'components/FiltersList/presenter';
 import { submissionFilters } from 'modules/AnalysisExecution/const';
 import LabelSubmissionStatus from 'components/LabelSubmissionStatus';
 
@@ -39,49 +44,66 @@ function SubmissionsTableFilter(props) {
     doSubmit,
     doClear,
     handleSubmit,
-    dataSourceList,
-    statusList,
+    fieldValues,
+    isAnyDatasourceId,
+    isAnySubmissionStatus,
+    checkAll,
+    uncheckAll,
   } = props;
+  const {
+    dataSourceIds,
+    submissionStatuses,
+  } = fieldValues;
   
-  const fields = [
-    {
-      type: 'TOGGLE',
-      name: submissionFilters.showHidden.name,
-      label: submissionFilters.showHidden.label,
-      forceOpened: true,
-      hasTitle: false,
+  const fields = {
+    showHidden: {
+      name: `filter[${submissionFilters.showHidden.name}]`,
+      InputComponent: {
+        component: FormToggle,
+        props: {
+          label: submissionFilters.showHidden.label,
+        },
+      },
     },
-    {
-      type: 'TOGGLE',
-      name: submissionFilters.hasInsight.name,
-      label: submissionFilters.hasInsight.label,
-      forceOpened: true,
-      hasTitle: false,
+    hasInsight: {
+      name: `filter[${submissionFilters.hasInsight.name}]`,
+      InputComponent: {
+        component: FormToggle,
+        props: {
+          label: submissionFilters.hasInsight.label,
+        },
+      },
     },
-    {
-      type: 'ENUM',
-      name: submissionFilters.dataSourceIds.name,
-      options: dataSourceList.map(source => ({
-        label: <span {...classes('datasource')} title={source.label}>{source.label}</span>,
-        value: source.value,
-      })),
-      label: submissionFilters.dataSourceIds.label,
-      forceOpened: true,
-      ...classes('ds-list-container'),
+    dataSourceIds: {
+      name: `filter[${submissionFilters.dataSourceIds.name}]`,
+      InputComponent: {
+        component: FormCheckboxList,
+        props: {
+          options: dataSourceIds.map(source => ({
+            label: <span {...classes('datasource')} title={source.label}>{source.label}</span>,
+            value: source.value,
+          })),
+          label: submissionFilters.dataSourceIds.label,
+          ...classes('ds-list-container'),
+        },
+      },
     },
-    {
-      type: 'ENUM',
-      name: submissionFilters.submissionStatuses.name,
-      options: statusList.map(({ label, value }) =>
-        ({
-          label: <LabelSubmissionStatus status={{ title: label, value }} type={'dot'} />,
-          value,
-        })
-      ),
-      label: submissionFilters.submissionStatuses.label,
-      forceOpened: true,
+    submissionStatuses: {
+      name: `filter[${submissionFilters.submissionStatuses.name}]`,
+      InputComponent: {
+        component: FormCheckboxList,
+        props: {
+          options: submissionStatuses.map(({ label, value }) =>
+            ({
+              label: <LabelSubmissionStatus status={{ title: label, value }} type={'dot'} />,
+              value,
+            })
+          ),
+          label: submissionFilters.submissionStatuses.label,
+        },
+      },
     },
-  ];
+  };
 
   return (
     <Modal
@@ -90,16 +112,52 @@ function SubmissionsTableFilter(props) {
       mods={['no-padding']}
     >
       <div {...classes()}>
-        <FacetedSearch
-          doSubmit={doSubmit}
-          doClear={doClear}
-          dynamicFields={fields.map(addAnyOption)}
-          fullTextSearchEnabled={false}
-          sortingEnabled={false}
-          showRefineSearch={false}
-          isAccordion
-          handleSubmit={handleSubmit}
-        />
+        <form onSubmit={props.handleSubmit(doSubmit)}>
+          <div {...classes('section')}>
+            <Field component={Fieldset} {...fields.showHidden} />
+          </div>
+          <div {...classes('section')}>
+            <Field component={Fieldset} {...fields.hasInsight} />
+          </div>
+          <div {...classes('section-title')}>Datasource</div>
+          <div {...classes('section', 'cols')}>
+            <Checkbox
+              {...classes('any-button')}
+              label={'Any'}
+              isChecked={isAnyDatasourceId}
+              onChange={(event) => {
+                isAnyDatasourceId
+                  ? uncheckAll('dataSourceIds')
+                  : checkAll('dataSourceIds');
+              }
+              }
+            />
+            <Field component={Fieldset} {...fields.dataSourceIds} />
+          </div>
+          <div {...classes('section-title')}>Status</div>
+          <div {...classes('section', 'cols')}>
+            <Checkbox
+              {...classes('any-button')}
+              label={'Any'}
+              isChecked={isAnySubmissionStatus}
+              onChange={(event) => {
+                isAnySubmissionStatus
+                  ? uncheckAll('submissionStatuses')
+                  : checkAll('submissionStatuses');
+              }
+              }
+            />
+            <Field component={Fieldset} {...fields.submissionStatuses} />
+          </div>
+          <div {...classes('actions')}>
+            <Button type={'submit'} mods={['rounded', 'submit']} disabled={props.submitting}>
+              Update
+            </Button>
+            <Button {...classes('cancel')} mods={['rounded', 'cancel']} onClick={doClear}>
+              Clear
+            </Button>
+          </div>
+        </form>
       </div>
     </Modal>
   );

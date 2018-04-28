@@ -26,6 +26,7 @@ import get from 'lodash/get';
 import actions from 'actions/index';
 import { ModalUtils } from 'arachne-ui-components';
 import { forms, modal } from 'modules/Admin/const';
+import { validators } from 'services/Utils';
 import presenter from './presenter';
 import selectors from './selectors';
 import authActions from 'modules/Auth/ducks/index';
@@ -106,6 +107,7 @@ class ModalPortalUserListBuilder extends ContainerBuilder {
   getFormParams() {
     return {
       form: forms.addUser,
+      validate: validators.checkPassword,
     }
   }
 }
