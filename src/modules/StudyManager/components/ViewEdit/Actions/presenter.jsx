@@ -39,7 +39,7 @@ function StudyActions(props) {
     publishedPaperId,
     reload,
     canDelete,
-    remove
+    remove,
   } = props;
 
   let publishContent;

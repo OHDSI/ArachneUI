@@ -63,11 +63,14 @@ class ModalInviteDSToStudyBuilder extends ContainerBuilder {
   mapStateToProps(state) {
     const dsInfo = selectors.getDsInfo(state);
     const studyOptions = selectors.getStudyList(state);
+    const selectedStudy = get(state, `form.${forms.inviteDataSource}.values.studyId`, -1, 'Number');
+    const canRequest = selectedStudy !== -1 && selectedStudy !== null;
 
     return {
       ...dsInfo,
       studyOptions,
       isOpened: get(state, `modal.${modal.inviteDataSource}.isOpened`, false),
+      canRequest,
     };
   }
 

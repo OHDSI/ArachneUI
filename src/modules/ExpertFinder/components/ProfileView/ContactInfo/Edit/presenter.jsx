@@ -27,6 +27,17 @@ import { FormSelect } from 'arachne-ui-components';
 import { FormAutocomplete } from 'arachne-ui-components';
 import { submitBtnConfig, cancelBtnConfig } from 'modules/ExpertFinder/const';
 
+function getStateFieldProps(canSelectState) {
+  const wrapperClassName = canSelectState
+    ? ''
+    : 'ac-tooltip';
+
+  return {
+    wrapperClassName,
+    ariaLabel: 'Select country first',
+  };
+}
+
 function ContactInfoEdit(props) {
   const {
     className,
@@ -35,6 +46,7 @@ function ContactInfoEdit(props) {
     provinces,
     searchCountries,
     searchProvinces,
+    canSelectState,
   } = props;
 
   const formFields = [
@@ -105,6 +117,8 @@ function ContactInfoEdit(props) {
           options: provinces,
           fetchOptions: searchProvinces,
           clearable: false,
+          disabled: !canSelectState,
+          ...getStateFieldProps(canSelectState),
         }
       }
     },

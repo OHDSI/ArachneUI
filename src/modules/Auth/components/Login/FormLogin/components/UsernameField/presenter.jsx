@@ -15,46 +15,27 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 13, 2016
+ * Authors: Vitaly Koulakov
+ * Created: Apr 27, 2018
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+import React from 'react';
+import { FormInput, Button } from 'arachne-ui-components';
+import BEMHelper from 'services/BemHelper';
 
-.#{$namespace} {
+import './style.scss';
 
-	&analysis-form-submit-code {
-		@include form();
-		width: auto;
+export default function UsernameField(props) {
+  const classes = BEMHelper('username-field');
+  const {
+    edit,
+    placeholder = 'Username',
+    disabled,
+  } = props;
 
-		&__actions {
-			padding: 0 15px 15px 15px;
-		}
-
-		&__submit, &__error {
-			margin-top: 15px;
-		}
-		
-		&__toggle-btn {
-			@include title();
-	    text-transform: initial;
-	    padding-top: 2px;
-	    font-size: 1.35rem;
-		}
-
-		&__invite-button {
-			display: flex;
-			text-transform: none;
-			padding-left: 0;
-
-			&-icon {
-				@include material-icon();
-				font-size: 2.1rem;
-				color: $green;
-				margin-right: 1rem;
-			}
-		}
-	}
-
+  return (<div {...classes()}>
+      <FormInput {...props} placeholder={placeholder} type={'text'} />
+      {disabled ? <Button onClick={edit} {...classes('button')}><i {...classes('icon')}>edit</i></Button> : null}
+    </div>);
 }

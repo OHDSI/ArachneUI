@@ -70,7 +70,9 @@ export default class ListDocumentsBuilder {
       ...stateProps,
       ...dispatchProps,
       removeDocument(fileId) {
-        Utils.confirmDelete()
+        Utils.confirmDelete({
+          message: 'Are you sure want to delete this file?',
+        })
           .then(() => {
             dispatchProps
               .removeDocument({ studyId: stateProps.studyId, fileUuid: fileId, action: 'remove' })

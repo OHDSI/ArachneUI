@@ -24,7 +24,13 @@
  
 .#{$namespace} { 
   &my-datasources {
-
+    & .ac-grid {
+			&__results-count {
+				position: fixed;
+				right: 16px;
+				bottom: 16px;
+			}
+		}
   }
 }
   

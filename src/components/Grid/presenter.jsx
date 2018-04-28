@@ -91,14 +91,16 @@ function Grid(props) {
         }
         <div {...classes('content-wrapper')}>
           {children}
-          <div {...classes('pagination-wrapper')}>
-            <div {...classes('pagination')}>
-              <Pagination pages={pages} currentPage={currentPage} path={path} />
+          {pages > 0 &&
+            <div {...classes('pagination-wrapper')}>
+              <div {...classes('pagination')}>
+                <Pagination pages={pages} currentPage={currentPage} path={path} />
+              </div>
+              <div {...classes('results-count')}>
+                <span>{resultsCountMessage}</span>
+              </div>
             </div>
-            <div {...classes('results-count')}>
-              <span>{resultsCountMessage}</span>
-            </div>
-          </div>
+          }
         </div>
         <LoadingPanel active={isLoading} />
       </div>

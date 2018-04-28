@@ -66,7 +66,7 @@ function DataSourceItem(props) {
     actions.push(
       <span
         {...classes('action')}
-        onClick={() => removeDataSource(dataSource.id)}
+        onClick={() => removeDataSource(dataSource.id, dataSource.name)}
       >
         <i {...classes('action-ico', 'remove')}>
           close
