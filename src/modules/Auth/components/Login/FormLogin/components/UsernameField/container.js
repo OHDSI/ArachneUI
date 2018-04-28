@@ -46,7 +46,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  principal: actions.auth.principal.query,
+  queryPrincipal: actions.auth.principal.query,
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
@@ -56,7 +56,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...ownProps,
     edit: () => {
       Auth.clearUserRequest();
-      dispatchProps.principal();
+      dispatchProps.queryPrincipal();
     }
   });
 }
