@@ -64,7 +64,7 @@ class SystemSettingsBuilder extends ContainerBuilder {
       applySettings: applySettings,
       solrReindex: actions.adminSettings.solrIndex.create,
       closeLoader: () => actions.adminSettings.atlasConnection.reset,
-      toggleButton: actions.adminSettings.reindexProcess.toggle,
+      toggleIsReindexing: actions.adminSettings.reindexProcess.toggle,
     };
   }
 
@@ -108,12 +108,12 @@ class SystemSettingsBuilder extends ContainerBuilder {
       },
       solrReindex({ domain }) {
         alert('Reindex started. Please wait for it to complete');
-        dispatchProps.toggleButton(domain.value, true);
+        dispatchProps.toggleIsReindexing(domain.value, true);
         dispatchProps
           .solrReindex({ domain: domain.value })
           .then(() => alert(`${domain.label} reindex completed`))
           .catch(() => alert(`${domain.label} reindex failed`))
-          .finally(() => dispatchProps.toggleButton(domain.value, false));
+          .finally(() => dispatchProps.toggleIsReindexing(domain.value, false));
       },
     };
   }
