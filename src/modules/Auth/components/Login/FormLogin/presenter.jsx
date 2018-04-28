@@ -33,7 +33,7 @@ import { Field } from 'redux-form';
 import { paths, authMethods } from 'modules/Auth/const';
 import BEMHelper from 'services/BemHelper';
 import PasswordField from 'components/PasswordField/connected';
-import UsernameField from 'components/UsernameField/index';
+import UsernameField from './components/UsernameField/index';
 
 require('./style.scss');
 
