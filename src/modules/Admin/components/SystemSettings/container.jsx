@@ -23,12 +23,13 @@
 import actions from 'actions/index';
 import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { asyncConnect } from 'redux-async-connect';
-import presenter from './presenter';
-import selectors from './selectors';
 import { apply as applySettings } from 'modules/Admin/ducks/systemSettings';
 import { ContainerBuilder } from 'services/Utils';
+import { solrDomains } from 'modules/Admin/const';
+import presenter from './presenter';
+import selectors from './selectors';
 
 class SystemSettings extends Component {
 
@@ -50,8 +51,9 @@ class SystemSettingsBuilder extends ContainerBuilder {
   mapStateToProps(state) {
     return {
       isApplied: get(state, 'adminSettings.systemSettings.queryResult.result.applied', true),
-      isLoading: state.adminSettings.systemSettings.isLoading || state.adminSettings.solrIndex.isSaving,
+      isLoading: state.adminSettings.systemSettings.isLoading,
       settingGroupList: selectors.getSystemSettings(state),
+      reindexProcess: selectors.getReindexProcess(state),
     };
   }
 
@@ -62,6 +64,7 @@ class SystemSettingsBuilder extends ContainerBuilder {
       applySettings: applySettings,
       solrReindex: actions.adminSettings.solrIndex.create,
       closeLoader: () => actions.adminSettings.atlasConnection.reset,
+      toggleButton: actions.adminSettings.reindexProcess.toggle,
     };
   }
 
@@ -102,6 +105,15 @@ class SystemSettingsBuilder extends ContainerBuilder {
       },
       applySettings: () => {
         dispatchProps.applySettings(() => dispatchProps.loadSystemSettings());
+      },
+      solrReindex({ domain }) {
+        alert('Reindex started. Please wait for it to complete');
+        dispatchProps.toggleButton(domain.value, true);
+        dispatchProps
+          .solrReindex({ domain: domain.value })
+          .then(() => alert(`${domain.label} reindex completed`))
+          .catch(() => alert(`${domain.label} reindex filed`))
+          .finally(() => dispatchProps.toggleButton(domain.value, false));
       },
     };
   }
