@@ -32,8 +32,9 @@ import ToolbarActions from './presenter';
 function mapStateToProps(state, ownProps) {
   const datasourceData = get(state, 'dataCatalog.dataSource.data.result');
   const isPublished = get(datasourceData, 'published', '');
-  const isUnpublishable = get(datasourceData, `permissions[${dataSourcePermissions.delete}]`, false);
-  const canUnpublish = isPublished && isUnpublishable;
+  const hasEditPermission = get(datasourceData, `permissions[${dataSourcePermissions.edit}]`, false);
+  
+  const canUnpublish = isPublished && hasEditPermission;
   const dataSourceId = get(datasourceData, 'id', '');
   const isMy = get(state, 'routing.locationBeforeTransitions.query.my', false);
   const editUrl = new URI(paths.edit(dataSourceId));
@@ -45,7 +46,7 @@ function mapStateToProps(state, ownProps) {
 
   return {
     canUnpublish: ownProps.mode === 'edit' ? canUnpublish : false,
-    canEdit: ownProps.mode === 'view' ? isUnpublishable : false,
+    canEdit: ownProps.mode === 'view' ? hasEditPermission : false,
     dataSourceId,
     editUrl: editUrl.href(),
   };
@@ -64,7 +65,9 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...ownProps,
     async unpublish() {
       try {
-        await Utils.confirmDelete();
+        await Utils.confirmDelete({
+          message: 'Are you really want to unpublish this Data Source?',
+        });
         const dataSourceId = stateProps.dataSourceId;
         await dispatchProps.unpublish({ id: dataSourceId });
         await dispatchProps.load({ id: dataSourceId });

@@ -38,7 +38,15 @@
 			background: $white;
 			margin-bottom: 1rem;
 			margin-right: 0.5rem;
-			overflow: visible;
+
+			&--shadowed {
+				@include block-shadow();
+				overflow: hidden;
+			}
+
+			&--uncut {
+				overflow: visible;
+			}
 		}
 		
     &__invite-form {

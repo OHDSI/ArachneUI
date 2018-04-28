@@ -55,7 +55,7 @@ class AnalysesItem extends Component {
     const classes = new BEMHelper('study-analyses-list-item');
 
     return (
-      <ListItem {...this.props} mods={mods} onRemove={() => removeAnalysis(id)}>
+      <ListItem {...this.props} mods={mods} onRemove={() => removeAnalysis(id, title)}>
         <div {...classes()}>
           <span title={title}>
             {link &&

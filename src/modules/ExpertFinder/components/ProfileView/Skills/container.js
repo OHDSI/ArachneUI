@@ -81,7 +81,9 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
       return submitPromise;
     },
     doRemove: (skill) => {
-      Utils.confirmDelete()
+      Utils.confirmDelete({
+        message: 'Are you sure want to delete this skill?',
+      })
         .then(() => {
           dispatchProps
             .removeSkill({ id: skill })

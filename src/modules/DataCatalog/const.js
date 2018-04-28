@@ -77,19 +77,19 @@ const imgs = {
 };
 
 const reportFilenames = {
-  [reports.dashboard]: /dashboard\.json/gi,
-  [reports.person]: /person\.json/gi,
-  [reports.observationperiods]: /observationperiod\.json/gi,
-  [reports.datadensity]: /datadensity\.json/gi,
-  [reports.death]: /death\.json/gi,
-  [reports.conditions]: /condition_treemap\.json/gi,
-  [reports.conditionera]: /conditionera_treemap\.json/gi,
-  [reports.observations]: /observation_treemap\.json/gi,
-  [reports.drugeras]: /drugera_treemap\.json/gi,
-  [reports.drugexposures]: /drug_treemap\.json/gi,
-  [reports.procedures]: /procedure_treemap\.json/gi,
-  [reports.visits]: /visit_treemap\.json/gi,
-  [reports.achillesheel]: /achillesheel\.json/gi,
+  [reports.dashboard]: /dashboard\.json/i,
+  [reports.person]: /person\.json/i,
+  [reports.observationperiods]: /observationperiod\.json/i,
+  [reports.datadensity]: /datadensity\.json/i,
+  [reports.death]: /death\.json/i,
+  [reports.conditions]: /condition_treemap\.json/i,
+  [reports.conditionera]: /conditionera_treemap\.json/i,
+  [reports.observations]: /observation_treemap\.json/i,
+  [reports.drugeras]: /drugera_treemap\.json/i,
+  [reports.drugexposures]: /drug_treemap\.json/i,
+  [reports.procedures]: /procedure_treemap\.json/i,
+  [reports.visits]: /visit_treemap\.json/i,
+  [reports.achillesheel]: /achillesheel\.json/i,
 };
 
 const chartSettings = {
@@ -108,6 +108,7 @@ const defaultTrellisSet = [
 
 const dataSourcePermissions = {
   delete: 'DELETE_DATASOURCE',
+  edit: 'EDIT_DATASOURCE',
 };
 
 export {

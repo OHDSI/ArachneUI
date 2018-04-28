@@ -16,27 +16,49 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: September 06, 2017
+ * Created: Apr 27, 2018
  *
  */
 
-import React from 'react';
-import { Route } from 'react-router';
-import AdminRoutes from './routesCommon';
-import PortalUserList from './components/PortalUserList';
+import { Component } from 'react';
+import { connect } from 'react-redux';
+import { get } from 'services/Utils';
+import presenter from './presenter';
+import actions from 'actions/index';
+import Auth from 'services/Auth';
 
-class AdminCentralRoutes extends AdminRoutes {
+class UsernameField extends Component{
 
-  static buildCentralRoutes() {
-    return [
-      <Route path="users" component={PortalUserList} />,
-    ];
+  constructor(props){
+    super(props);
   }
 
-  static build() {
-    let routes = super.build();
-    return routes.concat(this.buildCentralRoutes());
+  render(){
+    return presenter({
+      ...this.props,
+    });
   }
 }
 
-export default AdminCentralRoutes;
+function mapStateToProps(state) {
+  return {
+  };
+}
+
+const mapDispatchToProps = {
+  queryPrincipal: actions.auth.principal.query,
+};
+
+function mergeProps(stateProps, dispatchProps, ownProps) {
+  return ({
+    ...stateProps,
+    ...dispatchProps,
+    ...ownProps,
+    edit: () => {
+      Auth.clearUserRequest();
+      dispatchProps.queryPrincipal();
+    }
+  });
+}
+
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(UsernameField);
