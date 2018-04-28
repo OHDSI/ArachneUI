@@ -64,10 +64,6 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     resendEmail: () => dispatchProps.resend({}, { email: stateProps.userEmail })
       .then(() => dispatchProps.redirect(paths.login(loginMessages.resendDone)))
       .catch(() => {}),
-    doCancel: () => {
-      Auth.clearUserRequest();
-      dispatchProps.principal();
-    },
     doSubmit: (data) => dispatchProps.login(data.username, data.password)
       .then(() => Auth.clearUserRequest())
       .then(() => dispatchProps.redirect((/\/auth\/logout/i).test(stateProps.initialValues.redirectTo) ? '/'

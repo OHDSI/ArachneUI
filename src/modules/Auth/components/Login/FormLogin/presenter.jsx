@@ -33,6 +33,7 @@ import { Field } from 'redux-form';
 import { paths, authMethods } from 'modules/Auth/const';
 import BEMHelper from 'services/BemHelper';
 import PasswordField from 'components/PasswordField/connected';
+import UsernameField from 'components/UsernameField/index';
 
 require('./style.scss');
 
@@ -68,7 +69,7 @@ function FormLogin(props) {
     username: {
       name: 'username',
       InputComponent: {
-        component: FormInput,
+        component: UsernameField,
         props: {
           placeholder: 'Email address',
           type: 'text',
@@ -141,14 +142,6 @@ function FormLogin(props) {
             label={submitting ? 'Logging in...' : 'Login'}
             mods={['submit', 'rounded']}
             disabled={submitting}
-          />
-          <Button
-            {...formClasses('cancel')}
-            type="button"
-            label="Cancel"
-            mods={['submit', 'rounded']}
-            disabled={submitting}
-            onClick={doCancel}
           />
         </div>
       </form>
