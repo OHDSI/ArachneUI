@@ -61,13 +61,15 @@ class DataCatalogViewBuilder extends ContainerBuilder {
 
   mapStateToProps(state, ownProps) {
     const moduleState = get(state, 'dataCatalog');
-    const reportsAvailable = get(state, 'dataCatalog.report.queryResult.result', [], 'Array').length > 0;
+    const characterizationAvailable = get(state, 'dataCatalog.characterization.data.result.files', [], 'Array').length > 0;
+    const reportsAccessAvailable = get(state, 'dataCatalog.report.queryResult.result', [], 'Array').length > 0;
     const isDenied = isEmpty(get(state, 'dataCatalog.dataSource.data.result', {}, 'Object'));
   
     return {
       dataSourceId: ownProps.routeParams.dataSourceId,
       isLoading: moduleState.dataSource.isLoading || moduleState.characterization.isLoading,
-      reportsAvailable,
+      characterizationAvailable,
+        reportsAccessAvailable,
       isProfileSelected: get(ownProps, 'route.params.isProfileSelected', false),
       name: `${get(moduleState, 'dataSource.data.result.dataNode.name', 'Not published')}: ${get(moduleState, 'dataSource.data.result.name', '')}`,
       modelType: get(moduleState, 'dataSource.data.result.modelType', ''),

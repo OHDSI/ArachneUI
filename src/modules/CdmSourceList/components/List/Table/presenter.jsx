@@ -33,7 +33,7 @@ import { Utils } from 'services/Utils';
 
 require('./style.scss');
 
-function CellRegister({ published, onClick, isCdm, centralId, centralDomain }) {
+function CellRegister({ published, onClick, centralId, centralDomain }) {
   const classes = new BEMHelper('data-source-list-cell-register');
 
   return <div {...classes()}>
@@ -144,7 +144,6 @@ function DataSourceTable(props) {
           entity => ({
             published: entity.published,
             onClick: () => goToDataSource(entity.id),
-            isCdm: entity.modelType === modelTypesValues.CDM,
             centralId: entity.centralId,
             centralDomain,
           })

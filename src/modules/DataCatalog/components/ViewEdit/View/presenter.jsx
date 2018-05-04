@@ -45,7 +45,7 @@ function View(props) {
       <AttributesList />
     </div>
   );
-  if (props.reportsAvailable && props.isProfileSelected) {
+  if (props.reportsAccessAvailable && props.isProfileSelected) {
     content = (
       <div {...classes('content')}>
         <Report dataSourceId={props.dataSourceId} />
@@ -63,7 +63,7 @@ function View(props) {
             <Actions
               isProfileSelected={props.isProfileSelected}
               dataSourceId={props.dataSourceId}
-              reportsAvailable={props.reportsAvailable && props.modelType === modelTypesValues.CDM}
+              reportsAvailable={props.reportsAccessAvailable && props.characterizationAvailable}
             />,
             content,
           ]
