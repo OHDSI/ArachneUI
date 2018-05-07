@@ -53,8 +53,8 @@ class Edit {
       isVirtual,
       isCDM,
       showUploadForm,
+      canUploadAchillesResults,
     } = props;
-    const canUploadAchillesResults = isDatanodeRegistered && !isVirtual && isCDM && permissions.UPLOAD_ACHILLES_REPORTS;
 
     return (
       <PageContent title={`${props.name} | Arachne`}>
@@ -62,14 +62,12 @@ class Edit {
           {!isDenied && permissions.EDIT_DATASOURCE
             ? [
               <Toolbar mode={'edit'}>
-                {canUploadAchillesResults
-                  ? <Button
-                    label={'Upload Achilles results'}
-                    mods={['rounded', 'submit']}
-                    onClick={showUploadForm}
-                  />
-                  : null
-                }
+                <Button
+                  {...classes('achilles-btn', canUploadAchillesResults ? '': 'dimmed')}
+                  label={'Upload Achilles results'}
+                  mods={['rounded', 'submit']}
+                  onClick={showUploadForm}
+                />
               </Toolbar>,
               <div {...classes('content')}>
                 <div className="row">
