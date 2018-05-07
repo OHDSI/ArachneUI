@@ -24,11 +24,13 @@ import React from 'react';
 import BEMHelper from 'services/BemHelper';
 import { Button, Panel } from 'arachne-ui-components';
 import PageWrapper from 'modules/Admin/components/PageWrapper';
+import { solrDomains } from 'modules/Admin/const';
 // import DynamicDataForm from 'components/DynamicDataForm';
 import formFactory from 'components/DynamicDataForm/factory';
 import {
   LoadingPanel,
 } from 'arachne-ui-components';
+import { get } from 'services/Utils';
 
 require('./style.scss');
 
@@ -41,6 +43,7 @@ function SystemSettings(props) {
     doSubmit,
     settingGroupList,
     solrReindex,
+    reindexProcess,
   } = props;
 
   const formComponentList = settingGroupList.map((formData, index) => {
@@ -84,7 +87,8 @@ function SystemSettings(props) {
                 <Button
                   mods={['default']}
                   label="Reindex Expert Finder"
-                  onClick={() => solrReindex({ domain: 'users' })}
+                  onClick={() => solrReindex({ domain: solrDomains.users })}
+                  disabled={get(reindexProcess, `[${solrDomains.users.value}]`)}
                 />
               </div>
               <div {...classes('action-bar-btn')}>
@@ -92,7 +96,8 @@ function SystemSettings(props) {
                   {...classes('reindex-solr')}
                   mods={['default']}
                   label="Reindex Data Catalog"
-                  onClick={() => solrReindex({ domain: 'data-sources' })}
+                  onClick={() => solrReindex({ domain: solrDomains.dataSources })}
+                  disabled={get(reindexProcess, `[${solrDomains.dataSources.value}]`)}
                 />
               </div>
               <div {...classes('action-bar-btn')}>
@@ -100,7 +105,8 @@ function SystemSettings(props) {
                   {...classes('reindex-solr')}
                   mods={['default']}
                   label="Reindex Study Notebook"
-                  onClick={() => solrReindex({ domain: 'studies' })}
+                  onClick={() => solrReindex({ domain: solrDomains.studies })}
+                  disabled={get(reindexProcess, `[${solrDomains.studies.value}]`)}
                 />
               </div>
               <div {...classes('action-bar-btn')}>
@@ -108,7 +114,8 @@ function SystemSettings(props) {
                   {...classes('reindex-solr')}
                   mods={['default']}
                   label="Reindex Analyses"
-                  onClick={() => solrReindex({ domain: 'analyses' })}
+                  onClick={() => solrReindex({ domain: solrDomains.analyses })}
+                  disabled={get(reindexProcess, `[${solrDomains.analyses.value}]`)}
                 />
               </div>
               <div {...classes('action-bar-btn')}>
@@ -116,7 +123,8 @@ function SystemSettings(props) {
                   {...classes('reindex-solr')}
                   mods={['default']}
                   label="Reindex Papers"
-                  onClick={() => solrReindex({ domain: 'papers' })}
+                  onClick={() => solrReindex({ domain: solrDomains.papers })}
+                  disabled={get(reindexProcess, `[${solrDomains.papers.value}]`)}
                 />
               </div>
             </div>
