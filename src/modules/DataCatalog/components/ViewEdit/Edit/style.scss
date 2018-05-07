@@ -40,6 +40,15 @@
       }
     }
 
+    &__achilles-btn {
+      &--dimmed {
+        background-color: $grey-menu-icon;
+        &:hover {
+          background-color: lighten($blue-light, 20%);
+        }
+      }
+    }
+
     &__create-form {
       margin: 2rem 0;
     }
