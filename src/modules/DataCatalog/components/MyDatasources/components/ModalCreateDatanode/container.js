@@ -60,7 +60,7 @@ export default class ModalCreateDatanodeBuilder extends ContainerBuilder {
     const selectedOrganizationId = get(formValues, 'organization');
     const selectedNodeId = get(formValues, 'node');
 
-    const selectedNode = selectors.getDataNodes(state).find(node => node.centralId === selectedNodeId);
+    const selectedNode = selectors.getDataNodeOptions(state).find(node => node.centralId === selectedNodeId);
     const selectedOrganization = selectors.getOrganizations(state).find(organization => organization.id === selectedOrganizationId);
 
     const createdOrganization = selectors.getNewOrganization(state);
