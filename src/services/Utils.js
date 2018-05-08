@@ -225,6 +225,8 @@ const detectMimeTypeByExtension = (file) => {
   return type;
 };
 
+const DEFAULT_PROTOCOL = "https://";
+
 class Utils {
 
   static assignFacets(filterList, facets) {
@@ -479,11 +481,22 @@ class Utils {
     }
   }
 
+  static normalizeUrl(link) {
+    if (link) {
+      const uri = new URI(link);
+      if (!uri.is('domain') && !link.startsWith('/')) {
+        return DEFAULT_PROTOCOL + link;
+      }
+    }
+    return link;
+  }
+
   static getSecureLink(link) {
     let data = { link };
 
-    if (data.link && Utils.isOuterLink(data.link)) {
-      data = { onClick: Utils.confirmOuterLink.bind(null, [data.link]) };
+    const url = Utils.normalizeUrl(data.link);
+    if (url && Utils.isOuterLink(url)) {
+      data = { onClick: Utils.confirmOuterLink.bind(null, [url]) };
     }
 
     return data;
