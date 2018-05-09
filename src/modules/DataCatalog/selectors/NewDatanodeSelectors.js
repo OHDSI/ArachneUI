@@ -23,15 +23,15 @@ import { get } from 'services/Utils';
 
 class NewDatanodeSelectors {
 
-  getDataNodes(state) {
-    const dataNodes = get(state, 'dataCatalog.dataNode.queryResult', [], 'Array');
-    const tempDataNode = get(state, 'dataCatalog.dataNode.tempData');
+  getDataNodeOptions(state) {
+    const dataNodes = get(state, 'dataCatalog.dataNodeOptions.queryResult', [], 'Array');
+    const tempDataNode = get(state, 'dataCatalog.dataNodeOptions.tempData');
 
     return [...dataNodes, tempDataNode].filter(val => val);;
   }
 
-  getDataNodeOptions(state) {
-    return this.getDataNodes(state).map(node => ({
+  getDataNodeOptionsLabelValues(state) {
+    return this.getDataNodeOptions(state).map(node => ({
       value: node.centralId,
       label: node.name,
     }));
@@ -55,6 +55,7 @@ class NewDatanodeSelectors {
     return {
       getDataNodes: this.getDataNodes,
       getDataNodeOptions: this.getDataNodeOptions,
+      getDataNodeOptionsLabelValues: this.getDataNodeOptionsLabelValues,
       getOrganizations: this.getOrganizations,
       getOrganizationOptions: this.getOrganizationOptions,
     };
