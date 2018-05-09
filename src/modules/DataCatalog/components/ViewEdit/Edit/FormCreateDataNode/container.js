@@ -72,7 +72,7 @@ export default class FormCreateDataNode extends ContainerBuilder {
         dataNodeExists = parseInt(selectedNodeId || -1, 10) !== -1;
       }
     }
-    const dataNodes = selectors.getDataNodeOptions(state);
+    const dataNodes = selectors.getDataNodeOptionsLabelValues(state);
     const organizations = selectors.getOrganizationOptions(state);
     const createdOrganization = selectors.getNewOrganization(state);
 
@@ -94,9 +94,9 @@ export default class FormCreateDataNode extends ContainerBuilder {
       changeField: (field, value) => changeField(forms.createDataNode, field, value),
       update: actions.dataCatalog.dataNode.update,
       loadDataSource: actions.dataCatalog.dataSource.find,
-      loadDataNodes: ({ query }) => actions.dataCatalog.dataNode.query({}, { query }),
+      loadDataNodes: ({ query }) => actions.dataCatalog.dataNodeOptions.query({}, { query }),
       loadOrganizations: ({ query }) => actions.dataCatalog.organization.query({}, { query }),
-      selectNewDataNode: actions.dataCatalog.dataNode.selectNewDataNode,
+      selectNewDataNode: actions.dataCatalog.dataNodeOptions.selectNewDataNode,
       selectNewOrganization: actions.dataCatalog.organization.selectNewOrganization,
     };
   }
