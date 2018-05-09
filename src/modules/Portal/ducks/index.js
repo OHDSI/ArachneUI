@@ -24,18 +24,24 @@ import invitation from './invitations';
 import buildInfo from './buildInfo';
 import settings from './settings';
 import search from './search';
+import myProfile from './myProfile';
+import userSettings from './userSettings';
 
 export default {
   actions: {
     buildInfo: buildInfo.actions,
     invitation: invitation.actions,
+    myProfile: myProfile.actions,
     settings: settings.actions,
     search: search.actions,
+    userSettings: userSettings.actions,
   },
   reducer: {
     buildInfo: buildInfo.reducer,
     invitation: invitation.reducer,
+    myProfile: myProfile.reducer,
     settings: settings.reducer,
     search: search.reducer,
+    userSettings: userSettings.reducer,
   },
 };
