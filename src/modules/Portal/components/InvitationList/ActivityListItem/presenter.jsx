@@ -90,6 +90,21 @@ function ActivityListItem(props) {
   );
 }
 
+export function getTextActivity(props) {
+  const {
+    actionType,
+    comment,
+    entity,
+    user,
+    userPic,
+  } = props;
+
+  return {
+    body: `${user.firstname} ${user.lastname} ${actionType} ${entity.title}\n ${comment ? '"{comment}"' : ''}`,
+    icon: userPic,
+  };
+}
+
 ActivityListItem.propTypes = {
   actionList: PropTypes.array.isRequired,
   actionType: PropTypes.string,

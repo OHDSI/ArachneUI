@@ -16,47 +16,49 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 13, 2016
+ * Created: Apr 27, 2018
  *
  */
 
-import Cookies from 'js-cookie';
+import { Component } from 'react';
+import { connect } from 'react-redux';
+import { get } from 'services/Utils';
+import presenter from './presenter';
+import actions from 'actions/index';
+import Auth from 'services/Auth';
 
-const LS_TOKEN_KEY = 'Arachne-Auth-Token';
-const COOKIE_TOKEN_KEY = 'Arachne-Auth-Token';
-const COOKIE_USER_REQUEST = 'Arachne-User-Request';
+class UsernameField extends Component{
 
-class Auth {
-
-  static setToken(token) {
-    // For ajax
-    localStorage.setItem(LS_TOKEN_KEY, token);
-    // For file downloading
-    Cookies.set(COOKIE_TOKEN_KEY, token, { expires: 365, path: '/' });
+  constructor(props){
+    super(props);
   }
 
-  static getToken() {
-    return localStorage.getItem(LS_TOKEN_KEY);
+  render(){
+    return presenter({
+      ...this.props,
+    });
   }
-
-  static clearToken() {
-    localStorage.removeItem(LS_TOKEN_KEY);
-    Cookies.remove(COOKIE_TOKEN_KEY, { path: '/' });
-  }
-
-  static getUserRequest() {
-    return Cookies.get(COOKIE_USER_REQUEST);
-  }
-
-  static clearUserRequest() {
-    Cookies.remove(COOKIE_USER_REQUEST);
-  }
-
 }
 
-export default Auth;
-export {
-  LS_TOKEN_KEY,
-  COOKIE_TOKEN_KEY,
-  COOKIE_USER_REQUEST,
+function mapStateToProps(state) {
+  return {
+  };
+}
+
+const mapDispatchToProps = {
+  queryPrincipal: actions.auth.principal.query,
 };
+
+function mergeProps(stateProps, dispatchProps, ownProps) {
+  return ({
+    ...stateProps,
+    ...dispatchProps,
+    ...ownProps,
+    edit: () => {
+      Auth.clearUserRequest();
+      dispatchProps.queryPrincipal();
+    }
+  });
+}
+
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(UsernameField);
