@@ -23,7 +23,7 @@
 import { connect } from 'react-redux';
 import { push as goToPage } from 'react-router-redux';
 import { ModalUtils } from 'arachne-ui-components';
-import { modal, paths, apiPaths } from 'modules/CdmSourceList/const';
+import { modal, paths } from 'modules/CdmSourceList/const';
 import actions from 'actions';
 import { get } from 'services/Utils';
 import Table from './presenter';

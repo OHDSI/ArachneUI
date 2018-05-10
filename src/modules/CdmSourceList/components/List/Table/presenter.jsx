@@ -145,7 +145,7 @@ function DataSourceTable(props) {
           entity => ({
             published: entity.published,
             onClick: () => goToDataSource(entity.id),
-            centralId: entity.id,
+            centralId: entity.centralId,
             centralDomain,
             username,
           })
