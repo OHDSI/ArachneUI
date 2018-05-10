@@ -492,11 +492,10 @@ class Utils {
   }
 
   static getSecureLink(link) {
-    let data = { link };
+    let data = { link: Utils.normalizeUrl(link) };
 
-    const url = Utils.normalizeUrl(data.link);
-    if (url && Utils.isOuterLink(url)) {
-      data = { onClick: Utils.confirmOuterLink.bind(null, [url]) };
+    if (data.link && Utils.isOuterLink(data.link)) {
+      data = { onClick: Utils.confirmOuterLink.bind(null, [data.link]) };
     }
 
     return data;
