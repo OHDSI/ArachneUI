@@ -46,6 +46,8 @@ function SystemSettings(props) {
     reindexProcess,
   } = props;
 
+  const isReindexing = domain => get(reindexProcess, `[${domain}]`);
+
   const formComponentList = settingGroupList.map((formData, index) => {
     const Form = formFactory({
       name: formData.name,
@@ -86,45 +88,45 @@ function SystemSettings(props) {
               <div {...classes('action-bar-btn')}>
                 <Button
                   mods={['default']}
-                  label="Reindex Expert Finder"
+                  label={`${isReindexing(solrDomains.users.value) ? 'Indexing' : 'Reindex'} Expert Finder`}
                   onClick={() => solrReindex({ domain: solrDomains.users })}
-                  disabled={get(reindexProcess, `[${solrDomains.users.value}]`)}
+                  disabled={isReindexing(solrDomains.users.value)}
                 />
               </div>
               <div {...classes('action-bar-btn')}>
                 <Button
                   {...classes('reindex-solr')}
                   mods={['default']}
-                  label="Reindex Data Catalog"
+                  label={`${isReindexing(solrDomains.dataSources.value) ? 'Indexing' : 'Reindex'} Data Catalog`}
                   onClick={() => solrReindex({ domain: solrDomains.dataSources })}
-                  disabled={get(reindexProcess, `[${solrDomains.dataSources.value}]`)}
+                  disabled={isReindexing(solrDomains.dataSources.value)}
                 />
               </div>
               <div {...classes('action-bar-btn')}>
                 <Button
                   {...classes('reindex-solr')}
                   mods={['default']}
-                  label="Reindex Study Notebook"
+                  label={`${isReindexing(solrDomains.studies.value) ? 'Indexing' : 'Reindex'} Study Notebook`}
                   onClick={() => solrReindex({ domain: solrDomains.studies })}
-                  disabled={get(reindexProcess, `[${solrDomains.studies.value}]`)}
+                  disabled={isReindexing(solrDomains.studies.value)}
                 />
               </div>
               <div {...classes('action-bar-btn')}>
                 <Button
                   {...classes('reindex-solr')}
                   mods={['default']}
-                  label="Reindex Analyses"
+                  label={`${isReindexing(solrDomains.analyses.value) ? 'Indexing' : 'Reindex'} Analyses`}
                   onClick={() => solrReindex({ domain: solrDomains.analyses })}
-                  disabled={get(reindexProcess, `[${solrDomains.analyses.value}]`)}
+                  disabled={isReindexing(solrDomains.analyses.value)}
                 />
               </div>
               <div {...classes('action-bar-btn')}>
                 <Button
                   {...classes('reindex-solr')}
                   mods={['default']}
-                  label="Reindex Papers"
+                  label={`${isReindexing(solrDomains.papers.value) ? 'Indexing' : 'Reindex'} Papers`}
                   onClick={() => solrReindex({ domain: solrDomains.papers })}
-                  disabled={get(reindexProcess, `[${solrDomains.papers.value}]`)}
+                  disabled={isReindexing(solrDomains.papers.value)}
                 />
               </div>
             </div>
