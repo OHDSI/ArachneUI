@@ -47,6 +47,7 @@ function SystemSettings(props) {
   } = props;
 
   const isReindexing = domain => get(reindexProcess, `[${domain}]`);
+  const getReindexLabel = (domain, label) => `${isReindexing(domain) ? 'Indexing' : 'Reindex'} ${label}`;
 
   const formComponentList = settingGroupList.map((formData, index) => {
     const Form = formFactory({
@@ -88,7 +89,7 @@ function SystemSettings(props) {
               <div {...classes('action-bar-btn')}>
                 <Button
                   mods={['default']}
-                  label={`${isReindexing(solrDomains.users.value) ? 'Indexing' : 'Reindex'} Expert Finder`}
+                  label={getReindexLabel(solrDomains.users.value, 'Expert Finder')}
                   onClick={() => solrReindex({ domain: solrDomains.users })}
                   disabled={isReindexing(solrDomains.users.value)}
                 />
@@ -97,7 +98,7 @@ function SystemSettings(props) {
                 <Button
                   {...classes('reindex-solr')}
                   mods={['default']}
-                  label={`${isReindexing(solrDomains.dataSources.value) ? 'Indexing' : 'Reindex'} Data Catalog`}
+                  label={getReindexLabel(solrDomains.dataSources.value, 'Data Catalog')}
                   onClick={() => solrReindex({ domain: solrDomains.dataSources })}
                   disabled={isReindexing(solrDomains.dataSources.value)}
                 />
@@ -106,7 +107,7 @@ function SystemSettings(props) {
                 <Button
                   {...classes('reindex-solr')}
                   mods={['default']}
-                  label={`${isReindexing(solrDomains.studies.value) ? 'Indexing' : 'Reindex'} Study Notebook`}
+                  label={getReindexLabel(solrDomains.studies.value, 'Study Notebook')}
                   onClick={() => solrReindex({ domain: solrDomains.studies })}
                   disabled={isReindexing(solrDomains.studies.value)}
                 />
@@ -115,7 +116,7 @@ function SystemSettings(props) {
                 <Button
                   {...classes('reindex-solr')}
                   mods={['default']}
-                  label={`${isReindexing(solrDomains.analyses.value) ? 'Indexing' : 'Reindex'} Analyses`}
+                  label={getReindexLabel(solrDomains.analyses.value, 'Analyses')}
                   onClick={() => solrReindex({ domain: solrDomains.analyses })}
                   disabled={isReindexing(solrDomains.analyses.value)}
                 />
@@ -124,7 +125,7 @@ function SystemSettings(props) {
                 <Button
                   {...classes('reindex-solr')}
                   mods={['default']}
-                  label={`${isReindexing(solrDomains.papers.value) ? 'Indexing' : 'Reindex'} Papers`}
+                  label={getReindexLabel(solrDomains.papers.value, 'Papers')}
                   onClick={() => solrReindex({ domain: solrDomains.papers })}
                   disabled={isReindexing(solrDomains.papers.value)}
                 />
