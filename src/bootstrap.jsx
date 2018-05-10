@@ -143,6 +143,7 @@ function initBrowserHistory(store) {
 function initializeApi(store) {
   ApiService
     .setUserTokenGetter(() => AuthService.getToken())
+    .setUserRequestedGetter(() => AuthService.getUserRequest())
     .setUnauthorizedHandler(() => {
       if (store.getState().auth.principal.queryResult !== null) {
         store.dispatch(actions.auth.clearToken(store.getState().routing.locationBeforeTransitions.pathname));

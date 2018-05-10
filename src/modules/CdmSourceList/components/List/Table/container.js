@@ -23,11 +23,12 @@
 import { connect } from 'react-redux';
 import { push as goToPage } from 'react-router-redux';
 import { ModalUtils } from 'arachne-ui-components';
-import { modal, paths } from 'modules/CdmSourceList/const';
+import { modal, paths, apiPaths } from 'modules/CdmSourceList/const';
 import actions from 'actions';
 import { get } from 'services/Utils';
 import Table from './presenter';
 import selectors from './selectors';
+import Auth from 'services/Auth';
 
 function getSorting(location) {
   return {
@@ -54,6 +55,10 @@ const mapDispatchToProps = {
   goToDataSource: id => goToPage(paths.dataSources(id)),
   setSearch: actions.router.setSearch,
   loadList: actions.cdmSourceList.dataSourceList.query,
+  editCatalog: id => {
+    Auth.setToken(Auth.getToken());
+    window.open(apiPaths.dataSourceEdit(id), '_blank');
+  },
 };
 
 function mergeProps(state, dispatch, ownProps) {
