@@ -33,7 +33,7 @@ import { Utils } from 'services/Utils';
 
 require('./style.scss');
 
-function CellRegister({ published, onClick, editCatalog, centralId, centralDomain, username }) {
+function CellRegister({ published, onClick, centralId, centralDomain, username }) {
   const classes = new BEMHelper('data-source-list-cell-register');
 
   return <div {...classes()}>
