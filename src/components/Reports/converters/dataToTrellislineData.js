@@ -29,39 +29,45 @@ export default (rawData, DTO = {
   trellisName: 'TRELLIS_NAME',
   seriesName: 'SERIES_NAME',
 }) => {
-  const minXValue = d3.min(rawData[DTO.xValue]);
-  const maxXValue = d3.max(rawData[DTO.xValue]);
 
-  const nestByDecile = d3.nest()
-    .key(d => d[DTO.trellisName])
-    .key(d => d[DTO.seriesName])
-    .sortValues((a, b) =>
-      a[DTO.xValue] - b[DTO.xValue]
-    );
+  let data = [];
+  let trellisSet = [];
 
-  // map rawData into chartable form
-  const normalizedSeries = chart.dataframeToArray(rawData);
-  let data = nestByDecile.entries(normalizedSeries);
-  // fill in gaps
-  const xValuesRange = d3.range(minXValue, maxXValue, 1);
-
-  data.forEach((trellis) => {
-    trellis.values.forEach((series) => {
-      series.values = xValuesRange.map((year) => { // eslint-disable-line no-param-reassign
-        const xValue = series.values.filter(
-          f => f[DTO.xValue] == year // eslint-disable-line eqeqeq
-        )[0] || ReportUtils.seriesInitializer(trellis.key, series.key, year, 0);
-        xValue.date = new Date(year, 0, 1);
-        return xValue;
+  if (rawData[DTO.xValue]) {
+    const minXValue = d3.min(rawData[DTO.xValue]);
+    const maxXValue = d3.max(rawData[DTO.xValue]);
+  
+    const nestByDecile = d3.nest()
+      .key(d => d[DTO.trellisName])
+      .key(d => d[DTO.seriesName])
+      .sortValues((a, b) =>
+        a[DTO.xValue] - b[DTO.xValue]
+      );
+  
+    // map rawData into chartable form
+    const normalizedSeries = chart.dataframeToArray(rawData);
+    data = nestByDecile.entries(normalizedSeries);
+    // fill in gaps
+    const xValuesRange = d3.range(minXValue, maxXValue, 1);
+  
+    data.forEach((trellis) => {
+      trellis.values.forEach((series) => {
+        series.values = xValuesRange.map((year) => { // eslint-disable-line no-param-reassign
+          const xValue = series.values.filter(
+            f => f[DTO.xValue] == year // eslint-disable-line eqeqeq
+          )[0] || ReportUtils.seriesInitializer(trellis.key, series.key, year, 0);
+          xValue.date = new Date(year, 0, 1);
+          return xValue;
+        });
       });
     });
-  });
-
-  data = Array.isArray(data)
-    ? data
-    : [data];
-
-  const trellisSet = data.map(series => series.key);
+  
+    data = Array.isArray(data)
+      ? data
+      : [data];
+  
+    trellisSet = data.map(series => series.key);
+  }
 
   return {
     data,

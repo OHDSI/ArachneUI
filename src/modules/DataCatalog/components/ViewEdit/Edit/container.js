@@ -73,6 +73,7 @@ class DataCatalogEditBuilder extends ContainerBuilder {
       isDenied,
       isVirtual,
       isCDM,
+      canUploadAchillesResults: isDatanodeRegistered && !isVirtual && isCDM && permissions.UPLOAD_ACHILLES_REPORTS,
     };
   }
 
@@ -80,6 +81,23 @@ class DataCatalogEditBuilder extends ContainerBuilder {
     return {
       loadDataSource: actions.dataCatalog.dataSource.find,
       showUploadForm: () => ModalUtils.actions.toggle(forms.modalStatsUpload, true),
+    };
+  }
+
+  mergeProps(stateProps, dispatchProps, ownProps) {
+    return {
+      ...stateProps,
+      ...dispatchProps,
+      ...ownProps,
+      showUploadForm: () => {
+        if (stateProps.canUploadAchillesResults) {
+          dispatchProps.showUploadForm();
+        } else {
+          if (confirm('This data source was not detected to be CDM compliant. Are you sure that you still want upload Achilles stats?')) {
+            dispatchProps.showUploadForm();
+          }
+        }
+      }
     };
   }
 
