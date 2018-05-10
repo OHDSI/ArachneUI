@@ -46,7 +46,6 @@ const apiPaths = {
     `/api/v1/achilles/${datasourceId}/jobs${limit ? '?size='+limit : ''}`,
   achillesResults: ({ datasourceId }) => `/api/v1/achilles/${datasourceId}/pull`,
   dbmsTypes: () => '/api/v1/data-sources/dbms-types',
-  dataSourceEdit: id => `/api/v1/data-sources/${id}/edit`,
 };
 
 const imgs = {

@@ -28,7 +28,6 @@ import actions from 'actions';
 import { get } from 'services/Utils';
 import Table from './presenter';
 import selectors from './selectors';
-import Auth from 'services/Auth';
 
 function getSorting(location) {
   return {
@@ -40,12 +39,14 @@ function getSorting(location) {
 function mapStateToProps(state) {
   const query = state.routing.locationBeforeTransitions.query;
   const centralDomain = get(state, 'portal.buildInfo.data.centralUrl');
+  const username = get(state, 'auth.principal.queryResult.result.username');
 
   return {
     query,
     dataSourceList: selectors.getDataSourceList(state),
     sorting: getSorting(state.routing.locationBeforeTransitions),
     centralDomain,
+    username,
   };
 }
 
@@ -55,10 +56,6 @@ const mapDispatchToProps = {
   goToDataSource: id => goToPage(paths.dataSources(id)),
   setSearch: actions.router.setSearch,
   loadList: actions.cdmSourceList.dataSourceList.query,
-  editCatalog: id => {
-    Auth.setToken(Auth.getToken());
-    window.open(apiPaths.dataSourceEdit(id), '_blank');
-  },
 };
 
 function mergeProps(state, dispatch, ownProps) {

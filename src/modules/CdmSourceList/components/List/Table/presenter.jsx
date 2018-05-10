@@ -28,13 +28,12 @@ import {
   Button,
 } from 'arachne-ui-components';
 import { healthStatuses, modelTypesValues } from 'const/dataSource';
-import { paths as centralPaths, apiPaths as api } from 'modules/DataCatalog/const';
-import Auth from 'services/Auth';
+import { paths as centralPaths } from 'modules/DataCatalog/const';
 import { Utils } from 'services/Utils';
 
 require('./style.scss');
 
-function CellRegister({ published, onClick, editCatalog }) {
+function CellRegister({ published, onClick, editCatalog, centralId, centralDomain, username }) {
   const classes = new BEMHelper('data-source-list-cell-register');
 
   return <div {...classes()}>
@@ -42,7 +41,8 @@ function CellRegister({ published, onClick, editCatalog }) {
       {...classes('btn', { publish: !published })}
       mods={['submit', 'rounded']}
       label={published ? 'Edit catalog' : 'Publish'}
-      onClick={editCatalog}
+      link={`${centralDomain}${centralPaths.edit(centralId)}?user_req=${username}`}
+      target={'_blank'}
     />
     {published &&
       <Button
@@ -100,7 +100,8 @@ function DataSourceTable(props) {
     goToDataSource,
     setSearch,
     sorting,
-    editCatalog,
+    centralDomain,
+    username,
   } = props;
 
   return (
@@ -144,7 +145,9 @@ function DataSourceTable(props) {
           entity => ({
             published: entity.published,
             onClick: () => goToDataSource(entity.id),
-            editCatalog: () => editCatalog(entity.centralId),
+            centralId: entity.id,
+            centralDomain,
+            username,
           })
         }
       />
