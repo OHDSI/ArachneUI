@@ -75,7 +75,7 @@ export default class ListAnalysesBuilder {
       },
       removeAnalysis(id, title) {
         Utils.confirmDelete({
-          message: `Are you sure want to delete analysis ${title}?`,
+          message: `Are you sure want to delete analysis '${title}'?`,
         })
           .then(() => {
             dispatchProps
