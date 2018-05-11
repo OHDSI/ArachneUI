@@ -87,7 +87,7 @@ export default class ListParticipantsBuilder {
       },
       removeParticipant(userId, name) {
         Utils.confirmDelete({
-          message: `Are you sure want to remove ${name} from participants?`,
+          message: `Are you sure you want to remove ${name} from participants?`,
         })
           .then(() => {
             dispatchProps

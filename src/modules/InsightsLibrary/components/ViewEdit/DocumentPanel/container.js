@@ -60,7 +60,7 @@ export default class DocumentPanelBuilder {
       },
       deleteFile: (file) => {
         Utils.confirmDelete({
-          message: 'Are you sure want to delete this file?',
+          message: 'Are you sure you want to delete this file?',
         })
           .then(() => {
             dispatchProps

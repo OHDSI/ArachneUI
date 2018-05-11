@@ -82,7 +82,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     },
     doRemove: (id, name) => {
       Utils.confirmDelete({
-        message: `Are you sure want to delete '${name}'?`,
+        message: `Are you sure you want to delete '${name}'?`,
       })
         .then(() => {
           dispatchProps
