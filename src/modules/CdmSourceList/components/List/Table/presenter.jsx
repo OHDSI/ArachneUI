@@ -41,7 +41,7 @@ function CellRegister({ published, onClick, centralId, centralDomain, username }
       {...classes('btn', { publish: !published })}
       mods={['submit', 'rounded']}
       label={published ? 'Edit catalog' : 'Publish'}
-      link={`${centralDomain}${centralPaths.edit(centralId)}?user_req=${username}`}
+      link={`${centralDomain}${centralPaths.edit(centralId)}?user-req=${username}`}
       target={'_blank'}
     />
     {published &&
