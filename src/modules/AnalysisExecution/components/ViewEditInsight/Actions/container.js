@@ -33,6 +33,7 @@ function mapStateToProps(state) {
   return {
     submissionId: get(insight, 'data.result.submission.id'),
     analysisId: get(insight, 'data.result.analysis.id'),
+    name: get(insight, 'data.result.name'),
   };
 }
 
@@ -48,7 +49,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...ownProps,
     remove: () => {
       Utils.confirmDelete({
-        message: 'Are you sure want to delete insight?',
+        message: `Are you sure want to delete insight '${stateProps.name}'?`,
       })
         .then(() => {
           dispatchProps.remove({ submissionId: stateProps.submissionId })
