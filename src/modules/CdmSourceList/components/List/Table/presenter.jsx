@@ -55,7 +55,7 @@ function CellRegister({ published, onClick, centralId, centralDomain }) {
   </div>;
 }
 
-function CellEdit({ editDataSource, removeDataSource, value, published }) {
+function CellEdit({ editDataSource, removeDataSource, value, published, name }) {
   const classes = new BEMHelper('data-source-list-cell-edit');
   return (
     <div {...classes('btn-block')}>
@@ -64,7 +64,7 @@ function CellEdit({ editDataSource, removeDataSource, value, published }) {
       </Button>
       <Button {...classes('btn')} onClick={() => {
         Utils.confirmDelete({
-          message: 'Delete Data Source?',
+          message: `Delete Data Source '${name}'?`,
         })
           .then(() => removeDataSource({ id: value, published }))
           .catch(() => {});
@@ -154,7 +154,7 @@ function DataSourceTable(props) {
         field="id"
         editDataSource={editDataSource}
         removeDataSource={remove}
-        props={entity => ({ published: entity.published })}
+        props={entity => ({ published: entity.published, name: entity.name })}
       />
     </Table>
   );
