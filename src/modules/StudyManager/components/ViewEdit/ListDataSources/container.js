@@ -71,7 +71,7 @@ export default class ListDataSourcesBuilder {
       },
       removeDataSource(dataSourceId, title) {
         Utils.confirmDelete({
-          message: `Are you sure want to delete this Data Source (${title}) from study?`,
+          message: `Are you sure you want to delete this data source '${title}' from study?`,
         })
           .then(() => {
             dispatchProps

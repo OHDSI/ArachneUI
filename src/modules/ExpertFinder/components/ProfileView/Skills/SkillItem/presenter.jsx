@@ -33,7 +33,7 @@ function SkillItem(props) {
   return (
     <div {...classes()}>
       <span {...classes('skill-name')}>{name}</span>
-      <Link onClick={ () => onRemove(id) }>
+      <Link onClick={ () => onRemove(id, name) }>
         <i {...classes('skill-closer')}>close</i>
       </Link>
     </div>

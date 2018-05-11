@@ -73,7 +73,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     },
     doRemove: (publicationId) => {
       Utils.confirmDelete({
-        message: 'Are you sure want to delete this publication?',
+        message: 'Are you sure you want to delete this publication?',
       })
         .then(() => {
           dispatchProps.removePublication({ id: publicationId })
