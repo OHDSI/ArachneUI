@@ -59,8 +59,16 @@ class Api {
     console.error('Replace this interface with implementation');
   }
 
+  getUserRequested() {
+  }
+
   setUserTokenGetter(getUserToken) {
     this.getUserToken = getUserToken;
+    return this;
+  }
+
+  setUserRequestedGetter(getUserRequested) {
+    this.getUserRequested = getUserRequested;
     return this;
   }
 
@@ -85,6 +93,11 @@ class Api {
 
     if (token) {
       headers[AUTH_TOKEN_HEADER] = token;
+    }
+
+    const requested = this.getUserRequested();
+    if (requested) {
+      headers['Arachne-User-Request'] = requested;
     }
 
     return headers;
