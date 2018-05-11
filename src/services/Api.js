@@ -25,6 +25,7 @@
 import URI from 'urijs';
 import SockJS from 'sockjs-client/dist/sockjs';
 import { Stomp } from '@stomp/stompjs/lib/stomp';
+import { Notifier } from 'services/Notifier';
 
 const STATUS = {
   OK: 200,
@@ -75,7 +76,7 @@ class Api {
 
   // eslint-disable-next-line class-methods-use-this
   handleUnexpectedError() {
-    alert('Oooops!.. Something went wrong :(');
+    Notifier.alert({ message: 'Oooops!.. Something went wrong :(' });
   }
 
   getHeaders() {

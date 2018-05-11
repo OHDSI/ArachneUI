@@ -21,7 +21,7 @@
  */
 
 import Duck from 'services/Duck';
-import { apiPaths } from 'modules/ExpertFinder/const';
+import { apiPaths } from 'modules/Portal/const';
 
 const coreName = 'EF_USER';
 

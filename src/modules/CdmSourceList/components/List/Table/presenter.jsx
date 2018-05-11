@@ -29,6 +29,7 @@ import {
 } from 'arachne-ui-components';
 import { healthStatuses, modelTypesValues } from 'const/dataSource';
 import { paths as centralPaths } from 'modules/DataCatalog/const';
+import Auth from 'services/Auth';
 import { Utils } from 'services/Utils';
 
 require('./style.scss');
@@ -41,7 +42,7 @@ function CellRegister({ published, onClick, centralId, centralDomain }) {
       {...classes('btn', { publish: !published })}
       mods={['submit', 'rounded']}
       label={published ? 'Edit catalog' : 'Publish'}
-      link={`${centralDomain}${centralPaths.edit(centralId)}`}
+      link={`${centralDomain}${centralPaths.edit(centralId)}?token=${Auth.getToken()}`}
       target={'_blank'}
     />
     {published &&

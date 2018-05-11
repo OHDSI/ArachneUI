@@ -16,28 +16,49 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: January 24, 2017
+ * Created: Apr 27, 2018
  *
  */
 
-import React from 'react';
-import imgs from 'const/imgs';
-import { combineReducers } from 'redux';
-import ducks from './ducks';
-import { paths } from './const';
+import { Component } from 'react';
+import { connect } from 'react-redux';
+import { get } from 'services/Utils';
+import presenter from './presenter';
+import actions from 'actions/index';
+import Auth from 'services/Auth';
 
-export default {
-  actions: () => ducks.actions,
-  reducer: () => combineReducers(ducks.reducer),
-  routes: () => (location, cb) => {
-    require.ensure([], (require) => {
-      cb(null, require('./routes').default()); // eslint-disable-line global-require
+class UsernameField extends Component{
+
+  constructor(props){
+    super(props);
+  }
+
+  render(){
+    return presenter({
+      ...this.props,
     });
-  },
-  sidebarElement: {
-    ico: imgs.sidebar.expertFinder,
-    name: 'Expert Finder',
-    path: paths.list(),
-  },
-  indexRedirect: '/list',
+  }
+}
+
+function mapStateToProps(state) {
+  return {
+  };
+}
+
+const mapDispatchToProps = {
+  queryPrincipal: actions.auth.principal.query,
 };
+
+function mergeProps(stateProps, dispatchProps, ownProps) {
+  return ({
+    ...stateProps,
+    ...dispatchProps,
+    ...ownProps,
+    edit: () => {
+      Auth.clearUserRequest();
+      dispatchProps.queryPrincipal();
+    }
+  });
+}
+
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(UsernameField);

@@ -1,4 +1,4 @@
-/*
+/*!
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,28 +16,21 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: January 24, 2017
+ * Created: Apr 27, 2018
  *
  */
 
-import React from 'react';
-import imgs from 'const/imgs';
-import { combineReducers } from 'redux';
-import ducks from './ducks';
-import { paths } from './const';
+@import 'styles/vars-and-mixins.scss';
 
-export default {
-  actions: () => ducks.actions,
-  reducer: () => combineReducers(ducks.reducer),
-  routes: () => (location, cb) => {
-    require.ensure([], (require) => {
-      cb(null, require('./routes').default()); // eslint-disable-line global-require
-    });
-  },
-  sidebarElement: {
-    ico: imgs.sidebar.expertFinder,
-    name: 'Expert Finder',
-    path: paths.list(),
-  },
-  indexRedirect: '/list',
-};
+.#{$namespace} {
+  &username-field {
+    display: flex;
+
+    &__button {
+    }
+
+    &__icon {
+      @include material-icon();
+    }
+  }
+}
