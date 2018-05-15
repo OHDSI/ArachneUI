@@ -1,6 +1,6 @@
 {
   "name": "arachne-ui",
-  "version": "1.12.102",
+  "version": "1.13.18",
   "licenses": [
     {
       "type": "Apache-2.0",
@@ -46,7 +46,7 @@
   "dependencies": {
     "@ohdsi/atlascharts": "https://github.com/agackovka/Visualizations",
     "@stomp/stompjs": "github:stomp-js/stomp-websocket",
-    "arachne-ui-components": "1.12.18",
+    "arachne-ui-components": "^1.13.0",
     "autoprefixer": "^6.7.6",
     "babel-core": "^6.25.0",
     "babel-eslint": "^7.2.3",

@@ -20,24 +20,17 @@
  *
  */
 
-import React from 'react';
-import imgs from 'const/imgs';
-import { combineReducers } from 'redux';
-import ducks from './ducks';
-import { paths } from './const';
+import Duck from 'services/Duck';
+import { apiPaths } from 'modules/Portal/const';
+
+const coreName = 'EF_PROFILE';
+
+const profile = new Duck({
+  name: coreName,
+  urlBuilder: apiPaths.myProfile,
+});
 
 export default {
-  actions: () => ducks.actions,
-  reducer: () => combineReducers(ducks.reducer),
-  routes: () => (location, cb) => {
-    require.ensure([], (require) => {
-      cb(null, require('./routes').default()); // eslint-disable-line global-require
-    });
-  },
-  sidebarElement: {
-    ico: imgs.sidebar.expertFinder,
-    name: 'Expert Finder',
-    path: paths.list(),
-  },
-  indexRedirect: '/list',
+  actions: profile.actions,
+  reducer: profile.reducer,
 };
