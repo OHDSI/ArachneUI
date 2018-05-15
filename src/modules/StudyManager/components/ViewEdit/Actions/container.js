@@ -108,7 +108,7 @@ export default class StudyActionsBuilder {
       },
       remove: () => {
         Utils.confirmDelete({
-          message: `Are you sure want to delete study '${stateProps.title}'?`,
+          message: `Are you sure you want to delete study '${stateProps.title}'?`,
         })
           .then(() => {
             dispatchProps.remove(stateProps.studyId)

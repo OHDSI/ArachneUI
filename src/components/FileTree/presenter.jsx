@@ -117,7 +117,7 @@ class FileTree extends Component {
               onClick={(e) => {
                 e.preventDefault();
                 if (doDelete) {
-                  Utils.confirmDelete({ message: 'Are you sure want to delete this file?' })
+                  Utils.confirmDelete({ message: 'Are you sure you want to delete this file?' })
                     .then(() => doDelete(node))
                     .catch(() => {});
                 }
