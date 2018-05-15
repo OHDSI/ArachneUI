@@ -44,7 +44,17 @@ class DataCatalogStatefulList extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.searchStr !== nextProps.searchStr) {
-      this.props.loadDsList({ searchStr: nextProps.searchStr, onlyMy: nextProps.onlyMy });
+      const searchStr = { ...nextProps.searchStr };
+      if (nextProps.searchStr) {
+        Object.keys(nextProps.searchStr).forEach((filterName) => {
+          searchStr[filterName.replace(/^(filter\[f_)/, 'filter[')] = nextProps.searchStr[filterName];
+        });
+      }
+      
+      this.props.loadDsList({
+        searchStr,
+        onlyMy: nextProps.onlyMy,
+      });
     }
   }
 
