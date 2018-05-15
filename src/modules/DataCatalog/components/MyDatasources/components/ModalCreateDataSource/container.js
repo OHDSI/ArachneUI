@@ -87,7 +87,7 @@ export default class ModalCreateDataSourceBuilder extends ContainerBuilder {
       closeModal: () => ModalUtils.actions.toggle(modal.modalCreateDataSource, false),
       createDS: actions.dataCatalog.dataSource.create,
       getDbmsTypes: actions.dataCatalog.dbmsTypes.find,
-      showDs: id => push(paths.dataCatalog(id)),
+      showDs: id => push(paths.edit(id)),
     };
   }
 
