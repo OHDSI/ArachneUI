@@ -61,6 +61,8 @@ function AddDataCatalogSource(props) {
         options: [],
         fetchOptions: props.loadDataSourceOptions,
         clearable: false,
+        onSelectResetsInput: true,
+        onBlurResetsInput: true,
       },
     },
   };
