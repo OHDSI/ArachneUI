@@ -63,7 +63,7 @@ class AdminTableBuilder extends ContainerBuilder {
       ...ownProps,
       ...dispatchProps,
       removeAdmin: (id, name) => {
-        Utils.confirmDelete({ message: `Are you sure want to remove ${name} from admins?` })
+        Utils.confirmDelete({ message: `Are you sure you want to remove ${name} from admins?` })
           .then(() => {
             dispatchProps
               .removeAdmin({ id })

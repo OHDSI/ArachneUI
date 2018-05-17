@@ -21,7 +21,7 @@
  */
 
 import { createSelector } from 'reselect';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 
 function prepareName(name) {
   return name.replace(/\./g, '__');
@@ -29,6 +29,7 @@ function prepareName(name) {
 
 const getRawSystemSettings = state => get(state, 'adminSettings.systemSettings.queryResult.result.list') || [];
 const parseValue = field => field.type === 'checkbox' ? field.value === 'true' : field.value;
+const getRawReindexProcess = state => get(state, 'adminSettings.reindexProcess.data', '', 'Object');
 
 const getSystemSettings = createSelector(
   [getRawSystemSettings],
@@ -56,7 +57,13 @@ const getSystemSettings = createSelector(
   })
 );
 
+const getReindexProcess = createSelector(
+  [getRawReindexProcess],
+  process => process
+);
+
 export default {
   getSystemSettings,
   parseValue,
+  getReindexProcess,
 };

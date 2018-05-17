@@ -21,7 +21,7 @@
  */
 
 import React, { PropTypes } from 'react';
-import { canUseDom } from 'services/Utils';
+import { canUseDom, get } from 'services/Utils';
 import BEMHelper from 'services/BemHelper';
 import {
   PageContent,
@@ -88,6 +88,8 @@ function ReportViewer(props) {
     getFilename: conceptId => conceptId,
   };
 
+  const getIntervalIndexLength = (path) => get(data, `${path}.INTERVAL_INDEX.length`, 0) - 1;
+
   return (
     <PageContent title={pageTitle}>
       <div {...classes()}>
@@ -98,7 +100,7 @@ function ReportViewer(props) {
               showSummary={false}
               ageAtFirstObservation={{
                 DATA: data.ageAtDeath,
-                INTERVALS: data.ageAtDeath.INTERVAL_INDEX.length - 1,
+                INTERVALS: getIntervalIndexLength('ageAtDeath'),
                 INTERVAL_SIZE: 1,
                 MAX: data.ageAtDeath.INTERVAL_INDEX.length - 1,
                 MIN: 0,
@@ -113,7 +115,7 @@ function ReportViewer(props) {
               showSummary={false}
               birthYear={{
                 DATA: data.yearOfBirthData,
-                INTERVALS: data.yearOfBirthData.INTERVAL_INDEX.length - 1,
+                INTERVALS: getIntervalIndexLength('yearOfBirthData'),
                 INTERVAL_SIZE: 1,
                 MAX: data.yearOfBirthStats.MAX_VALUE[0],
                 MIN: data.yearOfBirthStats.MIN_VALUE[0],
@@ -128,27 +130,27 @@ function ReportViewer(props) {
             <reports.ObservationPeriods
               ageAtFirstObservation={{
                 DATA: data.ageAtFirst,
-                INTERVALS: data.ageAtFirst.INTERVAL_INDEX.length - 1,
+                INTERVALS: getIntervalIndexLength('ageAtFirst'),
                 INTERVAL_SIZE: 1,
-                MAX: data.ageAtFirst.INTERVAL_INDEX.length - 1,
+                MAX: getIntervalIndexLength('ageAtFirst'),
                 MIN: 0,
               }}
               ageByGender={data.ageByGender}
               durationByGender={data.observationLengthByGender}
               observationLength={{
                 DATA: data.observationLengthData,
-                INTERVALS: data.observationLengthData.INTERVAL_INDEX.length - 1,
+                INTERVALS: getIntervalIndexLength('observationLengthData'),
                 INTERVAL_SIZE: 1,
-                MAX: data.observationLengthData.INTERVAL_INDEX.length - 1,
+                MAX: getIntervalIndexLength('observationLengthData'),
                 MIN: 0,
               }}
               cumulativeObservation={data.cumulativeDuration}
               durationByAgeDecline={data.observationLengthByAge}
               durationByYear={{
                 DATA: data.observedByYearData,
-                INTERVALS: data.observedByYearData.INTERVAL_INDEX.length - 1,
+                INTERVALS: getIntervalIndexLength('observedByYearData'),
                 INTERVAL_SIZE: 1,
-                MAX: data.observedByYearData.INTERVAL_INDEX.length - 1,
+                MAX: getIntervalIndexLength('observedByYearData'),
                 MIN: 0,
               }}
               observationsPerPerson={data.periodPerPerson}

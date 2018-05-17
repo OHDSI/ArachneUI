@@ -29,6 +29,7 @@ import solrIndex from './solrIndex';
 import systemSettings from './systemSettings';
 import userOptionList from './userOptionList';
 import userList from './userList';
+import reindexProcess from './reindexProcess';
 
 const actions = {
   adminList: adminList.actions,
@@ -40,6 +41,7 @@ const actions = {
   systemSettings: systemSettings.actions,
   userOptionList: userOptionList.actions,
   userList: userList.actions,
+  reindexProcess: reindexProcess.actions,
 };
 
 const reducer = {
@@ -52,6 +54,7 @@ const reducer = {
   systemSettings: systemSettings.reducer,
   userOptionList: userOptionList.reducer,
   userList: userList.reducer,
+  reindexProcess: reindexProcess.reducer,
 };
 
 export default {

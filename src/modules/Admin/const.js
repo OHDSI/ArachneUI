@@ -95,6 +95,29 @@ if (__APP_TYPE_CENTRAL__) {
   adminPages.push({ label: 'Users', value: paths.users() });
 }
 
+const solrDomains = {
+  users: {
+    value: 'users',
+    label: 'Users',
+  },
+  dataSources: {
+    value: 'data-sources',
+    label: 'Data sources',
+  },
+  studies: {
+    value: 'studies',
+    label: 'Studies',
+  },
+  analyses: {
+    value: 'analyses',
+    label: 'Analyses',
+  },
+  papers: {
+    value: 'papers',
+    label: 'Papers',
+  },
+};
+
 export {
   adminPages,
   apiPaths,
@@ -102,4 +125,5 @@ export {
   imgs,
   modal,
   paths,
+  solrDomains,
 };

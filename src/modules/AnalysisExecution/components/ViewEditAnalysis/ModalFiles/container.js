@@ -188,7 +188,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...dispatchProps,
     loadSubmissionFiles: ({ submissionId = stateProps.submissionId, path }) => dispatchProps.loadSubmissionFiles({ submissionId, path }),
     removeResult: (fileId) => {
-      Utils.confirmDelete({ message: 'Are you sure want to delete this file from results list?' })
+      Utils.confirmDelete({ message: 'Are you sure you want to delete this file from results list?' })
         .then(() => {
           dispatchProps
             .removeResult({ submissionId: stateProps.submissionId, fileId })

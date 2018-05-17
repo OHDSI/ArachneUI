@@ -33,7 +33,7 @@ import { Utils } from 'services/Utils';
 
 require('./style.scss');
 
-function CellRegister({ published, onClick, isCdm, centralId, centralDomain }) {
+function CellRegister({ published, onClick, centralId, centralDomain }) {
   const classes = new BEMHelper('data-source-list-cell-register');
 
   return <div {...classes()}>
@@ -55,7 +55,7 @@ function CellRegister({ published, onClick, isCdm, centralId, centralDomain }) {
   </div>;
 }
 
-function CellEdit({ editDataSource, removeDataSource, value, published }) {
+function CellEdit({ editDataSource, removeDataSource, value, published, name }) {
   const classes = new BEMHelper('data-source-list-cell-edit');
   return (
     <div {...classes('btn-block')}>
@@ -64,7 +64,7 @@ function CellEdit({ editDataSource, removeDataSource, value, published }) {
       </Button>
       <Button {...classes('btn')} onClick={() => {
         Utils.confirmDelete({
-          message: 'Delete Data Source?',
+          message: `Delete data source '${name}'?`,
         })
           .then(() => removeDataSource({ id: value, published }))
           .catch(() => {});
@@ -144,7 +144,6 @@ function DataSourceTable(props) {
           entity => ({
             published: entity.published,
             onClick: () => goToDataSource(entity.id),
-            isCdm: entity.modelType === modelTypesValues.CDM,
             centralId: entity.centralId,
             centralDomain,
           })
@@ -155,7 +154,7 @@ function DataSourceTable(props) {
         field="id"
         editDataSource={editDataSource}
         removeDataSource={remove}
-        props={entity => ({ published: entity.published })}
+        props={entity => ({ published: entity.published, name: entity.name })}
       />
     </Table>
   );
