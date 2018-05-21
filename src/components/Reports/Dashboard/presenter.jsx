@@ -36,6 +36,7 @@ import moment from 'moment';
 import { commonDate } from 'const/formats';
 import Chart from 'components/Reports/Chart';
 import isEmpty from 'lodash/isEmpty';
+import { chartTime } from 'const/formats';
 
 require('./style.scss');
 
@@ -145,7 +146,7 @@ function Dashboard(props) {
                   d3.extent(observedByMonth[0].values, d => d.xValue)
                 ),
                 xFormat: d3.timeFormat('%m/%Y'),
-                tickFormat: d3.timeFormat('%b %Y'),
+                tickFormat: d3.timeFormat(chartTime),
                 ticks: 10,
                 xLabel: 'Date',
                 yLabel: 'People',
