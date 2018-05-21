@@ -37,6 +37,12 @@ function formatSearchString(searchStr) {
   const resultString = {};
   if (searchStr) {
     Object.keys(searchStr).forEach((filterName) => {
+      /*
+        Redux form behaves suspiciously when you use integers as Field name
+        It treats objects with Integer field as Array and it leads to errors,
+        And because we use Integer fields in our metadata fields
+        decided to escape fields with prefix 'f_'
+       */
       resultString[filterName.replace(/^(filter\[f_)/, 'filter[')] = searchStr[filterName];
     });
   }
