@@ -76,7 +76,7 @@ function DrugDetails(props) {
                 trellisLabel: 'Age Decile',
                 seriesLabel: 'Year of Observation',
                 yLabel: 'Prevalence Per 1000 People',
-                xFormat: d3.timeFormat('%B %Y'),
+                xFormat: d3.timeFormat('%b %Y'),
                 yFormat: d3.format('0.2f'),
                 tickPadding: 20,
                 colors: d3.scaleOrdinal()
@@ -103,7 +103,7 @@ function DrugDetails(props) {
                 xLabel: 'Date',
                 yFormat: d => numberFormatter.format(d, 'short'),
                 xFormat: d3.timeFormat('%m/%Y'),
-                tickFormat: d3.timeFormat('%B %Y'),
+                tickFormat: d3.timeFormat('%b %Y'),
                 xScale: d3.scaleTime().domain(d3.extent(exposureByMonth[0].values, d => d.xValue)),
               }
             );
