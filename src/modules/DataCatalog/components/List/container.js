@@ -33,6 +33,16 @@ import { paths } from 'modules/DataCatalog/const';
 
 const selectors = (new SelectorsBuilder()).build();
 
+function formatSearchString(searchStr) {
+  const resultString = {};
+  if (searchStr) {
+    Object.keys(searchStr).forEach((filterName) => {
+      resultString[filterName.replace(/^(filter\[f_)/, 'filter[')] = searchStr[filterName];
+    });
+  }
+  return resultString;
+}
+
 /** @augments { Component<any, any> } */
 class DataCatalogStatefulList extends Component {
   static propTypes() {
@@ -44,13 +54,7 @@ class DataCatalogStatefulList extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.searchStr !== nextProps.searchStr) {
-      const searchStr = { ...nextProps.searchStr };
-      if (nextProps.searchStr) {
-        Object.keys(nextProps.searchStr).forEach((filterName) => {
-          searchStr[filterName.replace(/^(filter\[f_)/, 'filter[')] = nextProps.searchStr[filterName];
-        });
-      }
-      
+      const searchStr = formatSearchString({ ...nextProps.searchStr });
       this.props.loadDsList({
         searchStr,
         onlyMy: nextProps.onlyMy,
@@ -88,7 +92,7 @@ class DataCatalogListBuilder extends ContainerBuilder {
   }
 
   getFetchers({ state }) {
-    const searchStr = state.routing.locationBeforeTransitions.query;
+    const searchStr = formatSearchString(state.routing.locationBeforeTransitions.query);
     return {
       loadDsList: actions.dataCatalog.dataSourceList.query.bind(null, { searchStr }),
     };
