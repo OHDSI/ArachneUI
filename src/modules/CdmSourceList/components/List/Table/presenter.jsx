@@ -33,7 +33,7 @@ import { Utils } from 'services/Utils';
 
 require('./style.scss');
 
-function CellRegister({ published, onClick, centralId, centralDomain }) {
+function CellRegister({ published, onClick, centralId, centralDomain, username }) {
   const classes = new BEMHelper('data-source-list-cell-register');
 
   return <div {...classes()}>
@@ -41,7 +41,7 @@ function CellRegister({ published, onClick, centralId, centralDomain }) {
       {...classes('btn', { publish: !published })}
       mods={['submit', 'rounded']}
       label={published ? 'Edit catalog' : 'Publish'}
-      link={`${centralDomain}${centralPaths.edit(centralId)}`}
+      link={`${centralDomain}${centralPaths.edit(centralId)}?user-req=${username}`}
       target={'_blank'}
     />
     {published &&
@@ -101,6 +101,7 @@ function DataSourceTable(props) {
     setSearch,
     sorting,
     centralDomain,
+    username,
   } = props;
 
   return (
@@ -146,6 +147,7 @@ function DataSourceTable(props) {
             onClick: () => goToDataSource(entity.id),
             centralId: entity.centralId,
             centralDomain,
+            username,
           })
         }
       />

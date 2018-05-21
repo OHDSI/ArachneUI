@@ -24,13 +24,11 @@ import expertsList from './expertsList';
 import userProfile from './userProfile';
 import professionalTypes from './professionalTypes';
 import skills from './skills';
-import myProfile from './myProfile';
 import invitations from './invitations';
 import studies from './studies';
 import provinces from './provinces';
 import countries from './countries';
 import facets from './facets';
-import userSettings from './userSettings';
 
 export default {
   actions: {
@@ -38,25 +36,21 @@ export default {
     userProfile: userProfile.actions,
     professionalTypes: professionalTypes.actions,
     skills: skills.actions,
-    myProfile: myProfile.actions,
     invitations: invitations.actions,
     studies: studies.actions,
     provinces: provinces.actions,
     countries: countries.actions,
     facets: facets.actions,
-    userSettings: userSettings.actions,
   },
   reducer: {
     expertsList: expertsList.reducer,
     userProfile: userProfile.reducer,
     professionalTypes: professionalTypes.reducer,
     skills: skills.reducer,
-    myProfile: myProfile.reducer,
     invitations: invitations.reducer,
     studies: studies.reducer,
     provinces: provinces.reducer,
     countries: countries.reducer,
     facets: facets.reducer,
-    userSettings: userSettings.reducer,
   },
 };
