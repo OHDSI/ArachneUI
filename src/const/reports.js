@@ -23,6 +23,7 @@ const reports = keyMirror({
   drugbyindex: null,
   datacompleteness: null,
   entropy: null,
+  measurement: null,
 });
 
 const chartTypes = {
@@ -59,6 +60,7 @@ const treemapReports = [
   reports.procbyindex,
   reports.condbyindex,
   reports.drugbyindex,
+  reports.measurement,
 ];
 
 export {
