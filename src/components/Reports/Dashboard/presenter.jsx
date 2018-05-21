@@ -145,7 +145,7 @@ function Dashboard(props) {
                   d3.extent(observedByMonth[0].values, d => d.xValue)
                 ),
                 xFormat: d3.timeFormat('%m/%Y'),
-                tickFormat: d3.timeFormat('%B %Y'),
+                tickFormat: d3.timeFormat('%b %Y'),
                 ticks: 10,
                 xLabel: 'Date',
                 yLabel: 'People',

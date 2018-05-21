@@ -95,7 +95,7 @@ function Person(props) {
               width/3,
               {
                 ...chartSettings,
-                xFormat: d3.timeFormat('%B %Y'),
+                xFormat: d3.timeFormat('%b %Y'),
                 xLabel: 'Year',
                 yLabel: 'People',
                 yFormat: d => numberFormatter.format(d, 'short')

@@ -70,7 +70,7 @@ function DataDensity(props) {
                 xFormat: d3.timeFormat('%m/%Y'),
                 yFormat: d => numberFormatter.format(d, 'short'),
                 xScale: d3.scaleTime().domain(d3.extent(totalRecordsYears, d => d.X_CALENDAR_MONTH)),
-                tickFormat: d3.timeFormat('%B %Y'),
+                tickFormat: d3.timeFormat('%b %Y'),
                 showLegend: true,
                 colors: d3.scaleOrdinal()
                   .range(d3.schemeCategory10),
@@ -99,7 +99,7 @@ function DataDensity(props) {
                 xFormat: d3.timeFormat('%m/%Y'),
                 yFormat: d => numberFormatter.format(d, 'short'),
                 xScale: d3.scaleTime().domain(d3.extent(recordsPerPersonYears, d => d.X_CALENDAR_MONTH)),
-                tickFormat: d3.timeFormat('%B %Y'),
+                tickFormat: d3.timeFormat('%b %Y'),
                 showLegend: true,
                 colors: d3.scaleOrdinal()
                   .range(d3.schemeCategory10),
