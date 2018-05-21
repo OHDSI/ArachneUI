@@ -40,7 +40,7 @@ export default function getFields(props) {
     },
     {
       label: 'Tenant',
-      name: 'tenant',
+      name: 'tenantIds',
       type: fieldTypes.enum,
       isMulti: true,
       forceOpened: true,
