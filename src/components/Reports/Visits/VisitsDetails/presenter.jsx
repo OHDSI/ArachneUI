@@ -30,6 +30,7 @@ import * as d3 from 'd3';
 import { chartSettings, defaultTrellisSet } from 'modules/DataCatalog/const';
 import Chart from 'components/Reports/Chart';
 import isEmpty from 'lodash/isEmpty';
+import { chartTime } from 'const/formats';
 
 function VisitsDetails(props) {
   const {
@@ -62,7 +63,7 @@ function VisitsDetails(props) {
                 trellisLabel: 'Age Decile',
                 seriesLabel: 'Year of Observation',
                 yLabel: 'Prevalence Per 1000 People',
-                xFormat: d3.timeFormat('%B %Y'),
+                xFormat: d3.timeFormat(chartTime),
                 yFormat: d3.format('0.2f'),
                 tickPadding: 20,
                 colors: d3.scaleOrdinal()
@@ -89,7 +90,7 @@ function VisitsDetails(props) {
                 xLabel: 'Date',
                 yFormat: d => numberFormatter.format(d, 'short'),
                 xFormat: d3.timeFormat('%m/%Y'),
-                tickFormat: d3.timeFormat('%B %Y'),
+                tickFormat: d3.timeFormat(chartTime),
                 xScale: d3.scaleTime().domain(d3.extent(conditionByMonth[0].values, d => d.xValue)),
               }
             );

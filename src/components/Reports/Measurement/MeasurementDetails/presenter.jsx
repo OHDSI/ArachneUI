@@ -25,23 +25,38 @@ import BEMHelper from 'services/BemHelper';
 import {
   Panel,
 } from 'arachne-ui-components';
+import {
+  histogram,
+} from '@ohdsi/atlascharts/dist/atlascharts.umd';
 import { numberFormatter } from 'services/Utils';
 import * as d3 from 'd3';
 import { chartSettings, defaultTrellisSet } from 'modules/DataCatalog/const';
 import Chart from 'components/Reports/Chart';
 import isEmpty from 'lodash/isEmpty';
-import { chartTime } from 'const/formats';
 
-function ConditionDetails(props) {
+function MeasurementDetails(props) {
   const {
-    proceduresByType,
+    measurementsByType,
     conditionByMonth,
     conditionPrevalence,
     ageOfFirstOccurrence,
+    frequencyDistribution,
+    valuesRelativeToNorm,
+    upperLimitDistribution,
+    lowerLimitDistribution,
+    measurementValueDistribution,
+    recordsByUnit,
+
 		conditionPrevalenceChart,
 		conditionByMonthChart,
-		proceduresByTypeChart,
-		ageOfFirstOccurrenceChart,
+		measurementsByTypeChart,
+    ageOfFirstOccurrenceChart,
+    frequencyDistributionChart,
+    valuesRelativeToNormChart,
+    upperLimitDistributionChart,
+    lowerLimitDistributionChart,
+    measurementValueDistributionChart,
+    recordsByUnitChart,
   } = props;
   const classes = new BEMHelper('report-death');
   const emptyClasses = new BEMHelper('report-empty');
@@ -64,7 +79,7 @@ function ConditionDetails(props) {
                 trellisLabel: 'Age Decile',
                 seriesLabel: 'Year of Observation',
                 yLabel: 'Prevalence Per 1000 People',
-                xFormat: d3.timeFormat(chartTime),
+                xFormat: d3.timeFormat('%B %Y'),
                 yFormat: d3.format('0.2f'),
                 tickPadding: 20,
                 colors: d3.scaleOrdinal()
@@ -91,7 +106,7 @@ function ConditionDetails(props) {
                 xLabel: 'Date',
                 yFormat: d => numberFormatter.format(d, 'short'),
                 xFormat: d3.timeFormat('%m/%Y'),
-                tickFormat: d3.timeFormat(chartTime),
+                tickFormat: d3.timeFormat('%B %Y'),
                 xScale: d3.scaleTime().domain(d3.extent(conditionByMonth[0].values, d => d.xValue)),
               }
             );
@@ -100,11 +115,11 @@ function ConditionDetails(props) {
       </div>
       <div className='col-xs-6'>
         <Chart
-          title='Procedures by Type'
-          isDataPresent={!isEmpty(proceduresByType)}
+          title='measurements by Type'
+          isDataPresent={!isEmpty(measurementsByType)}
           render={({ width, element }) => {
-            proceduresByTypeChart.render(
-              proceduresByType,
+            measurementsByTypeChart.render(
+              measurementsByType,
               element,
               width,
               width*0.75,
@@ -133,8 +148,114 @@ function ConditionDetails(props) {
           }}
         />
       </div>
+      <div className='col-xs-6'>
+        <Chart
+          title='Records by unit'
+          isDataPresent={!isEmpty(recordsByUnit)}
+          render={({ width, element }) => {
+            recordsByUnitChart.render(
+              recordsByUnit,
+              element,
+              width,
+              width*0.75,
+              {
+                ...chartSettings,
+              }
+            );
+          }}
+        />
+      </div>
+      <div className='col-xs-6'>
+        <Chart
+          title='Measurements value distribution'
+          isDataPresent={!isEmpty(measurementValueDistribution)}
+          render={({ width, element }) => {
+            measurementValueDistributionChart.render(
+              measurementValueDistribution,
+              element,
+              width,
+              width*0.75,
+              {
+                ...chartSettings,
+              }
+            );
+          }}
+        />
+      </div>
+      <div className='col-xs-6'>
+        <Chart
+          title='Lower limit distribution'
+          isDataPresent={!isEmpty(lowerLimitDistribution)}
+          render={({ width, element }) => {
+            lowerLimitDistributionChart.render(
+              lowerLimitDistribution,
+              element,
+              width,
+              width*0.75,
+              {
+                ...chartSettings,
+              }
+            );
+          }}
+        />
+      </div>
+      <div className='col-xs-6'>
+        <Chart
+          title='Upper limit distribution'
+          isDataPresent={!isEmpty(upperLimitDistribution)}
+          render={({ width, element }) => {
+            upperLimitDistributionChart.render(
+              upperLimitDistribution,
+              element,
+              width,
+              width*0.75,
+              {
+                ...chartSettings,
+              }
+            );
+          }}
+        />
+      </div>
+      <div className='col-xs-6'>
+        <Chart
+          title='Values relative to norm'
+          isDataPresent={!isEmpty(valuesRelativeToNorm)}
+          render={({ width, element }) => {
+            valuesRelativeToNormChart.render(
+              valuesRelativeToNorm,
+              element,
+              width,
+              width*0.75,
+              {
+                ...chartSettings,
+              }
+            );
+          }}
+        />
+      </div>
+      
+      <div className='col-xs-12'>
+        <Chart
+          title='Frequency Distribution'
+          isDataPresent={!isEmpty(frequencyDistribution)}
+          render={({ width, element }) => {
+            frequencyDistributionChart.render(
+              histogram.mapHistogram(frequencyDistribution),
+              element,
+              width,
+              width*0.25,
+              {
+                ...chartSettings,
+                xLabel: `Count ('x' or more measurements)`,
+                yLabel: '% of total number of persons',
+                yFormat: d => numberFormatter.format(d, 'short'),
+              }
+            );
+          }}
+        />
+      </div>
     </div>
   );
 }
 
-export default ConditionDetails;
+export default MeasurementDetails;
