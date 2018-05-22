@@ -86,6 +86,7 @@ const mapDispatchToProps = {
   closeModal: () => ModalUtils.actions.toggle(modal.createCode, false),
   loadAnalysis: actions.analysisExecution.analysis.find,
   reset: () => resetForm(form.importCodeList),
+  showModalError: message => ModalUtils.actions.toggle(modal.modalError, true, message),
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
@@ -112,7 +113,12 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
       submitPromise.then(() => dispatchProps.reset())
         .then(() => dispatchProps.closeModal())
         .then(() => dispatchProps.loadAnalysis({ id: stateProps.analysisId }))
-          .catch(er => {console.error(er)});
+        .catch((error) => {
+          const er = get(error, `errors.${entityGuid}`);
+          if (er) {
+            dispatchProps.showModalError(er);
+          }
+        });
 
       return submitPromise;
     },
