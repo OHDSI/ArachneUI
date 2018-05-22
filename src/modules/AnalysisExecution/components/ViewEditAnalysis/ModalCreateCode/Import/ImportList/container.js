@@ -67,10 +67,11 @@ ImportList.propTypes = {
 function mapStateToProps(state, ownProps) {
   const analysisType = get(state, 'analysisExecution.analysis.data.result.type.id', '', 'String');
   const selectedSource = get(ownProps, 'selectedSource', {}, 'Object');
+  const selectedEntity = selectors.getFormEntity(state);
 
   return {
     selectedSource,
-    isAnySelected: selectors.getSelectedForImport(state).length > 0,
+    isAnySelected: selectedEntity,
     entities: selectors.getList(state),
     totalSteps: ownProps.totalSteps,
     step: ownProps.step,
@@ -92,10 +93,10 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...ownProps,
     ...stateProps,
     ...dispatchProps,
-    doSubmit(entities) {
+    doSubmit({ entity }) {
       // TEMP. TODO!
       const datanodeId = stateProps.selectedSource.id;
-      const entityGuid = getFormSelectedCheckboxes(entities)[0];
+      const entityGuid = entity;
 
       const submitPromise = dispatchProps.importEntities(
         {

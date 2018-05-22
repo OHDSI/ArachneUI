@@ -21,29 +21,32 @@
  */
 
 import { createSelector } from 'reselect';
-import { get, getFormSelectedCheckboxes } from 'services/Utils';
+import { get } from 'services/Utils';
 import { form } from 'modules/AnalysisExecution/const';
 
-const getList = state => get(
+const getRawList = state => get(
   state,
   'analysisExecution.importEntityOptionList.queryResult',
-  [],
+  {},
   'Array'
 );
 
-const getFormEntities = state => get(
+const getFormEntity = state => get(
   state,
-  `form.${form.importCodeList}.values`,
-  {},
-  'Object'
+  `form.${form.importCodeList}.values.entity`,
+  '',
+  'String'
 );
 
-const getSelectedForImport = createSelector(
-  [getFormEntities],
-  formEntites => getFormSelectedCheckboxes(formEntites)
+const getList = createSelector(
+  [getRawList, getFormEntity],
+  (list, selectedEntity) => list.map((entity) => ({
+    ...entity,
+    selected: selectedEntity === entity.guid,
+  }))
 );
 
 export default {
   getList,
-  getSelectedForImport,
+  getFormEntity,
 };
