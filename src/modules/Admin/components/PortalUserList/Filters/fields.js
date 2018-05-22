@@ -37,15 +37,6 @@ export default function getFields(props) {
       type: fieldTypes.toggle,
       forceOpened: true,
       hasTitle: false
-    },
-    {
-      label: 'Tenant',
-      name: 'tenantIds',
-      type: fieldTypes.enum,
-      isMulti: true,
-      forceOpened: true,
-      hasTitle: true,
-      options: props.tenantOptions,
     }
   ];
 }

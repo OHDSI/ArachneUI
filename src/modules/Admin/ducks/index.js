@@ -21,7 +21,6 @@
  */
 
 import adminList from './adminList';
-import tenantList from './tenantList';
 import adminOptionList from './adminOptionList';
 import portalUserConfirmEmail from './portalUserConfirmEmail';
 import portalUserEnable from './portalUserEnable';
@@ -34,7 +33,6 @@ import reindexProcess from './reindexProcess';
 
 const actions = {
   adminList: adminList.actions,
-  tenantList: tenantList.actions,
   adminOptionList: adminOptionList.actions,
   portalUserConfirmEmail: portalUserConfirmEmail.actions,
   portalUserEnable: portalUserEnable.actions,
@@ -48,7 +46,6 @@ const actions = {
 
 const reducer = {
   adminList: adminList.reducer,
-  tenantList: tenantList.reducer,
   adminOptionList: adminOptionList.reducer,
   portalUserConfirmEmail: portalUserConfirmEmail.reducer,
   portalUserEnable: portalUserEnable.reducer,

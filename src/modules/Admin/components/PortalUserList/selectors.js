@@ -20,9 +20,7 @@
  *
  */
 
-import { createSelector } from 'reselect';
 import { get } from 'services/Utils';
-import { sortOptions } from 'services/Utils';
 import { extractPaginationData } from 'components/Grid';
 import { viewModePageSize } from 'const/viewModes';
 
@@ -36,26 +34,9 @@ class UserListSelectorsBuilder {
     });
   }
 
-  getTenantList(state) {
-    return get(state, 'adminSettings.tenantList.data') || [];
-  }
-
-  getTenantOptions(tenantList) {
-    const tenantOptions = tenantList.map(tenant => ({
-      label: tenant.name,
-      value: tenant.id.toString(),
-    }));
-    return sortOptions(tenantOptions);
-  }
-
-  buildSelectorForTenantOptions() {
-    return createSelector([this.getTenantList], this.getTenantOptions);
-  }
-
   build() {
     return {
       getPaginationDetails: this.getPaginationDetails,
-      getTenantOptions: this.buildSelectorForTenantOptions(),
     };
   }
 }
