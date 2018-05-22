@@ -16,22 +16,10 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: April 24, 2017
+ * Created: June 08, 2017
  *
  */
 
-const commonDate = 'MMM D, YYYY h:mmA z';
-const shortDate = 'MM/D/YYYY hh:mma z';
-const usDateTime = 'MM/D/YY hh:mm:ss z';
-const usDateOnly = 'MM/D/YY';
-const humanDate = 'DD MMM YYYY';
-const chartDate = '%b %Y';
+import Measurement from './container';
 
-export {
-  commonDate,
-  shortDate,
-  usDateTime,
-  usDateOnly,
-  humanDate,
-  chartDate,
-};
+export default Measurement;

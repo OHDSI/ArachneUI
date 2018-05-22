@@ -33,6 +33,7 @@ import * as d3 from 'd3';
 import { chartSettings } from 'modules/DataCatalog/const';
 import Chart from 'components/Reports/Chart';
 import isEmpty from 'lodash/isEmpty';
+import { chartTime } from 'const/formats';
 
 require('./style.scss');
 
@@ -95,7 +96,7 @@ function Person(props) {
               width/3,
               {
                 ...chartSettings,
-                xFormat: d3.timeFormat('%B %Y'),
+                xFormat: d3.timeFormat(chartTime),
                 xLabel: 'Year',
                 yLabel: 'People',
                 yFormat: d => numberFormatter.format(d, 'short')
