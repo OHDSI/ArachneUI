@@ -23,7 +23,7 @@
 import React from 'react';
 import BEMHelper from 'services/BemHelper';
 import { Field } from 'redux-form';
-import { Button, FormCheckbox, ListItem } from 'arachne-ui-components';
+import { Button, FormCheckbox, ListItem, Fieldset } from 'arachne-ui-components';
 import ProgressDots from 'components/ProgressDots';
 import { nameAnalysisType } from 'modules/AnalysisExecution/const';
 import Fuse from 'fuse.js';
@@ -109,11 +109,16 @@ function ImportList(props) {
           data={filteredEntities}
           rowRenderer={({ value }) => (
             <Field
-              component={FormCheckbox}
-              options={{
-                label: value.name,
+              component={Fieldset}
+              InputComponent={{
+                component: FormCheckbox,
+                props: {
+                    options: {
+                        label: value.name,
+                    }
+                },
               }}
-              name={`entities[${value.guid}]`}
+              name={value.guid}
             />
           )}
         />

@@ -33,7 +33,7 @@ const getList = state => get(
 
 const getFormEntities = state => get(
   state,
-  `form.${form.importCodeList}.values.entities`,
+  `form.${form.importCodeList}.values`,
   {},
   'Object'
 );

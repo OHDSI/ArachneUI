@@ -92,7 +92,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...ownProps,
     ...stateProps,
     ...dispatchProps,
-    doSubmit({ entities }) {
+    doSubmit(entities) {
       // TEMP. TODO!
       const datanodeId = stateProps.selectedSource.id;
       const entityGuid = getFormSelectedCheckboxes(entities)[0];
@@ -110,7 +110,8 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
 
       submitPromise.then(() => dispatchProps.reset())
         .then(() => dispatchProps.closeModal())
-        .then(() => dispatchProps.loadAnalysis({ id: stateProps.analysisId }));
+        .then(() => dispatchProps.loadAnalysis({ id: stateProps.analysisId }))
+          .catch(er => {console.error(er)});
 
       return submitPromise;
     },
