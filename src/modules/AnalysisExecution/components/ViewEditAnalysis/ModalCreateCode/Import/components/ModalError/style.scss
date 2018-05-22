@@ -24,8 +24,11 @@
  
 .#{$namespace} { 
   &modal-error {
+    padding: 0.5rem;
+
     &__error {
       color: $red;
+      padding: 5px 0;
     }
   }
 }

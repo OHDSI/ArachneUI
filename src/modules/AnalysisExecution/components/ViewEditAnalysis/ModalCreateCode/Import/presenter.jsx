@@ -26,7 +26,6 @@ import NodeSelector from './NodeSelector';
 import ImportList from './ImportList';
 import ImportLoading from './ImportLoading';
 import NotAvailable from './NotAvailable';
-import ModalError from './components/ModalError';
 
 require('./style.scss');
 
@@ -96,7 +95,6 @@ function ImportCode(props) {
             )}
           </div>
         )}
-      <ModalError />
     </div>
   );
 }
