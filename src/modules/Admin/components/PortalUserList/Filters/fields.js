@@ -22,21 +22,21 @@
 
 import { types as fieldTypes } from 'const/modelAttributes';
 
-const userFilterFields = [
-  {
-    label: 'Enabled',
-    name: 'enabled',
-    type: fieldTypes.toggle,
-    forceOpened: true,
-    hasTitle: false,
-  },
-  {
-    label: 'E-mail confirm',
-    name: 'emailConfirmed',
-    type: fieldTypes.toggle,
-    forceOpened: true,
-    hasTitle: false,
-  }
-];
-
-export default userFilterFields;
+export default function getFields(props) {
+  return [
+    {
+      label: 'Enabled',
+      name: 'enabled',
+      type: fieldTypes.toggle,
+      forceOpened: true,
+      hasTitle: false
+    },
+    {
+      label: 'E-mail confirm',
+      name: 'emailConfirmed',
+      type: fieldTypes.toggle,
+      forceOpened: true,
+      hasTitle: false
+    }
+  ];
+}

@@ -27,7 +27,7 @@ import actions from 'actions';
 import presenter from './presenter';
 import { ContainerBuilder, get, Utils } from 'services/Utils';
 import UserListSelectorBuilder from './selectors';
-import userFilterFields from './Filters';
+import getFields from './Filters/fields';
 import { saveFilter, getSavedFilter } from "modules/Admin/ducks/portalUserList";
 import values from 'lodash/values';
 import Uri from 'urijs';
@@ -90,7 +90,7 @@ class UserListBuilder extends ContainerBuilder {
       isLoading,
       query: get(state, 'routing.locationBeforeTransitions.query', {}, 'Object'),
       paginationDetails: selectors.getPaginationDetails(state),
-      filterFields: userFilterFields,
+      filterFields: getFields(),
       ...Utils.getPlainFiltersEncodeDecoder(),
     };
   }
