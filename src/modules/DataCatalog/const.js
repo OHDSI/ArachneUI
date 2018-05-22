@@ -91,6 +91,7 @@ const reportFilenames = {
   [reports.procedures]: /procedure_treemap\.json/i,
   [reports.visits]: /visit_treemap\.json/i,
   [reports.achillesheel]: /achillesheel\.json/i,
+  [reports.measurement]: /measurement_treemap\.json/i,
 };
 
 const chartSettings = {
