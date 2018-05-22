@@ -57,7 +57,7 @@ function Skills(props) {
           promptTextCreator: (skill) => `Create skill '${skill}'`,
           onNewOptionClick: (skill) => props.createSkill(skill),
           onBlurResetsInput: true,
-          osSelectResetsInput: true,
+          onSelectResetsInput: true,
         },
       },
     },
