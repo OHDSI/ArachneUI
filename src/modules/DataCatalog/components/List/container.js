@@ -33,6 +33,22 @@ import { paths } from 'modules/DataCatalog/const';
 
 const selectors = (new SelectorsBuilder()).build();
 
+function formatSearchString(searchStr) {
+  const resultString = {};
+  if (searchStr) {
+    Object.keys(searchStr).forEach((filterName) => {
+      /*
+        Redux form behaves suspiciously when you use integers as Field name
+        It treats objects with Integer field as Array and it leads to errors,
+        And because we use Integer fields in our metadata fields
+        decided to escape fields with prefix 'f_'
+       */
+      resultString[filterName.replace(/^(filter\[f_)/, 'filter[')] = searchStr[filterName];
+    });
+  }
+  return resultString;
+}
+
 /** @augments { Component<any, any> } */
 class DataCatalogStatefulList extends Component {
   static propTypes() {
@@ -44,7 +60,11 @@ class DataCatalogStatefulList extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.searchStr !== nextProps.searchStr) {
-      this.props.loadDsList({ searchStr: nextProps.searchStr, onlyMy: nextProps.onlyMy });
+      const searchStr = formatSearchString({ ...nextProps.searchStr });
+      this.props.loadDsList({
+        searchStr,
+        onlyMy: nextProps.onlyMy,
+      });
     }
   }
 
@@ -78,7 +98,7 @@ class DataCatalogListBuilder extends ContainerBuilder {
   }
 
   getFetchers({ state }) {
-    const searchStr = state.routing.locationBeforeTransitions.query;
+    const searchStr = formatSearchString(state.routing.locationBeforeTransitions.query);
     return {
       loadDsList: actions.dataCatalog.dataSourceList.query.bind(null, { searchStr }),
     };

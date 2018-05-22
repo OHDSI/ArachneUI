@@ -72,6 +72,10 @@ class DataCatalogListTableSelectorsBuilder extends DsAttrListSelector {
       // Remove attributes that should not be shown in Filter panel
       .filter(attr => attr.faceted)
       .map(cloneDeep)
+      .map(attr => ({
+        ...attr,
+        name: `f_${attr.name}`,
+      }))
       // Compute options for filter sections
       .map((attr) => {
         if (attr.type === fieldTypes.string && facets) {

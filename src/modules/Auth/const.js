@@ -148,6 +148,18 @@ const registerFields = function ({ professionalTypesOptions }) {
       },
     },
     {
+      name: 'organization',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Organization',
+          type: 'text',
+          required: true,
+        },
+      },
+    },
+    {
       name: 'professionalTypeId',
       InputComponent: {
         component: FormSelect,
