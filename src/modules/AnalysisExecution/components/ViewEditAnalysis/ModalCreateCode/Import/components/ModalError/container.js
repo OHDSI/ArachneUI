@@ -55,10 +55,10 @@ export default class ModalErrorBuilder extends ContainerBuilder {
   }
   
   mapStateToProps(state, ownProps) {     
-    const error = get(state, 'form.modalError.data', '');
+    const errors = get(state, 'modal.modalError.data', [], 'Array');
 
     return {
-      errors: error.split(','),
+      errors,
     };
   }
 
