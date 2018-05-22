@@ -25,6 +25,8 @@ import React from 'react';
 import ducks from './ducks';
 import AboutInfo from './components/AboutInfo/index';
 import SearchInput from './components/Search/NavbarInput';
+import MenuDropdown from './components/MenuDropdown';
+import MenuUsername from './components/MenuDropdown/Username';
 
 require('./styles/index.scss');
 
@@ -40,6 +42,13 @@ if (__APP_TYPE_CENTRAL__) {
   module.menuItems = () => [
     <SearchInput />,
     <InvitationList />,
+    <MenuDropdown />,
+  ];
+}
+
+if (__APP_TYPE_NODE__) {
+  module.menuItems = () => [
+    <MenuUsername mods={['standalone']} />,
   ];
 }
 

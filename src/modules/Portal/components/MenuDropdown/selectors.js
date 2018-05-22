@@ -15,29 +15,23 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: January 24, 2017
+ * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon
+ * Created: February 13, 2018
  *
  */
 
-import React from 'react';
-import imgs from 'const/imgs';
-import { combineReducers } from 'redux';
-import ducks from './ducks';
-import { paths } from './const';
+import { createSelector } from 'reselect';
+import { Utils, get } from 'services/Utils';
+
+const getTenants = state => get(state, 'portal.myProfile.data.result.tenants') || [];
+
+const getNewActiveTenantId = (state) => {
+  if (get(state, 'expertFinder.userSettings.isUpdating')) {
+    return get(state, 'expertFinder.userSettings.newData.activeTenantId');
+  }
+};
 
 export default {
-  actions: () => ducks.actions,
-  reducer: () => combineReducers(ducks.reducer),
-  routes: () => (location, cb) => {
-    require.ensure([], (require) => {
-      cb(null, require('./routes').default()); // eslint-disable-line global-require
-    });
-  },
-  sidebarElement: {
-    ico: imgs.sidebar.expertFinder,
-    name: 'Expert Finder',
-    path: paths.list(),
-  },
-  indexRedirect: '/list',
+  getTenants,
+  getNewActiveTenantId,
 };
