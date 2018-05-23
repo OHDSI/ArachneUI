@@ -5,7 +5,7 @@ const actionCoreName = 'AD_TENANT_LIST';
 
 const adminListDuck = new Duck({
   name: actionCoreName,
-  urlBuilder: apiPaths.tenants,
+  urlBuilder: apiPaths.tenantList,
 });
 
 const actions = adminListDuck.actions;
