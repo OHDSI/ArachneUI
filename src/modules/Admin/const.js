@@ -42,6 +42,7 @@ const apiPaths = {
     }
     return uri.toString();
   },
+  tenantList: () => `/api/v1/tenants/list`,
   adminOptions: ({ query }) => `/api/v1/admin/admins/suggest?query=${query}`,
   solrIndex: ({ domain }) => `/api/v1/admin/${domain}/reindex-solr`,
   users: ({ id, query }) => {
