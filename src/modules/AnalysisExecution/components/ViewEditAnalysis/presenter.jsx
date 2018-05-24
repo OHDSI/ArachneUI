@@ -42,7 +42,7 @@ import ModalStatusHistory from './ModalStatusHistory';
 import ModalUploadResult from './ModalUploadResult';
 import ModalRejectSubmission from './ModalRejectSubmission';
 import ModalAddDataSource from 'modules/StudyManager/components/ViewEdit/ModalAddDataSource';
-import ModalError from './ModalCreateCode/Import/components/ModalError';
+import ModalError from './ModalCreateCode/components/ModalError';
 
 import './style.scss';
 

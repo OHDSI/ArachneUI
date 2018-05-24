@@ -86,7 +86,7 @@ const mapDispatchToProps = {
   closeModal: () => ModalUtils.actions.toggle(modal.createCode, false),
   loadAnalysis: actions.analysisExecution.analysis.find,
   reset: () => resetForm(form.importCodeList),
-  showModalError: message => ModalUtils.actions.toggle(modal.modalError, true, message),
+  showModalError: params => ModalUtils.actions.toggle(modal.modalError, true, params),
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
@@ -114,9 +114,12 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         .then(() => dispatchProps.closeModal())
         .then(() => dispatchProps.loadAnalysis({ id: stateProps.analysisId }))
         .catch((error) => {
-          const er = get(error, `errors.${entityGuid}`);
-          if (er) {
-            dispatchProps.showModalError(er);
+          const errors = get(error, `errors.${entityGuid}`);
+          if (errors) {
+            dispatchProps.showModalError({
+              title: 'Unsuccessful import',
+              errors,
+            });
           }
         });
 

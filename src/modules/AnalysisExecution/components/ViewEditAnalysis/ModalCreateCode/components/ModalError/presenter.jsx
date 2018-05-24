@@ -30,7 +30,7 @@ function ModalError(props) {
   const classes = new BEMHelper('modal-error');
 
   return (
-    <Modal modal={props.modal} title="Unsuccessful import">
+    <Modal modal={props.modal} title={props.title || 'Error'}>
       <ul {...classes()}>
         {Array.isArray(props.errors) && props.errors.map(error =>
           <li {...classes('error')}>{error}</li>

@@ -55,10 +55,12 @@ export default class ModalErrorBuilder extends ContainerBuilder {
   }
   
   mapStateToProps(state, ownProps) {     
-    const errors = get(state, 'modal.modalError.data', [], 'Array');
+    const errors = get(state, 'modal.modalError.data.errors', [], 'Array');
+    const title = get(state, 'modal.modalError.data.title');
 
     return {
       errors,
+      title,
     };
   }
 
