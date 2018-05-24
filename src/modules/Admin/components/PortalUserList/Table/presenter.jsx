@@ -30,6 +30,8 @@ import {
   BadgedIcon,
 } from 'arachne-ui-components';
 
+import ActionsToolbar from './ActionsToolbar';
+
 require('./style.scss');
 
 function CellRemove({ id, removeUser }) {
@@ -55,63 +57,86 @@ function AdminTable(props) {
     confirmEmail,
     sorting,
     setSorting,
+    selectUser,
+    selectedUsers,
   } = props;
 
   return (
-    <Table
-      {...tableClasses()}
-      mods={['hover', 'padded']}
-      data={userList}
-      sorting={sorting}
-      setSorting={setSorting}
-    >
-      <Cell
-        {...tableClasses('name')}
-        header="Name"
-        field="name"
-      />
-      <Cell
-        {...tableClasses('email')}
-        header="Email"
-        field="email"
-      />
-      <CellCheck
-        {...tableClasses('enabled')}
-        header="Enabled"
-        field="enabled"
-        isSortable={false}
-        props={
-          entity => ({
-            id: entity.id,
-            toggle: enablePortalUser,
-          })
-        }
-      />
-      <CellCheck
-        {...tableClasses('emailConfirmed')}
-        header="Email confirm"
-        field="emailConfirmed"
-        isSortable={false}
-        props={
-          entity => ({
-            id: entity.id,
-            toggle: confirmEmail,
-          })
-        }
-      />
-      <CellRemove
-        {...tableClasses('remove')}
-        header="Remove"
-        field="id"
-        isSortable={false}
-        props={
-          entity => ({
-            id: entity.id,
-            removeUser,
-          })
-        }
-      />
-    </Table>
+    <div>
+      <ActionsToolbar/>
+      <Table
+        {...tableClasses()}
+        mods={['hover', 'padded']}
+        data={userList}
+        sorting={sorting}
+        setSorting={setSorting}
+      >
+        <CellCheck
+          {...tableClasses('selected')}
+          header=""
+          field="enabled"
+          isSortable={false}
+          props={
+            entity => ({
+              id: entity.id,
+              value: selectedUsers.includes(entity.id),
+              toggle: selectUser,
+            })
+          }
+        />
+        <Cell
+          {...tableClasses('name')}
+          header="Name"
+          field="name"
+        />
+        <Cell
+          {...tableClasses('tenants')}
+          header="Tenants"
+          field="tenantNames"
+        />
+        <Cell
+          {...tableClasses('email')}
+          header="Email"
+          field="email"
+        />
+        <CellCheck
+          {...tableClasses('enabled')}
+          header="Enabled"
+          field="enabled"
+          isSortable={false}
+          props={
+            entity => ({
+              id: entity.id,
+              toggle: enablePortalUser,
+            })
+          }
+        />
+        <CellCheck
+          {...tableClasses('emailConfirmed')}
+          header="Email confirm"
+          field="emailConfirmed"
+          isSortable={false}
+          props={
+            entity => ({
+              id: entity.id,
+              toggle: confirmEmail,
+            })
+          }
+        />
+        <CellRemove
+          {...tableClasses('remove')}
+          header="Remove"
+          field="id"
+          isSortable={false}
+          props={
+            entity => ({
+              id: entity.id,
+              removeUser,
+            })
+          }
+        />
+      </Table>
+    </div>
   );
 }
 

@@ -23,30 +23,27 @@
 import { createSelector } from 'reselect';
 import get from 'lodash/get';
 
-const getRawUserList = state => get(state, 'adminSettings.portalUserList.queryResult.content') || [];
-const getRawSelectedUsers = state => get(state, 'adminSettings.portalUserList.selectedUsers.data') || [];
+const getRawUserOptionList = state => get(state, 'adminSettings.userOptionList.data') || [];
+const getRawProfessionalTypesList = state => get(state, 'auth.professionalType.queryResult.result') || [];
 
-const getUserList = createSelector(
-  [getRawUserList],
-  rawUserList =>
-    rawUserList.map(item => ({
-      ...item,
-      tenantNames: item.tenants.map(v => v.name).join(','),
-      name: [
-        item.firstname || '',
-        item.middlename || '',
-        item.lastname || '',
-      ].filter(o => o).join(' '),
-    }))
+
+const getUserOptionList = createSelector(
+  [getRawUserOptionList],
+  rawUserOptionList => rawUserOptionList.map(user => ({
+    label: `${user.firstname} ${user.lastname}`,
+    value: user.id,
+  }))
 );
 
-// Has two additional usages : ActionsToolbar, ModalAddUsersToTenants
-const getSelectedUsers = createSelector(
-  [getRawSelectedUsers],
-  rawSelectedUser => Object.entries(rawSelectedUser).filter(([uuid, flag]) => flag).map(([uuid, flag]) => uuid),
+const getProfessionalTypes = createSelector(
+  [getRawProfessionalTypesList],
+  rawProfessionalTypesList => rawProfessionalTypesList.map(type => ({
+    label: type.name,
+    value: type.id,
+  }))
 );
 
 export default {
-  getUserList,
-  getSelectedUsers,
+  getUserOptionList,
+  getProfessionalTypes,
 };

@@ -31,6 +31,7 @@ const forms = keyMirror({
 const modal = keyMirror({
   addUser: null,
   addAdminUser: null,
+  addUsersToTenants: null,
 });
 
 const apiPaths = {
@@ -67,6 +68,7 @@ const apiPaths = {
   },
   portalUsersEnable: ({ id, enable }) => `/api/v1/admin/users/${id}/enable/${enable}`,
   portalUsersConfirmEmail: ({ id, confirm }) => `/api/v1/admin/users/${id}/confirm-email/${confirm}`,
+  portalUsersBatchDelete: () => '/api/v1/admin/users/batch',
 };
 
 const paths = {

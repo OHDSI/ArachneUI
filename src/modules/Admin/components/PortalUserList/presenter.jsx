@@ -25,6 +25,7 @@ import BEMHelper from 'services/BemHelper';
 import PageWrapper from 'modules/Admin/components/PageWrapper';
 import Table from './Table';
 import ModalAddUser from './ModalAddUser';
+import ModalAddUsersToTenants from './Table/ModalAddUsersToTenants';
 import {
   LoadingPanel,
   PageContent,
@@ -57,6 +58,7 @@ function UserList(props) {
         <Table />
       </Grid>
       <ModalAddUser />
+      <ModalAddUsersToTenants />
     </PageWrapper>
   );
 }

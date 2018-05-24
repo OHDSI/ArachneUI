@@ -24,40 +24,8 @@
 
 .#{$namespace} {
 
-  &admin-panel-user-list-table {
-    table-layout: fixed;
-
-    &__name-th {
-      width: 20%;
-    }
-    
-    &__email-th {
-      width: 20%;
-    }
-
-    &__enabled-th {
-      width: 10%;
-    }
-    
-    &__selected-th {
-      width: 5%
-    }
-
-    &__tenants-th {
-      width: 15%
-    }
-
-    &__emailConfirmed-th {
-      width: 15%;
-    }
-
-    &__remove-th {
-      width: 7%;
-    }
-
-    &__remove-td {
-      vertical-align: inherit;
-    }
-  }
+	&admin-panel-modal-add-user {
+		width: 260px;
+	}
 
 }

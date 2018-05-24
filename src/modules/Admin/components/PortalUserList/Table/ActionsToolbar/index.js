@@ -1,5 +1,4 @@
 /*
- *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,49 +14,10 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: September 29, 2017
- *
+ * Authors: Anton Gackovka
+ * Created: May 23, 2018
  */
 
-@import 'styles/vars-and-mixins.scss';
+import UserListActionsToolbarBuilder from './container';
 
-.#{$namespace} {
-
-  &admin-panel-user-list-table {
-    table-layout: fixed;
-
-    &__name-th {
-      width: 20%;
-    }
-    
-    &__email-th {
-      width: 20%;
-    }
-
-    &__enabled-th {
-      width: 10%;
-    }
-    
-    &__selected-th {
-      width: 5%
-    }
-
-    &__tenants-th {
-      width: 15%
-    }
-
-    &__emailConfirmed-th {
-      width: 15%;
-    }
-
-    &__remove-th {
-      width: 7%;
-    }
-
-    &__remove-td {
-      vertical-align: inherit;
-    }
-  }
-
-}
+export default new UserListActionsToolbarBuilder().build();

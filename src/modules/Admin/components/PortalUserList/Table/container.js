@@ -44,6 +44,7 @@ class UserListTableBuilder extends ContainerBuilder {
 
     return {
       userList: selectors.getUserList(state),
+      selectedUsers: selectors.getSelectedUsers(state),
       sorting: {
         sortBy: sortBy,
         sortAsc: sortAsc,
@@ -59,6 +60,7 @@ class UserListTableBuilder extends ContainerBuilder {
       removeUser: actions.adminSettings.portalUserList.delete,
       enableUser: actions.adminSettings.portalUserEnable.create,
       confirmEmail: actions.adminSettings.portalUserConfirmEmail.create,
+      selectUser: actions.adminSettings.portalUserList.toggle,
       setSearch: actions.router.setSearch,
       search: goToPage,
       loadUsersWithCurrentQuery: (query) => actions.adminSettings.portalUserList.query({ query }),

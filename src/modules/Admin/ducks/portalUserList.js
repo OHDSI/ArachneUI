@@ -22,16 +22,55 @@
 
 import Duck from 'services/Duck';
 import { apiPaths } from 'modules/Admin/const';
+import { Utils } from 'services/Utils';
+import ReducerFactory from 'services/ReducerFactory';
 
 const actionCoreName = 'AD_PORTAL_USERS';
+const selectUser = 'AD_PORTAL_USERS_SELECT_USER';
+const batchDelete = 'AD_PORTAL_USERS_BATCH_DELETE';
 
 const portalUsersDuck = new Duck({
   name: actionCoreName,
   urlBuilder: apiPaths.portalUsers,
 });
 
-const actions = portalUsersDuck.actions;
-const reducer = portalUsersDuck.reducer;
+const portalUserBatchDeleteDuck = new Duck({
+  name: batchDelete,
+  urlBuilder: apiPaths.portalUsersBatchDelete,
+});
+
+function toggleUser(uuid, selected = false) {
+  return {
+    type: selectUser,
+    payload: {
+      [uuid]: selected,
+    },
+  };
+}
+
+const selectUserReducer = new ReducerFactory();
+selectUserReducer.setActionHandler(selectUser, (state, action) => ({
+  ...state,
+  data: {
+    ...state.data,
+    ...action.payload,
+  },
+}));
+
+const actions = {
+  ...portalUsersDuck.actions,
+  batchDelete: portalUserBatchDeleteDuck.actions.create,
+  toggle: (uuid, selected) => {
+    return dispatch => dispatch(toggleUser(uuid, selected));
+  },
+};
+
+const reducer = Utils.extendReducer(
+  portalUsersDuck.reducer,
+  {
+    selectedUsers: selectUserReducer.build(),
+    batchDelete: portalUserBatchDeleteDuck.reducer,
+  });
 
 const filterName = 'portal-users-filter';
 
