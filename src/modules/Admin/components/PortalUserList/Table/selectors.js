@@ -25,6 +25,7 @@ import get from 'lodash/get';
 
 const getRawUserList = state => get(state, 'adminSettings.portalUserList.queryResult.content') || [];
 const getRawSelectedUsers = state => get(state, 'adminSettings.portalUserList.selectedUsers.data') || [];
+const getRawSelectedUserIds = state => get(state, 'adminSettings.portalUserList.selectedUsers.data') || [];
 
 const getUserList = createSelector(
   [getRawUserList],
@@ -45,6 +46,8 @@ const getSelectedUsers = createSelector(
   [getRawSelectedUsers],
   rawSelectedUser => Object.entries(rawSelectedUser).filter(([uuid, flag]) => flag).map(([uuid, flag]) => uuid),
 );
+
+
 
 export default {
   getUserList,

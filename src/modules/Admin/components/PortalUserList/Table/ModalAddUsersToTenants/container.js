@@ -24,11 +24,12 @@ import get from 'lodash/get';
 import actions from 'actions/index';
 import { ModalUtils } from 'arachne-ui-components';
 import { forms, modal } from 'modules/Admin/const';
-import { validators } from 'services/Utils';
 import Modal from './presenter';
-import selectors from '../selectors';
-import authActions from 'modules/Auth/ducks/index';
+import tableSelectors from '../selectors';
+import UserListSelectorBuilder from 'modules/Admin/components/PortalUserList/selectors';
 import { buildFormData, ContainerBuilder } from 'services/Utils';
+
+const gridSelectors = new UserListSelectorBuilder().build();
 
 class ModalAddUsersToTenantBuilder extends ContainerBuilder {
 
@@ -39,12 +40,15 @@ class ModalAddUsersToTenantBuilder extends ContainerBuilder {
   mapStateToProps(state) {
 
     return {
-      selectedUsers: selectors.getSelectedUsers(state),
+      selectedUsers: tableSelectors.getSelectedUsers(state),
+      tenantOptions: gridSelectors.getTenantOptions(state),
     };
   }
 
   getMapDispatchToProps() {
     return {
+      closeModal: () => ModalUtils.actions.toggle(modal.addUsersToTenants, false),
+      addToTenants: actions.adminSettings.portalUserList.addToTenants,
     }
   }
 
@@ -54,6 +58,9 @@ class ModalAddUsersToTenantBuilder extends ContainerBuilder {
       ...ownProps,
       ...stateProps,
       ...dispatchProps,
+      doSubmit: (data) => {
+        dispatchProps.addToTenants(null, { ...data, userIds: stateProps.selectedUsers });
+      }
     };
   }
 
@@ -63,12 +70,11 @@ class ModalAddUsersToTenantBuilder extends ContainerBuilder {
     };
   }
 
-  // getFormParams() {
-  //   return {
-  //     form: forms.addUser,
-  //     validate: validators.checkPassword,
-  //   }
-  // }
+  getFormParams() {
+    return {
+      form: forms.addUsersToTenants,
+    }
+  }
 }
 
 export default ModalAddUsersToTenantBuilder;

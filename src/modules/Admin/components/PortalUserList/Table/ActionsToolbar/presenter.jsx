@@ -20,6 +20,7 @@
 
 import React from 'react';
 import { Toolbar, Button } from 'arachne-ui-components';
+import { batchOperationType } from 'modules/Admin/const';
 
 require('./style.scss');
 
@@ -30,19 +31,17 @@ function ActionsToolbar
 ({
    children = null,
    selectedUsers,
-   batchDelete,
+   batch,
    openAddUsersToTenantsModal,
+   buttons,
  }) {
 
   return (
     selectedUsers.length > 0 ? 
       <Toolbar>
-        <Button onClick={batchDelete} label='New user(s)'/>
-        <Button onClick={batchDelete} label='Resend emails'/>
-        <Button onClick={openAddUsersToTenantsModal} label='Add to tenant'/>
-        <Button onClick={batchDelete} label='Enable/disable'/>
-        <Button onClick={batchDelete} label='Confirm/Invalidate email'/>
-        <Button onClick={batchDelete} label='Delete'/>
+        { 
+          buttons.map(v => <Button onClick={() => batch(v.type)} label={v.label}/>) 
+        }
         <span>{`Selected ${selectedUsers.length} elements`}</span>
       </Toolbar> 
       :

@@ -21,14 +21,12 @@
 import actions from 'actions/index';
 import { get, ContainerBuilder, Utils } from 'services/Utils';
 import UserTable from './presenter';
-import { order } from 'const/sorting';
 import { push as goToPage } from 'react-router-redux';
 import URI from 'urijs';
 import split from 'lodash/split';
 import selectors from '../selectors';
 import { ModalUtils } from 'arachne-ui-components';
-import { modal, paths } from 'modules/Admin/const';
-
+import { modal, batchOperationType } from 'modules/Admin/const';
 
 class UserListActionsToolbarBuilder extends ContainerBuilder {
 
@@ -37,26 +35,74 @@ class UserListActionsToolbarBuilder extends ContainerBuilder {
   }
 
   mapStateToProps(state) {
+    const { pathname, query } = state.routing.locationBeforeTransitions;
     return {
       selectedUsers: selectors.getSelectedUsers(state),
+      query,
+      pathname,
+      buttons: this.getButtons(),
     };
   }
 
+  getButtons() {
+    return [
+      {
+        type: 'new users',
+        label: 'New users',
+      },
+      {
+        type: batchOperationType.RESEND,
+        label: 'Resend emails',
+      },
+      {
+        type: batchOperationType.ENABLE,
+        label: 'Enable/Disable',
+      },
+      {
+        type: batchOperationType.CONFIRM,
+        label: 'Confirm/Invalidate email',
+      },
+      {
+        type: batchOperationType.DELETE,
+        label: 'Delete',
+      },
+    ];
+  }
+  
   getMapDispatchToProps() {
     return {
-      batchDeleteAction: actions.adminSettings.portalUserList.batchDelete,
+      batch: actions.adminSettings.portalUserList.batchOperation,
       openAddUsersToTenantsModal: () => ModalUtils.actions.toggle(modal.addUsersToTenants, true),
+      loadUsersWithCurrentQuery: (query) => actions.adminSettings.portalUserList.query({ query }),
+      cleanSelectedUsers: () => actions.adminSettings.portalUserList.updateSelectedUsers({}),
     }
   };
 
+  
   mergeProps(stateProps, dispatchProps, ownProps) {
 
+    const messages = {
+      [batchOperationType.ENABLE]: "toggle enabled flag for",
+      [batchOperationType.DELETE]: "delete",
+      [batchOperationType.RESEND]: "render confirmation email to",
+      [batchOperationType.CONFIRM]: "toggle confirmed flag for",
+    };
+    
     return {
       ...stateProps,
       ...ownProps,
       ...dispatchProps,
-      batchDelete: () => dispatchProps.batchDeleteAction(null, {ids: stateProps.selectedUsers})
-    };
+      batch: (operationType) => {
+        Utils.confirmDelete({message: `Are you sure you want to ${messages[operationType]} the selected users?`})
+          .then(() => dispatchProps.batch(null, {
+            type: operationType,
+            ids: stateProps.selectedUsers,
+          }))
+          .then(() => dispatchProps.loadUsersWithCurrentQuery(stateProps.query))
+          .then(() => operationType === batchOperationType.DELETE ? dispatchProps.cleanSelectedUsers() : {})
+          .catch(() => {});
+      },
+    }
   }
 }
 

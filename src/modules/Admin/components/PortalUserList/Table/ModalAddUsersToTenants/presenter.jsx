@@ -24,7 +24,6 @@ import { Form } from 'arachne-ui-components';
 import { FormInput } from 'arachne-ui-components';
 import { FormSelect, FormAutocomplete } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
-import { registerFields } from 'modules/Auth/const';
 
 require('./style.scss');
 
@@ -33,12 +32,45 @@ function ModalAddUser(props) {
 
   const { 
     selectedUsers,
+    tenants,
+    tenantOptions,
   } = props;
 
+  const submitBtn = {
+    label: 'Add',
+    loadingLabel: 'Adding...',
+    mods: ['success', 'rounded'],
+  };
+
+  const fields = [{
+    name: 'tenantIds',
+    InputComponent: {
+      component: FormSelect,
+      props: {
+        mods: ['bordered'],
+        placeholder: 'Tenants',
+        options: tenantOptions,
+        isMulti: true,
+      },
+    },
+  }];
+  
+  const cancelBtn = {
+    label: 'Cancel',
+  };
+  
   return (
     <Modal modal={props.modal} title="Add to tenants">
       <div {...classes()}>
-        {selectedUsers.join(',')}
+        <Form
+          mods={["spacing-actions-sm"]}
+          fields={fields}
+          submitBtn={submitBtn}
+          cancelBtn={cancelBtn}
+          onSubmit={props.doSubmit}
+          onCancel={props.modal.close}
+          {...props}
+        />
       </div>
     </Modal>
   );

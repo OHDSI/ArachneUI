@@ -19,7 +19,7 @@
  * Created: September 29, 2017
  *
  */
-
+import isEmpty from 'lodash/isEmpty';
 import actions from 'actions/index';
 import { get, ContainerBuilder, Utils } from 'services/Utils';
 import UserTable from './presenter';
@@ -64,6 +64,8 @@ class UserListTableBuilder extends ContainerBuilder {
       setSearch: actions.router.setSearch,
       search: goToPage,
       loadUsersWithCurrentQuery: (query) => actions.adminSettings.portalUserList.query({ query }),
+      loadUserIdsWithCurrentQuery: (query) => actions.adminSettings.portalUserList.loadUserIds({ query }),
+      updateSelectedIds: (ids) => actions.adminSettings.portalUserList.updateSelectedUsers(ids),
     }
   };
 
@@ -105,6 +107,15 @@ class UserListTableBuilder extends ContainerBuilder {
         });
         dispatchProps.search(uri.toString());
       },
+      selectAll: (selectedIds) => {
+        if (!isEmpty(selectedIds)) {
+          dispatchProps.updateSelectedIds({});
+        } else {
+          dispatchProps.loadUserIdsWithCurrentQuery(stateProps.query)
+            .then(dispatchProps.updateSelectedIds({}));
+        }
+        
+      }
     };
   }
 }

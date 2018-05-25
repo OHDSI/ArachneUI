@@ -26,6 +26,7 @@ import URI from 'urijs';
 const forms = keyMirror({
   addAdminUser: null,
   addUser: null,
+  addUsersToTenants: null,
 });
 
 const modal = keyMirror({
@@ -33,6 +34,15 @@ const modal = keyMirror({
   addAdminUser: null,
   addUsersToTenants: null,
 });
+
+
+function extractQuery(query, link) {
+  const uri = new URI(link);
+  if (query) {
+    uri.setSearch(query);
+  }
+  return uri.toString();
+}
 
 const apiPaths = {
   admins: ({ id, query }) => {
@@ -60,16 +70,15 @@ const apiPaths = {
   ping: () => '/api/v1/auth/me',
 
   portalUsers: ({ id, query }) => {
-    const link = `/api/v1/admin/users${id ? `/${id}` : ''}`;
-    const uri = new URI(link);
-    if (query) {
-      uri.setSearch(query);
-    }
-    return uri.toString();
+    return extractQuery(query, `/api/v1/admin/users${id ? `/${id}` : ''}`)
+  },
+  portalUsersIds: ({ query }) => {
+    return extractQuery(query, `/api/v1/admin/users/ids`);
   },
   portalUsersEnable: ({ id, enable }) => `/api/v1/admin/users/${id}/enable/${enable}`,
   portalUsersConfirmEmail: ({ id, confirm }) => `/api/v1/admin/users/${id}/confirm-email/${confirm}`,
-  portalUsersBatchDelete: () => '/api/v1/admin/users/batch',
+  portalUsersBatch: () => '/api/v1/admin/users/batch',
+  portalUsersAddToTenants: () => '/api/v1/admin/users/tenants',
 };
 
 const paths = {
@@ -121,6 +130,13 @@ const solrDomains = {
   },
 };
 
+const batchOperationType = keyMirror({
+  RESEND: null,
+  ENABLE: null,
+  CONFIRM: null,
+  DELETE: null,
+});
+
 export {
   adminPages,
   apiPaths,
@@ -129,4 +145,5 @@ export {
   modal,
   paths,
   solrDomains,
+  batchOperationType,
 };

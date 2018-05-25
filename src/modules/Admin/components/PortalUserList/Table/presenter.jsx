@@ -59,8 +59,11 @@ function AdminTable(props) {
     setSorting,
     selectUser,
     selectedUsers,
+    selectAll,
   } = props;
 
+  const checkBox = <Checkbox isChecked={true} onChange={selectAll} />;
+  
   return (
     <div>
       <ActionsToolbar/>
@@ -73,7 +76,7 @@ function AdminTable(props) {
       >
         <CellCheck
           {...tableClasses('selected')}
-          header=""
+          header={checkBox}
           field="enabled"
           isSortable={false}
           props={
