@@ -16,22 +16,39 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: April 24, 2017
+ * Created: June 08, 2017
  *
  */
 
-const commonDate = 'MMM D, YYYY h:mmA z';
-const shortDate = 'MM/D/YYYY hh:mma z';
-const usDateTime = 'MM/D/YY hh:mm:ss z';
-const usDateOnly = 'MM/D/YY';
-const humanDate = 'DD MMM YYYY';
-const chartTime = '%b %Y';
+import { connect } from 'react-redux';
+import actions from 'actions/index';
+import SelectorsBuilder from './selectors';
+import Procedures from './presenter';
 
-export {
-  commonDate,
-  shortDate,
-  usDateTime,
-  usDateOnly,
-  humanDate,
-  chartTime,
+const selectors = new SelectorsBuilder().build();
+
+function mapStateToProps(state) {
+  const reportData = selectors.getReportData(state);
+  const details = selectors.getReportDetails(state);
+  const tableData = selectors.getTableData(state);
+  const tableColumns = {
+    id: 'Id',
+    name: 'Name',
+    personCount: 'Persons',
+    prevalence: 'Prevalence',
+    recordsPerPerson: 'Records',
+  };
+
+  return {
+    data: reportData,
+    details,
+    tableData,
+    tableColumns,
+  };
+}
+
+const mapDispatchToProps = {
+  loadDetails: params => actions.dataCatalog.reportDetails.find(params),
 };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Procedures);

@@ -30,6 +30,7 @@ import { numberFormatter } from 'services/Utils';
 import * as d3 from 'd3';
 import { chartSettings } from 'modules/DataCatalog/const';
 import Chart from 'components/Reports/Chart';
+import { chartTime } from 'const/formats';
 
 require('./style.scss');
 
@@ -70,7 +71,7 @@ function DataDensity(props) {
                 xFormat: d3.timeFormat('%m/%Y'),
                 yFormat: d => numberFormatter.format(d, 'short'),
                 xScale: d3.scaleTime().domain(d3.extent(totalRecordsYears, d => d.X_CALENDAR_MONTH)),
-                tickFormat: d3.timeFormat('%B %Y'),
+                tickFormat: d3.timeFormat(chartTime),
                 showLegend: true,
                 colors: d3.scaleOrdinal()
                   .range(d3.schemeCategory10),
@@ -99,7 +100,7 @@ function DataDensity(props) {
                 xFormat: d3.timeFormat('%m/%Y'),
                 yFormat: d => numberFormatter.format(d, 'short'),
                 xScale: d3.scaleTime().domain(d3.extent(recordsPerPersonYears, d => d.X_CALENDAR_MONTH)),
-                tickFormat: d3.timeFormat('%B %Y'),
+                tickFormat: d3.timeFormat(chartTime),
                 showLegend: true,
                 colors: d3.scaleOrdinal()
                   .range(d3.schemeCategory10),
