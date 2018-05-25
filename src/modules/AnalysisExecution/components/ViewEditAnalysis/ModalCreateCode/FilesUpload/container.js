@@ -72,17 +72,16 @@ export default class FilesUploadBuilder {
           data = data.concat(files);
         }
 
-        const submitPromises = data.map(file =>
-          dispatchProps.createCode(
+        const fd = new FormData();
+          data.map(file => {
+              fd.append("files", file, file.label);
+          });
+
+        const submitPromise = dispatchProps.createCode(
             { analysisId: stateProps.analysisId },
-            buildFormData({
-              label: file.label,
-              file,
-            })
-          )
+            fd
         );
 
-        const submitPromise = Promise.all(submitPromises);
         submitPromise.then(() => dispatchProps.reset())
           .then(() => dispatchProps.closeModal())
           .then(() => dispatchProps.loadAnalysis({ id: stateProps.analysisId }))
