@@ -20,11 +20,11 @@
  *
  */
 
-import { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { ModalUtils } from 'arachne-ui-components';
 import { modal, paths } from 'modules/Admin/const';
 import actions from 'actions';
-import presenter from './presenter';
+import List from './presenter';
 import { ContainerBuilder, get, Utils } from 'services/Utils';
 import UserListSelectorBuilder from './selectors';
 import getFields from './Filters/fields';
@@ -70,7 +70,7 @@ class UserList extends Component {
   }
 
   render() {
-    return presenter(this.props);
+    return <List {...this.props} />;
   }
 }
 

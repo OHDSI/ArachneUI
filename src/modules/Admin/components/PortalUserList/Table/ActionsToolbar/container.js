@@ -20,7 +20,7 @@
 
 import actions from 'actions/index';
 import { get, ContainerBuilder, Utils } from 'services/Utils';
-import UserTable from './presenter';
+import ActionsToolbar from './presenter';
 import { push as goToPage } from 'react-router-redux';
 import URI from 'urijs';
 import split from 'lodash/split';
@@ -31,7 +31,7 @@ import { modal, batchOperationType } from 'modules/Admin/const';
 class UserListActionsToolbarBuilder extends ContainerBuilder {
 
   getComponent() {
-    return UserTable;
+    return ActionsToolbar;
   }
 
   mapStateToProps(state) {
@@ -40,39 +40,12 @@ class UserListActionsToolbarBuilder extends ContainerBuilder {
       selectedUsers: selectors.getSelectedUsers(state),
       query,
       pathname,
-      buttons: this.getButtons(),
     };
   }
 
-  getButtons() {
-    return [
-      {
-        type: 'new users',
-        label: 'New users',
-      },
-      {
-        type: batchOperationType.RESEND,
-        label: 'Resend emails',
-      },
-      {
-        type: batchOperationType.ENABLE,
-        label: 'Enable/Disable',
-      },
-      {
-        type: batchOperationType.CONFIRM,
-        label: 'Confirm/Invalidate email',
-      },
-      {
-        type: batchOperationType.DELETE,
-        label: 'Delete',
-      },
-    ];
-  }
-  
   getMapDispatchToProps() {
     return {
       batch: actions.adminSettings.portalUserList.batchOperation,
-      openAddUsersToTenantsModal: () => ModalUtils.actions.toggle(modal.addUsersToTenants, true),
       loadUsersWithCurrentQuery: (query) => actions.adminSettings.portalUserList.query({ query }),
       cleanSelectedUsers: () => actions.adminSettings.portalUserList.updateSelectedUsers({}),
     }

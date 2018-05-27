@@ -95,7 +95,7 @@ const actions = {
     return dispatch => dispatch(toggleUser(uuid, selected));
   },
   updateSelectedUsers: (payload) => {
-    return dispatch => dispatch(updateUsers(payload));
+    return dispatch => dispatch(updateUsers({ payload }));
   },
   loadUserIds: portalUsersIdsDuck.actions.query,
 };
@@ -106,7 +106,7 @@ const reducer = Utils.extendReducer(
     selectedUsers: selectUserReducer.build(),
     batchOperation: portalUserBatchDuck.reducer,
     addToTenants: portalUserAddToTenants.reducer,
-    selectedUserIds: portalUsersIdsDuck.reducer,
+    allUserIds: portalUsersIdsDuck.reducer,
   });
 
 const filterName = 'portal-users-filter';
@@ -126,4 +126,9 @@ function dropFilter() {
 export default {
   actions,
   reducer,
+};
+export {
+  saveFilter,
+  getSavedFilter,
+  dropFilter,
 };

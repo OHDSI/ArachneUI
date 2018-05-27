@@ -20,47 +20,49 @@
  *
  */
 
-import React from 'react';
-import BEMHelper from 'services/BemHelper';
+import React, { Component } from 'react';
 import PageWrapper from 'modules/Admin/components/PageWrapper';
 import Table from './Table';
 import ModalAddUser from './ModalAddUser';
 import ModalAddUsersToTenants from './Table/ModalAddUsersToTenants';
-import {
-  LoadingPanel,
-  PageContent,
-} from 'arachne-ui-components';
 import Grid from 'components/Grid';
-import AdminPagesSelector from 'modules/Admin/components/PageWrapper/Toolbar/AdminPagesSelector';
 import PortalUserListActions from './Actions';
 
 require('./style.scss');
 
-function UserList(props) {
-  const {
-    isLoading,
-    paginationDetails,
-    filterFields,
-    searchQueryDecode,
-    searchQueryEncode,
-  } = props;
-  return (
-    <PageWrapper>
-      <Grid
-        isLoading={isLoading}
-        title="Settings | Users"
-        paginationDetails={paginationDetails}
-        filterFields={filterFields}
-        Actions={<PortalUserListActions />}
-        searchQueryDecode={searchQueryDecode}
-        searchQueryEncode={searchQueryEncode}
-      >
-        <Table />
-      </Grid>
-      <ModalAddUser />
-      <ModalAddUsersToTenants />
-    </PageWrapper>
-  );
-}
+export default class UserList extends Component {
 
-export default UserList;
+  constructor() {
+    super();
+  }
+
+  getModals() {
+    return [<ModalAddUser />, <ModalAddUsersToTenants />];
+  }
+
+  render() {
+    const {
+      isLoading,
+      paginationDetails,
+      filterFields,
+      searchQueryDecode,
+      searchQueryEncode,
+    } = this.props;
+    return (
+      <PageWrapper>
+        <Grid
+          isLoading={isLoading}
+          title="Settings | Users"
+          paginationDetails={paginationDetails}
+          filterFields={filterFields}
+          Actions={<PortalUserListActions />}
+          searchQueryDecode={searchQueryDecode}
+          searchQueryEncode={searchQueryEncode}
+        >
+          <Table />
+        </Grid>
+        { this.getModals() }
+      </PageWrapper>
+    );
+  }
+}

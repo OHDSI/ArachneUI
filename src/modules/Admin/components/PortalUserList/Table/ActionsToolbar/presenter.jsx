@@ -18,7 +18,7 @@
  * Created: May 23, 2018
  */
 
-import React from 'react';
+import React, { Component } from 'react';
 import { Toolbar, Button } from 'arachne-ui-components';
 import { batchOperationType } from 'modules/Admin/const';
 
@@ -27,27 +27,45 @@ require('./style.scss');
 /**
  * @return {null}
  */
-function ActionsToolbar
-({
-   children = null,
-   selectedUsers,
-   batch,
-   openAddUsersToTenantsModal,
-   buttons,
- }) {
+export default class ActionsToolbar extends Component{
 
-  return (
-    selectedUsers.length > 0 ? 
-      <Toolbar>
-        { 
-          buttons.map(v => <Button onClick={() => batch(v.type)} label={v.label}/>) 
-        }
-        <span>{`Selected ${selectedUsers.length} elements`}</span>
-      </Toolbar> 
-      :
-      null
-  );
+  getButtons() {
+    return [
+      {
+        onClick: 'new users',
+        label: 'New users',
+      },
+      {
+        onClick: this.props.batch.bind(null, batchOperationType.RESEND),
+        label: 'Resend emails',
+      },
+      {
+        onClick: this.props.batch.bind(null, batchOperationType.ENABLE),
+        label: 'Enable/Disable',
+      },
+      {
+        onClick: this.props.batch.bind(null, batchOperationType.CONFIRM),
+        label: 'Confirm/Invalidate email',
+      },
+      {
+        onClick: this.props.batch.bind(null, batchOperationType.DELETE),
+        label: 'Delete',
+      },
+    ];
+  }
+
+  render() {
+
+    return (
+      this.props.selectedUsers.length > 0 ?
+        <Toolbar>
+          {
+            this.getButtons().map(buttonSettings => <Button {...buttonSettings} />)
+          }
+          <span>{`Selected ${this.props.selectedUsers.length} elements`}</span>
+        </Toolbar>
+        :
+        null
+    );
+  }
 }
-
-export default ActionsToolbar
-;
