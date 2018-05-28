@@ -141,22 +141,24 @@ function pdf({
         </div>
       }
       <div {...classes('pdf')}>
-        <ReactPDF
-          file={`data:application/pdf;base64,${data}`}
-          loading={<EmptyState message={'Loading PDF'} />}
-          error={<EmptyState message={'Failed to load PDF'} />}
-          noData={<EmptyState message={'No PDF file specified'} />}
-          onDocumentError={<EmptyState message={'Error while loading document'} />}
-          onPageError={<EmptyState message={'Error while loading page'} />}
-          width={pdfWidth * scale}
-          pageIndex={pageIndex-1}
-          onDocumentLoad={onPDFLoaded}
-          onPageLoad={(page) => {
-            if (!isInitialScaleSet) {
-              setInitialScale(pdfHeight / page.height);
-            }
-          }}
-        />
+        {data &&
+          <ReactPDF
+            file={`data:application/pdf;base64,${data}`}
+            loading={<EmptyState message={'Loading PDF'} />}
+            error={<EmptyState message={'Failed to load PDF'} />}
+            noData={<EmptyState message={'No PDF file specified'} />}
+            onDocumentError={<EmptyState message={'Error while loading document'} />}
+            onPageError={<EmptyState message={'Error while loading page'} />}
+            width={pdfWidth * scale}
+            pageIndex={pageIndex-1}
+            onDocumentLoad={onPDFLoaded}
+            onPageLoad={(page) => {
+              if (!isInitialScaleSet) {
+                setInitialScale(pdfHeight / page.height);
+              }
+            }}
+          />
+          }
       </div>
       <div {...classes('pagination')}>
         <Pagination pages={totalPages} currentPage={pageIndex} path={path} />
