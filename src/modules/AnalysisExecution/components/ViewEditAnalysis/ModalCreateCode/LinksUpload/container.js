@@ -72,6 +72,7 @@ const mapDispatchToProps = {
   loadAnalysis: actions.analysisExecution.analysis.find,
   add: val => reduxFormChange(form.createCodeLinks, 'createCodeLink', val),
   reset: () => resetForm.bind(null, form.createCodeLinks),
+    showModalError: params => ModalUtils.actions.toggle(modal.modalError, true, params)
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
@@ -80,23 +81,27 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...stateProps,
     ...dispatchProps,
     doSubmit() {
-      const submitPromises = stateProps.links.map(link =>
-        dispatchProps.createCode(
+      const fd = new FormData();
+        stateProps.links.forEach(link => {
+          fd.append('links', new Blob([link.value], { type: 'application/octet-stream' }), link.label ? link.label : link.value);
+        });
+        const submitPromise = dispatchProps.createCode(
           {
             analysisId: stateProps.analysisId,
           },
-          buildFormData({
-            label: link.label ? link.label : link.value,
-            link: link.value,
-          })
-        )
-      );
-      const submitPromise = Promise.all(submitPromises);
+          fd
+        );
       submitPromise.then(() => dispatchProps.reset())
         .then(() => dispatchProps.closeModal())
         .then(() => dispatchProps.loadAnalysis({ id: stateProps.analysisId }))
-        .catch((er) => {
-          console.error(er)
+        .catch((error) => {
+            const errors = get(error, 'errors.file');
+            if (errors) {
+                dispatchProps.showModalError({
+                    title: 'Unsuccessful upload',
+                    errors,
+                });
+            }
         });
 
       // We have to return a submission promise back to redux-form
