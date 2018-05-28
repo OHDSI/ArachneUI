@@ -24,6 +24,7 @@ import Cookies from 'js-cookie';
 
 const LS_TOKEN_KEY = 'Arachne-Auth-Token';
 const COOKIE_TOKEN_KEY = 'Arachne-Auth-Token';
+const COOKIE_USER_REQUEST = 'Arachne-User-Request';
 
 class Auth {
 
@@ -43,10 +44,19 @@ class Auth {
     Cookies.remove(COOKIE_TOKEN_KEY, { path: '/' });
   }
 
+  static getUserRequest() {
+    return Cookies.get(COOKIE_USER_REQUEST);
+  }
+
+  static clearUserRequest() {
+    Cookies.remove(COOKIE_USER_REQUEST);
+  }
+
 }
 
 export default Auth;
 export {
   LS_TOKEN_KEY,
   COOKIE_TOKEN_KEY,
+  COOKIE_USER_REQUEST,
 };

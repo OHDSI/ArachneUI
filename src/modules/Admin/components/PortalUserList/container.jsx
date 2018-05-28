@@ -27,7 +27,7 @@ import actions from 'actions';
 import presenter from './presenter';
 import { ContainerBuilder, get, Utils } from 'services/Utils';
 import UserListSelectorBuilder from './selectors';
-import userFilterFields from './Filters';
+import getFields from './Filters/fields';
 import { saveFilter, getSavedFilter } from "modules/Admin/ducks/portalUserList";
 import values from 'lodash/values';
 import Uri from 'urijs';
@@ -56,6 +56,7 @@ class UserList extends Component {
         this.props.applySavedFilters(savedFilter);
       }
     }
+    this.props.loadTenantList();
   }
 
   componentWillUnmount() {
@@ -90,7 +91,9 @@ class UserListBuilder extends ContainerBuilder {
       isLoading,
       query: get(state, 'routing.locationBeforeTransitions.query', {}, 'Object'),
       paginationDetails: selectors.getPaginationDetails(state),
-      filterFields: userFilterFields,
+      filterFields: getFields({
+        tenantOptions: selectors.getTenantOptions(state),
+      }),
       ...Utils.getPlainFiltersEncodeDecoder(),
     };
   }
@@ -98,6 +101,7 @@ class UserListBuilder extends ContainerBuilder {
   getMapDispatchToProps() {
     return {
       loadUserList: actions.adminSettings.portalUserList.query,
+      loadTenantList: actions.adminSettings.tenantList.find,
       openModal: () => ModalUtils.actions.toggle(modal.addUser, true),
       redirect: addr => push(addr),
     }

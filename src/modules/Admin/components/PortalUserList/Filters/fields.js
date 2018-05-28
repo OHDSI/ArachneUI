@@ -16,28 +16,36 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: January 24, 2017
+ * Created: October 05, 2017
  *
  */
 
-import React from 'react';
-import imgs from 'const/imgs';
-import { combineReducers } from 'redux';
-import ducks from './ducks';
-import { paths } from './const';
+import { types as fieldTypes } from 'const/modelAttributes';
 
-export default {
-  actions: () => ducks.actions,
-  reducer: () => combineReducers(ducks.reducer),
-  routes: () => (location, cb) => {
-    require.ensure([], (require) => {
-      cb(null, require('./routes').default()); // eslint-disable-line global-require
-    });
-  },
-  sidebarElement: {
-    ico: imgs.sidebar.expertFinder,
-    name: 'Expert Finder',
-    path: paths.list(),
-  },
-  indexRedirect: '/list',
-};
+export default function getFields(props) {
+  return [
+    {
+      label: 'Enabled',
+      name: 'enabled',
+      type: fieldTypes.toggle,
+      forceOpened: true,
+      hasTitle: false
+    },
+    {
+      label: 'E-mail confirm',
+      name: 'emailConfirmed',
+      type: fieldTypes.toggle,
+      forceOpened: true,
+      hasTitle: false
+    },
+    {
+      label: 'Tenant',
+      name: 'tenantIds',
+      type: fieldTypes.enum,
+      isMulti: true,
+      forceOpened: true,
+      hasTitle: true,
+      options: props.tenantOptions,
+    }
+  ];
+}

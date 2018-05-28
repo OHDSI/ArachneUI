@@ -1,4 +1,4 @@
-/*
+/*!
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,21 +16,21 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: January 23, 2017
+ * Created: Apr 27, 2018
  *
  */
 
-import Duck from 'services/Duck';
-import { apiPaths } from 'modules/ExpertFinder/const';
+@import 'styles/vars-and-mixins.scss';
 
-const coreName = 'EF_USER';
+.#{$namespace} {
+  &username-field {
+    display: flex;
 
-const province = new Duck({
-  name: coreName,
-  urlBuilder: apiPaths.userSettings,
-});
+    &__button {
+    }
 
-export default {
-  actions: province.actions,
-  reducer: province.reducer,
-};
+    &__icon {
+      @include material-icon();
+    }
+  }
+}

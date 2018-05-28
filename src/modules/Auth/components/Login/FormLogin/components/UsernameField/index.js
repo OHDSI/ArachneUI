@@ -16,21 +16,10 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: January 24, 2017
+ * Created: Apr 27, 2018
  *
  */
 
-import Duck from 'services/Duck';
-import { apiPaths } from 'modules/ExpertFinder/const';
+import UsernameField from './container';
 
-const coreName = 'EF_PROFILE';
-
-const profile = new Duck({
-  name: coreName,
-  urlBuilder: apiPaths.myProfile,
-});
-
-export default {
-  actions: profile.actions,
-  reducer: profile.reducer,
-};
+export default UsernameField;

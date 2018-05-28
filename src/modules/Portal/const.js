@@ -41,6 +41,8 @@ const apiPaths = {
   invitationsSubscription: () => '/user/topic/invitations',
   userpic: id => `/api/v1/user-management/users/${id}/avatar`,
   search: () => '/api/v1/search',
+  myProfile: () => '/api/v1/auth/me',
+  userSettings: () => `/api/v1/user-management/users/settings`,
 };
 
 const paths = {

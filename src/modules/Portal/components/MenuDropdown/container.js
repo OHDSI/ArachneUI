@@ -21,50 +21,23 @@
  */
 
 import { Component, PropTypes } from 'react';
-import ducks from 'modules/ExpertFinder/ducks';
+import ducks from 'modules/Portal/ducks';
 import { get, ContainerBuilder } from 'services/Utils';
 import presenter from './presenter';
 import selectors from './selectors';
 
-class MenuDropdown extends Component {
-  componentWillMount() {
-    this.props.loadMyProfile();
-  }
-
-  render() {
-    return presenter(this.props);
-  }
-}
-
-MenuDropdown.propTypes = {
-  loadMyProfile: PropTypes.func,
-};
-
 
 export default class MenuDropdownBuilder extends ContainerBuilder {
   getComponent() {
-    return MenuDropdown;
+    return presenter;
   }
 
   mapStateToProps(state) {
-    const moduleState = state.expertFinder.myProfile;
-    const id = get(moduleState, 'data.result.id', '');
-    let firstName = get(moduleState, 'data.result.firstname', '');
-    const lastName = get(moduleState, 'data.result.lastname', '');
-    let middleName = get(moduleState, 'data.result.middlename', '');
-    if (!firstName && !middleName && !lastName) {
-      firstName = 'NAME';
-    }
-    if (middleName) {
-      middleName = `${middleName.substring(0, 1)}.`;
-    }
+    const data = get(state, 'portal.myProfile.data.result', {});
     const hash = get(state, 'expertFinder.userProfile.data.result.updated', '');
 
     return {
-      id,
-      firstName,
-      lastName,
-      middleName,
+      id: data.id,
       hash,
       tenants: selectors.getTenants(state),
       newActiveTenantId: selectors.getNewActiveTenantId(state),
@@ -73,7 +46,6 @@ export default class MenuDropdownBuilder extends ContainerBuilder {
 
   getMapDispatchToProps() {
     return {
-      loadMyProfile: ducks.actions.myProfile.find,
       updateUser: ducks.actions.userSettings.update,
     };
   }
