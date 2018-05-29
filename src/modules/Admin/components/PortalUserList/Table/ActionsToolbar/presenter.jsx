@@ -19,6 +19,7 @@
  */
 
 import BEMHelper from 'services/BemHelper';
+import isEmpty from 'lodash/isEmpty';
 import React, { Component } from 'react';
 import { Toolbar, Button } from 'arachne-ui-components';
 import { batchOperationType } from 'modules/Admin/const';
@@ -28,35 +29,49 @@ require('./style.scss');
 /** @augments{ Component<any, any>} */
 export default class ActionsToolbar extends Component{
 
+  
   getButtons() {
+    
     return [
       {
         onClick: console.log,
         tooltipText: 'New users',
-        icon: 'fiber_new',
+        icon: 'add',
       },
-      {
+      this.createButton({
         onClick: this.props.batch.bind(null, batchOperationType.RESEND),
         tooltipText: 'Resend emails',
         icon: 'email',
-      },
-      {
+      }),
+      this.createButton({
         onClick: this.props.batch.bind(null, batchOperationType.ENABLE),
         tooltipText: 'Enable/Disable',
         icon: 'done',
-      },
-      {
+      }),
+      this.createButton({
         onClick: this.props.batch.bind(null, batchOperationType.CONFIRM),
         tooltipText: 'Confirm/Invalidate email',
         icon: 'verified_user',
-      },
-      {
+      }),
+      this.createButton({
         onClick: this.props.batch.bind(null, batchOperationType.DELETE),
         tooltipText: 'Delete',
         icon: 'delete',
-      },
+      }),
     ];
   }
+
+  createButton({ onClick, tooltipText, icon }) {
+    
+    const areUsersSelected = !isEmpty(this.props.selectedUsers);
+    return {
+      disabled: !areUsersSelected,
+      onClick: areUsersSelected ? onClick : () => {},
+      tooltipText: areUsersSelected ? tooltipText : "Select rows first",
+      icon: icon,
+    }
+  }
+  
 
   render() {
 
@@ -64,14 +79,13 @@ export default class ActionsToolbar extends Component{
     const tooltipClass = new BEMHelper('tooltip');
     
     return (
-      this.props.selectedUsers.length > 0 ?
         <div {...classes()}>
           <div {...classes()}>
             {
               this.getButtons().map(buttonSettings =>
                 <Button onClick={buttonSettings.onClick}>
                   <i 
-                    {...classes({element: 'btn-ico', extra: tooltipClass().className})}
+                    {...classes({element: 'btn-ico', modifiers: { disabled: buttonSettings.disabled }, extra: tooltipClass().className})}
                     aria-label={buttonSettings.tooltipText}
                     data-tootik-conf="bottom"
                   >{buttonSettings.icon}</i>
@@ -80,8 +94,6 @@ export default class ActionsToolbar extends Component{
           </div>
           <span>{`Selected ${this.props.selectedUsers.length} elements`}</span>
         </div>
-        :
-        null
     );
   }
 }

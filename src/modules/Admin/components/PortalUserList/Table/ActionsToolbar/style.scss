@@ -35,6 +35,9 @@
       color: $grey-dark;
       font-size: 2.2rem;
       vertical-align: middle;
+      &--disabled {
+        color: $grey-dark-light
+      }
     }
   }
 }

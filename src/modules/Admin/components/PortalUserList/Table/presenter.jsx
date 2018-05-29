@@ -52,7 +52,6 @@ function AdminTable(props) {
   const tableClasses = new BEMHelper('admin-panel-user-list-table');
   const {
     userList,
-    removeUser,
     enablePortalUser,
     confirmEmail,
     sorting,
@@ -116,25 +115,13 @@ function AdminTable(props) {
         />
         <CellCheck
           {...tableClasses('emailConfirmed')}
-          header="Email confirm"
+          header="Email confirmed"
           field="emailConfirmed"
           isSortable={false}
           props={
             entity => ({
               id: entity.id,
               toggle: confirmEmail,
-            })
-          }
-        />
-        <CellRemove
-          {...tableClasses('remove')}
-          header="Remove"
-          field="id"
-          isSortable={false}
-          props={
-            entity => ({
-              id: entity.id,
-              removeUser,
             })
           }
         />

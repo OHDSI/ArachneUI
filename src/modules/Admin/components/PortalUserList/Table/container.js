@@ -57,7 +57,6 @@ class UserListTableBuilder extends ContainerBuilder {
   getMapDispatchToProps() {
     return {
       loadList: actions.adminSettings.portalUserList.find,
-      removeUser: actions.adminSettings.portalUserList.delete,
       enableUser: actions.adminSettings.portalUserEnable.create,
       confirmEmail: actions.adminSettings.portalUserConfirmEmail.create,
       selectUser: actions.adminSettings.portalUserListSelectedUsers.toggle,
@@ -75,16 +74,6 @@ class UserListTableBuilder extends ContainerBuilder {
       ...stateProps,
       ...ownProps,
       ...dispatchProps,
-      removeUser: (id, name) => {
-        Utils.confirmDelete({ message: `Are you sure you want to delete ${name}?` })
-          .then(() => {
-            dispatchProps
-              .removeUser({ id })
-              .then(() => dispatchProps.loadUsersWithCurrentQuery(stateProps.query))
-              .catch(() => {
-              });
-          });
-      },
       enablePortalUser: (id, enable) => {
         dispatchProps
           .enableUser({ id, enable })
