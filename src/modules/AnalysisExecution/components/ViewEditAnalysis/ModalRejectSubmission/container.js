@@ -83,7 +83,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
                   });
                   break;
               }
-              case submissionActionTypes.PUBLISH:
+              case submissionActionTypes.PUBLISH: {
                   submitPromise = await dispatchProps.changePublishStatus(
                       {
                           submissionId: stateProps.submissionId,
@@ -93,7 +93,13 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
                           isApproved: false,
                           comment,
                       });
+                  dispatchProps.loadSubmissionGroups({
+                      analysisId: stateProps.analysisId,
+                      page: stateProps.page,
+                      filter: stateProps.filter,
+                  });
                   break;
+              }
           }
           await dispatchProps.closeModal();
           await dispatchProps.resetForm();
