@@ -62,10 +62,10 @@ class ModalCreateEditBuilder extends ContainerBuilder {
     return {
       isOpened: get(state, 'modal.atlasDetails.isOpened'),
       id: get(state, 'modal.atlasDetails.data.id'),
-      isLoading: get(state, 'externalResourceManager.atlases.isLoading'),
+      isLoading: get(state, 'externalResourceManager.atlases.list.isLoading'),
       initialValues: {
         authType: atlasAuthTypeList.none.value,
-        ...get(state, 'externalResourceManager.atlases.data', {}, 'Object'),
+        ...get(state, 'externalResourceManager.atlases.list.data', {}, 'Object'),
       },
     };
   }
