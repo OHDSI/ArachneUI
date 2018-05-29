@@ -94,9 +94,9 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
           page: stateProps.page,
           filter: stateProps.filter,
         });
-        await dispatchProps.closeModal();
-        await dispatchProps.resetForm();
-        await dispatchProps.loadAnalysis({ id: stateProps.analysisId }, true);
+        dispatchProps.closeModal();
+        dispatchProps.resetForm();
+        dispatchProps.loadAnalysis({ id: stateProps.analysisId }, true);
       } catch (er) {
       }
       return submitPromise;
