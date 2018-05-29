@@ -34,14 +34,14 @@ import { getFilter } from 'modules/AnalysisExecution/components/ViewEditAnalysis
 const selectors = (new SelectorsBuilder()).build();
 
 function mapStateToProps(state) {
-    const search = get(state, 'routing.locationBeforeTransitions.search');
-    const { number, totalPages } = selectors.getPagingData(state);
+  const search = get(state, 'routing.locationBeforeTransitions.search');
+  const { number, totalPages } = selectors.getPagingData(state);
   return {
     submissionId: get(state, `modal.${modal.rejectSubmission}.data.submissionId`),
     analysisId: get(state, `modal.${modal.rejectSubmission}.data.analysisId`),
     type: get(state, `modal.${modal.rejectSubmission}.data.type`),
-      page: number + 1,
-      filter: getFilter(search),
+    page: number + 1,
+    filter: getFilter(search),
   };
 }
 
@@ -51,10 +51,10 @@ const mapDispatchToProps = {
   changeExecutionStatus: actions.analysisExecution.executionStatus.create,
   changePublishStatus: actions.analysisExecution.publishStatus.create,
   loadAnalysis: actions.analysisExecution.analysis.find,
-    loadSubmissionGroups: ({ page = 1, analysisId, filter }) => {
-        const pageSize = submissionGroupsPageSize;
-        return actions.analysisExecution.submissionGroups.query({ page, pageSize, analysisId, filter });
-    }
+  loadSubmissionGroups: ({ page = 1, analysisId, filter }) => {
+    const pageSize = submissionGroupsPageSize;
+    return actions.analysisExecution.submissionGroups.query({ page, pageSize, analysisId, filter });
+  },
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
@@ -65,46 +65,39 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     async doSubmit({ comment }) {
       let submitPromise;
       try {
-          switch (stateProps.type) {
-              case submissionActionTypes.EXECUTE: {
-                  submitPromise = await dispatchProps.changeExecutionStatus(
-                      {
-                          submissionId: stateProps.submissionId,
-                      },
-                      {
-                          id: stateProps.submissionId,
-                          isApproved: false,
-                          comment,
-                      });
-                  dispatchProps.loadSubmissionGroups({
-                      analysisId: stateProps.analysisId,
-                      page: stateProps.page,
-                      filter: stateProps.filter,
-                  });
-                  break;
-              }
-              case submissionActionTypes.PUBLISH: {
-                  submitPromise = await dispatchProps.changePublishStatus(
-                      {
-                          submissionId: stateProps.submissionId,
-                      },
-                      {
-                          id: stateProps.submissionId,
-                          isApproved: false,
-                          comment,
-                      });
-                  dispatchProps.loadSubmissionGroups({
-                      analysisId: stateProps.analysisId,
-                      page: stateProps.page,
-                      filter: stateProps.filter,
-                  });
-                  break;
-              }
-          }
-          await dispatchProps.closeModal();
-          await dispatchProps.resetForm();
-          await dispatchProps.loadAnalysis({id: stateProps.analysisId}, true);
-      } catch(er) {
+        switch (stateProps.type) {
+          case submissionActionTypes.EXECUTE:
+            submitPromise = await dispatchProps.changeExecutionStatus(
+              {
+                submissionId: stateProps.submissionId,
+              },
+              {
+                id: stateProps.submissionId,
+                isApproved: false,
+                comment,
+              });
+            break;
+          case submissionActionTypes.PUBLISH:
+            submitPromise = await dispatchProps.changePublishStatus(
+              {
+                submissionId: stateProps.submissionId,
+              },
+              {
+                id: stateProps.submissionId,
+                isApproved: false,
+                comment,
+              });
+            break;
+        }
+        dispatchProps.loadSubmissionGroups({
+          analysisId: stateProps.analysisId,
+          page: stateProps.page,
+          filter: stateProps.filter,
+        });
+        await dispatchProps.closeModal();
+        await dispatchProps.resetForm();
+        await dispatchProps.loadAnalysis({ id: stateProps.analysisId }, true);
+      } catch (er) {
       }
       return submitPromise;
     },
