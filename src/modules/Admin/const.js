@@ -25,11 +25,13 @@ import URI from 'urijs';
 
 const forms = keyMirror({
   addAdminUser: null,
+  addUserBatch: null,
   addUser: null,
 });
 
 const modal = keyMirror({
   addUser: null,
+  addUserBatch: null,
   addAdminUser: null,
 });
 
