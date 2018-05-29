@@ -26,13 +26,11 @@ import URI from 'urijs';
 const forms = keyMirror({
   addAdminUser: null,
   addUser: null,
-  addUsersToTenants: null,
 });
 
 const modal = keyMirror({
   addUser: null,
   addAdminUser: null,
-  addUsersToTenants: null,
 });
 
 
@@ -78,7 +76,6 @@ const apiPaths = {
   portalUsersEnable: ({ id, enable }) => `/api/v1/admin/users/${id}/enable/${enable}`,
   portalUsersConfirmEmail: ({ id, confirm }) => `/api/v1/admin/users/${id}/confirm-email/${confirm}`,
   portalUsersBatch: () => '/api/v1/admin/users/batch',
-  portalUsersAddToTenants: () => '/api/v1/admin/users/tenants',
 };
 
 const paths = {

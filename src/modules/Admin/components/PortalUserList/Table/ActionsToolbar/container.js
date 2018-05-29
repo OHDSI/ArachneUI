@@ -19,14 +19,10 @@
  */
 
 import actions from 'actions/index';
-import { get, ContainerBuilder, Utils } from 'services/Utils';
+import { ContainerBuilder, Utils } from 'services/Utils';
 import ActionsToolbar from './presenter';
-import { push as goToPage } from 'react-router-redux';
-import URI from 'urijs';
-import split from 'lodash/split';
 import selectors from '../selectors';
-import { ModalUtils } from 'arachne-ui-components';
-import { modal, batchOperationType } from 'modules/Admin/const';
+import { batchOperationType } from 'modules/Admin/const';
 
 class UserListActionsToolbarBuilder extends ContainerBuilder {
 
@@ -45,7 +41,7 @@ class UserListActionsToolbarBuilder extends ContainerBuilder {
 
   getMapDispatchToProps() {
     return {
-      batch: actions.adminSettings.portalUserList.batchOperation,
+      batch: actions.adminSettings.portalUserList.batch,
       loadUsersWithCurrentQuery: (query) => actions.adminSettings.portalUserList.query({ query }),
       cleanSelectedUsers: () => actions.adminSettings.portalUserList.updateSelectedUsers({}),
     }

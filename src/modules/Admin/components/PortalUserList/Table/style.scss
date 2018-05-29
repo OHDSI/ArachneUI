@@ -58,6 +58,9 @@
     &__remove-td {
       vertical-align: inherit;
     }
-  }
 
+    &__tenants-td {
+      @include text-ellipsis();
+    }
+  }
 }

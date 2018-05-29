@@ -21,5 +21,20 @@
 @import 'styles/vars-and-mixins.scss';
 
 .#{$namespace} {
-  
+  &admin-portal-user-list-actions-toolbar {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.3rem 0.75rem;
+    
+    background-color: $grey-light;
+
+    &__btn-ico {
+      @include material-icon();
+      color: $grey-dark;
+      font-size: 2.2rem;
+      vertical-align: middle;
+    }
+  }
 }

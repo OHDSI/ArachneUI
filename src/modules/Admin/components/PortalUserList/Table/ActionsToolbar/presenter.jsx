@@ -18,52 +18,68 @@
  * Created: May 23, 2018
  */
 
+import BEMHelper from 'services/BemHelper';
 import React, { Component } from 'react';
 import { Toolbar, Button } from 'arachne-ui-components';
 import { batchOperationType } from 'modules/Admin/const';
 
 require('./style.scss');
 
-/**
- * @return {null}
- */
+/** @augments{ Component<any, any>} */
 export default class ActionsToolbar extends Component{
 
   getButtons() {
     return [
       {
-        onClick: 'new users',
-        label: 'New users',
+        onClick: console.log,
+        tooltipText: 'New users',
+        icon: 'fiber_new',
       },
       {
         onClick: this.props.batch.bind(null, batchOperationType.RESEND),
-        label: 'Resend emails',
+        tooltipText: 'Resend emails',
+        icon: 'email',
       },
       {
         onClick: this.props.batch.bind(null, batchOperationType.ENABLE),
-        label: 'Enable/Disable',
+        tooltipText: 'Enable/Disable',
+        icon: 'done',
       },
       {
         onClick: this.props.batch.bind(null, batchOperationType.CONFIRM),
-        label: 'Confirm/Invalidate email',
+        tooltipText: 'Confirm/Invalidate email',
+        icon: 'verified_user',
       },
       {
         onClick: this.props.batch.bind(null, batchOperationType.DELETE),
-        label: 'Delete',
+        tooltipText: 'Delete',
+        icon: 'delete',
       },
     ];
   }
 
   render() {
 
+    const classes = new BEMHelper('admin-portal-user-list-actions-toolbar');
+    const tooltipClass = new BEMHelper('tooltip');
+    
     return (
       this.props.selectedUsers.length > 0 ?
-        <Toolbar>
-          {
-            this.getButtons().map(buttonSettings => <Button {...buttonSettings} />)
-          }
+        <div {...classes()}>
+          <div {...classes()}>
+            {
+              this.getButtons().map(buttonSettings =>
+                <Button onClick={buttonSettings.onClick}>
+                  <i 
+                    {...classes({element: 'btn-ico', extra: tooltipClass().className})}
+                    aria-label={buttonSettings.tooltipText}
+                    data-tootik-conf="bottom"
+                  >{buttonSettings.icon}</i>
+                </Button>)
+            }
+          </div>
           <span>{`Selected ${this.props.selectedUsers.length} elements`}</span>
-        </Toolbar>
+        </div>
         :
         null
     );

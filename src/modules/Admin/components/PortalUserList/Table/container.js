@@ -60,12 +60,12 @@ class UserListTableBuilder extends ContainerBuilder {
       removeUser: actions.adminSettings.portalUserList.delete,
       enableUser: actions.adminSettings.portalUserEnable.create,
       confirmEmail: actions.adminSettings.portalUserConfirmEmail.create,
-      selectUser: actions.adminSettings.portalUserList.toggle,
+      selectUser: actions.adminSettings.portalUserListSelectedUsers.toggle,
       setSearch: actions.router.setSearch,
       search: goToPage,
       loadUsersWithCurrentQuery: (query) => actions.adminSettings.portalUserList.query({ query }),
-      loadUserIdsWithCurrentQuery: (query) => actions.adminSettings.portalUserList.loadUserIds({ query }),
-      updateSelectedIds: (ids) => actions.adminSettings.portalUserList.updateSelectedUsers(ids),
+      loadUserIdsWithCurrentQuery: (query) => actions.adminSettings.portalUserListSelectedUsers.loadUserIds({ query }),
+      updateSelectedIds: (ids) => actions.adminSettings.portalUserListSelectedUsers.updateSelectedUsers(ids),
     }
   };
 
@@ -114,6 +114,7 @@ class UserListTableBuilder extends ContainerBuilder {
           dispatchProps.loadUserIdsWithCurrentQuery(stateProps.query)
             .then(result => dispatchProps.updateSelectedIds(result.reduce(
               (acc, curr) => {
+                console.log(result);
                 acc[curr] = true;
                 return acc;
               }, {}),

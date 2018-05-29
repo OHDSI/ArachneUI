@@ -21,30 +21,15 @@
  */
 
 import Duck from 'services/Duck';
-import keyMirror from 'keymirror';
 import { apiPaths } from 'modules/Admin/const';
 import { Utils } from 'services/Utils';
-import ReducerFactory from 'services/ReducerFactory';
 
 const actionCoreName = 'AD_PORTAL_USERS';
-const selectUser = 'AD_PORTAL_USERS_SELECT_USER';
-const selectUserIds = 'AD_PORTAL_USERS_SELECT_USER_IDS';
 const batchOperation = 'AD_PORTAL_USERS_BATCH';
-const addToTenants = 'AD_PORTAL_USERS_ADD_TO_TENANTS';
-
-const selectedUsersActions = keyMirror({
-  toggle: null,
-  update: null,
-});
 
 const portalUsersDuck = new Duck({
   name: actionCoreName,
   urlBuilder: apiPaths.portalUsers,
-});
-
-const portalUsersIdsDuck = new Duck({
-  name: selectUserIds,
-  urlBuilder: apiPaths.portalUsersIds,
 });
 
 const portalUserBatchDuck = new Duck({
@@ -52,61 +37,16 @@ const portalUserBatchDuck = new Duck({
   urlBuilder: apiPaths.portalUsersBatch,
 });
 
-const portalUserAddToTenants = new Duck({
-  name: addToTenants,
-  urlBuilder: apiPaths.portalUsersAddToTenants,
-});
-
-
-function toggleUser(uuid, selected = false) {
-  return {
-    type: selectUser,
-    mode: selectedUsersActions.toggle,
-    payload: {
-      [uuid]: selected,
-    },
-  };
-}
-
-function updateUsers({ payload }) {
-  return {
-    type: selectUser,
-    mode: selectedUsersActions.update,
-    payload: payload,
-  };
-}
-
-const selectUserReducer = new ReducerFactory();
-selectUserReducer.setActionHandler(selectUser, (state, action = selectedUsersActions.toggle) => ({
-  ...state,
-  data: action.mode === selectedUsersActions.toggle ? {
-    ...state.data,
-    ...action.payload,
-  } : {
-    ...action.payload,
-  },
-}));
 
 const actions = {
   ...portalUsersDuck.actions,
-  batchOperation: portalUserBatchDuck.actions.create,
-  addToTenants: portalUserAddToTenants.actions.create,
-  toggle: (uuid, selected) => {
-    return dispatch => dispatch(toggleUser(uuid, selected));
-  },
-  updateSelectedUsers: (payload) => {
-    return dispatch => dispatch(updateUsers({ payload }));
-  },
-  loadUserIds: portalUsersIdsDuck.actions.query,
+  batch: portalUserBatchDuck.actions.create,
 };
 
 const reducer = Utils.extendReducer(
   portalUsersDuck.reducer,
   {
-    selectedUsers: selectUserReducer.build(),
-    batchOperation: portalUserBatchDuck.reducer,
-    addToTenants: portalUserAddToTenants.reducer,
-    allUserIds: portalUsersIdsDuck.reducer,
+    batch: portalUserBatchDuck.reducer,
   });
 
 const filterName = 'portal-users-filter';
