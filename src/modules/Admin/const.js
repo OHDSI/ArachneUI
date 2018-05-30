@@ -21,7 +21,7 @@
  */
 
 import keyMirror from 'keymirror';
-import URI from 'urijs';
+import Utils from 'services/Utils';
 
 const forms = keyMirror({
   addAdminUser: null,
@@ -33,33 +33,12 @@ const modal = keyMirror({
   addAdminUser: null,
 });
 
-
-function extractQuery(query, link) {
-  const uri = new URI(link);
-  if (query) {
-    uri.setSearch(query);
-  }
-  return uri.toString();
-}
-
 const apiPaths = {
-  admins: ({ id, query }) => {
-    const uri = new URI(`/api/v1/admin/admins${id ? `/${id}` : ''}`);
-    if (query) {
-      uri.setSearch(query);
-    }
-    return uri.toString();
-  },
+  admins: ({ id, query }) => Utils.setUrlParams(`/api/v1/admin/admins${id ? `/${id}` : ''}`, query),
   tenantList: () => `/api/v1/tenants/list`,
   adminOptions: ({ query }) => `/api/v1/admin/admins/suggest?query=${query}`,
   solrIndex: ({ domain }) => `/api/v1/admin/${domain}/reindex-solr`,
-  users: ({ id, query }) => {
-    const uri = new URI(`/api/v1/admin/users${id ? `/${id}` : ''}`);
-    if (query) {
-      uri.setSearch(query);
-    }
-    return uri.toString();
-  },
+  users: ({ id, query }) => Utils.setUrlParams(`/api/v1/admin/users${id ? `/${id}` : ''}`, query),
   userOptions: ({ query }) => `/api/v1/admin/users/suggest?query=${query}`,
 
   systemSettings: () => '/api/v1/admin/system-settings',
@@ -67,12 +46,8 @@ const apiPaths = {
   restartServer: () => '/api/v1/admin/restart',
   ping: () => '/api/v1/auth/me',
 
-  portalUsers: ({ id, query }) => {
-    return extractQuery(query, `/api/v1/admin/users${id ? `/${id}` : ''}`)
-  },
-  portalUsersIds: ({ query }) => {
-    return extractQuery(query, `/api/v1/admin/users/ids`);
-  },
+  portalUsers: ({ id, query }) => Utils.setUrlParams(`/api/v1/admin/users${id ? `/${id}` : ''}`, query),
+  portalUsersIds: ({ query }) => Utils.setUrlParams(`/api/v1/admin/users/ids`, query),
   portalUsersEnable: ({ id, enable }) => `/api/v1/admin/users/${id}/enable/${enable}`,
   portalUsersConfirmEmail: ({ id, confirm }) => `/api/v1/admin/users/${id}/confirm-email/${confirm}`,
   portalUsersBatch: () => '/api/v1/admin/users/batch',
