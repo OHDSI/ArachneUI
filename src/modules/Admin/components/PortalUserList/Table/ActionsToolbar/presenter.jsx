@@ -37,7 +37,7 @@ export default class ActionsToolbar extends Component{
       {
         onClick: console.log,
         tooltipText: 'New users',
-        icon: 'add',
+        icon: 'add_circle_outline',
       },
       this.createButton({
         onClick: this.props.batch.bind(null, batchOperationType.RESEND),
@@ -68,7 +68,7 @@ export default class ActionsToolbar extends Component{
     return {
       disabled: !areUsersSelected,
       onClick: areUsersSelected ? onClick : () => {},
-      tooltipText: areUsersSelected ? tooltipText : "Select rows first",
+      tooltipText: areUsersSelected ? tooltipText : "Select users first",
       icon: icon,
     }
   }

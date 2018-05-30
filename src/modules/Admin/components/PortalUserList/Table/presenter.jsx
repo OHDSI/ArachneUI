@@ -87,13 +87,19 @@ function AdminTable(props) {
           }
         />
         <Cell
-          {...tableClasses('name')}
-          header="Name"
-          field="name"
+          {...tableClasses('firstname')}
+          header="First name"
+          field="firstname"
+        />
+        <Cell
+          {...tableClasses('lastname')}
+          header="Last Name"
+          field="lastname"
         />
         <Cell
           {...tableClasses('tenants')}
           header="Tenants"
+          isSortable={false}
           field="tenantNames"
         />
         <Cell

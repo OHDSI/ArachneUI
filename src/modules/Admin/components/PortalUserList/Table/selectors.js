@@ -31,12 +31,16 @@ const getUserList = createSelector(
   rawUserList =>
     rawUserList.map(item => ({
       ...item,
-      tenantNames: item.tenants.map(v => v.name).join(','),
       name: [
         item.firstname || '',
         item.middlename || '',
         item.lastname || '',
       ].filter(o => o).join(' '),
+      tenantNames: item.activeTenant ? [
+        item.activeTenant.name, 
+        ...item.tenants.filter(v => v.id !== item.activeTenant.id).map(v => v.name)
+      ].join(',') : item.tenants.map(v => v.name).join(','),
+
     }))
 );
 

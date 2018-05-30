@@ -27,8 +27,11 @@
   &admin-panel-user-list-table {
     table-layout: fixed;
 
-    &__name-th {
-      width: 20%;
+    &__firstname-th {
+      width: 15%;
+    }
+    &__lastname-th {
+      width: 15%;
     }
     
     &__email-th {
