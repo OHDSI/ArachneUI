@@ -103,7 +103,6 @@ class UserListTableBuilder extends ContainerBuilder {
           dispatchProps.loadUserIdsWithCurrentQuery(stateProps.query)
             .then(result => dispatchProps.updateSelectedIds(result.reduce(
               (acc, curr) => {
-                console.log(result);
                 acc[curr] = true;
                 return acc;
               }, {}),

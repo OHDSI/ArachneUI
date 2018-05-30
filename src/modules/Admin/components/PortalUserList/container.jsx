@@ -102,6 +102,7 @@ class UserListBuilder extends ContainerBuilder {
     return {
       loadUserList: actions.adminSettings.portalUserList.query,
       loadTenantList: actions.adminSettings.tenantList.find,
+      cleanSelectedUsers: () => actions.adminSettings.portalUserListSelectedUsers.updateSelectedUsers({}),
       openModal: () => ModalUtils.actions.toggle(modal.addUser, true),
       redirect: addr => push(addr),
     }
@@ -113,7 +114,8 @@ class UserListBuilder extends ContainerBuilder {
       ...dispatchProps,
       ...ownProps,
       loadUsersWithCurrentQuery: () => {
-        dispatchProps.loadUserList({ query: stateProps.query });
+        dispatchProps.loadUserList({ query: stateProps.query })
+          .then(() => dispatchProps.cleanSelectedUsers());
       },
       applySavedFilters(filters) {
         const url = new Uri(paths.users());

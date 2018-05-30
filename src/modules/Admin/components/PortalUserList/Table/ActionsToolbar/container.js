@@ -43,7 +43,7 @@ class UserListActionsToolbarBuilder extends ContainerBuilder {
     return {
       batch: actions.adminSettings.portalUserList.batch,
       loadUsersWithCurrentQuery: (query) => actions.adminSettings.portalUserList.query({ query }),
-      cleanSelectedUsers: () => actions.adminSettings.portalUserList.updateSelectedUsers({}),
+      cleanSelectedUsers: () => actions.adminSettings.portalUserListSelectedUsers.updateSelectedUsers({}),
     }
   };
 
