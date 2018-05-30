@@ -25,11 +25,13 @@ import URI from 'urijs';
 
 const forms = keyMirror({
   addAdminUser: null,
+  addUserBatch: null,
   addUser: null,
 });
 
 const modal = keyMirror({
   addUser: null,
+  addUserBatch: null,
   addAdminUser: null,
 });
 
@@ -41,6 +43,7 @@ const apiPaths = {
     }
     return uri.toString();
   },
+  tenantList: () => `/api/v1/tenants/list`,
   adminOptions: ({ query }) => `/api/v1/admin/admins/suggest?query=${query}`,
   solrIndex: ({ domain }) => `/api/v1/admin/${domain}/reindex-solr`,
   users: ({ id, query }) => {
