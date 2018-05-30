@@ -35,7 +35,7 @@ export default class ActionsToolbar extends Component{
     
     return [
       {
-        onClick: console.log,
+        onClick: () => 'open batch user creating modal',
         tooltipText: 'New users',
         icon: 'add_circle_outline',
       },
