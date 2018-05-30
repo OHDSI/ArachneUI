@@ -67,10 +67,11 @@ ImportList.propTypes = {
 function mapStateToProps(state, ownProps) {
   const analysisType = get(state, 'analysisExecution.analysis.data.result.type.id', '', 'String');
   const selectedSource = get(ownProps, 'selectedSource', {}, 'Object');
+  const selectedEntity = selectors.getFormEntity(state);
 
   return {
     selectedSource,
-    isAnySelected: selectors.getSelectedForImport(state).length > 0,
+    isAnySelected: selectedEntity,
     entities: selectors.getList(state),
     totalSteps: ownProps.totalSteps,
     step: ownProps.step,
@@ -85,6 +86,7 @@ const mapDispatchToProps = {
   closeModal: () => ModalUtils.actions.toggle(modal.createCode, false),
   loadAnalysis: actions.analysisExecution.analysis.find,
   reset: () => resetForm(form.importCodeList),
+  showModalError: params => ModalUtils.actions.toggle(modal.modalError, true, params),
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
@@ -92,10 +94,10 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...ownProps,
     ...stateProps,
     ...dispatchProps,
-    doSubmit({ entities }) {
+    doSubmit({ entity }) {
       // TEMP. TODO!
       const datanodeId = stateProps.selectedSource.id;
-      const entityGuid = getFormSelectedCheckboxes(entities)[0];
+      const entityGuid = entity;
 
       const submitPromise = dispatchProps.importEntities(
         {
@@ -110,7 +112,16 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
 
       submitPromise.then(() => dispatchProps.reset())
         .then(() => dispatchProps.closeModal())
-        .then(() => dispatchProps.loadAnalysis({ id: stateProps.analysisId }));
+        .then(() => dispatchProps.loadAnalysis({ id: stateProps.analysisId }))
+        .catch((error) => {
+          const errors = get(error, `errors.${entityGuid}`);
+          if (errors) {
+            dispatchProps.showModalError({
+              title: 'Unsuccessful import',
+              errors,
+            });
+          }
+        });
 
       return submitPromise;
     },
