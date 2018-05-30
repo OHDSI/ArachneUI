@@ -21,8 +21,9 @@
 import BEMHelper from 'services/BemHelper';
 import isEmpty from 'lodash/isEmpty';
 import React, { Component } from 'react';
-import { Toolbar, Button } from 'arachne-ui-components';
+import { Button } from 'arachne-ui-components';
 import { batchOperationType } from 'modules/Admin/const';
+import pluralize from 'pluralize';
 
 require('./style.scss');
 
@@ -92,7 +93,7 @@ export default class ActionsToolbar extends Component{
                 </Button>)
             }
           </div>
-          <span>{`Selected ${this.props.selectedUsers.length} elements`}</span>
+          <span>{`Selected ${pluralize('element', this.props.selectedUsers.length, true)}`}</span>
         </div>
     );
   }
