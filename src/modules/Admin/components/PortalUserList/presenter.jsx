@@ -32,10 +32,6 @@ require('./style.scss');
 
 export default class UserList extends Component {
 
-  constructor() {
-    super();
-  }
-
   getModals() {
     return [<ModalAddUser />, <ModalAddUsersToTenants />];
   }

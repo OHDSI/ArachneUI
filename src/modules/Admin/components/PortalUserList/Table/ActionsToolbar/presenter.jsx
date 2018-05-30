@@ -81,7 +81,7 @@ export default class ActionsToolbar extends Component{
     
     return (
         <div {...classes()}>
-          <div {...classes()}>
+          <div>
             {
               this.getButtons().map(buttonSettings =>
                 <Button onClick={buttonSettings.onClick}>

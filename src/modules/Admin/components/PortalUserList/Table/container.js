@@ -62,9 +62,9 @@ class UserListTableBuilder extends ContainerBuilder {
       selectUser: actions.adminSettings.portalUserListSelectedUsers.toggle,
       setSearch: actions.router.setSearch,
       search: goToPage,
-      loadUsersWithCurrentQuery: (query) => actions.adminSettings.portalUserList.query({ query }),
-      loadUserIdsWithCurrentQuery: (query) => actions.adminSettings.portalUserListSelectedUsers.loadUserIds({ query }),
-      updateSelectedIds: (ids) => actions.adminSettings.portalUserListSelectedUsers.updateSelectedUsers(ids),
+      loadUsersWithCurrentQuery: query => actions.adminSettings.portalUserList.query({ query }),
+      loadUserIdsWithCurrentQuery: query => actions.adminSettings.portalUserListSelectedUsers.loadUserIds({ query }),
+      updateSelectedIds: ids => actions.adminSettings.portalUserListSelectedUsers.updateSelectedUsers(ids),
     }
   };
 

@@ -21,7 +21,7 @@
 import actions from 'actions/index';
 import { ContainerBuilder, Utils } from 'services/Utils';
 import ActionsToolbar from './presenter';
-import selectors from '../selectors';
+import selectors from 'modules/Admin/components/PortalUserList/Table/selectors';
 import { batchOperationType } from 'modules/Admin/const';
 
 class UserListActionsToolbarBuilder extends ContainerBuilder {
