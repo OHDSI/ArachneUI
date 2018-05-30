@@ -22,16 +22,32 @@
 
 import Duck from 'services/Duck';
 import { apiPaths } from 'modules/Admin/const';
+import { Utils } from 'services/Utils';
 
 const actionCoreName = 'AD_PORTAL_USERS';
+const batchOperation = 'AD_PORTAL_USERS_BATCH';
 
 const portalUsersDuck = new Duck({
   name: actionCoreName,
   urlBuilder: apiPaths.portalUsers,
 });
 
-const actions = portalUsersDuck.actions;
-const reducer = portalUsersDuck.reducer;
+const portalUserBatchDuck = new Duck({
+  name: batchOperation,
+  urlBuilder: apiPaths.portalUsersBatch,
+});
+
+
+const actions = {
+  ...portalUsersDuck.actions,
+  batch: portalUserBatchDuck.actions.create,
+};
+
+const reducer = Utils.extendReducer(
+  portalUsersDuck.reducer,
+  {
+    batch: portalUserBatchDuck.reducer,
+  });
 
 const filterName = 'portal-users-filter';
 

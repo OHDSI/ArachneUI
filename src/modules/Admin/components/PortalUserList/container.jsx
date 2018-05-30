@@ -20,11 +20,11 @@
  *
  */
 
-import { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { ModalUtils } from 'arachne-ui-components';
 import { modal, paths } from 'modules/Admin/const';
 import actions from 'actions';
-import presenter from './presenter';
+import List from './presenter';
 import { ContainerBuilder, get, Utils } from 'services/Utils';
 import UserListSelectorBuilder from './selectors';
 import getFields from './Filters/fields';
@@ -43,7 +43,7 @@ class UserList extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.query !== this.props.query) {
-      nextProps.loadUsersWithCurrentQuery();
+      nextProps.loadUsers();
     }
   }
 
@@ -70,7 +70,7 @@ class UserList extends Component {
   }
 
   render() {
-    return presenter(this.props);
+    return <List {...this.props} />;
   }
 }
 
@@ -102,6 +102,7 @@ class UserListBuilder extends ContainerBuilder {
     return {
       loadUserList: actions.adminSettings.portalUserList.query,
       loadTenantList: actions.adminSettings.tenantList.find,
+      cleanSelectedUsers: () => actions.adminSettings.portalUserListSelectedUsers.updateSelectedUsers({}),
       openModal: () => ModalUtils.actions.toggle(modal.addUser, true),
       redirect: addr => push(addr),
     }
@@ -112,8 +113,9 @@ class UserListBuilder extends ContainerBuilder {
       ...stateProps,
       ...dispatchProps,
       ...ownProps,
-      loadUsersWithCurrentQuery: () => {
-        dispatchProps.loadUserList({ query: stateProps.query });
+      loadUsers: () => {
+        dispatchProps.loadUserList({ query: stateProps.query })
+          .then(() => dispatchProps.cleanSelectedUsers());
       },
       applySavedFilters(filters) {
         const url = new Uri(paths.users());

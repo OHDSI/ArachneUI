@@ -31,6 +31,7 @@ import systemSettings from './systemSettings';
 import userOptionList from './userOptionList';
 import userList from './userList';
 import reindexProcess from './reindexProcess';
+import portalUserListSelectedUsers from './portalUserListSelectedUsers';
 
 const actions = {
   adminList: adminList.actions,
@@ -44,6 +45,7 @@ const actions = {
   userOptionList: userOptionList.actions,
   userList: userList.actions,
   reindexProcess: reindexProcess.actions,
+  portalUserListSelectedUsers: portalUserListSelectedUsers.actions,
 };
 
 const reducer = {
@@ -58,6 +60,7 @@ const reducer = {
   userOptionList: userOptionList.reducer,
   userList: userList.reducer,
   reindexProcess: reindexProcess.reducer,
+  portalUserListSelectedUsers: portalUserListSelectedUsers.reducer,
 };
 
 export default {

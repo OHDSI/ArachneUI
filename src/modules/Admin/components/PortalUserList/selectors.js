@@ -40,6 +40,7 @@ class UserListSelectorsBuilder {
     return get(state, 'adminSettings.tenantList.data') || [];
   }
 
+  // Is used in AddUsersToTenants modal
   getTenantOptions(tenantList) {
     const tenantOptions = tenantList.map(tenant => ({
       label: tenant.name,
