@@ -43,7 +43,7 @@ class UserList extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.query !== this.props.query) {
-      nextProps.loadUsersWithCurrentQuery();
+      nextProps.loadUsers();
     }
   }
 
@@ -113,7 +113,7 @@ class UserListBuilder extends ContainerBuilder {
       ...stateProps,
       ...dispatchProps,
       ...ownProps,
-      loadUsersWithCurrentQuery: () => {
+      loadUsers: () => {
         dispatchProps.loadUserList({ query: stateProps.query })
           .then(() => dispatchProps.cleanSelectedUsers());
       },

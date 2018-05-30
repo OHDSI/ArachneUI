@@ -62,7 +62,7 @@ class UserListTableBuilder extends ContainerBuilder {
       selectUser: actions.adminSettings.portalUserListSelectedUsers.toggle,
       setSearch: actions.router.setSearch,
       search: goToPage,
-      loadUsersWithCurrentQuery: query => actions.adminSettings.portalUserList.query({ query }),
+      loadUsers: query => actions.adminSettings.portalUserList.query({ query }),
       loadUserIdsWithCurrentQuery: query => actions.adminSettings.portalUserListSelectedUsers.loadUserIds({ query }),
       updateSelectedIds: ids => actions.adminSettings.portalUserListSelectedUsers.updateSelectedUsers(ids),
     }
@@ -77,14 +77,14 @@ class UserListTableBuilder extends ContainerBuilder {
       enablePortalUser: (id, enable) => {
         dispatchProps
           .enableUser({ id, enable })
-          .then(() => dispatchProps.loadUsersWithCurrentQuery(stateProps.query))
+          .then(() => dispatchProps.loadUsers(stateProps.query))
           .catch(() => {
           });
       },
       confirmEmail: (id, confirm) => {
         dispatchProps
           .confirmEmail({ id, confirm })
-          .then(() => dispatchProps.loadUsersWithCurrentQuery(stateProps.query))
+          .then(() => dispatchProps.loadUsers(stateProps.query))
           .catch(() => {
           });
       },

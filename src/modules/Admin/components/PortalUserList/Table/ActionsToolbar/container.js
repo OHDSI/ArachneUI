@@ -42,7 +42,7 @@ class UserListActionsToolbarBuilder extends ContainerBuilder {
   getMapDispatchToProps() {
     return {
       batch: actions.adminSettings.portalUserList.batch,
-      loadUsersWithCurrentQuery: (query) => actions.adminSettings.portalUserList.query({ query }),
+      loadUsers: (query) => actions.adminSettings.portalUserList.query({ query }),
       cleanSelectedUsers: () => actions.adminSettings.portalUserListSelectedUsers.updateSelectedUsers({}),
     }
   };
@@ -61,15 +61,11 @@ class UserListActionsToolbarBuilder extends ContainerBuilder {
       ...stateProps,
       ...ownProps,
       ...dispatchProps,
-      batch: (operationType) => {
-        Utils.confirmDelete({message: `Are you sure you want to ${messages[operationType]} the selected users?`})
-          .then(() => dispatchProps.batch(null, {
-            type: operationType,
-            ids: stateProps.selectedUsers,
-          }))
-          .then(() => dispatchProps.loadUsersWithCurrentQuery(stateProps.query))
-          .then(() => operationType === batchOperationType.DELETE ? dispatchProps.cleanSelectedUsers() : {})
-          .catch(() => {});
+      batch: async (operationType) => {
+          await Utils.confirmDelete({message: `Are you sure you want to ${messages[operationType]} the selected users?`});
+          await dispatchProps.batch(null, { type: operationType, ids: stateProps.selectedUsers });
+          await dispatchProps.loadUsers(stateProps.query);
+          await operationType === batchOperationType.DELETE ? dispatchProps.cleanSelectedUsers() : {};
       },
     }
   }
