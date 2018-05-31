@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -224,6 +224,8 @@ const detectMimeTypeByExtension = (file) => {
   }
   return type;
 };
+
+const DEFAULT_PROTOCOL = "https://";
 
 class Utils {
 
@@ -479,8 +481,18 @@ class Utils {
     }
   }
 
+  static normalizeUrl(link) {
+    if (link) {
+      const uri = new URI(link);
+      if (!uri.is('domain') && !link.startsWith('/')) {
+        return DEFAULT_PROTOCOL + link;
+      }
+    }
+    return link;
+  }
+
   static getSecureLink(link) {
-    let data = { link };
+    let data = { link: Utils.normalizeUrl(link) };
 
     if (data.link && Utils.isOuterLink(data.link)) {
       data = { onClick: Utils.confirmOuterLink.bind(null, [data.link]) };

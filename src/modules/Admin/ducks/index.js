@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,6 +21,7 @@
  */
 
 import adminList from './adminList';
+import tenantList from './tenantList';
 import adminOptionList from './adminOptionList';
 import portalUserConfirmEmail from './portalUserConfirmEmail';
 import portalUserEnable from './portalUserEnable';
@@ -30,9 +31,11 @@ import systemSettings from './systemSettings';
 import userOptionList from './userOptionList';
 import userList from './userList';
 import reindexProcess from './reindexProcess';
+import portalUserListSelectedUsers from './portalUserListSelectedUsers';
 
 const actions = {
   adminList: adminList.actions,
+  tenantList: tenantList.actions,
   adminOptionList: adminOptionList.actions,
   portalUserConfirmEmail: portalUserConfirmEmail.actions,
   portalUserEnable: portalUserEnable.actions,
@@ -42,10 +45,12 @@ const actions = {
   userOptionList: userOptionList.actions,
   userList: userList.actions,
   reindexProcess: reindexProcess.actions,
+  portalUserListSelectedUsers: portalUserListSelectedUsers.actions,
 };
 
 const reducer = {
   adminList: adminList.reducer,
+  tenantList: tenantList.reducer,
   adminOptionList: adminOptionList.reducer,
   portalUserConfirmEmail: portalUserConfirmEmail.reducer,
   portalUserEnable: portalUserEnable.reducer,
@@ -55,6 +60,7 @@ const reducer = {
   userOptionList: userOptionList.reducer,
   userList: userList.reducer,
   reindexProcess: reindexProcess.reducer,
+  portalUserListSelectedUsers: portalUserListSelectedUsers.reducer,
 };
 
 export default {

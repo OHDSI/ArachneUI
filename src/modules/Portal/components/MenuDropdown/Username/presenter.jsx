@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,23 +15,27 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon
- * Created: February 13, 2018
+ * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka
+ * Created: May 9, 2018
  *
  */
 
-import { createSelector } from 'reselect';
-import { Utils, get } from 'services/Utils';
+import React, { PropTypes } from 'react';
+import BEMHelper from 'services/BemHelper';
+import {
+  apiPaths as expertApiPaths
+} from 'modules/ExpertFinder/const';
 
-const getTenants = state => get(state, 'expertFinder.myProfile.data.result.tenants') || [];
+require('./style.scss');
 
-const getNewActiveTenantId = (state) => {
-  if (get(state, 'expertFinder.userSettings.isUpdating')) {
-    return get(state, 'expertFinder.userSettings.newData.activeTenantId');
-  }
-};
+function Username({ mods, name }) {
+  const classes = new BEMHelper('profile-menu-username');
 
-export default {
-  getTenants,
-  getNewActiveTenantId,
-};
+  return (
+    <div>
+      <span {...classes({ modifiers: mods })}>{name}</span>
+    </div>
+  );
+}
+
+export default Username;
