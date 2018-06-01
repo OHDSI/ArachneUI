@@ -376,18 +376,7 @@ function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false) {
         },
       },
     },
-    {
-      name: 'useKerberos',
-      InputComponent: {
-        component: FormCheckbox,
-        props: {
-          required: false,
-          options: {
-            label: 'Use Kerberos',
-          }
-        },
-      }
-    },
+
     ...cdmSpecificAttributes.map((attribute, index) => mapAttributeToField('CDM Settings', attribute, index)),
   ];
 
@@ -396,7 +385,20 @@ function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false) {
 
 const getDataSourceKerberosFields = function() {
   return ([
-    ...kerberosAttributes.map((attr, index) => mapAttributeToField('Kerberos', attr, index)),
+    {
+        name: 'useKerberos',
+        InputComponent: {
+            component: FormCheckbox,
+            props: {
+                required: false,
+                options: {
+                    label: 'Use Kerberos',
+                },
+                title: 'Kerberos',
+            },
+        }
+    },
+      ...kerberosAttributes.map((attr, index) => mapAttributeToField(null, attr, index)),
     {
       name: 'krbPassword',
       InputComponent: {
