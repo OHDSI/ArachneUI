@@ -61,6 +61,7 @@ ModalCreateEdit.propTypes = {
 function mapStateToProps(state) {
   const dataSourceData = get(state, 'cdmSourceList.dataSource.queryResult.result', [], 'Array');
   const isOpened = get(state, 'modal.createDataSource.isOpened', false);
+  const dbmsType = get(state, 'form.createDataSource.values.dbmsType');
 
   return {
     dbmsTypeList: selectors.getDbmsTypeList(state),
@@ -68,11 +69,13 @@ function mapStateToProps(state) {
     currentListQuery: state.routing.locationBeforeTransitions.query,
     dataSourceId: get(state.modal[form.createDataSource], 'data.id'),
     isLoading: state.cdmSourceList.dataSource.isLoading,
+    hasKeytab: dataSourceData.hasKeytab,
     initialValues: {
       ...dataSourceData,
       dbmsType: get(dataSourceData, 'dbmsType'),
     },
     isOpened,
+    dbmsType,
   };
 }
 
@@ -92,6 +95,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...stateProps,
     ...dispatchProps,
     doSubmit(data) {
+      data.useKerberos = !!data.useKerberos;
       const submitPromise = stateProps.dataSourceId
         ? dispatchProps.updateDataSource({id: stateProps.dataSourceId}, data)
         : dispatchProps.createDataSource({}, data);

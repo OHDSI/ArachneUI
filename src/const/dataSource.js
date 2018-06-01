@@ -27,6 +27,8 @@ import { get } from 'services/Utils';
 import {
   FormInput,
   FormSelect,
+  FormCheckbox,
+  FormFileInput,
 } from 'arachne-ui-components';
 import PasswordField from 'components/PasswordField/connected';
 
@@ -41,6 +43,12 @@ const attributeNames = keyMirror({
   cohortTargetTable: null,
   dbmsType: null,
   executionPolicy: null,
+  useKerberos: null,
+  krbKeytab: null,
+  krbRealm: null,
+  krbFQDN: null,
+  krbUser: null,
+  krbPassword: null,
 });
 
 const modelTypesValues = keyMirror({
@@ -251,6 +259,44 @@ const immutableAttributes = [
 const fieldHints = {
 };
 
+const kerberosAttributes = [
+  {
+    label: 'Kerberos Realm',
+    name: attributeNames.krbRealm,
+    type: fieldTypes.string,
+    faceted: false,
+    showInList: false,
+  },
+  {
+    label: 'Kerberos FQDN',
+    name: attributeNames.krbFQDN,
+    type: fieldTypes.string,
+    faceted: false,
+    showInList: false,
+  },
+  {
+    label: 'Kerberos Username',
+    name: attributeNames.krbUser,
+    type: fieldTypes.string,
+    faceted: false,
+    showInList: false,
+  },
+];
+
+function mapAttributeToField(section, attribute, index){
+  return {
+    name: attribute.name,
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: attribute.label,
+          title: index === 0 ? section : null,
+        },
+      },
+    };
+}
+
 function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false) {
   const virtualSourceFields = [
     {
@@ -330,21 +376,55 @@ function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false) {
         },
       },
     },
-    ...cdmSpecificAttributes.map((attribute, index) => ({
-      name: attribute.name,
+    {
+      name: 'useKerberos',
       InputComponent: {
-        component: FormInput,
+        component: FormCheckbox,
         props: {
-          mods: ['bordered'],
-          placeholder: attribute.label,
-          title: index === 0 ? 'CDM settings' : null,
+          required: false,
+          options: {
+            label: 'Use Kerberos',
+          }
         },
-      },
-    })),
+      }
+    },
+    ...cdmSpecificAttributes.map((attribute, index) => mapAttributeToField('CDM Settings', attribute, index)),
   ];
 
   return useOnlyVirtual ? virtualSourceFields : physicalSourceFields;
 }
+
+const getDataSourceKerberosFields = function() {
+  return ([
+    ...kerberosAttributes.map((attr, index) => mapAttributeToField('Kerberos', attr, index)),
+    {
+      name: 'krbPassword',
+      InputComponent: {
+        component: PasswordField,
+        props: {
+          mods: ['bordered'],
+          showHint: false,
+          placeholder: 'Kerberos password',
+          required: false,
+          type: 'password',
+        },
+      },
+    },
+  {
+      name: 'krbKeytab',
+      InputComponent: {
+        component: FormFileInput,
+        props: {
+          name: 'krbKeytab',
+          multiple: false,
+          mods: ['bordered'],
+          placeholder: 'Browse keytab file',
+          filePlaceholder: 'Label',
+          dropzonePlaceholder: 'Drag and drop keytab file',
+        },
+      }
+  }]);
+};
 
 export {
   healthStatuses,
@@ -357,5 +437,6 @@ export {
   fieldHints,
   cdmSpecificAttributes,
   getDataSourceCreationFields,
+  getDataSourceKerberosFields,
   executionPolicy,
 };

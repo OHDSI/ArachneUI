@@ -22,6 +22,8 @@
 
 import Duck from 'services/Duck';
 import { apiPaths } from '../const';
+import { buildFormData } from 'services/Utils';
+import _ from 'lodash';
 
 const coreName = 'CSL_DS';
 
@@ -37,9 +39,20 @@ const dataSource = new Duck({
   urlBuilder: apiPaths.dataSources,
 });
 
+const actions = dataSource.actions;
+const _create = actions.create;
+const _update = actions.update;
+const dsBlob = (data) => new Blob(
+  [ JSON.stringify(_.omit(data, 'krbKeytab')), ],
+  { type: 'application/json' },
+);
+const formData = data => buildFormData({dataSource: dsBlob(data), krbKeytab: data.krbKeytab ? data.krbKeytab[0] : null});
+actions.create = (urlParams, data) => _create(urlParams, formData(data));
+actions.update = (urlParams, data) => _update(urlParams, formData(data));
+
 export default {
   actions: {
-    ...dataSource.actions,
+    ...actions,
     reset: (dispatch) => dispatch(clearSource()),
   },
   reducer: dataSource.reducer,
