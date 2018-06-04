@@ -24,7 +24,6 @@ import React, { Component } from 'react';
 import PageWrapper from 'modules/Admin/components/PageWrapper';
 import Table from './Table';
 import ModalAddUser from './ModalAddUser';
-import ModalAddUsersToTenants from './Table/ModalAddUsersToTenants';
 import Grid from 'components/Grid';
 import PortalUserListActions from './Actions';
 
@@ -33,7 +32,7 @@ require('./style.scss');
 export default class UserList extends Component {
 
   getModals() {
-    return [<ModalAddUser />, <ModalAddUsersToTenants />];
+    return [<ModalAddUser />];
   }
 
   render() {
