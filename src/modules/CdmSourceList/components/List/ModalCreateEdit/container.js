@@ -27,7 +27,7 @@ import get from 'lodash/get';
 
 import actions from 'actions';
 import { ModalUtils } from 'arachne-ui-components';
-import { modal, form } from 'modules/CdmSourceList/const';
+import { modal, form, kerberosAuthType } from 'modules/CdmSourceList/const';
 import presenter from './presenter';
 import selectors from './selectors';
 
@@ -63,6 +63,8 @@ function mapStateToProps(state) {
   const isOpened = get(state, 'modal.createDataSource.isOpened', false);
   const dbmsType = get(state, 'form.createDataSource.values.dbmsType');
 
+  dataSourceData.krbAuthMethod = dataSourceData.krbAuthMethod || kerberosAuthType.PASSWORD;
+
   return {
     dbmsTypeList: selectors.getDbmsTypeList(state),
     cdmVersionList: selectors.getCDMVersionList(state),
@@ -70,6 +72,7 @@ function mapStateToProps(state) {
     dataSourceId: get(state.modal[form.createDataSource], 'data.id'),
     isLoading: state.cdmSourceList.dataSource.isLoading,
     hasKeytab: dataSourceData.hasKeytab,
+    authMethod: get(state, 'form.createDataSource.values.krbAuthMethod'),
     initialValues: {
       ...dataSourceData,
       dbmsType: get(dataSourceData, 'dbmsType'),
@@ -87,6 +90,7 @@ const mapDispatchToProps = {
   resetForm: () => resetForm(form.createDataSource),
   closeModal: () => ModalUtils.actions.toggle(modal.createDataSource, false),
   loadDataSourceList: actions.cdmSourceList.dataSourceList.query,
+  deleteDataSourceKeytab: actions.cdmSourceList.dataSourceKeytab.delete,
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
@@ -109,6 +113,10 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
       // We have to return a submission promise back to redux-form
       // to allow it update the state
       return submitPromise;
+    },
+    deleteKeytab() {
+      const id = stateProps.dataSourceId;
+      dispatchProps.deleteDataSourceKeytab({id}).then(() => dispatchProps.loadDataSource({id}));
     },
   });
 }

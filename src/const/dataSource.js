@@ -29,8 +29,10 @@ import {
   FormSelect,
   FormCheckbox,
   FormFileInput,
+  FormRadioList,
 } from 'arachne-ui-components';
 import PasswordField from 'components/PasswordField/connected';
+import { kerberosAuthType } from "modules/CdmSourceList/const";
 
 const attributeNames = keyMirror({
   name: null,
@@ -386,19 +388,39 @@ function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false) {
 const getDataSourceKerberosFields = function() {
   return ([
     {
-        name: 'useKerberos',
-        InputComponent: {
-            component: FormCheckbox,
-            props: {
-                required: false,
-                options: {
-                    label: 'Use Kerberos',
-                },
-                title: 'Kerberos',
+      name: 'useKerberos',
+      InputComponent: {
+        component: FormCheckbox,
+        props: {
+            required: false,
+            options: {
+                label: 'Use Kerberos',
             },
-        }
+            title: 'Kerberos',
+        },
+      }
     },
       ...kerberosAttributes.map((attr, index) => mapAttributeToField(null, attr, index)),
+    {
+      name: "krbAuthMethod",
+      className: 'radiolist',
+      InputComponent: {
+        component: FormRadioList,
+        props: {
+          required: false,
+          options: [
+            {
+              label: 'Authenticate using password',
+              value: kerberosAuthType.PASSWORD,
+            },
+            {
+              label: 'Authenticate using keytab file',
+              value: kerberosAuthType.KEYTAB,
+            }
+          ],
+        }
+      },
+    },
     {
       name: 'krbPassword',
       InputComponent: {

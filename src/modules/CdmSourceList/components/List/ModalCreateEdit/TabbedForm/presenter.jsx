@@ -30,6 +30,7 @@ import {
 import { Field } from 'redux-form';
 import BEMHelper from 'services/BemHelper';
 import { getDataSourceCreationFields, getDataSourceKerberosFields } from 'const/dataSource';
+import { kerberosAuthType } from 'modules/CdmSourceList/const';
 
 require('./style.scss');
 
@@ -37,20 +38,37 @@ function TabbedForm(props) {
 
   const classes = new BEMHelper('tabbed-form');
 
+  function isFieldVisible(field) {
+    return (field.name !== 'krbPassword' && field.name !== 'krbKeytab' )
+      || (field.name === 'krbPassword' && authMethod === kerberosAuthType.PASSWORD)
+      || (field.name === 'krbKeytab' && authMethod === kerberosAuthType.KEYTAB);
+  }
+
+  function KeytabControl({ hasKeytab } = props) {
+    return hasKeytab ?
+      (<div>
+        <div {...classes('keytab')}><i {...classes('icon')}>lock</i><span>Previously uploaded Keytab is used for authentication</span></div>
+        <div {...classes('keytab')}><Button {...classes({element: 'submit'})} mods={['submit', 'rounded']} onClick={deleteKeytab} label="Remove Keytab" /></div>
+      </div>) : null;
+  }
+
   function mapField() {
     return ((field, key) => [
         field.InputComponent && field.InputComponent.props && field.InputComponent.props.title
           ? <span {...classes('group-title')}>{field.InputComponent.props.title}</span>
           : null,
-        props.hasKeytab && field.name === 'krbKeytab' ? <div {...classes('keytab')}><i {...classes('icon')}>lock</i><span>Keytab is stored, remove password to apply it</span></div> : null,
-        <Field {...field} {...classes('group', field.mods, field.className)} component={Fieldset} key={key}/>
+        field.name === 'krbKeytab' && authMethod === kerberosAuthType.KEYTAB ? <KeytabControl {...props} /> : null,
+        isFieldVisible(field) ? <Field {...field} {...classes('group', field.mods, field.className)} component={Fieldset} key={key}/> : null,
       ]
     )
   }
 
   const {
     dbmsTypeList,
+    authMethod,
     openedSection,
+    hasKeytab,
+    deleteKeytab,
     onTabChange,
     /* redux-form props */
     error,
