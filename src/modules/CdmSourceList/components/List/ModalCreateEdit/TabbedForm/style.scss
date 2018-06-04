@@ -33,7 +33,7 @@
 
     & .ac-tabbed-pane {
       &__content {
-        padding: 1em 0 0 0;
+        padding-top: 1em;
         display: flex;
         flex-direction: column;
       }
@@ -41,25 +41,28 @@
 
     &__group-title {
       @include title();
-      margin: 1rem;
+      margin: 1rem 0;
+      padding: 0 2rem;
     }
 
     &__actions {
       display: flex;
       flex-direction: column;
-      margin-top: 15px;
+      padding: 0 1.5rem 1.5rem 1.5rem;
     }
 
     &__group {
-      margin-bottom: 12px;
+      margin-bottom: 1rem;
+      padding: 0.5rem 2rem;
     }
 
     &__cancel {
-      margin-top: 10px;
+      margin-top: 1rem;
     }
 
     &__keytab {
       margin-bottom: 1rem;
+      padding: 0.5rem 2rem;
     }
 
     &__icon {
@@ -69,6 +72,11 @@
       color: $blue-semi-light;
     }
 
+  }
+
+  &form-checkbox {
+    display: flex;
+    height: 3rem;
   }
 
 }

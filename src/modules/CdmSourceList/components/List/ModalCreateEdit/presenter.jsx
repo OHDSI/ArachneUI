@@ -75,7 +75,7 @@ function ModalCreateEdit(props) {
   );
 
   return (
-    <Modal modal={props.modal} title={modalTitle}>
+    <Modal modal={props.modal} title={modalTitle} mods={['no-padding']}>
       {form}
       <LoadingPanel active={isLoading}/>
     </Modal>
