@@ -23,7 +23,7 @@
 import Duck from 'services/Duck';
 import { apiPaths } from '../const';
 import { buildFormData } from 'services/Utils';
-import _ from 'lodash';
+import { omit } from 'lodash';
 
 const coreName = 'CSL_DS';
 
@@ -43,7 +43,7 @@ const actions = dataSource.actions;
 const _create = actions.create;
 const _update = actions.update;
 const dsBlob = (data) => new Blob(
-  [ JSON.stringify(_.omit(data, 'krbKeytab')), ],
+  [ JSON.stringify(omit(data, 'krbKeytab')), ],
   { type: 'application/json' },
 );
 const formData = data => buildFormData({dataSource: dsBlob(data), krbKeytab: data.krbKeytab ? data.krbKeytab[0] : null});
