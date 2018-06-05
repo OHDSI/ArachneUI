@@ -24,6 +24,7 @@ import characterization from './characterization';
 import dataSource from './dataSource';
 import dataSourceList from './dataSourceList';
 import dataSourceBusiness from './dataSourceBusiness';
+import dataSourceKeytab from './dataSourceKeytab';
 import dbmsTypes from './dbmsTypes';
 import achillesResults from './achillesResults';
 
@@ -32,6 +33,7 @@ export default {
     characterization: characterization.actions,
     dataSource: dataSource.actions,
     dataSourceList: dataSourceList.actions,
+    dataSourceKeytab: dataSourceKeytab.actions,
     dataSourceBusiness: dataSourceBusiness.actions,
     dbmsTypes: dbmsTypes.actions,
     achillesResults: achillesResults.actions,
@@ -41,6 +43,7 @@ export default {
     characterization: characterization.reducer,
     dataSource: dataSource.reducer,
     dataSourceList: dataSourceList.reducer,
+    dataSourceKeytab: dataSourceKeytab.reducer,
     dataSourceBusiness: dataSourceBusiness.reducer,
     dbmsTypes: dbmsTypes.reducer,
     achillesResults: achillesResults.reducer,

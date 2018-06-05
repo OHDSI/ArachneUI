@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2018 Observational Health Data Sciences and Informatics
+ * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,47 +16,27 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 20, 2016
+ * Created: May 29, 2018
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+import {Component} from 'react';
+import presenter from './presenter';
 
-.#{$namespace} {
+class TabbedForm extends Component {
+  componentWillMount(){
+    this.state = {
+      openedSection: 'datasource-fields',
+    };
+  }
 
-	&data-source-list-form-create {
-		flex-direction: column;
-		width: 400px;
+  onTabChange(openedSection) {
+    this.setState({ openedSection, });
+  }
 
-		&__field {
-
-			&--hidden {
-				display: none;
-			}
-		}
-
-		& .ac-form__error {
-    	width: 100%;
-		}
-
-		& .ac-form {
-			&__group-title {
-				@include title();
-				margin: 1rem 0;
-				padding: 0 2rem;
-			}
-
-			&__actions {
-				display: flex;
-				flex-direction: column;
-				padding: 0 1.5rem 1.5rem 1.5rem;
-			}
-
-			&__group {
-				margin-bottom: 1rem;
-				padding: 0.5rem 2rem;
-			}
-		}
-	}
-
+  render() {
+    return presenter(this.props);
+  }
 }
+
+export default TabbedForm;
