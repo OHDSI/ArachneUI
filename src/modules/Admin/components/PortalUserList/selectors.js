@@ -41,11 +41,18 @@ class UserListSelectorsBuilder {
   }
 
   getTenantOptions(tenantList) {
-    const tenantOptions = tenantList.map(tenant => ({
-      label: tenant.name,
-      value: tenant.id.toString(),
-    }));
-    return sortOptions(tenantOptions);
+    const tenantOptions = [
+        ...sortOptions(tenantList.map(tenant => ({
+        label: tenant.name,
+        value: tenant.id.toString(),
+      }))),
+      {
+        label: "No tenants",
+        value: "-1",
+      }
+    ];
+
+    return tenantOptions;
   }
 
   buildSelectorForTenantOptions() {
