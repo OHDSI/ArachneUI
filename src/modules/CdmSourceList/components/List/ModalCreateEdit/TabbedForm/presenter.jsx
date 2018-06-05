@@ -25,7 +25,8 @@ import React from 'react';
 import {
   TabbedPane,
   Fieldset,
-  Button
+  Button,
+  Link
 } from 'arachne-ui-components';
 import { Field } from 'redux-form';
 import BEMHelper from 'services/BemHelper';
@@ -48,7 +49,7 @@ function TabbedForm(props) {
     return hasKeytab ?
       (<div>
         <div {...classes('keytab')}><i {...classes('icon')}>lock</i><span>Previously uploaded Keytab is used for authentication</span></div>
-        <div {...classes('keytab')}><Button {...classes({element: 'submit'})} mods={['submit', 'rounded']} onClick={deleteKeytab} label="Remove Keytab" /></div>
+        <div {...classes('keytab')}><Link {...classes('link')} onClick={deleteKeytab}>Remove Keytab</Link></div>
       </div>) : null;
   }
 
