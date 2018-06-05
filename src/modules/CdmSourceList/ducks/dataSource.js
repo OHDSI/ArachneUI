@@ -23,7 +23,7 @@
 import Duck from 'services/Duck';
 import { apiPaths } from '../const';
 import { buildFormData } from 'services/Utils';
-import { omit } from 'lodash';
+import omit from 'lodash/omit';
 
 const coreName = 'CSL_DS';
 
