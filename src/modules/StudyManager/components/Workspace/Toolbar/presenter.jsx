@@ -56,7 +56,7 @@ function TitleCaption({ userId, title }) {
   )
 }
 
-function StudyToolbar(props) {
+function WorkspaceToolbar(props) {
   const {
     reload,
     userId,
@@ -76,7 +76,7 @@ function StudyToolbar(props) {
   );
 }
 
-StudyToolbar.propTypes = {
+WorkspaceToolbar.propTypes = {
   breadcrumbList: PropTypes.array.isRequired,
   backurl: PropTypes.string,
   isEditable: PropTypes.bool.isRequired,
@@ -84,6 +84,6 @@ StudyToolbar.propTypes = {
   studyTitle: PropTypes.string.isRequired,
   isFavourite: PropTypes.bool,
   setFavourite: PropTypes.func,
-}
+};
 
-export default StudyToolbar;
+export default WorkspaceToolbar;

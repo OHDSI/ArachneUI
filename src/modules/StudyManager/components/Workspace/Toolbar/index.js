@@ -20,6 +20,6 @@
  *
  */
 
-import StudyToolbarBuilder from './container';
+import WorkspaceToolbarBuilder from './container';
 
-export default (new StudyToolbarBuilder()).build();
+export default (new WorkspaceToolbarBuilder()).build();

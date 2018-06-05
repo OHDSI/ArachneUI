@@ -24,8 +24,18 @@ import get from 'lodash/get';
 import { ContainerBuilder } from 'services/Utils';
 import { goBack } from 'react-router-redux';
 import presenter from './presenter';
+import {recentActivityPageSize} from "../../../../../../src/modules/StudyManager/const";
 
 export class Workspace extends Component {
+  componentWillReceiveProps(nextProps) {
+
+    if (this.props.studyId !== nextProps.studyId) {
+      actions.studyManager.recentActivity.find({
+        studyId: nextProps.studyId,
+        pageSize: recentActivityPageSize
+      })
+    }
+  }
   render() {
     return presenter({
       ...this.props,
@@ -82,7 +92,6 @@ export default class WorkspaceBuilder extends ContainerBuilder {
     return {
       loadAnalysisTypeList: actions.studyManager.analysisTypes.find,
       loadStudy: () => actions.studyManager.study.find(studyId),
-      // TODO loadInsights: () => actions.studyManager.studyInsights.find({ studyId }),
     };
   }
 

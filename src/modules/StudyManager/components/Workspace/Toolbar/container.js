@@ -24,11 +24,11 @@ import get from 'lodash/get';
 import { modal, paths, studyPermissions } from 'modules/StudyManager/const';
 import { ModalUtils } from 'arachne-ui-components';
 import actions from 'actions';
-import StudyToolbar from './presenter';
+import WorkspaceToolbar from './presenter';
 
-export default class StudyToolbarBuilder {
+export default class WorkspaceToolbarBuilder {
   getComponent() {
-    return StudyToolbar;
+    return WorkspaceToolbar;
   }
 
   mapStateToProps(state) {

@@ -29,7 +29,6 @@ import ModalConfirmDatasource from 'modules/StudyManager/components/ViewEdit/Mod
 import ModalCreateDocument from 'modules/StudyManager/components/ViewEdit/ModalCreateDocument';
 import ModalCreateAnalysis from 'modules/StudyManager/components/ViewEdit/ModalCreateAnalysis';
 
-import ListAnalyses from 'modules/StudyManager/components/ViewEdit/ListAnalyses';
 import RightColumn from './RightColumn';
 import LeftColumn from './LeftColumn';
 
