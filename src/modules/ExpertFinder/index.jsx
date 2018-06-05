@@ -21,7 +21,7 @@
  */
 
 import React from 'react';
-import imgs from 'const/imgs';
+import { imgs } from './const';
 import { combineReducers } from 'redux';
 import ducks from './ducks';
 import { paths } from './const';
@@ -35,7 +35,7 @@ export default {
     });
   },
   sidebarElement: {
-    ico: imgs.sidebar.expertFinder,
+    ico: imgs.sideBarIco,
     name: 'Expert Finder',
     path: paths.list(),
   },

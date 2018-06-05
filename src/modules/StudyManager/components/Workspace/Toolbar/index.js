@@ -16,24 +16,10 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 13, 2016
+ * Created: December 16, 2016
  *
  */
 
-const imgs = {
-  loading: '/img/icons/loading.png',
-  header: {
-    logo: '/img/icons/Universal_Desktop/Header/Arachne_Desktop_logo.png',
-    search: '/img/icons/Universal_Desktop/Header/Arachne_Desktop_icon-Search-.png',
-  },
-  studiesToolbar: {
-    create: '/img/icons/Studies_Toolbar/Arachne_Desktop_icon-Create-.png',
-    refresh: '/img/icons/Studies_Toolbar/Arachne_Desktop_icon-Refresh.png',
-  },
-  modal: {
-    close: '/img/icons/close.png',
-  },
-  defaultAvatar: '/img/icons/icon_viewStudy_profilePic.svg',
-};
+import StudyToolbarBuilder from './container';
 
-export default imgs;
+export default (new StudyToolbarBuilder()).build();

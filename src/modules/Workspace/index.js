@@ -20,20 +20,17 @@
  *
  */
 
-const imgs = {
-  loading: '/img/icons/loading.png',
-  header: {
-    logo: '/img/icons/Universal_Desktop/Header/Arachne_Desktop_logo.png',
-    search: '/img/icons/Universal_Desktop/Header/Arachne_Desktop_icon-Search-.png',
-  },
-  studiesToolbar: {
-    create: '/img/icons/Studies_Toolbar/Arachne_Desktop_icon-Create-.png',
-    refresh: '/img/icons/Studies_Toolbar/Arachne_Desktop_icon-Refresh.png',
-  },
-  modal: {
-    close: '/img/icons/close.png',
-  },
-  defaultAvatar: '/img/icons/icon_viewStudy_profilePic.svg',
-};
+import { paths, imgs } from './const';
 
-export default imgs;
+export default {
+  routes: () => (location, cb) => {
+    require.ensure([], (require) => {
+      cb(null, require('./routes').default()); // eslint-disable-line global-require
+    });
+  },
+  sidebarElement: {
+    ico: imgs.sidebarIco,
+    name: 'Personal workspace',
+    path: paths.workspace(),
+  },
+};

@@ -42,54 +42,68 @@ import RightColumn from './RightColumn';
 
 require('./style.scss');
 
-function ViewEditStudy(props) {
-  const {
-    studyTitle,
-    isLoading,
-    id,
-    onBannerActed,
-    openedSection,
-    onTabChange,
-  } = props;
-  const classes = new BEMHelper('study-manager-view');
+export function PageContentBuilder({ LeftColumnElement, RightColumnElement, modalsFactory }) {
+  return function(props) {
+    const {
+      studyTitle,
+      isLoading,
+      id,
+      onBannerActed,
+      openedSection,
+      onTabChange,
+    } = props;
+    const classes = new BEMHelper('study-manager-view');
 
-  return (
-    <PageContent title={`${studyTitle} | Arachne`}>
-      <div {...classes()}>
-        <InviteRestrictedArea
-          {...classes('container')}
-          studyId={id}
-          onAction={onBannerActed}
-          disabled={isLoading}
-        >
-          <Toolbar studyId={id} />
-          <div {...classes('content')}>
-            <div className="row">
-              <div className="col-xs-12 col-lg-6">
-                <DateInterval />
-                <div className="row">
-                  <div className="col-xs-12">
-                    <LeftColumn openedSection={openedSection} onTabChange={onTabChange} />
+    return (
+      <PageContent title={`${studyTitle} | Arachne`}>
+        <div {...classes()}>
+          <InviteRestrictedArea
+            {...classes('container')}
+            studyId={id}
+            onAction={onBannerActed}
+            disabled={isLoading}
+          >
+            <Toolbar studyId={id} />
+            <div {...classes('content')}>
+              <div className="row">
+                <div className="col-xs-12 col-lg-6">
+                  <DateInterval />
+                  <div className="row">
+                    <div className="col-xs-12">
+                      <LeftColumnElement {...props} />
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="col-xs-12 col-lg-6">
-                <RightColumn studyId={id} />
+                <div className="col-xs-12 col-lg-6">
+                  <RightColumnElement {...props} />
+                </div>
               </div>
             </div>
-          </div>
-        </InviteRestrictedArea>
-        <LoadingPanel active={isLoading} />
+          </InviteRestrictedArea>
+          <LoadingPanel active={isLoading} />
+        </div>
+        {modalsFactory()}
+      </PageContent>
+    );
+  }
+}
+
+function ViewEditStudy(props) {
+  return PageContentBuilder({
+    LeftColumnElement: <LeftColumn />,
+    RightColumnElement: <RightColumn />,
+    modalsFactory: () => {
+      return <div>
+        <ModalEditTitle />
+        <ModalCreateAnalysis />
+        <ModalCreateDocument />
+        <ModalAddParticipant />
+        <ModalConfirmParticipant />
+        <ModalConfirmDatasource />
+        <ModalAddDataSource />
       </div>
-      <ModalEditTitle />
-      <ModalCreateAnalysis />
-      <ModalCreateDocument />
-      <ModalAddParticipant />
-      <ModalConfirmParticipant />
-      <ModalConfirmDatasource />
-      <ModalAddDataSource />
-    </PageContent>
-  );
+    }
+  })
 }
 
 ViewEditStudy.propTypes = {

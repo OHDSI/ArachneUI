@@ -20,20 +20,6 @@
  *
  */
 
-const imgs = {
-  loading: '/img/icons/loading.png',
-  header: {
-    logo: '/img/icons/Universal_Desktop/Header/Arachne_Desktop_logo.png',
-    search: '/img/icons/Universal_Desktop/Header/Arachne_Desktop_icon-Search-.png',
-  },
-  studiesToolbar: {
-    create: '/img/icons/Studies_Toolbar/Arachne_Desktop_icon-Create-.png',
-    refresh: '/img/icons/Studies_Toolbar/Arachne_Desktop_icon-Refresh.png',
-  },
-  modal: {
-    close: '/img/icons/close.png',
-  },
-  defaultAvatar: '/img/icons/icon_viewStudy_profilePic.svg',
-};
+import ViewEditStudy from './container';
 
-export default imgs;
+export default (new ViewEditStudy()).build();

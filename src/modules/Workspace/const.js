@@ -1,6 +1,5 @@
 /*
- *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,9 +14,8 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 13, 2016
- *
+ * Authors: Anton Gackovka
+ * Created: May 31, 2018
  */
 
 import keyMirror from 'keymirror';
@@ -46,12 +44,11 @@ const form = keyMirror({
 });
 
 const paths = {
+  workspace: () => `/workspace/home`,
   analyses: id => `/analysis-execution/analyses${id ? `/${id}` : ''}`,
   dataSources: id => `/data-catalog/data-sources${id ? `/${id}` : ''}`,
-  studies: id => `/study-manager/studies${id ? `/${id}` : ''}`,
   user: id => `/expert-finder/profile/${id}`,
   studyFile: ({ studyId, fileId }) => `/study-manager/studies/${studyId}/documents/${fileId}`,
-  profile: id => `/expert-finder/profile/${id}`,
 };
 
 const apiPaths = {
@@ -59,7 +56,9 @@ const apiPaths = {
   studies: id => `/api/v1/study-management/studies${id ? `/${id}` : ''}`,
   studyInsights: ({ studyId }) => `/api/v1/study-management/studies/${studyId}/insights`,
   // Study invitations
-  studyInvitations: ({ studyId }) => `/api/v1/user-management/users/invitations?studyId=${studyId}`,
+  studyInvitations: ({ studyId }) => {
+    return `/api/v1/user-management/users/invitations?studyId=${studyId}`;
+  },
   // Study types
   studyTypes: () => '/api/v1/study-management/study-types',
   // Study statuses
@@ -95,7 +94,7 @@ const statusColors = {
 };
 
 const imgs = {
-  sidebarIco: '/img/icons/Universal_Desktop/Navigation/Arachne_Desktop_icon-Studies_Library.png',
+  sidebarIco: '/img/icons/Universal_Desktop/Navigation/Arachne_Desktop_icon-Workspace.png',
 };
 
 const studyListPageSize = 12;

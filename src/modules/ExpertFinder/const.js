@@ -118,6 +118,11 @@ const roles = {
   },
 };
 
+
+const imgs = {
+  sideBarIco: '/img/icons/Universal_Desktop/Navigation/Arachne_Desktop_icon-Expert_Finder.png',
+};
+
 export {
   apiPaths,
   cancelBtnConfig,
@@ -130,4 +135,5 @@ export {
   autocompleteResultsLimit,
   maxDescriptionLength,
   roles,
+  imgs,
 };
