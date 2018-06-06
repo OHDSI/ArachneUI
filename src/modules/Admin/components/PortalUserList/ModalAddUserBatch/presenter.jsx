@@ -75,13 +75,14 @@ function TenantSelect({ tenantOptions }) {
       <div {...classes('field')}>
         <Field
           component={Fieldset}
-          name={`tenants`}
+          name={`tenantIds`}
           InputComponent={{
             component: FormSelect,
             props: {
               mods: ['rounded', 'bordered'],
               placeholder: 'Tenants',
               options: tenantOptions,
+              isMulti: true,
             }
           }}
         />
@@ -173,10 +174,14 @@ function UsersTable({ fields, meta: { touched, error }, professionalTypesOptions
         />
         <CellSelectEditable {...classes('col-prof-type')}
           header="Professional type"
-          field="professionalType"
+          field="professionalTypeId"
           props={() => ({
             options: professionalTypesOptions
           })}
+        />
+        <CellTextEditable {...classes('col-org')}
+          header="Organization"
+          field="organization"
         />
         <RemoveRow {...classes('col-remove')} props={() => ({
           removeUser: fields.remove,

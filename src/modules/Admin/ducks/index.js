@@ -30,6 +30,7 @@ import solrIndex from './solrIndex';
 import systemSettings from './systemSettings';
 import userOptionList from './userOptionList';
 import userList from './userList';
+import usersGroup from './usersGroup';
 import reindexProcess from './reindexProcess';
 import portalUserListSelectedUsers from './portalUserListSelectedUsers';
 
@@ -44,6 +45,7 @@ const actions = {
   systemSettings: systemSettings.actions,
   userOptionList: userOptionList.actions,
   userList: userList.actions,
+  usersGroup: usersGroup.actions,
   reindexProcess: reindexProcess.actions,
   portalUserListSelectedUsers: portalUserListSelectedUsers.actions,
 };
@@ -59,6 +61,7 @@ const reducer = {
   systemSettings: systemSettings.reducer,
   userOptionList: userOptionList.reducer,
   userList: userList.reducer,
+  usersGroup: usersGroup.reducer,
   reindexProcess: reindexProcess.reducer,
   portalUserListSelectedUsers: portalUserListSelectedUsers.reducer,
 };
