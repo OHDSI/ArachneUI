@@ -43,6 +43,7 @@ class ModalAddUserBatch extends Component {
 
   componentWillMount() {
     this.props.loadProfessionalTypes();
+    this.props.loadTenantList();
   }
 
   render() {
@@ -62,17 +63,18 @@ class ModalAddUserBatchBuilder extends ContainerBuilder {
     return {
       isOpened: get(state, `modal.${modal.addUserBatch}.isOpened`, false),
       professionalTypesOptions: selectors.getProfessionalTypes(state),
-      tenantOptions: [{label: 'Everyone', value: 1}],
+      tenantOptions: get(state, 'adminSettings.tenantList.queryResult', []).map(t => ({ label: t.name, value: t.id })),
     };
   }
 
   getMapDispatchToProps() {
     return {
-      addUser: actions.adminSettings.portalUserList.create,
+      addUsers: actions.adminSettings.usersGroup.create,
       loadUserList: actions.adminSettings.portalUserList.query,
-      closeModal: () => ModalUtils.actions.toggle(modal.addUser, false),
+      closeModal: () => ModalUtils.actions.toggle(modal.addUserBatch, false),
       resetForm: resetForm.bind(null, forms.addUser),
       loadProfessionalTypes: authActions.actions.professionalType.query,
+      loadTenantList: actions.adminSettings.tenantList.query,
     }
   }
 
@@ -82,18 +84,20 @@ class ModalAddUserBatchBuilder extends ContainerBuilder {
       ...ownProps,
       ...stateProps,
       ...dispatchProps,
-      doSubmit(data) {
-        console.log(data)
-        // const submitPromise = dispatchProps.addUserBatch({}, data);
+      async doSubmit(data) {
+        const usersData = {
+          users: data.users,
+          tenantIds: data.tenantIds,
+          password: data.password,
+          emailConfirmationRequired: data.emailConfirmationRequired || false,
+        };
+        
+        const submitPromise = await dispatchProps.addUsers({}, usersData);
+        await dispatchProps.loadUserList();
+        dispatchProps.resetForm();
+        dispatchProps.closeModal();
 
-        // submitPromise
-        //   .then(dispatchProps.loadUserList.bind(null, { id: null, query }))
-        //   .then(dispatchProps.resetForm)
-        //   .then(dispatchProps.closeModal)
-        //   .catch(() => {
-        //   });
-
-        // return submitPromise;
+        return submitPromise;
       },
     };
   }

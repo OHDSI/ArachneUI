@@ -23,6 +23,7 @@
 import errors from 'const/errors';
 import isEqual from 'lodash/isEqual';
 import _get from 'lodash/get';
+import set from 'lodash/set';
 import { types as fieldTypes } from 'const/modelAttributes';
 import mimeTypes from 'const/mimeTypes';
 import {
@@ -168,10 +169,12 @@ const validators = {
   checkValidationError(response) {
     if (typeof response.errorCode !== 'undefined') {
       if ([errors.VALIDATION_ERROR, errors.ALREADY_EXIST].includes(response.errorCode)) {
-        throw new SubmissionError({
+        const errors = {
           _error: response.errorMessage,
-          ...response.validatorErrors,
-        });
+        };
+        // Properly handle nested keys (e.g. for FieldArray)
+        Object.keys(response.validatorErrors).forEach(reKey => set(errors, reKey, response.validatorErrors[reKey]));
+        throw new SubmissionError(errors);
       } else if (response.errorCode === errors.UNACTIVATED) {
         throw new SubmissionError({
           _error: 'Please verify your account using link in the email that was sent to you.',

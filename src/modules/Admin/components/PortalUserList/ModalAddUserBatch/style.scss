@@ -65,21 +65,18 @@
  
   &admin-panel-batch-users {
     & .ac-table__cell {
+      vertical-align: top;
       &:not(:last-child) {
         padding-right: .75rem;
       }
     }
 
-    &__col-first-name-th, &__col-last-name-th, &__col-email-th, &__col-prof-type-th {
-      width: calc((#{$admin-modal-batch-users-width} - 3rem) / 4);
+    &__col-first-name-th, &__col-last-name-th, &__col-email-th, &__col-prof-type-th, &__col-org-th {
+      width: calc((#{$admin-modal-batch-users-width} - 3rem) / 5);
     }
 
     &__col-remove-th {
       width: 3rem;
-    }
-
-    &__col-first-name-td {
-      padding: 1.5rem;
     }
   }
 

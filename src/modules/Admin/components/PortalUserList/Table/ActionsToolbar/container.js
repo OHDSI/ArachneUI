@@ -22,7 +22,8 @@ import actions from 'actions/index';
 import { ContainerBuilder, Utils } from 'services/Utils';
 import ActionsToolbar from './presenter';
 import selectors from 'modules/Admin/components/PortalUserList/Table/selectors';
-import { batchOperationType } from 'modules/Admin/const';
+import { batchOperationType, modal } from 'modules/Admin/const';
+import { ModalUtils } from 'arachne-ui-components';
 
 class UserListActionsToolbarBuilder extends ContainerBuilder {
 
@@ -44,6 +45,7 @@ class UserListActionsToolbarBuilder extends ContainerBuilder {
       batch: actions.adminSettings.portalUserList.batch,
       loadUsers: (query) => actions.adminSettings.portalUserList.query({ query }),
       cleanSelectedUsers: () => actions.adminSettings.portalUserListSelectedUsers.updateSelectedUsers({}),
+      openAddUsersBatchModal: () => ModalUtils.actions.toggle(modal.addUserBatch, true),
     }
   };
 
