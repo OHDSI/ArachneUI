@@ -63,7 +63,7 @@ class ModalAddUserBatchBuilder extends ContainerBuilder {
     return {
       isOpened: get(state, `modal.${modal.addUserBatch}.isOpened`, false),
       professionalTypesOptions: selectors.getProfessionalTypes(state),
-      tenantOptions: get(state, 'adminSettings.tenantList.queryResult', []).map(t => ({ label: t.name, value: t.id }))// [{label: 'Everyone', value: 1}],
+      tenantOptions: get(state, 'adminSettings.tenantList.queryResult', []).map(t => ({ label: t.name, value: t.id })),
     };
   }
 
@@ -84,7 +84,7 @@ class ModalAddUserBatchBuilder extends ContainerBuilder {
       ...ownProps,
       ...stateProps,
       ...dispatchProps,
-      doSubmit(data) {
+      async doSubmit(data) {
         const usersData = {
           users: data.users,
           tenantIds: data.tenantIds,
@@ -92,12 +92,10 @@ class ModalAddUserBatchBuilder extends ContainerBuilder {
           emailConfirmationRequired: data.emailConfirmationRequired || false,
         };
         
-        const submitPromise = dispatchProps.addUsers({}, usersData);
-
-        submitPromise
-          .then(dispatchProps.loadUserList)
-          .then(dispatchProps.resetForm)
-          .then(dispatchProps.closeModal);
+        const submitPromise = await dispatchProps.addUsers({}, usersData);
+        await dispatchProps.loadUserList();
+        dispatchProps.resetForm();
+        dispatchProps.closeModal();
 
         return submitPromise;
       },

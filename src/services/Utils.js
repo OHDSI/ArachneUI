@@ -172,6 +172,7 @@ const validators = {
         const errors = {
           _error: response.errorMessage,
         };
+        // Properly handle nested keys (e.g. for FieldArray)
         Object.keys(response.validatorErrors).forEach(reKey => set(errors, reKey, response.validatorErrors[reKey]));
         throw new SubmissionError(errors);
       } else if (response.errorCode === errors.UNACTIVATED) {
