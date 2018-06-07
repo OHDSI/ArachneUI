@@ -22,6 +22,7 @@
 
 import * as numeral from 'numeral';
 import keyMirror = require('keymirror');
+import * as URI from 'urijs';
 
 numeral.register('locale', 'arachne', {
   delimiters: {
@@ -68,6 +69,13 @@ const numberFormatter = {
   },
 };
 
+const isOuterLink = function(link) {
+  const currentUri = new URI(window.location.href);
+  const givenUri = new URI(link);
+  return givenUri.domain().length !== 0 && currentUri.domain() !== givenUri.domain();
+}
+
 export {
   numberFormatter,
+  isOuterLink,
 };

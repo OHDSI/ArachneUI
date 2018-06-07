@@ -40,6 +40,7 @@ import TermFiltersPanel from './components/Filters';
 import { paths } from 'modules/SearchTerms/const';
 import Dropdown from 'react-simple-dropdown';
 import { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
+import { isOuterLink } from 'services/Utils';
 
 require('./style.scss');
 
@@ -110,13 +111,16 @@ function Term(props: ITermProps) {
     id: -1,
     name: '',
   });
-  const vocabularyReference = get(details, 'vocabularyReference', '')
+  const vocabularyReference = get(details, 'vocabularyReference', '');
   const description = <div {...classes('description-body')}>
     <ul {...classes('description-body-wrapper')}>
-      <li {...classes('description-line')}>{get(details, 'vocabularyName', '')}</li>
-      <li {...classes('description-line')}>{get(details, 'vocabularyVersion', '')}</li>
-      <li {...classes('description-line')}>
-        <Link to={vocabularyReference}>{vocabularyReference}</Link>
+      <li {...classes('description-line')} title={get(details, 'vocabularyName', '')}>{get(details, 'vocabularyName', '')}</li>
+      <li {...classes('description-line')} title={get(details, 'vocabularyVersion', '')}>{get(details, 'vocabularyVersion', '')}</li>
+      <li {...classes('description-line')} title={vocabularyReference}>
+        {isOuterLink(vocabularyReference)
+          ? <Link to={vocabularyReference}>{vocabularyReference}</Link>
+          : vocabularyReference
+        }
       </li>
     </ul>
   </div>;
