@@ -42,7 +42,7 @@ export default class selectorsBuilder {
   hasEditPermissions(state) {
     return get(
       state,
-      `studyManager.study.data.result.permissions[${studyPermissions.inviteContributor}]`,
+      `studyManager.study.data.permissions[${studyPermissions.inviteContributor}]`,
       false
     );
   }

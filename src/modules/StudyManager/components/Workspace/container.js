@@ -49,7 +49,7 @@ export default class WorkspaceBuilder extends ContainerBuilder {
     const workspaceData = get(moduleState, 'study.data');
     const isWorkspaceLoading = get(moduleState, 'workspace.isLoading');
 
-    const studyId = get(workspaceData, 'id');
+    const studyId = get(workspaceData, 'id', -1);
 
     const toolbarSettings = !userId ? {
       userId: loggedUser.id,

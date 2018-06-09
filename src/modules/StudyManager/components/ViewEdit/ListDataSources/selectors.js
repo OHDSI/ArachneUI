@@ -36,7 +36,7 @@ export default class selectorsBuilder {
   hasAttachPermissions(state) {
     return get(
       state,
-      `studyManager.study.data.result.permissions[${studyPermissions.inviteDatanode}]`,
+      `studyManager.study.data.permissions[${studyPermissions.inviteDatanode}]`,
       false
     );
   }
@@ -44,7 +44,7 @@ export default class selectorsBuilder {
   hasDeletePermissions(state) {
     return get(
       state,
-      `studyManager.study.data.result.permissions[${studyPermissions.unlinkDatasource}]`,
+      `studyManager.study.data.permissions[${studyPermissions.unlinkDatasource}]`,
       false
     );
   }
@@ -52,7 +52,7 @@ export default class selectorsBuilder {
   hasEditStudyPermissions(state) {
     return get(
       state,
-      `studyManager.study.data.result.permissions[${studyPermissions.editStudy}]`,
+      `studyManager.study.data.permissions[${studyPermissions.editStudy}]`,
       false
     );
   }
