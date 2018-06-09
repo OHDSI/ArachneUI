@@ -1,4 +1,3 @@
-
 /*
  *
  * Copyright 2017 Observational Health Data Sciences and Informatics
