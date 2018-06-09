@@ -24,7 +24,9 @@ import { Component, PropTypes } from 'react';
 import actions from 'actions';
 import get from 'lodash/get';
 import { ContainerBuilder } from 'services/Utils';
-import { goBack } from 'react-router-redux';
+import { push as goToPage } from 'react-router-redux';
+import { paths as workspacePaths } from 'modules/Workspace/const';
+import { participantRoles as roles } from 'modules/StudyManager/const';
 import presenter from './presenter';
 
 export class ViewEditStudy extends Component {
@@ -52,6 +54,11 @@ export class ViewEditStudy extends Component {
 
 
   componentWillReceiveProps(nextProps) {
+    if (this.props.kind && this.props.kind === 'WORKSPACE') {
+      const leadId = this.props.participants.filter(v => v.role.id = roles.LEAD_INVESTIGATOR)[0].id;
+      this.props.goToWorkspace(leadId);
+      return;
+    }
     if (this.props.id !== nextProps.id && nextProps.id) {
       this.props.loadTypeList();
       this.props.loadAnalysisTypeList();
@@ -84,19 +91,24 @@ export default class ViewEditStudyBuilder extends ContainerBuilder {
 
   mapStateToProps(state, ownProps) {
     const moduleState = get(state, 'studyManager');
-    const studyData = get(moduleState, 'study.data.result');
+    const studyData = get(moduleState, 'study.data.result', {});
     const pageTitle = [
       studyData ? get(studyData, 'title') : '',
       'My studies',
     ];
     const isStudyLoading = get(moduleState, 'study.isLoading');
     const isTypesLoading = get(moduleState, 'typeList.isLoading');
-    const isParticipantsLoading = get(moduleState, 'study.participants.isSaving');
-
+    const participants = get(studyData, 'participants');
+    const isParticipantsLoading = get(participants, 'isSaving');
+    
+    const kind = studyData.kind;
+    
     return {
       id: parseInt(ownProps.routeParams.studyId, 10),
       studyTitle: pageTitle.join(' | '),
       isLoading: isStudyLoading || isTypesLoading || isParticipantsLoading || get(state, 'studyManager.studyInvitations.isLoading'),
+      participants,
+      kind,
     };
   }
 
@@ -105,13 +117,13 @@ export default class ViewEditStudyBuilder extends ContainerBuilder {
   */
   getMapDispatchToProps() {
     return {
-      goBack,
       loadTypeList: actions.studyManager.typeList.find,
       loadAnalysisTypeList: actions.studyManager.analysisTypes.find,
       loadStatusList: actions.studyManager.statusList.find,
       loadStudy: actions.studyManager.study.find,
       loadInsights: actions.studyManager.studyInsights.find,
       loadTransitions: actions.studyManager.availableTransitions.query,
+      goToWorkspace: leadId => goToPage(workspacePaths.userWorkspace(leadId)),
     };
   }
 

@@ -135,6 +135,10 @@ const participantRoles = keyMirror({
   CONTRIBUTOR: null,
 });
 
+const studyKind = keyMirror({
+  WORKSPACE: null,
+  REGULAR: null,
+});
 
 const participantStatuses = keyMirror({
   DELETED: null,
@@ -175,4 +179,5 @@ export {
   studyActions,
   recentActivityPageSize,
   submissionStatusTitles,
+  studyKind,
 };

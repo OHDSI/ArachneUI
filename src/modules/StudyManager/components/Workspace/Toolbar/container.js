@@ -21,7 +21,6 @@
 // @ts-check
 import { Utils } from 'services/Utils';
 import get from 'lodash/get';
-import { modal, paths, studyPermissions } from 'modules/StudyManager/const';
 import { ModalUtils } from 'arachne-ui-components';
 import actions from 'actions';
 import WorkspaceToolbar from './presenter';
@@ -31,21 +30,9 @@ export default class WorkspaceToolbarBuilder {
     return WorkspaceToolbar;
   }
 
-  mapStateToProps(state) {
-    const studyData = get(state, 'studyManager.study.data.result');
-
-    return {
-      studyTitle: get(studyData, 'title', ''),
-      userId: 'ADIANgAyADEANAA0',
-      title: 'AGackovka',
-    };
-  }
-
   getMapDispatchToProps() {
     return {
-      openEditTitleModal: ModalUtils.actions.toggle.bind(null, modal.editStudyTitle, true),
-      loadStudy: actions.studyManager.study.find,
-      favourite: actions.studyManager.studyList.setFavourite,
+      loadWorkspace: actions.studyManager.workspace.find,
     };
   }
 
@@ -55,7 +42,7 @@ export default class WorkspaceToolbarBuilder {
       ...dispatchProps,
       ...ownProps,
       reload: () => {
-        dispatchProps.loadStudy(1);
+        dispatchProps.loadWorkspace(stateProps.toolbarSettings.userId);
       },
     };
   }
@@ -63,7 +50,6 @@ export default class WorkspaceToolbarBuilder {
   build() {
     return Utils.buildConnectedComponent({
       Component: this.getComponent(),
-      mapStateToProps: this.mapStateToProps,
       mapDispatchToProps: this.getMapDispatchToProps(),
       mergeProps: this.mergeProps,
     });

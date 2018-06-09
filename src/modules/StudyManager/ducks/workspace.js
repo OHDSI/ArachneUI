@@ -1,7 +1,5 @@
-
 /*
- *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,24 +14,19 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: September 05, 2017
- *
+ * Authors: Anton Gackovka
+ * Created: June 7, 2018
  */
 
 import Duck from 'services/Duck';
-import { apiPaths } from 'modules/StudyManager/const';
-import Uri from 'urijs';
+import { Utils } from 'services/Utils';
+import { apiPaths } from 'modules/Workspace/const';
 
-const actionCoreName = 'SM_STUDY_DS_LIST';
+const workspaceCoreName = 'SM_WORKSPACE';
 
 const ducks = new Duck({
-  name: actionCoreName,
-  urlBuilder: (params) => {
-    const url = new Uri(apiPaths.searchDataSource());
-    url.setSearch(params);
-    return url.href();
-  },
+  name: workspaceCoreName,
+  urlBuilder: apiPaths.workspace,
 });
 
 const actions = ducks.actions;

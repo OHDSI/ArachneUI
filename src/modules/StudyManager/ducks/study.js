@@ -22,7 +22,7 @@
 
 import Duck from 'services/Duck';
 import { Utils } from 'services/Utils';
-import { apiPaths } from 'modules/StudyManager/const';
+import { apiPaths, studyKind } from 'modules/StudyManager/const';
 import { apiPaths as paperApiPaths } from 'modules/InsightsLibrary/const';
 
 const studiesCoreName = 'SM_STUDY';

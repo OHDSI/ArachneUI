@@ -36,14 +36,13 @@ import Toolbar from './Toolbar';
 
 require('./style.scss');
 
-
-
 function Workspace(props) {
   const {
     studyTitle,
     isLoading,
-    id,
     onBannerActed,
+    studyId,
+    toolbarSettings,
   } = props;
   const classes = new BEMHelper('workspace-view');
 
@@ -52,11 +51,11 @@ function Workspace(props) {
       <div {...classes()}>
         <InviteRestrictedArea
           {...classes('container')}
-          studyId={id}
+          studyId={studyId}
           onAction={onBannerActed}
           disabled={isLoading}
         >
-          <Toolbar studyId={id} />
+          <Toolbar toolbarSettings={toolbarSettings} />
           <div {...classes('content')}>
             <div className="row">
               <div className="col-xs-12 col-lg-6">
@@ -67,7 +66,7 @@ function Workspace(props) {
                 </div>
               </div>
               <div className="col-xs-12 col-lg-6">
-                <RightColumn studyId={id} />
+                <RightColumn studyId={studyId} />
               </div>
             </div>
           </div>

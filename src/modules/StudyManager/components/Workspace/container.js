@@ -24,18 +24,8 @@ import get from 'lodash/get';
 import { ContainerBuilder } from 'services/Utils';
 import { goBack } from 'react-router-redux';
 import presenter from './presenter';
-import {recentActivityPageSize} from "../../../../../../src/modules/StudyManager/const";
 
 export class Workspace extends Component {
-  componentWillReceiveProps(nextProps) {
-
-    if (this.props.studyId !== nextProps.studyId) {
-      actions.studyManager.recentActivity.find({
-        studyId: nextProps.studyId,
-        pageSize: recentActivityPageSize
-      })
-    }
-  }
   render() {
     return presenter({
       ...this.props,
@@ -50,19 +40,31 @@ export default class WorkspaceBuilder extends ContainerBuilder {
   }
 
   mapStateToProps(state, ownProps) {
+
+    const userId = ownProps.params.userId;
     const moduleState = get(state, 'studyManager');
-    const studyData = get(moduleState, 'study.data.result');
-    const pageTitle = [
-      studyData ? get(studyData, 'title') : '',
-      'My studies',
-    ];
-    const isStudyLoading = get(moduleState, 'study.isLoading');
+    const loggedUser = get(state, 'portal.myProfile.data.result', {});
+
+    const workspaceData = get(moduleState, 'workspace.data.result');
+    const isWorkspaceLoading = get(moduleState, 'workspace.isLoading');
+
+    const studyId = get(workspaceData, 'id');
+
+    const toolbarSettings = !userId ? {
+      userId: loggedUser.id,
+      userName: `${loggedUser.firstname} ${loggedUser.middleName ? loggedUser.loggedUser : ''} ${loggedUser.lastname}`,
+      title: 'MY Workspace',
+    } : {
+      userId,
+      userName: get(workspaceData, 'leadParticipant.fullName', ''),
+      title: 'Workspace',
+    };
     
     return {
-      studyId: get(studyData, 'id'),
-      id: get(studyData, 'id'),
-      studyTitle: pageTitle.join(' | '),
-      isLoading: isStudyLoading || get(state, 'studyManager.studyInvitations.isLoading'),
+      studyId,
+      toolbarSettings,
+      isLoading: isWorkspaceLoading,
+      studyTitle: 'workspace',
     };
   }
 
@@ -73,8 +75,8 @@ export default class WorkspaceBuilder extends ContainerBuilder {
     return {
       goBack,
       loadAnalysisTypeList: actions.studyManager.analysisTypes.find,
-      loadStudy: actions.studyManager.study.find,
       loadInsights: actions.studyManager.studyInsights.find,
+      loadWorkspace: actions.studyManager.workspace.find,
     };
   }
 
@@ -83,15 +85,15 @@ export default class WorkspaceBuilder extends ContainerBuilder {
       ...ownProps,
       ...stateProps,
       ...dispatchProps,
-      onBannerActed: () => dispatchProps.loadStudy(stateProps.id),
+      onBannerActed: dispatchProps.loadWorkspace.bind(null, stateProps.toolbarSettings.userId),
     };
   }
 
-  getFetchers({ params }) {
-    const studyId = 1;
+  getFetchers({ params: { userId } }) {
+
     return {
       loadAnalysisTypeList: actions.studyManager.analysisTypes.find,
-      loadStudy: () => actions.studyManager.study.find(studyId),
+      loadWorkspace: actions.studyManager.workspace.find.bind(null, userId),
     };
   }
 

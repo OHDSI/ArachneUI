@@ -21,11 +21,12 @@
 import React from 'react';
 import { Route, IndexRedirect } from 'react-router';
 
-import ViewEditStudy from 'modules/StudyManager/components/Workspace';
+import Workspace from 'modules/StudyManager/components/Workspace';
 
 function Routes() {
   return [
-    <Route path="home" component={ViewEditStudy}/>,
+    <Route path="home" component={Workspace}/>,
+    <Route path="user/:userId" component={Workspace}/>,
     <IndexRedirect to="home" />,
   ];
 }
