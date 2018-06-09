@@ -31,7 +31,7 @@ export default class StudyObjectiveBuilder {
   }
 
   mapStateToProps(state) {
-    const studyData = get(state, 'studyManager.study.data.result');
+    const studyData = get(state, 'studyManager.study.data');
     return {
       isEditable: get(studyData, `permissions[${studyPermissions.editStudy}]`, false),
     };

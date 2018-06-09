@@ -33,7 +33,7 @@ export default class DateIntervalBuilder {
   }
 
   mapStateToProps(state) {
-    const studyData = get(state, 'studyManager.study.data.result');
+    const studyData = get(state, 'studyManager.study.data');
 
     return {
       studyId: get(studyData, 'id'),
@@ -60,13 +60,13 @@ export default class DateIntervalBuilder {
       ...dispatchProps,
       setStartDate: (startDate) => {
         dispatchProps
-          .updateStudy(stateProps.studyId, { startDate })
-          .then(() => dispatchProps.load(stateProps.studyId));
+          .updateStudy({ id: stateProps.studyId }, { startDate })
+          .then(() => dispatchProps.load({ id: stateProps.studyId }));
       },
       setEndDate: (endDate) => {
         dispatchProps
-          .updateStudy(stateProps.studyId, { endDate })
-          .then(() => dispatchProps.load(stateProps.studyId));
+          .updateStudy({ id: stateProps.studyId }, { endDate })
+          .then(() => dispatchProps.load({ id: stateProps.studyId }));
       },
     });
   }

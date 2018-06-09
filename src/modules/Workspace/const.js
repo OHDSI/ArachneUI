@@ -24,7 +24,7 @@ const paths = {
 };
 
 const apiPaths = {
-  workspace: id => `/api/v1/workspace${id ? `/${id}` : ''}`,
+  workspace: ({ id }) => `/api/v1/workspace${id ? `/${id}` : ''}`,
 };
 
 const imgs = {

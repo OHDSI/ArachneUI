@@ -24,6 +24,7 @@ import get from 'lodash/get';
 import { ModalUtils } from 'arachne-ui-components';
 import actions from 'actions';
 import WorkspaceToolbar from './presenter';
+import { studyKind } from 'modules/StudyManager/const';
 
 export default class WorkspaceToolbarBuilder {
   getComponent() {
@@ -32,7 +33,7 @@ export default class WorkspaceToolbarBuilder {
 
   getMapDispatchToProps() {
     return {
-      loadWorkspace: actions.studyManager.workspace.find,
+      loadWorkspace: actions.studyManager.study.find,
     };
   }
 
@@ -41,7 +42,7 @@ export default class WorkspaceToolbarBuilder {
       ...stateProps,
       ...dispatchProps,
       ...ownProps,
-      reload: dispatchProps.loadWorkspace.bind(null, ownProps.toolbarSettings.userId),
+      reload: dispatchProps.loadWorkspace.bind(null, { id: ownProps.toolbarSettings.userId, kind: studyKind.WORKSPACE }),
     };
   }
 

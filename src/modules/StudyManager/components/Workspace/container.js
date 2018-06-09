@@ -24,6 +24,7 @@ import get from 'lodash/get';
 import { ContainerBuilder } from 'services/Utils';
 import { goBack } from 'react-router-redux';
 import presenter from './presenter';
+import { studyKind } from 'modules/StudyManager/const';
 
 export class Workspace extends Component {
   render() {
@@ -45,7 +46,7 @@ export default class WorkspaceBuilder extends ContainerBuilder {
     const moduleState = get(state, 'studyManager');
     const loggedUser = get(state, 'portal.myProfile.data.result', {});
 
-    const workspaceData = get(moduleState, 'workspace.data.result');
+    const workspaceData = get(moduleState, 'study.data');
     const isWorkspaceLoading = get(moduleState, 'workspace.isLoading');
 
     const studyId = get(workspaceData, 'id');
@@ -74,7 +75,6 @@ export default class WorkspaceBuilder extends ContainerBuilder {
   getMapDispatchToProps() {
     return {
       goBack,
-      loadAnalysisTypeList: actions.studyManager.analysisTypes.find,
       loadInsights: actions.studyManager.studyInsights.find,
       loadWorkspace: actions.studyManager.workspace.find,
     };
@@ -93,7 +93,7 @@ export default class WorkspaceBuilder extends ContainerBuilder {
 
     return {
       loadAnalysisTypeList: actions.studyManager.analysisTypes.find,
-      loadWorkspace: actions.studyManager.workspace.find.bind(null, userId),
+      loadWorkspace: actions.studyManager.study.find.bind(null, { id: userId, kind:  studyKind.WORKSPACE }),
     };
   }
 

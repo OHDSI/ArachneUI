@@ -19,7 +19,6 @@
  */
 
 import Duck from 'services/Duck';
-import { Utils } from 'services/Utils';
 import { apiPaths } from 'modules/Workspace/const';
 
 const workspaceCoreName = 'SM_WORKSPACE';

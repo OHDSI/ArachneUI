@@ -54,7 +54,7 @@ export default class CreateModalBuidler {
   */
   getMapDispatchToProps() {
     return {
-      create: data => actions.studyManager.study.create(null, data),
+      create: data => actions.studyManager.study.create({}, data),
       show: id => goToPage(paths.studies(id)),
     };
   }

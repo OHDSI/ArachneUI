@@ -44,7 +44,7 @@ export default class ModalEditTitleBuilder {
   }
 
   mapStateToProps(state) {
-    const studyData = get(state, 'studyManager.study.data.result');
+    const studyData = get(state, 'studyManager.study.data');
     return {
       studyId: get(studyData, 'id'),
       initialValues: {
@@ -68,14 +68,14 @@ export default class ModalEditTitleBuilder {
       ...dispatchProps,
       doSubmit({ title }) {
         const submitPromise = dispatchProps.updateStudy(
-          stateProps.studyId,
+          { id: stateProps.studyId },
           { title },
           false
         );
 
         submitPromise
           .then(() => dispatchProps.closeModal())
-          .then(() => dispatchProps.loadStudy(stateProps.studyId))
+          .then(() => dispatchProps.loadStudy({ id: stateProps.studyId }))
           .catch(() => {});
 
         // We have to return a submission promise back to redux-form

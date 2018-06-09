@@ -34,7 +34,7 @@ export default class StudyToolbarBuilder {
   }
 
   mapStateToProps(state) {
-    const studyData = get(state, 'studyManager.study.data.result');
+    const studyData = get(state, 'studyManager.study.data');
     const isFavourite = get(studyData, 'favourite', false);
 
     return {
@@ -68,7 +68,7 @@ export default class StudyToolbarBuilder {
           ownProps.studyId,
           (!stateProps.isFavourite).toString()
         )
-        .then(() => dispatchProps.loadStudy(ownProps.studyId))
+        .then(() => dispatchProps.loadStudy({ id: ownProps.studyId }))
         .catch(() => {}),
     };
   }

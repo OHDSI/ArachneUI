@@ -128,7 +128,7 @@ export default class ModalAddParticipantBuilder {
           .then(() => dispatchProps.resetForm())
           .then(() => dispatchProps.closeModal())
           .then(() => dispatchProps.openConfirmParticipant(participant, stateProps.studyName))
-          .then(() => dispatchProps.loadStudy(stateProps.studyId))
+          .then(() => dispatchProps.loadStudy({ id: stateProps.studyId }))
           .catch(() => {});
 
         // We have to return a submission promise back to redux-form

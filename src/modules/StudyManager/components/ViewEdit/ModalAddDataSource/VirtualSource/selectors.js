@@ -36,7 +36,7 @@ export default class selectorsBuilder {
   getStudyParticipantList(state) {
     return get(
       state,
-      'studyManager.study.data.result.participants',
+      'studyManager.study.data.participants',
       []
     );
   }

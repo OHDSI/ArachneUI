@@ -37,7 +37,7 @@ export default class ListParticipantsBuilder {
   }
 
   mapStateToProps(state) {
-    const studyData = get(state, 'studyManager.study.data.result');
+    const studyData = get(state, 'studyManager.study.data');
 
     return {
       studyId: get(studyData, 'id'),
@@ -75,7 +75,7 @@ export default class ListParticipantsBuilder {
             role,
           }
           )
-          .then(() => dispatchProps.loadStudy(stateProps.studyId));
+          .then(() => dispatchProps.loadStudy({ id: stateProps.studyId }));
       },
       changeRole(userId, role) {
         dispatchProps
@@ -83,7 +83,7 @@ export default class ListParticipantsBuilder {
             { studyId: stateProps.studyId, userId },
             { role }
           )
-          .then(() => dispatchProps.loadStudy(stateProps.studyId));
+          .then(() => dispatchProps.loadStudy({ id: stateProps.studyId }));
       },
       removeParticipant(userId, name) {
         Utils.confirmDelete({
@@ -92,7 +92,7 @@ export default class ListParticipantsBuilder {
           .then(() => {
             dispatchProps
               .removeParticipant({ studyId: stateProps.studyId, userId })
-              .then(() => dispatchProps.loadStudy(stateProps.studyId));
+              .then(() => dispatchProps.loadStudy({ id: stateProps.studyId }));
           });
       },
     };

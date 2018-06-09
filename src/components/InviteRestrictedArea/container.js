@@ -41,14 +41,14 @@ class InviteRestrictedArea extends Component {
   componentWillMount() {
     if (this.props.studyId !== -1) {
       // in case of studyManager module, to prevent double request for study
-      this.props.loadStudy(this.props.studyId);
+      this.props.loadStudy({ id: this.props.studyId });
       this.props.loadSudyInvitations({ studyId: this.props.studyId });
     }
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.studyId !== nextProps.studyId && nextProps.studyId !== -1) {
-      nextProps.loadStudy(nextProps.studyId);
+      nextProps.loadStudy({ id: nextProps.studyId });
       nextProps.loadSudyInvitations({ studyId: nextProps.studyId });
     }
   }
@@ -65,7 +65,7 @@ export default class InviteRestrictedAreaBuilder extends ContainerBuilder {
 
   mapStateToProps(state) {
     const moduleState = get(state, 'studyManager');
-    const studyData = get(moduleState, 'study.data.result', null);
+    const studyData = get(moduleState, 'study.data', null);
     const isLoading = get(moduleState, 'study.isLoading', true);
 
     return {

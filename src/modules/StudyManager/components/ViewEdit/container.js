@@ -63,7 +63,7 @@ export class ViewEditStudy extends Component {
       this.props.loadTypeList();
       this.props.loadAnalysisTypeList();
       this.props.loadStatusList();
-      this.props.loadStudy(nextProps.id);
+      this.props.loadStudy({ id: nextProps.id });
       this.props.loadInsights({ studyId: nextProps.id });
       this.props.loadTransitions({ studyId: nextProps.id });
     }
@@ -91,7 +91,7 @@ export default class ViewEditStudyBuilder extends ContainerBuilder {
 
   mapStateToProps(state, ownProps) {
     const moduleState = get(state, 'studyManager');
-    const studyData = get(moduleState, 'study.data.result', {});
+    const studyData = get(moduleState, 'study.data', {});
     const pageTitle = [
       studyData ? get(studyData, 'title') : '',
       'My studies',
@@ -132,7 +132,7 @@ export default class ViewEditStudyBuilder extends ContainerBuilder {
       ...ownProps,
       ...stateProps,
       ...dispatchProps,
-      onBannerActed: () => dispatchProps.loadStudy(stateProps.id),
+      onBannerActed: () => dispatchProps.loadStudy({ id: stateProps.id }),
     };
   }
 
@@ -142,7 +142,7 @@ export default class ViewEditStudyBuilder extends ContainerBuilder {
       loadTypeList: actions.studyManager.typeList.find,
       loadAnalysisTypeList: actions.studyManager.analysisTypes.find,
       loadStatusList: actions.studyManager.statusList.find,
-      loadStudy: () => actions.studyManager.study.find(studyId),
+      loadStudy: () => actions.studyManager.study.find({ id: studyId }),
       loadInsights: () => actions.studyManager.studyInsights.find({ studyId }),
       loadTransitions: () => actions.studyManager.availableTransitions.query({ studyId }),
     };

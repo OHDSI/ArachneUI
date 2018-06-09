@@ -56,7 +56,7 @@ const paths = {
 
 const apiPaths = {
   // Study
-  studies: id => `/api/v1/study-management/studies${id ? `/${id}` : ''}`,
+  studies: ({ id = null }) => `/api/v1/study-management/studies${id ? `/${id}` : ''}`,
   studyInsights: ({ studyId }) => `/api/v1/study-management/studies/${studyId}/insights`,
   // Study invitations
   studyInvitations: ({ studyId }) => `/api/v1/user-management/users/invitations?studyId=${studyId}`,

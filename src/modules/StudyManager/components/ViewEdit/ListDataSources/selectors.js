@@ -26,11 +26,11 @@ import { dataSourceStatuses, paths, studyPermissions } from 'modules/StudyManage
 
 export default class selectorsBuilder {
   getStudyId(state) {
-    return get(state, 'studyManager.study.data.result.id') || [];
+    return get(state, 'studyManager.study.data.id') || [];
   }
 
   getRawDataSourceList(state) {
-    return get(state, 'studyManager.study.data.result.dataSources') || [];
+    return get(state, 'studyManager.study.data.dataSources') || [];
   }
 
   hasAttachPermissions(state) {
