@@ -41,9 +41,7 @@ export default class WorkspaceToolbarBuilder {
       ...stateProps,
       ...dispatchProps,
       ...ownProps,
-      reload: () => {
-        dispatchProps.loadWorkspace(stateProps.toolbarSettings.userId);
-      },
+      reload: dispatchProps.loadWorkspace.bind(null, ownProps.toolbarSettings.userId),
     };
   }
 
