@@ -42,7 +42,7 @@
     color: $black;
     
     &:hover {
-      background: #F1F1F1;
+      background: $grey-ash;
     }
   }
 
@@ -159,7 +159,7 @@
       align-items: center;
       
       &:hover {
-        background: #F1F1F1;
+        background: $grey-ash;
       }
 
       padding: 1.25rem 1.5rem;
