@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,6 +24,7 @@ import Cookies from 'js-cookie';
 
 const LS_TOKEN_KEY = 'Arachne-Auth-Token';
 const COOKIE_TOKEN_KEY = 'Arachne-Auth-Token';
+const COOKIE_USER_REQUEST = 'Arachne-User-Request';
 
 class Auth {
 
@@ -43,10 +44,19 @@ class Auth {
     Cookies.remove(COOKIE_TOKEN_KEY, { path: '/' });
   }
 
+  static getUserRequest() {
+    return Cookies.get(COOKIE_USER_REQUEST);
+  }
+
+  static clearUserRequest() {
+    Cookies.remove(COOKIE_USER_REQUEST);
+  }
+
 }
 
 export default Auth;
 export {
   LS_TOKEN_KEY,
   COOKIE_TOKEN_KEY,
+  COOKIE_USER_REQUEST,
 };

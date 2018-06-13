@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -41,6 +41,8 @@ const apiPaths = {
   invitationsSubscription: () => '/user/topic/invitations',
   userpic: id => `/api/v1/user-management/users/${id}/avatar`,
   search: () => '/api/v1/search',
+  myProfile: () => '/api/v1/auth/me',
+  userSettings: () => `/api/v1/user-management/users/settings`,
 };
 
 const paths = {

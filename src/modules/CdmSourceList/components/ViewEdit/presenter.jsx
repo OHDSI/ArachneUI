@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,9 +27,9 @@ import {
   PageContent,
 } from 'arachne-ui-components';
 import { modelTypesValues } from 'const/dataSource';
-import EmptyState from 'components/EmptyState';
 import Toolbar from './Toolbar';
 import AchillesSettings from './AchillesSettings';
+import Banner from './Banner';
 
 require('./style.scss');
 
@@ -40,15 +40,13 @@ function ViewEdit({ isLoading, dataSourceName, published, modelType }) {
   return (
     <PageContent title={`${dataSourceName} | Arachne`}>
       <div {...classes()}>
+        <Banner disabled={reportsAvailable} />
         <Toolbar />
-        <div {...classes({ element: 'content', modifiers: { empty: !reportsAvailable } })}>
-          <div{...classes({ element: 'row', modifiers: { empty: !reportsAvailable }, extra: 'row' })}>
-            {reportsAvailable
-              ? <div className="col-xs-12 col-md-6">
-                  <AchillesSettings />
-                </div>
-              : <EmptyState message={'Generating reports is unavailable for non-CDM data sources'} />
-            }
+        <div {...classes('content')}>
+          <div {...classes({ element: 'row', extra: 'row' })}>
+            <div className="col-xs-12 col-md-6">
+              <AchillesSettings />
+            </div>
           </div>
         </div>
         <LoadingPanel active={isLoading} />

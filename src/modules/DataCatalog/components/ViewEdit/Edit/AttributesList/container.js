@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,6 +28,7 @@ import { modelTypesValues, attributeNames, executionPolicy } from 'const/dataSou
 import isEmpty from 'lodash/isEmpty';
 import presenter from './presenter';
 import SelectorsBuilder from './selectors';
+import { Notifier } from 'services/Notifier';
 
 const selectors = (new SelectorsBuilder()).build();
 
@@ -109,7 +110,7 @@ export default class AttributeListBuilder extends ContainerBuilder {
           id: stateProps.dataSourceId,
         }, data);
         if (!stateProps.isPublished) {
-          alert('Data source was successfully published');
+          Notifier.alert({ message: 'Data source was successfully published' });
           dispatchProps.load({ id: stateProps.dataSourceId });
         }
 
