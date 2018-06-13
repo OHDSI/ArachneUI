@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,6 +24,7 @@ import { createSelector } from 'reselect';
 import get from 'lodash/get';
 
 const getRawUserList = state => get(state, 'adminSettings.portalUserList.queryResult.content') || [];
+const getRawSelectedUsers = state => get(state, 'adminSettings.portalUserListSelectedUsers.data') || [];
 
 const getUserList = createSelector(
   [getRawUserList],
@@ -35,9 +36,21 @@ const getUserList = createSelector(
         item.middlename || '',
         item.lastname || '',
       ].filter(o => o).join(' '),
+      tenantNames: item.activeTenant ? [
+        item.activeTenant.name, 
+        ...item.tenants.filter(v => v.id !== item.activeTenant.id).map(v => v.name)
+      ].join(',') : item.tenants.map(v => v.name).join(','),
+
     }))
+);
+
+// Has two additional usages : ActionsToolbar, ModalAddUsersToTenants
+const getSelectedUsers = createSelector(
+  [getRawSelectedUsers],
+  rawSelectedUser => Object.entries(rawSelectedUser).filter(([uuid, flag]) => flag).map(([uuid, flag]) => uuid),
 );
 
 export default {
   getUserList,
+  getSelectedUsers,
 };

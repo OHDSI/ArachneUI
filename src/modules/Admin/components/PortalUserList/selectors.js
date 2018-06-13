@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,7 +20,9 @@
  *
  */
 
+import { createSelector } from 'reselect';
 import { get } from 'services/Utils';
+import { sortOptions } from 'services/Utils';
 import { extractPaginationData } from 'components/Grid';
 import { viewModePageSize } from 'const/viewModes';
 
@@ -34,9 +36,34 @@ class UserListSelectorsBuilder {
     });
   }
 
+  getTenantList(state) {
+    return get(state, 'adminSettings.tenantList.data') || [];
+  }
+
+  // Is used in AddUsersToTenants modal
+  getTenantOptions(tenantList) {
+    const tenantOptions = [
+        ...sortOptions(tenantList.map(tenant => ({
+        label: tenant.name,
+        value: tenant.id.toString(),
+      }))),
+      {
+        label: "No tenants",
+        value: "-1",
+      }
+    ];
+
+    return tenantOptions;
+  }
+
+  buildSelectorForTenantOptions() {
+    return createSelector([this.getTenantList], this.getTenantOptions);
+  }
+
   build() {
     return {
       getPaginationDetails: this.getPaginationDetails,
+      getTenantOptions: this.buildSelectorForTenantOptions(),
     };
   }
 }

@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -39,12 +39,14 @@ function getSorting(location) {
 function mapStateToProps(state) {
   const query = state.routing.locationBeforeTransitions.query;
   const centralDomain = get(state, 'portal.buildInfo.data.centralUrl');
+  const username = get(state, 'auth.principal.queryResult.result.username');
 
   return {
     query,
     dataSourceList: selectors.getDataSourceList(state),
     sorting: getSorting(state.routing.locationBeforeTransitions),
     centralDomain,
+    username,
   };
 }
 
