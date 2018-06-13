@@ -28,22 +28,15 @@ require('./style.scss');
 
 function ToolbarActions({
     canUnpublish,
-    canDelete,
     unpublish,
     canEdit,
     dataSourceId,
     editUrl,
-    remove,
   }) {
   const classes = new BEMHelper('data-source-toolbar-actions');
 
   return (
     <div  {...classes()}>
-      {canDelete &&
-        <Button onClick={remove}>
-          <span  {...classes('delete-button')}>delete</span>
-        </Button>
-      }
       {canUnpublish &&
         <Button onClick={unpublish} mods={['rounded', 'cancel']}>
           Unpublish
