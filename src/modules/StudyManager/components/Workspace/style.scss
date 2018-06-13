@@ -23,23 +23,23 @@
 .#{$namespace} {
   &workspace-view {
     @include view-edit-page();
-		height: 100%;
-		
-		&__container {
-			flex-grow: 1;
-			display: flex;
-			flex-direction: column;
-		}
+    height: 100%;
+    
+    &__container {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
 
     &__empty-state {
-    	@include title();
-    	align-items: center;
-    	display: flex;
-    	flex-direction: column;
-    	height: 100%;
-    	justify-content: center;
-    	width: 100%;
-    	line-height: 1.5;
+      @include title();
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      justify-content: center;
+      width: 100%;
+      line-height: 1.5;
     }
   }
 }

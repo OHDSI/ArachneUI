@@ -56,8 +56,11 @@
   }
   
   &workspace-user-avatar {
-    margin-right: 1.5rem;
-    height: 60px;
-    width: 60px;
+    flex-shrink: 0;
+    flex-grow: 0;
+    font-size: 5rem !important;
+    height: 5rem;
+    margin-right: 1.75rem;
+    width: 5rem;
   }
 }

@@ -23,9 +23,7 @@ import ListDocuments from 'modules/StudyManager/components/ViewEdit/ListDocument
 import ListDataSources from 'modules/StudyManager/components/ViewEdit/ListDataSources';
 import { Panel } from 'arachne-ui-components';
 
-function LeftColumn(props) {
-  const {
-  } = props;
+function LeftColumn() {
   return (<div>
     <Panel title={"Documents"}>
       <ListDocuments/>

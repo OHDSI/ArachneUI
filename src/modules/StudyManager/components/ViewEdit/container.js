@@ -26,7 +26,7 @@ import get from 'lodash/get';
 import { ContainerBuilder } from 'services/Utils';
 import { push as goToPage } from 'react-router-redux';
 import { paths as workspacePaths } from 'modules/Workspace/const';
-import { participantRoles as roles } from 'modules/StudyManager/const';
+import { studyKind, participantRoles as roles } from 'modules/StudyManager/const';
 import presenter from './presenter';
 
 export class ViewEditStudy extends Component {
@@ -54,7 +54,7 @@ export class ViewEditStudy extends Component {
 
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.kind && this.props.kind === 'WORKSPACE') {
+    if (this.props.kind && this.props.kind === studyKind.WORKSPACE) {
       const leadId = this.props.participants.filter(v => v.role.id = roles.LEAD_INVESTIGATOR)[0].id;
       this.props.goToWorkspace(leadId);
       return;

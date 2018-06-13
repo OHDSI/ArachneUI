@@ -23,9 +23,7 @@ import ListAnalyses from 'modules/StudyManager/components/ViewEdit/ListAnalyses'
 import Settings from 'modules/StudyManager/components/ViewEdit/Settings';
 
 function RightColumn() {
-  return (<div>
-    <ListAnalyses />
-  </div>);
+  return <ListAnalyses />;
 }
 
 export default RightColumn;

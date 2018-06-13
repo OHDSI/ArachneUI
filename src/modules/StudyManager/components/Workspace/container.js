@@ -51,14 +51,14 @@ export default class WorkspaceBuilder extends ContainerBuilder {
 
     const studyId = get(workspaceData, 'id', -1);
 
-    const toolbarSettings = !userId ? {
-      userId: loggedUser.id,
-      userName: `${loggedUser.firstname} ${loggedUser.middleName ? loggedUser.loggedUser : ''} ${loggedUser.lastname}`,
-      title: 'MY Workspace',
-    } : {
+    const toolbarSettings = userId ? {
       userId,
       userName: get(workspaceData, 'leadParticipant.fullName', ''),
       title: 'Workspace',
+    } : {
+      userId: loggedUser.id,
+      userName: `${loggedUser.firstname} ${loggedUser.middleName ? loggedUser.loggedUser : ''} ${loggedUser.lastname}`,
+      title: 'MY Workspace',
     };
     
     return {
@@ -76,7 +76,7 @@ export default class WorkspaceBuilder extends ContainerBuilder {
     return {
       goBack,
       loadInsights: actions.studyManager.studyInsights.find,
-      loadWorkspace: actions.studyManager.workspace.find,
+      loadWorkspace: actions.studyManager.study.find,
     };
   }
 
@@ -85,7 +85,7 @@ export default class WorkspaceBuilder extends ContainerBuilder {
       ...ownProps,
       ...stateProps,
       ...dispatchProps,
-      onBannerActed: dispatchProps.loadWorkspace.bind(null, stateProps.toolbarSettings.userId),
+      onBannerActed: dispatchProps.loadWorkspace.bind(null, { id: ownProps.params.userId, kind: studyKind.WORKSPACE }),
     };
   }
 
@@ -93,7 +93,7 @@ export default class WorkspaceBuilder extends ContainerBuilder {
 
     return {
       loadAnalysisTypeList: actions.studyManager.analysisTypes.find,
-      loadWorkspace: actions.studyManager.study.find.bind(null, { id: userId, kind:  studyKind.WORKSPACE }),
+      loadWorkspace: actions.studyManager.study.find.bind(null, { id: userId, kind: studyKind.WORKSPACE }),
     };
   }
 

@@ -35,22 +35,16 @@ function UserAvatar({ url }) {
   );
 }
 
-function TitleCaption({ userId, userName, title }) {
+function TitleCaption({ title }) {
   
   const classes = new BEMHelper('workspace-toolbar-title-caption');
   
   return (
     <div {...classes()}>
-      <UserAvatar url={apiPaths.userpic(userId)}/>
       <div {...classes('info')}>
         <span {...classes('title')}>
           {title}
         </span>
-        <div {...classes('profile')}>
-          <Link to={paths.profile(userId)} {...classes('name')}>
-            {userName}
-          </Link>
-        </div>
       </div>
     </div>
   )
@@ -60,6 +54,7 @@ function WorkspaceToolbar(props) {
   const {
     reload,
     toolbarSettings,
+    breadcrumbList,
   } = props;
 
   const classes = new BEMHelper('workspace-toolbar-title');
@@ -67,6 +62,8 @@ function WorkspaceToolbar(props) {
   return (
     <Toolbar
       caption={<TitleCaption {...toolbarSettings}/>}
+      breadcrumbList={breadcrumbList}
+      icon={<UserAvatar url={apiPaths.userpic(toolbarSettings.userId)}/>}
     >
       <Button {...classes('reload')} onClick={reload}>
         <i {...classes('reload-ico')}>refresh</i>

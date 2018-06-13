@@ -19,18 +19,32 @@
  */
 
 // @ts-check
-import { Utils } from 'services/Utils';
+import { Utils, ContainerBuilder } from 'services/Utils';
 import get from 'lodash/get';
 import { ModalUtils } from 'arachne-ui-components';
 import actions from 'actions';
 import WorkspaceToolbar from './presenter';
-import { studyKind } from 'modules/StudyManager/const';
+import { apiPaths, paths, studyKind } from 'modules/StudyManager/const';
 
-export default class WorkspaceToolbarBuilder {
+export default class WorkspaceToolbarBuilder extends ContainerBuilder {
   getComponent() {
     return WorkspaceToolbar;
   }
 
+  mapStateToProps(state, ownProps) {
+
+    const { userId, userName } = ownProps.toolbarSettings
+    
+    return {
+      breadcrumbList: [
+        {
+          label: userName,
+          link: paths.profile(userId),
+        },
+      ],
+    }
+  }
+  
   getMapDispatchToProps() {
     return {
       loadWorkspace: actions.studyManager.study.find,
@@ -44,13 +58,5 @@ export default class WorkspaceToolbarBuilder {
       ...ownProps,
       reload: dispatchProps.loadWorkspace.bind(null, { id: ownProps.toolbarSettings.userId, kind: studyKind.WORKSPACE }),
     };
-  }
-
-  build() {
-    return Utils.buildConnectedComponent({
-      Component: this.getComponent(),
-      mapDispatchToProps: this.getMapDispatchToProps(),
-      mergeProps: this.mergeProps,
-    });
   }
 }

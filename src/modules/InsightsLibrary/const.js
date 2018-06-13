@@ -92,8 +92,7 @@ const publishStates = [
 ];
 
 const imgs = {
-  sidebarIco: '/img/icons/Universal_Desktop/Navigation/Arachne_Desktop_icon-Insight_Library.png' +
-  '',
+  sidebarIco: '/img/icons/Universal_Desktop/Navigation/Arachne_Desktop_icon-Insight_Library.png',
 };
 
 export {

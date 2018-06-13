@@ -32,7 +32,6 @@ import dataSourceList from './dataSourceList';
 import availableTransitions from './availableTransitions';
 import studyDocumentFile from './studyDocumentFile';
 import studyInvitations from './studyInvitations';
-import workspace from './workspace';
 
 const actions = {
   analyses: analyses.actions,
@@ -47,7 +46,6 @@ const actions = {
   typeList: typeList.actions,
   studyDocumentFile: studyDocumentFile.actions,
   studyInvitations: studyInvitations.actions,
-  workspace: workspace.actions,
 };
 
 const reducer = {
@@ -63,7 +61,6 @@ const reducer = {
   typeList: typeList.reducer,
   studyDocumentFile: studyDocumentFile.reducer,
   studyInvitations: studyInvitations.reducer,
-  workspace: workspace.reducer,
 };
 
 export default {
