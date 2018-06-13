@@ -249,6 +249,7 @@ const immutableAttributes = [
 ];
 
 const fieldHints = {
+  [attributeNames.name]: 'Name can be changed at Node side',
 };
 
 function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false) {
