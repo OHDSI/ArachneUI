@@ -30,9 +30,13 @@ import Fuse from 'fuse.js';
 import searchSettings from 'const/search';
 import { VirtualList } from 'components/VirtualScroller';
 
+require('./style.scss');
+const classes = new BEMHelper('code-import-list');
+
 function FormRadioButton({ input, options }) {
   return (
     <RadioButton
+      {...classes('import-entity')}
       isChecked={options.isChecked}
       onChange={e => input.onChange(e.target.value)}
       label={options.label}
@@ -40,9 +44,6 @@ function FormRadioButton({ input, options }) {
     />
   );
 }
-
-require('./style.scss');
-const classes = new BEMHelper('code-import-list');
 
 function ImportList(props) {
   const {
