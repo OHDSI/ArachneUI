@@ -55,6 +55,7 @@ function mapStateToProps(state, ownProps) {
 
 const mapDispatchToProps = {
   load: actions.dataCatalog.dataSource.find,
+  remove: actions.dataCatalog.dataSource.delete,
   unpublish: actions.dataCatalog.registration.delete,
   goToPage,
 };
@@ -67,7 +68,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     async unpublish() {
       try {
         await Utils.confirmDelete({
-          message: `Do you really want to unpublish this Data Source '${stateProps.name}'?`,
+          message: `Do you really want to unpublish '${stateProps.name}'?`,
         });
         const dataSourceId = stateProps.dataSourceId;
         await dispatchProps.unpublish({ id: dataSourceId });
