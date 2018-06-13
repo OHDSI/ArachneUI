@@ -33,7 +33,7 @@ export default class MenuDropdownBuilder extends ContainerBuilder {
   }
 
   mapStateToProps(state) {
-    const data = get(state, 'portal.myProfile.data.result', {});
+    const data = get(state, 'auth.principal.queryResult.result', {});
     const hash = get(state, 'expertFinder.userProfile.data.result.updated', '');
 
     return {
