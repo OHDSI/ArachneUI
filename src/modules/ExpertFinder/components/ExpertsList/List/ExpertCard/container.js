@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,7 +25,7 @@ import get from 'lodash/get';
 import ExpertCard from './presenter';
 
 function mapStateToProps(state, ownProps) {
-  const loggedUserId = get(state, 'expertFinder.myProfile.data.result.id');
+  const loggedUserId = get(state, 'portal.myProfile.data.result.id');
   const canBeInvited = ownProps.expert.id !== loggedUserId;
 
   return {
