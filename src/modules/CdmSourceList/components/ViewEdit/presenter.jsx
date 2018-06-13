@@ -42,8 +42,8 @@ function ViewEdit({ isLoading, dataSourceName, published, modelType }) {
       <div {...classes()}>
         <Banner disabled={reportsAvailable} />
         <Toolbar />
-        <div {...classes({ element: 'content', modifiers: { empty: !reportsAvailable } })}>
-          <div {...classes({ element: 'row', modifiers: { empty: !reportsAvailable }, extra: 'row' })}>
+        <div {...classes('content')}>
+          <div {...classes({ element: 'row', extra: 'row' })}>
             <div className="col-xs-12 col-md-6">
               <AchillesSettings />
             </div>
