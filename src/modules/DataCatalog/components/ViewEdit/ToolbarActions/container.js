@@ -33,7 +33,6 @@ function mapStateToProps(state, ownProps) {
   const datasourceData = get(state, 'dataCatalog.dataSource.data.result');
   const isPublished = get(datasourceData, 'published', '');
   const hasEditPermission = get(datasourceData, `permissions[${dataSourcePermissions.edit}]`, false);
-  const canDelete = get(datasourceData, `permissions[${dataSourcePermissions.delete}]`, false);
   
   const canUnpublish = isPublished && hasEditPermission;
   const dataSourceId = get(datasourceData, 'id', '');
@@ -47,7 +46,6 @@ function mapStateToProps(state, ownProps) {
 
   return {
     canUnpublish: ownProps.mode === 'edit' ? canUnpublish : false,
-    canDelete: ownProps.mode === 'edit' ? canDelete : false,
     canEdit: ownProps.mode === 'view' ? hasEditPermission : false,
     dataSourceId,
     editUrl: editUrl.href(),
@@ -75,18 +73,6 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         const dataSourceId = stateProps.dataSourceId;
         await dispatchProps.unpublish({ id: dataSourceId });
         await dispatchProps.load({ id: dataSourceId });
-        await dispatchProps.goToPage(paths.dataCatalog());
-      } catch (er) {
-        console.error(er);
-      }
-    },
-    async remove() {
-      try {
-        await Utils.confirmDelete({
-          message: `Do you really want to delete ${stateProps.name}?`,
-        });
-        const dataSourceId = stateProps.dataSourceId;
-        await dispatchProps.remove({ id: dataSourceId });
         await dispatchProps.goToPage(paths.dataCatalog());
       } catch (er) {
         console.error(er);
