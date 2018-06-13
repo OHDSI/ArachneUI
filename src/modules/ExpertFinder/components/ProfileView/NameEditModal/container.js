@@ -48,7 +48,7 @@ function mapStateToProps(state) {
 const mapDispatchToProps = {
   hideDialog: () => ModalUtils.actions.toggle(modal.nameEdit, false),
   updateGeneralInfo: actions.expertFinder.userProfile.generalInfo.update,
-  loadMyProfile: actions.portal.myProfile.find,
+  loadMyProfile: actions.auth.principal.find,
   loadInfo: actions.expertFinder.userProfile.find,
 };
 
