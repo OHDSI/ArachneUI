@@ -43,7 +43,7 @@ function ViewEdit({ isLoading, dataSourceName, published, modelType }) {
         <Banner disabled={reportsAvailable} />
         <Toolbar />
         <div {...classes('content')}>
-          <div {...classes('row')}>
+          <div {...classes({ element: 'row', extra: 'row' })}>
             <div className="col-xs-12 col-md-6">
               <AchillesSettings />
             </div>
