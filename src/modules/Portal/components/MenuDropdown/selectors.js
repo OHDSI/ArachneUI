@@ -23,7 +23,7 @@
 import { createSelector } from 'reselect';
 import { Utils, get } from 'services/Utils';
 
-const getTenants = state => get(state, 'portal.myProfile.data.result.tenants') || [];
+const getTenants = state => get(state, 'auth.principal.queryResult.result.tenants') || [];
 
 const getNewActiveTenantId = (state) => {
   if (get(state, 'expertFinder.userSettings.isUpdating')) {
