@@ -27,9 +27,9 @@ import {
   PageContent,
 } from 'arachne-ui-components';
 import { modelTypesValues } from 'const/dataSource';
-import EmptyState from 'components/EmptyState';
 import Toolbar from './Toolbar';
 import AchillesSettings from './AchillesSettings';
+import Banner from './Banner';
 
 require('./style.scss');
 
@@ -40,15 +40,13 @@ function ViewEdit({ isLoading, dataSourceName, published, modelType }) {
   return (
     <PageContent title={`${dataSourceName} | Arachne`}>
       <div {...classes()}>
+        <Banner disabled={reportsAvailable} />
         <Toolbar />
-        <div {...classes({ element: 'content', modifiers: { empty: !reportsAvailable } })}>
-          <div{...classes({ element: 'row', modifiers: { empty: !reportsAvailable }, extra: 'row' })}>
-            {reportsAvailable
-              ? <div className="col-xs-12 col-md-6">
-                  <AchillesSettings />
-                </div>
-              : <EmptyState message={'Generating reports is unavailable for non-CDM data sources'} />
-            }
+        <div {...classes('content')}>
+          <div {...classes({ element: 'row', extra: 'row' })}>
+            <div className="col-xs-12 col-md-6">
+              <AchillesSettings />
+            </div>
           </div>
         </div>
         <LoadingPanel active={isLoading} />
