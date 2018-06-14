@@ -46,10 +46,10 @@ export default class WorkspaceBuilder extends ContainerBuilder {
     const moduleState = get(state, 'studyManager');
     const loggedUser = get(state, 'portal.myProfile.data.result', {});
 
-    const workspaceData = get(moduleState, 'study.data');
+    const workspaceData = get(moduleState, 'study.data', {});
     const isWorkspaceLoading = get(moduleState, 'workspace.isLoading');
 
-    const studyId = get(workspaceData, 'id', -1);
+    const studyId = get(workspaceData, 'id', null);
 
     const toolbarSettings = userId ? {
       userId,

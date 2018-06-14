@@ -67,7 +67,7 @@ export default class StudyActionsBuilder {
       isEditable,
       isFilledForPaper,
       canCreatePaper,
-      title: studyData.title,
+      title: get(studyData, 'title'),
     };
   }
 
