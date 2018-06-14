@@ -46,13 +46,6 @@
 
   &workspace-toolbar-title-caption {
     display: flex;
-    
-    &__name {
-      @include title();
-      color: $blue-semi-light;
-      flex-grow: 1;
-      font-size: 1.8rem;
-    }
   }
   
   &workspace-user-avatar {
