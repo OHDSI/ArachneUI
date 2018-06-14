@@ -29,7 +29,7 @@ function Banner({ disabled = true }) {
 
   return (
     <div {...classes({ modifiers: { active: !disabled } })}>
-      <span {...classes('preface')}>Warning:</span> Detected non-CDM compliant model
+      Warning: Detected non-CDM compliant model
     </div>
   );
 }

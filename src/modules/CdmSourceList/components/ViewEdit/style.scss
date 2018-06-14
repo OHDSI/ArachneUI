@@ -26,18 +26,6 @@
 
 	&cdm-data-source {
 		@include view-edit-page();
-
-		&__content {
-			&--empty {
-				display: flex;
-			}
-		}
-
-		&__row {
-			&--empty {
-				flex: 1;
-			}
-		}
 	}
 
 }

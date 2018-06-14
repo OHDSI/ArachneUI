@@ -259,6 +259,7 @@ const immutableAttributes = [
 ];
 
 const fieldHints = {
+  [attributeNames.name]: 'Name can be changed at Node side',
 };
 
 const kerberosAttributes = [
