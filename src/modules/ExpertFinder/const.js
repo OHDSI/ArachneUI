@@ -23,6 +23,7 @@
 import keyMirror from 'keymirror';
 import { types as fieldTypes } from 'const/modelAttributes';
 import URI from 'urijs';
+import { paths as commonPaths } from 'const/paths';
 
 const submitBtnConfig = {
   label: 'Add',
@@ -99,7 +100,7 @@ const apiPaths = {
 };
 
 const paths = {
-  profile: id => `/expert-finder/profile/${id}`,
+  profile: commonPaths.profile,
   list: () => '/expert-finder/list',
   settings: () => '/portal/settings',
   study: id => `/study-manager/studies/${id}`,

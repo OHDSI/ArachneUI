@@ -22,6 +22,7 @@
 
 import keyMirror from 'keymirror';
 import { Utils } from 'services/Utils';
+import { paths as commonPaths } from 'const/paths';
 
 const modal = keyMirror({
   createStudy: null,
@@ -49,9 +50,8 @@ const paths = {
   analyses: id => `/analysis-execution/analyses${id ? `/${id}` : ''}`,
   dataSources: id => `/data-catalog/data-sources${id ? `/${id}` : ''}`,
   studies: id => `/study-manager/studies${id ? `/${id}` : ''}`,
-  user: id => `/expert-finder/profile/${id}`,
+  user: commonPaths.profile,
   studyFile: ({ studyId, fileId }) => `/study-manager/studies/${studyId}/documents/${fileId}`,
-  profile: id => `/expert-finder/profile/${id}`,
 };
 
 const apiPaths = {

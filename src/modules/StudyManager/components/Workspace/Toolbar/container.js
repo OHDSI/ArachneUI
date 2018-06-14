@@ -39,7 +39,7 @@ export default class WorkspaceToolbarBuilder extends ContainerBuilder {
       breadcrumbList: [
         {
           label: userName,
-          link: paths.profile(userId),
+          link: paths.user(userId),
         },
       ],
     }

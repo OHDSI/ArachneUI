@@ -22,6 +22,7 @@
 
 import keyMirror from 'keymirror';
 import types from 'const/modelAttributes';
+import { paths as commonPaths } from 'const/paths';
 
 const form = keyMirror({
   changePassword: null,
@@ -47,7 +48,7 @@ const apiPaths = {
 
 const paths = {
   study: id => `/study-manager/studies/${id}`,
-  userProfile: id => `/expert-finder/profile/${id}`,
+  userProfile: commonPaths.profile,
   odysseus: () => 'http://odysseusinc.com/',
   search: ({ query }) => `/portal/search?query=${query}`,
 };

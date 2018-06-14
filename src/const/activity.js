@@ -21,6 +21,7 @@
  */
 
 import keyMirror from 'keymirror';
+import { paths as commonPaths } from 'const/paths';
 
 const apiPaths = {
   userpic: id => `/api/v1/user-management/users/${id}/avatar`,
@@ -30,7 +31,7 @@ const paths = {
   analyses: id => `/analysis-execution/analyses${id ? `/${id}` : ''}`,
   dataSources: id => `/data-catalog/data-sources${id ? `/${id}` : ''}`,
   studies: id => `/study-manager/studies${id ? `/${id}` : ''}`,
-  user: id => `/expert-finder/profile/${id}`,
+  user: commonPaths.profile,
 };
 
 const submissionStatusTitles = {
