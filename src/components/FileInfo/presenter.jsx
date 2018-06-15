@@ -90,6 +90,8 @@ class FileInfo extends Component {
       onClick,
       antivirusStatus,
       antivirusDescription,
+      onEdit,
+      isEditable,
     } = this.props;
 
     const label = this.getRawLabel();
@@ -105,6 +107,10 @@ class FileInfo extends Component {
                 {label}
               </Link>
               : <span {...this.classes('name')} title={label}>{label}</span>
+            }
+            {onEdit && isEditable && <i {...this.classes('edit-ico')} onClick={onEdit}>
+              edit
+            </i>
             }
             {createdAt &&
               <span {...this.classes('datetime')}>

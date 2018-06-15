@@ -37,6 +37,7 @@ const modal = keyMirror({
   rejectSubmission: null,
   submissionsTableFilter: null,
   modalError: null,
+  editFileName: null,
 });
 
 const form = keyMirror({
@@ -56,6 +57,7 @@ const form = keyMirror({
   importCodeList: null,
   rejectSubmission: null,
   submissionsTableFilter: null,
+  editFileName: null,
 });
 
 const paths = {
