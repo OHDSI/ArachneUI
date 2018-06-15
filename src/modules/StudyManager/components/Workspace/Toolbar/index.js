@@ -16,10 +16,10 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: September 05, 2018
+ * Created: June 4, 2018
  *
  */
 
-import LeftColumn from './presenter';
+import WorkspaceToolbarBuilder from './container';
 
-export default LeftColumn;
+export default (new WorkspaceToolbarBuilder()).build();

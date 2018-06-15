@@ -48,7 +48,7 @@ function mapStateToProps(state) {
 
   const rawSelectedFilters = Utils.getFilterValues(get(state, 'routing.locationBeforeTransitions.search', '', 'String'));
   const selectedFilters = {};
-  const datasources = get(state, 'studyManager.study.data.result.dataSources', [], 'Array');
+  const datasources = get(state, 'studyManager.study.data.dataSources', [], 'Array');
   Object.entries(rawSelectedFilters)
     .forEach(([filterId, filter]) => {
       switch (filterId) {

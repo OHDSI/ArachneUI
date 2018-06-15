@@ -26,7 +26,7 @@ import { paths } from 'modules/StudyManager/const';
 
 export default class selectorsBuilder {
   getRawAnalysisList(state){
-    return get(state, 'studyManager.study.data.result.analyses') || [];
+    return get(state, 'studyManager.study.data.analyses') || [];
   }
 
   getAnalysisList(analysisList) {

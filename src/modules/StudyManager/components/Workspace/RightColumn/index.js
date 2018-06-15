@@ -15,11 +15,11 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: September 05, 2018
+ * Authors: Anton Gackovka
+ * Created: June 4, 2018
  *
  */
 
-import LeftColumn from './presenter';
+import RightColumn from './presenter';
 
-export default LeftColumn;
+export default RightColumn;

@@ -1,5 +1,4 @@
 /*
- *
  * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +14,14 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: September 05, 2018
- *
+ * Authors: Anton Gackovka
+ * Created: June 14, 2018
  */
 
-import LeftColumn from './presenter';
+const paths = {
+  profile: id => `/expert-finder/profile/${id}`,
+};
 
-export default LeftColumn;
+export {
+  paths,
+};

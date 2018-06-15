@@ -63,7 +63,7 @@ export default class StudyObjectiveEditBuilder {
   }
 
   mapStateToProps(state) {
-    const studyData = get(state, 'studyManager.study.data.result');
+    const studyData = get(state, 'studyManager.study.data');
 
     return {
       studyId: get(studyData, 'id'),
@@ -86,8 +86,8 @@ export default class StudyObjectiveEditBuilder {
       ...stateProps,
       ...dispatchProps,
       setDescr: ({ description }) => dispatchProps
-        .updateStudy(stateProps.studyId, { description })
-        .then(() => dispatchProps.load(stateProps.studyId))
+        .updateStudy({ id: stateProps.studyId }, { description })
+        .then(() => dispatchProps.load({ id: stateProps.studyId }))
         .then(ownProps.setViewMode),
       cancel: () => ownProps.setViewMode(),
     };

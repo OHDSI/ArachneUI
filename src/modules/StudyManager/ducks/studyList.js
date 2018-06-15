@@ -26,12 +26,12 @@ import { apiPaths } from 'modules/StudyManager/const';
 import { Utils } from 'services/Utils';
 import Uri from 'urijs';
 
-const actionCoreName = 'SM_STUDY';
+const actionCoreName = 'SM_STUDY_LIST';
 
 const ducks = new Duck({
   name: actionCoreName,
   urlBuilder: (params) => {
-    const url = new Uri(apiPaths.studies());
+    const url = new Uri(apiPaths.studies({}));
     url.setSearch(params);
     return url.href();
   },

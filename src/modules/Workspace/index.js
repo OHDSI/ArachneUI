@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2018 Observational Health Data Sciences and Informatics
+ * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,10 +16,21 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: September 05, 2018
+ * Created: December 13, 2016
  *
  */
 
-import LeftColumn from './presenter';
+import { paths, imgs } from './const';
 
-export default LeftColumn;
+export default {
+  routes: () => (location, cb) => {
+    require.ensure([], (require) => {
+      cb(null, require('./routes').default()); // eslint-disable-line global-require
+    });
+  },
+  sidebarElement: {
+    ico: imgs.sidebarIco,
+    name: 'Personal workspace',
+    path: paths.workspace(),
+  },
+};

@@ -40,7 +40,7 @@ export default class StudyActionsBuilder {
   mapStateToProps(state) {
     const moduleState = get(state, 'studyManager');
 
-    const studyData = get(state, 'studyManager.study.data.result');
+    const studyData = get(state, 'studyManager.study.data');
     const isEditable = get(studyData, `permissions[${studyPermissions.editStudy}]`, false);
     const analyses = get(studyData, 'analyses', []);
     const docs = get(studyData, 'files', []);
@@ -67,7 +67,7 @@ export default class StudyActionsBuilder {
       isEditable,
       isFilledForPaper,
       canCreatePaper,
-      title: studyData.title,
+      title: get(studyData, 'title'),
     };
   }
 
@@ -102,7 +102,7 @@ export default class StudyActionsBuilder {
         ).then(result => dispatchProps.goToPaper(result.id));
       },
       reload: () => {
-        dispatchProps.loadStudy(stateProps.studyId);
+        dispatchProps.loadStudy({ id: stateProps.studyId });
         dispatchProps.loadInsights({ studyId: stateProps.studyId });
         dispatchProps.loadSudyInvitations({ studyId: stateProps.studyId });
       },
