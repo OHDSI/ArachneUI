@@ -25,7 +25,7 @@ import { get } from 'services/Utils';
 
 const getStudyData = state => get(
   state,
-  'studyManager.study.data.result',
+  'studyManager.study.data',
   {
     description: null,
     startDate: 1,

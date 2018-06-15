@@ -22,8 +22,9 @@
 
 import Duck from 'services/Duck';
 import { Utils } from 'services/Utils';
-import { apiPaths } from 'modules/StudyManager/const';
+import { apiPaths, studyKind } from 'modules/StudyManager/const';
 import { apiPaths as paperApiPaths } from 'modules/InsightsLibrary/const';
+import { apiPaths as workspacePaths } from 'modules/Workspace/const';
 
 const studiesCoreName = 'SM_STUDY';
 const paperCoreName = 'SM_STUDY_PAPER';
@@ -34,7 +35,9 @@ const analysisMoveCoreName = 'SM_ANALYSIS_MOVE';
 
 const ducks = new Duck({
   name: studiesCoreName,
-  urlBuilder: apiPaths.studies,
+  urlBuilder: ({ id, kind = studyKind.REGULAR }) => {
+    return kind === studyKind.WORKSPACE ? workspacePaths.workspace({ id }) : apiPaths.studies({ id });
+  }
 });
 
 const paperDuck = new Duck({

@@ -91,12 +91,17 @@ const publishStates = [
   },
 ];
 
+const imgs = {
+  sidebarIco: '/img/icons/Universal_Desktop/Navigation/Arachne_Desktop_icon-Insight_Library.png',
+};
+
 export {
   apiPaths,
   forms,
   insightRoleOptions,
   modals,
   paths,
+  imgs,
   paperFileType,
   publishStates,
   publishStateOptions,

@@ -55,7 +55,7 @@ export default class SelectorsBuilder {
   }
 
   getStudyStatus(state) {
-    return get(state, 'studyManager.study.data.result.status.name');
+    return get(state, 'studyManager.study.data.status.name');
   }
 
   getStatusOptions(statusList, transitionList, studyStatus) {

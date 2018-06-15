@@ -30,7 +30,7 @@ export default class studyObjectiveViewBuilder {
   }
 
   mapStateToProps(state) {
-    const studyData = get(state, 'studyManager.study.data.result');
+    const studyData = get(state, 'studyManager.study.data');
 
     return {
       description: get(studyData, 'description'),

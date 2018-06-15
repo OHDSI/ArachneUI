@@ -65,7 +65,7 @@ export default class AddDataCatalogSourceBuilder {
   }
 
   mapStateToProps(state) {
-    const studyData = get(state, 'studyManager.study.data.result');
+    const studyData = get(state, 'studyManager.study.data');
     const isSaving = get(state, 'form.addCatalogSource.submitting', false);
     const restItemsCount = get(state, 'studyManager.dataSourceList.data.totalElements', 0);
 
@@ -121,7 +121,7 @@ export default class AddDataCatalogSourceBuilder {
           })
           .then(() => dispatchProps.resetForm())
           .then(() => dispatchProps.closeModal())
-          .then(() => dispatchProps.loadStudy(stateProps.studyId))
+          .then(() => dispatchProps.loadStudy({ id: stateProps.studyId }))
           .then(() => {
             if (!allApproved) {
               return dispatchProps.openConfirmDatasource(dataSources, stateProps.studyName);
