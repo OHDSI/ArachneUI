@@ -47,6 +47,7 @@ export class AddDataCatalogSource extends Component {
       this.props.loadDataSourceOptions({
         query: '',
       });
+      this.props.reset();
     }
   }
 
