@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -62,7 +62,7 @@ export default class LinksUploadBuilder extends ContainerBuilder {
 
   mapStateToProps(state) {
     const fieldName = 'createDocumentLink';
-    const studyData = get(state, 'studyManager.study.data.result');
+    const studyData = get(state, 'studyManager.study.data');
     const links = get(state, `form.createDocumentLinks.values.${fieldName}`, []);
     const addButtonTitle = links.length === 0 ? 'Add link' : 'Add another link';
 
@@ -105,7 +105,7 @@ export default class LinksUploadBuilder extends ContainerBuilder {
         const submitPromise = Promise.all(submitPromises);
         submitPromise.then(() => dispatchProps.reset())
           .then(() => dispatchProps.closeModal())
-          .then(() => dispatchProps.loadStudy(stateProps.studyId))
+          .then(() => dispatchProps.loadStudy({ id: stateProps.studyId }))
           .catch((er) => {
             console.error(er);
           });

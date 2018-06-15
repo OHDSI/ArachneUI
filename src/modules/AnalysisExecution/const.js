@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,6 +22,7 @@
 
 import keyMirror from 'keymirror';
 import { Utils } from 'services/Utils';
+import { paths as commonPaths } from 'const/paths';
 
 const modal = keyMirror({
   analysisFiles: null,
@@ -68,7 +69,7 @@ const paths = {
   insightCodeFile: ({ submissionId, fileId }) => `/analysis-execution/submissions/${submissionId}/insight/code/${fileId}`,
   insightResultFile: ({ submissionId, fileId }) => `/analysis-execution/submissions/${submissionId}/insight/results/${fileId}`,
   insight: ({ submissionId }) => `/analysis-execution/submissions/${submissionId}/insight`,
-  profile: id => `/expert-finder/profile/${id}`,
+  profile: commonPaths.profile,
 };
 
 function importEntityPathByType(type) {
