@@ -23,7 +23,7 @@
 import React from 'react';
 import { Modal } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
-import FormCreateDataNode from 'modules/DataCatalog/components/ViewEdit/Edit/FormCreateDataNode';
+import FormCreateDataNode from 'modules/DataCatalog/components/DataSource/ViewEdit/Edit/FormCreateDataNode';
 
 import './style.scss';
 

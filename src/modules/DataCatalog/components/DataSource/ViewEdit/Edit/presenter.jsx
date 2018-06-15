@@ -31,8 +31,8 @@ import {
   Button,
 } from 'arachne-ui-components';
 
-import Toolbar from 'modules/DataCatalog/components/ViewEdit/Toolbar';
-import ModalStatsUpload from 'modules/DataCatalog/components/ViewEdit/Edit/ModalStatsUpload';
+import Toolbar from 'modules/DataCatalog/components/DataSource/ViewEdit/Toolbar';
+import ModalStatsUpload from 'modules/DataCatalog/components/DataSource/ViewEdit/Edit/ModalStatsUpload';
 import FormCreateDataNode from './FormCreateDataNode';
 import AttributeList from './AttributesList';
 
