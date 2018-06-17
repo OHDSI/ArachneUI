@@ -48,7 +48,7 @@ const apiPaths = {
   restartServer: () => '/api/v1/admin/restart',
   ping: () => '/api/v1/auth/me',
 
-  portalUsers: ({ id, query }) => Utils.setUrlParams(`/api/v1/admin/users${id ? `/${id}` : ''}`, query),
+  portalUsers: ({ id, query } = {}) => Utils.setUrlParams(`/api/v1/admin/users${id ? `/${id}` : ''}`, query),
   portalUsersIds: ({ query }) => Utils.setUrlParams(`/api/v1/admin/users/ids`, query),
   portalUsersEnable: ({ id, enable }) => `/api/v1/admin/users/${id}/enable/${enable}`,
   portalUsersConfirmEmail: ({ id, confirm }) => `/api/v1/admin/users/${id}/confirm-email/${confirm}`,

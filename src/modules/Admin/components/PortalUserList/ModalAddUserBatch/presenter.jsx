@@ -21,7 +21,7 @@
  */
 
 import React from 'react';
-import { Button, Modal, Form, Fieldset, FormInput, FormCheckbox, FormSelect, FormAutocomplete, Table, TableCellText as CellText } from 'arachne-ui-components';
+import { Button, Modal, Form, Fieldset, FormInput, FormCheckbox, FormError, FormSelect, FormAutocomplete, Table, TableCellText as CellText } from 'arachne-ui-components';
 import { Field, FieldArray } from 'redux-form';
 import BEMHelper from 'services/BemHelper';
 import { registerFields } from 'modules/Auth/const';
@@ -233,6 +233,10 @@ function ModalAddUserBatch(props) {
             <PasswordInput />
             <EmailCheckbox />
           </div>
+          {(!props.pristine && props.error) ? 
+            <FormError error={props.error} />
+            : null
+          }
           <div {...classes('btn-bar')}>
             <Button
               {...classes('add-btn')}
