@@ -61,7 +61,7 @@ export default class StudyActionsBuilder {
     const canCreatePaper = get(studyData, `status.availableActions`, []).includes(studyActions.createPaper);
 
     return {
-      studyId: get(moduleState, 'study.data.result.id'),
+      studyId: get(studyData, 'id'),
       canDelete,
       publishedPaperId,
       isEditable,
