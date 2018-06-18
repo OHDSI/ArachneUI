@@ -22,14 +22,14 @@ import { connect } from 'react-redux';
 import actions from 'actions/index';
 import { ModalUtils } from 'arachne-ui-components';
 import { modal, form } from 'modules/AnalysisExecution/const';
-import ModalEditlFileName from './presenter';
+import ModalEditFileName from './presenter';
 import { ContainerBuilder, get } from 'services/Utils';
 import { isFat as isMimeTypeFat } from 'services/MimeTypeUtil';
 
 class ModalEditFileNameBuilder extends ContainerBuilder {
   
   getComponent() {
-    return ModalEditlFileName;
+    return ModalEditFileName;
   }
   
   mapStateToProps(state) {
@@ -53,7 +53,7 @@ class ModalEditFileNameBuilder extends ContainerBuilder {
   }
 
   mergeProps(stateProps, dispatchProps, ownProps) {
-    return Object.assign({
+    return {
       ...ownProps,
       ...stateProps,
       ...dispatchProps,
@@ -63,14 +63,14 @@ class ModalEditFileNameBuilder extends ContainerBuilder {
           { name },
           false
         );
-        await dispatchProps.closeModal();
-        await dispatchProps.loadAnalysisCode({
+        dispatchProps.closeModal();
+        dispatchProps.loadAnalysisCode({
           analysisId: stateProps.analysisId,
           analysisCodeId: stateProps.fileUuid,
           withContent: !isMimeTypeFat(stateProps.mimeType),
         });
       },
-    });
+    };
   }
 
   getModalParams() {
