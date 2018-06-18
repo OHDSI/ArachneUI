@@ -65,7 +65,7 @@ export class CodeItem extends Component {
     this.selectExecutable = this.props.selectExecutable;
     this.isLocked = this.props.isLocked;
     this.canBeReimported = this.props.canBeReimported;
-    
+
     const mods = {
       hover: true,
       actionable: true,

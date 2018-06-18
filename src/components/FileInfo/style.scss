@@ -120,14 +120,6 @@
       vertical-align: top;
     }
 
-    &__edit-ico {
-      @include material-icon();
-      color: $blue-light;
-      cursor: pointer;
-      font-size: 1.6rem;
-      padding-top: 0.3rem;
-    }
-
     &--horizontal {
       & .#{$namespace} {
 
