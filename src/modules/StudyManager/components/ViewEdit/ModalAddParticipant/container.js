@@ -75,8 +75,8 @@ export default class ModalAddParticipantBuilder {
     }));
 
     return {
-      studyId: get(moduleData, 'study.data.result.id'),
-      studyName: get(moduleData, 'study.data.result.title'),
+      studyId: get(moduleData, 'study.data.id'),
+      studyName: get(moduleData, 'study.data.title'),
       isOpened: get(state, 'modal.addParticipant.isOpened', false),
       participantOptions,
       initialValues: {

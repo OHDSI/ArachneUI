@@ -101,7 +101,7 @@ export default class ViewEditStudyBuilder extends ContainerBuilder {
     const participants = get(studyData, 'participants');
     const isParticipantsLoading = get(participants, 'isSaving');
     
-    const kind = studyData.kind;
+    const kind = get(studyData, 'kind');
     
     return {
       id: parseInt(ownProps.routeParams.studyId, 10),
