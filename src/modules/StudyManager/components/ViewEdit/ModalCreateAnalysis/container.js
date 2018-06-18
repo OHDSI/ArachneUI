@@ -49,7 +49,7 @@ export default class ModalCreateAnalysisBuilder {
   mapStateToProps(state) {
     const moduleData = get(state, 'studyManager');
     return {
-      studyId: get(moduleData, 'study.data.result.id'),
+      studyId: get(moduleData, 'study.data.id'),
       analysisTypes: selectors.getAnalysisTypesList(state),
       initialValues: {
         attachDefaultCodeFiles: true,
