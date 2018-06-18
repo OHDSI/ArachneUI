@@ -37,7 +37,6 @@ import ModalEditTitle from './ModalEditTitle/index';
 import ModalCreateCode from './ModalCreateCode/index';
 import ModalCreateInsight from './ModalCreateInsight';
 import ModalSubmitCode from './ModalSubmitCode/index';
-import ModalEditFileName from './ModalEditFileName/index';
 import ModalFiles from './ModalFiles/index';
 import ModalStatusHistory from './ModalStatusHistory';
 import ModalUploadResult from './ModalUploadResult';
@@ -73,7 +72,6 @@ export default class ViewEditAnalysis extends Component {
       <ModalUploadResult />,
       <ModalRejectSubmission />,
       <ModalAddDataSource onAdd={this.props.refreshStudyDataSources} />,
-      <ModalEditFileName/>,
       <ModalError />,
     ];
   }

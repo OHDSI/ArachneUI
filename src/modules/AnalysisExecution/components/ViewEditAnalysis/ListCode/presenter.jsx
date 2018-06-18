@@ -50,8 +50,7 @@ export class CodeItem extends Component {
   getComponent() {
     return [
       <div {...this.classes('main-info')}>
-        <FileInfo isEditable={true} onEdit={() => this.props.openEditFileNameModal(this.props.index)}
-         {...this.code} subtitle={this.getFileDescription()} />
+        <FileInfo {...this.code} subtitle={this.getFileDescription()} />
       </div>
     ];
   }
@@ -66,8 +65,6 @@ export class CodeItem extends Component {
     this.selectExecutable = this.props.selectExecutable;
     this.isLocked = this.props.isLocked;
     this.canBeReimported = this.props.canBeReimported;
-    this.openEditFileNameModal = this.props.openEditFileNameModal;
-    this.index = this.props.index;
     
     const mods = {
       hover: true,
@@ -208,9 +205,8 @@ export default class ListCode extends Component {
         isLocked={this.isLocked}
         reimportCode={this.reimportCode}
         removeCode={this.removeCode}
-        index={key}
+        key={key}
         removable={code.removable}
-        openEditFileNameModal={this.openEditFileNameModal}
       />
     );
   }
@@ -239,7 +235,6 @@ export default class ListCode extends Component {
     this.isEditable = this.props.isEditable;
     this.canBeReimported = this.props.canBeReimported;
     this.isExecutableSelected = this.props.isExecutableSelected;
-    this.openEditFileNameModal = this.props.openEditFileNameModal;
 
     return (
       <Panel

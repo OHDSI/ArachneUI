@@ -29,11 +29,12 @@ import { usDateTime as dateFormat } from 'const/formats';
 require('./style.scss');
 
 function AnalysisCodeToolbar(props) {
-  const classes = new BEMHelper('analysis-code-toolbar');
   const {
     backUrl,
     breadcrumbList,
     title,
+    openEditFileNameModal,
+    isEditable,
   } = props;
 
   return (
@@ -42,6 +43,8 @@ function AnalysisCodeToolbar(props) {
       caption={title}
       breadcrumbList={breadcrumbList}
       backUrl={backUrl}
+      onEdit={openEditFileNameModal}
+      isEditable={isEditable}
     />
   );
 }
