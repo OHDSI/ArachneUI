@@ -26,6 +26,7 @@ import { PageContent, LoadingPanel } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
 import MediaViewer from 'components/MediaViewer';
 import InviteRestrictedArea from 'components/InviteRestrictedArea';
+import ModalEditFileName from './ModalEditFileName/index';
 
 import Toolbar from './Toolbar/index';
 import Editor from './Editor/index';
@@ -83,6 +84,7 @@ function AnalysisCode({
         <LoadingPanel active={isLoading} />
         <ConfirmDialog />
         <ModalRequestUnlock />
+        <ModalEditFileName/>,
       </div>
     </PageContent>
   );
