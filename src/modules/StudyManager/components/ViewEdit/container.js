@@ -55,7 +55,7 @@ export class ViewEditStudy extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.kind && this.props.participants && this.props.kind === studyKind.WORKSPACE) {
-      const leadId = this.props.participants.find(v => v.role.id = roles.LEAD_INVESTIGATOR).id;
+      const leadId = this.props.participants.find(v => v.role.id === roles.LEAD_INVESTIGATOR).id;
       this.props.goToWorkspace(leadId);
       return;
     }
