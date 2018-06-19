@@ -30,86 +30,91 @@ import {
   FormTextarea,
   FormAutocomplete,
 } from 'arachne-ui-components';
-import { fieldTypes } from 'modules/ExpertFinder/const';
-import { immutableAttributes, fieldHints, attributeNames } from 'const/dataSource';
+import {fieldTypes} from 'modules/ExpertFinder/const';
+import {
+  immutableAttributes,
+  fieldHints,
+  attributeNames,
+} from 'const/dataSource';
+import {addAnyOption} from 'services/Utils';
 
 require('./style.scss');
 
-function ImmutableAttribute({ name, value }) {
+function ImmutableAttribute({name, value}) {
   const classes = new BEMHelper('immutable-attribute');
 
   return (
-    <div {...classes()}>
-      <div {...classes('value')}>{value}</div>
-      {fieldHints[name] &&
+      <div {...classes()}>
+        <div {...classes('value')}>{value}</div>
+        {fieldHints[name] &&
         <div
-          {...classes('hint', null, 'ac-tooltip')}
-          aria-label={fieldHints[name]}
-          data-tootik-conf={'bottom multiline'}
+            {...classes('hint', null, 'ac-tooltip')}
+            aria-label={fieldHints[name]}
+            data-tootik-conf={'bottom multiline'}
         >help</div>
-      }
-    </div>
+        }
+      </div>
   );
 }
 
 export function AttributesFormListItem({
-  item,
-  input,
-  meta,
-  isWide = false,
-  disabled,
-  useAutocomplete,
-  autocompleteOptions,
-}) {
+                                         item,
+                                         input,
+                                         meta,
+                                         isWide = false,
+                                         disabled,
+                                         useAutocomplete,
+                                         autocompleteOptions,
+                                       }) {
   const itemClasses = new BEMHelper('attributes-form-list-item');
   let field = null;
   if (item.isImmutable) {
-    field = (<ImmutableAttribute name={item.name} value={input.value} />);
+    field = (<ImmutableAttribute name={item.name} value={input.value}/>);
   } else if (useAutocomplete) {
     field = (<FormAutocomplete
-      input={input}
-      mods={['bordered']}
-      placeholder={item.placeholder}
-      fetchOptions={autocompleteOptions.fetchOptions}
-      canCreateNewOptions
-      promptTextCreator={autocompleteOptions.promptTextCreator}
-      onNewOptionClick={autocompleteOptions.onNewOptionClick}
-      options={autocompleteOptions.options}
+        input={input}
+        mods={['bordered']}
+        placeholder={item.placeholder}
+        fetchOptions={autocompleteOptions.fetchOptions}
+        canCreateNewOptions
+        promptTextCreator={autocompleteOptions.promptTextCreator}
+        onNewOptionClick={autocompleteOptions.onNewOptionClick}
+        options={autocompleteOptions.options}
     />);
   } else {
     switch (item.type) {
       case fieldTypes.enum:
-        case fieldTypes.enumMulti:
+      case fieldTypes.enumMulti:
         field = (<FormSelect
-          options={item.options}
-          mods={['bordered']}
-          input={input}
-          meta={meta}
-          isMulti={item.type === fieldTypes.enumMulti}
-          disabled={disabled}
+            options={addAnyOption(item, 'None').options}
+            mods={['bordered']}
+            input={input}
+            meta={meta}
+            isMulti={item.type === fieldTypes.enumMulti}
+            disabled={disabled}
         />);
         break;
       case fieldTypes.string:
       case fieldTypes.integer:
         field = (
-          <FormInput
-            placeholder={item.label}
-            mods={['bordered']}
-            input={input}
-            meta={meta}
-            disabled={disabled}
-          />
+            <FormInput
+                placeholder={item.label}
+                mods={['bordered']}
+                input={input}
+                meta={meta}
+                disabled={disabled}
+            />
         );
         break;
       case fieldTypes.textarea:
         field = (
-          <FormTextarea
-            placeholder={item.label}
-            mods={['bordered']}
-            input={input}
-            meta={meta}
-            disabled={disabled}
-          />
+            <FormTextarea
+                placeholder={item.label}
+                mods={['bordered']}
+                input={input}
+                meta={meta}
+                disabled={disabled}
+            />
         );
         break;
       default:
@@ -118,14 +123,15 @@ export function AttributesFormListItem({
   }
 
   return (
-    <div {...itemClasses({ modifiers: { wide: isWide, disabled } })}>
-      <div {...itemClasses('name', { wide: isWide })}>
-        {item.label} {item.isRequired && <span {...itemClasses('required')}>*</span>}
+      <div {...itemClasses({modifiers: {wide: isWide, disabled}})}>
+        <div {...itemClasses('name', {wide: isWide})}>
+          {item.label} {item.isRequired &&
+        <span {...itemClasses('required')}>*</span>}
+        </div>
+        <div {...itemClasses('value', {wide: isWide})}>
+          {field}
+        </div>
       </div>
-      <div {...itemClasses('value', { wide: isWide })}>
-        {field}
-      </div>
-    </div>
   );
 }
 
@@ -139,17 +145,16 @@ function AttributesList(props) {
     isCDM,
     isManual = false,
   } = props;
-  const fields = attrList
-    .map(item => ({
-      name: item.name,
-      InputComponent: {
-        component: AttributesFormListItem,
-        props: {
-          item,
-          disabled: item.name === attributeNames.cdmVersion && !isCDM,
-        },
+  const fields = attrList.map(item => ({
+    name: item.name,
+    InputComponent: {
+      component: AttributesFormListItem,
+      props: {
+        item,
+        disabled: item.name === attributeNames.cdmVersion && !isCDM,
       },
-    }));
+    },
+  }));
   const submitBtn = {
     label: isPublished ? 'Save' : 'Publish',
     loadingLabel: isPublished ? 'Saving' : 'Publishing',
@@ -157,15 +162,15 @@ function AttributesList(props) {
   };
 
   return (
-    <Panel {...classes()} title="Metadata">
-      <Form
-        {...props}
-        onSubmit={doSubmit}
-        fields={fields}
-        mods={['no-spacing', 'actions-inline']}
-        submitBtn={submitBtn}
-      />
-    </Panel>
+      <Panel {...classes()} title="Metadata">
+        <Form
+            {...props}
+            onSubmit={doSubmit}
+            fields={fields}
+            mods={['no-spacing', 'actions-inline']}
+            submitBtn={submitBtn}
+        />
+      </Panel>
   );
 }
 

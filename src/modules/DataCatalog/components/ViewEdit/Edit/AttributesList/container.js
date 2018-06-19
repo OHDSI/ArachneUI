@@ -31,7 +31,7 @@ import SelectorsBuilder from './selectors';
 
 const selectors = (new SelectorsBuilder()).build();
 
-/** @augments { Component<any, any> } */
+/** @arguments { Component<any, any> } */
 export class AttributeList extends Component {
   static get propTypes() {
     return {
