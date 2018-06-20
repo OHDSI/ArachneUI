@@ -20,7 +20,7 @@
  *
  */
 
-import imgs from 'const/imgs';
+import { imgs } from './const';
 import ducks from './ducks';
 import { paths } from './const';
 
@@ -33,7 +33,7 @@ export default {
     });
   },
   sidebarElement: {
-    ico: imgs.sidebar.insightsLibrary,
+    ico: imgs.sidebarIco,
     name: 'Insights Library',
     path: paths.insights(),
     indexRedirect: '/insights',

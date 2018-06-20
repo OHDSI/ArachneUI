@@ -82,7 +82,7 @@ export default class ViewEditAnalysis extends Component {
 
     const {
       isLoading,
-      isEditable
+      isEditable,
     } = this.props;
 
     return (

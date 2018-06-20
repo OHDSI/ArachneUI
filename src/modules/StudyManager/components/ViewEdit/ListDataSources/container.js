@@ -36,7 +36,7 @@ export default class ListDataSourcesBuilder {
   }
 
   mapStateToProps(state) {
-    const studyData = get(state, 'studyManager.study.data.result');
+    const studyData = get(state, 'studyManager.study.data');
 
     return {
       studyId: get(studyData, 'id'),
@@ -67,7 +67,7 @@ export default class ListDataSourcesBuilder {
       addDataSource(dataSourceId) {
         dispatchProps
           .addDataSource({ studyId: stateProps.studyId, dataSourceId })
-          .then(() => dispatchProps.loadStudy(stateProps.studyId));
+          .then(() => dispatchProps.loadStudy({ id: stateProps.studyId }));
       },
       removeDataSource(dataSourceId, title) {
         Utils.confirmDelete({
@@ -76,7 +76,7 @@ export default class ListDataSourcesBuilder {
           .then(() => {
             dispatchProps
               .removeDataSource({ studyId: stateProps.studyId, dataSourceId })
-              .then(() => dispatchProps.loadStudy(stateProps.studyId));
+              .then(() => dispatchProps.loadStudy({ id: stateProps.studyId }));
           });
       },
       editDataSource(dataSourceId) {

@@ -75,8 +75,8 @@ export default class ModalAddParticipantBuilder {
     }));
 
     return {
-      studyId: get(moduleData, 'study.data.result.id'),
-      studyName: get(moduleData, 'study.data.result.title'),
+      studyId: get(moduleData, 'study.data.id'),
+      studyName: get(moduleData, 'study.data.title'),
       isOpened: get(state, 'modal.addParticipant.isOpened', false),
       participantOptions,
       initialValues: {
@@ -128,7 +128,7 @@ export default class ModalAddParticipantBuilder {
           .then(() => dispatchProps.resetForm())
           .then(() => dispatchProps.closeModal())
           .then(() => dispatchProps.openConfirmParticipant(participant, stateProps.studyName))
-          .then(() => dispatchProps.loadStudy(stateProps.studyId))
+          .then(() => dispatchProps.loadStudy({ id: stateProps.studyId }))
           .catch(() => {});
 
         // We have to return a submission promise back to redux-form

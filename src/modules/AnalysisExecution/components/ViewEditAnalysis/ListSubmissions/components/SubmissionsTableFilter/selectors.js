@@ -25,7 +25,7 @@
   
   export default class SelectorsBuilder {
     getRawDatasources(state) {
-      return get(state, 'studyManager.study.data.result.dataSources', [], 'Array');
+      return get(state, 'studyManager.study.data.dataSources', [], 'Array');
     }
   
     buildSelectorForGetDatasourceList() {

@@ -58,7 +58,9 @@ function initModules(modules) {
   let redirects = {};
 
   modules.forEach((module, moduleKey) => {
-    injectActionToRoot(module.namespace, module.actions());
+    if (module.actions) {
+      injectActionToRoot(module.namespace, module.actions());  
+    }
 
     if (module.reducer) {
       reducers[module.namespace] = module.reducer();

@@ -34,7 +34,6 @@ import './style.scss';
 function InviteRestrictedArea(props) {
   const {
     children,
-    className,
     onAccept,
     onDecline,
     accessGranted,
@@ -52,7 +51,7 @@ function InviteRestrictedArea(props) {
     </div>
   );
 
-  if (studyId !== -1 && isLoading) {
+  if (!studyId && isLoading) {
     return null;
   }
 
@@ -62,14 +61,14 @@ function InviteRestrictedArea(props) {
         <Sticky>
           {
             ({ isSticky }) => <Banner
-              className={isSticky ? classes({
-                element: 'sticky-banner',
-              }).className : null}
-              invitation={invitation}
-              acceptInvitation={onAccept}
-              declineInvitation={onDecline}
-              disabled={disabled}
-            />
+                className={isSticky ? classes({
+                  element: 'sticky-banner',
+                }).className : null}
+                invitation={invitation}
+                acceptInvitation={onAccept}
+                declineInvitation={onDecline}
+                disabled={disabled}
+              />
           }
         </Sticky>
         {children}

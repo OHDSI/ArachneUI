@@ -22,6 +22,7 @@
 
 import keyMirror from 'keymirror';
 import { Utils } from 'services/Utils';
+import { paths as commonPaths } from 'const/paths';
 
 const modal = keyMirror({
   analysisFiles: null,
@@ -37,6 +38,7 @@ const modal = keyMirror({
   rejectSubmission: null,
   submissionsTableFilter: null,
   modalError: null,
+  editFileName: null,
 });
 
 const form = keyMirror({
@@ -56,6 +58,7 @@ const form = keyMirror({
   importCodeList: null,
   rejectSubmission: null,
   submissionsTableFilter: null,
+  editFileName: null,
 });
 
 const paths = {
@@ -68,7 +71,7 @@ const paths = {
   insightCodeFile: ({ submissionId, fileId }) => `/analysis-execution/submissions/${submissionId}/insight/code/${fileId}`,
   insightResultFile: ({ submissionId, fileId }) => `/analysis-execution/submissions/${submissionId}/insight/results/${fileId}`,
   insight: ({ submissionId }) => `/analysis-execution/submissions/${submissionId}/insight`,
-  profile: id => `/expert-finder/profile/${id}`,
+  profile: commonPaths.profile,
 };
 
 function importEntityPathByType(type) {

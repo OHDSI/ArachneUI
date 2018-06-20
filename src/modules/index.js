@@ -43,6 +43,16 @@ if (__APP_TYPE_CENTRAL__) {
   const DataCatalog = require('./DataCatalog/index').default;
   const InsightsLibrary = require('./InsightsLibrary').default;
 
+  const Workspace = require('./Workspace/index').default;
+
+  modules.push({
+    ...Workspace,
+    path: 'workspace',
+    namespace: 'workspace',
+    isRoot: true,
+    isAdminOnly: false,
+  });
+  
   modules.push({
     ...StudyManager,
     path: 'study-manager',

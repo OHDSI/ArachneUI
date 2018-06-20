@@ -21,8 +21,7 @@
  */
 
 import { detectMimeTypeByExtension, Utils } from 'services/Utils';
-
-const profilePath = id => `/expert-finder/profile/${id}`;
+import { paths as commonPaths } from 'const/paths';
 
 function getLink(file, pathBuilder) {
   let link = null;
@@ -48,7 +47,7 @@ export default (file, pathBuilder) => ({
   ...getLink(file, pathBuilder),
   author: {
     ...file.author,
-    link: (file.author && file.author.id) ? profilePath(file.author.id) : null,
+    link: (file.author && file.author.id) ? commonPaths.profile(file.author.id) : null,
   },
   commentTopicId: file.commentTopicId,
   version: file.version,

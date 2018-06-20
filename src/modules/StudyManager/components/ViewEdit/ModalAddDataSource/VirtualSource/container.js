@@ -89,7 +89,7 @@ export default class AddVirtualSourceBuilder {
   }
 
   mapStateToProps(state) {
-    const studyData = get(state, 'studyManager.study.data.result');
+    const studyData = get(state, 'studyManager.study.data');
     const dataSourceData = get(state, 'studyManager.study.dataSource.data');
     const ownerList = selectors.getDataSourceOwnerList(state);
 
@@ -166,7 +166,7 @@ export default class AddVirtualSourceBuilder {
         submitPromise
           .then(() => dispatchProps.resetForm())
           .then(() => dispatchProps.closeModal())
-          .then(() => dispatchProps.loadStudy(stateProps.studyId))
+          .then(() => dispatchProps.loadStudy({ id: stateProps.studyId }))
           .then(ownProps.onAdd)
           .catch(() => {});
 

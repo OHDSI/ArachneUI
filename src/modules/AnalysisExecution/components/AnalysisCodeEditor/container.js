@@ -79,7 +79,7 @@ function mapStateToProps(state, ownProps) {
   const antivirusStatus = get(fileData, 'antivirusStatus', false);
   const antivirusDescription = get(fileData, 'antivirusDescription');
 
-  const isEditable = get(fileData, `permissions[${analysisPermissions.deleteAnalysisFiles}]`, false)
+  const isEditable = get(fileData, `permissions[${analysisPermissions.deleteAnalysisFiles}]`, false);
 
   const pageTitle = [
     get(fileData, 'name', 'Code file'),

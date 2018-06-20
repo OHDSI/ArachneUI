@@ -27,11 +27,11 @@ import fileConverter from 'components/FileInfo/converter';
 
 export default class selectorsBuilder {
   getStudyId(state) {
-    return get(state, 'studyManager.study.data.result.id') || [];
+    return get(state, 'studyManager.study.data.id') || [];
   }
 
   getRawDocumentList(state) {
-    return get(state, 'studyManager.study.data.result.files') || [];
+    return get(state, 'studyManager.study.data.files') || [];
   }
 
   getDocumentList(studyId, documentList) {

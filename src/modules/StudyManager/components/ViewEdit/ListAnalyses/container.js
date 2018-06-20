@@ -37,7 +37,7 @@ export default class ListAnalysesBuilder {
   }
 
   mapStateToProps(state) {
-    const studyData = get(state, 'studyManager.study.data.result');
+    const studyData = get(state, 'studyManager.study.data');
 
     return {
       studyId: get(studyData, 'id'),
@@ -71,7 +71,7 @@ export default class ListAnalysesBuilder {
             analysisId: movedItem.id,
             newIndex,
           })
-          .then(() => dispatchProps.loadStudy(stateProps.studyId));
+          .then(() => dispatchProps.loadStudy({ id: stateProps.studyId }));
       },
       removeAnalysis(id, title) {
         Utils.confirmDelete({
@@ -81,7 +81,7 @@ export default class ListAnalysesBuilder {
             dispatchProps
               .removeAnalysis(id)
               .then(() => {
-                dispatchProps.loadStudy(stateProps.studyId);
+                dispatchProps.loadStudy({ id: stateProps.studyId });
                 dispatchProps.getTransitions({ studyId: stateProps.studyId });
               });
           });

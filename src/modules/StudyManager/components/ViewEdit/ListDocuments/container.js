@@ -38,7 +38,7 @@ export default class ListDocumentsBuilder {
   }
 
   mapStateToProps(state) {
-    const studyData = get(state, 'studyManager.study.data.result');
+    const studyData = get(state, 'studyManager.study.data');
     const studyId = get(studyData, 'id');
     const documentList = selectors.getDocumentList(state);
     const filesList = documentList.filter(doc => doc.docType !== mimeTypes.link);
@@ -76,7 +76,7 @@ export default class ListDocumentsBuilder {
           .then(() => {
             dispatchProps
               .removeDocument({ studyId: stateProps.studyId, fileUuid: fileId, action: 'remove' })
-              .then(() => dispatchProps.loadStudy(stateProps.studyId));
+              .then(() => dispatchProps.loadStudy({ id: stateProps.studyId }));
           });
       },
     };

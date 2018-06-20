@@ -43,7 +43,7 @@ export default class FilesUploadBuilder {
   }
 
   mapStateToProps(state) {
-    const studyData = get(state, 'studyManager.study.data.result');
+    const studyData = get(state, 'studyManager.study.data');
     const files = get(state, `form.${form.createDocumentFiles}.values.files`, []);
 
     return {
@@ -83,7 +83,7 @@ export default class FilesUploadBuilder {
         const submitPromise = Promise.all(submitPromises)
           .then(() => dispatchProps.reset())
           .then(() => dispatchProps.closeModal())
-          .then(() => dispatchProps.loadStudy(stateProps.studyId));
+          .then(() => dispatchProps.loadStudy({ id: stateProps.studyId }));
 
         // We have to return a submission promise back to redux-form
         // to allow it update the state

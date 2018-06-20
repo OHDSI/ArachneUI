@@ -26,13 +26,6 @@ const imgs = {
     logo: '/img/icons/Universal_Desktop/Header/Arachne_Desktop_logo.png',
     search: '/img/icons/Universal_Desktop/Header/Arachne_Desktop_icon-Search-.png',
   },
-  sidebar: {
-    dashboard: '/img/icons/Universal_Desktop/Navigation/Arachne_Desktop_icon-Dashboard.png',
-    studyNotebook: '/img/icons/Universal_Desktop/Navigation/Arachne_Desktop_icon-Studies_Library.png',
-    expertFinder: '/img/icons/Universal_Desktop/Navigation/Arachne_Desktop_icon-Expert_Finder.png',
-    dataCatalog: '/img/icons/Universal_Desktop/Navigation/Arachne_Desktop_icon-Data_Catalog.png',
-    insightsLibrary: '/img/icons/Universal_Desktop/Navigation/Arachne_Desktop_icon-Insight_Library.png',
-  },
   studiesToolbar: {
     create: '/img/icons/Studies_Toolbar/Arachne_Desktop_icon-Create-.png',
     refresh: '/img/icons/Studies_Toolbar/Arachne_Desktop_icon-Refresh.png',
