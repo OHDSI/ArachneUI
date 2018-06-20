@@ -20,24 +20,65 @@
   *
   */
 
-  import React from 'react';
-  
-  import BEMHelper from 'services/BemHelper';
-  
-  import './style.scss';
-  
-  function ViewEdit(props) {
-    const classes = new BEMHelper('view-edit');
-    
-  
-    return (
-      
-        <div {...classes()}>
-          ViewEdit
+import React from 'react';
+import {
+  PageContent,
+  Toolbar,
+  ListItem,
+  Panel,
+} from 'arachne-ui-components'
+import EmptyState from 'components/EmptyState';
+import BEMHelper from 'services/BemHelper';
+
+import './style.scss';
+import { paths } from 'modules/DataCatalog/const';
+import isEmpty from 'lodash/isEmpty';
+
+function ViewEdit(props) {
+  const classes = new BEMHelper('view-edit');
+  const {
+    dataNode: {
+      name,
+      description,
+    },
+    organization,
+    dataSources,
+  } = props;
+
+  return (      
+    <PageContent title={`${name} | Arachne`}>
+      <div {...classes()}>
+        <Toolbar caption={`Data node: ${name}`} backUrl={paths.dataCatalog()} />
+        <div {...classes('content')}>
+          <div {...classes('block', 'shadowed')}>
+            <ListItem>
+              <div {...classes('attribute')}>
+                <span {...classes('label')}>Organization</span>
+                <span>{organization}</span>
+              </div>
+            </ListItem>
+            <ListItem>
+              {description}
+            </ListItem>
+          </div>
+          <div {...classes('block')}>
+            <Panel title={'Attached Data Sources'}>
+              {dataSources.map(ds =>
+                <ListItem>
+                  {ds.name}
+                </ListItem>
+              )}
+              {isEmpty(dataSources) &&
+                <ListItem>
+                  <EmptyState message={'No Data Sources attached to this Data Node yet'} />
+                </ListItem>
+              }
+            </Panel>
+          </div>
         </div>
-      
-    );
-  }
-  
-  export default ViewEdit;
-  
+      </div>
+    </PageContent>
+  );
+}
+
+export default ViewEdit;

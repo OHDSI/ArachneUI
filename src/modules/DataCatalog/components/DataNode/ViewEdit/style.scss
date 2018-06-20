@@ -24,7 +24,29 @@
  
 .#{$namespace} { 
   &view-edit {
+    &__content {
+      padding: 2rem;
+      flex-grow: 1;
+      display: flex;
+      justify-content: space-between;
+    }
 
+    &__block {
+      width: 49%;
+      &--shadowed {
+        @include block-shadow();
+      }
+    }
+
+    &__attribute {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    &__label {
+      @include title();
+    }
   }
 }
   

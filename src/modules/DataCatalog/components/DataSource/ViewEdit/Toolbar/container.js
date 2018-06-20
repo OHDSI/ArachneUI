@@ -29,6 +29,7 @@ function mapStateToProps(state) {
   const dataSourceData = get(state, 'dataCatalog.dataSource.data.result');
   const isMy = get(state, 'routing.locationBeforeTransitions.query.my', false);
   const backUrl = isMy ? paths.myDatasources() : paths.dataCatalog();
+  const dataNode = get(dataSourceData, 'dataNode', { name: 'Unknown data node', id: null });
 
   return {
     backUrl,
@@ -38,6 +39,8 @@ function mapStateToProps(state) {
       value: get(dataSourceData, 'healthStatus'),
     },
     isDeleted: !!get(dataSourceData, 'deleted', ''),
+    dataNodeId: get(dataNode, 'id'),
+    dataNodeName: get(dataNode, 'name'),
   };
 }
 

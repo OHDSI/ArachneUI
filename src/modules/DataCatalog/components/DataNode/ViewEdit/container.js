@@ -34,7 +34,12 @@ export class ViewEdit extends Component {
   static get propTypes() {
     return {
     };
-  } 
+  }
+  
+  componentWillMount() {
+    this.props.load({ id: this.props.id });
+  }
+  
 
   render() {
     return presenter(this.props);
@@ -46,13 +51,19 @@ export default class ViewEditBuilder extends ContainerBuilder {
     return ViewEdit;
   }
 
-  
-  
-  
- 
-  mapStateToProps(state, ownProps) {     
+  mapStateToProps(state, ownProps) {
+    const dataNode = get(state, 'dataCatalog.dataNode.data.result', {
+      name: 'Unknown data node',
+      description: '',
+      organization: 'Unknown',
+    });
+    const dataSources = [];
 
     return {
+      id: ownProps.routeParams.datanodeId,
+      dataNode,
+      dataSources,
+      organization: get(dataNode, 'organization', 'Unknown', 'String'),
     };
   }
 
@@ -61,7 +72,7 @@ export default class ViewEditBuilder extends ContainerBuilder {
    */
   getMapDispatchToProps() {
     return {
-      
+      load: actions.dataCatalog.dataNode.find,
     };
   }
 
@@ -73,12 +84,5 @@ export default class ViewEditBuilder extends ContainerBuilder {
       
     };
   }
-
-  getFetchers({ params, state, dispatch }) {
-    
-    return {
-    };
-  }
-
 }
  
