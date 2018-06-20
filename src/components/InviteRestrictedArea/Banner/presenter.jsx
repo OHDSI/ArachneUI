@@ -66,36 +66,38 @@ export default function Banner(props) {
         modifiers,
       })}
     >
-      <div {...classes('avatar')}>
-        <Avatar img={ activityApiPaths.userpic(user.id) } />
-      </div>
-      <div {...classes('info')}>
-        <label {...classes('title')}>
-          You've been invited
-        </label>
-        <span {...classes('descr')}>
-          <Link {...classes('invited-by')} to={paths.user(user.id)}>
-            {`${user.firstname} ${user.lastname}`}
-          </Link>
-          <span {...classes('invite-text')}>
-            {`${actionType} ${entity.title}`}
+      {!disabled &&
+        [<div key={0} {...classes('avatar')}>
+          <Avatar img={ activityApiPaths.userpic(user.id) } />
+        </div>,
+        <div key={1} {...classes('info')}>
+          <label {...classes('title')}>
+            You've been invited
+          </label>
+          <span {...classes('descr')}>
+            <Link {...classes('invited-by')} to={paths.user(user.id)}>
+              {`${user.firstname} ${user.lastname}`}
+            </Link>
+            <span {...classes('invite-text')}>
+              {`${actionType} ${entity.title}`}
+            </span>
           </span>
-        </span>
-      </div>
-      <div {...classes('action-list')}>
-        <Button
-          {...classes('action', 'approve')}
-          mods={['rounded']}
-          label="Accept"
-          onClick={() => acceptInvitation()}
-        />
-        <Link
-          {...classes('action', 'decline')}
-          onClick={showDeclineModal}
-        >
-          Decline
-        </Link>
-      </div>
+        </div>,
+        <div key={2} {...classes('action-list')}>
+          <Button
+            {...classes('action', 'approve')}
+            mods={['rounded']}
+            label="Accept"
+            onClick={() => acceptInvitation()}
+          />
+          <Link
+            {...classes('action', 'decline')}
+            onClick={showDeclineModal}
+          >
+            Decline
+          </Link>
+        </div>]
+      }
       <DeclineModal onDecline={declineInvitation} />
     </div>
   );
