@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -32,17 +32,17 @@ import { dsConverter } from 'components/LabelDataSource';
 
 export default class selectorsBuilder {
   getRawParticipantList(state) {
-    return get(state, 'studyManager.study.data.result.participants') || [];
+    return get(state, 'studyManager.study.data.participants') || [];
   }
 
   getRawDataSourceList(state) {
-    return get(state, 'studyManager.study.data.result.dataSources', [], 'Array');
+    return get(state, 'studyManager.study.data.dataSources', [], 'Array');
   }
 
   hasEditPermissions(state) {
     return get(
       state,
-      `studyManager.study.data.result.permissions[${studyPermissions.inviteContributor}]`,
+      `studyManager.study.data.permissions[${studyPermissions.inviteContributor}]`,
       false
     );
   }

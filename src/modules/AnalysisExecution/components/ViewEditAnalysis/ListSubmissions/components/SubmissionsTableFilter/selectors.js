@@ -1,6 +1,6 @@
 /*
   *
-  * Copyright 2017 Observational Health Data Sciences and Informatics
+  * Copyright 2018 Observational Health Data Sciences and Informatics
   * Licensed under the Apache License, Version 2.0 (the "License");
   * you may not use this file except in compliance with the License.
   * You may obtain a copy of the License at
@@ -25,7 +25,7 @@
   
   export default class SelectorsBuilder {
     getRawDatasources(state) {
-      return get(state, 'studyManager.study.data.result.dataSources', [], 'Array');
+      return get(state, 'studyManager.study.data.dataSources', [], 'Array');
     }
   
     buildSelectorForGetDatasourceList() {

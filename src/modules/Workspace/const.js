@@ -1,6 +1,5 @@
 /*
- *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,22 +14,25 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: January 24, 2017
- *
+ * Authors: Anton Gackovka
+ * Created: June 8, 2018
  */
 
-import Duck from 'services/Duck';
-import { apiPaths } from 'modules/ExpertFinder/const';
+const paths = {
+  workspace: () => `/workspace/home`,
+  userWorkspace: (userId) => `/workspace/user/${userId}`
+};
 
-const coreName = 'EF_PROFILE';
+const apiPaths = {
+  workspace: ({ id }) => `/api/v1/workspace${id ? `/${id}` : ''}`,
+};
 
-const profile = new Duck({
-  name: coreName,
-  urlBuilder: apiPaths.myProfile,
-});
+const imgs = {
+  sidebarIco: '/img/icons/Universal_Desktop/Navigation/Arachne_Desktop_icon-Workspace.png',
+};
 
-export default {
-  actions: profile.actions,
-  reducer: profile.reducer,
+export {
+  paths,
+  apiPaths,
+  imgs,
 };

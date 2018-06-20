@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -49,7 +49,7 @@ export default class ModalCreateAnalysisBuilder {
   mapStateToProps(state) {
     const moduleData = get(state, 'studyManager');
     return {
-      studyId: get(moduleData, 'study.data.result.id'),
+      studyId: get(moduleData, 'study.data.id'),
       analysisTypes: selectors.getAnalysisTypesList(state),
       initialValues: {
         attachDefaultCodeFiles: true,

@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -75,8 +75,8 @@ export default class ModalAddParticipantBuilder {
     }));
 
     return {
-      studyId: get(moduleData, 'study.data.result.id'),
-      studyName: get(moduleData, 'study.data.result.title'),
+      studyId: get(moduleData, 'study.data.id'),
+      studyName: get(moduleData, 'study.data.title'),
       isOpened: get(state, 'modal.addParticipant.isOpened', false),
       participantOptions,
       initialValues: {
@@ -128,7 +128,7 @@ export default class ModalAddParticipantBuilder {
           .then(() => dispatchProps.resetForm())
           .then(() => dispatchProps.closeModal())
           .then(() => dispatchProps.openConfirmParticipant(participant, stateProps.studyName))
-          .then(() => dispatchProps.loadStudy(stateProps.studyId))
+          .then(() => dispatchProps.loadStudy({ id: stateProps.studyId }))
           .catch(() => {});
 
         // We have to return a submission promise back to redux-form

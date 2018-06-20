@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,6 +21,7 @@
  */
 
 import keyMirror from 'keymirror';
+import { paths as commonPaths } from 'const/paths';
 
 const apiPaths = {
   userpic: id => `/api/v1/user-management/users/${id}/avatar`,
@@ -30,7 +31,7 @@ const paths = {
   analyses: id => `/analysis-execution/analyses${id ? `/${id}` : ''}`,
   dataSources: id => `/data-catalog/data-sources${id ? `/${id}` : ''}`,
   studies: id => `/study-manager/studies${id ? `/${id}` : ''}`,
-  user: id => `/expert-finder/profile/${id}`,
+  user: commonPaths.profile,
 };
 
 const submissionStatusTitles = {

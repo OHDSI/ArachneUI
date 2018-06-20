@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,6 +23,7 @@
 import keyMirror from 'keymirror';
 import { types as fieldTypes } from 'const/modelAttributes';
 import URI from 'urijs';
+import { paths as commonPaths } from 'const/paths';
 
 const submitBtnConfig = {
   label: 'Add',
@@ -85,7 +86,6 @@ const apiPaths = {
   userpic: ({ id, hash }) => `/api/v1/user-management/users/${id}/avatar${hash ? `?${hash}` : ''}`,
   userProfile: ({ id }) => `/api/v1/user-management/users/${id}/profile`,
   myUserpic: ({ hash }) => `/api/v1/user-management/users/avatar${hash ? `?${hash}` : ''}`,
-  myProfile: () => '/api/v1/auth/me',
   inviteParticipant: ({ studyId }) =>
     `/api/v1/study-management/studies/${studyId}/participants`,
   studies: ({ query, participantId }) =>
@@ -97,11 +97,10 @@ const apiPaths = {
     `/api/v1/user-management/state-province/search?limit=${autocompleteResultsLimit}&query=${query}&countryId=${countryId}${includeId ? `&includeId=${includeId}` : ''}`,
   studiesAutocomplete: ({ query, participantId }) =>
     `/api/v1/study-management/studies/search?region=PARTICIPANT&id=${participantId}&query=${query}`,
-  userSettings: () => `/api/v1/user-management/users/settings`,
 };
 
 const paths = {
-  profile: id => `/expert-finder/profile/${id}`,
+  profile: commonPaths.profile,
   list: () => '/expert-finder/list',
   settings: () => '/portal/settings',
   study: id => `/study-manager/studies/${id}`,
@@ -120,6 +119,11 @@ const roles = {
   },
 };
 
+
+const imgs = {
+  sideBarIco: '/img/icons/Universal_Desktop/Navigation/Arachne_Desktop_icon-Expert_Finder.png',
+};
+
 export {
   apiPaths,
   cancelBtnConfig,
@@ -132,4 +136,5 @@ export {
   autocompleteResultsLimit,
   maxDescriptionLength,
   roles,
+  imgs,
 };
