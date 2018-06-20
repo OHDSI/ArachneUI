@@ -30,30 +30,30 @@ import {
   FormTextarea,
   FormAutocomplete,
 } from 'arachne-ui-components';
-import {fieldTypes} from 'modules/ExpertFinder/const';
+import { fieldTypes } from 'modules/ExpertFinder/const';
 import {
   immutableAttributes,
   fieldHints,
   attributeNames,
 } from 'const/dataSource';
-import {addAnyOption} from 'services/Utils';
+import { addAnyOption } from 'services/Utils';
 
 require('./style.scss');
 
-function ImmutableAttribute({name, value}) {
+function ImmutableAttribute({ name, value }) {
   const classes = new BEMHelper('immutable-attribute');
 
   return (
-      <div {...classes()}>
-        <div {...classes('value')}>{value}</div>
-        {fieldHints[name] &&
-        <div
-            {...classes('hint', null, 'ac-tooltip')}
-            aria-label={fieldHints[name]}
-            data-tootik-conf={'bottom multiline'}
-        >help</div>
-        }
-      </div>
+    <div {...classes()}>
+      <div {...classes('value')}>{value}</div>
+      {fieldHints[name] &&
+      <div
+        {...classes('hint', null, 'ac-tooltip')}
+        aria-label={fieldHints[name]}
+        data-tootik-conf={'bottom multiline'}
+      >help</div>
+      }
+    </div>
   );
 }
 
@@ -72,49 +72,49 @@ export function AttributesFormListItem({
     field = (<ImmutableAttribute name={item.name} value={input.value}/>);
   } else if (useAutocomplete) {
     field = (<FormAutocomplete
-        input={input}
-        mods={['bordered']}
-        placeholder={item.placeholder}
-        fetchOptions={autocompleteOptions.fetchOptions}
-        canCreateNewOptions
-        promptTextCreator={autocompleteOptions.promptTextCreator}
-        onNewOptionClick={autocompleteOptions.onNewOptionClick}
-        options={autocompleteOptions.options}
+      input={input}
+      mods={['bordered']}
+      placeholder={item.placeholder}
+      fetchOptions={autocompleteOptions.fetchOptions}
+      canCreateNewOptions
+      promptTextCreator={autocompleteOptions.promptTextCreator}
+      onNewOptionClick={autocompleteOptions.onNewOptionClick}
+      options={autocompleteOptions.options}
     />);
   } else {
     switch (item.type) {
       case fieldTypes.enum:
       case fieldTypes.enumMulti:
         field = (<FormSelect
-            options={addAnyOption(item, 'None').options}
-            mods={['bordered']}
-            input={input}
-            meta={meta}
-            isMulti={item.type === fieldTypes.enumMulti}
-            disabled={disabled}
+          options={addAnyOption(item, 'None').options}
+          mods={['bordered']}
+          input={input}
+          meta={meta}
+          isMulti={item.type === fieldTypes.enumMulti}
+          disabled={disabled}
         />);
         break;
       case fieldTypes.string:
       case fieldTypes.integer:
         field = (
-            <FormInput
-                placeholder={item.label}
-                mods={['bordered']}
-                input={input}
-                meta={meta}
-                disabled={disabled}
-            />
+          <FormInput
+            placeholder={item.label}
+            mods={['bordered']}
+            input={input}
+            meta={meta}
+            disabled={disabled}
+          />
         );
         break;
       case fieldTypes.textarea:
         field = (
-            <FormTextarea
-                placeholder={item.label}
-                mods={['bordered']}
-                input={input}
-                meta={meta}
-                disabled={disabled}
-            />
+          <FormTextarea
+            placeholder={item.label}
+            mods={['bordered']}
+            input={input}
+            meta={meta}
+            disabled={disabled}
+          />
         );
         break;
       default:
@@ -123,15 +123,15 @@ export function AttributesFormListItem({
   }
 
   return (
-      <div {...itemClasses({modifiers: {wide: isWide, disabled}})}>
-        <div {...itemClasses('name', {wide: isWide})}>
-          {item.label} {item.isRequired &&
-        <span {...itemClasses('required')}>*</span>}
-        </div>
-        <div {...itemClasses('value', {wide: isWide})}>
-          {field}
-        </div>
+    <div {...itemClasses({ modifiers: { wide: isWide, disabled } })}>
+      <div {...itemClasses('name', { wide: isWide })}>
+        {item.label} {item.isRequired &&
+      <span {...itemClasses('required')}>*</span>}
       </div>
+      <div {...itemClasses('value', { wide: isWide })}>
+        {field}
+      </div>
+    </div>
   );
 }
 
@@ -162,15 +162,15 @@ function AttributesList(props) {
   };
 
   return (
-      <Panel {...classes()} title="Metadata">
-        <Form
-            {...props}
-            onSubmit={doSubmit}
-            fields={fields}
-            mods={['no-spacing', 'actions-inline']}
-            submitBtn={submitBtn}
-        />
-      </Panel>
+    <Panel {...classes()} title="Metadata">
+      <Form
+        {...props}
+        onSubmit={doSubmit}
+        fields={fields}
+        mods={['no-spacing', 'actions-inline']}
+        submitBtn={submitBtn}
+      />
+    </Panel>
   );
 }
 

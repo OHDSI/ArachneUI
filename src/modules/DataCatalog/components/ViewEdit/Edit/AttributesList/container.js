@@ -31,7 +31,7 @@ import SelectorsBuilder from './selectors';
 
 const selectors = (new SelectorsBuilder()).build();
 
-/** @arguments { Component<any, any> } */
+/** @augments { Component<any, any> } */
 export class AttributeList extends Component {
   static get propTypes() {
     return {
@@ -72,15 +72,15 @@ export default class AttributeListBuilder extends ContainerBuilder {
     }
 
     const attrList = selectors.getAttrList(state)
-    .filter((attr) => isManual ? true : !attr.onlyManual)
-    .map((attr) => {
-      const attribute = { ...attr };
-      if (attr.name === attributeNames.dbmsType) {
-        attribute.options = selectors.getDbmsTypes(state);
-      }
+      .filter((attr) => isManual ? true : !attr.onlyManual)
+      .map((attr) => {
+        const attribute = { ...attr };
+        if (attr.name === attributeNames.dbmsType) {
+          attribute.options = selectors.getDbmsTypes(state);
+        }
 
-      return attribute;
-    });
+        return attribute;
+      });
 
     return {
       attrList,

@@ -20,7 +20,7 @@
  *
  */
 
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import BEMHelper from 'services/BemHelper';
 import {
   BadgedIcon,
@@ -39,7 +39,7 @@ import Dropdown, {
 import types from 'const/modelAttributes';
 import filterTypes from 'const/filterTypes';
 import uniqBy from 'lodash/uniqBy';
-import {addAnyOption} from 'services/Utils';
+import { addAnyOption } from 'services/Utils';
 
 require('./style.scss');
 
@@ -58,26 +58,26 @@ function FilterFormSelect(props) {
   } = props;
 
   return <Select
-      isMulti={isMulti}
-      mods={mods}
-      placeholder={placeholder}
-      options={options}
-      value={input.value}
-      expanded={meta.active}
-      disabled={meta.submitting || disabled}
-      onFocus={() => input.onFocus()}
-      onBlur={() => input.onBlur()}
-      onChange={(val) => {
-        let newValue = val;
-        if (isMulti) {
-          const isAnyOptionSelected = val.includes(anyOptionValue);
-          newValue = isAnyOptionSelected ? [] : val;
-        } else {
-          // whether 'Any' option selected
-          newValue = val === anyOptionValue ? null : val;
-        }
-        input.onChange(newValue);
-      }}
+    isMulti={isMulti}
+    mods={mods}
+    placeholder={placeholder}
+    options={options}
+    value={input.value}
+    expanded={meta.active}
+    disabled={meta.submitting || disabled}
+    onFocus={() => input.onFocus()}
+    onBlur={() => input.onBlur()}
+    onChange={(val) => {
+      let newValue = val;
+      if (isMulti) {
+        const isAnyOptionSelected = val.includes(anyOptionValue);
+        newValue = isAnyOptionSelected ? [] : val;
+      } else {
+        // whether 'Any' option selected
+        newValue = val === anyOptionValue ? null : val;
+      }
+      input.onChange(newValue);
+    }}
   />;
 }
 
@@ -99,7 +99,8 @@ function getComponentByType(type) {
 
 function getOptions(field) {
   switch (field.type) {
-    case types.enum: case types.enumMulti:
+    case types.enum:
+    case types.enumMulti:
       return {
         mods: ['bordered'],
         title: field.label,
@@ -128,23 +129,23 @@ function getOptions(field) {
   }
 }
 
-function FacetedFilters({clear, fields, handleSubmit}) {
+function FacetedFilters({ clear, fields, handleSubmit }) {
   return (
-      <FacetedSearch
-          doSubmit={() => {}}
-          dynamicFields={fields.map(field => addAnyOption(field, 'Any'))}
-          fullTextSearchEnabled
-          sortingEnabled={false}
-          showRefineSearch
-          isAccordion
-          doClear={clear}
-          handleSubmit={handleSubmit}
-          mods={['no-submit']}
-      />
+    <FacetedSearch
+      doSubmit={() => {}}
+      dynamicFields={fields.map(field => addAnyOption(field, 'Any'))}
+      fullTextSearchEnabled
+      sortingEnabled={false}
+      showRefineSearch
+      isAccordion
+      doClear={clear}
+      handleSubmit={handleSubmit}
+      mods={['no-submit']}
+    />
   );
 }
 
-function DropdownFilters({classes, fields, clear, handleSubmit}) {
+function DropdownFilters({ classes, fields, clear, handleSubmit }) {
   const keywordsField = {
     type: types.string,
     label: 'Keywords',
@@ -181,23 +182,23 @@ function DropdownFilters({classes, fields, clear, handleSubmit}) {
   });
 
   return (
-      <Panel
-          mods={['black-header']}
-          title={'Filter'}
-      >
-        <div {...classes('filters')}>
-          <Form
-              fields={dropdownFields}
-              onSubmit={() => {}}
-              handleSubmit={handleSubmit}
-              cancelBtn={{
-                mods: ['cancel', 'rounded'],
-                label: 'Clear',
-              }}
-              onCancel={clear}
-          />
-        </div>
-      </Panel>
+    <Panel
+      mods={['black-header']}
+      title={'Filter'}
+    >
+      <div {...classes('filters')}>
+        <Form
+          fields={dropdownFields}
+          onSubmit={() => {}}
+          handleSubmit={handleSubmit}
+          cancelBtn={{
+            mods: ['cancel', 'rounded'],
+            label: 'Clear',
+          }}
+          onCancel={clear}
+        />
+      </div>
+    </Panel>
   );
 }
 
@@ -216,48 +217,48 @@ function FiltersList(props) {
   const isDropdown = type === filterTypes.dropdown;
 
   return isDropdown
-      ? <Dropdown {...classes(null, 'dropdown')}>
-        <DropdownTrigger {...classes('icon')}>
-          <BadgedIcon
-              {...classes('toggle-btn', null,
-                  selectedFiltersCount ? 'ac-tooltip' : null)}
-              icon={'filter_list'}
-              count={selectedFiltersCount}
-              aria-label={`Filtered by ${filteredByList.join(', ')}`}
-              data-tootik-conf={'multiline left'}
-          />
-        </DropdownTrigger>
-        <DropdownContent>
-          <div {...classes('content', null, className)}>
-            <DropdownFilters classes={classes} fields={fields} clear={clear}
-                             handleSubmit={handleSubmit}/>
-          </div>
-        </DropdownContent>
-      </Dropdown>
-      : <div {...classes(null, 'column')}>
-        <div {...classes('filters', null, className)}>
-          <FacetedFilters fields={fields} clear={clear}
-                          handleSubmit={handleSubmit}/>
+    ? <Dropdown {...classes(null, 'dropdown')}>
+      <DropdownTrigger {...classes('icon')}>
+        <BadgedIcon
+          {...classes('toggle-btn', null,
+            selectedFiltersCount ? 'ac-tooltip' : null)}
+          icon={'filter_list'}
+          count={selectedFiltersCount}
+          aria-label={`Filtered by ${filteredByList.join(', ')}`}
+          data-tootik-conf={'multiline left'}
+        />
+      </DropdownTrigger>
+      <DropdownContent>
+        <div {...classes('content', null, className)}>
+          <DropdownFilters classes={classes} fields={fields} clear={clear}
+                           handleSubmit={handleSubmit}/>
         </div>
-      </div>;
+      </DropdownContent>
+    </Dropdown>
+    : <div {...classes(null, 'column')}>
+      <div {...classes('filters', null, className)}>
+        <FacetedFilters fields={fields} clear={clear}
+                        handleSubmit={handleSubmit}/>
+      </div>
+    </div>;
 }
 
 FiltersList.propTypes = {
   className: PropTypes.string,
   selectedFiltersCount: PropTypes.number.isRequired,
   fields: PropTypes.arrayOf(
-      PropTypes.shape({
-        label: PropTypes.string,
-        name: PropTypes.string,
-        type: PropTypes.string,
-        forceOpened: PropTypes.bool,
-        options: PropTypes.arrayOf(
-            PropTypes.shape({
-              label: PropTypes.string,
-              value: PropTypes.string,
-            }),
-        ),
-      }),
+    PropTypes.shape({
+      label: PropTypes.string,
+      name: PropTypes.string,
+      type: PropTypes.string,
+      forceOpened: PropTypes.bool,
+      options: PropTypes.arrayOf(
+        PropTypes.shape({
+          label: PropTypes.string,
+          value: PropTypes.string,
+        }),
+      ),
+    }),
   ),
   clear: PropTypes.func.isRequired,
   filteredByList: PropTypes.arrayOf(PropTypes.string),
