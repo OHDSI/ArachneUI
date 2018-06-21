@@ -42,8 +42,9 @@ export default function Banner(props) {
     invitation,
   } = props;
   const classes = new BEMHelper('invite-banner');
+  const isActive = !disabled && invitation !== null;
   const modifiers = {
-    active: !disabled && invitation !== null,
+    active: isActive,
   };
 
   if (!invitation) {
@@ -66,36 +67,38 @@ export default function Banner(props) {
         modifiers,
       })}
     >
-      <div {...classes('avatar')}>
-        <Avatar img={ activityApiPaths.userpic(user.id) } />
-      </div>
-      <div {...classes('info')}>
-        <label {...classes('title')}>
-          You've been invited
-        </label>
-        <span {...classes('descr')}>
-          <Link {...classes('invited-by')} to={paths.user(user.id)}>
-            {`${user.firstname} ${user.lastname}`}
-          </Link>
-          <span {...classes('invite-text')}>
-            {`${actionType} ${entity.title}`}
+      {isActive &&
+        [<div key={0} {...classes('avatar')}>
+          <Avatar img={ activityApiPaths.userpic(user.id) } />
+        </div>,
+        <div key={1} {...classes('info')}>
+          <label {...classes('title')}>
+            You've been invited
+          </label>
+          <span {...classes('descr')}>
+            <Link {...classes('invited-by')} to={paths.user(user.id)}>
+              {`${user.firstname} ${user.lastname}`}
+            </Link>
+            <span {...classes('invite-text')}>
+              {`${actionType} ${entity.title}`}
+            </span>
           </span>
-        </span>
-      </div>
-      <div {...classes('action-list')}>
-        <Button
-          {...classes('action', 'approve')}
-          mods={['rounded']}
-          label="Accept"
-          onClick={() => acceptInvitation()}
-        />
-        <Link
-          {...classes('action', 'decline')}
-          onClick={showDeclineModal}
-        >
-          Decline
-        </Link>
-      </div>
+        </div>,
+        <div key={2} {...classes('action-list')}>
+          <Button
+            {...classes('action', 'approve')}
+            mods={['rounded']}
+            label="Accept"
+            onClick={() => acceptInvitation()}
+          />
+          <Link
+            {...classes('action', 'decline')}
+            onClick={showDeclineModal}
+          >
+            Decline
+          </Link>
+        </div>]
+      }
       <DeclineModal onDecline={declineInvitation} />
     </div>
   );
