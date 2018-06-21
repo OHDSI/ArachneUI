@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,6 +22,7 @@
 
 import keyMirror from 'keymirror';
 import { Utils } from 'services/Utils';
+import { paths as commonPaths } from 'const/paths';
 
 const modal = keyMirror({
   createStudy: null,
@@ -49,13 +50,13 @@ const paths = {
   analyses: id => `/analysis-execution/analyses${id ? `/${id}` : ''}`,
   dataSources: id => `/data-catalog/data-sources${id ? `/${id}` : ''}`,
   studies: id => `/study-manager/studies${id ? `/${id}` : ''}`,
-  user: id => `/expert-finder/profile/${id}`,
+  user: commonPaths.profile,
   studyFile: ({ studyId, fileId }) => `/study-manager/studies/${studyId}/documents/${fileId}`,
 };
 
 const apiPaths = {
   // Study
-  studies: id => `/api/v1/study-management/studies${id ? `/${id}` : ''}`,
+  studies: ({ id = null }) => `/api/v1/study-management/studies${id ? `/${id}` : ''}`,
   studyInsights: ({ studyId }) => `/api/v1/study-management/studies/${studyId}/insights`,
   // Study invitations
   studyInvitations: ({ studyId }) => `/api/v1/user-management/users/invitations?studyId=${studyId}`,
@@ -134,6 +135,10 @@ const participantRoles = keyMirror({
   CONTRIBUTOR: null,
 });
 
+const studyKind = keyMirror({
+  WORKSPACE: null,
+  REGULAR: null,
+});
 
 const participantStatuses = keyMirror({
   DELETED: null,
@@ -174,4 +179,5 @@ export {
   studyActions,
   recentActivityPageSize,
   submissionStatusTitles,
+  studyKind,
 };

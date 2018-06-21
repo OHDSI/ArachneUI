@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,6 +24,9 @@ import { connect } from 'react-redux';
 import get from 'lodash/get';
 import { buildBreadcrumbList } from 'modules/AnalysisExecution/utils';
 import Toolbar from './presenter';
+import { ModalUtils } from 'arachne-ui-components';
+import { modal } from 'modules/AnalysisExecution/const';
+import {analysisPermissions} from 'modules/AnalysisExecution/const';
 
 function mapStateToProps(state) {
   const analysisCodeData = get(state, 'analysisExecution.analysisCode.data.result');
@@ -36,9 +39,12 @@ function mapStateToProps(state) {
     title: get(analysisCodeData, 'label') || get(analysisCodeData, 'name'),
     backUrl,
     breadcrumbList,
+    isEditable: get(analysisCodeData, `permissions[${analysisPermissions.deleteAnalysisFiles}]`, false),
   };
 }
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  openEditFileNameModal: () => ModalUtils.actions.toggle(modal.editFileName, true),
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Toolbar);

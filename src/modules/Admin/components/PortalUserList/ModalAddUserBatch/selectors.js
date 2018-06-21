@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,22 +15,24 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: January 23, 2017
+ * Authors: Pavel Grafkin
+ * Created: May 28, 2018
  *
  */
 
-import Duck from 'services/Duck';
-import { apiPaths } from 'modules/ExpertFinder/const';
+import { createSelector } from 'reselect';
+import get from 'lodash/get';
 
-const coreName = 'EF_USER';
+const getRawProfessionalTypesList = state => get(state, 'auth.professionalType.queryResult.result') || [];
 
-const province = new Duck({
-  name: coreName,
-  urlBuilder: apiPaths.userSettings,
-});
+const getProfessionalTypes = createSelector(
+  [getRawProfessionalTypesList],
+  rawProfessionalTypesList => rawProfessionalTypesList.map(type => ({
+    label: type.name,
+    value: type.id,
+  }))
+);
 
 export default {
-  actions: province.actions,
-  reducer: province.reducer,
+  getProfessionalTypes,
 };

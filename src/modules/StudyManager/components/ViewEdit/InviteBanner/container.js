@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -35,7 +35,7 @@ export default class IviteBannerBuilder extends ContainerBuilder {
 
   mapStateToProps(state) {
     return {
-      studyId: get(state, 'studyManager.study.data.result.id'),
+      studyId: get(state, 'studyManager.study.data.id'),
       invitation: selectors.getInvitation(state),
     };
   }
@@ -60,7 +60,7 @@ export default class IviteBannerBuilder extends ContainerBuilder {
           type: stateProps.invitation.type,
         })
         .then(() => {
-          dispatchProps.loadStudy(stateProps.studyId);
+          dispatchProps.loadStudy({ id: stateProps.studyId });
           dispatchProps.loadSudyInvitations({ studyId: stateProps.studyId });
         });
       },
@@ -69,7 +69,7 @@ export default class IviteBannerBuilder extends ContainerBuilder {
           id: stateProps.invitation.id,
           type: stateProps.invitation.type,
         })
-        .then(() => dispatchProps.loadStudy(stateProps.studyId));
+        .then(() => dispatchProps.loadStudy({ id: stateProps.studyId }));
       },
     };
   }
