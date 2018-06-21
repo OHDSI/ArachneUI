@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -32,10 +32,7 @@ import {
   FormSlider,
   FormInput,
 } from 'arachne-ui-components';
-import Dropdown, {
-  DropdownTrigger,
-  DropdownContent,
-} from 'react-simple-dropdown';
+import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
 import types from 'const/modelAttributes';
 import filterTypes from 'const/filterTypes';
 import uniqBy from 'lodash/uniqBy';
@@ -83,8 +80,7 @@ function FilterFormSelect(props) {
 
 function getComponentByType(type) {
   switch (type) {
-    case types.enum:
-    case types.enumMulti:
+    case types.enum: case types.enumMulti:
       return FilterFormSelect;
     case types.toggle:
       return FormToggle;
@@ -99,8 +95,7 @@ function getComponentByType(type) {
 
 function getOptions(field) {
   switch (field.type) {
-    case types.enum:
-    case types.enumMulti:
+    case types.enum: case types.enumMulti:
       return {
         mods: ['bordered'],
         title: field.label,
@@ -159,15 +154,14 @@ function DropdownFilters({ classes, fields, clear, handleSubmit }) {
           ...getOptions(keywordsField),
         },
       },
-    },
+    }
   ];
 
   fields.forEach((field) => {
-    const options = [
-      {
-        label: 'Any',
-        value: anyOptionValue,
-      }].concat(field.options);
+    const options = [{
+      label: 'Any',
+      value: anyOptionValue,
+    }].concat(field.options);
     dropdownFields.push({
       // assure it's compatible with the form in FacetedSearch component
       name: `filter[${field.name}]`,
@@ -220,8 +214,7 @@ function FiltersList(props) {
     ? <Dropdown {...classes(null, 'dropdown')}>
       <DropdownTrigger {...classes('icon')}>
         <BadgedIcon
-          {...classes('toggle-btn', null,
-            selectedFiltersCount ? 'ac-tooltip' : null)}
+          {...classes('toggle-btn', null, selectedFiltersCount ? 'ac-tooltip' : null)}
           icon={'filter_list'}
           count={selectedFiltersCount}
           aria-label={`Filtered by ${filteredByList.join(', ')}`}
@@ -230,15 +223,13 @@ function FiltersList(props) {
       </DropdownTrigger>
       <DropdownContent>
         <div {...classes('content', null, className)}>
-          <DropdownFilters classes={classes} fields={fields} clear={clear}
-                           handleSubmit={handleSubmit}/>
+          <DropdownFilters classes={classes} fields={fields} clear={clear} handleSubmit={handleSubmit} />
         </div>
       </DropdownContent>
     </Dropdown>
     : <div {...classes(null, 'column')}>
       <div {...classes('filters', null, className)}>
-        <FacetedFilters fields={fields} clear={clear}
-                        handleSubmit={handleSubmit}/>
+        <FacetedFilters fields={fields} clear={clear} handleSubmit={handleSubmit} />
       </div>
     </div>;
 }
@@ -256,9 +247,9 @@ FiltersList.propTypes = {
         PropTypes.shape({
           label: PropTypes.string,
           value: PropTypes.string,
-        }),
+        })
       ),
-    }),
+    })
   ),
   clear: PropTypes.func.isRequired,
   filteredByList: PropTypes.arrayOf(PropTypes.string),

@@ -67,8 +67,8 @@ if (!numeral['locales']['arachne']) {
       trillion: null,
     }),
     currency: {
-      symbol: '$',
-    },
+      symbol: '$'
+    }
   });
 }
 
@@ -85,8 +85,8 @@ if (!numeral['locales']['arachne-short']) {
       trillion: 'tn',
     },
     currency: {
-      symbol: '$',
-    },
+      symbol: '$'
+    }
   });
 }
 
@@ -95,16 +95,13 @@ const numberFormatter = {
     switch (form) {
       case 'short':
         numeral.locale('arachne-short');
-        return numeral(value)
-          .format('0[.]0 a');
+        return numeral(value).format('0[.]0 a');
       case 'whole':
         numeral.locale('arachne');
-        return numeral(value)
-          .format('0,0');
+        return numeral(value).format('0,0');
       default:
         numeral.locale('arachne');
-        return numeral(value)
-          .format('0[.]0 a');
+        return numeral(value).format('0[.]0 a');
     }
   },
 };
@@ -112,7 +109,7 @@ const numberFormatter = {
 const getSelectedOption = (options, value) =>
   // NOTE: initial value of input should not be null
   // otherwise React will mark input as uncontrolled
-  options.filter(o => o.value === value)[0] || { value: '' };
+   options.filter(o => o.value === value)[0] || { value: '' };
 
 // Sorts values in "list" by string value located in "key"
 // And puts "lastValue" value to the end of list
@@ -163,12 +160,11 @@ function addAnyOption(field, optionLabel) {
 
 function getFormSelectedCheckboxes(selection = {}) {
   const res = [];
-  Object.keys(selection)
-    .forEach((key) => {
-      if (selection[key] === true) {
-        res.push(key);
-      }
-    });
+  Object.keys(selection).forEach((key) => {
+    if (selection[key] === true) {
+      res.push(key);
+    }
+  });
   return res;
 }
 
@@ -210,8 +206,7 @@ const validators = {
 };
 
 function canUseDom() {
-  return (typeof window !== 'undefined' && typeof document !== 'undefined' &&
-    document.documentElement);
+  return (typeof window !== 'undefined' && typeof document !== 'undefined' && document.documentElement);
 }
 
 const detectLanguageByExtension = (file) => {
@@ -221,9 +216,7 @@ const detectLanguageByExtension = (file) => {
     if (!isText(docType)) {
       language = file.docType;
     } else {
-      const extension = file.name.split('.')
-        .pop()
-        .toLowerCase();
+      const extension = file.name.split('.').pop().toLowerCase();
       if (extension === mimeTypes.r) {
         language = 'r';
       } else if (extension === mimeTypes.sql) {
@@ -241,9 +234,7 @@ const detectMimeTypeByExtension = (file) => {
     if (ReportUtils.getReportType(type) !== reports.unknown) {
       type = mimeTypes.report;
     } else if (type === mimeTypes.text) {
-      const extension = file.name.split('.')
-        .pop()
-        .toLowerCase();
+      const extension = file.name.split('.').pop().toLowerCase();
       type = mimeTypes[extension] ? mimeTypes[extension] : mimeTypes.text;
     }
   }
@@ -254,8 +245,7 @@ class Utils {
 
   static assignFacets(filterList, facets) {
     filterList.forEach((field) => {
-      if ([fieldTypes.enum, fieldTypes.enumMulti].includes(field.type) ||
-        (field.type === fieldTypes.string && Array.isArray(field.options))) {
+      if ([fieldTypes.enum, fieldTypes.enumMulti].includes(field.type) || (field.type === fieldTypes.string && Array.isArray(field.options))) {
         field.options.forEach((option) => {
           let facetId = option.value;
           if (isNaN(facetId)) {
@@ -269,20 +259,19 @@ class Utils {
   }
 
   static fetchAll({ fetchers, dispatch }) {
-    return Promise.all(Object.values(fetchers)
-      .map(fetcher => fetcher.then ? /* promise */ fetcher : /* action */ dispatch(fetcher())));
+    return Promise.all(Object.values(fetchers).map(fetcher => fetcher.then ? /* promise */ fetcher : /* action */ dispatch(fetcher())));
   }
 
   static buildConnectedComponent({
-                                   Component,
-                                   mapStateToProps = null,
-                                   getMapDispatchToProps = null, // if it should be defined as Object (this is done due to unavailability of extending of getters in TS)
-                                   mapDispatchToProps = null, // if it should be defined as Function
-                                   mergeProps = null,
-                                   getModalParams = null,
-                                   getFormParams = null,
-                                   getFetchers = null,
-                                 } = {}) {
+    Component,
+    mapStateToProps = null,
+    getMapDispatchToProps = null, // if it should be defined as Object (this is done due to unavailability of extending of getters in TS)
+    mapDispatchToProps = null, // if it should be defined as Function
+    mergeProps = null,
+    getModalParams = null,
+    getFormParams = null,
+    getFetchers = null,
+  } = {}) {
     let WrappedComponent = Component;
 
     if (getModalParams) {
@@ -296,18 +285,17 @@ class Utils {
     let ConnectedComponent = connect(
       mapStateToProps,
       getMapDispatchToProps ? getMapDispatchToProps() : mapDispatchToProps,
-      mergeProps,
+      mergeProps
     )(WrappedComponent);
 
     if (getFetchers) {
-      ConnectedComponent = asyncConnect([
-        {
-          promise: ({ params, store: { dispatch, getState } }) => {
-            const state = getState();
-            const fetchers = getFetchers({ params, state, dispatch, getState });
-            return Utils.fetchAll({ fetchers, dispatch });
-          },
-        }])(ConnectedComponent);
+      ConnectedComponent = asyncConnect([{
+        promise: ({ params, store: { dispatch, getState } }) => {
+          const state = getState();
+          const fetchers = getFetchers({ params, state, dispatch, getState });
+          return Utils.fetchAll({ fetchers, dispatch });
+        },
+      }])(ConnectedComponent);
     }
 
     return ConnectedComponent;
@@ -328,14 +316,11 @@ class Utils {
         break;
       }
       case fieldTypes.enumMulti: {
-        parsedValue = optionsList.filter(o => rawValue.indexOf(o.value) !== -1)
-          .map(option => option.label)
-          .join(', ');
+        parsedValue = optionsList.filter(o => rawValue.indexOf(o.value) !== -1).map(option => option.label).join(', ');
         break;
       }
       case fieldTypes.date: {
-        parsedValue = moment(rawValue)
-          .format(commonDate);
+        parsedValue = moment(rawValue).format(commonDate);
         break;
       }
       case fieldTypes.integer: {
@@ -380,31 +365,28 @@ class Utils {
     fieldsSpecification.forEach((field) => {
       fieldsMap[field.name] = field;
     });
-    Object.keys(query)
-      .forEach((paramName) => {
-        const field = fieldsMap[paramName];
-        const paramValue = query[paramName];
-        if (!field) {
-          return false;
-        }
-        switch (field.type) {
-          case fieldTypes.enum:
-            if (field.isMulti) {
-              initialValues[field.name] = Array.isArray(paramValue)
-                ? paramValue
-                : (typeof paramValue === 'object' ? Object.values(paramValue) : [paramValue]);
-            } else {
-              initialValues[field.name] = paramValue;
-            }
-            break;
-          case fieldTypes.toggle:
-            initialValues[field.name] = !!paramValue;
-            break;
-          default:
+    Object.keys(query).forEach((paramName) => {
+      const field = fieldsMap[paramName];
+      const paramValue = query[paramName];
+      if (!field) {
+        return false;
+      }
+      switch (field.type) {
+        case fieldTypes.enum:
+          if (field.isMulti) {
+            initialValues[field.name] = Array.isArray(paramValue) ? paramValue : (typeof paramValue === 'object' ? Object.values(paramValue) : [paramValue]);
+          } else {
             initialValues[field.name] = paramValue;
-            break;
-        }
-      });
+          }
+          break;
+        case fieldTypes.toggle:
+          initialValues[field.name] = !!paramValue;
+          break;
+        default:
+          initialValues[field.name] = paramValue;
+          break;
+      }
+    });
 
     return initialValues;
   }
@@ -426,17 +408,16 @@ class Utils {
       let nextState = { ...communityState };
       let hasChanged = false;
 
-      Object.keys(newReducerMap)
-        .forEach(key => {
-          const reducer = newReducerMap[key];
-          const previousStateForKey = state[key];
-          const nextStateForKey = reducer(previousStateForKey, action);
-          nextState[key] = nextStateForKey;
-          hasChanged = hasChanged || nextStateForKey !== previousStateForKey;
-        });
+      Object.keys(newReducerMap).forEach(key => {
+        const reducer = newReducerMap[key];
+        const previousStateForKey = state[key];
+        const nextStateForKey = reducer(previousStateForKey, action);
+        nextState[key] = nextStateForKey;
+        hasChanged = hasChanged || nextStateForKey !== previousStateForKey;
+      });
 
       return hasChanged ? nextState : communityState;
-    };
+    }
   }
 
   static setUrlParams(url, query) {
@@ -474,12 +455,11 @@ class Utils {
       savedFilter = {};
     }
     const filter = {};
-    Object.keys(savedFilter)
-      .forEach((key) => {
-        if (!Utils.isEmpty(savedFilter[key])) {
-          filter[key] = savedFilter[key];
-        }
-      });
+    Object.keys(savedFilter).forEach((key) => {
+      if (!Utils.isEmpty(savedFilter[key])) {
+        filter[key] = savedFilter[key];
+      }
+    });
     return filter;
   }
 
@@ -594,14 +574,14 @@ class TreemapSelectorsBuilder {
   buildSelectorForTableData() {
     return createSelector(
       this.getRawTableData.bind(this),
-      this.extractTableData,
+      this.extractTableData
     );
   }
 
   buildSelectorForReportDetails() {
     return createSelector(
       this.getRawDetails.bind(this),
-      this.extractReportDetails,
+      this.extractReportDetails
     );
   }
 

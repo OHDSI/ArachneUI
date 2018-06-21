@@ -31,11 +31,7 @@ import {
   FormAutocomplete,
 } from 'arachne-ui-components';
 import { fieldTypes } from 'modules/ExpertFinder/const';
-import {
-  immutableAttributes,
-  fieldHints,
-  attributeNames,
-} from 'const/dataSource';
+import { immutableAttributes, fieldHints, attributeNames } from 'const/dataSource';
 import { addAnyOption } from 'services/Utils';
 
 require('./style.scss');
@@ -47,29 +43,29 @@ function ImmutableAttribute({ name, value }) {
     <div {...classes()}>
       <div {...classes('value')}>{value}</div>
       {fieldHints[name] &&
-      <div
-        {...classes('hint', null, 'ac-tooltip')}
-        aria-label={fieldHints[name]}
-        data-tootik-conf={'bottom multiline'}
-      >help</div>
+        <div
+          {...classes('hint', null, 'ac-tooltip')}
+          aria-label={fieldHints[name]}
+          data-tootik-conf={'bottom multiline'}
+        >help</div>
       }
     </div>
   );
 }
 
 export function AttributesFormListItem({
-                                         item,
-                                         input,
-                                         meta,
-                                         isWide = false,
-                                         disabled,
-                                         useAutocomplete,
-                                         autocompleteOptions,
-                                       }) {
+  item,
+  input,
+  meta,
+  isWide = false,
+  disabled,
+  useAutocomplete,
+  autocompleteOptions,
+}) {
   const itemClasses = new BEMHelper('attributes-form-list-item');
   let field = null;
   if (item.isImmutable) {
-    field = (<ImmutableAttribute name={item.name} value={input.value}/>);
+    field = (<ImmutableAttribute name={item.name} value={input.value} />);
   } else if (useAutocomplete) {
     field = (<FormAutocomplete
       input={input}
@@ -84,7 +80,7 @@ export function AttributesFormListItem({
   } else {
     switch (item.type) {
       case fieldTypes.enum:
-      case fieldTypes.enumMulti:
+        case fieldTypes.enumMulti:
         field = (<FormSelect
           options={addAnyOption(item, 'None').options}
           mods={['bordered']}
@@ -125,8 +121,7 @@ export function AttributesFormListItem({
   return (
     <div {...itemClasses({ modifiers: { wide: isWide, disabled } })}>
       <div {...itemClasses('name', { wide: isWide })}>
-        {item.label} {item.isRequired &&
-      <span {...itemClasses('required')}>*</span>}
+        {item.label} {item.isRequired && <span {...itemClasses('required')}>*</span>}
       </div>
       <div {...itemClasses('value', { wide: isWide })}>
         {field}
@@ -145,16 +140,17 @@ function AttributesList(props) {
     isCDM,
     isManual = false,
   } = props;
-  const fields = attrList.map(item => ({
-    name: item.name,
-    InputComponent: {
-      component: AttributesFormListItem,
-      props: {
-        item,
-        disabled: item.name === attributeNames.cdmVersion && !isCDM,
+  const fields = attrList
+    .map(item => ({
+      name: item.name,
+      InputComponent: {
+        component: AttributesFormListItem,
+        props: {
+          item,
+          disabled: item.name === attributeNames.cdmVersion && !isCDM,
+        },
       },
-    },
-  }));
+    }));
   const submitBtn = {
     label: isPublished ? 'Save' : 'Publish',
     loadingLabel: isPublished ? 'Saving' : 'Publishing',

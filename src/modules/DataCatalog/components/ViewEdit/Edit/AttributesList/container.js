@@ -72,15 +72,15 @@ export default class AttributeListBuilder extends ContainerBuilder {
     }
 
     const attrList = selectors.getAttrList(state)
-      .filter((attr) => isManual ? true : !attr.onlyManual)
-      .map((attr) => {
-        const attribute = { ...attr };
-        if (attr.name === attributeNames.dbmsType) {
-          attribute.options = selectors.getDbmsTypes(state);
-        }
+    .filter((attr) => isManual ? true : !attr.onlyManual)
+    .map((attr) => {
+      const attribute = { ...attr };
+      if (attr.name === attributeNames.dbmsType) {
+        attribute.options = selectors.getDbmsTypes(state);
+      }
 
-        return attribute;
-      });
+      return attribute;
+    });
 
     return {
       attrList,
