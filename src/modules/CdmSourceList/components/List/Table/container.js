@@ -39,12 +39,14 @@ function getSorting(location) {
 function mapStateToProps(state) {
   const query = state.routing.locationBeforeTransitions.query;
   const centralDomain = get(state, 'portal.buildInfo.data.centralUrl');
+  const username = get(state, 'auth.principal.queryResult.result.username');
 
   return {
     query,
     dataSourceList: selectors.getDataSourceList(state),
     sorting: getSorting(state.routing.locationBeforeTransitions),
     centralDomain,
+    username,
   };
 }
 

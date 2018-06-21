@@ -29,6 +29,7 @@ import { ModalUtils } from 'arachne-ui-components';
 
 import presenter from './presenter';
 import SelectorsBuilder from './selectors';
+import { Notifier } from 'services/Notifier';
 
 const selectors = (new SelectorsBuilder()).build();
 
@@ -89,8 +90,7 @@ export default class ModalCreateDatanodeBuilder extends ContainerBuilder {
       ...ownProps,
       async chooseDataNode({ node }) {
         if (!node) {
-          // TODO: add notification (ARACHNE-2016)
-          alert('You should create or choose existing Data Node first');
+          Notifier.alert({ message: 'You should create or choose existing Data Node first' });
           return false;
         }
         await dispatchProps.closeModal();
