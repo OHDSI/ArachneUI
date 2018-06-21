@@ -33,6 +33,7 @@ import {
 import { fieldTypes } from 'modules/ExpertFinder/const';
 import { immutableAttributes, fieldHints, attributeNames } from 'const/dataSource';
 import { addAnyOption } from 'services/Utils';
+import { FilterFormSelect } from 'components/FiltersList/presenter';
 
 require('./style.scss');
 
@@ -81,13 +82,14 @@ export function AttributesFormListItem({
     switch (item.type) {
       case fieldTypes.enum:
         case fieldTypes.enumMulti:
-        field = (<FormSelect
+        field = (<FilterFormSelect
           options={addAnyOption(item, 'None').options}
           mods={['bordered']}
           input={input}
           meta={meta}
           isMulti={item.type === fieldTypes.enumMulti}
           disabled={disabled}
+          placeholder={'None'}
         />);
         break;
       case fieldTypes.string:

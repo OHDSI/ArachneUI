@@ -36,13 +36,11 @@ import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdow
 import types from 'const/modelAttributes';
 import filterTypes from 'const/filterTypes';
 import uniqBy from 'lodash/uniqBy';
-import { addAnyOption } from 'services/Utils';
+import { addAnyOption, anyOptionValue } from 'services/Utils';
 
 require('./style.scss');
 
-const anyOptionValue = Symbol.for('anyOptionValue');
-
-function FilterFormSelect(props) {
+export function FilterFormSelect(props) {
   const {
     isMulti,
     mods,
@@ -128,7 +126,7 @@ function FacetedFilters({ clear, fields, handleSubmit }) {
   return (
     <FacetedSearch
       doSubmit={() => {}}
-      dynamicFields={fields.map(field => addAnyOption(field, 'Any'))}
+      dynamicFields={fields.filter(field => !field.isMulti).map(field => addAnyOption(field, 'Any'))}
       fullTextSearchEnabled
       sortingEnabled={false}
       showRefineSearch

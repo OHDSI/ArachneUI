@@ -142,14 +142,16 @@ function get(from, path, defaultVal, typeCheckRule) {
   return result;
 }
 
+const anyOptionValue = Symbol.for('anyOptionValue');
+
 function addAnyOption(field, optionLabel) {
-  if (field.type === types.enum && !field.isMulti) {
+  if (field.type === types.enum || field.type === types.enumMulti) {
     return {
       ...field,
       options: [
         {
           label: optionLabel,
-          value: '',
+          value: anyOptionValue,
         },
         ...field.options,
       ],
@@ -609,4 +611,5 @@ export {
   ContainerBuilder,
   TreemapSelectorsBuilder,
   addAnyOption,
+  anyOptionValue,
 };
