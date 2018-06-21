@@ -1,6 +1,6 @@
 {
   "name": "arachne-ui",
-  "version": "1.13.19",
+  "version": "1.13.50",
   "licenses": [
     {
       "type": "Apache-2.0",
@@ -165,7 +165,7 @@
     "imports-loader": "^0.6.5",
     "jsdom": "^9.8.0",
     "mocha": "^3.1.2",
-    "node-sass": "^4.7.2",
+    "node-sass": "4.9.0",
     "path": "^0.12.7",
     "piping": "^0.3.0",
     "proxy-middleware": "^0.15.0",

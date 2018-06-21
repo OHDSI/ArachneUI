@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,7 +23,7 @@
 import { createSelector } from 'reselect';
 import { Utils, get } from 'services/Utils';
 
-const getTenants = state => get(state, 'portal.myProfile.data.result.tenants') || [];
+const getTenants = state => get(state, 'auth.principal.queryResult.result.tenants') || [];
 
 const getNewActiveTenantId = (state) => {
   if (get(state, 'expertFinder.userSettings.isUpdating')) {

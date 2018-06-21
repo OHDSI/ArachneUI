@@ -45,7 +45,7 @@ export default class UsernameBuilder extends ContainerBuilder {
   }
 
   mapStateToProps(state) {
-    const data = get(state, 'portal.myProfile.data.result', {});
+    const data = get(state, 'auth.principal.queryResult.result', {});
     return {
       name: `${data.firstname} ${data.middlename ? (data.middlename.substring(0, 1) + '. ') : ''} ${data.lastname}`,
     };
