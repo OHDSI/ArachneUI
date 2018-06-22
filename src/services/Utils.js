@@ -142,6 +142,24 @@ function get(from, path, defaultVal, typeCheckRule) {
   return result;
 }
 
+const anyOptionValue = Symbol.for('anyOptionValue');
+
+function addAnyOption(field, optionLabel) {
+  if (field.type === types.enum || field.type === types.enumMulti) {
+    return {
+      ...field,
+      options: [
+        {
+          label: optionLabel,
+          value: anyOptionValue,
+        },
+        ...field.options,
+      ],
+    };
+  }
+  return field;
+}
+
 function getFormSelectedCheckboxes(selection = {}) {
   const res = [];
   Object.keys(selection).forEach((key) => {
@@ -342,7 +360,7 @@ class Utils {
       .filter(setting => !Utils.isEmpty(setting))
       .length;
   }
-  
+
   static prepareFilterValues(query, fieldsSpecification = []) {
     const initialValues = {};
     const fieldsMap = {};
@@ -592,4 +610,6 @@ export {
   Utils,
   ContainerBuilder,
   TreemapSelectorsBuilder,
+  addAnyOption,
+  anyOptionValue,
 };

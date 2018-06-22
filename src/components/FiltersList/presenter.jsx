@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -36,12 +36,11 @@ import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdow
 import types from 'const/modelAttributes';
 import filterTypes from 'const/filterTypes';
 import uniqBy from 'lodash/uniqBy';
+import { addAnyOption, anyOptionValue } from 'services/Utils';
 
 require('./style.scss');
 
-const anyOptionValue = Symbol.for('anyOptionValue');
-
-function FilterFormSelect(props) {
+export function FilterFormSelect(props) {
   const {
     isMulti,
     mods,
@@ -123,27 +122,11 @@ function getOptions(field) {
   }
 }
 
-export function addAnyOption(field) {
-  if (field.type === types.enum && !field.isMulti) {
-    return {
-      ...field,
-      options: [
-        {
-          label: 'Any',
-          value: '',
-        },
-        ...field.options,
-      ],
-    };
-  }
-  return field;
-}
-
 function FacetedFilters({ clear, fields, handleSubmit }) {
   return (
     <FacetedSearch
       doSubmit={() => {}}
-      dynamicFields={fields.map(addAnyOption)}
+      dynamicFields={fields.filter(field => !field.isMulti).map(field => addAnyOption(field, 'Any'))}
       fullTextSearchEnabled
       sortingEnabled={false}
       showRefineSearch
@@ -178,7 +161,7 @@ function DropdownFilters({ classes, fields, clear, handleSubmit }) {
       value: anyOptionValue,
     }].concat(field.options);
     dropdownFields.push({
-      // assure it's compatable with the form in FacetedSearch component
+      // assure it's compatible with the form in FacetedSearch component
       name: `filter[${field.name}]`,
       InputComponent: {
         component: getComponentByType(field.type),
