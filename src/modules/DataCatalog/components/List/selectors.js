@@ -29,6 +29,18 @@ import cloneDeep from 'lodash/cloneDeep';
 import DsAttrListSelector from 'modules/DataCatalog/selectors/DsAttrListSelector';
 import { extractPaginationData } from 'components/Grid';
 import { viewModePageSize } from 'const/viewModes';
+import reduce from 'lodash/reduce';
+
+function escape(v) {
+  return `f_${v}`;
+}
+
+function escapeKeys(obj) {
+  return reduce(obj, (newObj, currentValue, oldValue) => {
+    newObj[escape(oldValue)] = currentValue;
+    return newObj;
+  }, {})
+}
 
 class DataCatalogListTableSelectorsBuilder extends DsAttrListSelector {
 
@@ -74,7 +86,7 @@ class DataCatalogListTableSelectorsBuilder extends DsAttrListSelector {
       .map(cloneDeep)
       .map(attr => ({
         ...attr,
-        name: `f_${attr.name}`,
+        name: escape(attr.name),
       }))
       // Compute options for filter sections
       .map((attr) => {
@@ -95,8 +107,9 @@ class DataCatalogListTableSelectorsBuilder extends DsAttrListSelector {
       });
 
     // Assign facets
+    const escapedFacets = escapeKeys(facets);
     if (facets) {
-      Utils.assignFacets(filterList, facets);
+      Utils.assignFacets(filterList, escapedFacets);
     }
 
     return filterList;
