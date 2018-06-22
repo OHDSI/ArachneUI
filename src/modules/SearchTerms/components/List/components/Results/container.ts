@@ -58,12 +58,13 @@ function mapStateToProps(state: Object): IResultStateProps {
   // query should be 3 letters min
   if(!searchLocation.query.query || searchLocation.query.query.length < 3) {
   	downloadLink.removeSearch('query');
-  }
+	}
+	const sortBy = get(searchLocation, 'query.sort', 'id');
 
 	return {
 		searchResults,
 		sorting: {
-			sortBy: selectors.getConceptFieldName(get(searchLocation, 'query.sort', '')),
+			sortBy: selectors.getConceptFieldName(sortBy) || sortBy, // use fallback when sorting is set to static fields like id
 			sortAsc: get(searchLocation, 'query.order') === 'asc',
 		},
 		searchLocation,
