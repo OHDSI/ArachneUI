@@ -90,7 +90,7 @@ function mergeProps(
     ...stateProps,
     ...ownProps,
     ...dispatchProps,
-    doSubmit: ({ vocabularies, pendingVocabs }) => {
+    doSubmit: ({ vocabularies = [], pendingVocabs = [] }) => {
       const promises = [];
       difference(stateProps.initialValues.vocabularies, vocabularies).forEach((licenseId) => {
         promises.push(dispatchProps.remove(licenseId));
