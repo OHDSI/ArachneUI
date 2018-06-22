@@ -49,7 +49,7 @@ function SystemSettings(props) {
   const isReindexing = domain => get(reindexProcess, `[${domain}]`);
   const getReindexLabel = (domain, label) => `${isReindexing(domain) ? 'Indexing' : 'Reindex'} ${label}`;
 
-  const formComponentList = settingGroupList.map((formData, index) => {
+  const formComponentList = settingGroupList.filter(formData => formData.name !== 'atlas').map((formData, index) => {
     const Form = formFactory({
       name: formData.name,
       initialValues: formData.initialValues,
