@@ -33,6 +33,7 @@ import {
 } from './presenter';
 import { getTermFilters } from 'modules/SearchTerms/selectors';
 import * as URI from 'urijs';
+import { isEqual } from 'lodash';
 import presenter from './presenter';
 
 interface ITermRoute {
@@ -70,13 +71,9 @@ class Term extends Component<ITermProps, { isFullscreen: boolean }> {
         this.props.termFilters.levels,
         this.props.termFilters.zoomLevels
         );
-    } else if (this.props.termFilters.levels !== props.termFilters.levels) {
-      this.props.fetchConceptAncestors(
-        props.termId,
-        props.termFilters.levels,
-        props.termFilters.zoomLevel
-      );
-    } else if (this.props.termFilters.zoomLevel !== props.termFilters.zoomLevel) {
+    } else if (
+      !isEqual(this.props.termFilters.levels, props.termFilters.levels)
+      || !isEqual(this.props.termFilters.zoomLevel, props.termFilters.zoomLevel)) {
       this.props.fetchConceptAncestors(
         props.termId,
         props.termFilters.levels,
