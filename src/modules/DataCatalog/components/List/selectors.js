@@ -80,6 +80,9 @@ class DataCatalogListTableSelectorsBuilder extends DsAttrListSelector {
   // Filter options selector
 
   getFilterList(attrList, facets) {
+
+    const escapedFacets = escapeKeys(facets);
+    
     const filterList = attrList
       // Remove attributes that should not be shown in Filter panel
       .filter(attr => attr.faceted)
@@ -90,8 +93,8 @@ class DataCatalogListTableSelectorsBuilder extends DsAttrListSelector {
       }))
       // Compute options for filter sections
       .map((attr) => {
-        if (attr.type === fieldTypes.string && facets) {
-          attr.options = Object.keys(facets[attr.name] || {}).map(key => ({ label: key, value: key }));
+        if (attr.type === fieldTypes.string && escapedFacets) {
+          attr.options = Object.keys(escapedFacets[attr.name] || {}).map(key => ({ label: key, value: key }));
         }
         return attr;
       })
@@ -107,7 +110,6 @@ class DataCatalogListTableSelectorsBuilder extends DsAttrListSelector {
       });
 
     // Assign facets
-    const escapedFacets = escapeKeys(facets);
     if (facets) {
       Utils.assignFacets(filterList, escapedFacets);
     }
