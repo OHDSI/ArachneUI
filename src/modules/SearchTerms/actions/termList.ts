@@ -67,7 +67,11 @@ function fetch(id: number) {
 }
 
 function fetchConceptAncestors(conceptId: number, levels: number = 10, zoomLevel: number = 4) {
-  return services.relations.get(conceptId, {query: {depth: levels, zoomLevel}});
+  let zoom = zoomLevel;
+  if (isNaN(zoomLevel)) {
+    zoom = 4;
+  }
+  return services.relations.get(conceptId, {query: {depth: levels, zoomLevel: zoom}});
 }
 
 function fetchRelationships(conceptId: number, standards = false) {
