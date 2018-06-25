@@ -66,7 +66,7 @@ export function FilterFormSelect(props) {
       let newValue = val;
       if (isMulti) {
         const isAnyOptionSelected = val.includes(anyOptionValue);
-        newValue = isAnyOptionSelected ? [] : val;
+        newValue = isAnyOptionSelected ? null : val;
       } else {
         // whether 'Any' option selected
         newValue = val === anyOptionValue ? null : val;
@@ -126,12 +126,7 @@ function FacetedFilters({ clear, fields, handleSubmit }) {
   return (
     <FacetedSearch
       doSubmit={() => {}}
-      dynamicFields={fields.map((field) => {
-        if (!field.isMulti) {
-          return addAnyOption(field, 'Any');
-        }
-        return field;
-      })}
+      dynamicFields={fields.map(field => addAnyOption(field, 'Any'))}
       fullTextSearchEnabled
       sortingEnabled={false}
       showRefineSearch
