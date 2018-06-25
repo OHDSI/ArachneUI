@@ -145,7 +145,7 @@ function get(from, path, defaultVal, typeCheckRule) {
 const anyOptionValue = Symbol.for('anyOptionValue');
 
 function addAnyOption(field, optionLabel) {
-  if (field.type === types.enum || field.type === types.enumMulti) {
+  if (!field.isRequired && (field.type === types.enum || field.type === types.enumMulti)) {
     return {
       ...field,
       options: [

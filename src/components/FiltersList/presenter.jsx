@@ -126,7 +126,12 @@ function FacetedFilters({ clear, fields, handleSubmit }) {
   return (
     <FacetedSearch
       doSubmit={() => {}}
-      dynamicFields={fields.filter(field => !field.isMulti).map(field => addAnyOption(field, 'Any'))}
+      dynamicFields={fields.map((field) => {
+        if (!field.isMulti) {
+          return addAnyOption(field, 'Any');
+        }
+        return field;
+      })}
       fullTextSearchEnabled
       sortingEnabled={false}
       showRefineSearch
