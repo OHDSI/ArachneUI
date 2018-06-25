@@ -26,13 +26,15 @@ import {
   Toolbar,
   ListItem,
   Panel,
+  Button,
 } from 'arachne-ui-components'
 import EmptyState from 'components/EmptyState';
 import BEMHelper from 'services/BemHelper';
 
-import './style.scss';
-import { paths } from 'modules/DataCatalog/const';
 import isEmpty from 'lodash/isEmpty';
+import LabelDataSource from 'community/components/LabelDataSource';
+import './style.scss';
+import EditDataNodeTitle from 'community/modules/DataCatalog/components/DataNode/ViewEdit/components/EditDataNodeTitle/presenter';
 
 function ViewEdit(props) {
   const classes = new BEMHelper('view-edit');
@@ -40,15 +42,29 @@ function ViewEdit(props) {
     dataNode: {
       name,
       description,
+      editable,
     },
     organization,
     dataSources,
+    showNameEditDialog,
+    goBack,
   } = props;
+  const caption = <div {...classes('toolbar')}>
+    <Button onClick={goBack} {...classes('back')}>
+      <i {...classes('back-icon')}>
+        arrow_back
+      </i>
+    </Button>
+    <span>Data node: {name}</span>
+    {editable &&
+      <Button {...classes('edit-button')} onClick={showNameEditDialog}>mode_edit</Button>
+    }
+  </div>;
 
   return (      
     <PageContent title={`${name} | Arachne`}>
       <div {...classes()}>
-        <Toolbar caption={`Data node: ${name}`} backUrl={paths.dataCatalog()} />
+        <Toolbar caption={caption} />
         <div {...classes('content')}>
           <div {...classes('block', 'shadowed')}>
             <ListItem>
@@ -65,7 +81,7 @@ function ViewEdit(props) {
             <Panel title={'Attached Data Sources'}>
               {dataSources.map(ds =>
                 <ListItem>
-                  {ds.name}
+                  <LabelDataSource {...ds} />
                 </ListItem>
               )}
               {isEmpty(dataSources) &&
@@ -77,6 +93,7 @@ function ViewEdit(props) {
           </div>
         </div>
       </div>
+      <EditDataNodeTitle />
     </PageContent>
   );
 }

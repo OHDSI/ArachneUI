@@ -31,6 +31,8 @@ const forms = keyMirror({
   createDataNode: null,
   modalCreateDataSource: null,
   modalStatsUpload: null,
+  editDataNodeTitle: null,
+  editDataNode: null,
 });
 
 const modal = keyMirror({
@@ -39,6 +41,7 @@ const modal = keyMirror({
   modalCreateDatanode: null,
   modalCreateDataSource: null,
   modalStatsUpload: null,
+  editDataNodeTitle: null,
 });
 
 const apiPaths = {
@@ -59,6 +62,7 @@ const apiPaths = {
   dataNode: ({ id }) => `/api/v1/data-nodes${id ? `/${id}` : ''}`,
   dataNodeCreate: () => `/api/v1/data-nodes/manual`,
   dataNodeOptions: () => `/api/v1/data-nodes/suggest`,
+  dataNodeSources: ({ id }) => `/api/v1/data-nodes/${id}/data-sources`,
   registerDataSource: ({ id }) => `/api/v1/data-sources/${id}/register-on-central`,
   registration: ({ id }) => `/api/v1/data-sources/${id}/registration`,
   dbmsTypes: () => '/api/v1/data-sources/dbms-types',

@@ -16,7 +16,7 @@
   * Company: Odysseus Data Services, Inc.
   * Product Owner/Architecture: Gregory Klebanov
   * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
-  * Created: Thursday, June 14, 2018 6:41 PM
+  * Created: Monday, June 25, 2018 2:13 PM
   *
   */
 
@@ -24,52 +24,54 @@
 import { Component, PropTypes } from 'react';
 import actions from 'actions';
 import { ContainerBuilder, get } from 'services/Utils';
-import { goBack } from 'react-router-redux';
-import { DataNodeSelectors } from './selectors';
+import { form } from 'modules/DataCatalog/const';
+import { modal } from 'modules/DataCatalog/const';
 import { ModalUtils } from 'arachne-ui-components';
 import presenter from './presenter';
-import { modal, form } from 'modules/DataCatalog/const';
+import { DataNodeSelectors } from 'community/modules/DataCatalog/components/DataNode/ViewEdit/selectors';
 
-const selectors = (new DataNodeSelectors).build();
+const selectors = (new DataNodeSelectors()).build();
 
 /** @augments { Component<any, any> } */
-export class ViewEdit extends Component {
+export class EditDataNodeTitle extends Component {
   static get propTypes() {
     return {
     };
-  }
-  
-  async componentWillMount() {
-    await this.props.load({ id: this.props.id });
-    this.props.loadDataSources({ id: this.props.id });
-  }
-  
+  } 
 
   render() {
     return presenter(this.props);
   }
 }
  
-export default class ViewEditBuilder extends ContainerBuilder {
+export default class EditDataNodeTitleBuilder extends ContainerBuilder {
   getComponent() {
-    return ViewEdit;
+    return EditDataNodeTitle;
   }
 
+  
   getFormParams() {
     return {
-      name: form.editDataNode,
+      form: form.editDataNodeTitle,
+      enableReinitialize: false,
     };
   }
-
-  mapStateToProps(state, ownProps) {
-    const dataNode = selectors.getDataNode(state);
-    const dataSources = selectors.getDataSources(state);
+  
+  
+  
+  getModalParams() {
+    return {
+      name: modal.editDataNodeTitle,
+    };
+  }
+  
+ 
+  mapStateToProps(state, ownProps) {     
+    const node = selectors.getDataNode(state);
 
     return {
-      id: ownProps.routeParams.datanodeId,
-      dataNode,
-      dataSources,
-      organization: get(dataNode, 'organization', 'Unknown', 'String'),
+      ...node,
+      initialValues: { name: node.name },
     };
   }
 
@@ -78,10 +80,9 @@ export default class ViewEditBuilder extends ContainerBuilder {
    */
   getMapDispatchToProps() {
     return {
-      load: actions.dataCatalog.dataNode.find,
-      loadDataSources: actions.dataCatalog.dataNodeDataSources.query,
-      goBack,
-      showNameEditDialog: () => ModalUtils.actions.toggle(modal.editDataNodeTitle, true),
+      closeModal: () => ModalUtils.actions.toggle(modal.editDataNodeTitle, false), 
+      update: actions.dataCatalog.dataNode.update,
+      loadDataNode: actions.dataCatalog.dataNode.find,
     };
   }
 
@@ -89,9 +90,16 @@ export default class ViewEditBuilder extends ContainerBuilder {
     return {
       ...ownProps,
       ...stateProps,
-      ...dispatchProps,
-      
+      ...dispatchProps,      
+      async doSubmit({ name }) {
+        const result = await dispatchProps.update({ id: stateProps.id }, { name });
+        dispatchProps.closeModal();
+        dispatchProps.loadDataNode({ id: stateProps.id });
+
+        return result;
+      }      
     };
   }
+
 }
  
