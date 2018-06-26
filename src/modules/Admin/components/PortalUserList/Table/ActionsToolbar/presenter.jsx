@@ -68,7 +68,7 @@ export default class ActionsToolbar extends Component{
     const areUsersSelected = !isEmpty(this.props.selectedUsers);
     return {
       disabled: !areUsersSelected,
-      onClick: areUsersSelected ? onClick : () => {},
+      onClick: areUsersSelected && isEmpty(this.props.selectedUndeletableUsers) ? onClick : () => {},
       tooltipText: areUsersSelected ? tooltipText : "Select users first",
       icon,
       mods,
