@@ -16,60 +16,30 @@
   * Company: Odysseus Data Services, Inc.
   * Product Owner/Architecture: Gregory Klebanov
   * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
-  * Created: Monday, June 25, 2018 2:13 PM
+  * Created: Tuesday, June 26, 2018 2:06 PM
   *
   */
 
 import React from 'react';
-import {
-  Modal,
-  Form,
-  FormInput,
-  } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
+import FormCreateDataNode from 'modules/DataCatalog/components/DataSource/ViewEdit/Edit/FormCreateDataNode';
+import { DataNodeCreateModes } from 'modules/DataCatalog/components/DataSource/ViewEdit/Edit/FormCreateDataNode/presenter';
 
 import './style.scss';
 
-function EditDataNodeTitle(props) {
-  const classes = new BEMHelper('edit-data-node-title');
+function EditCommonData(props) {
+  const classes = new BEMHelper('edit-common-data');
   
-  const fields = [
-    {
-      name: 'name',
-      InputComponent: {
-        component: FormInput,
-        props: {
-          mods: ['bordered'],
-          placeholder: 'Name',
-        },
-      },
-    },
-  ];
-
-  const submitBtn = {
-    label: 'Add',
-    loadingLabel: 'Adding...',
-    mods: ['success', 'rounded'],
-  };
-
-  const cancelBtn = {
-    label: 'Cancel',
-  };
-
-  return (
-    <Modal modal={props.modal} title="Edit data node name">
-      <div {...classes()}>        
-        <Form
-          fields={fields}
-          submitBtn={submitBtn}
-          cancelBtn={cancelBtn}
-          onSubmit={props.doSubmit}
-          {...props}
-        />        
-      </div>
-    </Modal>
+  return (    
+    <div {...classes()}>
+      <FormCreateDataNode
+        onCancel={props.setViewMode}
+        doSubmit={props.doSubmit}
+        mode={DataNodeCreateModes.EDIT}
+        initialValues={props.initialValues}
+      />
+    </div>
   );
 }
 
-export default EditDataNodeTitle;
-
+export default EditCommonData;  

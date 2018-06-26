@@ -67,7 +67,10 @@ export default class ViewEditBuilder extends ContainerBuilder {
 
     return {
       id: ownProps.routeParams.datanodeId,
-      dataNode,
+      dataNode: {
+        ...dataNode,
+        editable: true,
+      },
       dataSources,
       organization: get(dataNode, 'organization', 'Unknown', 'String'),
     };
@@ -89,8 +92,15 @@ export default class ViewEditBuilder extends ContainerBuilder {
     return {
       ...ownProps,
       ...stateProps,
-      ...dispatchProps,
-      
+      ...dispatchProps,      
+    };
+  }
+
+  getFetchers({ params, state, dispatch }) {
+    const id = params.datanodeId;
+    return {
+      load: actions.dataCatalog.dataNode.find.bind(null, { id }),
+      loadDataSources: actions.dataCatalog.dataNodeDataSources.query.bind(null, { id }),
     };
   }
 }

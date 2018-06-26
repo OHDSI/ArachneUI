@@ -27,18 +27,22 @@ import {
   ListItem,
   Panel,
   Button,
+  PanelEditable,
 } from 'arachne-ui-components'
 import EmptyState from 'components/EmptyState';
 import BEMHelper from 'services/BemHelper';
 
 import isEmpty from 'lodash/isEmpty';
-import LabelDataSource from 'community/components/LabelDataSource';
+import LabelDataSource from 'components/LabelDataSource';
 import './style.scss';
-import EditDataNodeTitle from 'community/modules/DataCatalog/components/DataNode/ViewEdit/components/EditDataNodeTitle/presenter';
+import EditDataNodeTitle from 'modules/DataCatalog/components/DataNode/ViewEdit/components/EditDataNodeTitle';
+import ViewCommonData from 'modules/DataCatalog/components/DataNode/ViewEdit/components/ViewCommonData';
+import EditCommonData from 'modules/DataCatalog/components/DataNode/ViewEdit/components/EditCommonData';
 
 function ViewEdit(props) {
   const classes = new BEMHelper('view-edit');
   const {
+    id,
     dataNode: {
       name,
       description,
@@ -59,24 +63,19 @@ function ViewEdit(props) {
     {editable &&
       <Button {...classes('edit-button')} onClick={showNameEditDialog}>mode_edit</Button>
     }
-  </div>;
+  </div>;              
 
-  return (      
+  return (
     <PageContent title={`${name} | Arachne`}>
       <div {...classes()}>
         <Toolbar caption={caption} />
         <div {...classes('content')}>
-          <div {...classes('block', 'shadowed')}>
-            <ListItem>
-              <div {...classes('attribute')}>
-                <span {...classes('label')}>Organization</span>
-                <span>{organization}</span>
-              </div>
-            </ListItem>
-            <ListItem>
-              {description}
-            </ListItem>
-          </div>
+          <PanelEditable
+            {...classes('block')}
+            title={'Common data'}
+            viewContent={<ViewCommonData description={description} organization={organization} />}
+            editContent={<EditCommonData name={name} description={description} organization={organization} datanodeId={id} />}
+          />
           <div {...classes('block')}>
             <Panel title={'Attached Data Sources'}>
               {dataSources.map(ds =>

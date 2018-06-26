@@ -33,6 +33,7 @@ const forms = keyMirror({
   modalStatsUpload: null,
   editDataNodeTitle: null,
   editDataNode: null,
+  editCommonData: null,
 });
 
 const modal = keyMirror({

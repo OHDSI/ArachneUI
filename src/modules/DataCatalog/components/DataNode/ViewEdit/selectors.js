@@ -31,9 +31,9 @@ export class DataNodeSelectors {
 
   getDataNode(state) {
     return get(state, 'dataCatalog.dataNode.data.result', {
-      name: 'Unknown data node',
+      name: '',
       description: '',
-      organization: 'Unknown',
+      organization: { name: 'Unknown', id: -1 },
     });
   }
 

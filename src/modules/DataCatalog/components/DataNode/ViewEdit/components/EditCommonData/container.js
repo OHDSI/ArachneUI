@@ -16,7 +16,7 @@
   * Company: Odysseus Data Services, Inc.
   * Product Owner/Architecture: Gregory Klebanov
   * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
-  * Created: Monday, June 25, 2018 2:13 PM
+  * Created: Tuesday, June 26, 2018 2:06 PM
   *
   */
 
@@ -25,15 +25,15 @@ import { Component, PropTypes } from 'react';
 import actions from 'actions';
 import { ContainerBuilder, get } from 'services/Utils';
 import { form } from 'modules/DataCatalog/const';
-import { modal } from 'modules/DataCatalog/const';
-import { ModalUtils } from 'arachne-ui-components';
-import presenter from './presenter';
-import { DataNodeSelectors } from 'community/modules/DataCatalog/components/DataNode/ViewEdit/selectors';
+import CreateDataNodeSelectors from 'modules/DataCatalog/components/DataSource/ViewEdit/Edit/FormCreateDataNode/selectors';
 
-const selectors = (new DataNodeSelectors()).build();
+const selectors = (new CreateDataNodeSelectors()).build();
+
+import presenter from './presenter';
+
 
 /** @augments { Component<any, any> } */
-export class EditDataNodeTitle extends Component {
+export class EditCommonData extends Component {
   static get propTypes() {
     return {
     };
@@ -44,33 +44,20 @@ export class EditDataNodeTitle extends Component {
   }
 }
  
-export default class EditDataNodeTitleBuilder extends ContainerBuilder {
+export default class EditCommonDataBuilder extends ContainerBuilder {
   getComponent() {
-    return EditDataNodeTitle;
+    return EditCommonData;
   }
-
-  
-  getFormParams() {
-    return {
-      form: form.editDataNodeTitle,
-      enableReinitialize: true,
-    };
-  }
-  
-  
-  getModalParams() {
-    return {
-      name: modal.editDataNodeTitle,
-    };
-  }
-  
  
-  mapStateToProps(state) {
-    const node = selectors.getDataNode(state);
+  mapStateToProps(state, ownProps) {
+    const createdOrganization = selectors.getNewOrganization(state);
 
     return {
-      ...node,
-      initialValues: { name: node.name },
+      createdOrganization,
+      initialValues: {
+        description: ownProps.description,
+        organization: get(ownProps, 'organization.id', -1),
+      },
     };
   }
 
@@ -79,7 +66,6 @@ export default class EditDataNodeTitleBuilder extends ContainerBuilder {
    */
   getMapDispatchToProps() {
     return {
-      closeModal: () => ModalUtils.actions.toggle(modal.editDataNodeTitle, false), 
       update: actions.dataCatalog.dataNode.update,
       loadDataNode: actions.dataCatalog.dataNode.find,
     };
@@ -89,14 +75,23 @@ export default class EditDataNodeTitleBuilder extends ContainerBuilder {
     return {
       ...ownProps,
       ...stateProps,
-      ...dispatchProps,      
-      async doSubmit({ name }) {
-        const result = await dispatchProps.update({ id: stateProps.id }, { name });
-        dispatchProps.closeModal();
-        dispatchProps.loadDataNode({ id: stateProps.id });
+      ...dispatchProps,
+      async doSubmit(data) {
+        const organization = {
+          id: data.organization === -1 ? null : data.organization,
+          name: data.organization === -1 ? stateProps.createdOrganization.name : null,
+        };
+        const dataNode = await dispatchProps.update({ id: ownProps.datanodeId },
+          {
+            name: ownProps.name,
+            description: data.description,
+            organization,
+          });
+        ownProps.setViewMode();
+        dispatchProps.loadDataNode({ id: ownProps.datanodeId });
 
-        return result;
-      }      
+        return dataNode;
+      },
     };
   }
 

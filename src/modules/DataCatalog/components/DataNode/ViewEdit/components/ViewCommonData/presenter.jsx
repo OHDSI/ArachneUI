@@ -16,60 +16,35 @@
   * Company: Odysseus Data Services, Inc.
   * Product Owner/Architecture: Gregory Klebanov
   * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
-  * Created: Monday, June 25, 2018 2:13 PM
+  * Created: Tuesday, June 26, 2018 2:04 PM
   *
   */
 
 import React from 'react';
-import {
-  Modal,
-  Form,
-  FormInput,
-  } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
+import {
+  ListItem,
+} from 'arachne-ui-components';
 
 import './style.scss';
 
-function EditDataNodeTitle(props) {
-  const classes = new BEMHelper('edit-data-node-title');
-  
-  const fields = [
-    {
-      name: 'name',
-      InputComponent: {
-        component: FormInput,
-        props: {
-          mods: ['bordered'],
-          placeholder: 'Name',
-        },
-      },
-    },
-  ];
-
-  const submitBtn = {
-    label: 'Add',
-    loadingLabel: 'Adding...',
-    mods: ['success', 'rounded'],
-  };
-
-  const cancelBtn = {
-    label: 'Cancel',
-  };
+function ViewCommonData({ description, organization }) {
+  const classes = new BEMHelper('view-common-data');
 
   return (
-    <Modal modal={props.modal} title="Edit data node name">
-      <div {...classes()}>        
-        <Form
-          fields={fields}
-          submitBtn={submitBtn}
-          cancelBtn={cancelBtn}
-          onSubmit={props.doSubmit}
-          {...props}
-        />        
-      </div>
-    </Modal>
+    <div {...classes()}>
+      <ListItem>
+        <div {...classes('attribute')}>
+          <span>Organization</span>
+          <span>{organization}</span>
+        </div>
+      </ListItem>
+      <ListItem>
+        <span {...classes('label')}>Description: </span>
+        {description}
+      </ListItem>
+    </div>
   );
 }
 
-export default EditDataNodeTitle;
-
+export default ViewCommonData;
