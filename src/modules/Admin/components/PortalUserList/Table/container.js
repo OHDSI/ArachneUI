@@ -60,11 +60,14 @@ class UserListTableBuilder extends ContainerBuilder {
       enableUser: actions.adminSettings.portalUserEnable.create,
       confirmEmail: actions.adminSettings.portalUserConfirmEmail.create,
       selectUser: actions.adminSettings.portalUserListSelectedUsers.toggle,
+      selectUndeletableUser: actions.adminSettings.portalUserListSelectedUsers.toggleUndeletableUser,
       setSearch: actions.router.setSearch,
       search: goToPage,
       loadUsers: query => actions.adminSettings.portalUserList.query({ query }),
       loadUserIdsWithCurrentQuery: query => actions.adminSettings.portalUserListSelectedUsers.loadUserIds({ query }),
+      loadUndeletableUserIdsWithCurrentQuery: query => actions.adminSettings.portalUserListSelectedUsers.loadUndeletableUserIds({ query }),
       updateSelectedIds: ids => actions.adminSettings.portalUserListSelectedUsers.updateSelectedUsers(ids),
+      updateSelectedUndeletableUsers: ids => actions.adminSettings.portalUserListSelectedUsers.updateSelectedUndeletableUsers(ids)
     }
   };
 
@@ -96,9 +99,10 @@ class UserListTableBuilder extends ContainerBuilder {
         });
         dispatchProps.search(uri.toString());
       },
-      selectAll: (selectedIds) => {
+      selectAll:(selectedIds) => {
         if (!isEmpty(selectedIds)) {
           dispatchProps.updateSelectedIds({});
+          dispatchProps.updateSelectedUndeletableUsers({});
         } else {
           dispatchProps.loadUserIdsWithCurrentQuery(stateProps.query)
             .then(result => dispatchProps.updateSelectedIds(result.reduce(
@@ -106,8 +110,20 @@ class UserListTableBuilder extends ContainerBuilder {
                 acc[curr] = true;
                 return acc;
               }, {}),
-              ),
-            );
+            ));
+          dispatchProps.loadUndeletableUserIdsWithCurrentQuery(stateProps.query)
+            .then(result => dispatchProps.updateSelectedUndeletableUsers(result.reduce(
+              (acc, curr) => {
+                acc[curr] = true;
+                return acc;
+              }, {})));
+        }
+      },
+      selectUser: (uuid, selected) => {
+        dispatchProps.selectUser(uuid, selected);
+        const isDeletable = stateProps.userList.find(v => v.id === uuid).deletable;
+        if (!isDeletable) {
+          dispatchProps.selectUndeletableUser(uuid, selected);
         }
       }
     };

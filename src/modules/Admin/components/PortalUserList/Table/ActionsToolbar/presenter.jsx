@@ -56,20 +56,22 @@ export default class ActionsToolbar extends Component{
       }),
       this.createButton({
         onClick: this.props.batch.bind(null, batchOperationType.DELETE),
-        tooltipText: 'Delete',
+        tooltipText: !isEmpty(this.props.selectedUndeletableUsers) ? `${pluralize('user', this.props.selectedUndeletableUsers.length, true)} cannot be deleted` : 'Delete',
         icon: 'delete',
+        mods: { invalid:  !isEmpty(this.props.selectedUndeletableUsers)}
       }),
     ];
   }
 
-  createButton({ onClick, tooltipText, icon }) {
+  createButton({ onClick, tooltipText, icon, mods = {} }) {
     
     const areUsersSelected = !isEmpty(this.props.selectedUsers);
     return {
       disabled: !areUsersSelected,
       onClick: areUsersSelected ? onClick : () => {},
       tooltipText: areUsersSelected ? tooltipText : "Select users first",
-      icon: icon,
+      icon,
+      mods,
     }
   }
   
@@ -86,14 +88,14 @@ export default class ActionsToolbar extends Component{
               this.getButtons().map(buttonSettings =>
                 <Button onClick={buttonSettings.onClick}>
                   <i 
-                    {...classes({element: 'btn-ico', modifiers: { disabled: buttonSettings.disabled }, extra: tooltipClass().className})}
+                    {...classes({element: 'btn-ico', modifiers: { ...buttonSettings.mods, disabled: buttonSettings.disabled }, extra: tooltipClass().className})}
                     aria-label={buttonSettings.tooltipText}
                     data-tootik-conf="bottom"
                   >{buttonSettings.icon}</i>
                 </Button>)
             }
           </div>
-          <span>{`Selected ${pluralize('element', this.props.selectedUsers.length, true)}`}</span>
+          <span>{`Selected ${pluralize('user', this.props.selectedUsers.length, true)}`}</span>
         </div>
     );
   }
