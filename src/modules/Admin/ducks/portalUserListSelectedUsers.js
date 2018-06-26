@@ -27,7 +27,6 @@ import ReducerFactory from 'services/ReducerFactory';
 const selectUser = 'AD_PORTAL_USERS_SELECT_USER';
 const selectUndeletableUser = 'AD_PORTAL_USERS_SELECT_UNDELETABLE_USER';
 const selectUserIds = 'AD_PORTAL_USERS_SELECT_USER_IDS';
-const selectUndeletableIds = 'AD_PORTAL_USERS_SELECT_UNDELETABLE_IDS';
 
 const selectedUsersActions = keyMirror({
   toggle: null,
