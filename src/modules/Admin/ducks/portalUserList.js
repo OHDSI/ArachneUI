@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,16 +22,32 @@
 
 import Duck from 'services/Duck';
 import { apiPaths } from 'modules/Admin/const';
+import { Utils } from 'services/Utils';
 
 const actionCoreName = 'AD_PORTAL_USERS';
+const batchOperation = 'AD_PORTAL_USERS_BATCH';
 
 const portalUsersDuck = new Duck({
   name: actionCoreName,
   urlBuilder: apiPaths.portalUsers,
 });
 
-const actions = portalUsersDuck.actions;
-const reducer = portalUsersDuck.reducer;
+const portalUserBatchDuck = new Duck({
+  name: batchOperation,
+  urlBuilder: apiPaths.portalUsersBatch,
+});
+
+
+const actions = {
+  ...portalUsersDuck.actions,
+  batch: portalUserBatchDuck.actions.create,
+};
+
+const reducer = Utils.extendReducer(
+  portalUsersDuck.reducer,
+  {
+    batch: portalUserBatchDuck.reducer,
+  });
 
 const filterName = 'portal-users-filter';
 

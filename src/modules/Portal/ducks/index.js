@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,18 +24,24 @@ import invitation from './invitations';
 import buildInfo from './buildInfo';
 import settings from './settings';
 import search from './search';
+import myProfile from './myProfile';
+import userSettings from './userSettings';
 
 export default {
   actions: {
     buildInfo: buildInfo.actions,
     invitation: invitation.actions,
+    myProfile: myProfile.actions,
     settings: settings.actions,
     search: search.actions,
+    userSettings: userSettings.actions,
   },
   reducer: {
     buildInfo: buildInfo.reducer,
     invitation: invitation.reducer,
+    myProfile: myProfile.reducer,
     settings: settings.reducer,
     search: search.reducer,
+    userSettings: userSettings.reducer,
   },
 };

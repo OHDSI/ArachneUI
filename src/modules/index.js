@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -43,6 +43,16 @@ if (__APP_TYPE_CENTRAL__) {
   const DataCatalog = require('./DataCatalog/index').default;
   const InsightsLibrary = require('./InsightsLibrary').default;
 
+  const Workspace = require('./Workspace/index').default;
+
+  modules.push({
+    ...Workspace,
+    path: 'workspace',
+    namespace: 'workspace',
+    isRoot: true,
+    isAdminOnly: false,
+  });
+  
   modules.push({
     ...StudyManager,
     path: 'study-manager',

@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,13 +25,6 @@ const imgs = {
   header: {
     logo: '/img/icons/Universal_Desktop/Header/Arachne_Desktop_logo.png',
     search: '/img/icons/Universal_Desktop/Header/Arachne_Desktop_icon-Search-.png',
-  },
-  sidebar: {
-    dashboard: '/img/icons/Universal_Desktop/Navigation/Arachne_Desktop_icon-Dashboard.png',
-    studyNotebook: '/img/icons/Universal_Desktop/Navigation/Arachne_Desktop_icon-Studies_Library.png',
-    expertFinder: '/img/icons/Universal_Desktop/Navigation/Arachne_Desktop_icon-Expert_Finder.png',
-    dataCatalog: '/img/icons/Universal_Desktop/Navigation/Arachne_Desktop_icon-Data_Catalog.png',
-    insightsLibrary: '/img/icons/Universal_Desktop/Navigation/Arachne_Desktop_icon-Insight_Library.png',
   },
   studiesToolbar: {
     create: '/img/icons/Studies_Toolbar/Arachne_Desktop_icon-Create-.png',

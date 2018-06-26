@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,23 +15,11 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon
- * Created: February 13, 2018
+ * Authors: Anton Gackovka
+ * Created: June 4, 2018
  *
  */
 
-import { createSelector } from 'reselect';
-import { Utils, get } from 'services/Utils';
+import RightColumn from './presenter';
 
-const getTenants = state => get(state, 'expertFinder.myProfile.data.result.tenants') || [];
-
-const getNewActiveTenantId = (state) => {
-  if (get(state, 'expertFinder.userSettings.isUpdating')) {
-    return get(state, 'expertFinder.userSettings.newData.activeTenantId');
-  }
-};
-
-export default {
-  getTenants,
-  getNewActiveTenantId,
-};
+export default RightColumn;
