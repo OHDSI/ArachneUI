@@ -33,6 +33,8 @@ export default class ActionsToolbar extends Component{
   
   getButtons() {
     
+    const areUndeletableUsersSelected = !isEmpty(this.props.selectedUndeletableUsers);
+    
     return [
       {
         onClick: this.props.openAddUsersBatchModal,
@@ -55,10 +57,10 @@ export default class ActionsToolbar extends Component{
         icon: 'verified_user',
       }),
       this.createButton({
-        onClick: this.props.batch.bind(null, batchOperationType.DELETE),
-        tooltipText: !isEmpty(this.props.selectedUndeletableUsers) ? `${pluralize('user', this.props.selectedUndeletableUsers.length, true)} cannot be deleted` : 'Delete',
+        onClick: areUndeletableUsersSelected ? () => {} : this.props.batch.bind(null, batchOperationType.DELETE),
+        tooltipText: areUndeletableUsersSelected ? `${pluralize('user', this.props.selectedUndeletableUsers.length, true)} cannot be deleted` : 'Delete',
         icon: 'delete',
-        mods: { invalid:  !isEmpty(this.props.selectedUndeletableUsers)}
+        mods: { invalid:  areUndeletableUsersSelected}
       }),
     ];
   }
@@ -68,7 +70,7 @@ export default class ActionsToolbar extends Component{
     const areUsersSelected = !isEmpty(this.props.selectedUsers);
     return {
       disabled: !areUsersSelected,
-      onClick: areUsersSelected && isEmpty(this.props.selectedUndeletableUsers) ? onClick : () => {},
+      onClick: areUsersSelected ? onClick : () => {},
       tooltipText: areUsersSelected ? tooltipText : "Select users first",
       icon,
       mods,
