@@ -64,7 +64,8 @@ class DataCatalogEditBuilder extends ContainerBuilder {
     const isDenied = isEmpty(get(state, 'dataCatalog.dataSource.data.result', {}, 'Object'));
     const isVirtual = get(state, 'dataCatalog.dataSource.data.result.dataNode.virtual', false);
     const isCDM = get(state, 'dataCatalog.dataSource.data.result.modelType', '') === modelTypesValues.CDM;
-    const canDelete = get(permissions, dataSourcePermissions.delete, false);
+    const isDeleted = get(state, 'dataCatalog.dataSource.data.result.deleted', false) !== false;
+    const canDelete = get(permissions, dataSourcePermissions.delete, false) && !isDeleted;
   
     return {
       name: `${get(moduleState, 'dataSource.data.result.dataNode.name', '')}: ${get(moduleState, 'dataSource.data.result.name', '')}`,
