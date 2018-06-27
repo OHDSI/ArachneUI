@@ -62,6 +62,12 @@ function buildSearchParams({
   return searchParams;
 }
 
+function countNonEmptyValues(selectedFilters, selectedQuery, fields, defaultVals) {
+  const defaultFormattedVals = Utils.prepareFilterValues({}, fields , defaultVals);
+  const changedFilters = Utils.plainDiff({ ...selectedFilters, selectedQuery }, { ...defaultFormattedVals, selectedQuery: '' } );
+  return Utils.countNonEmptyValues(changedFilters);
+}
+
 /** @augments { Component<any, any> } */
 class Filter extends Component {
 
@@ -74,14 +80,14 @@ class Filter extends Component {
           let nextFilterValue = get(nextProps.selectedFilters, filterName, [], 'Array|Boolean|String');
           const existingFilterValue = get(this.props.selectedFilters, filterName, [], 'Array|Boolean|String');
           if (Array.isArray(existingFilterValue) && Array.isArray(nextFilterValue)) {
-            if (existingFilterValue.includes(anyOptionValue.toString())) {
+            if (existingFilterValue.includes(anyOptionValue)) {
               // 'Any' option had been previously selected, then just ignore it
-              nextFilterValue = nextFilterValue.filter(value => value !== anyOptionValue.toString());
-            } else if (nextFilterValue.includes(anyOptionValue.toString())) {
+              nextFilterValue = nextFilterValue.filter(value => value !== anyOptionValue);
+            } else if (nextFilterValue.includes(anyOptionValue)) {
               // We're just selected it, cancel all other selected options
               return false;
             }
-          } else if (nextFilterValue === anyOptionValue.toString()) {
+          } else if (nextFilterValue === anyOptionValue) {
             nextFilterValue = null;
           }
           
@@ -148,19 +154,16 @@ export default class FilterBuilder extends ContainerBuilder {
       };
     }
     // Enforces proper value formats for form's fields
+    const defaultVals = fields.reduce((accum, f) => { accum[f.name] = f.type === fieldTypes.toggle ? false : anyOptionValue; return accum }, {});
     initialValues.filter = Utils.prepareFilterValues(
       initialValues.filter,
       fields,
-      // Default vals
-      fields.reduce((accum, f) => { accum[f.name] = f.type === fieldTypes.toggle ? false : anyOptionValue.toString(); return accum }, {})
+      defaultVals
     );
 
     const selectedQuery = get(state, `form.${this.formName}.values.query`, '');
     const selectedFilters = get(state, `form.${this.formName}.values.filter`, {});
-    const selectedFiltersCount = Utils.countNonEmptyValues({
-      ...selectedFilters,
-      selectedQuery,
-    });
+    const selectedFiltersCount = countNonEmptyValues(selectedFilters, selectedQuery, fields, defaultVals);
     const filteredByList = Utils.getFilterTooltipText(
       selectedFilters,
       fields.reduce((accumulator, entry) => {

@@ -22,6 +22,7 @@
 
 import errors from 'const/errors';
 import isEqual from 'lodash/isEqual';
+import reduce from 'lodash/reduce';
 import _get from 'lodash/get';
 import set from 'lodash/set';
 import { types as fieldTypes } from 'const/modelAttributes';
@@ -143,7 +144,7 @@ function get(from, path, defaultVal, typeCheckRule) {
   return result;
 }
 
-const anyOptionValue = Symbol.for('anyOptionValue');
+const anyOptionValue = 'anyOptionValue';
 
 function addAnyOption(field, optionLabel) {
   if (field.type === types.enum || field.type === types.enumMulti) {
@@ -152,7 +153,7 @@ function addAnyOption(field, optionLabel) {
       options: [
         {
           label: optionLabel,
-          value: anyOptionValue.toString(),
+          value: anyOptionValue,
         },
         ...field.options,
       ],
@@ -364,6 +365,13 @@ class Utils {
     return Object.values(object)
       .filter(setting => !Utils.isEmpty(setting))
       .length;
+  }
+
+  static plainDiff(a, b) {
+    return reduce(a, function(result, value, key) {
+        return isEqual(value, b[key]) ?
+            result : result.concat(key);
+    }, []);
   }
 
   static prepareFilterValues(query, fieldsSpecification = [], defaultVals = {}) {
