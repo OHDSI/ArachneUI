@@ -121,7 +121,7 @@ function FormCreateDataNode(props) {
     },
   ];
   let cancelBtn = null;
-  if (mode === DataNodeCreateModes.ADD) {
+  if (mode === DataNodeCreateModes.CREATE) {
     fields.unshift({
       name: NODE_FIELD,
       InputComponent: {
