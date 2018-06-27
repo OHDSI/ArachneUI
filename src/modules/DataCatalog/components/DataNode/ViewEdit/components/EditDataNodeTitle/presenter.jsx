@@ -47,8 +47,8 @@ function EditDataNodeTitle(props) {
   ];
 
   const submitBtn = {
-    label: 'Add',
-    loadingLabel: 'Adding...',
+    label: 'Update',
+    loadingLabel: 'Updating...',
     mods: ['success', 'rounded'],
   };
 
