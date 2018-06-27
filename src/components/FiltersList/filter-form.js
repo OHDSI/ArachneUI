@@ -25,6 +25,8 @@ import { Component, PropTypes } from 'react';
 import { Utils, get, ContainerBuilder } from 'services/Utils';
 import isEqual from 'lodash/isEqual';
 import qs from 'qs';
+import { anyOptionValue } from 'services/Utils';
+import { types as fieldTypes } from 'const/modelAttributes';
 import FilterPresenter from './presenter';
 import actions from 'actions';
 
@@ -35,9 +37,9 @@ function buildSearchParams({
   queryEncode = null,
 }) {
   const valuesToUnsearch = {};
-  Object.keys(selectedFilters).forEach((setting) => {
-    if (!selectedFilters[setting]) {
-      valuesToUnsearch[setting] = undefined;
+  filterFields.forEach((filter) => {
+    if (!selectedFilters[filter.name]) {
+      valuesToUnsearch[filter.name] = undefined;
     }
   });
 
@@ -72,13 +74,15 @@ class Filter extends Component {
           let nextFilterValue = get(nextProps.selectedFilters, filterName, [], 'Array|Boolean|String');
           const existingFilterValue = get(this.props.selectedFilters, filterName, [], 'Array|Boolean|String');
           if (Array.isArray(existingFilterValue) && Array.isArray(nextFilterValue)) {
-            if (existingFilterValue.includes('')) {
+            if (existingFilterValue.includes(anyOptionValue.toString())) {
               // 'Any' option had been previously selected, then just ignore it
-              nextFilterValue = nextFilterValue.filter(value => value);
-            } else if (nextFilterValue.includes('')) {
+              nextFilterValue = nextFilterValue.filter(value => value !== anyOptionValue.toString());
+            } else if (nextFilterValue.includes(anyOptionValue.toString())) {
               // We're just selected it, cancel all other selected options
               return false;
             }
+          } else if (nextFilterValue === anyOptionValue.toString()) {
+            nextFilterValue = null;
           }
           
           selectedFilters[filterName] = nextFilterValue;
@@ -144,7 +148,12 @@ export default class FilterBuilder extends ContainerBuilder {
       };
     }
     // Enforces proper value formats for form's fields
-    initialValues.filter = Utils.prepareFilterValues(initialValues.filter, fields);
+    initialValues.filter = Utils.prepareFilterValues(
+      initialValues.filter,
+      fields,
+      // Default vals
+      fields.reduce((accum, f) => { accum[f.name] = f.type === fieldTypes.toggle ? false : anyOptionValue.toString(); return accum }, {})
+    );
 
     const selectedQuery = get(state, `form.${this.formName}.values.query`, '');
     const selectedFilters = get(state, `form.${this.formName}.values.filter`, {});

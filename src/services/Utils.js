@@ -151,7 +151,7 @@ function addAnyOption(field, optionLabel) {
       options: [
         {
           label: optionLabel,
-          value: anyOptionValue,
+          value: anyOptionValue.toString(),
         },
         ...field.options,
       ],
@@ -361,34 +361,30 @@ class Utils {
       .length;
   }
 
-  static prepareFilterValues(query, fieldsSpecification = []) {
+  static prepareFilterValues(query, fieldsSpecification = [], defaultVals = {}) {
     const initialValues = {};
     const fieldsMap = {};
-    fieldsSpecification.forEach((field) => {
-      fieldsMap[field.name] = field;
-    });
-    Object.keys(query).forEach((paramName) => {
-      const field = fieldsMap[paramName];
-      const paramValue = query[paramName];
-      if (!field) {
-        return false;
-      }
-      switch (field.type) {
-        case fieldTypes.enum:
-          if (field.isMulti) {
-            initialValues[field.name] = Array.isArray(paramValue) ? paramValue : (typeof paramValue === 'object' ? Object.values(paramValue) : [paramValue]);
-          } else {
+
+    fieldsSpecification.forEach(field => {
+      if (query[field.name] || defaultVals[field.name]) {
+        const paramValue = query[field.name] || defaultVals[field.name];
+        switch (field.type) {
+          case fieldTypes.enum:
+            if (field.isMulti) {
+              initialValues[field.name] = Array.isArray(paramValue) ? paramValue : (typeof paramValue === 'object' ? Object.values(paramValue) : [paramValue]);
+            } else {
+              initialValues[field.name] = paramValue;
+            }
+            break;
+          case fieldTypes.toggle:
+            initialValues[field.name] = !!paramValue;
+            break;
+          default:
             initialValues[field.name] = paramValue;
-          }
-          break;
-        case fieldTypes.toggle:
-          initialValues[field.name] = !!paramValue;
-          break;
-        default:
-          initialValues[field.name] = paramValue;
-          break;
+            break;
+        }
       }
-    });
+    })
 
     return initialValues;
   }
