@@ -36,7 +36,7 @@ function ViewCommonData({ description, organization }) {
       <ListItem>
         <div {...classes('attribute')}>
           <span>Organization</span>
-          <span>{organization}</span>
+          <span>{organization.name}</span>
         </div>
       </ListItem>
       <ListItem>

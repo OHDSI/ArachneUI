@@ -91,7 +91,14 @@ export default class EditDataNodeTitleBuilder extends ContainerBuilder {
       ...stateProps,
       ...dispatchProps,      
       async doSubmit({ name }) {
-        const result = await dispatchProps.update({ id: stateProps.id }, { name });
+        const result = await dispatchProps.update(
+          { id: stateProps.id },
+          {
+            name,
+            description: stateProps.description,
+            organization: stateProps.organization,
+          }
+        );
         dispatchProps.closeModal();
         dispatchProps.loadDataNode({ id: stateProps.id });
 

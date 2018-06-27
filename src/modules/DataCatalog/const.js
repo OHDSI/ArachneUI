@@ -119,6 +119,11 @@ const dataSourcePermissions = {
   edit: 'EDIT_DATASOURCE',
 };
 
+const dataNodePermissions = {
+  create: 'CREATE_DATANODE',
+  edit: 'EDIT_DATANODE',
+};
+
 export {
   apiPaths,
   imgs,
@@ -129,4 +134,5 @@ export {
   chartSettings,
   defaultTrellisSet,
   dataSourcePermissions,
+  dataNodePermissions,
 };

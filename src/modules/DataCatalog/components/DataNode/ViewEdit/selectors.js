@@ -22,7 +22,8 @@
 
 import { createSelector } from 'reselect';
 import { get } from 'services/Utils';
-import { dsConverter } from 'community/components/LabelDataSource';
+import { dsConverter } from 'components/LabelDataSource';
+import { dataNodePermissions } from 'modules/DataCatalog/const';
 
 export class DataNodeSelectors {
   getRawSources(state) {
@@ -30,11 +31,15 @@ export class DataNodeSelectors {
   }
 
   getDataNode(state) {
-    return get(state, 'dataCatalog.dataNode.data.result', {
+    const dn = get(state, 'dataCatalog.dataNode.data.result', {
       name: '',
       description: '',
       organization: { name: 'Unknown', id: -1 },
+      permissions: {},
     });
+    dn.editable = dn.permissions[dataNodePermissions.edit] === true;
+
+    return dn;
   }
 
   buildSelectorForSources() {

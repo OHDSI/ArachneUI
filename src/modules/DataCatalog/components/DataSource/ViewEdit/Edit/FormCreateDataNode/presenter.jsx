@@ -57,16 +57,17 @@ function FormCreateDataNode(props) {
     mode = DataNodeCreateModes.CREATE,
   } = props;
 
-  const submitBtn = dataNodeExists ?
-    {
+  let submitBtn = {
+    label: `${mode === DataNodeCreateModes.CREATE ? 'Create' : 'Update'}`,
+    loadingLabel: `${mode === DataNodeCreateModes.CREATE ? 'Creating' : 'Updating'}`,
+  };
+  if (dataNodeExists) {
+    submitBtn = {
       label: 'Select',
       loadingLabel: 'Selecting...',
-      mods: ['success' , 'rounded'],
-    } :
-    {
-      label: 'Create',
-      loadingLabel: 'Creating...',
+      mods: ['success', 'rounded'],
     };
+  }
 
   const useAutocomplete = dataSourceId === undefined;
   const disabledAdditionalFields = dataNodeExists && dataSourceId === undefined;

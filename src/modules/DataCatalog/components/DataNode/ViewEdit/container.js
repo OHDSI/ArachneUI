@@ -67,12 +67,8 @@ export default class ViewEditBuilder extends ContainerBuilder {
 
     return {
       id: ownProps.routeParams.datanodeId,
-      dataNode: {
-        ...dataNode,
-        editable: true,
-      },
+      dataNode,
       dataSources,
-      organization: get(dataNode, 'organization', 'Unknown', 'String'),
     };
   }
 
@@ -92,7 +88,7 @@ export default class ViewEditBuilder extends ContainerBuilder {
     return {
       ...ownProps,
       ...stateProps,
-      ...dispatchProps,      
+      ...dispatchProps,
     };
   }
 
