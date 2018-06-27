@@ -29,6 +29,18 @@ import cloneDeep from 'lodash/cloneDeep';
 import DsAttrListSelector from 'modules/DataCatalog/selectors/DsAttrListSelector';
 import { extractPaginationData } from 'components/Grid';
 import { viewModePageSize } from 'const/viewModes';
+import reduce from 'lodash/reduce';
+
+function escape(v) {
+  return `f_${v}`;
+}
+
+function escapeKeys(obj) {
+  return reduce(obj, (newObj, currentValue, oldValue) => {
+    newObj[escape(oldValue)] = currentValue;
+    return newObj;
+  }, {})
+}
 
 class DataCatalogListTableSelectorsBuilder extends DsAttrListSelector {
 
@@ -68,18 +80,21 @@ class DataCatalogListTableSelectorsBuilder extends DsAttrListSelector {
   // Filter options selector
 
   getFilterList(attrList, facets) {
+
+    const escapedFacets = escapeKeys(facets);
+    
     const filterList = attrList
       // Remove attributes that should not be shown in Filter panel
       .filter(attr => attr.faceted)
       .map(cloneDeep)
       .map(attr => ({
         ...attr,
-        name: `f_${attr.name}`,
+        name: escape(attr.name),
       }))
       // Compute options for filter sections
       .map((attr) => {
-        if (attr.type === fieldTypes.string && facets) {
-          attr.options = Object.keys(facets[attr.name] || {}).map(key => ({ label: key, value: key }));
+        if (attr.type === fieldTypes.string && escapedFacets) {
+          attr.options = Object.keys(escapedFacets[attr.name] || {}).map(key => ({ label: key, value: key }));
         }
         return attr;
       })
@@ -96,7 +111,7 @@ class DataCatalogListTableSelectorsBuilder extends DsAttrListSelector {
 
     // Assign facets
     if (facets) {
-      Utils.assignFacets(filterList, facets);
+      Utils.assignFacets(filterList, escapedFacets);
     }
 
     return filterList;
