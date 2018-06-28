@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,17 +26,17 @@ import { dataSourceStatuses, paths, studyPermissions } from 'modules/StudyManage
 
 export default class selectorsBuilder {
   getStudyId(state) {
-    return get(state, 'studyManager.study.data.result.id') || [];
+    return get(state, 'studyManager.study.data.id') || [];
   }
 
   getRawDataSourceList(state) {
-    return get(state, 'studyManager.study.data.result.dataSources') || [];
+    return get(state, 'studyManager.study.data.dataSources') || [];
   }
 
   hasAttachPermissions(state) {
     return get(
       state,
-      `studyManager.study.data.result.permissions[${studyPermissions.inviteDatanode}]`,
+      `studyManager.study.data.permissions[${studyPermissions.inviteDatanode}]`,
       false
     );
   }
@@ -44,7 +44,7 @@ export default class selectorsBuilder {
   hasDeletePermissions(state) {
     return get(
       state,
-      `studyManager.study.data.result.permissions[${studyPermissions.unlinkDatasource}]`,
+      `studyManager.study.data.permissions[${studyPermissions.unlinkDatasource}]`,
       false
     );
   }
@@ -52,7 +52,7 @@ export default class selectorsBuilder {
   hasEditStudyPermissions(state) {
     return get(
       state,
-      `studyManager.study.data.result.permissions[${studyPermissions.editStudy}]`,
+      `studyManager.study.data.permissions[${studyPermissions.editStudy}]`,
       false
     );
   }

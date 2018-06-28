@@ -28,15 +28,17 @@ import { viewModePageSize } from 'const/viewModes';
 export default class SelectorsBuilder {
 
   getRawAtlasList(state) {
-    return get(state, 'externalResourceManager.atlases.queryResult.content') || [];
+    return get(state, 'externalResourceManager.atlases.list.queryResult.content') || [];
   }
 
   getIsLoading(state) {
-    return get(state, 'externalResourceManager.atlases.isLoading') || get(state, 'externalResourceManager.atlases.isDeleting');
+    return get(state, 'externalResourceManager.atlases.list.isLoading')
+      || get(state, 'externalResourceManager.atlases.list.isDeleting')
+      || get(state, 'externalResourceManager.atlases.connection.isLoading');
   }
 
   getPaginationDetails(state) {
-    const searchResults = get(state, 'externalResourceManager.atlases.queryResult');
+    const searchResults = get(state, 'externalResourceManager.atlases.list.queryResult');
     return extractPaginationData({ searchResults, numOfElsPerPage: viewModePageSize.DEFAULT });
   }
 

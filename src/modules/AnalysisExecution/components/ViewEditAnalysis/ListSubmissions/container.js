@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -48,7 +48,7 @@ function mapStateToProps(state) {
 
   const rawSelectedFilters = Utils.getFilterValues(get(state, 'routing.locationBeforeTransitions.search', '', 'String'));
   const selectedFilters = {};
-  const datasources = get(state, 'studyManager.study.data.result.dataSources', [], 'Array');
+  const datasources = get(state, 'studyManager.study.data.dataSources', [], 'Array');
   Object.entries(rawSelectedFilters)
     .forEach(([filterId, filter]) => {
       switch (filterId) {

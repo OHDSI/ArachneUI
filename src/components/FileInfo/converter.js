@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,8 +21,7 @@
  */
 
 import { detectMimeTypeByExtension, Utils } from 'services/Utils';
-
-const profilePath = id => `/expert-finder/profile/${id}`;
+import { paths as commonPaths } from 'const/paths';
 
 function getLink(file, pathBuilder) {
   let link = null;
@@ -48,7 +47,7 @@ export default (file, pathBuilder) => ({
   ...getLink(file, pathBuilder),
   author: {
     ...file.author,
-    link: (file.author && file.author.id) ? profilePath(file.author.id) : null,
+    link: (file.author && file.author.id) ? commonPaths.profile(file.author.id) : null,
   },
   commentTopicId: file.commentTopicId,
   version: file.version,
