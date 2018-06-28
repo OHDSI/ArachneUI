@@ -25,6 +25,7 @@ import { Utils } from 'services/Utils';
 import ReducerFactory from 'services/ReducerFactory';
 
 const selectUser = 'AD_PORTAL_USERS_SELECT_USER';
+const selectUndeletableUser = 'AD_PORTAL_USERS_SELECT_UNDELETABLE_USER';
 const selectUserIds = 'AD_PORTAL_USERS_SELECT_USER_IDS';
 
 const selectedUsersActions = keyMirror({
@@ -37,6 +38,11 @@ const portalUsersIdsDuck = new Duck({
   urlBuilder: apiPaths.portalUsersIds,
 });
 
+const portalUndeletableUsersIdsDuck = new Duck({
+  name: selectUndeletableUser,
+  urlBuilder: apiPaths.portalUsersUndeletableIds,
+});
+
 function toggleUser(uuid, selected = false) {
   return {
     type: selectUser,
@@ -47,9 +53,26 @@ function toggleUser(uuid, selected = false) {
   };
 }
 
+function toggleUndeletableUser(uuid, selected = false) {
+  return {
+    type: selectUndeletableUser,
+    mode: selectedUsersActions.toggle,
+    selected: selected,
+    payload: uuid,
+  };
+}
+
 function updateUserIds({ payload }) {
   return {
     type: selectUser,
+    mode: selectedUsersActions.update,
+    payload: payload,
+  };
+}
+
+function updateUndeletableUserIds({ payload }) {
+  return {
+    type: selectUndeletableUser,
     mode: selectedUsersActions.update,
     payload: payload,
   };
@@ -66,6 +89,23 @@ selectUserReducer.setActionHandler(selectUser, (state, action = selectedUsersAct
   },
 }));
 
+const selectUndeletableUserReducer = new ReducerFactory();
+selectUndeletableUserReducer.setActionHandler(selectUndeletableUser, (state, action = selectedUsersActions.toggle) => {
+  
+  let result;
+  if (action.mode === selectedUsersActions.update) {
+    result = {
+      ...action.payload,
+    }
+  } else if (action.selected) {
+    result = {...state, [action.payload]: true};
+  } else {
+    const {[action.payload]: oldValue, ...updated} = state;
+    result = updated;
+  }
+  return result;
+});
+
 const actions = {
   toggle: (uuid, selected) => {
     return dispatch => dispatch(toggleUser(uuid, selected));
@@ -73,13 +113,22 @@ const actions = {
   updateSelectedUsers: (payload) => {
     return dispatch => dispatch(updateUserIds({ payload }));
   },
+  toggleUndeletableUser: (uuid, selected) => {
+    return dispatch => dispatch(toggleUndeletableUser(uuid, selected));
+  },
+  updateSelectedUndeletableUsers: (payload) => {
+    return dispatch => dispatch(updateUndeletableUserIds({ payload }));
+  },
   loadUserIds: portalUsersIdsDuck.actions.query,
+  loadUndeletableUserIds: portalUndeletableUsersIdsDuck.actions.query,
 };
 
 const reducer = Utils.extendReducer(
   selectUserReducer.build(),
   {
+    selectedUndeletableUsers: selectUndeletableUserReducer.build(),
     allUserIds: portalUsersIdsDuck.reducer,
+    allUndeletableUserIds: portalUndeletableUsersIdsDuck.reducer,
   });
 
 export default {

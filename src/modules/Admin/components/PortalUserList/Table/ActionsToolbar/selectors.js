@@ -1,4 +1,5 @@
-/*!
+/*
+ *
  * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,33 +15,21 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Anton Gackovka
- * Created: May 23, 2018
+ * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
+ * Created: September 29, 2017
+ *
  */
 
-@import 'styles/vars-and-mixins.scss';
+import { createSelector } from 'reselect';
+import get from 'lodash/get';
 
-.#{$namespace} {
-  &admin-portal-user-list-actions-toolbar {
+const getRawUndeletableUsers = state => get(state, 'adminSettings.portalUserListSelectedUsers.selectedUndeletableUsers') || {};
 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem 1.5rem;
-    
-    background-color: $grey-ash;
+const getUndeletableUsers = createSelector(
+  [getRawUndeletableUsers],
+  rawUserList => Object.keys(rawUserList)
+);
 
-    &__btn-ico {
-      @include material-icon();
-      color: $grey-dark;
-      font-size: 2.2rem;
-      vertical-align: middle;
-      &--disabled {
-        color: $grey-dark-light
-      }
-      &--invalid {
-        color: $dark-red;
-      }
-    }
-  }
-}
+export default {
+  getUndeletableUsers,
+};

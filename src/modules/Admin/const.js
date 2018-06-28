@@ -50,6 +50,7 @@ const apiPaths = {
 
   portalUsers: ({ id, query } = {}) => Utils.setUrlParams(`/api/v1/admin/users${id ? `/${id}` : ''}`, query),
   portalUsersIds: ({ query }) => Utils.setUrlParams(`/api/v1/admin/users/ids`, query),
+  portalUsersUndeletableIds: ({ query }) => Utils.setUrlParams(`/api/v1/admin/users/ids/undeletable`, query),
   portalUsersEnable: ({ id, enable }) => `/api/v1/admin/users/${id}/enable/${enable}`,
   portalUsersConfirmEmail: ({ id, confirm }) => `/api/v1/admin/users/${id}/confirm-email/${confirm}`,
   portalUsersBatch: () => '/api/v1/admin/users/batch',

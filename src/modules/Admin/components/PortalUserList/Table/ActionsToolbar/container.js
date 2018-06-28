@@ -21,7 +21,8 @@
 import actions from 'actions/index';
 import { ContainerBuilder, Utils } from 'services/Utils';
 import ActionsToolbar from './presenter';
-import selectors from 'modules/Admin/components/PortalUserList/Table/selectors';
+import selectors from './selectors';
+import parentSelectors from 'modules/Admin/components/PortalUserList/Table/selectors';
 import { batchOperationType, modal } from 'modules/Admin/const';
 import { ModalUtils } from 'arachne-ui-components';
 
@@ -34,7 +35,8 @@ class UserListActionsToolbarBuilder extends ContainerBuilder {
   mapStateToProps(state) {
     const { pathname, query } = state.routing.locationBeforeTransitions;
     return {
-      selectedUsers: selectors.getSelectedUsers(state),
+      selectedUsers: parentSelectors.getSelectedUsers(state),
+      selectedUndeletableUsers: selectors.getUndeletableUsers(state),
       query,
       pathname,
     };
