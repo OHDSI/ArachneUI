@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -38,7 +38,7 @@ export default class ListDocumentsBuilder {
   }
 
   mapStateToProps(state) {
-    const studyData = get(state, 'studyManager.study.data.result');
+    const studyData = get(state, 'studyManager.study.data');
     const studyId = get(studyData, 'id');
     const documentList = selectors.getDocumentList(state);
     const filesList = documentList.filter(doc => doc.docType !== mimeTypes.link);
@@ -76,7 +76,7 @@ export default class ListDocumentsBuilder {
           .then(() => {
             dispatchProps
               .removeDocument({ studyId: stateProps.studyId, fileUuid: fileId, action: 'remove' })
-              .then(() => dispatchProps.loadStudy(stateProps.studyId));
+              .then(() => dispatchProps.loadStudy({ id: stateProps.studyId }));
           });
       },
     };
