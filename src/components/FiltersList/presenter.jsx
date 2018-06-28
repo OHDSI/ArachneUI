@@ -36,7 +36,7 @@ import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdow
 import types from 'const/modelAttributes';
 import filterTypes from 'const/filterTypes';
 import uniqBy from 'lodash/uniqBy';
-import { addAnyOption, anyOptionValue } from 'services/Utils';
+import { addAnyOption } from 'services/Utils';
 
 require('./style.scss');
 
@@ -62,17 +62,7 @@ export function FilterFormSelect(props) {
     disabled={meta.submitting || disabled}
     onFocus={() => input.onFocus()}
     onBlur={() => input.onBlur()}
-    onChange={(val) => {
-      let newValue = val;
-      if (isMulti) {
-        const isAnyOptionSelected = val.includes(anyOptionValue);
-        newValue = isAnyOptionSelected ? [] : val;
-      } else {
-        // whether 'Any' option selected
-        newValue = val === anyOptionValue ? null : val;
-      }
-      input.onChange(newValue);
-    }}
+    onChange={val => input.onChange(val)}
   />;
 }
 
@@ -126,7 +116,7 @@ function FacetedFilters({ clear, fields, handleSubmit }) {
   return (
     <FacetedSearch
       doSubmit={() => {}}
-      dynamicFields={fields.filter(field => !field.isMulti).map(field => addAnyOption(field, 'Any'))}
+      dynamicFields={fields.map(field => addAnyOption(field, 'Any'))}
       fullTextSearchEnabled
       sortingEnabled={false}
       showRefineSearch
@@ -155,18 +145,15 @@ function DropdownFilters({ classes, fields, clear, handleSubmit }) {
     }
   ];
 
-  fields.forEach((field) => {
-    const options = [{
-      label: 'Any',
-      value: anyOptionValue,
-    }].concat(field.options);
+  fields.forEach((rawField) => {
+    const field = addAnyOption(rawField, 'Any');
     dropdownFields.push({
       // assure it's compatible with the form in FacetedSearch component
       name: `filter[${field.name}]`,
       InputComponent: {
         component: getComponentByType(field.type),
         props: {
-          options: uniqBy(options, 'value'),
+          options: uniqBy(field.options, 'value'),
           ...getOptions(field),
         },
       },

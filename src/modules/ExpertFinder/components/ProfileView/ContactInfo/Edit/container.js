@@ -25,11 +25,22 @@ import get from 'lodash/get';
 import { reduxForm, reset as resetForm } from 'redux-form';
 import { Component, PropTypes } from 'react';
 import actions from 'actions';
+import uniqBy from 'lodash/uniqBy';
 import { forms } from 'modules/ExpertFinder/const';
 import presenter from './presenter';
 import selectors from './selectors';
 
 class ContactInfoEdit extends Component {
+  constructor() {
+    super();
+    this.state = {
+      selectedCountry: null,
+      selectedProvince: null,
+    };
+    this.storeCountry = this.storeCountry.bind(this);
+    this.storeProvince = this.storeProvince.bind(this);
+  }
+
   componentWillMount() {
     this.props.searchCountries();
     if (this.props.countryId) {
@@ -37,8 +48,36 @@ class ContactInfoEdit extends Component {
     }
   }
 
+  storeCountry(id) {
+    this.setState({
+      selectedCountry: this.props.countries.find(option => option.value === id),
+    });
+  }
+
+  storeProvince(id) {
+    this.setState({
+      selectedProvince: this.props.provinces.find(option => option.value === id),
+    });
+  }
+
   render() {
-    return presenter(this.props);
+    const countries = [...this.props.countries];
+    if (this.state.selectedCountry) {
+      countries.unshift(this.state.selectedCountry);
+    }
+
+    const provinces = [...this.props.provinces];
+    if (this.state.selectedProvince) {
+      provinces.unshift(this.state.selectedProvince);
+    }
+
+    return presenter({
+      ...this.props,
+      storeCountry: this.storeCountry,
+      storeProvince: this.storeProvince,
+      countries: uniqBy(countries, 'value'),
+      provinces: uniqBy(provinces, 'value'),
+    });
   }
 }
 

@@ -21,10 +21,8 @@
  */
 
 import React, { PropTypes } from 'react';
-import { Form } from 'arachne-ui-components';
-import { FormInput } from 'arachne-ui-components';
-import { FormSelect } from 'arachne-ui-components';
-import { FormAutocomplete } from 'arachne-ui-components';
+import { Form, FormInput, FormSelect } from 'arachne-ui-components';
+import StatefulFormAutocomplete from 'components/StatefulFormAutocomplete';
 import { submitBtnConfig, cancelBtnConfig } from 'modules/ExpertFinder/const';
 
 function getStateFieldProps(canSelectState) {
@@ -97,20 +95,23 @@ function ContactInfoEdit(props) {
     {
       name: 'country',
       InputComponent: {
-        component: FormAutocomplete,
+        component: StatefulFormAutocomplete,
         props: {
           mods: ['bordered'],
           placeholder: 'Country',
           options: countries,
           fetchOptions: searchCountries,
           clearable: false,
+          onSelectResetsInput: true,
+          onBlurResetsInput: true,
+          storeSelectedOption: props.storeCountry,
         }
       }
     },
     {
       name: 'stateProvinceId',
       InputComponent: {
-        component: FormAutocomplete,
+        component: StatefulFormAutocomplete,
         props: {
           mods: ['bordered'],
           placeholder: 'State',
@@ -118,6 +119,9 @@ function ContactInfoEdit(props) {
           fetchOptions: searchProvinces,
           clearable: false,
           disabled: !canSelectState,
+          storeSelectedOption: props.storeProvince,
+          onSelectResetsInput: true,
+          onBlurResetsInput: true,
           ...getStateFieldProps(canSelectState),
         }
       }

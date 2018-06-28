@@ -33,6 +33,8 @@ export default class ActionsToolbar extends Component{
   
   getButtons() {
     
+    const areUndeletableUsersSelected = !isEmpty(this.props.selectedUndeletableUsers);
+    
     return [
       {
         onClick: this.props.openAddUsersBatchModal,
@@ -55,21 +57,23 @@ export default class ActionsToolbar extends Component{
         icon: 'verified_user',
       }),
       this.createButton({
-        onClick: this.props.batch.bind(null, batchOperationType.DELETE),
-        tooltipText: 'Delete',
+        onClick: areUndeletableUsersSelected ? () => {} : this.props.batch.bind(null, batchOperationType.DELETE),
+        tooltipText: areUndeletableUsersSelected ? `${pluralize('user', this.props.selectedUndeletableUsers.length, true)} cannot be deleted` : 'Delete',
         icon: 'delete',
+        mods: { invalid:  areUndeletableUsersSelected}
       }),
     ];
   }
 
-  createButton({ onClick, tooltipText, icon }) {
+  createButton({ onClick, tooltipText, icon, mods = {} }) {
     
     const areUsersSelected = !isEmpty(this.props.selectedUsers);
     return {
       disabled: !areUsersSelected,
       onClick: areUsersSelected ? onClick : () => {},
       tooltipText: areUsersSelected ? tooltipText : "Select users first",
-      icon: icon,
+      icon,
+      mods,
     }
   }
   
@@ -86,14 +90,14 @@ export default class ActionsToolbar extends Component{
               this.getButtons().map(buttonSettings =>
                 <Button onClick={buttonSettings.onClick}>
                   <i 
-                    {...classes({element: 'btn-ico', modifiers: { disabled: buttonSettings.disabled }, extra: tooltipClass().className})}
+                    {...classes({element: 'btn-ico', modifiers: { ...buttonSettings.mods, disabled: buttonSettings.disabled }, extra: tooltipClass().className})}
                     aria-label={buttonSettings.tooltipText}
                     data-tootik-conf="bottom"
                   >{buttonSettings.icon}</i>
                 </Button>)
             }
           </div>
-          <span>{`Selected ${pluralize('element', this.props.selectedUsers.length, true)}`}</span>
+          <span>{`Selected ${pluralize('user', this.props.selectedUsers.length, true)}`}</span>
         </div>
     );
   }

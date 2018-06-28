@@ -81,9 +81,9 @@ export function AttributesFormListItem({
   } else {
     switch (item.type) {
       case fieldTypes.enum:
-        case fieldTypes.enumMulti:
+      case fieldTypes.enumMulti:
         field = (<FilterFormSelect
-          options={addAnyOption(item, 'None').options}
+          options={!item.isRequired ? addAnyOption(item, 'None').options : item.options}
           mods={['bordered']}
           input={input}
           meta={meta}
