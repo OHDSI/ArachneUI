@@ -28,7 +28,7 @@ import { push } from 'react-router-redux';
 import Uri from 'urijs';
 import { paths } from 'modules/InsightsLibrary/const';
 import { saveFilter } from 'modules/InsightsLibrary/ducks/insights';
-
+import { viewModes, viewModePageSize } from 'const/viewModes';
 import presenter from './presenter';
 import getFields from './Filters/fields';
 import SelectorsBuilder from './selectors';
@@ -113,7 +113,8 @@ export default class InsightsListBuilder extends ContainerBuilder {
       ...dispatchProps,
       ...ownProps,
       loadInsightsWithCurrentQuery: () => {
-        dispatchProps.loadInsights(null, stateProps.searchQuery);
+        const pageSize = viewModePageSize[get(stateProps.searchQuery, 'view') || viewModes.TABLE];
+        dispatchProps.loadInsights(null, { ...stateProps.searchQuery, pageSize });
       },
       applySavedFilters(filters) {
         const url = new Uri(paths.insights());
@@ -125,8 +126,9 @@ export default class InsightsListBuilder extends ContainerBuilder {
   getFetchers({ params, state, dispatch }) {
     const load = actions.insightsLibrary.insights.query;
     const query = state.routing.locationBeforeTransitions.query;
+    const pageSize = viewModePageSize[get(query, 'view') || viewModes.TABLE];
     return {
-      load: () => load(null, query),
+      load: () => load(null, { ...query, pageSize }),
     };
   }
 
