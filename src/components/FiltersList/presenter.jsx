@@ -28,6 +28,7 @@ import {
   Panel,
   Form,
   Select,
+  SelectFilters,
   FormToggle,
   FormSlider,
   FormInput,
@@ -62,7 +63,10 @@ export function FilterFormSelect(props) {
     disabled={meta.submitting || disabled}
     onFocus={() => input.onFocus()}
     onBlur={() => input.onBlur()}
-    onChange={val => input.onChange(val)}
+    onChange={val => {
+      return input.onChange(val)
+    }}
+    valuesFilter={SelectFilters.clearOnEmptyOptionFilter}
   />;
 }
 
