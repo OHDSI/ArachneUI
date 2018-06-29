@@ -23,6 +23,9 @@
 // @ts-check
 import { Component, PropTypes } from 'react';
 import { Utils, get, ContainerBuilder } from 'services/Utils';
+import {
+  SelectFilters,
+} from 'arachne-ui-components';
 import isEqual from 'lodash/isEqual';
 import qs from 'qs';
 import { anyOptionValue } from 'services/Utils';
@@ -79,19 +82,7 @@ class Filter extends Component {
         .forEach((filterName) => {
           let nextFilterValue = get(nextProps.selectedFilters, filterName, [], 'Array|Boolean|String');
           const existingFilterValue = get(this.props.selectedFilters, filterName, [], 'Array|Boolean|String');
-          if (Array.isArray(existingFilterValue) && Array.isArray(nextFilterValue)) {
-            if (existingFilterValue.includes(anyOptionValue)) {
-              // 'Any' option had been previously selected, then just ignore it
-              nextFilterValue = nextFilterValue.filter(value => value !== anyOptionValue);
-            } else if (nextFilterValue.includes(anyOptionValue)) {
-              // We're just selected it, cancel all other selected options
-              return false;
-            }
-          } else if (nextFilterValue === anyOptionValue) {
-            nextFilterValue = null;
-          }
-          
-          selectedFilters[filterName] = nextFilterValue;
+          selectedFilters[filterName] = SelectFilters.clearOnEmptyOptionFilter(existingFilterValue, nextFilterValue);
         });
 
       const searchParams = buildSearchParams({

@@ -143,7 +143,7 @@ function get(from, path, defaultVal, typeCheckRule) {
   return result;
 }
 
-const anyOptionValue = 'anyOptionValue';
+const anyOptionValue = '';
 
 function addAnyOption(field, optionLabel) {
   if (field.type === types.enum || field.type === types.enumMulti) {
@@ -374,12 +374,12 @@ class Utils {
     const fieldsMap = {};
 
     fieldsSpecification.forEach(field => {
-      if (query[field.name] || defaultVals[field.name]) {
+      if (typeof query[field.name] !== undefined || defaultVals[field.name] !== undefined) {
         const paramValue = query[field.name] || defaultVals[field.name];
         switch (field.type) {
           case fieldTypes.enum:
             if (field.isMulti) {
-              initialValues[field.name] = Array.isArray(paramValue) ? paramValue : (typeof paramValue === 'object' ? Object.values(paramValue) : [paramValue]);
+              initialValues[field.name] = Array.isArray(paramValue) ? paramValue : ((typeof paramValue === 'object' && paramValue !== null) ? Object.values(paramValue) : [paramValue]);
             } else {
               initialValues[field.name] = paramValue;
             }
