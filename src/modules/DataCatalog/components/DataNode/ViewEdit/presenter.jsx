@@ -74,7 +74,7 @@ function ViewEdit(props) {
             {...classes('block')}
             title={'Common data'}
             viewContent={<ViewCommonData description={description} organization={organization} />}
-            editContent={<EditCommonData name={name} description={description} organization={organization} datanodeId={id} />}
+            editContent={<EditCommonData description={description} organization={organization} datanodeId={id} />}
           />
           <div {...classes('block')}>
             <Panel title={'Attached Data Sources'}>

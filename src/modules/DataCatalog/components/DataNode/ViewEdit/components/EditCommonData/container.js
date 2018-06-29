@@ -83,7 +83,6 @@ export default class EditCommonDataBuilder extends ContainerBuilder {
         };
         const dataNode = await dispatchProps.update({ id: ownProps.datanodeId },
           {
-            name: ownProps.name,
             description: data.description,
             organization,
           });
