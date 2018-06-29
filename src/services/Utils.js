@@ -144,7 +144,7 @@ function get(from, path, defaultVal, typeCheckRule) {
   return result;
 }
 
-const anyOptionValue = 'anyOptionValue';
+const anyOptionValue = '';
 
 function addAnyOption(field, optionLabel) {
   if (field.type === types.enum || field.type === types.enumMulti) {
