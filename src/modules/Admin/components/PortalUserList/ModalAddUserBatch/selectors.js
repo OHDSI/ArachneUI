@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,23 +15,24 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon
- * Created: February 13, 2018
+ * Authors: Pavel Grafkin
+ * Created: May 28, 2018
  *
  */
 
 import { createSelector } from 'reselect';
-import { Utils, get } from 'services/Utils';
+import get from 'lodash/get';
 
-const getTenants = state => get(state, 'expertFinder.myProfile.data.result.tenants') || [];
+const getRawProfessionalTypesList = state => get(state, 'auth.professionalType.queryResult.result') || [];
 
-const getNewActiveTenantId = (state) => {
-  if (get(state, 'expertFinder.userSettings.isUpdating')) {
-    return get(state, 'expertFinder.userSettings.newData.activeTenantId');
-  }
-};
+const getProfessionalTypes = createSelector(
+  [getRawProfessionalTypesList],
+  rawProfessionalTypesList => rawProfessionalTypesList.map(type => ({
+    label: type.name,
+    value: type.id,
+  }))
+);
 
 export default {
-  getTenants,
-  getNewActiveTenantId,
+  getProfessionalTypes,
 };

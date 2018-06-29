@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,6 +24,7 @@ import errors from 'const/errors';
 import isEqual from 'lodash/isEqual';
 import reduce from 'lodash/reduce';
 import _get from 'lodash/get';
+import set from 'lodash/set';
 import { types as fieldTypes } from 'const/modelAttributes';
 import mimeTypes from 'const/mimeTypes';
 import {
@@ -143,7 +144,7 @@ function get(from, path, defaultVal, typeCheckRule) {
   return result;
 }
 
-const anyOptionValue = '';
+const anyOptionValue = 'anyOptionValue';
 
 function addAnyOption(field, optionLabel) {
   if (field.type === types.enum || field.type === types.enumMulti) {
@@ -187,10 +188,12 @@ const validators = {
   checkValidationError(response) {
     if (typeof response.errorCode !== 'undefined') {
       if ([errors.VALIDATION_ERROR, errors.ALREADY_EXIST].includes(response.errorCode)) {
-        throw new SubmissionError({
+        const errors = {
           _error: response.errorMessage,
-          ...response.validatorErrors,
-        });
+        };
+        // Properly handle nested keys (e.g. for FieldArray)
+        Object.keys(response.validatorErrors).forEach(reKey => set(errors, reKey, response.validatorErrors[reKey]));
+        throw new SubmissionError(errors);
       } else if (response.errorCode === errors.UNACTIVATED) {
         throw new SubmissionError({
           _error: 'Please verify your account using link in the email that was sent to you.',
@@ -243,6 +246,8 @@ const detectMimeTypeByExtension = (file) => {
   }
   return type;
 };
+
+const DEFAULT_PROTOCOL = "https://";
 
 class Utils {
 
@@ -501,8 +506,18 @@ class Utils {
     }
   }
 
+  static normalizeUrl(link) {
+    if (link) {
+      const uri = new URI(link);
+      if (!uri.is('domain') && !link.startsWith('/')) {
+        return DEFAULT_PROTOCOL + link;
+      }
+    }
+    return link;
+  }
+
   static getSecureLink(link) {
-    let data = { link };
+    let data = { link: Utils.normalizeUrl(link) };
 
     if (data.link && Utils.isOuterLink(data.link)) {
       data = { onClick: Utils.confirmOuterLink.bind(null, [data.link]) };

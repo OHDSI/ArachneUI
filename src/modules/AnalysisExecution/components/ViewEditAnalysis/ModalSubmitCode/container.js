@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -57,6 +57,7 @@ function mapStateToProps(state) {
   }
   const isAllSelected = dataSourceOptions.length === selectedDN.length;
   const currentQuery = state.routing.locationBeforeTransitions.query;
+  const initialValues = selectors.getLastSources(state);
 
   return {
     analysisId: get(analysisData, 'id'),
@@ -65,6 +66,7 @@ function mapStateToProps(state) {
     isOpened,
     isAllSelected,
     page: get(currentQuery, 'page', 1),
+    initialValues,
   };
 }
 
@@ -129,6 +131,7 @@ let ReduxModalCreateCode = ModalUtils.connect({
 
 ReduxModalCreateCode = reduxForm({
   form: form.submitCode,
+  enableReinitialize: true,
 })(ReduxModalCreateCode);
 
 export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(ReduxModalCreateCode);

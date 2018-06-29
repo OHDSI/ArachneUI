@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -36,7 +36,7 @@ export default class ListDataSourcesBuilder {
   }
 
   mapStateToProps(state) {
-    const studyData = get(state, 'studyManager.study.data.result');
+    const studyData = get(state, 'studyManager.study.data');
 
     return {
       studyId: get(studyData, 'id'),
@@ -67,7 +67,7 @@ export default class ListDataSourcesBuilder {
       addDataSource(dataSourceId) {
         dispatchProps
           .addDataSource({ studyId: stateProps.studyId, dataSourceId })
-          .then(() => dispatchProps.loadStudy(stateProps.studyId));
+          .then(() => dispatchProps.loadStudy({ id: stateProps.studyId }));
       },
       removeDataSource(dataSourceId, title) {
         Utils.confirmDelete({
@@ -76,7 +76,7 @@ export default class ListDataSourcesBuilder {
           .then(() => {
             dispatchProps
               .removeDataSource({ studyId: stateProps.studyId, dataSourceId })
-              .then(() => dispatchProps.loadStudy(stateProps.studyId));
+              .then(() => dispatchProps.loadStudy({ id: stateProps.studyId }));
           });
       },
       editDataSource(dataSourceId) {

@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,10 +16,36 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: January 24, 2017
+ * Created: October 05, 2017
  *
  */
 
-import MenuDropdownBuilder from './container';
+import { types as fieldTypes } from 'const/modelAttributes';
 
-export default new MenuDropdownBuilder().build();
+export default function getFields(props) {
+  return [
+    {
+      label: 'Enabled',
+      name: 'enabled',
+      type: fieldTypes.toggle,
+      forceOpened: true,
+      hasTitle: false
+    },
+    {
+      label: 'E-mail confirm',
+      name: 'emailConfirmed',
+      type: fieldTypes.toggle,
+      forceOpened: true,
+      hasTitle: false
+    },
+    {
+      label: 'Tenant',
+      name: 'tenantIds',
+      type: fieldTypes.enum,
+      isMulti: true,
+      forceOpened: true,
+      hasTitle: true,
+      options: props.tenantOptions,
+    }
+  ];
+}

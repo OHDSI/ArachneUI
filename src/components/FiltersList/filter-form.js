@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -82,7 +82,19 @@ class Filter extends Component {
         .forEach((filterName) => {
           let nextFilterValue = get(nextProps.selectedFilters, filterName, [], 'Array|Boolean|String');
           const existingFilterValue = get(this.props.selectedFilters, filterName, [], 'Array|Boolean|String');
-          selectedFilters[filterName] = SelectFilters.clearOnEmptyOptionFilter(existingFilterValue, nextFilterValue);
+          if (Array.isArray(existingFilterValue) && Array.isArray(nextFilterValue)) {
+            if (existingFilterValue.includes(anyOptionValue)) {
+              // 'Any' option had been previously selected, then just ignore it
+              nextFilterValue = nextFilterValue.filter(value => value !== anyOptionValue);
+            } else if (nextFilterValue.includes(anyOptionValue)) {
+              // We're just selected it, cancel all other selected options
+              return false;
+            }
+          } else if (nextFilterValue === anyOptionValue) {
+            nextFilterValue = null;
+          }
+          
+          selectedFilters[filterName] = nextFilterValue;
         });
 
       const searchParams = buildSearchParams({

@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,6 +25,8 @@ import React from 'react';
 import ducks from './ducks';
 import AboutInfo from './components/AboutInfo/index';
 import SearchInput from './components/Search/NavbarInput';
+import MenuDropdown from './components/MenuDropdown';
+import MenuUsername from './components/MenuDropdown/Username';
 
 require('./styles/index.scss');
 
@@ -40,6 +42,13 @@ if (__APP_TYPE_CENTRAL__) {
   module.menuItems = () => [
     <SearchInput />,
     <InvitationList />,
+    <MenuDropdown />,
+  ];
+}
+
+if (__APP_TYPE_NODE__) {
+  module.menuItems = () => [
+    <MenuUsername mods={['standalone']} />,
   ];
 }
 

@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,6 +25,7 @@ import BEMHelper from 'services/BemHelper';
 import { Avatar, Link } from 'arachne-ui-components';
 import { apiPaths, paths } from 'modules/ExpertFinder/const';
 import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
+import Username from './Username';
 
 require('./style.scss');
 
@@ -161,15 +162,7 @@ function MenuDropdown(props) {
           <Avatar img={apiPaths.myUserpic({ hash: props.hash })} />
         </div>
         <div {...classes('user-name')}>
-          {props.firstName &&
-            <span {...classes('user-name-part')}>{props.firstName}</span>
-          }
-          {props.middleName &&
-            <span {...classes('user-name-part')}>{props.middleName}</span>
-          }
-          {props.lastName &&
-            <span {...classes('user-name-part')}>{props.lastName}</span>
-          }
+          <Username />
         </div>
         <span {...classes('arrow')}>play_arrow</span>
       </DropdownTrigger>
@@ -182,9 +175,6 @@ function MenuDropdown(props) {
 
 MenuDropdown.propTypes = {
   id: PropTypes.number,
-  firstName: PropTypes.string,
-  lastName: PropTypes.string,
-  middleName: PropTypes.string,
 };
 
 export default MenuDropdown;
