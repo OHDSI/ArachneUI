@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -40,6 +40,7 @@ const paths = {
 
 const apiPaths = {
   dataSources: ({ id }) => `/api/v1/data-sources${id ? `/${id}` : ''}`,
+  dataSourceKeytabs: ({ id }) => `/api/v1/data-sources${id ? `/${id}` : ''}/keytab`,
   dataSourceBusiness: ({ id }) => `/api/v1/data-sources/${id}/business`,
   registerDataSource: ({ id }) => `/api/v1/data-sources/${id}/register-on-central`,
   characterization: ({ datasourceId, limit }) =>
@@ -105,6 +106,11 @@ const characterizationStatuses = keyMirror({
   NOT_STARTED: null,
 });
 
+const kerberosAuthType = {
+  PASSWORD: 'PASSWORD',
+  KEYTAB: 'KEYTAB',
+};
+
 const pollTime = 5000;
 
 export {
@@ -116,4 +122,5 @@ export {
   cdmVersionList,
   characterizationStatuses,
   pollTime,
+  kerberosAuthType,
 };

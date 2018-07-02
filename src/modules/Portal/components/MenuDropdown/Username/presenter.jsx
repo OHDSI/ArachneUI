@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,22 +15,27 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: January 23, 2017
+ * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka
+ * Created: May 9, 2018
  *
  */
 
-import Duck from 'services/Duck';
-import { apiPaths } from 'modules/ExpertFinder/const';
+import React, { PropTypes } from 'react';
+import BEMHelper from 'services/BemHelper';
+import {
+  apiPaths as expertApiPaths
+} from 'modules/ExpertFinder/const';
 
-const coreName = 'EF_USER';
+require('./style.scss');
 
-const province = new Duck({
-  name: coreName,
-  urlBuilder: apiPaths.userSettings,
-});
+function Username({ mods, name }) {
+  const classes = new BEMHelper('profile-menu-username');
 
-export default {
-  actions: province.actions,
-  reducer: province.reducer,
-};
+  return (
+    <div>
+      <span {...classes({ modifiers: mods })}>{name}</span>
+    </div>
+  );
+}
+
+export default Username;

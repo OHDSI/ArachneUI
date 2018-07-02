@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -42,7 +42,7 @@
     color: $black;
     
     &:hover {
-      background: #F1F1F1;
+      background: $grey-ash;
     }
   }
 
@@ -63,9 +63,6 @@
     &__user-name {
     	cursor: pointer;
     	color: $white;
-    }
-
-    &__user-name-part {
     	margin-right: 0.5rem;
     }
 
@@ -162,7 +159,7 @@
       align-items: center;
       
       &:hover {
-        background: #F1F1F1;
+        background: $grey-ash;
       }
 
       padding: 1.25rem 1.5rem;
