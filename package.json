@@ -132,7 +132,8 @@
     "url-loader": "^0.5.9",
     "webpack-bundle-analyzer": "^2.9.1",
     "webpack-config-postcss": "^1.0.0-alpha.4",
-    "whatwg-fetch": "^1.0.0"
+    "whatwg-fetch": "^1.0.0",
+    "@ohdsi/ui-toolbox": "^1.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.17.0",

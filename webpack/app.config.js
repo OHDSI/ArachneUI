@@ -148,7 +148,7 @@ module.exports = function (env) {
       rules: [
         {
           test: /\.jsx?$/,
-          exclude: /(node_modules|ArachneUIComponents)/i,
+          exclude: /(node_modules|ArachneUIComponents|UIToolbox)/i,
           loaders: 'babel-loader',
           options: Object.assign(
             {},
