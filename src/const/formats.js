@@ -25,6 +25,7 @@ const shortDate = 'MM/D/YYYY hh:mma z';
 const usDateTime = 'MM/D/YY hh:mm:ss z';
 const usDateOnly = 'MM/D/YY';
 const humanDate = 'DD MMM YYYY';
+const chartTime = '%b %Y';
 
 export {
   commonDate,
@@ -32,4 +33,5 @@ export {
   usDateTime,
   usDateOnly,
   humanDate,
+  chartTime,
 };

@@ -24,10 +24,11 @@
 import { Component } from 'react';
 import actions from 'actions/index';
 import get from 'lodash/get';
-import { ContainerBuilder } from 'services/Utils';
+import Utils, { ContainerBuilder } from 'services/Utils';
 import isEmpty from 'lodash/isEmpty';
 import { ModalUtils } from 'arachne-ui-components';
-import { forms } from 'modules/DataCatalog/const';
+import { forms, dataSourcePermissions, paths } from 'modules/DataCatalog/const';
+import { push as goToPage } from 'react-router-redux';
 import Presenter from './presenter';
 import { modelTypesValues } from 'const/dataSource';
 
@@ -63,6 +64,8 @@ class DataCatalogEditBuilder extends ContainerBuilder {
     const isDenied = isEmpty(get(state, 'dataCatalog.dataSource.data.result', {}, 'Object'));
     const isVirtual = get(state, 'dataCatalog.dataSource.data.result.dataNode.virtual', false);
     const isCDM = get(state, 'dataCatalog.dataSource.data.result.modelType', '') === modelTypesValues.CDM;
+    const isDeleted = get(state, 'dataCatalog.dataSource.data.result.deleted', false) !== false;
+    const canDelete = get(permissions, dataSourcePermissions.delete, false) && !isDeleted;
   
     return {
       name: `${get(moduleState, 'dataSource.data.result.dataNode.name', '')}: ${get(moduleState, 'dataSource.data.result.name', '')}`,
@@ -74,6 +77,7 @@ class DataCatalogEditBuilder extends ContainerBuilder {
       isVirtual,
       isCDM,
       canUploadAchillesResults: isDatanodeRegistered && !isVirtual && isCDM && permissions.UPLOAD_ACHILLES_REPORTS,
+      canDelete,
     };
   }
 
@@ -81,6 +85,8 @@ class DataCatalogEditBuilder extends ContainerBuilder {
     return {
       loadDataSource: actions.dataCatalog.dataSource.find,
       showUploadForm: () => ModalUtils.actions.toggle(forms.modalStatsUpload, true),
+      remove: actions.dataCatalog.dataSource.delete,
+      goToPage,
     };
   }
 
@@ -97,7 +103,19 @@ class DataCatalogEditBuilder extends ContainerBuilder {
             dispatchProps.showUploadForm();
           }
         }
-      }
+      },
+      async remove() {
+        try {
+          await Utils.confirmDelete({
+            message: `Do you really want to delete ${stateProps.name}?`,
+          });
+          const dataSourceId = stateProps.dataSourceId;
+          await dispatchProps.remove({ id: dataSourceId });
+          await dispatchProps.goToPage(paths.dataCatalog());
+        } catch (er) {
+          console.error(er);
+        }
+      },
     };
   }
 

@@ -57,6 +57,7 @@ export default class FilesUploadBuilder {
       createCode: actions.analysisExecution.code.create,
       loadAnalysis: actions.analysisExecution.analysis.find,
       reset: () => resetForm(form.createCodeFiles),
+      showModalError: params => ModalUtils.actions.toggle(modal.modalError, true, params),
     };
   }
 
@@ -71,21 +72,28 @@ export default class FilesUploadBuilder {
           data = data.concat(files);
         }
 
-        const submitPromises = data.map(file =>
-          dispatchProps.createCode(
+        const fd = new FormData();
+          data.map(file => {
+              fd.append("files", file, file.label);
+          });
+
+        const submitPromise = dispatchProps.createCode(
             { analysisId: stateProps.analysisId },
-            buildFormData({
-              label: file.label,
-              file,
-            })
-          )
+            fd
         );
 
-        const submitPromise = Promise.all(submitPromises);
         submitPromise.then(() => dispatchProps.reset())
           .then(() => dispatchProps.closeModal())
           .then(() => dispatchProps.loadAnalysis({ id: stateProps.analysisId }))
-          .catch(() => {});
+          .catch((error) => {
+            const errors = get(error, 'errors.file');
+            if (errors) {
+              dispatchProps.showModalError({
+                title: 'Unsuccessful upload',
+                errors,
+              });
+            }
+          });
 
         // We have to return a submission promise back to redux-form
         // to allow it update the state

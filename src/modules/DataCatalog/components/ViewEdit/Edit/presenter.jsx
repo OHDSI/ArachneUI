@@ -54,6 +54,8 @@ class Edit {
       isCDM,
       showUploadForm,
       canUploadAchillesResults,
+      canDelete,
+      remove,
     } = props;
 
     return (
@@ -68,6 +70,11 @@ class Edit {
                   mods={['rounded', 'submit']}
                   onClick={showUploadForm}
                 />
+                {canDelete &&
+                  <Button onClick={remove} {...classes('delete-button')}>
+                    delete
+                  </Button>
+                }
               </Toolbar>,
               <div {...classes('content')}>
                 <div className="row">

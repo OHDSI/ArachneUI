@@ -61,8 +61,8 @@ function AddDataCatalogSource(props) {
         options: [],
         fetchOptions: props.loadDataSourceOptions,
         clearable: false,
-        onSelectResetsInput: true,
-        onBlurResetsInput: true,
+        onSelectResetsInput: false,
+        onBlurResetsInput: false,
       },
     },
   };
@@ -70,7 +70,9 @@ function AddDataCatalogSource(props) {
   return (
 		<div {...classes({ modifiers: { 'has-options': props.dataSourceOptions.length } })}>
       <form {...props} onSubmit={props.handleSubmit(props.doSubmit)}>
-        <Field component={Fieldset} {...filterField} />
+        {props.isOpened &&
+          <Field component={Fieldset} {...filterField} />
+        }
         <div {...classes('data-sources')}>
           {props.dataSourceOptions.map(option => {
             const ds = {

@@ -22,6 +22,7 @@
 
 import errors from 'const/errors';
 import isEqual from 'lodash/isEqual';
+import reduce from 'lodash/reduce';
 import _get from 'lodash/get';
 import { types as fieldTypes } from 'const/modelAttributes';
 import mimeTypes from 'const/mimeTypes';
@@ -140,6 +141,24 @@ function get(from, path, defaultVal, typeCheckRule) {
   }
 
   return result;
+}
+
+const anyOptionValue = '';
+
+function addAnyOption(field, optionLabel) {
+  if (field.type === types.enum || field.type === types.enumMulti) {
+    return {
+      ...field,
+      options: [
+        {
+          label: optionLabel,
+          value: anyOptionValue,
+        },
+        ...field.options,
+      ],
+    };
+  }
+  return field;
 }
 
 function getFormSelectedCheckboxes(selection = {}) {
@@ -342,35 +361,38 @@ class Utils {
       .filter(setting => !Utils.isEmpty(setting))
       .length;
   }
-  
-  static prepareFilterValues(query, fieldsSpecification = []) {
+
+  static plainDiff(a, b) {
+    return reduce(a, function(result, value, key) {
+        return isEqual(value, b[key]) ?
+            result : result.concat(key);
+    }, []);
+  }
+
+  static prepareFilterValues(query, fieldsSpecification = [], defaultVals = {}) {
     const initialValues = {};
     const fieldsMap = {};
-    fieldsSpecification.forEach((field) => {
-      fieldsMap[field.name] = field;
-    });
-    Object.keys(query).forEach((paramName) => {
-      const field = fieldsMap[paramName];
-      const paramValue = query[paramName];
-      if (!field) {
-        return false;
-      }
-      switch (field.type) {
-        case fieldTypes.enum:
-          if (field.isMulti) {
-            initialValues[field.name] = Array.isArray(paramValue) ? paramValue : (typeof paramValue === 'object' ? Object.values(paramValue) : [paramValue]);
-          } else {
+
+    fieldsSpecification.forEach(field => {
+      if (typeof query[field.name] !== undefined || defaultVals[field.name] !== undefined) {
+        const paramValue = query[field.name] || defaultVals[field.name];
+        switch (field.type) {
+          case fieldTypes.enum:
+            if (field.isMulti) {
+              initialValues[field.name] = Array.isArray(paramValue) ? paramValue : ((typeof paramValue === 'object' && paramValue !== null) ? Object.values(paramValue) : [paramValue]);
+            } else {
+              initialValues[field.name] = paramValue;
+            }
+            break;
+          case fieldTypes.toggle:
+            initialValues[field.name] = !!paramValue;
+            break;
+          default:
             initialValues[field.name] = paramValue;
-          }
-          break;
-        case fieldTypes.toggle:
-          initialValues[field.name] = !!paramValue;
-          break;
-        default:
-          initialValues[field.name] = paramValue;
-          break;
+            break;
+        }
       }
-    });
+    })
 
     return initialValues;
   }
@@ -592,4 +614,6 @@ export {
   Utils,
   ContainerBuilder,
   TreemapSelectorsBuilder,
+  addAnyOption,
+  anyOptionValue,
 };

@@ -60,7 +60,7 @@ function DataSourcesTable(props) {
             return <CellName
               {...tableClasses('ds-name', '', tableClasses('meta').className)}
               header={col.label}
-              field={col.name}
+              field={'dataNode,name'}
               props={dataSource => ({ dataSource })}
             />
           }

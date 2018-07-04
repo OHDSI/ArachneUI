@@ -48,6 +48,7 @@ if (canUseDom()) {
     Person: require('./Reports/Person').default,
     Procedures: require('./Reports/Procedures').default,
     Visits: require('./Reports/Visits').default,
+    Measurement: require('./Reports/Measurement').default,
   }
 }
 
@@ -110,6 +111,9 @@ function Report(props) {
       }
       {reports.Visits && selectedReport === reportConst.visits &&
         <reports.Visits dataSourceId={dataSourceId} />
+      }
+      {reports.Visits && selectedReport === reportConst.measurement &&
+        <reports.Measurement dataSourceId={dataSourceId} />
       }
       {reports.Achillesheel && selectedReport === reportConst.achillesheel &&
         <reports.Achillesheel />

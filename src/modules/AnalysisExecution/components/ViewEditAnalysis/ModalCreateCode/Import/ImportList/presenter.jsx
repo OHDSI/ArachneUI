@@ -23,7 +23,7 @@
 import React from 'react';
 import BEMHelper from 'services/BemHelper';
 import { Field } from 'redux-form';
-import { Button, FormCheckbox, ListItem } from 'arachne-ui-components';
+import { Button, RadioButton, ListItem, Fieldset } from 'arachne-ui-components';
 import ProgressDots from 'components/ProgressDots';
 import { nameAnalysisType } from 'modules/AnalysisExecution/const';
 import Fuse from 'fuse.js';
@@ -32,6 +32,18 @@ import { VirtualList } from 'components/VirtualScroller';
 
 require('./style.scss');
 const classes = new BEMHelper('code-import-list');
+
+function FormRadioButton({ input, options }) {
+  return (
+    <RadioButton
+      {...classes('import-entity')}
+      isChecked={options.isChecked}
+      onChange={e => input.onChange(e.target.value)}
+      label={options.label}
+      value={options.value}
+    />
+  );
+}
 
 function ImportList(props) {
   const {
@@ -45,6 +57,7 @@ function ImportList(props) {
     analysisType,
     filterText,
     filter,
+    selectedEntities,
     /* redux-forms */
     handleSubmit,
     submitting,
@@ -109,11 +122,18 @@ function ImportList(props) {
           data={filteredEntities}
           rowRenderer={({ value }) => (
             <Field
-              component={FormCheckbox}
-              options={{
-                label: value.name,
+              component={Fieldset}
+              InputComponent={{
+                component: FormRadioButton,
+                props: {
+                  options: {
+                    label: value.name,
+                    isChecked: value.selected,
+                    value: value.guid,
+                  },
+                },
               }}
-              name={`entities[${value.guid}]`}
+              name={'entity'}
             />
           )}
         />

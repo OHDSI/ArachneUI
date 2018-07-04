@@ -32,6 +32,8 @@ import {
 } from 'arachne-ui-components';
 import { fieldTypes } from 'modules/ExpertFinder/const';
 import { immutableAttributes, fieldHints, attributeNames } from 'const/dataSource';
+import { addAnyOption } from 'services/Utils';
+import { FilterFormSelect } from 'components/FiltersList/presenter';
 
 require('./style.scss');
 
@@ -79,14 +81,15 @@ export function AttributesFormListItem({
   } else {
     switch (item.type) {
       case fieldTypes.enum:
-        case fieldTypes.enumMulti:
-        field = (<FormSelect
-          options={item.options}
+      case fieldTypes.enumMulti:
+        field = (<FilterFormSelect
+          options={!item.isRequired ? addAnyOption(item, 'None').options : item.options}
           mods={['bordered']}
           input={input}
           meta={meta}
           isMulti={item.type === fieldTypes.enumMulti}
           disabled={disabled}
+          placeholder={'None'}
         />);
         break;
       case fieldTypes.string:

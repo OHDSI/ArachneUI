@@ -26,14 +26,22 @@ import get from 'lodash/get';
 
 import actions from 'actions/index';
 import { ModalUtils } from 'arachne-ui-components';
-import { modal, form, submissionActionTypes } from 'modules/AnalysisExecution/const';
+import { modal, form, submissionActionTypes, paths, submissionFilters, submissionStatuses, submissionGroupsPageSize } from 'modules/AnalysisExecution/const';
 import ModalRejectSubmission from './presenter';
+import SelectorsBuilder from 'modules/AnalysisExecution/components/ViewEditAnalysis/ListSubmissions/selectors';
+import { getFilter } from 'modules/AnalysisExecution/components/ViewEditAnalysis/container';
+
+const selectors = (new SelectorsBuilder()).build();
 
 function mapStateToProps(state) {
+  const search = get(state, 'routing.locationBeforeTransitions.search');
+  const { number, totalPages } = selectors.getPagingData(state);
   return {
     submissionId: get(state, `modal.${modal.rejectSubmission}.data.submissionId`),
     analysisId: get(state, `modal.${modal.rejectSubmission}.data.analysisId`),
     type: get(state, `modal.${modal.rejectSubmission}.data.type`),
+    page: number + 1,
+    filter: getFilter(search),
   };
 }
 
@@ -43,6 +51,10 @@ const mapDispatchToProps = {
   changeExecutionStatus: actions.analysisExecution.executionStatus.create,
   changePublishStatus: actions.analysisExecution.publishStatus.create,
   loadAnalysis: actions.analysisExecution.analysis.find,
+  loadSubmissionGroups: ({ page = 1, analysisId, filter }) => {
+    const pageSize = submissionGroupsPageSize;
+    return actions.analysisExecution.submissionGroups.query({ page, pageSize, analysisId, filter });
+  },
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
@@ -50,39 +62,43 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...ownProps,
     ...stateProps,
     ...dispatchProps,
-    doSubmit({ comment }) {
+    async doSubmit({ comment }) {
       let submitPromise;
-      switch (stateProps.type) {
-        case submissionActionTypes.EXECUTE:
-          submitPromise = dispatchProps.changeExecutionStatus(
-            {
-              submissionId: stateProps.submissionId,
-            },
-            {
-              id: stateProps.submissionId,
-              isApproved: false,
-              comment,
-            });
-          break;
-        case submissionActionTypes.PUBLISH:
-          submitPromise = dispatchProps.changePublishStatus(
-            {
-              submissionId: stateProps.submissionId,
-            },
-            {
-              id: stateProps.submissionId,
-              isApproved: false,
-              comment,
-            });
-          break;
+      try {
+        switch (stateProps.type) {
+          case submissionActionTypes.EXECUTE:
+            submitPromise = await dispatchProps.changeExecutionStatus(
+              {
+                submissionId: stateProps.submissionId,
+              },
+              {
+                id: stateProps.submissionId,
+                isApproved: false,
+                comment,
+              });
+            break;
+          case submissionActionTypes.PUBLISH:
+            submitPromise = await dispatchProps.changePublishStatus(
+              {
+                submissionId: stateProps.submissionId,
+              },
+              {
+                id: stateProps.submissionId,
+                isApproved: false,
+                comment,
+              });
+            break;
+        }
+        dispatchProps.loadSubmissionGroups({
+          analysisId: stateProps.analysisId,
+          page: stateProps.page,
+          filter: stateProps.filter,
+        });
+        dispatchProps.closeModal();
+        dispatchProps.resetForm();
+        dispatchProps.loadAnalysis({ id: stateProps.analysisId }, true);
+      } catch (er) {
       }
-
-      submitPromise
-        .then(() => dispatchProps.closeModal())
-        .then(() => dispatchProps.resetForm())
-        .then(() => dispatchProps.loadAnalysis({ id: stateProps.analysisId }, true))
-        .catch(() => {});
-
       return submitPromise;
     },
   };

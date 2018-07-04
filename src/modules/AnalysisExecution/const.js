@@ -36,6 +36,7 @@ const modal = keyMirror({
   uploadResult: null,
   rejectSubmission: null,
   submissionsTableFilter: null,
+  modalError: null,
 });
 
 const form = keyMirror({
