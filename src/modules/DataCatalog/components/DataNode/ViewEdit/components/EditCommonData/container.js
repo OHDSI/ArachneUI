@@ -51,9 +51,11 @@ export default class EditCommonDataBuilder extends ContainerBuilder {
  
   mapStateToProps(state, ownProps) {
     const createdOrganization = selectors.getNewOrganization(state);
+    const organizations = selectors.getOrganizationOptions(state);
 
     return {
       createdOrganization,
+      organizations,
       initialValues: {
         description: ownProps.description,
         organization: get(ownProps, 'organization.id', -1),
@@ -77,10 +79,17 @@ export default class EditCommonDataBuilder extends ContainerBuilder {
       ...stateProps,
       ...dispatchProps,
       async doSubmit(data) {
-        const organization = {
-          id: data.organization === -1 ? null : data.organization,
-          name: data.organization === -1 ? stateProps.createdOrganization.name : null,
-        };
+        let organization = {};
+        if (data.organization === -1) {
+          organization = {
+            id: null,
+            name: stateProps.createdOrganization.name,
+          };
+        } else {
+          const { value: id, label: name } = stateProps.organizations.find(org => org.value === data.organization);
+          organization = { id, name };
+        }
+          
         const dataNode = await dispatchProps.update({ id: ownProps.datanodeId },
           {
             description: data.description,
