@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2018 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -144,7 +144,7 @@ function get(from, path, defaultVal, typeCheckRule) {
   return result;
 }
 
-const anyOptionValue = 'anyOptionValue';
+const anyOptionValue = '';
 
 function addAnyOption(field, optionLabel) {
   if (field.type === types.enum || field.type === types.enumMulti) {
@@ -379,12 +379,12 @@ class Utils {
     const fieldsMap = {};
 
     fieldsSpecification.forEach(field => {
-      if (query[field.name] || defaultVals[field.name]) {
+      if (typeof query[field.name] !== undefined || defaultVals[field.name] !== undefined) {
         const paramValue = query[field.name] || defaultVals[field.name];
         switch (field.type) {
           case fieldTypes.enum:
             if (field.isMulti) {
-              initialValues[field.name] = Array.isArray(paramValue) ? paramValue : (typeof paramValue === 'object' ? Object.values(paramValue) : [paramValue]);
+              initialValues[field.name] = Array.isArray(paramValue) ? paramValue : ((typeof paramValue === 'object' && paramValue !== null) ? Object.values(paramValue) : [paramValue]);
             } else {
               initialValues[field.name] = paramValue;
             }

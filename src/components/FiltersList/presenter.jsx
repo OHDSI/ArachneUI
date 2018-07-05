@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2018 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,6 +28,7 @@ import {
   Panel,
   Form,
   Select,
+  SelectFilters,
   FormToggle,
   FormSlider,
   FormInput,
@@ -62,7 +63,10 @@ export function FilterFormSelect(props) {
     disabled={meta.submitting || disabled}
     onFocus={() => input.onFocus()}
     onBlur={() => input.onBlur()}
-    onChange={val => input.onChange(val)}
+    onChange={val => {
+      return input.onChange(val)
+    }}
+    valuesFilter={SelectFilters.clearOnEmptyOptionFilter}
   />;
 }
 

@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2018 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,6 +26,7 @@ import { connect } from 'react-redux';
 import get from 'lodash/get';
 import { reportFilenames, paths } from 'modules/DataCatalog/const';
 import { push as goToPage } from 'react-router-redux';
+import sortBy from 'lodash/sortBy';
 import presenter from './presenter';
 
 class Report extends Component {
@@ -106,7 +107,8 @@ Report.propTypes = {
 };
 
 function mapStateToProps(state, ownProps) {
-  const list = get(state, 'dataCatalog.report.queryResult.result', []) || [];
+  const unsortedList = get(state, 'dataCatalog.report.queryResult.result', []) || [];
+  const list = sortBy(unsortedList, ['name']);
   const characterization = get(state, 'dataCatalog.characterization.data.result.files', []) || [];
   const isLoading = get(state, 'dataCatalog.characterization.isLoading', false)
         || get(state, 'dataCatalog.report.isLoading', false)

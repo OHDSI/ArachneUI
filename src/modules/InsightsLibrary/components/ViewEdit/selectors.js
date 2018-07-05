@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2018 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,6 +25,7 @@ import { createSelector } from 'reselect';
 import { get } from 'services/Utils';
 import moment from 'moment-timezone';
 import { humanDate } from 'const/formats';
+import { participantStatuses } from 'modules/StudyManager/const';
 import { apiPaths, paperFileType, paths } from 'modules/InsightsLibrary/const';
 import fileConverter from 'components/FileInfo/converter';
 import { dsConverter } from 'components/LabelDataSource';
@@ -59,7 +60,7 @@ export default class SelectorsBuilder {
       id: entity.id,
       studyTitle: get(entity, 'study.title'),
       objective: get(entity, 'study.description'),
-      leadList: (get(entity, 'study.studyLeads') || []).map(this.userConverter),
+      leadList: (get(entity, 'study.studyLeads') || []).filter(p => p.status === participantStatuses.APPROVED).map(this.userConverter),
       participants: (get(entity, 'study.studyParticipants') || []).map(this.extendedUserConverter),
       dataSourceList: (get(entity, 'study.studyDataSources') || []).map(v => ({
         ...v,
