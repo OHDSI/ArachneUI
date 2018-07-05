@@ -28,6 +28,7 @@ const forms = keyMirror({
   downloadSettings: null,
   bundle: null,
   notifications: null,
+  licenses: null,
 });
 
 const modal = keyMirror({
@@ -36,6 +37,7 @@ const modal = keyMirror({
   requestLicense: null,
   confirmLicense: null,
   notifications: null,
+  licenses: null,
 });
 
 const actionTypes = keyMirror({
@@ -48,7 +50,7 @@ const paths = {
 };
 
 const apiPaths = {
-
+  availability: id => `/vocabularies/check/${id}`,
 };
 
 const resultsPageSize = 15;

@@ -20,10 +20,10 @@
  *
  */
 
-import API from 'services/Api';
+import API, { ohdsiApi } from 'services/Api';
 import services from '../apiServices';
 
-import { actionTypes } from 'modules/Vocabulary/const';
+import { actionTypes, apiPaths } from 'modules/Vocabulary/const';
 import { IAppAction } from 'actions';
 
 type DownloadParams = {
@@ -45,6 +45,12 @@ function toggleAllVocabs(value: boolean) {
   return (dispatch: Function) => dispatch(toggleVocabsList(value));
 }
 
+function checkBundleAvailability(id: string) {
+  return (dispatch: Function) => {
+    return ohdsiApi.doGet(apiPaths.availability(id));
+  };
+}
+
 function requestDownload(downloadParams: DownloadParams) {
 	return services.download.find({ query: downloadParams });
 }
@@ -63,5 +69,6 @@ export default {
   requestDownload,
   requestNotification,
   getNotifications,
+  checkBundleAvailability,
 };
 export { DownloadParams };

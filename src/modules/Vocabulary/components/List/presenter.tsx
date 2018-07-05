@@ -37,6 +37,7 @@ require('./style.scss');
 
 interface IListStateProps {
   isLoading: boolean;
+  predefinedVocabs: Array<string>;
 };
 interface IListDispatchProps {
   load: () => (dispatch: Function) => any;
@@ -44,13 +45,13 @@ interface IListDispatchProps {
 interface IListProps extends IListStateProps, IListDispatchProps {};
 
 function VocabsList(props: IListProps) {
-  const { isLoading } = props;
+  const { isLoading, predefinedVocabs } = props;
   const classes = BEMHelper('vocabs');
 
   return (    
     <div {...classes()}>
       <ControlPanel />
-      <Results />
+      <Results predefinedVocabs={predefinedVocabs} />
       <ModalConfirmDownload />
       <ModalDownloadResult />
       <ModalRequestLicense />

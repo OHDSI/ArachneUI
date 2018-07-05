@@ -20,12 +20,15 @@
  *
  */
 
+import { Api as OHDSIApi } from '@ohdsi/ui-toolbox';
+import Auth from 'services/Auth';
 import { connect } from 'react-redux';
 import { Component } from 'react';
 import actions from 'modules/SearchTerms/actions';
 import { goBack, push } from 'react-router-redux';
 import { get, has } from 'lodash';
 import { paths } from 'modules/SearchTerms/const';
+import { paths as vocabularyPaths } from 'modules/Vocabulary/const';
 import {
   ITermProps,
   ITermStateProps,
@@ -53,6 +56,10 @@ class Term extends Component<ITermProps, { isFullscreen: boolean }> {
   }
 
   componentWillMount() {
+    const api = new OHDSIApi();
+    api.setAuthTokenHeader('Athena-Auth-Token');
+    api.setUserTokenGetter(() => Auth.getAuthToken());
+    api.doGet('me');
     this.props.fetch(this.props.termId);
     this.props.fetchConceptAncestors(
       this.props.termId,
@@ -143,6 +150,7 @@ function mergeProps(
   dispatchProps: ITermDispatchProps,
   ownProps: ITermRoute,
  ): ITermProps {
+   // @ts-ignore
   return {
     ...stateProps,
     ...dispatchProps,
@@ -154,6 +162,14 @@ function mergeProps(
         ...stateProps.termFilters
       });
       return dispatchProps.redirect(address.href());
+    },
+    goToLicenses(vocabularyIds: Array<string>) {
+      const url = new URI(vocabularyPaths.vocabsList());
+      url.setSearch({
+        request: vocabularyIds,
+      });
+
+      dispatchProps.redirect(url.href());
     },
   };
 }

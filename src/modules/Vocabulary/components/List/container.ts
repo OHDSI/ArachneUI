@@ -27,6 +27,7 @@ import { get } from 'lodash';
 import presenter from './presenter';
 import { resultsPageSize } from 'modules/Vocabulary/const';
 import * as URI from 'urijs';
+import { isEmpty } from 'lodash';
 
 import {
 	IListStateProps,
@@ -44,10 +45,16 @@ class VocabsList extends Component<IListProps, void> {
 	}
 }
 
-function mapStateToProps(state: Object): IListStateProps {
+function mapStateToProps(state: Object, ownProps: any): IListStateProps {
+	let predefinedVocabs = get(ownProps.router.location.query, 'request', []);
+	if (!isEmpty(predefinedVocabs) && !Array.isArray(predefinedVocabs)) {
+		// if there's only one required license
+		predefinedVocabs = [predefinedVocabs];
+	}
 
 	return {
 		isLoading: get(state, 'vocabulary.vocabularies.isLoading', false),
+		predefinedVocabs,
 	};
 }
 

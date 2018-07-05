@@ -28,6 +28,7 @@ import { get } from 'lodash';
 import { push as goToPage } from 'react-router-redux';
 import { reduxForm, reset, FormProps, change as reduxFormChange } from 'redux-form';
 import { ModalUtils } from 'arachne-ui-components';
+import { isEmpty } from 'lodash';
 import presenter from './presenter';
 import selectors from './selectors';
 
@@ -35,18 +36,19 @@ import {
 	IResultsStateProps,
 	IResultsDispatchProps,
 	IResultsProps,
+	IResultsOwnProps,
 } from './presenter';
 import {
 	Vocabulary,
 } from './selectors';
 
-class Results extends Component<IResultsProps & FormProps<{}, {}, {}>, void> {
+class Results extends Component<IResultsProps & FormProps<{}, {}, {}> & IResultsOwnProps, void> {
 	render() {
 		return presenter(this.props);
 	}
 }
 
-function mapStateToProps(state: Object): IResultsStateProps {
+function mapStateToProps(state: Object, ownProps: any): IResultsStateProps {
 	let vocabularies = selectors.getVocabs(state);
 	let initialValues = {
 		vocabulary: [],
@@ -63,6 +65,13 @@ function mapStateToProps(state: Object): IResultsStateProps {
 			initialValues.vocabulary[`${vocabulary.id}`] = vocabulary.clickDefault;
 		}
 	});
+
+	if (!isEmpty(ownProps.predefinedVocabs)) {
+		initialValues.vocabulary = [];
+		ownProps.predefinedVocabs.forEach(vocabId => {
+			initialValues.vocabulary[vocabId] = true;
+		});
+	}
 
 	const values = get(state, `form.${forms.download}.values.vocabulary`, []) || [];
 
@@ -99,7 +108,8 @@ const mapDispatchToProps = {
 
 function mergeProps(
 	stateProps: IResultsStateProps,
-	dispatchProps: IResultsDispatchProps
+	dispatchProps: IResultsDispatchProps,
+	ownProps: IResultsOwnProps
 ): IResultsProps {
 	return {
 		...stateProps,
@@ -116,7 +126,7 @@ const ResultsForm = reduxForm({
 	enableReinitialize: true,
 })(Results);
 
-export default connect<IResultsStateProps, IResultsDispatchProps, {}>(
+export default connect<IResultsStateProps, IResultsDispatchProps, IResultsOwnProps>(
 	mapStateToProps,
 	mapDispatchToProps,
 	mergeProps

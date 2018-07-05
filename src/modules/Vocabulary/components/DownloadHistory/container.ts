@@ -26,7 +26,8 @@ import actions from 'modules/Vocabulary/actions';
 import { get } from 'lodash';
 import { modal } from 'modules/Vocabulary/const';
 import { ModalUtils } from 'arachne-ui-components';
-import presenter from './presenter';
+import FileSaver from 'file-saver';
+import presenter, { IDownloadRequest } from './presenter';
 import selectors from './selectors';
 
 import {
@@ -100,6 +101,8 @@ const mapDispatchToProps = {
 	remove: actions.history.remove,
 	restore: actions.history.restore,
 	showNotifications: () => ModalUtils.actions.toggle(modal.notifications, true),
+	checkAvailability: actions.download.checkBundleAvailability,
+	showRequestModal: (ids = []) => ModalUtils.actions.toggle(modal.licenses, true, ids),
 };
 
 function mergeProps(
@@ -116,8 +119,25 @@ function mergeProps(
 		},
 		restoreBundle: (id) => {
 			dispatchProps
-				.restore(id)
-				.then(dispatchProps.load);
+				.checkAvailability(id)
+				.then(({ accessible, vocabularyIds }) => {
+					if (accessible) {
+						dispatchProps.restore(id).then(dispatchProps.load);
+					} else {
+						dispatchProps.showRequestModal(vocabularyIds);
+					}
+				})
+		},
+		download(bundle: IDownloadRequest) {
+			dispatchProps
+				.checkAvailability(bundle.id)
+				.then(({ accessible, vocabularyIds }) => {
+					if (accessible) {
+						window.open(bundle.link, '_blank');
+					} else {
+						dispatchProps.showRequestModal(vocabularyIds);
+					}					
+				});
 		},
 	};
 }

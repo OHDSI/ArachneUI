@@ -27,10 +27,12 @@ import * as rest from 'feathers-rest-arachne/client';
 import * as superagent from 'superagent';
 import { get } from 'lodash';
 import { SubmissionError } from 'redux-form';
+import Auth from 'services/Auth';
+import { Api as OhdsiApi } from '@ohdsi/ui-toolbox';
 
 import { authTokenName } from 'const';
 
-
+const corePath = '/api/v1';
 let API = feathers();
 
 interface ApiConfig {
@@ -53,7 +55,7 @@ function configure(props: ApiConfig): Promise<any> {
   } = props;
 
   API = API
-    .configure(rest('/api/v1').superagent(superagent, {withCredentials: true}))
+    .configure(rest(corePath).superagent(superagent, {withCredentials: true}))
     .configure(hooks());
     //.configure(auth);
 
@@ -93,7 +95,14 @@ function configure(props: ApiConfig): Promise<any> {
   return new Promise((resolve) => {resolve();}); //API.authenticate({ strategy: 'token' }).catch(() => {}); // 
 }
 
+const ohdsiApi = new OhdsiApi();
+ohdsiApi.setApiHost(corePath);
+ohdsiApi.setAuthTokenHeader(authTokenName);
+ohdsiApi.setUserTokenGetter(() => Auth.getAuthToken());
+ohdsiApi.handleUnexpectedError = er => console.error('Oooops!.. Something went wrong :(');
+
 export default API;
 export {
   configure,
+  ohdsiApi,
 };
