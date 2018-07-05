@@ -21,6 +21,7 @@
  */
 
 import React from 'react';
+import keyMirror from 'keymirror';
 import {
   LoadingPanel,
   Form,
@@ -30,6 +31,11 @@ import { AttributesFormListItem } from '../AttributesList/presenter';
 
 import './style.scss';
 import { fieldTypes } from 'modules/ExpertFinder/const';
+
+export const DataNodeCreateModes = keyMirror({
+  CREATE: null,
+  EDIT: null,
+});
 
 function FormCreateDataNode(props) {
   const classes = new BEMHelper('data-node-list-form-create');
@@ -47,18 +53,21 @@ function FormCreateDataNode(props) {
     organizations = [],
     loadOrganizations = () => {},
     dataNodeExists,
+    onCancel,
+    mode = DataNodeCreateModes.CREATE,
   } = props;
 
-  const submitBtn = dataNodeExists ?
-    {
+  let submitBtn = {
+    label: `${mode === DataNodeCreateModes.CREATE ? 'Create' : 'Update'}`,
+    loadingLabel: `${mode === DataNodeCreateModes.CREATE ? 'Creating' : 'Updating'}`,
+  };
+  if (dataNodeExists) {
+    submitBtn = {
       label: 'Select',
       loadingLabel: 'Selecting...',
-      mods: ['success' , 'rounded'],
-    } :
-    {
-      label: 'Create',
-      loadingLabel: 'Creating...',
+      mods: ['success', 'rounded'],
     };
+  }
 
   const useAutocomplete = dataSourceId === undefined;
   const disabledAdditionalFields = dataNodeExists && dataSourceId === undefined;
@@ -78,22 +87,6 @@ function FormCreateDataNode(props) {
     onNewOptionClick: ({ value }) => createOrganization({ name: value }),
   };
   const fields = [
-    {
-      name: NODE_FIELD,
-      InputComponent: {
-        component: AttributesFormListItem,
-        props: {
-          item: {
-            name: '',
-            label: 'Name of data node',
-            type: fieldTypes.string,
-            isRequired: true,
-          },
-          useAutocomplete,
-          autocompleteOptions,
-        },
-      },
-    },
     {
       name: ORG_FIELD,
       InputComponent: {
@@ -127,14 +120,41 @@ function FormCreateDataNode(props) {
       },
     },
   ];
+  let cancelBtn = null;
+  if (mode === DataNodeCreateModes.CREATE) {
+    fields.unshift({
+      name: NODE_FIELD,
+      InputComponent: {
+        component: AttributesFormListItem,
+        props: {
+          item: {
+            name: '',
+            label: 'Name of data node',
+            type: fieldTypes.string,
+            isRequired: true,
+          },
+          useAutocomplete,
+          autocompleteOptions,
+        },
+      },
+    });
+  }
+  if (onCancel) {
+    cancelBtn = {
+      label: 'Cancel',
+    };
+  }
+
 
   return (
     <div title={'Create Data Node'} {...classes()}>
       <Form
         fields={fields}
         submitBtn={submitBtn}
+        cancelBtn={cancelBtn}
         mods={['no-spacing', 'actions-inline']}
         onSubmit={doSubmit}
+        onCancel={onCancel}
         {...props}
       />
       <LoadingPanel active={isLoading} />

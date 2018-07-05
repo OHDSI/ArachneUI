@@ -31,6 +31,9 @@ const forms = keyMirror({
   createDataNode: null,
   modalCreateDataSource: null,
   modalStatsUpload: null,
+  editDataNodeTitle: null,
+  editDataNode: null,
+  editCommonData: null,
 });
 
 const modal = keyMirror({
@@ -39,6 +42,7 @@ const modal = keyMirror({
   modalCreateDatanode: null,
   modalCreateDataSource: null,
   modalStatsUpload: null,
+  editDataNodeTitle: null,
 });
 
 const apiPaths = {
@@ -59,6 +63,7 @@ const apiPaths = {
   dataNode: ({ id }) => `/api/v1/data-nodes${id ? `/${id}` : ''}`,
   dataNodeCreate: () => `/api/v1/data-nodes/manual`,
   dataNodeOptions: () => `/api/v1/data-nodes/suggest`,
+  dataNodeSources: ({ id }) => `/api/v1/data-nodes/${id}/data-sources`,
   registerDataSource: ({ id }) => `/api/v1/data-sources/${id}/register-on-central`,
   registration: ({ id }) => `/api/v1/data-sources/${id}/registration`,
   dbmsTypes: () => '/api/v1/data-sources/dbms-types',
@@ -68,6 +73,7 @@ const apiPaths = {
 
 const paths = {
   dataCatalog: id => `/data-catalog/data-sources${id ? `/${id}` : ''}`,
+  dataNode: id => `/data-catalog/data-nodes${id ? `/${id}` : ''}`,
   studies: id => `/api/v1/study-management/studies${id ? `/${id}` : ''}`,
   myDatasources: () => '/data-catalog/my-data-sources',
   edit: id => `/data-catalog/data-sources/${id}/edit`,
@@ -113,6 +119,11 @@ const dataSourcePermissions = {
   edit: 'EDIT_DATASOURCE',
 };
 
+const dataNodePermissions = {
+  create: 'CREATE_DATANODE',
+  edit: 'EDIT_DATANODE',
+};
+
 export {
   apiPaths,
   imgs,
@@ -123,4 +134,5 @@ export {
   chartSettings,
   defaultTrellisSet,
   dataSourcePermissions,
+  dataNodePermissions,
 };

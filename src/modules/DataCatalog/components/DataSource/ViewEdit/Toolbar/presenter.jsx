@@ -37,6 +37,8 @@ function ViewDataSourceToolbar({
   isDeleted,
   mode,
   children = null,
+  dataNodeId,
+  dataNodeName,
 }) {
   const classes = new BEMHelper('data-source-toolbar-caption');
   const tooltipClass = new BEMHelper('tooltip');
@@ -67,6 +69,10 @@ function ViewDataSourceToolbar({
     {
       link: paths.dataCatalog(),
       label: <span {...classes('breadcrumb')}>Data Catalog</span>,
+    },
+    {
+      link: paths.dataNode(dataNodeId),
+      label: <span>{dataNodeName}</span>,
     },
   ];
 

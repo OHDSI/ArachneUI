@@ -29,7 +29,7 @@ import {
   LoadingPanel,
 } from 'arachne-ui-components';
 import EmptyState from 'components/EmptyState';
-import Toolbar from 'modules/DataCatalog/components/ViewEdit/Toolbar';
+import Toolbar from 'modules/DataCatalog/components/DataSource/ViewEdit/Toolbar';
 import AttributesList from './AttributesList';
 import ModalInviteToStudy from './ModalInviteToStudy';
 import ModalConfirmDatasource from './ModalConfirmDatasource';

@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2018 Odysseus Data Services, inc.
+ * Copyright 2018 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,32 +15,22 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: April 21, 2017
+ * Authors: Alexander Saltykov
+ * Created: June 25, 2018
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+import Duck from 'services/Duck';
+import { apiPaths } from '../const';
 
-.#{$namespace} {
+const coreName = 'CSL_DATA_NODE_SOURCES';
 
-	&data-node-list-form-create {
-    width: 600px;
-    
-    & .#{$namespace} {
-      &form {
-        padding-top: 1rem;
-        
-        &__actions {
-          background: $grey-lighter;
-          justify-content: flex-end;
-          margin-top: 25px;
-          padding-bottom: 10px;
-          padding-top: 10px;
-          padding-right: 2rem;
-        }
-      }
-    }
-	}
+const dataNodeSources = new Duck({
+  name: coreName,
+  urlBuilder: apiPaths.dataNodeSources,
+});
 
-}
+export default {
+  actions: dataNodeSources.actions,
+  reducer: dataNodeSources.reducer,
+};

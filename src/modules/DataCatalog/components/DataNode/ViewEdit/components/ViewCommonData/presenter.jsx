@@ -1,6 +1,6 @@
 /*
   *
-  * Copyright 2018 Odysseus Data Services, inc.
+  * Copyright 2018 Observational Health Data Sciences and Informatics
   * Licensed under the Apache License, Version 2.0 (the "License");
   * you may not use this file except in compliance with the License.
   * You may obtain a copy of the License at
@@ -15,38 +15,36 @@
   *
   * Company: Odysseus Data Services, Inc.
   * Product Owner/Architecture: Gregory Klebanov
-  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
-  * Created: Wednesday, February 14, 2018 3:07 PM
+  * Authors: Alexander Saltykov
+  * Created: June 26, 2018
   *
   */
 
 import React from 'react';
-import { Modal } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
-import FormCreateDataNode from 'modules/DataCatalog/components/ViewEdit/Edit/FormCreateDataNode';
+import {
+  ListItem,
+} from 'arachne-ui-components';
 
 import './style.scss';
 
-function ModalCreateDatanode(props) {
-  const classes = new BEMHelper('modal-create-datanode');
-  const {
-    createDataNode,
-    createOrganization,
-    doSubmit,
-  } = props;
+function ViewCommonData({ description, organization }) {
+  const classes = new BEMHelper('view-common-data');
 
   return (
-    <Modal
-      modal={props.modal}
-      title="Create Data node"
-      mods={['no-padding']}
-      create
-    >
-      <div {...classes()}>
-        <FormCreateDataNode doSubmit={doSubmit} />
+    <div {...classes()}>
+      <ListItem>
+        <div {...classes('attribute')}>
+          <span {...classes('label')}>Organization</span>
+          <span>{organization.name}</span>
+        </div>
+      </ListItem>
+      <div {...classes('list-item')}>
+        <div {...classes('label', 'tall')}>Description</div>
+        <p>{description}</p>
       </div>
-    </Modal>
+    </div>
   );
 }
 
-export default ModalCreateDatanode;
+export default ViewCommonData;

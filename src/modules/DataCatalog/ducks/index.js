@@ -34,6 +34,7 @@ import dataNodeOptions from './dataNodeOptions';
 import registration from './registration';
 import dbmsTypes from './dbmsTypes';
 import organization from './organization';
+import dataNodeDataSources from './dataNodeDataSources';
 
 export default {
   actions: {
@@ -51,6 +52,7 @@ export default {
     registration: registration.actions,
     dbmsTypes: dbmsTypes.actions,
     organization: organization.actions,
+    dataNodeDataSources: dataNodeDataSources.actions,
   },
   reducer: {
     achillesResults: achillesResults.reducer,
@@ -67,5 +69,6 @@ export default {
     registration: registration.reducer,
     dbmsTypes: dbmsTypes.reducer,
     organization: organization.reducer,
+    dataNodeDataSources: dataNodeDataSources.reducer,
   },
 };
