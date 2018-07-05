@@ -207,6 +207,11 @@
       align-items: center;
       justify-content: center;
       flex: 1;
+      flex-direction: column;
+    }
+    
+    &__request-btn {
+        margin-top: 2rem;
     }
   }
 }

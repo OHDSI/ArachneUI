@@ -20,7 +20,6 @@
  *
  */
 
-import { Api as OHDSIApi } from '@ohdsi/ui-toolbox';
 import Auth from 'services/Auth';
 import { connect } from 'react-redux';
 import { Component } from 'react';
@@ -56,10 +55,6 @@ class Term extends Component<ITermProps, { isFullscreen: boolean }> {
   }
 
   componentWillMount() {
-    const api = new OHDSIApi();
-    api.setAuthTokenHeader('Athena-Auth-Token');
-    api.setUserTokenGetter(() => Auth.getAuthToken());
-    api.doGet('me');
     this.props.fetch(this.props.termId);
     this.props.fetchConceptAncestors(
       this.props.termId,

@@ -91,11 +91,17 @@ function Term(props: ITermProps) {
   } = props;
   const classes = BEMHelper('term');
 
-  if (!isLoading && details.accessible === false) {
+  if (!isLoading && get(details, 'accessible') === false) {
     return (
       <div {...classes('empty-state')}>
         <p>You don't have a required license to access this concept. Request a license on the Download page.</p>
-        <Button mods={['success']} onClick={() => goToLicenses(details.vocabularyIds)}>Request</Button>
+        <Button
+            {...classes('request-btn')}
+            mods={['rounded', 'success']}
+            onClick={() => goToLicenses(details.vocabularyIds)}
+        >
+            Request
+        </Button>
       </div>
     );
   }
