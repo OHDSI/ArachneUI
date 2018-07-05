@@ -28,7 +28,6 @@ const forms = keyMirror({
   downloadSettings: null,
   bundle: null,
   notifications: null,
-  licenses: null,
 });
 
 const modal = keyMirror({

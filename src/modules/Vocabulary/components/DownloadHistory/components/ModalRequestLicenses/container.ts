@@ -24,9 +24,8 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import actions from 'modules/Vocabulary/actions';
-import { reduxForm, change as reduxFormChange } from 'redux-form';
 import { ModalUtils } from 'arachne-ui-components';
-import { modal, forms, paths } from 'modules/Vocabulary/const';
+import { modal, paths } from 'modules/Vocabulary/const';
 import { get } from 'lodash';
 import selectors from 'modules/Vocabulary/components/List/components/Results/selectors';
 import presenter from './presenter';
@@ -42,7 +41,7 @@ class ModalRequestLicenses extends Component<IModalProps, {}> {
 function mapStateToProps(state: any): IModalStateProps {
   const licenses = get(state, `modal.${modal.licenses}.data`, []);
 
-	return {
+  return {
     licenses,
   };
 }
@@ -72,12 +71,11 @@ function mergeProps(
   };
 }
 
-let ReduxModalWindow = reduxForm({ form: forms.licenses })(ModalRequestLicenses);
-ReduxModalWindow = ModalUtils.connect({ name: modal.licenses })(ReduxModalWindow);
+let ReduxModalWindow =  ModalUtils.connect({ name: modal.licenses })(ModalRequestLicenses);
 
 export default connect<IModalStateProps, IModalDispatchProps, {}>(
-	mapStateToProps,
-	mapDispatchToProps,
-	mergeProps
+  mapStateToProps,
+  mapDispatchToProps,
+  mergeProps
 )
 (ReduxModalWindow);

@@ -22,53 +22,47 @@
 
 import * as React from 'react';
 import BEMHelper from 'services/BemHelper';
-import { Modal, ListItem, Button, LoadingPanel } from 'arachne-ui-components';
+import { Modal, Button } from 'arachne-ui-components';
 
 require('./style.scss');
 
-interface IVocab {
-	name: string;
-	id: number;
-};
-
 interface IModalStateProps {
-	licenses: Array<string>;
+  licenses: Array<string>;
 };
 
 interface IModalDispatchProps {
-	goToLicenses: Function;
+  goToLicenses: Function;
 };
 
 interface IModalProps extends IModalStateProps, IModalDispatchProps {
-	modal: string;
-	removeVocabulary: (id: number) => any;
+  modal: string;
+  removeVocabulary: (id: number) => any;
 };
 
 function ModalRequestLicenses(props: IModalProps) {
   const {
-		modal,
-		licenses,
-		goToLicenses,
+    modal,
+    licenses,
+    goToLicenses,
   } = props;
   const classes = BEMHelper('modal-licenses');
 
   return (
-  	<div {...classes()}>
-	    <Modal modal={modal} title='Licenses needed'>
-	      <p {...classes('message')}>
-					You need some licenses ({licenses.length}) in order to download this bundle. Please, request them on Download page. The required vocabularies will be pre-selected.
-				</p>
-	      <div {...classes('actions')}>
-		      <Button mods={['success']} onClick={goToLicenses}>Request</Button>
-	      </div>
-	    </Modal>
+    <div {...classes()}>
+      <Modal modal={modal} title='Licenses needed'>
+        <p {...classes('message')}>
+          You need some licenses ({licenses.length}) in order to download this bundle. Please, request them on Download page. The required vocabularies will be pre-selected.
+        </p>
+        <div {...classes('actions')}>
+          <Button mods={['success']} onClick={goToLicenses}>Request</Button>
+        </div>
+      </Modal>
     </div>);
 }
 
 export default ModalRequestLicenses;
 export {
-	IModalProps,
-	IModalStateProps,
-	IModalDispatchProps,
-	IVocab,
+  IModalProps,
+  IModalStateProps,
+  IModalDispatchProps,
 };

@@ -20,7 +20,6 @@
  *
  */
 
-import Auth from 'services/Auth';
 import { connect } from 'react-redux';
 import { Component } from 'react';
 import actions from 'modules/SearchTerms/actions';
