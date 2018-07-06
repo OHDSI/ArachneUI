@@ -86,7 +86,7 @@ function Skills(props) {
             onSubmit={props.doSubmit}
             submitBtnConfig={{
               ...submitBtnConfig,
-              disabled: props.skillValue === null || props.skillResult !== null,
+              disabled: props.skillValue === null,
             }}
             cancelBtnConfig={cancelBtnConfig}
             {...props}
