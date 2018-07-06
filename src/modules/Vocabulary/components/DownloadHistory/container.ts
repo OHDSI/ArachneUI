@@ -101,7 +101,7 @@ const mapDispatchToProps = {
   restore: actions.history.restore,
   showNotifications: () => ModalUtils.actions.toggle(modal.notifications, true),
   checkAvailability: actions.download.checkBundleAvailability,
-  showRequestModal: (ids = []) => ModalUtils.actions.toggle(modal.licenses, true, ids),
+  showRequestModal: (ids = [], message) => ModalUtils.actions.toggle(modal.licenses, true, { licenses: ids, message }),
 };
 
 function mergeProps(
@@ -123,7 +123,7 @@ function mergeProps(
           if (accessible) {
             dispatchProps.restore(id).then(dispatchProps.load);
           } else {
-            dispatchProps.showRequestModal(vocabularyIds);
+            dispatchProps.showRequestModal(vocabularyIds, 'restore');
           }
         })
     },
@@ -134,7 +134,7 @@ function mergeProps(
           if (accessible) {
             window.open(bundle.link, '_blank');
           } else {
-            dispatchProps.showRequestModal(vocabularyIds);
+            dispatchProps.showRequestModal(vocabularyIds, 'download');
           }					
         });
     },

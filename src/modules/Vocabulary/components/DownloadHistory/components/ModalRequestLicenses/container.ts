@@ -39,10 +39,12 @@ class ModalRequestLicenses extends Component<IModalProps, {}> {
 }
 
 function mapStateToProps(state: any): IModalStateProps {
-  const licenses = get(state, `modal.${modal.licenses}.data`, []);
+  const licenses = get(state, `modal.${modal.licenses}.data.licenses`, []);
+  const message = get(state, `modal.${modal.licenses}.data.message`, 'download');
 
   return {
     licenses,
+    message,
   };
 }
 

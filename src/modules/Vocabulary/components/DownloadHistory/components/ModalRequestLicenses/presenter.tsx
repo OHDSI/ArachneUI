@@ -28,6 +28,7 @@ require('./style.scss');
 
 interface IModalStateProps {
   licenses: Array<string>;
+  message: string;
 };
 
 interface IModalDispatchProps {
@@ -43,6 +44,7 @@ function ModalRequestLicenses(props: IModalProps) {
   const {
     modal,
     licenses,
+    message,
     goToLicenses,
   } = props;
   const classes = BEMHelper('modal-licenses');
@@ -51,7 +53,7 @@ function ModalRequestLicenses(props: IModalProps) {
     <div {...classes()}>
       <Modal modal={modal} title='Licenses needed'>
         <p {...classes('message')}>
-          You need some licenses ({licenses.length}) in order to download this bundle. Please, request them on Download page. The required vocabularies will be pre-selected.
+          You need some licenses ({licenses.length}) in order to {message} this bundle. Please, request them on Download page. The required vocabularies will be pre-selected.
         </p>
         <div {...classes('actions')}>
           <Button mods={['success']} onClick={goToLicenses}>Request</Button>
