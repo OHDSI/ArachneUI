@@ -32,9 +32,9 @@ import {
 
 require('./style.scss');
 
-function CellRemove({ id, removeUser }) {
+function CellRemove({ id, removeUser, name }) {
   return (
-    <Link onClick={() => removeUser(id)}>
+    <Link onClick={() => removeUser(id, name)}>
       <BadgedIcon icon="delete" />
     </Link>
   );
@@ -108,6 +108,7 @@ function AdminTable(props) {
           entity => ({
             id: entity.id,
             removeUser,
+            name: entity.name,
           })
         }
       />
