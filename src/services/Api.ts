@@ -28,7 +28,7 @@ import * as superagent from 'superagent';
 import { get } from 'lodash';
 import { SubmissionError } from 'redux-form';
 import Auth from 'services/Auth';
-import { Api as OhdsiApi } from '@ohdsi/ui-toolbox';
+import { Api as OhdsiApi } from 'ohdsi-ui-toolbox';
 
 import { authTokenName } from 'const';
 
