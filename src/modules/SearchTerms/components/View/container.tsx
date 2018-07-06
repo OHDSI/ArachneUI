@@ -26,6 +26,7 @@ import actions from 'modules/SearchTerms/actions';
 import { goBack, push } from 'react-router-redux';
 import { get, has } from 'lodash';
 import { paths } from 'modules/SearchTerms/const';
+import { paths as vocabularyPaths } from 'modules/Vocabulary/const';
 import {
   ITermProps,
   ITermStateProps,
@@ -143,6 +144,7 @@ function mergeProps(
   dispatchProps: ITermDispatchProps,
   ownProps: ITermRoute,
  ): ITermProps {
+   // @ts-ignore
   return {
     ...stateProps,
     ...dispatchProps,
@@ -154,6 +156,14 @@ function mergeProps(
         ...stateProps.termFilters
       });
       return dispatchProps.redirect(address.href());
+    },
+    goToLicenses(vocabularyIds: Array<string>) {
+      const url = new URI(vocabularyPaths.vocabsList());
+      url.setSearch({
+        request: vocabularyIds,
+      });
+
+      dispatchProps.redirect(url.href());
     },
   };
 }

@@ -90,6 +90,7 @@
     align-items: center;
 
     &__icon {
+      @include material-icon();
       margin-right: 1rem;
     }
   }

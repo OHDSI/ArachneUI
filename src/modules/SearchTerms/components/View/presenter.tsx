@@ -28,6 +28,7 @@ import {
   Link,
   ListItem,
   Tabs,
+  Button,
 } from 'arachne-ui-components';
 import { RouterAction } from 'react-router-redux';
 import BEMHelper from 'services/BemHelper';
@@ -69,6 +70,7 @@ interface ITermDispatchProps {
 interface ITermProps extends ITermStateProps, ITermDispatchProps {
   changeTab: (tab: string) => any;
   toggleFullscreen?: Function;
+  goToLicenses: Function;
 };
 
 function Term(props: ITermProps) {
@@ -85,8 +87,25 @@ function Term(props: ITermProps) {
     connectionsCount,
     isFullscreen,
     toggleFullscreen,
+    goToLicenses,
   } = props;
   const classes = BEMHelper('term');
+
+  if (!isLoading && get(details, 'accessible') === false) {
+    return (
+      <div {...classes('empty-state')}>
+        <p>You don't have a required license to access this concept. Request a license on the Download page.</p>
+        <Button
+            {...classes('request-btn')}
+            mods={['rounded', 'success']}
+            onClick={() => goToLicenses(details.vocabularyIds)}
+        >
+            Request
+        </Button>
+      </div>
+    );
+  }
+
   let title = 'Term connections';
   if (relationshipsCount) {
     title += ` (${relationshipsCount})`;

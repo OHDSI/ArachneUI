@@ -68,6 +68,10 @@ interface IResultsProps extends IResultsStateProps, IResultsDispatchProps {
   setSorting: Function;
 };
 
+interface IResultsOwnProps {
+  predefinedVocabs: Array<string>;
+};
+
 function DownloadCheckbox(props: IDownloadCheckboxProps) {
   const { options, /*redux-form*/ input } = props;
   return (<Checkbox
@@ -245,4 +249,5 @@ export {
   IResultsStateProps,
   IResultsDispatchProps,
   IResultsProps,
+  IResultsOwnProps,
 };

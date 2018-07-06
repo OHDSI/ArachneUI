@@ -200,5 +200,18 @@
       margin-right: 1rem;
       user-select: none;
     }
+
+    &__empty-state {
+      @include title();
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      flex-direction: column;
+    }
+    
+    &__request-btn {
+        margin-top: 2rem;
+    }
   }
 }
