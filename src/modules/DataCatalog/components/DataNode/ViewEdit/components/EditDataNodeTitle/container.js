@@ -28,7 +28,7 @@ import { form } from 'modules/DataCatalog/const';
 import { modal } from 'modules/DataCatalog/const';
 import { ModalUtils } from 'arachne-ui-components';
 import presenter from './presenter';
-import { DataNodeSelectors } from 'community/modules/DataCatalog/components/DataNode/ViewEdit/selectors';
+import { DataNodeSelectors } from 'modules/DataCatalog/components/DataNode/ViewEdit/selectors';
 
 const selectors = (new DataNodeSelectors()).build();
 
