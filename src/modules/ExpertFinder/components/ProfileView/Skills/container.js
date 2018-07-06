@@ -36,6 +36,8 @@ function mapStateToProps(state) {
   const isCreating = get(moduleState, 'skills.isSaving', false);
   const isLoading = get(moduleState, 'skills.isLoading', false);
   const skillsDictionary = get(moduleState, 'skills.queryResult.result', []);
+  const skillValue = get(state.form, 'skills.values.skill', null);
+  const skillResult = get(state.form, 'skills.values.skill.result', null);
 
   return {
     id,
@@ -44,6 +46,8 @@ function mapStateToProps(state) {
     skillsDictionary,
     editable,
     isCreating,
+    skillValue,
+    skillResult,
   };
 }
 
@@ -67,6 +71,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         name: skill.value,
       })
         .then(res => this.doSubmit({ skill: res.result.id }))
+        .then(() => Skills.formFields.InputComponent.props.placeholder = 'Add Skill (3 letters minimum)')
         .catch(() => {});
 
       return createPromise;

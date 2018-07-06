@@ -67,7 +67,7 @@ function Skills(props) {
     <Panel title="Skills" {...classes()}>
       {props.editable ?
         <div>
-          <div {...classes({ element: 'content', modifiers: {empty: !props.items.length} })}> 
+          <div {...classes({ element: 'content', modifiers: {empty: !props.items.length} })}>
             {!props.items.length &&
               <span>No skills yet</span>
             }
@@ -84,12 +84,15 @@ function Skills(props) {
             addButtonTitle="Add skill"
             formTitle="Add Skill"
             onSubmit={props.doSubmit}
-            submitBtnConfig={submitBtnConfig}
+            submitBtnConfig={{
+              ...submitBtnConfig,
+              disabled: props.skillValue === null || props.skillResult !== null,
+            }}
             cancelBtnConfig={cancelBtnConfig}
             {...props}
           />
         </div>
-        : 
+        :
         <div {...classes({ element: 'content', modifiers: {empty: !props.items.length} })}>
           {!props.items.length &&
             <span>No skills yet</span>
