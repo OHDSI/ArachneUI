@@ -80,8 +80,8 @@ class Filter extends Component {
       const selectedFilters = {};
       Object.keys(nextProps.selectedFilters)
         .forEach((filterName) => {
-          let nextFilterValue = get(nextProps.selectedFilters, filterName, [], 'Array|Boolean|String');
-          const existingFilterValue = get(this.props.selectedFilters, filterName, [], 'Array|Boolean|String');
+          let nextFilterValue = get(nextProps.selectedFilters, filterName, [], 'Array|Boolean|String|{to: Number, from: Number}');
+          const existingFilterValue = get(this.props.selectedFilters, filterName, [], 'Array|Boolean|String|{to: Number, from: Number}');
           selectedFilters[filterName] = SelectFilters.clearOnEmptyOptionFilter(existingFilterValue, nextFilterValue);
         });
 
