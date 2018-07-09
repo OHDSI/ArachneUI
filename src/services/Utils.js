@@ -376,18 +376,20 @@ class Utils {
 
   static prepareFilterValues(query, fieldsSpecification = [], defaultVals = {}) {
     const initialValues = {};
-    const fieldsMap = {};
 
-    fieldsSpecification.forEach(field => {
+    fieldsSpecification.forEach((field) => {
       if (typeof query[field.name] !== undefined || defaultVals[field.name] !== undefined) {
-        const paramValue = query[field.name] || defaultVals[field.name];
+        let paramValue = query[field.name] || defaultVals[field.name];
         switch (field.type) {
           case fieldTypes.enum:
-            if (field.isMulti) {
-              initialValues[field.name] = Array.isArray(paramValue) ? paramValue : ((typeof paramValue === 'object' && paramValue !== null) ? Object.values(paramValue) : [paramValue]);
-            } else {
-              initialValues[field.name] = paramValue;
+            if (!Array.isArray(paramValue)) {
+              if (typeof paramValue === 'object' && paramValue !== null) {
+                paramValue = Object.values(paramValue);
+              } else {
+                paramValue = [paramValue];
+              }
             }
+            initialValues[field.name] = paramValue;
             break;
           case fieldTypes.toggle:
             initialValues[field.name] = !!paramValue;
@@ -397,7 +399,7 @@ class Utils {
             break;
         }
       }
-    })
+    });
 
     return initialValues;
   }
