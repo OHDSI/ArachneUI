@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,6 +22,7 @@
 
 import * as numeral from 'numeral';
 import keyMirror = require('keymirror');
+import * as URI from 'urijs';
 
 numeral.register('locale', 'arachne', {
   delimiters: {
@@ -68,6 +69,13 @@ const numberFormatter = {
   },
 };
 
+const isOuterLink = function(link) {
+  const currentUri = new URI(window.location.href);
+  const givenUri = new URI(link);
+  return givenUri.domain().length !== 0 && currentUri.domain() !== givenUri.domain();
+}
+
 export {
   numberFormatter,
+  isOuterLink,
 };

@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,6 +28,7 @@ import {
   Link,
   ListItem,
   Tabs,
+  Button,
 } from 'arachne-ui-components';
 import { RouterAction } from 'react-router-redux';
 import BEMHelper from 'services/BemHelper';
@@ -40,6 +41,7 @@ import TermFiltersPanel from './components/Filters';
 import { paths } from 'modules/SearchTerms/const';
 import Dropdown from 'react-simple-dropdown';
 import { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
+import { isOuterLink } from 'services/Utils';
 
 require('./style.scss');
 
@@ -68,6 +70,7 @@ interface ITermDispatchProps {
 interface ITermProps extends ITermStateProps, ITermDispatchProps {
   changeTab: (tab: string) => any;
   toggleFullscreen?: Function;
+  goToLicenses: Function;
 };
 
 function Term(props: ITermProps) {
@@ -84,8 +87,25 @@ function Term(props: ITermProps) {
     connectionsCount,
     isFullscreen,
     toggleFullscreen,
+    goToLicenses,
   } = props;
   const classes = BEMHelper('term');
+
+  if (!isLoading && get(details, 'accessible') === false) {
+    return (
+      <div {...classes('empty-state')}>
+        <p>You don't have a required license to access this concept. Request a license on the Download page.</p>
+        <Button
+            {...classes('request-btn')}
+            mods={['rounded', 'success']}
+            onClick={() => goToLicenses(details.vocabularyIds)}
+        >
+            Request
+        </Button>
+      </div>
+    );
+  }
+
   let title = 'Term connections';
   if (relationshipsCount) {
     title += ` (${relationshipsCount})`;
@@ -110,13 +130,16 @@ function Term(props: ITermProps) {
     id: -1,
     name: '',
   });
-  const vocabularyReference = get(details, 'vocabularyReference', '')
+  const vocabularyReference = get(details, 'vocabularyReference', '');
   const description = <div {...classes('description-body')}>
     <ul {...classes('description-body-wrapper')}>
-      <li {...classes('description-line')}>{get(details, 'vocabularyName', '')}</li>
-      <li {...classes('description-line')}>{get(details, 'vocabularyVersion', '')}</li>
-      <li {...classes('description-line')}>
-        <Link to={vocabularyReference}>{vocabularyReference}</Link>
+      <li {...classes('description-line')} title={get(details, 'vocabularyName', '')}>{get(details, 'vocabularyName', '')}</li>
+      <li {...classes('description-line')} title={get(details, 'vocabularyVersion', '')}>{get(details, 'vocabularyVersion', '')}</li>
+      <li {...classes('description-line')} title={vocabularyReference}>
+        {isOuterLink(vocabularyReference)
+          ? <Link to={vocabularyReference}>{vocabularyReference}</Link>
+          : vocabularyReference
+        }
       </li>
     </ul>
   </div>;

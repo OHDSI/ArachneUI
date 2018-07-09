@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,6 +26,7 @@ import actions from 'modules/SearchTerms/actions';
 import { goBack, push } from 'react-router-redux';
 import { get, has } from 'lodash';
 import { paths } from 'modules/SearchTerms/const';
+import { paths as vocabularyPaths } from 'modules/Vocabulary/const';
 import {
   ITermProps,
   ITermStateProps,
@@ -33,6 +34,7 @@ import {
 } from './presenter';
 import { getTermFilters } from 'modules/SearchTerms/selectors';
 import * as URI from 'urijs';
+import { isEqual } from 'lodash';
 import presenter from './presenter';
 
 interface ITermRoute {
@@ -70,13 +72,9 @@ class Term extends Component<ITermProps, { isFullscreen: boolean }> {
         this.props.termFilters.levels,
         this.props.termFilters.zoomLevels
         );
-    } else if (this.props.termFilters.levels !== props.termFilters.levels) {
-      this.props.fetchConceptAncestors(
-        props.termId,
-        props.termFilters.levels,
-        props.termFilters.zoomLevel
-      );
-    } else if (this.props.termFilters.zoomLevel !== props.termFilters.zoomLevel) {
+    } else if (
+      !isEqual(this.props.termFilters.levels, props.termFilters.levels)
+      || !isEqual(this.props.termFilters.zoomLevel, props.termFilters.zoomLevel)) {
       this.props.fetchConceptAncestors(
         props.termId,
         props.termFilters.levels,
@@ -146,6 +144,7 @@ function mergeProps(
   dispatchProps: ITermDispatchProps,
   ownProps: ITermRoute,
  ): ITermProps {
+   // @ts-ignore
   return {
     ...stateProps,
     ...dispatchProps,
@@ -157,6 +156,14 @@ function mergeProps(
         ...stateProps.termFilters
       });
       return dispatchProps.redirect(address.href());
+    },
+    goToLicenses(vocabularyIds: Array<string>) {
+      const url = new URI(vocabularyPaths.vocabsList());
+      url.setSearch({
+        request: vocabularyIds,
+      });
+
+      dispatchProps.redirect(url.href());
     },
   };
 }

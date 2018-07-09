@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -96,6 +96,18 @@ function FormRegister(props) {
           mods: ['bordered'],
           placeholder: 'Password',
           type: 'password',
+          required: true,
+        },
+      },
+    },
+    {
+      name: 'organization',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Organization',
+          type: 'text',
           required: true,
         },
       },

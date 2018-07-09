@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -58,12 +58,13 @@ function mapStateToProps(state: Object): IResultStateProps {
   // query should be 3 letters min
   if(!searchLocation.query.query || searchLocation.query.query.length < 3) {
   	downloadLink.removeSearch('query');
-  }
+	}
+	const sortBy = get(searchLocation, 'query.sort', 'id');
 
 	return {
 		searchResults,
 		sorting: {
-			sortBy: selectors.getConceptFieldName(get(searchLocation, 'query.sort', '')),
+			sortBy: selectors.getConceptFieldName(sortBy) || sortBy, // use fallback when sorting is set to static fields like id
 			sortAsc: get(searchLocation, 'query.order') === 'asc',
 		},
 		searchLocation,
