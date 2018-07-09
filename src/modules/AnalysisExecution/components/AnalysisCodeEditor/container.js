@@ -75,7 +75,10 @@ function mapStateToProps(state, ownProps) {
   const createdAt = get(fileData, 'created');
   const language = detectLanguageByExtension(fileData);
   const isLoading = get(moduleState, 'analysisCode.isLoading') || get(state, 'studyManager.studyInvitations.isLoading');
-  const studyId = get(moduleState, 'analysis.data.result.study.id', -1);
+  
+  const studyData = get(moduleState, 'analysis.data.result.study');
+  const studyId = get(studyData, 'id', -1);
+  const studyKind = get(studyData, 'kind');
   const antivirusStatus = get(fileData, 'antivirusStatus', false);
   const antivirusDescription = get(fileData, 'antivirusDescription');
 
@@ -107,6 +110,7 @@ function mapStateToProps(state, ownProps) {
     isEditable, 
     antivirusStatus,
     antivirusDescription,
+    studyKind,
   };
 }
 
@@ -114,6 +118,7 @@ const mapDispatchToProps = {
   loadAnalysis: actions.analysisExecution.analysis.find,
   loadAnalysisCode: actions.analysisExecution.analysisCode.find,
   loadBreadcrumbs: actions.analysisExecution.breadcrumbs.query,
+  setActiveModule: actions.modules.setActive,
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
