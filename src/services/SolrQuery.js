@@ -24,7 +24,7 @@ import { types as fieldTypes } from 'const/modelAttributes';
 import omit from 'lodash/omit';
 import { get } from 'services/Utils';
 
-function parseSolrValue(value, { type }) {
+function parseSolrValue(value, { type, isMulti }) {
   let parsedValue;
 
   switch (type) {
@@ -40,6 +40,10 @@ function parseSolrValue(value, { type }) {
       break;
     }
     case fieldTypes.enum:
+      parsedValue = value;
+      if (!isMulti) {
+        break;
+      }
     case fieldTypes.enumMulti:
     case fieldTypes.string:
       parsedValue = value
