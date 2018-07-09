@@ -265,7 +265,7 @@ const submissionStatuses = [
   },
   {
     value: 'STARTING',
-    label: 'In queue',
+    label: 'Submitted',
   },
   {
     value: 'QUEUE_PROCESSING',
@@ -273,7 +273,7 @@ const submissionStatuses = [
   },
   {
     value: 'IN_PROGRESS',
-    label: 'In progress',
+    label: 'Processing',
   },
   {
     value: 'EXECUTED',
@@ -282,6 +282,10 @@ const submissionStatuses = [
   {
     value: 'FAILED',
     label: 'Awaiting approval (failed)',
+  },
+  {
+    value: 'APPROVED',
+    label: 'Approved',
   },
   {
     value: 'EXECUTED_REJECTED',
@@ -300,6 +304,11 @@ const submissionStatuses = [
     label: 'Failed (published)',
   },
 ];
+
+const submissionStatusesTitles = {};
+submissionStatuses.forEach((status) => {
+  submissionStatusesTitles[status.value] = status.label;
+});
 
 const submissionFilters = {
   showHidden: {
@@ -342,5 +351,6 @@ export {
   analysisTypes,
   submissionGroupsPageSize,
   submissionStatuses,
+  submissionStatusesTitles,
   submissionFilters,
 };

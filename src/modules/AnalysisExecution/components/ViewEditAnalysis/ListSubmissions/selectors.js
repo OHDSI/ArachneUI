@@ -27,7 +27,7 @@ import moment from 'moment-timezone';
 import { get } from 'services/Utils';
 import { commonDate as commonDateFormat } from 'const/formats';
 import { dsConverter } from 'components/LabelDataSource';
-import { submissionActionTypes } from 'modules/AnalysisExecution/const';
+import { submissionActionTypes, submissionStatusesTitles } from 'modules/AnalysisExecution/const';
 import pick from 'lodash/pick';
 
 class SubmissionListSelectorsBuilder {
@@ -50,7 +50,10 @@ class SubmissionListSelectorsBuilder {
     const submission = {
       id: source.id,
       dataSource: dsConverter(source.dataSource),
-      status: source.status || {},
+      status: {
+        value: source.status.value,
+        title: submissionStatusesTitles[source.status.value],
+      } || {},
       actions,
       resultFilesCount: source.resultFilesCount,
       resultInfo: source.resultInfo,

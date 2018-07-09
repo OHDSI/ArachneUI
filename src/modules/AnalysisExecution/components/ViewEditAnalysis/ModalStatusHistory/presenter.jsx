@@ -30,58 +30,58 @@ import { paths, statusColors } from 'modules/AnalysisExecution/const';
 require('./style.scss');
 
 function StatusListItem({ status }) {
-	const classes = new BEMHelper('modal-status-history');
+  const classes = new BEMHelper('modal-status-history');
   const modifiers = status.value ? statusColors[status.value] : null;
-	return (
-		<tr>
-			<td {...classes('date')}>
-				{status.date}
-			</td>
-			{status.comment === null
-				? <td {...classes({ element: 'status', modifiers })}>
-						{status.title}
-					</td>
-				: <td
-						{...classes({ element: 'status', modifiers })}
-					>
-							{status.title}
-							<div
-								{...classes({ element: 'comment', extra: 'ac-tooltip' })}
-								aria-label={`Comment: ${status.comment}`}
-								data-tootik-conf='bottom multiline'
-							>
-								<span
-									{...classes('comment-ico')}
-								>comment</span>
-							</div>
-					</td>
-			}
-			<td {...classes('author')}>
-				{status.author.id ?
-				<Link to={paths.profile(status.author.id)}>
-					{status.author.firstname} {status.author.lastname}
-				</Link>
-				:
-					<span>{status.author.firstname} {status.author.lastname}</span>
-				}
-			</td>
-		</tr>
-	);
+  return (
+    <tr>
+      <td {...classes('date')}>
+        {status.date}
+      </td>
+      {status.comment === null
+        ? <td {...classes({ element: 'status', modifiers })}>
+            {status.title}
+          </td>
+        : <td
+            {...classes({ element: 'status', modifiers })}
+          >
+              {status.title}
+              <div
+                {...classes({ element: 'comment', extra: 'ac-tooltip' })}
+                aria-label={`Comment: ${status.comment}`}
+                data-tootik-conf='bottom multiline'
+              >
+                <span
+                  {...classes('comment-ico')}
+                >comment</span>
+              </div>
+          </td>
+      }
+      <td {...classes('author')}>
+        {status.author.id ?
+        <Link to={paths.profile(status.author.id)}>
+          {status.author.firstname} {status.author.lastname}
+        </Link>
+        :
+          <span>{status.author.firstname} {status.author.lastname}</span>
+        }
+      </td>
+    </tr>
+  );
 }
 
 function ModalStatusHistory({
-	modal,
-	listStatuses,
-	isLoading,
+  modal,
+  listStatuses,
+  isLoading,
 }) {
   const classes = new BEMHelper('modal-status-history');
 
   return (
     <Modal modal={modal} title="Status history">
       <table {...classes()}>
-      	{listStatuses && listStatuses.map((status, key) =>
-      		<StatusListItem status={status} key={key} />
-				)}
+        {listStatuses && listStatuses.map((status, key) =>
+          <StatusListItem status={status} key={key} />
+        )}
       </table>
       <LoadingPanel active={isLoading} />
     </Modal>
