@@ -100,7 +100,7 @@ function FormRegister(props) {
         },
       },
     },
-    {
+/*    {
       name: 'organization',
       InputComponent: {
         component: FormInput,
@@ -111,7 +111,7 @@ function FormRegister(props) {
           required: true,
         },
       },
-    },
+    },*/
     {
       name: 'professionalTypeId',
       InputComponent: {
