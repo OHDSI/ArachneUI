@@ -34,10 +34,10 @@
       font-size: 3rem;
       vertical-align: middle;
     }
-    &__action {
-      &--pages {
-        padding: 0.25em 0;
-      }
+
+    &__btn {
+      padding-top: 0;
+      padding-bottom: 0;
     }
   }
 }
