@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,35 +27,42 @@ import { get } from 'lodash';
 import presenter from './presenter';
 import { resultsPageSize } from 'modules/Vocabulary/const';
 import * as URI from 'urijs';
+import { isEmpty } from 'lodash';
 
 import {
-	IListStateProps,
-	IListDispatchProps,
-	IListProps,
+  IListStateProps,
+  IListDispatchProps,
+  IListProps,
 } from './presenter';
 
 class VocabsList extends Component<IListProps, void> {
-	componentWillMount() {
-		this.props.load();
-	}
+  componentWillMount() {
+    this.props.load();
+  }
 
-	render() {
-		return presenter(this.props);
-	}
+  render() {
+    return presenter(this.props);
+  }
 }
 
-function mapStateToProps(state: Object): IListStateProps {
+function mapStateToProps(state: Object, ownProps: any): IListStateProps {
+  let predefinedVocabs = get(ownProps.router.location.query, 'request', []);
+  if (!isEmpty(predefinedVocabs) && !Array.isArray(predefinedVocabs)) {
+    // if there's only one required license
+    predefinedVocabs = [predefinedVocabs];
+  }
 
-	return {
-		isLoading: get(state, 'vocabulary.vocabularies.isLoading', false),
-	};
+  return {
+    isLoading: get(state, 'vocabulary.vocabularies.isLoading', false),
+    predefinedVocabs,
+  };
 }
 
 const mapDispatchToProps = {
-	load: actions.vocabularies.load,
+  load: actions.vocabularies.load,
 };
 
 export default connect<IListStateProps, IListDispatchProps, void>(
-	mapStateToProps,
-	mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(VocabsList);

@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -37,6 +37,7 @@ require('./style.scss');
 
 interface IListStateProps {
   isLoading: boolean;
+  predefinedVocabs: Array<string>;
 };
 interface IListDispatchProps {
   load: () => (dispatch: Function) => any;
@@ -44,13 +45,13 @@ interface IListDispatchProps {
 interface IListProps extends IListStateProps, IListDispatchProps {};
 
 function VocabsList(props: IListProps) {
-  const { isLoading } = props;
+  const { isLoading, predefinedVocabs } = props;
   const classes = BEMHelper('vocabs');
 
   return (    
     <div {...classes()}>
       <ControlPanel />
-      <Results />
+      <Results predefinedVocabs={predefinedVocabs} />
       <ModalConfirmDownload />
       <ModalDownloadResult />
       <ModalRequestLicense />

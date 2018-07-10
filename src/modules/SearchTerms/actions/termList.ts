@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -67,7 +67,11 @@ function fetch(id: number) {
 }
 
 function fetchConceptAncestors(conceptId: number, levels: number = 10, zoomLevel: number = 4) {
-  return services.relations.get(conceptId, {query: {depth: levels, zoomLevel}});
+  let zoom = zoomLevel;
+  if (isNaN(zoomLevel)) {
+    zoom = 4;
+  }
+  return services.relations.get(conceptId, {query: {depth: levels, zoomLevel: zoom}});
 }
 
 function fetchRelationships(conceptId: number, standards = false) {

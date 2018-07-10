@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -37,6 +37,7 @@ import {
 } from 'react-sanfona';
 import { fullDateFormat } from 'const/formats';
 import ModalEditNotifications from './components/ModalEditNotifications';
+import ModalRequestLicenses from './components/ModalRequestLicenses';
 
 require('./style.scss');
 
@@ -73,11 +74,14 @@ interface IDownloadHistoryDispatchProps {
   remove: (id: number) => Promise<void>;
   restore: (id: number) => Promise<void>;
   showNotifications: Function;
+  checkAvailability: Function;
+  showRequestModal: Function;
 };
 
 interface IDownloadHistoryProps extends IDownloadHistoryStateProps, IDownloadHistoryDispatchProps {
   removeBundle: (id: number) => any;
   restoreBundle: (id: number) => any;
+  download: (bundle: IDownloadRequest) => any;
 };
 
 interface IDownloadHistoryStatefulProps {
@@ -98,7 +102,7 @@ function BundleName({ name, date, onClick, isOpened }) {
   </div>;
 }
 
-function BundleTitle({ bundle, removeBundle, toggle, isExpanded, restore }) {
+function BundleTitle({ bundle, removeBundle, toggle, isExpanded, restore, download }) {
   const classes = BEMHelper('download-history');
 
   return <Toolbar
@@ -108,7 +112,7 @@ function BundleTitle({ bundle, removeBundle, toggle, isExpanded, restore }) {
       ? <div>
           <Button
             {...classes('download-button')}
-            link={bundle.link}
+            onClick={() => download(bundle)}
             mods={['rounded']}
           >
             Download
@@ -145,6 +149,7 @@ function VocabsList(props: IDownloadHistoryProps & IDownloadHistoryStatefulProps
     expandedBundleId,
     restoreBundle,
     showNotifications,
+    download,
   } = props;
   const classes = BEMHelper('download-history');
 
@@ -165,6 +170,7 @@ function VocabsList(props: IDownloadHistoryProps & IDownloadHistoryStatefulProps
               toggle={toggle}
               isExpanded={bundle.id === expandedBundleId}
               restore={restoreBundle}
+              download={download}
              />}
             {...classes('bundle-caption')}
             key={`caption${index}`}
@@ -201,6 +207,7 @@ function VocabsList(props: IDownloadHistoryProps & IDownloadHistoryStatefulProps
       </Accordion>
       <LoadingPanel active={isLoading} />
       <ModalEditNotifications />
+      <ModalRequestLicenses />
     </div>
   );
 }
