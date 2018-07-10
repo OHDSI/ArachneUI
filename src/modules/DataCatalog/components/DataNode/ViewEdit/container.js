@@ -28,7 +28,7 @@ import { goBack } from 'react-router-redux';
 import { DataNodeSelectors } from './selectors';
 import { ModalUtils } from 'arachne-ui-components';
 import presenter from './presenter';
-import { modal, form } from 'modules/DataCatalog/const';
+import { modal, forms } from 'modules/DataCatalog/const';
 
 const selectors = (new DataNodeSelectors).build();
 
@@ -57,7 +57,7 @@ export default class ViewEditBuilder extends ContainerBuilder {
 
   getFormParams() {
     return {
-      name: form.editDataNode,
+      name: forms.editDataNode,
     };
   }
 
