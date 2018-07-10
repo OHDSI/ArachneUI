@@ -19,11 +19,11 @@
  *
  */
 
-import { get, ContainerBuilder } from 'services/Utils';
+import { get } from 'services/Utils';
 import actions from 'actions/index';
 import { apiPaths, paths } from 'modules/StudyManager/const';
+import { StudyLoadingContainerBuilder } from 'modules/StudyManager/utils';
 import { FileLoader } from 'services/FileLoader';
-import fileConverter from 'components/FileInfo/converter';
 import presenter from './presenter';
 
 class DocumentViewer extends FileLoader {
@@ -32,7 +32,7 @@ class DocumentViewer extends FileLoader {
   }
 }
 
-export default class StudyDocumentBuilder extends ContainerBuilder {
+export default class StudyDocumentBuilder extends StudyLoadingContainerBuilder {
 
   getComponent() {
     return DocumentViewer;

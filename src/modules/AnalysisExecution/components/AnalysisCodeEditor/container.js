@@ -22,12 +22,13 @@
 
 import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { get, detectLanguageByExtension } from 'services/Utils';
+import {get, detectLanguageByExtension, ContainerBuilder} from 'services/Utils';
 import actions from 'actions/index';
 import { apiPaths, analysisPermissions } from 'modules/AnalysisExecution/const';
 import { isFat as isMimeTypeFat, isText } from 'services/MimeTypeUtil';
 import { asyncConnect } from 'redux-async-connect';
 import presenter from './presenter';
+import { setActiveModuleAccordingToStudyKind } from 'modules/StudyManager/utils';
 
 class AnalysisCode extends Component {
   componentWillReceiveProps(props) {
@@ -56,104 +57,106 @@ AnalysisCode.propTypes = {
   isLoading: PropTypes.bool,
 };
 
-function mapStateToProps(state, ownProps) {
-  const moduleState = state.analysisExecution;
-
-  const analysisId = parseInt(ownProps.routeParams.analysisId, 10);
-  const analysisCodeId = ownProps.routeParams.analysisCodeId;
-
-  const downloadLink = apiPaths.analysisCodeDownload({
-    analysisId,
-    analysisCodeId,
-  });
-
-  const fileData = get(moduleState, 'analysisCode.data.result');
-  const mimeType = get(fileData, 'docType', null, 'String');
-  const content = get(fileData, 'content', null, 'String');
-  const title = get(fileData, 'label', '');
-  const name = get(fileData, 'name', '');
-  const createdAt = get(fileData, 'created');
-  const language = detectLanguageByExtension(fileData);
-  const isLoading = get(moduleState, 'analysisCode.isLoading') || get(state, 'studyManager.studyInvitations.isLoading');
+export default class AnalysisCodeEditorBuilder extends ContainerBuilder {
   
-  const studyData = get(moduleState, 'analysis.data.result.study');
-  const studyId = get(studyData, 'id', -1);
-  const studyKind = get(studyData, 'kind');
-  const antivirusStatus = get(fileData, 'antivirusStatus', false);
-  const antivirusDescription = get(fileData, 'antivirusDescription');
+  getComponent() {
+    return AnalysisCode;
+  }
+  
+  mapStateToProps(state, ownProps) {
+    const moduleState = state.analysisExecution;
 
-  const isEditable = get(fileData, `permissions[${analysisPermissions.deleteAnalysisFiles}]`, false);
+    const analysisId = parseInt(ownProps.routeParams.analysisId, 10);
+    const analysisCodeId = ownProps.routeParams.analysisCodeId;
 
-  const pageTitle = [
-    get(fileData, 'name', 'Code file'),
-    ...(get(moduleState, 'breadcrumbs.data', []).map(crumb => crumb.title).reverse()),
-    'Arachne',
-  ];
+    const downloadLink = apiPaths.analysisCodeDownload({
+      analysisId,
+      analysisCodeId,
+    });
 
-  const isTextFile = isText(mimeType);
+    const fileData = get(moduleState, 'analysisCode.data.result');
+    const mimeType = get(fileData, 'docType', null, 'String');
+    const content = get(fileData, 'content', null, 'String');
+    const title = get(fileData, 'label', '');
+    const name = get(fileData, 'name', '');
+    const createdAt = get(fileData, 'created');
+    const language = detectLanguageByExtension(fileData);
+    const isLoading = get(moduleState, 'analysisCode.isLoading') || get(state, 'studyManager.studyInvitations.isLoading');
 
-  return {
-    isLoading: get(moduleState, 'analysisCode.isLoading', false) || get(moduleState, 'analysis.isLoading', false),
-    pageTitle: pageTitle.join(' | '),
-    isTextFile,
-    analysisId,
-    mimeType,
-    downloadLink,
-    analysisCodeId,
-    /* to prevent calling setState() of an unmounted ViewerCore */
-    content: isLoading ? null : content,
-    title,
-    name,
-    createdAt,
-    language,
-    studyId,
-    isEditable, 
-    antivirusStatus,
-    antivirusDescription,
-    studyKind,
-  };
-}
+    const studyData = get(moduleState, 'analysis.data.result.study');
+    const studyId = get(studyData, 'id', -1);
+    const antivirusStatus = get(fileData, 'antivirusStatus', false);
+    const antivirusDescription = get(fileData, 'antivirusDescription');
 
-const mapDispatchToProps = {
-  loadAnalysis: actions.analysisExecution.analysis.find,
-  loadAnalysisCode: actions.analysisExecution.analysisCode.find,
-  loadBreadcrumbs: actions.analysisExecution.breadcrumbs.query,
-  setActiveModule: actions.modules.setActive,
-};
+    const isEditable = get(fileData, `permissions[${analysisPermissions.deleteAnalysisFiles}]`, false);
 
-function mergeProps(stateProps, dispatchProps, ownProps) {
-  return {
-    ...ownProps,
-    ...stateProps,
-    ...dispatchProps,
-    onBannerActed: () => dispatchProps.loadAnalysisCode({
-      analysisId: stateProps.analysisId,
-      analysisCodeId: stateProps.analysisCodeId,
-      withContent: !isMimeTypeFat(stateProps.mimeType),
-    }),
-  };
-}
+    const pageTitle = [
+      get(fileData, 'name', 'Code file'),
+      ...(get(moduleState, 'breadcrumbs.data', []).map(crumb => crumb.title).reverse()),
+      'Arachne',
+    ];
 
-const connectedAnalysisCode = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-  mergeProps
-)(AnalysisCode);
+    const isTextFile = isText(mimeType);
 
-export default asyncConnect([{
-  promise: ({ params, store: { dispatch } }) => {
-    const fetchers = {
-      loadAnalysis: actions.analysisExecution.analysis.find.bind(null, { id: params.analysisId }),
-      loadAnalysisCode: actions.analysisExecution.analysisCode.find.bind(null, {
+    return {
+      isLoading: get(moduleState, 'analysisCode.isLoading', false) || get(moduleState, 'analysis.isLoading', false),
+      pageTitle: pageTitle.join(' | '),
+      isTextFile,
+      analysisId,
+      mimeType,
+      downloadLink,
+      analysisCodeId,
+      /* to prevent calling setState() of an unmounted ViewerCore */
+      content: isLoading ? null : content,
+      title,
+      name,
+      createdAt,
+      language,
+      studyId,
+      isEditable,
+      antivirusStatus,
+      antivirusDescription,
+    };
+  }
+
+  getMapDispatchToProps() {
+    return {
+      loadAnalysis: actions.analysisExecution.analysis.find,
+      loadAnalysisCode: actions.analysisExecution.analysisCode.find,
+      loadBreadcrumbs: actions.analysisExecution.breadcrumbs.query,
+    }
+  }
+
+  mergeProps(stateProps, dispatchProps, ownProps) {
+    return {
+      ...ownProps,
+      ...stateProps,
+      ...dispatchProps,
+      onBannerActed: () => dispatchProps.loadAnalysisCode({
+        analysisId: stateProps.analysisId,
+        analysisCodeId: stateProps.analysisCodeId,
+        withContent: !isMimeTypeFat(stateProps.mimeType),
+      }),
+    };
+  }
+  
+  getFetchers({ params, dispatch, getState }) {
+    const componentActions = this.getMapDispatchToProps();
+    return {
+      loadAnalysis: dispatch(componentActions.loadAnalysis({ id: params.analysisId }))
+        .then(analysis => {
+          const kind = get(analysis, 'result.study.kind');
+          setActiveModuleAccordingToStudyKind({ kind, dispatch });
+        }),
+      loadAnalysisCode: componentActions.loadAnalysisCode.bind(null, {
         analysisId: params.analysisId,
         analysisCodeId: params.analysisCodeId,
         withContent: false,
       }),
-      loadBreadcrumbs: actions.analysisExecution.breadcrumbs.query.bind(null, {
+      loadBreadcrumbs: componentActions.loadBreadcrumbs.bind(null, {
         entityType: 'ANALYSIS',
         id: params.analysisId,
       }),
     };
-    return Promise.all(Object.values(fetchers).map(action => dispatch(action())));
-  },
-}])(connectedAnalysisCode);
+  }
+}

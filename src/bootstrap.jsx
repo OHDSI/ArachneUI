@@ -155,8 +155,10 @@ function initializeApi(store) {
 
 function initRootRoute({ store, routes, indexRedirect, menuItems, redirects }) {
   const setActiveModule = (module) => {
-    const action = actions.modules.setActive(module);
-    store.dispatch(action);
+    if (!['study-manager', 'analysis-execution'].includes(module)) {
+      const action = actions.modules.setActive(module);
+      store.dispatch(action);
+    }
   };
 
   return (

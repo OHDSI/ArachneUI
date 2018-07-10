@@ -29,6 +29,7 @@ import isEqual from 'lodash/isEqual';
 import qs from 'qs';
 import { ModalUtils } from 'arachne-ui-components';
 import Presenter from './presenter';
+import { setActiveModuleAccordingToStudyKind } from 'modules/StudyManager/utils';
 
 export function getFilter(search) {
   let filter = Utils.getFilterValues(search);
@@ -154,9 +155,11 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
     const filter = getFilter(getState().routing.locationBeforeTransitions.search);
     return {
       loadAnalysisWDataSources: dispatch(componentActions.loadAnalysis({ id: params.analysisId }))
-        .then(() => {
-          const studyId = getState().analysisExecution.analysis.data.result.study.id;
+        .then(analysis => {
+          const studyId = get(analysis, 'result.study.id');
           dispatch(componentActions.loadSubmissionGroups({ analysisId: params.analysisId, page, filter }));
+          const kind = get(analysis, 'result.study.kind');
+          setActiveModuleAccordingToStudyKind({ kind, dispatch });
           return dispatch(componentActions.loadStudyDataSources({ studyId }));
         }),
       loadTypeList: componentActions.loadTypeList,

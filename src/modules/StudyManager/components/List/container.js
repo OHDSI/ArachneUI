@@ -52,6 +52,10 @@ export class List extends Component {
     this.persistFilters = this.persistFilters.bind(this);
   }
 
+  componentWillMount() {
+    this.props.activateModule();
+  }
+  
   componentDidMount() {
     window.addEventListener('beforeunload', this.onUnmount);
   }
@@ -137,6 +141,7 @@ export default class ListBuilder extends ContainerBuilder {
       loadTypeList: actions.studyManager.typeList.find,
       loadStatusList: actions.studyManager.statusList.find,
       redirect: addr => push(addr),
+      activateModule: actions.modules.setActive.bind(null, 'study-manager'),
     };
   }
 

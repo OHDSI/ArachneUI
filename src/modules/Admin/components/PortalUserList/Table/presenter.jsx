@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2018 Odysseus Data Services, inc.
+ * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -30,8 +30,6 @@ import {
   BadgedIcon,
 } from 'arachne-ui-components';
 
-import ActionsToolbar from './ActionsToolbar';
-
 require('./style.scss');
 
 function CellRemove({ id, removeUser }) {
@@ -52,87 +50,69 @@ function AdminTable(props) {
   const tableClasses = new BEMHelper('admin-panel-user-list-table');
   const {
     userList,
+    removeUser,
     enablePortalUser,
     confirmEmail,
     sorting,
     setSorting,
-    selectUser,
-    selectedUsers,
-    selectAll,
   } = props;
 
-  const checkBox = <Checkbox isChecked={Object.keys(selectedUsers).length} onChange={() => selectAll(selectedUsers)} />;
-
   return (
-    <div>
-      <ActionsToolbar/>
-      <Table
-        {...tableClasses()}
-        mods={['hover', 'padded']}
-        data={userList}
-        sorting={sorting}
-        setSorting={setSorting}
-      >
-        <CellCheck
-          {...tableClasses('selected')}
-          header={checkBox}
-          field="enabled"
-          isSortable={false}
-          props={
-            entity => ({
-              id: entity.id,
-              value: selectedUsers.includes(entity.id),
-              toggle: selectUser,
-            })
-          }
-        />
-        <Cell
-          {...tableClasses('firstname')}
-          header="First name"
-          field="firstname"
-        />
-        <Cell
-          {...tableClasses('lastname')}
-          header="Last Name"
-          field="lastname"
-        />
-        <Cell
-          {...tableClasses('tenants')}
-          header="Tenants"
-          isSortable={false}
-          field="tenantNames"
-        />
-        <Cell
-          {...tableClasses('email')}
-          header="Email"
-          field="email"
-        />
-        <CellCheck
-          {...tableClasses('enabled')}
-          header="Enabled"
-          field="enabled"
-          isSortable={false}
-          props={
-            entity => ({
-              id: entity.id,
-              toggle: enablePortalUser,
-            })
-          }
-        />
-        <CellCheck
-          {...tableClasses('emailConfirmed')}
-          header="Email confirmed"
-          field="emailConfirmed"
-          isSortable={false}
-          props={
-            entity => ({
-              id: entity.id,
-              toggle: confirmEmail,
-            })
-          }
-        />
-      </Table>
-    </div>
+    <Table
+      {...tableClasses()}
+      mods={['hover', 'padded']}
+      data={userList}
+      sorting={sorting}
+      setSorting={setSorting}
+    >
+      <Cell
+        {...tableClasses('name')}
+        header="Name"
+        field="name"
+      />
+      <Cell
+        {...tableClasses('email')}
+        header="Email"
+        field="email"
+      />
+      <CellCheck
+        {...tableClasses('enabled')}
+        header="Enabled"
+        field="enabled"
+        isSortable={false}
+        props={
+          entity => ({
+            id: entity.id,
+            toggle: enablePortalUser,
+          })
+        }
+      />
+      <CellCheck
+        {...tableClasses('emailConfirmed')}
+        header="Email confirm"
+        field="emailConfirmed"
+        isSortable={false}
+        props={
+          entity => ({
+            id: entity.id,
+            toggle: confirmEmail,
+          })
+        }
+      />
+      <CellRemove
+        {...tableClasses('remove')}
+        header="Remove"
+        field="id"
+        isSortable={false}
+        props={
+          entity => ({
+            id: entity.id,
+            removeUser,
+            name: entity.name,
+          })
+        }
+      />
+    </Table>
   );
 }
 
