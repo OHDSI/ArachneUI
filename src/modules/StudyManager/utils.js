@@ -21,17 +21,23 @@
 import { studyKind } from 'modules/StudyManager/const';
 import { ContainerBuilder } from 'services/Utils';
 import actions from 'actions/index';
+import { domains } from 'modules/Portal/const';
 
-class StudyLoadingContainerBuilder extends ContainerBuilder {
+class ActiveModuleAwareContainerBuilder extends ContainerBuilder {
+  
+  getId({ params }) {
+    return params.studyId;
+  } 
+  
+  getType() {
+    return domains.STUDY;
+  }
+  
   getFetchers({ params, dispatch, getState }) {
     return {
-      loadStudy: dispatch(actions.studyManager.study.find({ id: params.studyId }))
-        .then(result => {
-          if (result.kind === studyKind.WORKSPACE) {
-            dispatch(actions.modules.setActive('workspace'));
-          } else {
-            dispatch(actions.modules.setActive('study-manager'));
-          }
+      setActiveAccordingToStudyKind: dispatch(actions.studyManager.study.studyKind.find({ id: this.getId({ params }), type: this.getType() }))
+        .then(kind => {
+          setActiveModuleAccordingToStudyKind({ kind, dispatch});
         }),
     }
   }
@@ -46,6 +52,6 @@ function setActiveModuleAccordingToStudyKind({ kind, dispatch }) {
 }
 
 export {
-  StudyLoadingContainerBuilder,
+  ActiveModuleAwareContainerBuilder,
   setActiveModuleAccordingToStudyKind
 };

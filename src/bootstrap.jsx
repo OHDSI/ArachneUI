@@ -155,6 +155,8 @@ function initializeApi(store) {
 
 function initRootRoute({ store, routes, indexRedirect, menuItems, redirects }) {
   const setActiveModule = (module) => {
+    // active module for these two will be handled by components themselves
+    // because in some situations workspace should be chosen instead of study-manager
     if (!['study-manager', 'analysis-execution'].includes(module)) {
       const action = actions.modules.setActive(module);
       store.dispatch(action);

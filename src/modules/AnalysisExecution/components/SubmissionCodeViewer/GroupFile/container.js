@@ -24,6 +24,7 @@ import { SubmissionCodeBuilder, SubmissionCode } from 'modules/AnalysisExecution
 import SubmissionGroupSelectors from 'modules/AnalysisExecution/components/SubmissionCodeViewer/GroupFile/selectors';
 import actions from 'actions';
 import { SubmissionGroupLinkBuilder } from 'modules/AnalysisExecution/ducks/linkBuilder';
+import { domains } from 'modules/Portal/const';
 
 class SubmissionGroupFile extends SubmissionCode {
   componentWillMount() {
@@ -53,5 +54,13 @@ export default class SubmissionGroupFileViewerBuilder extends SubmissionCodeBuil
       loadFile: actions.analysisExecution.submissionGroupFile.find,
       clearFileData: actions.analysisExecution.submissionGroupFile.clear,
     };
+  }
+
+  getId({ params }) {
+    return params.submissionGroupId;
+  }
+
+  getType() {
+    return domains.SUBMISSION_GROUP;
   }
 }

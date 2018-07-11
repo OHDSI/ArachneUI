@@ -22,7 +22,7 @@
 import { get } from 'services/Utils';
 import actions from 'actions/index';
 import { apiPaths, paths } from 'modules/StudyManager/const';
-import { StudyLoadingContainerBuilder } from 'modules/StudyManager/utils';
+import { ActiveModuleAwareContainerBuilder } from 'modules/StudyManager/utils';
 import { FileLoader } from 'services/FileLoader';
 import presenter from './presenter';
 
@@ -32,7 +32,7 @@ class DocumentViewer extends FileLoader {
   }
 }
 
-export default class StudyDocumentBuilder extends StudyLoadingContainerBuilder {
+export default class StudyDocumentBuilder extends ActiveModuleAwareContainerBuilder {
 
   getComponent() {
     return DocumentViewer;
