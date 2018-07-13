@@ -92,7 +92,7 @@ function getOptions(field) {
         mods: ['bordered'],
         title: field.label,
         placeholder: 'Any',
-        isMulti: field.isMulti || field.type === types.enumMulti,
+        isMulti: field.type === types.enumMulti,
       };
     case types.toggle:
       return {

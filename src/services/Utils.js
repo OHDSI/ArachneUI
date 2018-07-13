@@ -382,7 +382,10 @@ class Utils {
         let paramValue = query[field.name] || defaultVals[field.name];
         switch (field.type) {
           case fieldTypes.enum:
-            if (field.isMulti && !Array.isArray(paramValue)) {
+            initialValues[field.name] = paramValue;
+            break;
+          case fieldTypes.enumMulti:
+            if (!Array.isArray(paramValue)) {
               if (typeof paramValue === 'object' && paramValue !== null) {
                 paramValue = Object.values(paramValue);
               } else {

@@ -41,9 +41,7 @@ function parseSolrValue(value, { type, isMulti }) {
     }
     case fieldTypes.enum:
       parsedValue = value;
-      if (!isMulti) {
-        break;
-      }
+      break;
     case fieldTypes.enumMulti:
     case fieldTypes.string:
       parsedValue = value
