@@ -24,7 +24,7 @@ import { types as fieldTypes } from 'const/modelAttributes';
 import omit from 'lodash/omit';
 import { get } from 'services/Utils';
 
-function parseSolrValue(value, { type, isMulti }) {
+function parseSolrValue(value, { type }) {
   let parsedValue;
 
   switch (type) {

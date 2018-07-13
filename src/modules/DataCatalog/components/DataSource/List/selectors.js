@@ -88,7 +88,6 @@ class DataCatalogListTableSelectorsBuilder extends DsAttrListSelector {
       .filter(attr => attr.faceted)
       .map(cloneDeep)
       .map(attr => ({
-        isMulti: attr.type === fieldTypes.enumMulti,
         ...attr,
         name: escape(attr.name),
       }))
