@@ -22,7 +22,7 @@
 
 import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import {get, detectLanguageByExtension, ContainerBuilder} from 'services/Utils';
+import { get, detectLanguageByExtension } from 'services/Utils';
 import actions from 'actions/index';
 import { apiPaths, analysisPermissions } from 'modules/AnalysisExecution/const';
 import { isFat as isMimeTypeFat, isText } from 'services/MimeTypeUtil';
