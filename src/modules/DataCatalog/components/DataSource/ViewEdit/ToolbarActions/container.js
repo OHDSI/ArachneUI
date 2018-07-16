@@ -34,6 +34,9 @@ function mapStateToProps(state, ownProps) {
   const isPublished = get(datasourceData, 'published', '');
   const hasEditPermission = get(datasourceData, `permissions[${dataSourcePermissions.edit}]`, false);
   
+  const isDeleted = get(datasourceData, 'deleted', false) !== false;
+  const canDelete = get(datasourceData, `permissions[${dataSourcePermissions.delete}]`, false) && !isDeleted;
+  
   const canUnpublish = isPublished && hasEditPermission;
   const dataSourceId = get(datasourceData, 'id', '');
   const isMy = get(state, 'routing.locationBeforeTransitions.query.my', false);
@@ -50,6 +53,7 @@ function mapStateToProps(state, ownProps) {
     dataSourceId,
     editUrl: editUrl.href(),
     name: get(datasourceData, 'name'),
+    canDelete,
   };
 }
 
@@ -73,6 +77,18 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         const dataSourceId = stateProps.dataSourceId;
         await dispatchProps.unpublish({ id: dataSourceId });
         await dispatchProps.load({ id: dataSourceId });
+        await dispatchProps.goToPage(paths.dataCatalog());
+      } catch (er) {
+        console.error(er);
+      }
+    },
+    async remove() {
+      try {
+        await Utils.confirmDelete({
+          message: `Do you really want to delete ${stateProps.name}?`,
+        });
+        const dataSourceId = stateProps.dataSourceId;
+        await dispatchProps.remove({ id: dataSourceId });
         await dispatchProps.goToPage(paths.dataCatalog());
       } catch (er) {
         console.error(er);
