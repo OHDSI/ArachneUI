@@ -39,7 +39,7 @@ export default class StudyDocumentBuilder extends ActiveModuleAwareContainerBuil
     return DocumentViewer;
   }
 
-  getType() {
+  getType({ params }) {
     return domains.STUDY;
   }
   

@@ -154,7 +154,7 @@ export class SubmissionCodeBuilder extends ActiveModuleAwareContainerBuilder {
     return params.submissionId;
   }
   
-  getType() {
+  getType({ params }) {
     return domains.SUBMISSION;
   }
 }
