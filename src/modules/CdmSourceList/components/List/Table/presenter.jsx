@@ -138,6 +138,7 @@ function DataSourceTable(props) {
         {...tableClasses('model-type')}
         header="Model"
         field="modelType"
+        isSortable={false}
       />
       <CellRegister
         {...tableClasses('register')}
