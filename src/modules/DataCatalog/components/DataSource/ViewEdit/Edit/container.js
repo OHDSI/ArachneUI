@@ -64,8 +64,6 @@ class DataCatalogEditBuilder extends ContainerBuilder {
     const isDenied = isEmpty(get(state, 'dataCatalog.dataSource.data.result', {}, 'Object'));
     const isVirtual = get(state, 'dataCatalog.dataSource.data.result.dataNode.virtual', false);
     const isCDM = get(state, 'dataCatalog.dataSource.data.result.modelType', '') === modelTypesValues.CDM;
-    const isDeleted = get(state, 'dataCatalog.dataSource.data.result.deleted', false) !== false;
-    const canDelete = get(permissions, dataSourcePermissions.delete, false) && !isDeleted;
   
     return {
       name: `${get(moduleState, 'dataSource.data.result.dataNode.name', '')}: ${get(moduleState, 'dataSource.data.result.name', '')}`,
@@ -77,7 +75,6 @@ class DataCatalogEditBuilder extends ContainerBuilder {
       isVirtual,
       isCDM,
       canUploadAchillesResults: isDatanodeRegistered && !isVirtual && isCDM && permissions.UPLOAD_ACHILLES_REPORTS,
-      canDelete,
     };
   }
 
@@ -102,18 +99,6 @@ class DataCatalogEditBuilder extends ContainerBuilder {
           if (confirm('This data source was not detected to be CDM compliant. Are you sure that you still want upload Achilles stats?')) {
             dispatchProps.showUploadForm();
           }
-        }
-      },
-      async remove() {
-        try {
-          await Utils.confirmDelete({
-            message: `Do you really want to delete ${stateProps.name}?`,
-          });
-          const dataSourceId = stateProps.dataSourceId;
-          await dispatchProps.remove({ id: dataSourceId });
-          await dispatchProps.goToPage(paths.dataCatalog());
-        } catch (er) {
-          console.error(er);
         }
       },
     };

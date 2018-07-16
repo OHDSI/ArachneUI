@@ -79,8 +79,8 @@ function ViewDataSourceToolbar({
 
   return (
     <Toolbar caption={title} backUrl={backUrl} breadcrumbList={breadcrumbList} >
-      <ToolbarActions mode={mode} />
       {children}
+      <ToolbarActions mode={mode} />
     </Toolbar>
   );
 }

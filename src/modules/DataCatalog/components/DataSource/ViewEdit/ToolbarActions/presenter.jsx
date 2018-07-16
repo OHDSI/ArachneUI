@@ -32,6 +32,8 @@ function ToolbarActions({
     canEdit,
     dataSourceId,
     editUrl,
+    canDelete,
+    remove,
   }) {
   const classes = new BEMHelper('data-source-toolbar-actions');
 
@@ -45,6 +47,11 @@ function ToolbarActions({
       {canEdit &&
         <Button {...classes('action')} link={editUrl}>
           <i {...classes('action-ico')}>settings</i>
+        </Button>
+      }
+      {canDelete &&
+        <Button onClick={remove} {...classes('delete-button')}>
+          delete
         </Button>
       }
     </div>
