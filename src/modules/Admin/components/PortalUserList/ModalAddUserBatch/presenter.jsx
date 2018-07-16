@@ -30,7 +30,7 @@ require('./style.scss');
 
 const fieldArrayName = 'users';
 
-function CellTextEditable({ value, header, field, index }) {
+function CellTextEditable({ value, header, field, index, required = false }) {
   return (
     <Field
       component={Fieldset}
@@ -41,13 +41,14 @@ function CellTextEditable({ value, header, field, index }) {
           mods: ['rounded', 'bordered'],
           type: 'text',
           placeholder: header,
+          required,
         }
       }}
     />
   );
 }
 
-function CellSelectEditable({ options, header, field, index }) {
+function CellSelectEditable({ options, header, field, index, required = false }) {
   return (
     <Field
       component={Fieldset}
@@ -58,6 +59,7 @@ function CellSelectEditable({ options, header, field, index }) {
           mods: ['rounded', 'bordered'],
           placeholder: header,
           options,
+          required,
         }
       }}
     />
@@ -163,25 +165,38 @@ function UsersTable({ fields, meta: { touched, error }, professionalTypesOptions
         <CellTextEditable {...classes('col-first-name')}
           header="First name"
           field="firstname"
+          props={() => ({
+            required: true,
+          })}
         />
         <CellTextEditable {...classes('col-last-name')}
           header="Last name"
           field="lastname"
+          props={() => ({
+            required: true,
+          })}
         />
         <CellTextEditable {...classes('col-email')}
           header="Email"
           field="email"
+          props={() => ({
+            required: true,
+          })}
         />
         <CellSelectEditable {...classes('col-prof-type')}
           header="Professional type"
           field="professionalTypeId"
           props={() => ({
-            options: professionalTypesOptions
+            options: professionalTypesOptions,
+            required: true,
           })}
         />
         <CellTextEditable {...classes('col-org')}
           header="Organization"
           field="organization"
+          props={() => ({
+            required: true,
+          })}
         />
         <RemoveRow {...classes('col-remove')} props={() => ({
           removeUser: fields.remove,

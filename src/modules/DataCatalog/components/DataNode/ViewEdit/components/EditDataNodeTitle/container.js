@@ -24,7 +24,7 @@
 import { Component, PropTypes } from 'react';
 import actions from 'actions';
 import { ContainerBuilder, get } from 'services/Utils';
-import { form } from 'modules/DataCatalog/const';
+import { forms } from 'modules/DataCatalog/const';
 import { modal } from 'modules/DataCatalog/const';
 import { ModalUtils } from 'arachne-ui-components';
 import presenter from './presenter';
@@ -52,7 +52,7 @@ export default class EditDataNodeTitleBuilder extends ContainerBuilder {
   
   getFormParams() {
     return {
-      form: form.editDataNodeTitle,
+      form: forms.editDataNodeTitle,
       enableReinitialize: true,
     };
   }
