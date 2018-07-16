@@ -28,7 +28,7 @@ import { apiPaths, analysisPermissions } from 'modules/AnalysisExecution/const';
 import { isFat as isMimeTypeFat, isText } from 'services/MimeTypeUtil';
 import { asyncConnect } from 'redux-async-connect';
 import presenter from './presenter';
-import { setActiveModuleAccordingToStudyKind } from 'modules/StudyManager/utils';
+import { ActiveModuleAwareContainerBuilder } from 'modules/StudyManager/utils';
 
 class AnalysisCode extends Component {
   componentWillReceiveProps(props) {
@@ -57,7 +57,7 @@ AnalysisCode.propTypes = {
   isLoading: PropTypes.bool,
 };
 
-export default class AnalysisCodeEditorBuilder extends ContainerBuilder {
+export default class AnalysisCodeEditorBuilder extends ActiveModuleAwareContainerBuilder {
   
   getComponent() {
     return AnalysisCode;
@@ -143,10 +143,11 @@ export default class AnalysisCodeEditorBuilder extends ContainerBuilder {
   getFetchers({ params, dispatch, getState }) {
     const componentActions = this.getMapDispatchToProps();
     return {
+      ...super.getFetchers({ params, dispatch, getState }),
       loadAnalysis: dispatch(componentActions.loadAnalysis({ id: params.analysisId }))
         .then(analysis => {
           const kind = get(analysis, 'result.study.kind');
-          setActiveModuleAccordingToStudyKind({ kind, dispatch });
+          this.setKind(kind);
         }),
       loadAnalysisCode: componentActions.loadAnalysisCode.bind(null, {
         analysisId: params.analysisId,

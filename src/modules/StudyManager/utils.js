@@ -21,24 +21,33 @@
 import { studyKind } from 'modules/StudyManager/const';
 import { ContainerBuilder } from 'services/Utils';
 import actions from 'actions/index';
-import { domains } from 'modules/Portal/const';
 
 class ActiveModuleAwareContainerBuilder extends ContainerBuilder {
   
+  kindPromise = new Promise((resolve, reject) => {
+    this.setKind = resolve;
+  });
+  
   getId({ params }) {
-    return params.studyId;
+    return null;
   } 
   
-  getType() {
-    return domains.STUDY;
+  getType({ params }) {
+    return null;
   }
   
   getFetchers({ params, dispatch, getState }) {
-    return {
-      setActiveAccordingToStudyKind: dispatch(actions.studyManager.study.studyKind.find({ id: this.getId({ params }), type: this.getType() }))
+    let promise;
+    if (this.getId({ params }) && this.getType({ params })) {
+      promise = dispatch(actions.studyManager.study.studyKind.find({ id: this.getId({ params }), type: this.getType({ params }) }))
         .then(kind => {
           setActiveModuleAccordingToStudyKind({ kind, dispatch});
-        }),
+        });
+    } else {
+      promise = this.kindPromise.then(kind => setActiveModuleAccordingToStudyKind({ kind, dispatch }));
+    } 
+    return {
+      setActiveAccordingToStudyKind: promise,
     }
   }
 }

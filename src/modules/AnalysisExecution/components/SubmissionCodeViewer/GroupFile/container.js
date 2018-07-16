@@ -57,10 +57,10 @@ export default class SubmissionGroupFileViewerBuilder extends SubmissionCodeBuil
   }
 
   getId({ params }) {
-    return params.submissionGroupId;
+    return params.submissionGroupId || params.submissionId;
   }
 
-  getType() {
-    return domains.SUBMISSION_GROUP;
+  getType({ params }) {
+    return params.submissionId ? domains.SUBMISSION : domains.SUBMISSION_GROUP;
   }
 }

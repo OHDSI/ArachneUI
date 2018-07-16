@@ -25,6 +25,7 @@ import { apiPaths, paths } from 'modules/StudyManager/const';
 import { ActiveModuleAwareContainerBuilder } from 'modules/StudyManager/utils';
 import { FileLoader } from 'services/FileLoader';
 import presenter from './presenter';
+import { domains } from 'modules/Portal/const';
 
 class DocumentViewer extends FileLoader {
   render() {
@@ -38,6 +39,14 @@ export default class StudyDocumentBuilder extends ActiveModuleAwareContainerBuil
     return DocumentViewer;
   }
 
+  getType() {
+    return domains.STUDY;
+  }
+  
+  getId({ params }) {
+    return params.studyId;
+  }
+  
   mapStateToProps(state, ownProps) {
     const fileUuid = ownProps.params.fileUuid;
     const studyId = ownProps.params.studyId;

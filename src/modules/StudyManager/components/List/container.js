@@ -24,14 +24,15 @@
 import actions from 'actions';
 import { Component, PropTypes } from 'react';
 import { push } from 'react-router-redux';
-import { Utils, ContainerBuilder, get } from 'services/Utils';
+import { Utils, get } from 'services/Utils';
 import viewModes from 'const/viewModes';
-import { studyListPageSize, studyListPageSizeCards, paths } from 'modules/StudyManager/const';
+import { studyListPageSize, studyListPageSizeCards, paths, studyKind } from 'modules/StudyManager/const';
 import Uri from 'urijs';
 import isEmpty from 'lodash/isEmpty';
 import getFields from './Filter/fields';
 import presenter from './presenter';
 import SelectorsBuilder from './selectors';
+import { ActiveModuleAwareContainerBuilder } from 'modules/StudyManager/utils';
 
 const selectors = (new SelectorsBuilder()).build();
 
@@ -52,10 +53,6 @@ export class List extends Component {
     this.persistFilters = this.persistFilters.bind(this);
   }
 
-  componentWillMount() {
-    this.props.activateModule();
-  }
-  
   componentDidMount() {
     window.addEventListener('beforeunload', this.onUnmount);
   }
@@ -107,7 +104,8 @@ export class List extends Component {
   }
 }
 
-export default class ListBuilder extends ContainerBuilder {
+export default class ListBuilder extends ActiveModuleAwareContainerBuilder {
+  
   getComponent() {
     return List;
   }
@@ -141,7 +139,6 @@ export default class ListBuilder extends ContainerBuilder {
       loadTypeList: actions.studyManager.typeList.find,
       loadStatusList: actions.studyManager.statusList.find,
       redirect: addr => push(addr),
-      activateModule: actions.modules.setActive.bind(null, 'study-manager'),
     };
   }
 
@@ -158,9 +155,11 @@ export default class ListBuilder extends ContainerBuilder {
     };
   }
 
-  getFetchers({ params, state, dispatch }) {
-    const query = state.routing.locationBeforeTransitions.query;
+  getFetchers({ params, dispatch, getState }) {
+    this.setKind('study-manager');
+    const query = getState().routing.locationBeforeTransitions.query;
     return {
+      ...super.getFetchers({ params, getState, dispatch }),
       loadStudies: actions.studyManager.studyList.find.bind(null, {
         ...query,
         pagesize: query.view === viewModes.CARDS ? studyListPageSizeCards : studyListPageSize,

@@ -24,7 +24,7 @@ import { Component, PropTypes } from 'react';
 import { get, ContainerBuilder } from 'services/Utils';
 import actions from 'actions';
 import presenter from './presenter';
-import { setActiveModuleAccordingToStudyKind } from 'modules/StudyManager/utils';
+import { ActiveModuleAwareContainerBuilder } from 'modules/StudyManager/utils';
 
 const moduleActions = actions.analysisExecution;
 
@@ -47,7 +47,7 @@ ViewEditInsight.propTypes = {
   submissionId: PropTypes.number.isRequired,
 };
 
-export default class ViewEditInsightBuilder extends ContainerBuilder {
+export default class ViewEditInsightBuilder extends ActiveModuleAwareContainerBuilder {
 
   getComponent() {
     return ViewEditInsight;
@@ -94,14 +94,15 @@ export default class ViewEditInsightBuilder extends ContainerBuilder {
     };
   }
 
-  getFetchers({ params, dispatch }) {
+  getFetchers({ params, dispatch, getState }) {
     const componentActions = this.getMapDispatchToProps();
     const submissionId = params.submissionId;
     return {
+      ...super.getFetchers({ params, dispatch, getState }),
       loadInsight: dispatch(componentActions.loadInsight({ submissionId }))
         .then(result => {
           const kind = get(result, 'result.analysis.study.kind', '');
-          setActiveModuleAccordingToStudyKind({ kind, dispatch });
+          this.setKind(kind);
         }),
       unloadComments: moduleActions.insightComments.unload,
       unloadFile: moduleActions.insightFile.unload,

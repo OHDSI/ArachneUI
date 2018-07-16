@@ -28,6 +28,7 @@ import { push as goToPage } from 'react-router-redux';
 import { paths as workspacePaths } from 'modules/Workspace/const';
 import { studyKind, participantRoles as roles } from 'modules/StudyManager/const';
 import presenter from './presenter';
+import { ActiveModuleAwareContainerBuilder } from 'modules/StudyManager/utils';
 
 export class ViewEditStudy extends Component {
   static get propTypes() {
@@ -84,7 +85,7 @@ export class ViewEditStudy extends Component {
   }
 }
 
-export default class ViewEditStudyBuilder extends ContainerBuilder {
+export default class ViewEditStudyBuilder extends ActiveModuleAwareContainerBuilder {
   getComponent() {
     return ViewEditStudy;
   }
@@ -136,13 +137,15 @@ export default class ViewEditStudyBuilder extends ContainerBuilder {
     };
   }
 
-  getFetchers({ params }) {
+  getFetchers({ params, dispatch, getState }) {
     const studyId = params.studyId;
     return {
+      ...super.getFetchers({ params, dispatch, getState }),
       loadTypeList: actions.studyManager.typeList.find,
       loadAnalysisTypeList: actions.studyManager.analysisTypes.find,
       loadStatusList: actions.studyManager.statusList.find,
-      loadStudy: () => actions.studyManager.study.find({ id: studyId }),
+      loadStudy: dispatch(actions.studyManager.study.find({ id: studyId }))
+        .then(studyData => this.setKind(get(studyData, 'kind'))),
       loadInsights: () => actions.studyManager.studyInsights.find({ studyId }),
       loadTransitions: () => actions.studyManager.availableTransitions.query({ studyId }),
     };

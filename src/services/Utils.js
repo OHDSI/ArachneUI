@@ -45,6 +45,7 @@ import { reports } from 'const/reports';
 import URI from 'urijs';
 import { createSelector } from 'reselect';
 import qs from 'qs';
+import actions from 'actions/index';
 
 function buildFormData(obj) {
   const formData = new FormData();
@@ -290,9 +291,15 @@ class Utils {
       WrappedComponent = reduxForm(getFormParams())(WrappedComponent);
     }
 
+    let dtp = getMapDispatchToProps ? getMapDispatchToProps() : mapDispatchToProps;
+    
+    const commonActions = {
+      setActiveModule: actions.modules.setActive,
+    };
+    
     let ConnectedComponent = connect(
       mapStateToProps,
-      getMapDispatchToProps ? getMapDispatchToProps() : mapDispatchToProps,
+      { ...dtp, ...commonActions },
       mergeProps
     )(WrappedComponent);
 

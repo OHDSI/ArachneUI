@@ -29,7 +29,8 @@ import isEqual from 'lodash/isEqual';
 import qs from 'qs';
 import { ModalUtils } from 'arachne-ui-components';
 import Presenter from './presenter';
-import { setActiveModuleAccordingToStudyKind } from 'modules/StudyManager/utils';
+import { ActiveModuleAwareContainerBuilder } from 'modules/StudyManager/utils';
+import { studyKind } from 'modules/StudyManager/const';
 
 export function getFilter(search) {
   let filter = Utils.getFilterValues(search);
@@ -70,6 +71,8 @@ class ViewEditAnalysis extends Component {
     if (nextProps.id !== this.props.id) {
       const analysis = await this.props.loadAnalysis({ id: nextProps.id });
       const studyId = analysis.result.study.id;
+      const kind = analysis.result.study.kind; 
+      this.props.setActiveModule(kind === studyKind.WORKSPACE ? 'workspace' : 'study-manager');
       this.props.loadStudyDataSources({ studyId });
     }
     if (nextProps.id !== this.props.id || nextProps.page !== this.props.page || !isEqual(this.props.filter, nextProps.filter)) {
@@ -87,7 +90,7 @@ class ViewEditAnalysis extends Component {
   }
 }
 
-export default class ViewEditAnalysisBuilder extends ContainerBuilder {
+export default class ViewEditAnalysisBuilder extends ActiveModuleAwareContainerBuilder {
   getComponent() {
     return ViewEditAnalysis;
   }
@@ -154,12 +157,13 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
     const page = get(currentQuery, 'page', 1);
     const filter = getFilter(getState().routing.locationBeforeTransitions.search);
     return {
+      ...super.getFetchers({ params, dispatch, getState }),
       loadAnalysisWDataSources: dispatch(componentActions.loadAnalysis({ id: params.analysisId }))
         .then(analysis => {
           const studyId = get(analysis, 'result.study.id');
           dispatch(componentActions.loadSubmissionGroups({ analysisId: params.analysisId, page, filter }));
           const kind = get(analysis, 'result.study.kind');
-          setActiveModuleAccordingToStudyKind({ kind, dispatch });
+          this.setKind(kind);
           return dispatch(componentActions.loadStudyDataSources({ studyId }));
         }),
       loadTypeList: componentActions.loadTypeList,
