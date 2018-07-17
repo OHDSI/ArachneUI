@@ -36,8 +36,7 @@ const getFilterList = createSelector(
       {
         label: 'Professional type',
         name: 'professionalType',
-        type: fieldTypes.enum,
-        isMulti: true,
+        type: fieldTypes.enumMulti,
         options: professionalTypes.map(type => ({
           label: type.name,
           // To string is required, because filter picks selected values from url,

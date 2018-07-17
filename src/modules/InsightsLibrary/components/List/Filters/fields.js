@@ -39,7 +39,6 @@ function getFields() {
     {
       label: 'Publish state',
       name: 'publishState',
-      isMulti: false,
       type: types.enum,
       forceOpened: true,
       hasTitle: true,
