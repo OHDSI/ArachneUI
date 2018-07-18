@@ -108,6 +108,7 @@ function getOptions(field) {
         title: field.label,
         placeholder: field.label,
         mods: ['bordered'],
+        isMulti: true,
       };
     default:
       return null;
