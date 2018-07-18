@@ -46,7 +46,7 @@ export function FilterFormSelect(props) {
     isMulti,
     mods,
     placeholder,
-    options,
+    options = [],
     disabled,
 
     input,
@@ -72,14 +72,12 @@ export function FilterFormSelect(props) {
 
 function getComponentByType(type) {
   switch (type) {
-    case types.enum: case types.enumMulti:
+    case types.enum: case types.enumMulti: case types.string:
       return FilterFormSelect;
     case types.toggle:
       return FormToggle;
     case types.integer:
       return FormSlider;
-    case types.string:
-      return FormInput;
     default:
       return null;
   }
