@@ -140,7 +140,7 @@ function DropdownFilters({ classes, fields, clear, handleSubmit }) {
     {
       name: 'query',
       InputComponent: {
-        component: getComponentByType(keywordsField.type),
+        component: FormInput,
         props: {
           ...getOptions(keywordsField),
         },
