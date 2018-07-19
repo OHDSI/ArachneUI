@@ -35,6 +35,24 @@ class ActiveModuleAwareContainerBuilder extends ContainerBuilder {
   getType({ params }) {
     return null;
   }
+
+  /**
+   * @returns { { [x: string]: any } }
+   */
+  getMapDispatchToProps() {
+    return {
+      setActiveModule: actions.modules.setActive,
+    }
+  }
+  
+  mergeProps(stateProps, dispatchProps, ownProps) {
+
+    return {
+      setActiveModule: kind => {
+        dispatchProps.setActiveModule(kind === studyKind.WORKSPACE ? 'workspace' : 'study-manager')
+      }
+    };
+  }
   
   getFetchers({ params, dispatch, getState }) {
     let promise;

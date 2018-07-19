@@ -30,7 +30,6 @@ import qs from 'qs';
 import { ModalUtils } from 'arachne-ui-components';
 import Presenter from './presenter';
 import { ActiveModuleAwareContainerBuilder } from 'modules/StudyManager/utils';
-import { studyKind } from 'modules/StudyManager/const';
 
 export function getFilter(search) {
   let filter = Utils.getFilterValues(search);
@@ -71,8 +70,7 @@ class ViewEditAnalysis extends Component {
     if (nextProps.id !== this.props.id) {
       const analysis = await this.props.loadAnalysis({ id: nextProps.id });
       const studyId = analysis.result.study.id;
-      const kind = analysis.result.study.kind; 
-      this.props.setActiveModule(kind === studyKind.WORKSPACE ? 'workspace' : 'study-manager');
+      this.props.setActiveModule(analysis.result.study.kind);
       this.props.loadStudyDataSources({ studyId });
     }
     if (nextProps.id !== this.props.id || nextProps.page !== this.props.page || !isEqual(this.props.filter, nextProps.filter)) {
@@ -121,6 +119,7 @@ export default class ViewEditAnalysisBuilder extends ActiveModuleAwareContainerB
 
   getMapDispatchToProps() {
     return {
+      ...super.getMapDispatchToProps(),
       loadAnalysis: actions.analysisExecution.analysis.find,
       loadTypeList: actions.analysisExecution.analysisTypes.query,
       unloadAnalysis: actions.analysisExecution.analysis.unload,
@@ -139,6 +138,7 @@ export default class ViewEditAnalysisBuilder extends ActiveModuleAwareContainerB
       ...ownProps,
       ...stateProps,
       ...dispatchProps,
+      ...super.mergeProps(stateProps, dispatchProps, ownProps),
       onBannerActed: async () => {
         await dispatchProps.loadAnalysis({ id: stateProps.id });
         return dispatchProps.loadSubmissionGroups({ analysisId: stateProps.id, page: stateProps.page, filter: stateProps.filter });
