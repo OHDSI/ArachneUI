@@ -31,6 +31,7 @@ const paperCoreName = 'SM_STUDY_PAPER';
 const documentCoreName = 'SM_STUDY_DOCUMENT';
 const participantsCoreName = 'SM_STUDY_PARTICIPANTS';
 const dsCoreName = 'SM_STUDY_DATA_SOURCE';
+const studiesKind = 'SM_KIND';
 const analysisMoveCoreName = 'SM_ANALYSIS_MOVE';
 
 const ducks = new Duck({
@@ -38,6 +39,11 @@ const ducks = new Duck({
   urlBuilder: ({ id, kind = studyKind.REGULAR }) => {
     return kind === studyKind.WORKSPACE ? workspacePaths.workspace({ id }) : apiPaths.studies({ id });
   }
+});
+
+const studyKindDuck = new Duck({
+  name: studiesKind,
+  urlBuilder: apiPaths.kind,
 });
 
 const paperDuck = new Duck({
@@ -85,6 +91,7 @@ export default {
     participants: participantsDuck.actions,
     dataSource: {...datasourceDuck.actions, unload: unloadDataSource},
     analysisMove: analysisMoveDuck.actions,
+    studyKind: studyKindDuck.actions,
   },
   reducer: Utils.extendReducer(ducks.reducer, {
     paper: paperDuck.reducer,

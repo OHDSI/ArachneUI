@@ -30,6 +30,8 @@ import { LinkBuilder } from 'modules/AnalysisExecution/ducks/linkBuilder';
 import FileTreeUtils from 'services/FileTreeUtils';
 import { FileLoader } from 'services/FileLoader';
 import presenter from './presenter';
+import { ActiveModuleAwareContainerBuilder } from 'modules/StudyManager/utils'
+import { domains } from 'modules/Portal/const';
 
 export class SubmissionCode extends FileLoader {
   constructor() {
@@ -71,7 +73,7 @@ export class SubmissionCode extends FileLoader {
   }
 }
 
-export class SubmissionCodeBuilder extends ContainerBuilder {
+export class SubmissionCodeBuilder extends ActiveModuleAwareContainerBuilder {
   constructor() {
     super();
     this.selectors = {};
@@ -146,6 +148,14 @@ export class SubmissionCodeBuilder extends ContainerBuilder {
       loadBreadcrumbs: actions.analysisExecution.breadcrumbs.query,
       clearDetailsData: actions.analysisExecution.submissionFileDetails.clear,
     };
+  }
+  
+  getId({ params }) {
+    return params.submissionId;
+  }
+  
+  getType({ params }) {
+    return domains.SUBMISSION;
   }
 }
 

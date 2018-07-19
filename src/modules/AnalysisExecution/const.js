@@ -23,6 +23,7 @@
 import keyMirror from 'keymirror';
 import { Utils } from 'services/Utils';
 import { paths as commonPaths } from 'const/paths';
+import { domains } from 'modules/Portal/const'
 
 const modal = keyMirror({
   analysisFiles: null,
@@ -239,9 +240,9 @@ const fileSources = keyMirror({
 const maxFilesCount = 10000;
 
 const breadcrumbTypes = keyMirror({
-  ANALYSIS: null,
-  STUDY: null,
-  INSIGHT: null,
+  [domains.ANALYSIS]: null,
+  [domains.STUDY]: null,
+  [domains.INSIGHT]: null,
 });
 
 const analysisTypes = keyMirror({

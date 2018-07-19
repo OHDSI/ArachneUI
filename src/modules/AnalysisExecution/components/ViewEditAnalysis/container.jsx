@@ -29,6 +29,7 @@ import isEqual from 'lodash/isEqual';
 import qs from 'qs';
 import { ModalUtils } from 'arachne-ui-components';
 import Presenter from './presenter';
+import { ActiveModuleAwareContainerBuilder } from 'modules/StudyManager/utils';
 
 export function getFilter(search) {
   let filter = Utils.getFilterValues(search);
@@ -69,6 +70,7 @@ class ViewEditAnalysis extends Component {
     if (nextProps.id !== this.props.id) {
       const analysis = await this.props.loadAnalysis({ id: nextProps.id });
       const studyId = analysis.result.study.id;
+      this.props.setActiveModule(analysis.result.study.kind);
       this.props.loadStudyDataSources({ studyId });
     }
     if (nextProps.id !== this.props.id || nextProps.page !== this.props.page || !isEqual(this.props.filter, nextProps.filter)) {
@@ -86,7 +88,7 @@ class ViewEditAnalysis extends Component {
   }
 }
 
-export default class ViewEditAnalysisBuilder extends ContainerBuilder {
+export default class ViewEditAnalysisBuilder extends ActiveModuleAwareContainerBuilder {
   getComponent() {
     return ViewEditAnalysis;
   }
@@ -117,6 +119,7 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
 
   getMapDispatchToProps() {
     return {
+      ...super.getMapDispatchToProps(),
       loadAnalysis: actions.analysisExecution.analysis.find,
       loadTypeList: actions.analysisExecution.analysisTypes.query,
       unloadAnalysis: actions.analysisExecution.analysis.unload,
@@ -135,6 +138,7 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
       ...ownProps,
       ...stateProps,
       ...dispatchProps,
+      ...super.mergeProps(stateProps, dispatchProps, ownProps),
       onBannerActed: async () => {
         await dispatchProps.loadAnalysis({ id: stateProps.id });
         return dispatchProps.loadSubmissionGroups({ analysisId: stateProps.id, page: stateProps.page, filter: stateProps.filter });
@@ -153,10 +157,13 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
     const page = get(currentQuery, 'page', 1);
     const filter = getFilter(getState().routing.locationBeforeTransitions.search);
     return {
+      ...super.getFetchers({ params, dispatch, getState }),
       loadAnalysisWDataSources: dispatch(componentActions.loadAnalysis({ id: params.analysisId }))
-        .then(() => {
-          const studyId = getState().analysisExecution.analysis.data.result.study.id;
+        .then(analysis => {
+          const studyId = get(analysis, 'result.study.id');
           dispatch(componentActions.loadSubmissionGroups({ analysisId: params.analysisId, page, filter }));
+          const kind = get(analysis, 'result.study.kind');
+          this.setKind(kind);
           return dispatch(componentActions.loadStudyDataSources({ studyId }));
         }),
       loadTypeList: componentActions.loadTypeList,

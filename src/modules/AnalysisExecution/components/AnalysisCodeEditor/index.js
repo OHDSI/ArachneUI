@@ -20,6 +20,6 @@
  *
  */
 
-import AnalysisCode from './container';
+import AnalysisCodeEditorBuilder from './container';
 
-export default AnalysisCode;
+export default (new AnalysisCodeEditorBuilder()).build();

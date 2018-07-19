@@ -70,6 +70,10 @@ const domains = keyMirror({
   USER: null,
   DATA_SOURCE: null,
   PAPER: null,
+  INSIGHT: null,
+  STUDY_FILE: null,
+  SUBMISSION: null,
+  SUBMISSION_GROUP: null,
 });
 
 const domainNames = {

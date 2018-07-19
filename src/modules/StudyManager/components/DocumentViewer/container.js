@@ -19,12 +19,13 @@
  *
  */
 
-import { get, ContainerBuilder } from 'services/Utils';
+import { get } from 'services/Utils';
 import actions from 'actions/index';
 import { apiPaths, paths } from 'modules/StudyManager/const';
+import { ActiveModuleAwareContainerBuilder } from 'modules/StudyManager/utils';
 import { FileLoader } from 'services/FileLoader';
-import fileConverter from 'components/FileInfo/converter';
 import presenter from './presenter';
+import { domains } from 'modules/Portal/const';
 
 class DocumentViewer extends FileLoader {
   render() {
@@ -32,12 +33,20 @@ class DocumentViewer extends FileLoader {
   }
 }
 
-export default class StudyDocumentBuilder extends ContainerBuilder {
+export default class StudyDocumentBuilder extends ActiveModuleAwareContainerBuilder {
 
   getComponent() {
     return DocumentViewer;
   }
 
+  getType({ params }) {
+    return domains.STUDY;
+  }
+  
+  getId({ params }) {
+    return params.studyId;
+  }
+  
   mapStateToProps(state, ownProps) {
     const fileUuid = ownProps.params.fileUuid;
     const studyId = ownProps.params.studyId;
