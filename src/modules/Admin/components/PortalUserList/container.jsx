@@ -122,6 +122,9 @@ class UserListBuilder extends ContainerBuilder {
         url.setSearch(filters);
         dispatchProps.redirect(url.href());
       },
+      onPageOutOfRange() {
+        dispatchProps.redirect(paths.users());
+      }
     };
   }
 
