@@ -29,8 +29,10 @@ import {
 } from 'services/SolrQuery';
 import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
+import { replace } from 'react-router-redux';
 import presenter from './presenter';
 import SelectorsBuilder from './selectors';
+import { paths } from 'modules/DataCatalog/const';
 
 const selectors = (new SelectorsBuilder()).build();
 const defaultQueryParams = { query: '', page: 1, pageSize: 10 };
@@ -80,6 +82,7 @@ export default class MyDatasourcesBuilder extends ContainerBuilder {
   getMapDispatchToProps() {
     return {
       loadDsList: actions.dataCatalog.myDatasources.query,
+      redirect: addr => replace(addr),
     };
   }
 
@@ -88,6 +91,9 @@ export default class MyDatasourcesBuilder extends ContainerBuilder {
       ...ownProps,
       ...stateProps,
       ...dispatchProps,
+      onPageOutOfRange() {
+        dispatchProps.redirect(paths.myDatasources());
+      }
     };
   }
 

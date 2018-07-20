@@ -39,6 +39,7 @@ function DataCatalogList(props) {
     searchQueryEncode,
     isLoading,
     paginationDetails,
+    onPageOutOfRange,
   } = props;
 
   return (
@@ -52,6 +53,7 @@ function DataCatalogList(props) {
           paginationDetails={paginationDetails}
           searchQueryDecode={searchQueryDecode}
           searchQueryEncode={searchQueryEncode}
+          onPageOutOfRange={onPageOutOfRange}
         >
           <div>
             <DataSourcesTable columns={columns} data={data} />
