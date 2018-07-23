@@ -24,9 +24,11 @@ import actions from 'actions/index';
 
 class ActiveModuleAwareContainerBuilder extends ContainerBuilder {
   
-  kindPromise = new Promise((resolve, reject) => {
-    this.setKind = resolve;
-  });
+  initializeKindPromise() {
+    this.kindPromise = new Promise((resolve, reject) => {
+      this.setKind = resolve;
+    });
+  }
   
   getId({ params }) {
     return null;
@@ -36,6 +38,11 @@ class ActiveModuleAwareContainerBuilder extends ContainerBuilder {
     return null;
   }
 
+  constructor() {
+    super();
+    this.initializeKindPromise();
+  }
+  
   /**
    * @returns { { [x: string]: any } }
    */
@@ -62,7 +69,9 @@ class ActiveModuleAwareContainerBuilder extends ContainerBuilder {
           setActiveModuleAccordingToStudyKind({ kind, dispatch});
         });
     } else {
-      promise = this.kindPromise.then(kind => setActiveModuleAccordingToStudyKind({ kind, dispatch }));
+      promise = this.kindPromise
+        .then(kind => setActiveModuleAccordingToStudyKind({ kind, dispatch }))
+        .then(() => this.initializeKindPromise());
     } 
     return {
       setActiveAccordingToStudyKind: promise,
