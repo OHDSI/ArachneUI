@@ -42,6 +42,7 @@ function AtlasList(props) {
     reload,
     setSorting,
     sorting,
+    onPageOutOfRange,
   } = props;
 
   return (
@@ -51,6 +52,7 @@ function AtlasList(props) {
         isLoading={isLoading}
         paginationDetails={paginationDetails}
         Actions={<Actions reload={reload} />}
+        onPageOutOfRange={onPageOutOfRange}
       >
         <List
           data={atlasList}
