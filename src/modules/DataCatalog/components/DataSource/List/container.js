@@ -27,6 +27,7 @@ import { ContainerBuilder } from 'services/Utils';
 import {
   filterListEncoderDecoder,
 } from 'services/SolrQuery';
+import { replace } from 'react-router-redux';
 import presenter from './presenter';
 import SelectorsBuilder from './selectors';
 import { paths } from 'modules/DataCatalog/const';
@@ -94,6 +95,18 @@ class DataCatalogListBuilder extends ContainerBuilder {
   getMapDispatchToProps() {
     return {
       loadDsList: actions.dataCatalog.dataSourceList.query,
+      redirect: addr => replace(addr),
+    };
+  }
+
+  mergeProps(stateProps, dispatchProps, ownProps) {
+    return {
+      ...stateProps,
+      ...dispatchProps,
+      ...ownProps,
+      onPageOutOfRange() {
+        dispatchProps.redirect(paths.dataCatalog());
+      },
     };
   }
 

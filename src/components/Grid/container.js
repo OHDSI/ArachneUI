@@ -21,6 +21,7 @@
  */
 
 // @ts-check
+import { Component } from 'react';
 import { get, ContainerBuilder } from 'services/Utils';
 import Uri from 'urijs';
 import GridPresenter from './presenter';
@@ -42,10 +43,25 @@ function extractPaginationData({ searchResults, numOfElsPerPage, startsFromOne =
   };
 }
 
+class Grid extends Component {
+  
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.paginationDetails.pages < nextProps.currentPage) {
+      this.props.onPageOutOfRange(nextProps.currentPage, nextProps.paginationDetails.pages);
+    }
+  }
+  
+  render() {
+    return GridPresenter({
+      ...this.props,
+    });
+  }
+}
+
 export default class GridBuilder extends ContainerBuilder {
 
   getComponent() {
-    return GridPresenter;
+    return Grid;
   }
 
   mapStateToProps(state) {
@@ -57,6 +73,18 @@ export default class GridBuilder extends ContainerBuilder {
 
     return {
       path: url.href(),
+      currentPage: currentQuery.page,
+    };
+  }
+
+  mergeProps(stateProps, dispatchProps, ownProps) {
+    return {
+      ...stateProps,
+      ...dispatchProps,
+      onPageOutOfRange(requestedPage, pagesCount) {
+        console.warn(`Page ${requestedPage} is out of range [0..${pagesCount}]`);
+      },
+      ...ownProps, // allow re-defining of the onPagesOutOfRange handler
     };
   }
 

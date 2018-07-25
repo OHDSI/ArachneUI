@@ -24,7 +24,7 @@ import { Component, PropTypes } from 'react';
 import URI from 'urijs';
 import { get, ContainerBuilder } from 'services/Utils';
 import PageableUtils from 'services/PageableUtils';
-import { push as goToPage } from 'react-router-redux';
+import { push as goToPage, replace } from 'react-router-redux';
 import { ModalUtils } from 'arachne-ui-components';
 import presenter from './presenter';
 import actions from 'actions';
@@ -82,6 +82,7 @@ export default class ListBuilder extends ContainerBuilder {
       checkConnection: id => actions.externalResourceManager.atlases.checkConnection({ id }),
       editAtlas: id => ModalUtils.actions.toggle(modal.atlasDetails, true, { id }),
       deleteAtlas: actions.externalResourceManager.atlases.delete,
+      redirect: addr => replace(addr),
     };
   }
 
@@ -95,6 +96,9 @@ export default class ListBuilder extends ContainerBuilder {
       async deleteAtlas(id) {
         await dispatchProps.deleteAtlas({ id });
         dispatchProps.loadAtlasList();
+      },
+      onPageOutOfRange() {
+        dispatchProps.redirect(paths.atlases());
       },
     };
   }
