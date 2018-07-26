@@ -26,8 +26,10 @@ import {
   filterListEncoderDecoder,
 } from 'services/SolrQuery';
 import { ContainerBuilder, get } from 'services/Utils';
+import { replace } from 'react-router-redux';
 import presenter from './presenter';
 import selectors from './selectors';
+import { paths } from 'modules/ExpertFinder/const';
 
 class ExpertsList extends Component {
   componentWillReceiveProps(nextProps) {
@@ -71,6 +73,18 @@ export default class ExpertsListBuilder extends ContainerBuilder {
     return {
       loadList: actions.expertFinder.expertsList.query,
       loadProfessionalTypes: actions.expertFinder.professionalTypes.query,
+      redirect: addr => replace(addr),
+    };
+  }
+
+  mergeProps(stateProps, dispatchProps, ownProps) {
+    return {
+      ...stateProps,
+      ...dispatchProps,
+      ...ownProps,
+      onPageOutOfRange() {
+        dispatchProps.redirect(paths.list({ query: stateProps.searchStr }));
+      },
     };
   }
 

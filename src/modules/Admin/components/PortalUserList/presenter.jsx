@@ -43,6 +43,7 @@ export default class UserList extends Component {
       filterFields,
       searchQueryDecode,
       searchQueryEncode,
+      onPageOutOfRange,
     } = this.props;
     return (
       <PageWrapper>
@@ -54,6 +55,7 @@ export default class UserList extends Component {
           Actions={<PortalUserListActions />}
           searchQueryDecode={searchQueryDecode}
           searchQueryEncode={searchQueryEncode}
+          onPageOutOfRange={onPageOutOfRange}
         >
           <Table />
         </Grid>
