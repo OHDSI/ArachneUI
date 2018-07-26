@@ -61,6 +61,7 @@ const paths = {
   admins: () => '/admin-settings/admins',
   systemSettings: () => '/admin-settings/system-settings',
   users: () => '/admin-settings/users',
+  tenants: () => '/admin-settings/tenants',
 };
 
 const imgs = {
