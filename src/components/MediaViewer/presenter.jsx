@@ -22,7 +22,7 @@
 
 import React, { PropTypes } from 'react';
 import BEMHelper from 'services/BemHelper';
-import Viewer from 'react-viewer';
+import OriginalViewer from 'react-viewer';
 import Loadable from 'react-loadable';
 import EmptyState from 'components/EmptyState';
 import { isText } from 'services/MimeTypeUtil';
@@ -33,6 +33,16 @@ import moment from 'moment-timezone';
 import { usDateTime as dateFormat } from 'const/formats';
 import CSV from './CsvViewer';
 import { getScanResultDescription } from 'const/antivirus';
+
+class Viewer extends OriginalViewer {
+  removeViewer() {
+    this.props.onClose();
+    if (this.container) {
+      this.container = null;
+      this.component = null;
+    }
+  }
+}
 
 let ReactPDF;
 
@@ -87,16 +97,16 @@ function image({ classes, container, setContainer, data }) {
         }
       }}
     />,
-    container ?
-      <Viewer
-        attribute={false}
-        images={[{ src: `data:image;base64,${data}` }]}
-        visible={data !== null}
-        container={container}
-        zIndex={10}
-        onClose={() => {
-        }}
-      /> : null,
+    <Viewer
+      attribute={false}
+      images={[{ src: `data:image;base64,${data}` }]}
+      visible={data !== null}
+      container={container}
+      zIndex={10}
+      onClose={() => {
+        setContainer(null);
+      }}
+    />,
   ]
   );
 }
@@ -133,36 +143,40 @@ function pdf({
         }
       }}
     >
-      {isLoaded &&
-        <div {...classes('zoom')}>
-          <div {...classes('zoom-control')} onClick={zoomIn}>+</div>
-          <div {...classes('scale')}>{parseInt(scale * 100, 10)} %</div>
-          <div {...classes('zoom-control')} onClick={zoomOut}>-</div>
+      {container &&
+        <div>
+          {isLoaded &&
+            <div {...classes('zoom')}>
+              <div {...classes('zoom-control')} onClick={zoomIn}>+</div>
+              <div {...classes('scale')}>{parseInt(scale * 100, 10)} %</div>
+              <div {...classes('zoom-control')} onClick={zoomOut}>-</div>
+            </div>
+          }
+          <div {...classes('pdf')}>
+            {data &&
+              <ReactPDF
+                file={`data:application/pdf;base64,${data}`}
+                loading={<EmptyState message={'Loading PDF'} />}
+                error={<EmptyState message={'Failed to load PDF'} />}
+                noData={<EmptyState message={'No PDF file specified'} />}
+                onDocumentError={<EmptyState message={'Error while loading document'} />}
+                onPageError={<EmptyState message={'Error while loading page'} />}
+                width={pdfWidth * scale}
+                pageIndex={pageIndex-1}
+                onDocumentLoad={onPDFLoaded}
+                onPageLoad={(page) => {
+                  if (!isInitialScaleSet) {
+                    setInitialScale(pdfHeight / page.height);
+                  }
+                }}
+              />
+              }
+          </div>
+          <div {...classes('pagination')}>
+            <Pagination pages={totalPages} currentPage={pageIndex} path={path} />
+          </div>
         </div>
       }
-      <div {...classes('pdf')}>
-        {data &&
-          <ReactPDF
-            file={`data:application/pdf;base64,${data}`}
-            loading={<EmptyState message={'Loading PDF'} />}
-            error={<EmptyState message={'Failed to load PDF'} />}
-            noData={<EmptyState message={'No PDF file specified'} />}
-            onDocumentError={<EmptyState message={'Error while loading document'} />}
-            onPageError={<EmptyState message={'Error while loading page'} />}
-            width={pdfWidth * scale}
-            pageIndex={pageIndex-1}
-            onDocumentLoad={onPDFLoaded}
-            onPageLoad={(page) => {
-              if (!isInitialScaleSet) {
-                setInitialScale(pdfHeight / page.height);
-              }
-            }}
-          />
-          }
-      </div>
-      <div {...classes('pagination')}>
-        <Pagination pages={totalPages} currentPage={pageIndex} path={path} />
-      </div>
     </div>)
   );
 }
