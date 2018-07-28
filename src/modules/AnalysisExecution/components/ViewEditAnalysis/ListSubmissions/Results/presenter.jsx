@@ -87,13 +87,13 @@ export default class Results extends Component {
     let element;
     switch (this.analysisType) {
       case 'COHORT':
-        element = <Cohort/>;
+        element = <this.Cohort/>;
         break;
       case 'COHORT_CHARACTERIZATION':
-        element = <CohortCharacterization/>;
+        element = <this.CohortCharacterization/>;
         break;
       case 'INCIDENCE':
-        element = <Incidence/>;
+        element = <this.Incidence/>;
         break;
       default:
         element = <this.Default/>;
