@@ -144,7 +144,7 @@ function CellActions(props) {
   );
 }
 
-function CellInsight({ hasInsight, isDisabled, name, showCreateInsight, submissionId, isEditable }) {
+function CellInsight({ hasInsight, isDisabled, name, showCreateInsight, submissionId, isEditable, hasAccessToResults }) {
   const classes = new BEMHelper('submissions-insight-ico');
   const tooltipClass = new BEMHelper('tooltip');
 
@@ -156,6 +156,18 @@ function CellInsight({ hasInsight, isDisabled, name, showCreateInsight, submissi
           extra: tooltipClass().className
         })}
         aria-label={ 'No results are available yet' }
+        data-tootik-conf="left"
+      ></i>
+    );
+  }
+  else if (!hasAccessToResults) {
+    return (
+      <i
+        {...classes({
+          modifiers: ['disabled'],
+          extra: tooltipClass().className
+        })}
+        aria-label={'Only contributors can view the insight'}
         data-tootik-conf="left"
       ></i>
     );
@@ -360,6 +372,7 @@ function SubmissionLine(props) {
           name={get(submission, 'insight.name')}
           showCreateInsight={showCreateInsight}
           submissionId={submission.id}
+          hasAccessToResults={submission.hasAccessToResults}
         />
       </div>
       <div {...classes('cell', ['visibility', isVisibilityTogglable ? '' : 'hidden'])}>
