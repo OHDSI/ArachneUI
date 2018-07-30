@@ -36,6 +36,7 @@ function ExpertsList(props) {
     paginationDetails,
     searchQueryDecode,
     searchQueryEncode,
+    onPageOutOfRange,
   } = props;
 
   return (
@@ -49,6 +50,7 @@ function ExpertsList(props) {
           paginationDetails={paginationDetails}
           searchQueryDecode={searchQueryDecode}
           searchQueryEncode={searchQueryEncode}
+          onPageOutOfRange={onPageOutOfRange}
         >
           <List />
         </Grid>

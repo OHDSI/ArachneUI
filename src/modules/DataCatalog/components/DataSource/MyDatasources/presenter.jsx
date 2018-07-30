@@ -41,6 +41,7 @@
       searchQueryEncode,
       isLoading,
       paginationDetails,
+      onPageOutOfRange,
     } = props;
 
     return (
@@ -54,6 +55,7 @@
             paginationDetails={paginationDetails}
             searchQueryDecode={searchQueryDecode}
             searchQueryEncode={searchQueryEncode}
+            onPageOutOfRange={onPageOutOfRange}
           >
             <div>
               <DataSourcesTable columns={columns} data={data} my />
