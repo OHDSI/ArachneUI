@@ -20,7 +20,7 @@
  *
  */
 
-import React from 'react';
+import React, { Component } from 'react';
 import BEMHelper from 'services/BemHelper';
 import get from 'lodash/get';
 import { numberFormatter } from 'services/Utils';
@@ -28,84 +28,76 @@ import pluralize from 'pluralize';
 
 require('./style.scss');
 
-export default function Results(props) {
+export default class Results extends Component {
 
-  const {
-    resultInfo,
-    resultFilesCount,
-    analysisType,
-  } = props;
-
-  let element;
-  switch (analysisType) {
-    case 'COHORT':
-      element = <Cohort resultInfo={resultInfo} resultFilesCount={resultFilesCount} />;
-      break;
-    case 'COHORT_CHARACTERIZATION':
-      element = <CohortCharacterization resultInfo={resultInfo} resultFilesCount={resultFilesCount} />;
-      break;
-    case 'INCIDENCE':
-      element = <Incidence resultInfo={resultInfo} resultFilesCount={resultFilesCount} />;
-      break;
-    default:
-      element = <Default resultFilesCount={resultFilesCount} />;
+  tooltipClass = new BEMHelper('tooltip');
+  
+  constructor({ resultInfo, resultFilesCount, analysisType, hasAccess }) {
+    super();
+    this.resultInfo = resultInfo;
+    this.resultFilesCount = resultFilesCount;
+    this.analysisType = analysisType;
+    this.hasAccess = hasAccess;
   }
-  return element;
-}
 
-function Cohort(props) {
+  BaseSpan = ({ string }) => {
+    return this.hasAccess ?
+      <span>{string}</span>
+      :
+      <span {...this.tooltipClass()} data-tootik-conf="top" aria-label="Only contributors can view the results">{string}</span>;
+  };
+  
+  Cohort = () => {
+    const persons = get(this.resultInfo, 'persons');
+    return <this.BaseSpan string={pluralize('person', persons, true)}/>;
+  };
 
-  const {
-    resultInfo,
-  } = props;
+  Default = () => {
+    return <this.BaseSpan string={pluralize('document', this.resultFilesCount, true)}/>;
+  };
 
-  const persons = get(resultInfo, 'persons');
+  CohortCharacterization = () => {
+    const persons = get(this.resultInfo, 'persons') || 0;
+    const reports = get(this.resultInfo, 'reports') || 0;
+    return <this.BaseSpan string={`${pluralize('person', persons, true)}, ${pluralize('report', reports, true)}`}/>;
+  };
 
-  return <span>{pluralize('person', persons, true)}</span>;
-}
-
-function CohortCharacterization(props) {
-  const {
-    resultInfo,
-  } = props;
-
-  const persons = get(resultInfo, 'persons') || 0;
-  const reports = get(resultInfo, 'reports') || 0;
-
-  return <span>{pluralize('person', persons, true)}, {pluralize('report', reports, true)}</span>;
-}
-
-function Incidence(props) {
-
-  const {
-    resultInfo,
-  } = props;
-
-  const tooltipClass = new BEMHelper('tooltip');
-
-  const personCount = get(resultInfo, 'PERSON_COUNT') || 0;
-  const timeAtRisk = get(resultInfo, 'TIME_AT_RISK') || 0;
-  const cases = get(resultInfo, 'CASES') || 0;
-  const rate = get(resultInfo, 'RATE') || 0;
-  const proportion = get(resultInfo, 'PROPORTION') || 0;
-  const tooltipString = `Rate: ${rate}
+  Incidence = () => {
+    const personCount = get(this.resultInfo, 'PERSON_COUNT') || 0;
+    const timeAtRisk = get(this.resultInfo, 'TIME_AT_RISK') || 0;
+    const cases = get(this.resultInfo, 'CASES') || 0;
+    const rate = get(this.resultInfo, 'RATE') || 0;
+    const proportion = get(this.resultInfo, 'PROPORTION') || 0;
+    const tooltipString = `Rate: ${rate}
   ${pluralize('Case', cases)}: ${cases}
   ${pluralize('Person', personCount)}: ${personCount}
   Time at risk: ${timeAtRisk} 
   Proportion: ${proportion}`;
 
-  return (<div
-    {...tooltipClass({ modifiers: 'preformatted' })}
-    aria-label={tooltipString}
-    data-tootik-conf='left'
-  >
-    {numberFormatter.format(cases, 'short')} {pluralize('case', cases)}, {numberFormatter.format(personCount, 'short')} {pluralize('person', personCount)}
-  </div>);
-}
-
-function Default(props) {
-  const {
-    resultFilesCount,
-  } = props;
-  return <span>{pluralize('document', resultFilesCount, true)}</span>;
+    return (<div
+      {...this.tooltipClass({ modifiers: 'preformatted' })}
+      aria-label={tooltipString}
+      data-tootik-conf='left'
+    >
+      {numberFormatter.format(cases, 'short')} {pluralize('case', cases)}, {numberFormatter.format(personCount, 'short')} {pluralize('person', personCount)}
+    </div>);
+  };
+  
+  render() {
+    let element;
+    switch (this.analysisType) {
+      case 'COHORT':
+        element = <this.Cohort/>;
+        break;
+      case 'COHORT_CHARACTERIZATION':
+        element = <this.CohortCharacterization/>;
+        break;
+      case 'INCIDENCE':
+        element = <this.Incidence/>;
+        break;
+      default:
+        element = <this.Default/>;
+    }
+    return element;
+  }
 }

@@ -40,11 +40,11 @@ const getDataSourceOptions = createSelector(
 );
 
 const getLastSources = createSelector(
-  [getLastSubmissionGroup],
-  (lastSubmissionGroup) => {
+  [getLastSubmissionGroup, getDataSourceOptions],
+  (lastSubmissionGroup, dsOptions) => {
     if (lastSubmissionGroup) {
       const dataSources = [];
-      lastSubmissionGroup.submissions.forEach((submission) => {
+      lastSubmissionGroup.submissions.filter(s => dsOptions.find(o => o.id === s.dataSource.id)).forEach((submission) => {
         dataSources[submission.dataSource.id] = true;
       });
 
