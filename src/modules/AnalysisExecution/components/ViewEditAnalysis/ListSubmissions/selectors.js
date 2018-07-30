@@ -64,6 +64,7 @@ class SubmissionListSelectorsBuilder {
         && actions[submissionActionTypes.MANUAL_UPLOAD].hasPermsission,
       canHide: get(actions, `[${submissionActionTypes.HIDE}].available`, false)
         && source.permissions.UPDATE_SUBMISSION,
+      hasAccessToResults: source.permissions.ACCESS_SUBMISSION_RESULTS,
     };
 
     return submission;
