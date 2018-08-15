@@ -34,7 +34,7 @@ const getDataNodes = createSelector(
   [getRawStudySourceList],
   (dsList) => {
     const dnList = dsList
-      .filter(ds => !!ds.dataNode.atlasVerion)
+      .filter(ds => !!ds.dataNode.atlasVersion)
       .map(ds => dnConverter(ds.dataNode));
 
     return uniqBy(dnList, 'id');
