@@ -21,7 +21,9 @@
  */
 
 import buildInfo from './buildInfo';
+import licenseAgreement from './licenseAgreement';
 
 export default {
   buildInfo,
+  licenseAgreement,
 };
