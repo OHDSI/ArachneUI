@@ -1,4 +1,4 @@
-/*
+/*!
  *
  * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,39 +16,43 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Alexandr Saltykov, Pavel Grafkin, Vitaly Koulakov, Anton Gackovka
- * Created: March 3, 2017
+ * Created: October 3, 2018
  *
  */
 
-import keyMirror = require('keymirror');
+ @import 'styles/vars-and-mixins.scss';
 
-const actionTypes = keyMirror({
-  RECEIVE_PORTAL_BUILD_INFO: null,
-  LICENSE_AGREEMENT_GET: null,
-  LICENSE_AGREEMENT_SET: null,
-});
+ .#{$namespace} {
+ 
+   &license-agreement-modal {
+     max-width: 900px;
+     height: 500px;
+     overflow: auto;
+     padding: 1rem;
 
-const modal = keyMirror({
-  portalAboutInfo: null,
-  portalLicenseAgreement: null,
-});
+     &__line, & li {
+      margin: 1rem 0;
+      line-height: 1.25;
+     }
 
-const paths = {
-  odysseus: () => 'http://odysseusinc.com/',
-};
+     &__list {
+      list-style: decimal;
+      margin: 0 0 0 2rem;
+     }
 
-const images = {
-  logo: '/icons/logo/logo_odys.svg',
-};
+     &__sublist {
+      list-style: lower-latin;
+      margin: 0 0 0 2rem;
+     }
 
-const LICENSE_AGREEMENT_KEY = 'license-agreement';
-const acceptanceExpiresInDays = 10;
+     &__strong {
+      font-weight: 500;
+     }
 
-export {
-  actionTypes,
-  images,
-  modal,
-  paths,
-  LICENSE_AGREEMENT_KEY,
-  acceptanceExpiresInDays,
-};
+     &__actions {
+      padding: 1rem;
+      display: flex;
+      justify-content: flex-end;
+     }
+   }
+ }

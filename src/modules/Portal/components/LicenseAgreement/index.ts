@@ -16,39 +16,10 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Alexandr Saltykov, Pavel Grafkin, Vitaly Koulakov, Anton Gackovka
- * Created: March 3, 2017
+ * Created: October 3, 2018
  *
  */
 
-import keyMirror = require('keymirror');
+import LicenseAgreement from './container';
 
-const actionTypes = keyMirror({
-  RECEIVE_PORTAL_BUILD_INFO: null,
-  LICENSE_AGREEMENT_GET: null,
-  LICENSE_AGREEMENT_SET: null,
-});
-
-const modal = keyMirror({
-  portalAboutInfo: null,
-  portalLicenseAgreement: null,
-});
-
-const paths = {
-  odysseus: () => 'http://odysseusinc.com/',
-};
-
-const images = {
-  logo: '/icons/logo/logo_odys.svg',
-};
-
-const LICENSE_AGREEMENT_KEY = 'license-agreement';
-const acceptanceExpiresInDays = 10;
-
-export {
-  actionTypes,
-  images,
-  modal,
-  paths,
-  LICENSE_AGREEMENT_KEY,
-  acceptanceExpiresInDays,
-};
+export default LicenseAgreement;

@@ -22,7 +22,9 @@
 
 import { combineReducers } from 'redux';
 import services from '../apiServices';
+import licenseAgreement from './licenseAgreement';
 
 export default combineReducers({
 	buildInfo: services.buildInfo.reducer,
+	licenseAgreement,
 });
