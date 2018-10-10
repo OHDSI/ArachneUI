@@ -103,12 +103,13 @@ Report.propTypes = {
   list: PropTypes.arrayOf(PropTypes.shape({
     label: PropTypes.string,
     name: PropTypes.string,
+    sortOrder: PropTypes.string,
   })),
 };
 
 function mapStateToProps(state, ownProps) {
   const unsortedList = get(state, 'dataCatalog.report.queryResult.result', []) || [];
-  const list = sortBy(unsortedList, ['name']);
+  const list = sortBy(unsortedList, ['sortOrder']);
   const characterization = get(state, 'dataCatalog.characterization.data.result.files', []) || [];
   const isLoading = get(state, 'dataCatalog.characterization.isLoading', false)
         || get(state, 'dataCatalog.report.isLoading', false)
