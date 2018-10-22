@@ -44,13 +44,15 @@ interface ILicenseAgreementProps extends IStateProps, IDispatchProps {
   accept: Function;
 }
 
+type IMergeProps = (s: IStateProps, d: IDispatchProps, o: any) => ILicenseAgreementProps;
+
 class LicenseAgreement extends Component<ILicenseAgreementProps & { modal: Object }, {}> {
   componentWillMount() {
     this.props.getIsAccepted();
   }
 
   componentWillReceiveProps(nextProps: ILicenseAgreementProps) {
-    if (nextProps.isLoggedIn && !nextProps.isAccepted && !nextProps.isModalOpened) {
+    if (!nextProps.isAccepted && !nextProps.isModalOpened) {
       this.props.showModal();
     }
   }
@@ -91,7 +93,7 @@ const ModalLicenseAgreement = ModalUtils.connect({
   name: modal.portalLicenseAgreement,
 })(LicenseAgreement);
 
-export default connect<IStateProps, IDispatchProps, ILicenseAgreementProps>(
+export default connect<IStateProps, IDispatchProps, IMergeProps>(
   mapStateToProps,
   mapDispatchToProps,
   mergeProps,
