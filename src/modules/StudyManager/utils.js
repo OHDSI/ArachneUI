@@ -57,7 +57,10 @@ class ActiveModuleAwareContainerBuilder extends ContainerBuilder {
     return {
       setActiveModule: kind => {
         dispatchProps.setActiveModule(kind === studyKind.WORKSPACE ? 'workspace' : 'study-manager')
-      }
+      },
+      ...stateProps,
+      ...dispatchProps,
+      ...ownProps,
     };
   }
   
