@@ -34,21 +34,25 @@ function mapStateToProps(state) {
   );
   const author = get(analysisData, 'author', {});
   const isLoading = get(state, 'analysisExecution.analysis.isLoading', false);
+  const breadcrumbList = [
+    {
+      label: studyTitle,
+      link: studyUrl,
+    },
+  ];
+  const activeModule = get(state, 'modules.active');
+  if (activeModule !== 'workspace') {
+    breadcrumbList.unshift({
+      label: 'My studies',
+      link: paths.studies(),
+    });
+  }
 
   return {
     analysisTitle: get(analysisData, 'title'),
     backUrl: studyUrl,
     createdAt: get(analysisData, 'created'),
-    breadcrumbList: [
-      {
-        label: 'My studies',
-        link: paths.studies(),
-      },
-      {
-        label: studyTitle,
-        link: studyUrl,
-      },
-    ],
+    breadcrumbList,
     studyTitle,
     author,
     isLoading,

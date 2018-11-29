@@ -33,24 +33,28 @@ function mapStateToProps(state) {
   const studyId = get(insightData, 'analysis.study.id');
   const studyTitle = get(insightData, 'analysis.study.title');
   const analysisUrl = paths.analyses(analysisId);
+  const breadcrumbList = [
+    {
+      label: studyTitle,
+      link: paths.studies(studyId),
+    },
+    {
+      label: analysisTitle,
+      link: analysisUrl,
+    },
+  ];
+  const activeModule = get(state, 'modules.active');
+  if (activeModule !== 'workspace') {
+    breadcrumbList.unshift({
+      label: 'My studies',
+      link: paths.studies(),
+    });
+  }
 
   return {
     insightTitle: get(insightData, 'name'),
     backUrl: analysisUrl,
-    breadcrumbList: [
-      {
-        label: 'My studies',
-        link: paths.studies(),
-      },
-      {
-        label: studyTitle,
-        link: paths.studies(studyId),
-      },
-      {
-        label: analysisTitle,
-        link: analysisUrl,
-      },
-    ],
+    breadcrumbList,
   };
 }
 
