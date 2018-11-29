@@ -26,13 +26,14 @@ import { buildBreadcrumbList } from 'modules/AnalysisExecution/utils';
 import Toolbar from './presenter';
 import { ModalUtils } from 'arachne-ui-components';
 import { modal } from 'modules/AnalysisExecution/const';
-import {analysisPermissions} from 'modules/AnalysisExecution/const';
+import { analysisPermissions } from 'modules/AnalysisExecution/const';
 
 function mapStateToProps(state) {
   const analysisCodeData = get(state, 'analysisExecution.analysisCode.data.result');
   const breadcrumbs = get(state, 'analysisExecution.breadcrumbs.queryResult.result');
+  const isWorkspace = get(state, 'modules.active') === 'workspace';
 
-  const breadcrumbList = buildBreadcrumbList(breadcrumbs);
+  const breadcrumbList = buildBreadcrumbList(breadcrumbs, !isWorkspace);
   const backUrl = breadcrumbList.length > 0 ? breadcrumbList[breadcrumbList.length - 1].link : null;
 
   return {
