@@ -192,7 +192,7 @@ const staticAttrList = [
   {
     label: 'Model Type',
     name: attributeNames.modelType,
-    type: fieldTypes.enumMulti,
+    type: fieldTypes.enum,
     faceted: true,
     showInList: true,
     options: modelTypes,
@@ -202,7 +202,7 @@ const staticAttrList = [
   {
     label: 'Version',
     name: attributeNames.cdmVersion,
-    type: fieldTypes.enumMulti,
+    type: fieldTypes.enum,
     faceted: true,
     showInList: true,
     options: cdmVersionList,
