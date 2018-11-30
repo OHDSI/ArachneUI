@@ -23,7 +23,8 @@
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 import { ModalUtils } from 'arachne-ui-components';
-import { modal, paths } from 'modules/AnalysisExecution/const';
+import { modal, paths, breadcrumbTypes } from 'modules/AnalysisExecution/const';
+import { buildBreadcrumbList } from 'modules/AnalysisExecution/utils';
 import Toolbar from './presenter';
 
 function mapStateToProps(state) {
@@ -34,19 +35,17 @@ function mapStateToProps(state) {
   );
   const author = get(analysisData, 'author', {});
   const isLoading = get(state, 'analysisExecution.analysis.isLoading', false);
-  const breadcrumbList = [
-    {
-      label: studyTitle,
-      link: studyUrl,
-    },
-  ];
-  const activeModule = get(state, 'modules.active');
-  if (activeModule !== 'workspace') {
-    breadcrumbList.unshift({
-      label: 'My studies',
-      link: paths.studies(),
-    });
-  }
+  const isWorkspace = get(state, 'modules.active') === 'workspace';
+  const breadcrumbList = buildBreadcrumbList(
+    [
+      {
+        entityType: breadcrumbTypes.STUDY,
+        title: studyTitle,
+        id: get(analysisData, 'study.id'),
+      },
+    ],
+    !isWorkspace
+  );
 
   return {
     analysisTitle: get(analysisData, 'title'),
