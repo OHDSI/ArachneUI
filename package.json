@@ -1,6 +1,6 @@
 {
   "name": "arachne-ui",
-  "version": "1.13.80",
+  "version": "1.13.83",
   "licenses": [
     {
       "type": "Apache-2.0",
@@ -99,7 +99,7 @@
     "react-data-grid": "^3.0.11",
     "react-datepicker": "0.40.0",
     "react-dom": "^15.3.2",
-    "react-draggable-list": "^3.1.2",
+    "react-draggable-list": "3.1.2",
     "react-dropzone": "^3.7.3",
     "react-helmet": "^2.2.0",
     "react-loadable": "^5.3.1",
