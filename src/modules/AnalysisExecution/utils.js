@@ -22,16 +22,18 @@
 
 import { paths, breadcrumbTypes } from 'modules/AnalysisExecution/const';
 
-function buildBreadcrumbList(breadcrumbs = []) {
+function buildBreadcrumbList(breadcrumbs = [], doAddStudiesList = true) {
   const breadcrumbList = [];
 
   breadcrumbs.forEach((crumb) => {
     switch (crumb.entityType) {
       case breadcrumbTypes.STUDY:
-        breadcrumbList.push({
-          label: 'My studies',
-          link: paths.studies(),
-        });
+        if (doAddStudiesList) {
+          breadcrumbList.push({
+            label: 'My studies',
+            link: paths.studies(),
+          });
+        }
         breadcrumbList.push({
           label: crumb.title,
           link: paths.studies(crumb.id),
