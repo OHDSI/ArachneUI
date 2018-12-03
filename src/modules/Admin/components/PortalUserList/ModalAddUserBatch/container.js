@@ -25,12 +25,13 @@ import { reset as resetForm } from 'redux-form';
 import get from 'lodash/get';
 import actions from 'actions/index';
 import { ModalUtils } from 'arachne-ui-components';
-import { forms, modal } from 'modules/Admin/const';
+import { forms, modal, paths } from 'modules/Admin/const';
 import { validators } from 'services/Utils';
 import presenter from './presenter';
 import selectors from './selectors';
 import authActions from 'modules/Auth/ducks/index';
 import { buildFormData, ContainerBuilder } from 'services/Utils';
+import { push as goToPage } from 'react-router-redux';
 
 class ModalAddUserBatch extends Component {
 
@@ -70,9 +71,9 @@ class ModalAddUserBatchBuilder extends ContainerBuilder {
   getMapDispatchToProps() {
     return {
       addUsers: actions.adminSettings.usersGroup.create,
-      loadUserList: actions.adminSettings.portalUserList.query,
       closeModal: () => ModalUtils.actions.toggle(modal.addUserBatch, false),
       resetForm: resetForm.bind(null, forms.addUser),
+      resetFilters: () => goToPage(paths.users()),
       loadProfessionalTypes: authActions.actions.professionalType.query,
       loadTenantList: actions.adminSettings.tenantList.query,
     }
@@ -93,9 +94,9 @@ class ModalAddUserBatchBuilder extends ContainerBuilder {
         };
         
         const submitPromise = await dispatchProps.addUsers({}, usersData);
-        await dispatchProps.loadUserList();
         dispatchProps.resetForm();
         dispatchProps.closeModal();
+        dispatchProps.resetFilters();
 
         return submitPromise;
       },

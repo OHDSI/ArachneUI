@@ -21,7 +21,7 @@
  */
 
 import keyMirror from 'keymirror';
-import Utils from 'services/Utils';
+import { Utils } from 'services/Utils';
 
 const forms = keyMirror({
   addAdminUser: null,
