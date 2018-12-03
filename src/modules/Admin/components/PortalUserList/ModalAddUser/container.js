@@ -25,12 +25,13 @@ import { reset as resetForm } from 'redux-form';
 import get from 'lodash/get';
 import actions from 'actions/index';
 import { ModalUtils } from 'arachne-ui-components';
-import { forms, modal } from 'modules/Admin/const';
+import { forms, modal, paths } from 'modules/Admin/const';
 import { validators } from 'services/Utils';
 import presenter from './presenter';
 import selectors from './selectors';
 import authActions from 'modules/Auth/ducks/index';
 import { buildFormData, ContainerBuilder } from 'services/Utils';
+import { push as goToPage } from 'react-router-redux';
 
 class ModalAddUser extends Component {
 
@@ -69,9 +70,9 @@ class ModalPortalUserListBuilder extends ContainerBuilder {
     return {
       addUser: actions.adminSettings.portalUserList.create,
       loadUserOptions: actions.adminSettings.userOptionList.query,
-      loadUserList: actions.adminSettings.portalUserList.query,
       closeModal: () => ModalUtils.actions.toggle(modal.addUser, false),
       resetForm: resetForm.bind(null, forms.addUser),
+      resetFilters: () => goToPage(paths.users()),
       loadProfessionalTypes: authActions.actions.professionalType.query,
     }
   }
@@ -87,9 +88,9 @@ class ModalPortalUserListBuilder extends ContainerBuilder {
         const submitPromise = dispatchProps.addUser({ id: null, query }, data);
 
         submitPromise
-          .then(dispatchProps.loadUserList.bind(null, { id: null, query }))
           .then(dispatchProps.resetForm)
           .then(dispatchProps.closeModal)
+          .then(dispatchProps.resetFilters)
           .catch(() => {
           });
 
