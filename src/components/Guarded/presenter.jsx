@@ -1,0 +1,53 @@
+/*
+*
+* Copyright 2018 Odysseus Data Services, inc.
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*
+* Company: Odysseus Data Services, Inc.
+* Product Owner/Architecture: Gregory Klebanov
+* Authors: Alexander Saltykov
+* Created: December 03, 2018
+*
+*/
+
+import React, { PropTypes } from 'react';
+import AppBEMHelper from 'services/BemHelper';
+import { Guard } from 'services/Guard';
+
+import './style.scss';
+
+export default function GuardedComponent({ isMet, children, rules, className }) {
+  const bem = new AppBEMHelper('guarded-component');
+  const classes = bem({
+    extra: `${className} ${isMet ? null : 'ac-tooltip'}`,
+    modifiers: { blocked: !isMet },
+  });
+
+  return (
+    <div
+      {...classes}
+      aria-label={rules.tooltip}
+      data-tootik-conf={'multiline'}
+    >
+      {!isMet && <div {...bem('block-layer')} />}
+      {children}
+    </div>
+  );
+}
+
+GuardedComponent.propTypes = {
+  isMet: PropTypes.bool,
+  children: PropTypes.oneOf(PropTypes.node, PropTypes.arrayOf(PropTypes.node)),
+  rules: PropTypes.instanceOf(Guard),
+  className: PropTypes.string,
+};
