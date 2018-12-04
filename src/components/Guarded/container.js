@@ -19,7 +19,7 @@
 * Created: December 03, 2018
 *
 */
-import { Guard } from 'community/services/Guard';
+import { Guard } from 'services/Guard';
 import { Component } from 'react';
 import presenter from './presenter';
 
