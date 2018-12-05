@@ -22,10 +22,12 @@
 
 import React from 'react';
 import BEMHelper from 'services/BemHelper';
-import { Modal } from 'arachne-ui-components';
-import { Fieldset, Checkbox, ListItem, Button } from 'arachne-ui-components';
+import { Modal, Fieldset, Checkbox, ListItem, Button } from 'arachne-ui-components';
 import { Field } from 'redux-form';
 import DataSources from 'modules/AnalysisExecution/components/ViewEditAnalysis/DataSources';
+import GuardedComponent from 'components/Guarded/container';
+import { Guard } from 'services/Guard';
+import { studyPermissions } from 'modules/StudyManager/const';
 
 require('./style.scss');
 
@@ -50,6 +52,7 @@ function ModalSubmitCode(props) {
     closeModal,
     inviteDatasource,
     error,
+    grantedPermissions,
   } = props;
 
   const fields = [
@@ -89,10 +92,20 @@ function ModalSubmitCode(props) {
           {fields.map(field => <Field {...field} component={Fieldset} />)}
           {error && <div {...classes('error')}>{error}</div>}
           <div {...classes('actions')}>
-            <Button {...classes('invite-button')} onClick={inviteDatasource}>
-              <span {...classes('invite-button-icon')}>add_circle_outline</span>
-              Invite Data Sources
-            </Button>
+            <GuardedComponent
+              rules={new Guard({
+                rules: [studyPermissions.inviteDatanode],
+                grantedPermissions,
+                tooltip: {
+                  [studyPermissions.inviteDatanode]: 'you should be contributor or datasource owner',
+                },
+              })}
+            >
+              <Button {...classes('invite-button')} onClick={inviteDatasource}>
+                <span {...classes('invite-button-icon')}>add_circle_outline</span>
+                Invite Data Sources
+              </Button>
+            </GuardedComponent>
             <Button {...classes('submit')} type={'submit'} mods={['success', 'rounded']} disabled={submitting}>
               {submitting ? 'Submitting...' : 'Submit'}
             </Button>

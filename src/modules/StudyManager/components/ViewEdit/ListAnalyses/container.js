@@ -38,12 +38,13 @@ export default class ListAnalysesBuilder {
 
   mapStateToProps(state) {
     const studyData = get(state, 'studyManager.study.data');
+    const grantedPermissions = get(state, 'studyManager.study.data.permissions', []);
 
     return {
       studyId: get(studyData, 'id'),
       analysisList: selectors.getAnalysisList(state),
       isEditable: get(studyData, `permissions[${studyPermissions.createAnalysis}]`, false),
-
+      grantedPermissions,
     };
   }
   
