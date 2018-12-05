@@ -21,7 +21,7 @@
  */
 
 import React, { Component, PropTypes } from 'react';
-import { get, ContainerBuilder, Utils } from 'services/Utils';
+import { get, Utils, isViewable } from 'services/Utils';
 import { refreshTime, analysisPermissions, submissionGroupsPageSize, modal } from 'modules/AnalysisExecution/const';
 import { modal as studyModal } from 'modules/StudyManager/const';
 import actions from 'actions/index';
@@ -105,6 +105,7 @@ export default class ViewEditAnalysisBuilder extends ActiveModuleAwareContainerB
     const studyId = get(analysisData, 'study.id', -1);
     const currentQuery = state.routing.locationBeforeTransitions.query;
     const filter = getFilter(state.routing.locationBeforeTransitions.search);
+    const canView = isViewable(analysis.data);
 
     return {
       id: parseInt(ownProps.routeParams.analysisId, 10),
@@ -114,6 +115,7 @@ export default class ViewEditAnalysisBuilder extends ActiveModuleAwareContainerB
       isEditable: get(analysisData, `permissions[${analysisPermissions.editAnalysis}]`, false),
       page: get(currentQuery, 'page', 1),
       filter,
+      canView,
     };
   }
 
@@ -159,12 +161,14 @@ export default class ViewEditAnalysisBuilder extends ActiveModuleAwareContainerB
     return {
       ...super.getFetchers({ params, dispatch, getState }),
       loadAnalysisWDataSources: dispatch(componentActions.loadAnalysis({ id: params.analysisId }))
-        .then(analysis => {
+        .then((analysis) => {
           const studyId = get(analysis, 'result.study.id');
-          dispatch(componentActions.loadSubmissionGroups({ analysisId: params.analysisId, page, filter }));
           const kind = get(analysis, 'result.study.kind');
           this.setKind(kind);
-          return dispatch(componentActions.loadStudyDataSources({ studyId }));
+          if (isViewable(analysis)) {
+            dispatch(componentActions.loadSubmissionGroups({ analysisId: params.analysisId, page, filter }));
+            dispatch(componentActions.loadStudyDataSources({ studyId }));
+          }
         }),
       loadTypeList: componentActions.loadTypeList,
     };
