@@ -26,7 +26,7 @@ import get from 'lodash/get';
 import { modal } from 'modules/ExpertFinder/const';
 import actions from 'actions';
 import { goBack } from 'react-router-redux';
-import { ContainerBuilder } from 'services/Utils';
+import { ContainerBuilder, isViewable } from 'services/Utils';
 import presenter from './presenter';
 
 
@@ -65,12 +65,14 @@ export default class ProfileViewBuilder extends ContainerBuilder {
     if (!firstname && !middlename && !lastname) {
       firstname = 'an expert';
     }
+    const canView = isViewable(moduleState.data);
 
     return {
       editable,
       name: [firstname, middlename, lastname].filter(val => !!val).join(' '),
       id,
       isLoading: isLoading || isCreatingSkill,
+      canView,
     };
   }
 
