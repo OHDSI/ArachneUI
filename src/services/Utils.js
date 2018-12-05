@@ -45,6 +45,7 @@ import { reports } from 'const/reports';
 import URI from 'urijs';
 import { createSelector } from 'reselect';
 import qs from 'qs';
+import { resultErrorCodes } from 'modules/StudyManager/const';
 
 function buildFormData(obj) {
   const formData = new FormData();
@@ -620,6 +621,10 @@ class TreemapSelectorsBuilder {
   }
 }
 
+function isViewable(entity) {
+  return get(entity, 'errorCode', resultErrorCodes.NO_ERROR) !== resultErrorCodes.PERMISSION_DENIED;
+}
+
 export {
   buildFormData,
   get,
@@ -636,4 +641,5 @@ export {
   TreemapSelectorsBuilder,
   addAnyOption,
   anyOptionValue,
+  isViewable,
 };

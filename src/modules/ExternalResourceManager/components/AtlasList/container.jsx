@@ -100,6 +100,10 @@ export default class ListBuilder extends ContainerBuilder {
       onPageOutOfRange() {
         dispatchProps.redirect(paths.atlases());
       },
+      async checkConnection(id) {
+        await dispatchProps.checkConnection(id);
+        dispatchProps.loadAtlasList();
+      },
     };
   }
 

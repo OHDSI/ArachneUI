@@ -43,6 +43,7 @@ import ModalUploadResult from './ModalUploadResult';
 import ModalRejectSubmission from './ModalRejectSubmission';
 import ModalAddDataSource from 'modules/StudyManager/components/ViewEdit/ModalAddDataSource';
 import ModalError from './ModalCreateCode/components/ModalError';
+import EmptyState from 'components/EmptyState';
 
 import './style.scss';
 
@@ -83,10 +84,12 @@ export default class ViewEditAnalysis extends Component {
     const {
       isLoading,
       isEditable,
+      canView,
     } = this.props;
 
     return (
       <PageContent title={this.pageTitle}>
+        {canView ?
         <div {...this.classes()}>
           <InviteRestrictedArea
             {...this.classes('container')}
@@ -115,6 +118,8 @@ export default class ViewEditAnalysis extends Component {
           {this.getModals()}
           <LoadingPanel active={isLoading} />
         </div>
+        : <EmptyState message={'Access denied or analysis does not exist'} />
+        }
       </PageContent>
     );
   }

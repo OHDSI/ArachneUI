@@ -23,12 +23,13 @@
 import { Component, PropTypes } from 'react';
 import actions from 'actions';
 import get from 'lodash/get';
-import { ContainerBuilder } from 'services/Utils';
 import { push as goToPage } from 'react-router-redux';
 import { paths as workspacePaths } from 'modules/Workspace/const';
 import { studyKind, participantRoles as roles } from 'modules/StudyManager/const';
 import presenter from './presenter';
 import { ActiveModuleAwareContainerBuilder } from 'modules/StudyManager/utils';
+import isEmpty from 'lodash/isEmpty';
+import { isViewable } from 'services/Utils';
 
 export class ViewEditStudy extends Component {
   static get propTypes() {
@@ -43,6 +44,8 @@ export class ViewEditStudy extends Component {
       loadStudy: PropTypes.func,
       loadInsights: PropTypes.func,
       loadTransitions: PropTypes.func,
+      canView: PropTypes.bool,
+      isStudyLoadingComplete: PropTypes.bool,
     };
   }
 
@@ -61,12 +64,12 @@ export class ViewEditStudy extends Component {
       return;
     }
     if (this.props.id !== nextProps.id && nextProps.id) {
-      this.props.loadTypeList();
-      this.props.loadAnalysisTypeList();
-      this.props.loadStatusList();
       this.props.loadStudy({ id: nextProps.id });
-      this.props.loadInsights({ studyId: nextProps.id });
-      this.props.loadTransitions({ studyId: nextProps.id });
+    }
+    if (this.props.isStudyLoadingComplete === false && nextProps.isStudyLoadingComplete === true
+      && nextProps.canView
+    ) {
+      this.loadDetailedInfo(nextProps);
     }
   }
 
@@ -74,6 +77,14 @@ export class ViewEditStudy extends Component {
     this.setState({
       openedSection,
     });
+  }
+
+  loadDetailedInfo(nextProps) {
+    this.props.loadTypeList();
+    this.props.loadAnalysisTypeList();
+    this.props.loadStatusList();
+    this.props.loadInsights({ studyId: nextProps.id });
+    this.props.loadTransitions({ studyId: nextProps.id });
   }
 
   render() {
@@ -101,15 +112,19 @@ export default class ViewEditStudyBuilder extends ActiveModuleAwareContainerBuil
     const isTypesLoading = get(moduleState, 'typeList.isLoading');
     const participants = get(studyData, 'participants');
     const isParticipantsLoading = get(participants, 'isSaving');
-    
+
     const kind = get(studyData, 'kind');
-    
+    const isStudyLoadingComplete = !isEmpty(studyData) && !isStudyLoading;
+    const canView = isViewable(studyData);    
+
     return {
       id: parseInt(ownProps.routeParams.studyId, 10),
       studyTitle: pageTitle.join(' | '),
       isLoading: isStudyLoading || isTypesLoading || isParticipantsLoading || get(state, 'studyManager.studyInvitations.isLoading'),
       participants,
       kind,
+      canView,
+      isStudyLoadingComplete,
     };
   }
 
@@ -141,13 +156,8 @@ export default class ViewEditStudyBuilder extends ActiveModuleAwareContainerBuil
     const studyId = params.studyId;
     return {
       ...super.getFetchers({ params, dispatch, getState }),
-      loadTypeList: actions.studyManager.typeList.find,
-      loadAnalysisTypeList: actions.studyManager.analysisTypes.find,
-      loadStatusList: actions.studyManager.statusList.find,
       loadStudy: dispatch(actions.studyManager.study.find({ id: studyId }))
         .then(studyData => this.setKind(get(studyData, 'kind'))),
-      loadInsights: () => actions.studyManager.studyInsights.find({ studyId }),
-      loadTransitions: () => actions.studyManager.availableTransitions.query({ studyId }),
     };
   }
 
