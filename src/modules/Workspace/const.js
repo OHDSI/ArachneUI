@@ -19,8 +19,8 @@
  */
 
 const paths = {
-  workspace: () => `/workspace/home`,
-  userWorkspace: (userId) => `/workspace/user/${userId}`
+  workspace: () => '/workspace/home',
+  userWorkspace: userId => `/workspace/user/${userId}`,
 };
 
 const apiPaths = {
