@@ -91,6 +91,7 @@ const mapDispatchToProps = {
   closeModal: () => ModalUtils.actions.toggle(modal.createDataSource, false),
   loadDataSourceList: actions.cdmSourceList.dataSourceList.query,
   deleteDataSourceKeytab: actions.cdmSourceList.dataSourceKeytab.delete,
+  refreshBuildInfo: actions.portal.buildInfo.find,
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
@@ -107,6 +108,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
       submitPromise
         .then(() => dispatchProps.resetForm())
         .then(() => dispatchProps.closeModal())
+        .then(() => dispatchProps.refreshBuildInfo())
         .then(() => dispatchProps.loadDataSourceList({}, {query: stateProps.currentListQuery}))
         .catch(() => {});
 
