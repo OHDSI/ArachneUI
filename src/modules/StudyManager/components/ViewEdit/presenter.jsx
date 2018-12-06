@@ -39,7 +39,7 @@ import ModalCreateAnalysis from './ModalCreateAnalysis';
 
 import LeftColumn from './LeftColumn';
 import RightColumn from './RightColumn';
-import EmptyState from 'community/components/EmptyState';
+import EmptyState from 'components/EmptyState';
 
 require('./style.scss');
 
