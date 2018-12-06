@@ -39,7 +39,7 @@ import UserPicModal from './UserPicModal';
 import NameEditModal from './NameEditModal';
 import InviteModal from 'modules/ExpertFinder/components/InviteModal';
 import InviteConfirmModal from 'modules/ExpertFinder/components/InviteConfirmModal';
-import EmptyState from 'community/components/EmptyState';
+import EmptyState from 'components/EmptyState';
 
 require('./style.scss');
 
