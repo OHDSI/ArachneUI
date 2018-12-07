@@ -46,7 +46,8 @@ function extractPaginationData({ searchResults, numOfElsPerPage, startsFromOne =
 class Grid extends Component {
   
   componentWillReceiveProps(nextProps) {
-    if (nextProps.paginationDetails.pages < nextProps.currentPage) {
+    const currentPage = parseInt(nextProps.currentPage, 10);
+    if (nextProps.paginationDetails.pages < currentPage && currentPage !== 1) {
       this.props.onPageOutOfRange(nextProps.currentPage, nextProps.paginationDetails.pages);
     }
   }

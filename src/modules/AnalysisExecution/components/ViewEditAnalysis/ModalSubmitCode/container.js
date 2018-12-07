@@ -37,6 +37,13 @@ class ModalSubmitCode extends Component {
     if (props.analysisId && !this.props.isOpened && props.isOpened === true) {
       this.props.loadStudyDataSources({ studyId: props.studyId });
     }
+    // we don't have study permissions yet
+    if (this.props.grantedPermissions.length === 0
+      && this.props.isOpened === false
+      && props.isOpened === true
+    ) {
+      this.props.loadStudy({ id: props.studyId });
+    }
   }
 
   render() {
@@ -58,6 +65,7 @@ function mapStateToProps(state) {
   const isAllSelected = dataSourceOptions.length === selectedDN.length;
   const currentQuery = state.routing.locationBeforeTransitions.query;
   const initialValues = selectors.getLastSources(state);
+  const grantedPermissions = get(state, 'studyManager.study.data.permissions', []);
 
   return {
     analysisId: get(analysisData, 'id'),
@@ -67,6 +75,7 @@ function mapStateToProps(state) {
     isAllSelected,
     page: get(currentQuery, 'page', 1),
     initialValues,
+    grantedPermissions,
   };
 }
 
@@ -83,6 +92,7 @@ const mapDispatchToProps = {
   },
   showInviteModal: () => ModalUtils.actions.toggle(studyModal.addDataSource, true),
   showSubmitModal: () => ModalUtils.actions.toggle(modal.submitCode, true),
+  loadStudy: actions.studyManager.study.find,
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
