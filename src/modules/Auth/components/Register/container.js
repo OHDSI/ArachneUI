@@ -27,7 +27,7 @@ import actions from 'actions/index';
 import get from 'lodash/get';
 import { leaveIfAuthed } from 'modules/Auth/utils';
 import presenter from './presenter';
-import selectors from 'modules/ExpertFinder/components/ProfileView/ContactInfo/Edit/selectors.js';
+import selectors from './selectors';
 
 class Register extends Component {
 
@@ -106,8 +106,8 @@ function mapStateToProps(state, ownProps) {
 const mapDispatchToProps = {
   goToRoot: goToPage.bind(null, '/'),
   loadProfessionalTypes: actions.auth.professionalType.query,
-  searchCountries: actions.expertFinder.countries.query,
-  searchProvinces: actions.expertFinder.provinces.query,
+  searchCountries: actions.auth.countries.query,
+  searchProvinces: actions.auth.provinces.query,
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
