@@ -23,6 +23,7 @@
 import keyMirror from 'keymirror';
 import { FormInput, FormSelect } from 'arachne-ui-components';
 import PasswordField from 'components/PasswordField/connected';
+import StatefulFormAutocomplete from 'components/StatefulFormAutocomplete';
 
 const form = keyMirror({
   remindPassword: null,
@@ -75,7 +76,13 @@ const authMethods = keyMirror({
   NATIVE: null,
 });
 
-const registerFields = function ({ professionalTypesOptions }) {
+const registerFields = function ({ professionalTypesOptions,
+                                   countries,
+                                   provinces,
+                                   searchCountries,
+                                   storeCountry,
+                                   searchProvinces,
+                                   storeProvince, }) {
 
   return [
     {
@@ -91,6 +98,23 @@ const registerFields = function ({ professionalTypesOptions }) {
       },
     },
     {
+      name: 'address.country',
+      InputComponent: {
+        component: StatefulFormAutocomplete,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Country',
+          required: true,
+          options: countries,
+          fetchOptions: searchCountries,
+          clearable: false,
+          onSelectResetsInput: true,
+          onBlurResetsInput: true,
+          storeSelectedOption: storeCountry,
+        }
+      }
+    },
+    {
       name: 'middlename',
       InputComponent: {
         component: FormInput,
@@ -100,6 +124,22 @@ const registerFields = function ({ professionalTypesOptions }) {
           type: 'text',
         },
       },
+    },
+    {
+      name: 'address.stateProvince',
+      InputComponent: {
+        component: StatefulFormAutocomplete,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'State/Province',
+          options: provinces,
+          fetchOptions: searchProvinces,
+          clearable: false,
+          onSelectResetsInput: true,
+          onBlurResetsInput: true,
+          storeSelectedOption: storeProvince,
+        }
+      }
     },
     {
       name: 'lastname',
@@ -114,6 +154,18 @@ const registerFields = function ({ professionalTypesOptions }) {
       },
     },
     {
+      name: 'address.zipCode',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Zip code',
+          type: 'text',
+          required: true,
+        }
+      }
+    },
+    {
       name: 'email',
       InputComponent: {
         component: FormInput,
@@ -126,6 +178,18 @@ const registerFields = function ({ professionalTypesOptions }) {
       },
     },
     {
+      name: 'address.city',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'City',
+          type: 'text',
+          required: true,
+        }
+      }
+    },
+    {
       name: 'password',
       InputComponent: {
         component: PasswordField,
@@ -134,6 +198,17 @@ const registerFields = function ({ professionalTypesOptions }) {
           required: true,
         },
       },
+    },
+    {
+      name: 'address.address1',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Address',
+          type: 'text',
+        }
+      }
     },
     {
       name: 'passwordConfirmation',
@@ -148,6 +223,17 @@ const registerFields = function ({ professionalTypesOptions }) {
       },
     },
     {
+      name: 'address.mobile',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Mobile',
+          type: 'text',
+        }
+      }
+    },
+    {
       name: 'organization',
       InputComponent: {
         component: FormInput,
@@ -157,6 +243,17 @@ const registerFields = function ({ professionalTypesOptions }) {
           type: 'text',
           required: true,
         },
+      },
+    },
+    {
+      name: 'department',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Department',
+          type: 'text',
+        }
       },
     },
     {
