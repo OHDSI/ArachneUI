@@ -41,6 +41,10 @@ function FormRegister(props) {
 
   return (
     <div {...classes()}>
+      <div {...classes('title-pane')}>
+        <div {...classes('column-title')}>General</div>
+        <div {...classes('column-title')}>Contact Info</div>
+      </div>
       <Form fields={registerFields(props)} submitBtn={submitBtn} onSubmit={props.doSubmit} {...props} />
       <span {...classes('login-caption')}>
         Already Registered? <Link to={paths.login()}>Login here</Link>

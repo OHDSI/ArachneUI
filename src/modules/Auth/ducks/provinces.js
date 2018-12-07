@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2018 Odysseus Data Services, inc.
+ * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,44 +16,21 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 14, 2016
+ * Created: Dec 7, 2018
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+import Duck from 'services/Duck';
+import { apiPaths } from 'modules/Auth/const';
 
-.#{$namespace} {
-	&auth {
-		display: flex;
-		max-width: 37rem;
-		flex-direction: column;
-    	margin-left: auto;
-    	margin-right: auto;
+const coreName = 'AU_PROVINCE';
 
-		&--register {
-			max-width: 55rem;
-		}
-    
-		&__title, &__descr {
-			text-align: center;
-			color: $white;
-		}
-		&__title {
-			margin-top: 55px;
+const province = new Duck({
+  name: coreName,
+  urlBuilder: apiPaths.searchProvince,
+});
 
-			font-size: $font-size-header;
-			font-family: $font-family-montserrat;
-			text-transform: uppercase;
-		}
-		&__descr {
-			background: #24768E;
-			line-height: 20px;
-			margin-top: 20px;
-			padding: 20px;
-			width: 100%;
-		}
-		&__form {
-			margin-top: 30px;
-		}
-	}
-}
+export default {
+  actions: province.actions,
+  reducer: province.reducer,
+};
