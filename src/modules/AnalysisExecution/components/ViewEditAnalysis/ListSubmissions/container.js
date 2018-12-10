@@ -71,17 +71,22 @@ function mapStateToProps(state) {
           break;
       }
     });
+  const page = number + 1;
+  const submissionGroupList = selectors.getSubmissionGroupList(state);
+  const pageSize = get(state, 'analysisExecution.submissionGroups.queryResult.size', 0);
+  const groupCount = get(state, 'analysisExecution.submissionGroups.queryResult.totalElements', submissionGroupList.length) - (number * pageSize);
 
   return {
     analysisId: get(analysisData, 'id'),
-    submissionGroupList: selectors.getSubmissionGroupList(state),
+    submissionGroupList,
     isPaginationAvailable,
     totalPages,
-    page: number + 1,
+    page,
     path: url.href(),
     isFiltered: !isEmpty(selectedFilters),
     selectedFilters: Object.entries(selectedFilters),
     filter: getFilter(search),
+    groupCount,
   };
 }
 
