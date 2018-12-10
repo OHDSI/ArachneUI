@@ -411,9 +411,9 @@ function ListSubmissions(props) {
     isFiltered,
     selectedFilters,
     toggleVisibility,
+    groupCount,
   } = props;
 
-  const groupCount = submissionGroupList.length;
   const data = submissionGroupList.map((item, index) => {
     return (
       <div>
