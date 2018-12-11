@@ -29,5 +29,7 @@ export default combineReducers({
 	logout: services.auth_logout.reducer,
 	principal: services.auth_principal.reducer,
 	professionalTypes: services.auth_professionalTypes.reducer,
+	countries: services.auth_countries.reducer,
+	provinces: services.auth_provinces.reducer,
 	remindPasswors: services.remind_password.reducer,
 });

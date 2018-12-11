@@ -26,7 +26,8 @@ import {
   Form,
   FormInput,
   FormSelect,
-  LoadingPanel
+  FormAutocomplete,
+  LoadingPanel,
 } from 'arachne-ui-components';
 import { paths } from 'modules/Auth/const';
 import BEMHelper from 'services/BemHelper';
@@ -38,6 +39,20 @@ interface IFormRegisterProps {
   doSubmit: Function,
   professionalTypesOptions: any,
 };
+
+function StatefulFormAutocomplete(props) {
+  const input = {
+    ...props.input,
+    onChange: (option) => {
+      props.storeSelectedOption(option);
+      return props.input.onChange(option);
+    }
+  };
+  return <FormAutocomplete
+    {...props}
+    input={input}
+  />;
+}
 
 function FormRegister(props) {
   const fields = [
@@ -54,6 +69,18 @@ function FormRegister(props) {
       },
     },
     {
+      name: 'address.address1',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Address',
+          type: 'text',
+          required: true,
+        }
+      }
+    },
+    {
       name: 'middlename',
       InputComponent: {
         component: FormInput,
@@ -63,6 +90,18 @@ function FormRegister(props) {
           type: 'text',
         },
       },
+    },
+    {
+      name: 'address.city',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'City',
+          type: 'text',
+          required: true,
+        }
+      }
     },
     {
       name: 'lastname',
@@ -77,6 +116,18 @@ function FormRegister(props) {
       },
     },
     {
+      name: 'address.zipCode',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Zip code',
+          type: 'text',
+          required: true,
+        }
+      }
+    },
+    {
       name: 'email',
       InputComponent: {
         component: FormInput,
@@ -87,6 +138,23 @@ function FormRegister(props) {
           required: true,
         },
       },
+    },
+    {
+      name: 'address.country',
+      InputComponent: {
+        component: StatefulFormAutocomplete,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Country',
+          required: true,
+          options: props.countries,
+          fetchOptions: props.searchCountries,
+          clearable: false,
+          onSelectResetsInput: true,
+          onBlurResetsInput: true,
+          storeSelectedOption: props.storeCountry,
+        }
+      }
     },
     {
       name: 'password',
@@ -100,7 +168,23 @@ function FormRegister(props) {
         },
       },
     },
-/*    {
+    {
+      name: 'address.stateProvince',
+      InputComponent: {
+        component: StatefulFormAutocomplete,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'State/Province',
+          options: props.provinces,
+          fetchOptions: props.searchProvinces,
+          clearable: false,
+          onSelectResetsInput: true,
+          onBlurResetsInput: true,
+          storeSelectedOption: props.storeProvince,
+        }
+      }
+    },
+    {
       name: 'organization',
       InputComponent: {
         component: FormInput,
@@ -111,7 +195,29 @@ function FormRegister(props) {
           required: true,
         },
       },
-    },*/
+    },
+    {
+      name: 'address.mobile',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Mobile',
+          type: 'text',
+        }
+      }
+    },
+    {
+      name: 'department',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Department',
+          type: 'text',
+        }
+      },
+    },
     {
       name: 'professionalTypeId',
       InputComponent: {
@@ -133,6 +239,10 @@ function FormRegister(props) {
 
   return (
     <div {...classes()}>
+      <div {...classes('title-pane')}>
+        <div {...classes('column-title')}>General</div>
+        <div {...classes('column-title')}>Contact Info</div>
+      </div>
       <Form
         fields={fields}
         submitBtn={submitBtn}

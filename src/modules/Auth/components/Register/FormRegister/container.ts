@@ -67,8 +67,18 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...ownProps,
     ...stateProps,
     ...dispatchProps,
-    doSubmit(data) {
-      const submitPromise = dispatchProps.doRegister(data);
+    doSubmit: function(data) {
+      const reg = {
+        ...data,
+        address: {
+          ...data.address,
+          country: (data.address && data.address.country) ? ownProps.countries.filter(c => c.value === data.address.country)
+            .map(c => ({isoCode: c.value,})).shift() : null,
+          stateProvince: (data.address && data.address.stateProvince) ? ownProps.provinces.filter(p => p.value === data.address.stateProvince)
+            .map(p => ({isoCode: p.value,})).shift() : null,
+        }
+      };
+      const submitPromise = dispatchProps.doRegister(reg);
 
       submitPromise
         .then(() => dispatchProps.goToWelcome())

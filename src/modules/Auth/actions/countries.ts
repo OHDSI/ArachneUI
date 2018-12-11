@@ -1,46 +1,38 @@
-/*!
+/*
  *
  * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- *  limitations under the License.
+ * limitations under the License.
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Alexandr Saltykov, Pavel Grafkin, Vitaly Koulakov, Anton Gackovka
- * Created: March 3, 2017
+ * Authors: Alexandr Saltykov, Pavel Grafkin, Vitaly Koulakov
+ * Created: December 7, 2018
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
-@import 'react-simple-dropdown/styles/Dropdown';
+import services from '../apiServices';
 
-.#{$namespace} {
-  &register {
-  	align-items: center;
-  	background-color: $grey-lighter;
-    display: flex;
-    height: 100%;
-    justify-content: center;
+const limit = 10;
 
-    &__form-panel {
-      position: relative;
-      text-align: center;
-      top: -100px;
+function query(params) {
+  return services.auth_countries.find({
+    query: {
+      ...params,
+      limit
     }
-
-    &__form-container {
-    	padding: 2rem;
-    	width: 57rem;
-    }
-  }
-  
+  });
 }
+
+export default {
+  query,
+};
