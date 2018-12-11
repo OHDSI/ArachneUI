@@ -42,6 +42,8 @@ const loginMessages = {
   resendDone: 'email-resend-done',
 };
 
+const autocompleteResultsLimit = 10;
+
 const paths = {
   login(message) {
     const messageParam = message ? `?message=${message}` : '';
@@ -69,6 +71,10 @@ const apiPaths = {
   refresh: () => '/api/v1/auth/refresh',
   //
   passwordPolicy: () => '/api/v1/auth/password-policies',
+  searchCountry: ({ query, includeId } = {}) =>
+    `/api/v1/user-management/countries/search?limit=${autocompleteResultsLimit}&query=${query}${includeId ? `&includeId=${includeId}` : ''}`,
+  searchProvince: ({ countryId, query, includeId } = {}) =>
+    `/api/v1/user-management/state-province/search?limit=${autocompleteResultsLimit}&query=${query}&countryId=${countryId}${includeId ? `&includeId=${includeId}` : ''}`,
 };
 
 const authMethods = keyMirror({
@@ -98,19 +104,13 @@ const registerFields = function ({ professionalTypesOptions,
       },
     },
     {
-      name: 'address.country',
+      name: 'address.address1',
       InputComponent: {
-        component: StatefulFormAutocomplete,
+        component: FormInput,
         props: {
           mods: ['bordered'],
-          placeholder: 'Country',
-          required: true,
-          options: countries,
-          fetchOptions: searchCountries,
-          clearable: false,
-          onSelectResetsInput: true,
-          onBlurResetsInput: true,
-          storeSelectedOption: storeCountry,
+          placeholder: 'Address',
+          type: 'text',
         }
       }
     },
@@ -126,18 +126,14 @@ const registerFields = function ({ professionalTypesOptions,
       },
     },
     {
-      name: 'address.stateProvince',
+      name: 'address.city',
       InputComponent: {
-        component: StatefulFormAutocomplete,
+        component: FormInput,
         props: {
           mods: ['bordered'],
-          placeholder: 'State/Province',
-          options: provinces,
-          fetchOptions: searchProvinces,
-          clearable: false,
-          onSelectResetsInput: true,
-          onBlurResetsInput: true,
-          storeSelectedOption: storeProvince,
+          placeholder: 'City',
+          type: 'text',
+          required: true,
         }
       }
     },
@@ -178,14 +174,19 @@ const registerFields = function ({ professionalTypesOptions,
       },
     },
     {
-      name: 'address.city',
+      name: 'address.country',
       InputComponent: {
-        component: FormInput,
+        component: StatefulFormAutocomplete,
         props: {
           mods: ['bordered'],
-          placeholder: 'City',
-          type: 'text',
+          placeholder: 'Country',
           required: true,
+          options: countries,
+          fetchOptions: searchCountries,
+          clearable: false,
+          onSelectResetsInput: true,
+          onBlurResetsInput: true,
+          storeSelectedOption: storeCountry,
         }
       }
     },
@@ -200,13 +201,18 @@ const registerFields = function ({ professionalTypesOptions,
       },
     },
     {
-      name: 'address.address1',
+      name: 'address.stateProvince',
       InputComponent: {
-        component: FormInput,
+        component: StatefulFormAutocomplete,
         props: {
           mods: ['bordered'],
-          placeholder: 'Address',
-          type: 'text',
+          placeholder: 'State/Province',
+          options: provinces,
+          fetchOptions: searchProvinces,
+          clearable: false,
+          onSelectResetsInput: true,
+          onBlurResetsInput: true,
+          storeSelectedOption: storeProvince,
         }
       }
     },
@@ -274,6 +280,7 @@ export {
   actionTypes,
   authMethods,
   apiPaths,
+  autocompleteResultsLimit,
   form,
   loginMessages,
   paths,
