@@ -24,6 +24,8 @@ import { createSelector } from 'reselect';
 import get from 'lodash/get';
 
 const getRawProfessionalTypesList = state => get(state, 'auth.professionalType.queryResult.result') || [];
+const getRawCountriesList = state => get(state, 'adminSettings.countries.queryResult.result') || [];
+const getRawProvincesList = state => get(state, 'adminSettings.provinces.queryResult.result') || [];
 
 const getProfessionalTypes = createSelector(
   [getRawProfessionalTypesList],
@@ -33,6 +35,24 @@ const getProfessionalTypes = createSelector(
   }))
 );
 
+const getCountries = createSelector(
+  [getRawCountriesList],
+  rawCountriesList => rawCountriesList.map(c => ({
+    label: c.name,
+    value: c.isoCode,
+  }))
+);
+
+const getProvinces = createSelector(
+  [getRawProvincesList],
+  rawProvincesList => rawProvincesList.map(p => ({
+    label: p.name,
+    value: p.isoCode,
+  }))
+);
+
 export default {
   getProfessionalTypes,
+  getCountries,
+  getProvinces,
 };

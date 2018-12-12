@@ -46,6 +46,10 @@ function ModalAddUser(props) {
   return (
     <Modal modal={props.modal} title="Add user">
       <div {...classes()}>
+        <div {...classes('title-pane')}>
+          <div {...classes('column-title')}>General</div>
+          <div {...classes('column-title')}>Contact Info</div>
+        </div>
         <Form
           mods={["spacing-actions-sm"]}
           fields={registerFields(props)}
