@@ -33,6 +33,8 @@ import userList from './userList';
 import usersGroup from './usersGroup';
 import reindexProcess from './reindexProcess';
 import portalUserListSelectedUsers from './portalUserListSelectedUsers';
+import countries from './countries';
+import provinces from './provinces';
 
 const actions = {
   adminList: adminList.actions,
@@ -48,6 +50,8 @@ const actions = {
   usersGroup: usersGroup.actions,
   reindexProcess: reindexProcess.actions,
   portalUserListSelectedUsers: portalUserListSelectedUsers.actions,
+  countries: countries.actions,
+  provinces: provinces.actions,
 };
 
 const reducer = {
@@ -64,6 +68,8 @@ const reducer = {
   usersGroup: usersGroup.reducer,
   reindexProcess: reindexProcess.reducer,
   portalUserListSelectedUsers: portalUserListSelectedUsers.reducer,
+  countries: countries.reducer,
+  provinces: provinces.reducer,
 };
 
 export default {
