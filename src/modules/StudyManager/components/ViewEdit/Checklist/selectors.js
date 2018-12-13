@@ -22,7 +22,6 @@
 
 import { createSelector } from 'reselect';
 import { get } from 'services/Utils';
-import isEmpty from 'lodash/isEmpty';
 
 const getStudyData = state => get(
   state,
@@ -47,7 +46,7 @@ const getStepList = createSelector(
       position: 'right',
       title: 'Setup study duration',
       // descr: 'Lorem Ipsum ...',
-      isDone: study.startDate !== study.endDate && !isEmpty(study.endDate),
+      isDone: study.startDate !== study.endDate && study.endDate,
     },
     {
       element: '#study-objective',
