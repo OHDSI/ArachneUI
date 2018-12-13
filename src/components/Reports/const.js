@@ -19,3 +19,5 @@
  * Created: November 09, 2017
  *
  */
+
+ export const tablePageSize = 10;

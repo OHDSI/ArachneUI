@@ -55,7 +55,8 @@ export default class StudyActionsBuilder {
 
     const isFilledForPaper = get(studyData, 'title') &&
       get(studyData, 'description') &&
-      get(studyData, 'startDate');
+      get(studyData, 'startDate') &&
+      get(studyData, 'endDate');
 
     const canCreatePaper = get(studyData, `status.availableActions`, []).includes(studyActions.createPaper);
 

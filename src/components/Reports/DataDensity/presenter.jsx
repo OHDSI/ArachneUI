@@ -73,8 +73,7 @@ function DataDensity(props) {
                 xScale: d3.scaleTime().domain(d3.extent(totalRecordsYears, d => d.X_CALENDAR_MONTH)),
                 tickFormat: d3.timeFormat(chartTime),
                 showLegend: true,
-                colors: d3.scaleOrdinal()
-                  .range(d3.schemeCategory10),
+                colors: d3.scaleOrdinal(d3.schemeCategory10),
                 ...chartSettings,
               }
             );
@@ -102,8 +101,7 @@ function DataDensity(props) {
                 xScale: d3.scaleTime().domain(d3.extent(recordsPerPersonYears, d => d.X_CALENDAR_MONTH)),
                 tickFormat: d3.timeFormat(chartTime),
                 showLegend: true,
-                colors: d3.scaleOrdinal()
-                  .range(d3.schemeCategory10),
+                colors: d3.scaleOrdinal(d3.schemeCategory10),
                 ...chartSettings,
               }
             );

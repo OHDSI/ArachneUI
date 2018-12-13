@@ -34,6 +34,11 @@
       flex-grow: 1;
       padding: 0 1rem;
       flex-wrap: wrap;
+
+      &--empty {
+        align-content: center;
+        justify-content: center;
+      }
     }
 
     &__renew-button {

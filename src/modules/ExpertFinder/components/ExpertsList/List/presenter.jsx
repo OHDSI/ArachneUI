@@ -21,13 +21,10 @@
  */
 
 import React, { PropTypes } from 'react';
-import { Toolbar } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
-import { Button } from 'arachne-ui-components';
-import { Pagination } from 'arachne-ui-components';
 import InviteModal from 'modules/ExpertFinder/components/InviteModal';
 import InviteConfirmModal from 'modules/ExpertFinder/components/InviteConfirmModal';
-
+import EmptyState from 'components/EmptyState';
 import ExpertCard from './ExpertCard';
 
 require('./style.scss');
@@ -41,8 +38,10 @@ function List(props) {
 
   return (
     <div {...classes()}>
-      <div {...classes('list')}>
-        {userList.map((expert, key) =>
+      <div {...classes('list', userList.length === 0 ? 'empty' : null)}>
+        {userList.length === 0
+          ? <EmptyState message={'No results found'} />
+          : userList.map((expert, key) =>
           <ExpertCard key={key} expert={expert} showInviteDialog={showInviteDialog} />
         )}
       </div>
