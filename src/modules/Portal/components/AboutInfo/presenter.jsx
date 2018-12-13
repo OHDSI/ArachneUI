@@ -28,6 +28,7 @@ import { LoadingPanel } from 'arachne-ui-components';
 import { Link } from 'arachne-ui-components';
 
 import { paths, images } from 'modules/Portal/const';
+import moment from 'moment';
 
 require('./style.scss');
 
@@ -52,7 +53,7 @@ function AboutInfo(props) {
           />
         </Link>
         <p {...classes('line', 'emphasized')}>
-          @ 2015-2017, Odysseus Data Services, Inc. All rights reserved
+          @ 2015-{moment().format('YYYY')}, Odysseus Data Services, Inc. All rights reserved
         </p>
         {projectVersion && buildNumber &&
           <p {...classes('line', 'additional')}>
