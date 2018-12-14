@@ -28,7 +28,7 @@ import DataSources from 'modules/AnalysisExecution/components/ViewEditAnalysis/D
 import GuardedComponent from 'components/Guarded/container';
 import { Guard } from 'services/Guard';
 import { studyPermissions } from 'modules/StudyManager/const';
-import EmptyState from 'community/components/EmptyState';
+import EmptyState from 'components/EmptyState';
 
 require('./style.scss');
 
