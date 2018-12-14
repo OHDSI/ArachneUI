@@ -113,6 +113,7 @@ function ModalSubmitCode(props) {
               </Button>
             </GuardedComponent>
             <Button {...classes('submit')} type={'submit'} mods={['success', 'rounded']} disabled={submitting || props.dataSourceOptions.length === 0}>
+
               {submitting ? 'Submitting...' : 'Submit'}
             </Button>
             <Button {...classes('cancel')} mods={['cancel', 'rounded']} onClick={closeModal}>

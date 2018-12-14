@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2018 Odysseus Data Services, inc.
+ * Copyright 2017 Observational Health Data Sciences and Informatics
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,35 +16,21 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: February 15, 2017
+ * Created: Dec 11, 2018
  *
  */
 
-import { createSelector } from 'reselect';
-import { get } from 'services/Utils';
+import Duck from 'services/Duck';
+import { apiPaths } from 'modules/ExpertFinder/const';
 
-const getRawProvinces = state => get(state, 'expertFinder.provinces.queryResult.result', [], 'Array');
-const getRawCountries = state => get(state, 'expertFinder.countries.queryResult.result', [], 'Array');
+const coreName = 'AD_COUNTRIES';
 
-const getProvinces = createSelector(
-  [getRawProvinces],
-  rawList => rawList.map(item => ({
-    value: item.id,
-    label: item.name,
-    isoCode: item.isoCode,
-  }))
-);
-
-const getCountries = createSelector(
-  [getRawCountries],
-  rawList => rawList.map(item => ({
-    value: item.id,
-    label: item.name,
-    isoCode: item.isoCode,
-  }))
-);
+const countries = new Duck({
+  name: coreName,
+  urlBuilder: apiPaths.searchCountry,
+});
 
 export default {
-  getProvinces,
-  getCountries,
+  actions: countries.actions,
+  reducer: countries.reducer,
 };
