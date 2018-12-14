@@ -43,6 +43,7 @@ function Workspace(props) {
     onBannerActed,
     studyId,
     toolbarSettings,
+    userId,
   } = props;
   const classes = new BEMHelper('workspace-view');
 
@@ -66,7 +67,7 @@ function Workspace(props) {
                 </div>
               </div>
               <div className="col-xs-12 col-lg-6">
-                <RightColumn studyId={studyId} />
+                <RightColumn studyId={studyId} userId={userId} />
               </div>
             </div>
           </div>

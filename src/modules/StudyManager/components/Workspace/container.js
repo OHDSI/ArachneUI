@@ -66,6 +66,7 @@ export default class WorkspaceBuilder extends ContainerBuilder {
       toolbarSettings,
       isLoading: isWorkspaceLoading,
       studyTitle: 'workspace',
+      userId,
     };
   }
 
