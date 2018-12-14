@@ -111,8 +111,8 @@ export default class AttributeListBuilder extends ContainerBuilder {
         }, data);
         if (!stateProps.isPublished) {
           Notifier.alert({ message: 'Data source was successfully published' });
-          dispatchProps.load({ id: stateProps.dataSourceId });
         }
+        dispatchProps.load({ id: stateProps.dataSourceId });
 
         return result;
       },

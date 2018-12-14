@@ -55,6 +55,12 @@
 				margin-right: 1rem;
 			}
 		}
+
+		&__empty-state {
+			max-width: 500px;
+			padding: 4rem 2rem;
+			text-align: center;
+		}
 	}
 
 }

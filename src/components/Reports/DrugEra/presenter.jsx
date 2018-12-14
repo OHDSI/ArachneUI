@@ -33,6 +33,7 @@ import Chart from 'components/Reports/Chart';
 import { convertDataToTreemapData } from 'components/Reports/converters';
 import DrugEraDetails from './DrugEraDetails';
 import ReportUtils from 'components/Reports/Utils';
+import { tablePageSize } from '../const';
 
 require('./style.scss');
 
@@ -53,7 +54,7 @@ function DrugEra(props) {
   const table = <Table
     data={tableData}
     columns={tableColumns}
-    pageSize={5}
+    pageSize={tablePageSize}
     onRowClick={node => loadConditionDetails(node.id.value)}
   />;
 

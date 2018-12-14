@@ -129,8 +129,8 @@ function VisitsDetails(props) {
               width/2,                
               {
                 ...chartSettings,
-                yLabel: 'Days',
-                xLabel: '',
+                yLabel: 'Age',
+                xLabel: 'Gender',
                 yFormat: d => numberFormatter.format(d, 'short')
               },
             );

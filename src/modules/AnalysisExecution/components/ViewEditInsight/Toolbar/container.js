@@ -45,7 +45,7 @@ function mapStateToProps(state) {
       {
         entityType: breadcrumbTypes.ANALYSIS,
         title: analysisTitle,
-        id: analysisUrl,
+        id: analysisId,
       },
     ],
     !isWorkspace
