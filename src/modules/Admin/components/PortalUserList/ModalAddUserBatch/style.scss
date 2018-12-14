@@ -24,7 +24,7 @@
 
 .#{$namespace} {
 
-  $admin-modal-batch-users-width: 900px;
+  $admin-modal-batch-users-width: 95rem;
  
   &admin-panel-modal-batch-users {
     width: $admin-modal-batch-users-width;
@@ -32,6 +32,7 @@
     &__shared-field-list {
       background: $grey-lighter;
       display: flex;
+      flex-wrap: wrap;
       padding: 1.5rem;
     }
 
@@ -68,10 +69,11 @@
       vertical-align: top;
       &:not(:last-child) {
         padding-right: .75rem;
+        padding-left: .75rem;
       }
     }
 
-    &__col-first-name-th, &__col-last-name-th, &__col-email-th, &__col-prof-type-th, &__col-org-th {
+    &__col-first-name-th, &__col-last-name-th, &__col-email-th, &__col-prof-type-th, &__col-org-th, &__col-mobile-th {
       width: calc((#{$admin-modal-batch-users-width} - 3rem) / 5);
     }
 
@@ -89,6 +91,8 @@
 
   &admin-panel-batch-users-common-field {
     flex: 1;
+    min-width: 24rem;
+    padding-top: 1.5rem;
 
     &:not(:first-child) {
       padding-left: 1.5rem;
@@ -96,6 +100,10 @@
 
     &:not(:last-child) {
       padding-right: 1.5rem;
+    }
+
+    &:nth-child(4), &:nth-child(7) {
+      padding-left: 0;
     }
 
     &__label {

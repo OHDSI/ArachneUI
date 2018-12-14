@@ -22,6 +22,7 @@
 
 import React from 'react';
 import { Button, Modal, Form, Fieldset, FormInput, FormCheckbox, FormError, FormSelect, FormAutocomplete, Table, TableCellText as CellText } from 'arachne-ui-components';
+import StatefulFormAutocomplete from 'components/StatefulFormAutocomplete';
 import { Field, FieldArray } from 'redux-form';
 import BEMHelper from 'services/BemHelper';
 import { registerFields } from 'modules/Auth/const';
@@ -66,85 +67,166 @@ function CellSelectEditable({ options, header, field, index, required = false })
   );
 }
 
-function TenantSelect({ tenantOptions }) {
+function LabeledField({ label, name, InputComponent }){
   const classes = new BEMHelper('admin-panel-batch-users-common-field');
 
   return (
     <div {...classes()}>
-      <label {...classes('label')}>
-        Tenant
-      </label>
+      <label {...classes('label')}>{label}</label>
       <div {...classes('field')}>
         <Field
           component={Fieldset}
-          name={`tenantIds`}
-          InputComponent={{
-            component: FormSelect,
-            props: {
-              mods: ['rounded', 'bordered'],
-              placeholder: 'Tenants',
-              options: tenantOptions,
-              isMulti: true,
-            }
-          }}
-        />
+          name={ name }
+          InputComponent={ InputComponent }
+        >
+        </Field>
       </div>
     </div>
-  )
+  );
+}
+
+function TenantSelect({ tenantOptions }) {
+
+  return LabeledField({
+    label: 'Tenant',
+    name: 'tenantIds',
+    InputComponent: {
+      component: FormSelect,
+      props: {
+        mods: ['rounded', 'bordered'],
+        placeholder: 'Tenants',
+        options: tenantOptions,
+        isMulti: true,
+      }
+    },
+  });
 }
 
 function PasswordInput({ tenantOptions }) {
-  const classes = new BEMHelper('admin-panel-batch-users-common-field');
 
-  return (
-    <div {...classes()}>
-      <label {...classes('label')}>
-        Password
-      </label>
-      <div {...classes('field')}>
-        <Field
-          component={Fieldset}
-          name={`password`}
-          InputComponent={{
-            component: FormInput,
-            props: {
-              mods: ['rounded', 'bordered'],
-              placeholder: 'Password',
-              type: "password",
-            }
-          }}
-        />
-      </div>
-    </div>
-  )
+  return LabeledField({
+    label: 'Password',
+    name: 'password',
+    InputComponent: {
+      component: FormInput,
+      props: {
+        mods: ['rounded', 'bordered'],
+        placeholder: 'Password',
+        type: "password",
+      }
+    },
+  })
 }
 
 function EmailCheckbox({ }) {
-  const classes = new BEMHelper('admin-panel-batch-users-common-field');
 
-  return (
-    <div {...classes()}>
-      <label {...classes('label')}>
-        Email confirm
-      </label>
-      <div {...classes('field')}>
-        <Field
-          component={Fieldset}
-          name={`emailConfirmationRequired`}
-          InputComponent={{
-            component: FormCheckbox,
-            props: {
-              mods: ['bordered'],
-              placeholder: 'Require',
-              options: {
-                label: 'Send email confirmation',
-              },
-            },
-          }}
-        />
-      </div>
-    </div>
-  )
+  return LabeledField({
+    label: 'Email confirm',
+    name: 'emailConfirmationRequired',
+    InputComponent: {
+      component: FormCheckbox,
+      props: {
+        mods: ['bordered'],
+        placeholder: 'Require',
+        options: {
+          label: 'Send email confirmation',
+        },
+      },
+    },
+  });
+}
+
+function Address() {
+
+  return LabeledField({
+    label: 'Address',
+    name: 'address1',
+    InputComponent: {
+      component: FormInput,
+      props: {
+        mods: ['bordered'],
+        placeholder: 'Address',
+        type: 'text',
+      }
+    },
+  })
+}
+
+function City() {
+
+  return LabeledField({
+    label: 'City',
+    name: 'city',
+    InputComponent: {
+      component: FormInput,
+      props: {
+        mods: ['bordered'],
+        placeholder: 'City',
+        type: 'text',
+        required: true,
+      }
+    },
+  })
+}
+
+function ZipCode() {
+
+  return LabeledField({
+    label: 'Zip code',
+    name: 'zipCode',
+    InputComponent: {
+      component: FormInput,
+      props: {
+        mods: ['bordered'],
+        placeholder: 'Zip code',
+        type: 'text',
+        required: true,
+      }
+    }
+  });
+}
+
+function Country({ countries, searchCountries, storeCountry }) {
+
+  return LabeledField({
+    label: 'Country',
+    name: 'address.country',
+    InputComponent: {
+      component: StatefulFormAutocomplete,
+      props: {
+        mods: ['bordered'],
+        placeholder: 'Country',
+        required: true,
+        options: countries,
+        fetchOptions: searchCountries,
+        clearable: false,
+        onSelectResetsInput: true,
+        onBlurResetsInput: true,
+        storeSelectedOption: storeCountry,
+      }
+    }
+  });
+}
+
+function Province({ provinces, searchProvinces, storeProvince }) {
+
+  return LabeledField({
+    label: 'State/Province',
+    name: 'address.stateProvince',
+    InputComponent: {
+      component: StatefulFormAutocomplete,
+      props: {
+        mods: ['bordered'],
+        placeholder: 'State/Province',
+        options: provinces,
+        fetchOptions: searchProvinces,
+        clearable: false,
+        onSelectResetsInput: true,
+        onBlurResetsInput: true,
+        storeSelectedOption: storeProvince,
+      }
+    },
+  })
 }
 
 function RemoveRow({ removeUser, index }) {
@@ -198,6 +280,11 @@ function UsersTable({ fields, meta: { touched, error }, professionalTypesOptions
             required: true,
           })}
         />
+        <CellTextEditable {...classes('col-mobile')}
+          header="Mobile"
+          field="address.mobile"
+          props={() => ({ required: true, })}
+        />
         <RemoveRow {...classes('col-remove')} props={() => ({
           removeUser: fields.remove,
         })} />
@@ -217,6 +304,12 @@ function ModalAddUserBatch(props) {
     professionalTypesOptions,
     removeUser,
     tenantOptions,
+    countries,
+    searchCountries,
+    storeCountry,
+    provinces,
+    searchProvinces,
+    storeProvince,
   } = props;
 
   const submitBtn = {
@@ -230,6 +323,9 @@ function ModalAddUserBatch(props) {
   }
 
   const ref = {};
+
+  const countryProps = { countries, searchCountries, storeCountry };
+  const provinceProps = { provinces, searchProvinces, storeProvince };
 
   return (
     <Modal modal={props.modal} title="Add users" mods={['no-padding']}>
@@ -247,6 +343,11 @@ function ModalAddUserBatch(props) {
             <TenantSelect tenantOptions={tenantOptions} />
             <PasswordInput />
             <EmailCheckbox />
+            <Address />
+            <City />
+            <ZipCode />
+            <Country {...countryProps} />
+            <Province {...provinceProps} />
           </div>
           {(!props.pristine && props.error) ? 
             <FormError error={props.error} />

@@ -42,12 +42,47 @@ class ModalAddUser extends Component {
     };
   }
 
+  constructor() {
+    super();
+    this.state = {
+      selectedCountry: null,
+      selectedProvince: null,
+    }
+  }
+
   componentWillMount() {
     this.props.loadProfessionalTypes();
   }
 
+  storeCountry(id) {
+    this.setState({
+      selectedCountry: this.props.countries.find(option => option.value === id),
+    });
+  }
+
+  storeProvince(id) {
+    this.setState({
+      selectedProvince: this.props.provinces.find(option => option.value === id),
+    });
+  }
+
   render() {
-    return presenter(this.props);
+    const countries = [...this.props.countries];
+    const provinces = [...this.props.provinces];
+    if (this.state.selectedCountry) {
+      countries.unshift(this.state.selectedCountry);
+    }
+    if (this.state.selectedProvince) {
+      provinces.unshift(this.state.selectedProvince);
+    }
+
+    return presenter({
+      ...this.props,
+      storeCountry: (id) => this.storeCountry(id),
+      storeProvince: (id) => this.storeProvince(id),
+      countries,
+      provinces,
+    });
   }
 }
 
@@ -59,10 +94,27 @@ class ModalPortalUserListBuilder extends ContainerBuilder {
 
   mapStateToProps(state) {
 
+    const countries = selectors.getCountries(state);
+    const provinces = selectors.getProvinces(state);
+
+    if (state.selectedCountry) {
+      countries.unshift(state.selectedCountry);
+    }
+    if (state.selectedProvince) {
+      provinces.unshift(state.selectedProvince);
+    }
+
+    const formState = get(state, 'form.addUser.values', {});
+
     return {
       isOpened: get(state, `modal.${modal.addUser}.isOpened`, false),
       userOptions: selectors.getUserOptionList(state),
       professionalTypesOptions: selectors.getProfessionalTypes(state),
+      formState,
+      countries,
+      provinces,
+      countryId: state.selectedCountry ? state.selectedCountry.value : null,
+      provinceId: state.selectedProvince ? state.selectedProvince.value : null,
     };
   }
 
@@ -74,6 +126,8 @@ class ModalPortalUserListBuilder extends ContainerBuilder {
       resetForm: resetForm.bind(null, forms.addUser),
       resetFilters: () => goToPage(paths.users()),
       loadProfessionalTypes: authActions.actions.professionalType.query,
+      searchCountries: actions.adminSettings.countries.query,
+      searchProvinces: actions.adminSettings.provinces.query,
     }
   }
 
@@ -85,7 +139,16 @@ class ModalPortalUserListBuilder extends ContainerBuilder {
       ...dispatchProps,
       doSubmit(data) {
         const query = { type: stateProps.type };
-        const submitPromise = dispatchProps.addUser({ id: null, query }, data);
+
+        const reg = {
+          ...data,
+          address: {
+            ...data.address,
+            country: (data.address && data.address.country) ? { isoCode: data.address.country } : null,
+            stateProvince: (data.address && data.address.stateProvince) ? { isoCode: data.address.stateProvince } : null,
+          }
+        };
+        const submitPromise = dispatchProps.addUser({ id: null, query }, reg);
 
         submitPromise
           .then(dispatchProps.resetForm)
@@ -95,6 +158,23 @@ class ModalPortalUserListBuilder extends ContainerBuilder {
           });
 
         return submitPromise;
+      },
+      searchCountries: (data) => {
+        const query = get(data, 'query', '') || '';
+
+        return dispatchProps.searchCountries({
+          query,
+          includeId: !query ? stateProps.countryId : -1,
+        });
+      },
+      searchProvinces: (data) => {
+        const query = get(data, 'query', '') || '';
+
+        return dispatchProps.searchProvinces({
+          query,
+          countryId: (stateProps.formState.address && stateProps.formState.address.country) || stateProps.countryId,
+          includeId: !query ? stateProps.provinceId : - 1,
+        })
       },
     };
   }
