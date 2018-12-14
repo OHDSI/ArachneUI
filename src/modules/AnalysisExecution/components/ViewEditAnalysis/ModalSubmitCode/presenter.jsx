@@ -28,6 +28,7 @@ import DataSources from 'modules/AnalysisExecution/components/ViewEditAnalysis/D
 import GuardedComponent from 'components/Guarded/container';
 import { Guard } from 'services/Guard';
 import { studyPermissions } from 'modules/StudyManager/const';
+import EmptyState from 'community/components/EmptyState';
 
 require('./style.scss');
 
@@ -89,7 +90,12 @@ function ModalSubmitCode(props) {
           />
         </ListItem>
         <form {...props} onSubmit={handleSubmit(doSubmit)}>
-          {fields.map(field => <Field {...field} component={Fieldset} />)}
+          {props.dataSourceOptions.length === 0
+            ? <div {...classes('empty-state')}>
+              <EmptyState message={'No data sources were attached to the study. You need at least one approved data source to create a submission'} />
+            </div>
+            : fields.map(field => <Field {...field} component={Fieldset} />)
+          }
           {error && <div {...classes('error')}>{error}</div>}
           <div {...classes('actions')}>
             <GuardedComponent
@@ -97,7 +103,7 @@ function ModalSubmitCode(props) {
                 rules: [studyPermissions.inviteDatanode],
                 grantedPermissions,
                 tooltip: {
-                  [studyPermissions.inviteDatanode]: 'you should be contributor or datasource owner',
+                  [studyPermissions.inviteDatanode]: 'you should be lead investigator or datasource owner',
                 },
               })}
             >
@@ -106,7 +112,7 @@ function ModalSubmitCode(props) {
                 Invite Data Sources
               </Button>
             </GuardedComponent>
-            <Button {...classes('submit')} type={'submit'} mods={['success', 'rounded']} disabled={submitting}>
+            <Button {...classes('submit')} type={'submit'} mods={['success', 'rounded']} disabled={submitting || props.dataSourceOptions.length === 0}>
               {submitting ? 'Submitting...' : 'Submit'}
             </Button>
             <Button {...classes('cancel')} mods={['cancel', 'rounded']} onClick={closeModal}>

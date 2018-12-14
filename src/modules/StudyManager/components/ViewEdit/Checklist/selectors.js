@@ -46,7 +46,7 @@ const getStepList = createSelector(
       position: 'right',
       title: 'Setup study duration',
       // descr: 'Lorem Ipsum ...',
-      isDone: study.startDate !== study.endDate,
+      isDone: study.startDate !== study.endDate && study.endDate,
     },
     {
       element: '#study-objective',

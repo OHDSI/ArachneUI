@@ -33,6 +33,7 @@ import { convertDataToTreemapData } from 'components/Reports/converters';
 import Chart from 'components/Reports/Chart';
 import MeasurementDetails from './MeasurementDetails';
 import ReportUtils from 'components/Reports/Utils';
+import { tablePageSize } from '../const';
 
 require('./style.scss');
 
@@ -53,7 +54,7 @@ function Measurement(props) {
   const table = <Table
     data={tableData}
     columns={tableColumns}
-    pageSize={5}
+    pageSize={tablePageSize}
     onRowClick={node => loadConditionDetails(node.id.value)}
   />;
 

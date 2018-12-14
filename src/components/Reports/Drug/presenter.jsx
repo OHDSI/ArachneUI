@@ -29,6 +29,7 @@ import { convertDataToTreemapData } from 'components/Reports/converters';
 import Chart from 'components/Reports/Chart';
 import ReportUtils from 'components/Reports/Utils';
 import DrugDetails from './DrugDetails';
+import { tablePageSize } from '../const';
 
 require('./style.scss');
 
@@ -49,7 +50,7 @@ function Drug(props) {
   const table = <Table
     data={tableData}
     columns={tableColumns}
-    pageSize={5}
+    pageSize={tablePageSize}
     onRowClick={node => loadConditionDetails(node.id.value)}
   />;
 
