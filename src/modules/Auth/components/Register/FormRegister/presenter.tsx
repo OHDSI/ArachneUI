@@ -65,6 +65,7 @@ function FormRegister(props) {
           placeholder: 'First Name',
           type: 'text',
           required: true,
+          tabindex: 1,
         },
       },
     },
@@ -77,6 +78,7 @@ function FormRegister(props) {
           placeholder: 'Address',
           type: 'text',
           required: true,
+          tabindex: 9,
         }
       }
     },
@@ -88,6 +90,7 @@ function FormRegister(props) {
           mods: ['bordered'],
           placeholder: 'Middle Name',
           type: 'text',
+          tabindex: 2,
         },
       },
     },
@@ -100,6 +103,7 @@ function FormRegister(props) {
           placeholder: 'City',
           type: 'text',
           required: true,
+          tabindex: 10,
         }
       }
     },
@@ -112,6 +116,7 @@ function FormRegister(props) {
           placeholder: 'Last Name',
           type: 'text',
           required: true,
+          tabindex: 3,
         },
       },
     },
@@ -124,6 +129,7 @@ function FormRegister(props) {
           placeholder: 'Zip code',
           type: 'text',
           required: true,
+          tabindex: 11,
         }
       }
     },
@@ -136,6 +142,7 @@ function FormRegister(props) {
           placeholder: 'Email',
           type: 'text',
           required: true,
+          tabindex: 4,
         },
       },
     },
@@ -153,6 +160,7 @@ function FormRegister(props) {
           onSelectResetsInput: true,
           onBlurResetsInput: true,
           storeSelectedOption: props.storeCountry,
+          tabindex: 12,
         }
       }
     },
@@ -165,6 +173,7 @@ function FormRegister(props) {
           placeholder: 'Password',
           type: 'password',
           required: true,
+          tabindex: 5,
         },
       },
     },
@@ -181,6 +190,7 @@ function FormRegister(props) {
           onSelectResetsInput: true,
           onBlurResetsInput: true,
           storeSelectedOption: props.storeProvince,
+          tabindex: 13,
         }
       }
     },
@@ -193,6 +203,7 @@ function FormRegister(props) {
           placeholder: 'Organization',
           type: 'text',
           required: true,
+          tabindex: 6,
         },
       },
     },
@@ -204,6 +215,7 @@ function FormRegister(props) {
           mods: ['bordered'],
           placeholder: 'Mobile',
           type: 'text',
+          tabindex: 14,
         }
       }
     },
@@ -215,6 +227,7 @@ function FormRegister(props) {
           mods: ['bordered'],
           placeholder: 'Department',
           type: 'text',
+          tabindex: 7,
         }
       },
     },
@@ -227,6 +240,7 @@ function FormRegister(props) {
           placeholder: 'Professional type',
           options: props.professionalTypes,
           required: true,
+          tabindex: 8,
         },
       },
     },
