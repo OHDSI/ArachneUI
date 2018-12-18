@@ -47,7 +47,7 @@ export default class WorkspaceBuilder extends ContainerBuilder {
     const loggedUser = get(state, 'portal.myProfile.data.result', {});
 
     const workspaceData = get(moduleState, 'study.data', {});
-    const isWorkspaceLoading = get(moduleState, 'workspace.isLoading');
+    const isWorkspaceLoading = get(moduleState, 'study.isLoading');
 
     const studyId = get(workspaceData, 'id', null);
 
