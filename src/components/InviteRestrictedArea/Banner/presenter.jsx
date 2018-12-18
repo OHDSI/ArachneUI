@@ -37,6 +37,8 @@ export default function Banner(props) {
     className,
     showDeclineModal,
     disabled,
+    // sticky.js internal needs
+    ref,
   } = props;
   let {
     invitation,
@@ -66,6 +68,7 @@ export default function Banner(props) {
         extra: className,
         modifiers,
       })}
+      ref={ref}
     >
       {isActive &&
         [<div key={0} {...classes('avatar')}>
