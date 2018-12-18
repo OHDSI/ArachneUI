@@ -222,7 +222,10 @@ function ObservationPeriods(props) {
               element,
               width, // Scrollbar width
               width/2,
-              chartSettings,
+              {
+                ...chartSettings,
+                colors: d3.scaleOrdinal().range(d3.schemeCategory10),
+              },
             );
           }}
         />

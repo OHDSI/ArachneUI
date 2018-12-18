@@ -69,8 +69,6 @@ export default class InsightsListBuilder extends ContainerBuilder {
         actions.insightsLibrary.insightFavourites.update(insightId, {
           value: isFavourite,
         }),
-      loadInsightsWithCurrentQuery: searchQuery =>
-        actions.insightsLibrary.insights.query(null, searchQuery),
     };
   }
 
@@ -86,9 +84,9 @@ export default class InsightsListBuilder extends ContainerBuilder {
         };
         dispatchProps.search(searchParams);
       },
-      setFavourite(insightId, isFavourite) {
-        dispatchProps.doSetFavourite(insightId, isFavourite)
-          .then(() => dispatchProps.loadInsightsWithCurrentQuery(stateProps.searchQuery));
+      async setFavourite(insightId, isFavourite) {
+        await dispatchProps.doSetFavourite(insightId, isFavourite);
+        ownProps.reload();
       },
     };
   }

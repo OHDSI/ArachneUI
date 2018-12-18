@@ -20,7 +20,7 @@
 
 import { Component, PropTypes } from 'react';
 import actions from 'actions';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { ContainerBuilder } from 'services/Utils';
 import { goBack } from 'react-router-redux';
 import presenter from './presenter';
@@ -47,7 +47,7 @@ export default class WorkspaceBuilder extends ContainerBuilder {
     const loggedUser = get(state, 'portal.myProfile.data.result', {});
 
     const workspaceData = get(moduleState, 'study.data', {});
-    const isWorkspaceLoading = get(moduleState, 'workspace.isLoading');
+    const isWorkspaceLoading = get(moduleState, 'study.isLoading');
 
     const studyId = get(workspaceData, 'id', null);
 
