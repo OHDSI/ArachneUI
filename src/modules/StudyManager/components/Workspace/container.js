@@ -20,7 +20,7 @@
 
 import { Component, PropTypes } from 'react';
 import actions from 'actions';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { ContainerBuilder } from 'services/Utils';
 import { goBack } from 'react-router-redux';
 import presenter from './presenter';
