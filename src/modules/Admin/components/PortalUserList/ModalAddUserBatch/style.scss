@@ -24,7 +24,7 @@
 
 .#{$namespace} {
 
-  $admin-modal-batch-users-width: 95rem;
+  $admin-modal-batch-users-width: 160rem;
  
   &admin-panel-modal-batch-users {
     width: $admin-modal-batch-users-width;
@@ -65,6 +65,14 @@
   }
  
   &admin-panel-batch-users {
+    max-height: 60rem;
+    overflow-x: hidden;
+    overflow-y: scroll;
+
+    &__table {
+      table-layout: fixed;
+    }
+
     & .ac-table__cell {
       vertical-align: top;
       &:not(:last-child) {
@@ -73,12 +81,31 @@
       }
     }
 
-    &__col-first-name-th, &__col-last-name-th, &__col-email-th, &__col-prof-type-th, &__col-org-th, &__col-mobile-th {
-      width: calc((#{$admin-modal-batch-users-width} - 3rem) / 5);
+    &__col-first-name-th, 
+    &__col-last-name-th, 
+    &__col-email-th, 
+    &__col-prof-type-th, 
+    &__col-org-th, 
+    &__col-mobile-th, 
+    & .ac-select__options,
+    &__col-address-th,
+    &__col-city-th,
+    &__col-zip-th,
+    &__col-country-th,
+    &__col-province-th {
+      width: calc((#{$admin-modal-batch-users-width} - 3rem - /* Scroll bar */ 17px) / 11);
     }
 
     &__col-remove-th {
       width: 3rem;
+    }
+
+    & .ac-form-select, & .ac-autocomplete, & .ac-autocomplete__select { // required to allow dropdown options list to overflow container, while container has max-height
+      position: initial;
+    }
+
+    .ac-autocomplete__search { // due to position:initial; - the icon is not located properly; temp solution
+      display: none;
     }
   }
 
@@ -86,6 +113,7 @@
     @include material-icon();
     color: $grey-placeholder;
     font-size: 2.4rem;
+    margin-left: -1.25rem;
     padding: 0;
   }
 
