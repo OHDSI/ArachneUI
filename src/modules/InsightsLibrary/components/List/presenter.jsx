@@ -34,6 +34,7 @@ function InsightsList(props) {
     paginationDetails,
     searchQueryDecode,
     searchQueryEncode,
+    loadInsightsWithCurrentQuery,
   } = props;
   const classes = new BEMHelper('insights-list');
 
@@ -49,7 +50,7 @@ function InsightsList(props) {
           searchQueryDecode={searchQueryDecode}
           searchQueryEncode={searchQueryEncode}
         >
-          <List />
+          <List reload={loadInsightsWithCurrentQuery} />
         </Grid>
       </div>
     </PageContent>

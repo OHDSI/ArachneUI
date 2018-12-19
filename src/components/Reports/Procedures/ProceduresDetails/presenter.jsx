@@ -108,7 +108,10 @@ function ConditionDetails(props) {
               element,
               width,
               width*0.75,
-              chartSettings,
+              {
+                ...chartSettings,
+                colors: d3.scaleOrdinal().range(d3.schemeCategory10),
+              },
             );
           }}
         />
