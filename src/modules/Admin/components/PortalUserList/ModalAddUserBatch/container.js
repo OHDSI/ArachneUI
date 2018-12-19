@@ -44,10 +44,6 @@ class ModalAddUserBatch extends Component {
 
   constructor() {
     super();
-    this.state = {
-      selectedCountry: null,
-      selectedProvince: null,
-    }
   }
 
   componentWillMount() {
@@ -55,34 +51,9 @@ class ModalAddUserBatch extends Component {
     this.props.loadTenantList();
   }
 
-  storeCountry(id) {
-    this.setState({
-      selectedCountry: this.props.countries.find(option => option.value === id),
-    });
-  }
-
-  storeProvince(id) {
-    this.setState({
-      selectedProvince: this.props.provinces.find(option => option.value === id),
-    });
-  }
-
   render() {
-    const countries = [...this.props.countries];
-    const provinces = [...this.props.provinces];
-    if (this.state.selectedCountry) {
-      countries.unshift(this.state.selectedCountry);
-    }
-    if (this.state.selectedProvince) {
-      provinces.unshift(this.state.selectedProvince);
-    }
-
     return presenter({
-      ...this.props,
-      storeCountry: (id) => this.storeCountry(id),
-      storeProvince: (id) => this.storeProvince(id),
-      countries,
-      provinces,
+      ...this.props
     });
   }
 }
@@ -107,6 +78,9 @@ class ModalAddUserBatchBuilder extends ContainerBuilder {
       provinces,
       formState,
       countryId: formState.address && formState.address.country,
+      initialValues: {
+        users: [{}]
+      },
     };
   }
 
@@ -132,19 +106,11 @@ class ModalAddUserBatchBuilder extends ContainerBuilder {
       async doSubmit(data) {
         const usersData = {
           users: data.users.map(u => ({
-            ...u,
             address: {
-              ...u.address,
-              address1: data.address1,
-              city: data.city,
-              zipCode: data.zipCode,
-              country: {
-                isoCode: data.address && data.address.country,
-              },
-              stateProvince: {
-                isoCode: data.address && data.address.stateProvince,
-              },
+              country: {},
+              province: {},
             },
+            ...u,
           })),
           tenantIds: data.tenantIds,
           password: data.password,
@@ -160,19 +126,22 @@ class ModalAddUserBatchBuilder extends ContainerBuilder {
       },
       searchCountries: (data) => {
         const query = get(data, 'query', '') || '';
+        const countryId = get(stateProps.formState, `${data.rowDataKey}.address.country.isoCode`);
 
         return dispatchProps.searchCountries({
           query,
-          includeId: !query ? stateProps.countryId : -1,
+          includeId: countryId,
         });
       },
       searchProvinces: (data) => {
         const query = get(data, 'query', '') || '';
+        const countryId = get(stateProps.formState, `${data.rowDataKey}.address.country.isoCode`);
+        const provinceId = get(stateProps.formState, `${data.rowDataKey}.address.province.isoCode`);
 
         return dispatchProps.searchProvinces({
           query,
-          countryId: stateProps.formState.address && stateProps.formState.address.country,
-          includeId: !query ? stateProps.provinceId : - 1,
+          countryId,
+          includeId: provinceId,
         })
       },
     };
