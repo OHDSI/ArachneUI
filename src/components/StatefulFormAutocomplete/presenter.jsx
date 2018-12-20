@@ -20,19 +20,39 @@
  *
  */
 
-import React from 'react';
+import React, { Component } from 'react';
 import { FormAutocomplete } from 'arachne-ui-components';
 
-export default function (props) {
-  const input = {
-    ...props.input,
-    onChange: (option) => {
-      props.storeSelectedOption(option);
-      return props.input.onChange(option);
+
+export default class StatefulFormAutocomplete extends Component {
+
+  constructor() {
+    super();
+    this.storeSelectedOption = this.storeSelectedOption.bind(this);
+    this.state = {
+      selectedOption: null,
     }
-  };
-  return <FormAutocomplete
-    {...props}
-    input={input}
-  />
+  }
+  
+  storeSelectedOption(option) {
+    this.setState({
+      selectedOption: option,
+    })
+  }
+
+  render() {
+    const input = {
+      ...this.props.input,
+      onChange: (option) => {
+        (this.props.storeSelectedOption || this.storeSelectedOption)(this.props.options.find(o => o.value === option));
+        return this.props.input.onChange(option);
+      }
+    };
+
+    return <FormAutocomplete
+      {...this.props}
+      options={!!this.state.selectedOption ? [ ...this.props.options, this.state.selectedOption ] : this.props.options }
+      input={input}
+    />;
+  }
 }
