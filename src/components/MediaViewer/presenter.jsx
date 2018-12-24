@@ -97,7 +97,7 @@ function image({ classes, container, setContainer, data }) {
         }
       }}
     />,
-    <Viewer
+    (data != null ? <Viewer
       attribute={false}
       images={[{ src: `data:image;base64,${data}` }]}
       visible={data !== null}
@@ -106,7 +106,7 @@ function image({ classes, container, setContainer, data }) {
       onClose={() => {
         setContainer(null);
       }}
-    />,
+    /> : null),
   ]
   );
 }
