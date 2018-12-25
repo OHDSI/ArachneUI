@@ -32,7 +32,7 @@ import {
 import moment from 'moment';
 import { humanDate } from 'const/formats';
 import actions from 'actions/index';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import URI from 'urijs';
 import viewModes from 'const/viewModes';
 import presenter from './presenter';

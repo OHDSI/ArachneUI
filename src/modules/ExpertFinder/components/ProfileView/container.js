@@ -22,7 +22,7 @@
 
 import { Component, PropTypes } from 'react';
 import { ModalUtils } from 'arachne-ui-components';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { modal } from 'modules/ExpertFinder/const';
 import actions from 'actions';
 import { goBack } from 'react-router-redux';

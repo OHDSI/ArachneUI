@@ -21,7 +21,7 @@
  */
 
 import { createSelector } from 'reselect';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import moment from 'moment-timezone';
 import { commonDate as commonDateFormat } from 'const/formats';
 import { submissionStatusesTitles } from 'modules/AnalysisExecution/const';

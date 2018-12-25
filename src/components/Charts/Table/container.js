@@ -22,7 +22,7 @@
 
 import debounce from 'lodash/debounce';
 import Fuse from 'fuse.js';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { Component, PropTypes } from 'react';
 import sortBy from 'lodash/sortBy';
 import { connect } from 'react-redux';

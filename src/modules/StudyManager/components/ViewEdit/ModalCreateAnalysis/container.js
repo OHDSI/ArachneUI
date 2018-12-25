@@ -23,7 +23,7 @@
 // @ts-check
 import { reduxForm } from 'redux-form';
 import { Utils } from 'services/Utils';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import actions from 'actions/index';
 import { ModalUtils } from 'arachne-ui-components';
 import { modal, form, paths } from 'modules/StudyManager/const';
