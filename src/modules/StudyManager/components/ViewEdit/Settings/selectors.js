@@ -21,7 +21,7 @@
  */
 
 import { createSelector } from 'reselect';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import reduce from 'lodash/reduce';
 import { statusColors } from 'modules/StudyManager/const';
 import { sortOptions } from 'services/Utils';

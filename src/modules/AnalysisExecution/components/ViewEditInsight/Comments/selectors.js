@@ -21,7 +21,7 @@
  */
 
 import { createSelector } from 'reselect';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 
 const getSelectedFile = state => get(state, 'analysisExecution.insightFile.data', null);
 const getFileCommentList = state => get(state, 'analysisExecution.insightComments.queryResult.result.comments', []);

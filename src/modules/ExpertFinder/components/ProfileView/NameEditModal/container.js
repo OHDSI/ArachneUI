@@ -25,7 +25,7 @@ import { connect } from 'react-redux';
 import { ModalUtils } from 'arachne-ui-components';
 import { reduxForm } from 'redux-form';
 import { modal, forms } from 'modules/ExpertFinder/const';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import NameEditModal from './presenter';
 
 function mapStateToProps(state) {

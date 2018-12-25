@@ -21,7 +21,7 @@
  */
 
 import { connect } from 'react-redux';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { reduxForm, reset as resetForm } from 'redux-form';
 import { Component, PropTypes } from 'react';
 import actions from 'actions';

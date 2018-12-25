@@ -20,7 +20,7 @@
  *
  */
 
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { ModalUtils } from 'arachne-ui-components';
 import { connect } from 'react-redux';
 import { modal, paths } from 'modules/AnalysisExecution/const';

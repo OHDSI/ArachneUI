@@ -23,7 +23,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { form } from 'modules/AnalysisExecution/const';
 import actions from 'actions/index';
 import presenter from './presenter';

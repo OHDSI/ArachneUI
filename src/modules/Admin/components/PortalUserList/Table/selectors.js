@@ -21,7 +21,7 @@
  */
 
 import { createSelector } from 'reselect';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 
 const getRawUserList = state => get(state, 'adminSettings.portalUserList.queryResult.content') || [];
 const getRawSelectedUsers = state => get(state, 'adminSettings.portalUserListSelectedUsers.data') || [];
