@@ -111,6 +111,7 @@ const registerFields = function ({ professionalTypesOptions,
         props: {
           mods: ['bordered'],
           placeholder: 'Address',
+          required: true,
           type: 'text',
           tabindex: 10,
         }
@@ -246,6 +247,7 @@ const registerFields = function ({ professionalTypesOptions,
         props: {
           mods: ['bordered'],
           placeholder: 'Mobile',
+          required: true,
           type: 'text',
           tabindex: 15,
         }
@@ -283,6 +285,7 @@ const registerFields = function ({ professionalTypesOptions,
         props: {
           mods: ['bordered'],
           placeholder: 'Professional type',
+          required: true,
           options: professionalTypesOptions,
           tabindex: 9,
         },

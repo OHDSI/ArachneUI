@@ -22,7 +22,7 @@
 
 // @ts-check
 import { createSelector } from 'reselect';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { sortOptions } from 'services/Utils';
 import { extractPaginationData } from 'components/Grid';
 import {

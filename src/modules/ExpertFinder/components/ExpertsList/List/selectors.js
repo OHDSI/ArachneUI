@@ -21,7 +21,7 @@
  */
 
 import { createSelector } from 'reselect';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 
 const getRawUserList = state => get(state, 'expertFinder.expertsList.queryResult.result.content') || [];
 

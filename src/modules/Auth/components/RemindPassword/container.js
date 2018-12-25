@@ -23,7 +23,7 @@
 import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { push as goToPage } from 'react-router-redux';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { leaveIfAuthed } from 'modules/Auth/utils';
 import presenter from './presenter';
 

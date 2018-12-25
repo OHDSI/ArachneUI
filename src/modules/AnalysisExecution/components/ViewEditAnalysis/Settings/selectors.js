@@ -21,7 +21,7 @@
  */
 
 import { createSelector } from 'reselect';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { sortOptions } from 'services/Utils';
 
 const getTypeList = state => get(state, 'analysisExecution.analysisTypes.queryResult.result') || [];
