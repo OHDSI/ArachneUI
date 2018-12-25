@@ -87,7 +87,6 @@ export function ActionBar(props = {}) {
 
 function image({ classes, container, setContainer, data }) {
   return (
-  [
     <div
       {...classes('container')}
       id="media-viewer-container"
@@ -96,18 +95,18 @@ function image({ classes, container, setContainer, data }) {
           setContainer(element);
         }
       }}
-    />,
-    (data != null ? <Viewer
-      attribute={false}
-      images={[{ src: `data:image;base64,${data}` }]}
-      visible={data !== null}
-      container={container}
-      zIndex={10}
-      onClose={() => {
-        setContainer(null);
-      }}
-    /> : null),
-  ]
+    >
+      <Viewer
+        attribute={false}
+        images={[{ src: `data:image;base64,${data}` }]}
+        visible={data !== null}
+        container={container}
+        zIndex={10}
+        onClose={() => {
+          setContainer(null);
+        }}
+      />
+    </div>
   );
 }
 
