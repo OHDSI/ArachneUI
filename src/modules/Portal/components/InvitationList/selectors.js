@@ -21,7 +21,7 @@
  */
 
 import { createSelector } from 'reselect';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import moment from 'moment';
 import { paths, apiPaths } from 'modules/Portal/const';
 import { paths as analysisPaths } from 'modules/AnalysisExecution/const';

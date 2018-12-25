@@ -21,7 +21,7 @@
  */
 
 import { createSelector } from 'reselect';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { paths } from 'modules/StudyManager/const';
 
 export default class selectorsBuilder {

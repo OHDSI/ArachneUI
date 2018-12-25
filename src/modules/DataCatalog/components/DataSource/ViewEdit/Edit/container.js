@@ -23,7 +23,7 @@
 // @ts-check
 import { Component } from 'react';
 import actions from 'actions/index';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import Utils, { ContainerBuilder } from 'services/Utils';
 import isEmpty from 'lodash/isEmpty';
 import { ModalUtils } from 'arachne-ui-components';

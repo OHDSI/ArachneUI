@@ -25,7 +25,7 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import { ModalUtils } from 'arachne-ui-components';
 import { reduxForm, reset as resetForm } from 'redux-form';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { forms, modal } from 'modules/ExpertFinder/const';
 import presenter from './presenter';
 

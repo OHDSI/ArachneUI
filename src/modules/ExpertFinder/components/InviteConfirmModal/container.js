@@ -22,7 +22,7 @@
 
 import { connect } from 'react-redux';
 import { ModalUtils } from 'arachne-ui-components';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { modal } from 'modules/ExpertFinder/const';
 import InviteConfirmModal from './presenter';
 

@@ -20,7 +20,7 @@
  *
  */
 
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { reset as resetForm } from 'redux-form';
 import { Component, PropTypes } from 'react';
 import actions from 'actions';

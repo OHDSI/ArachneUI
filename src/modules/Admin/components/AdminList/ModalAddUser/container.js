@@ -22,7 +22,7 @@
 
 import { Component, PropTypes } from 'react';
 import { reset as resetForm } from 'redux-form';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import actions from 'actions/index';
 import { ModalUtils } from 'arachne-ui-components';
 import { forms, modal } from 'modules/Admin/const';

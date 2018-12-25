@@ -22,7 +22,7 @@
 
 import { ModalUtils } from 'arachne-ui-components';
 import { connect } from 'react-redux';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { modal, apiPaths } from 'modules/ExpertFinder/const';
 import UserPic from './presenter';
 

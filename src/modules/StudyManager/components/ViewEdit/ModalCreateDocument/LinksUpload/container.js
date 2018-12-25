@@ -23,7 +23,7 @@
 // @ts-check
 import { Component, PropTypes } from 'react';
 import { buildFormData, ContainerBuilder } from 'services/Utils';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import {
   change as reduxFormChange,
   reset as resetForm,

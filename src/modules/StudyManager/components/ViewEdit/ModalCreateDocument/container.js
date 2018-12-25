@@ -24,7 +24,7 @@
 import { Utils } from 'services/Utils';
 import { ModalUtils } from 'arachne-ui-components';
 import { modal } from 'modules/StudyManager/const';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import ModalCreateDocument from './presenter';
 
 const ReduxModalCreateDocument = ModalUtils.connect({
