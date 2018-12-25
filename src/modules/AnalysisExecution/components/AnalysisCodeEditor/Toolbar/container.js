@@ -21,7 +21,7 @@
  */
 
 import { connect } from 'react-redux';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { buildBreadcrumbList } from 'modules/AnalysisExecution/utils';
 import Toolbar from './presenter';
 import { ModalUtils } from 'arachne-ui-components';

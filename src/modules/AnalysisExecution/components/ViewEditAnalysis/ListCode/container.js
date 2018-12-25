@@ -21,7 +21,7 @@
  */
 
 // @ts-check
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { ModalUtils } from 'arachne-ui-components';
 import actions from 'actions/index';
 import { apiPaths, modal, analysisPermissions } from 'modules/AnalysisExecution/const';

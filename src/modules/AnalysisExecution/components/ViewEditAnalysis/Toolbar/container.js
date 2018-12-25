@@ -21,7 +21,7 @@
  */
 
 import { connect } from 'react-redux';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { ModalUtils } from 'arachne-ui-components';
 import { modal, paths, breadcrumbTypes } from 'modules/AnalysisExecution/const';
 import { buildBreadcrumbList } from 'modules/AnalysisExecution/utils';

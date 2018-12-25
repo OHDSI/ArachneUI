@@ -22,7 +22,7 @@
 
 // @ts-check
 import { Utils } from 'services/Utils';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import actions from 'actions/index';
 import { studyPermissions } from 'modules/StudyManager/const';
 import StudySettings from './presenter';

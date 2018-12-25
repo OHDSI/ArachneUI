@@ -21,7 +21,7 @@
  */
 
 import React from 'react';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import BEMHelper from 'services/BemHelper';
 import { Link, Select, Tabs, Panel } from 'arachne-ui-components';
 import LabelDataSource from 'components/LabelDataSource';

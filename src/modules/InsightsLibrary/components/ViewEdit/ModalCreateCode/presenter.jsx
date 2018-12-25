@@ -21,7 +21,7 @@
  */
 
 import React from 'react';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import BEMHelper from 'services/BemHelper';
 import { Modal, TabbedPane, LoadingPanel } from 'arachne-ui-components';
 import ModalFilesUploader from 'components/ModalFilesUploader';

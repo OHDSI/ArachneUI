@@ -21,7 +21,7 @@
  */
 
 import { connect } from 'react-redux';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 
 import { paths } from 'modules/CdmSourceList/const';
 import Toolbar from './presenter';

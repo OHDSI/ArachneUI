@@ -21,7 +21,7 @@
  */
 
 import { createSelector } from 'reselect';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 
 const getRawUndeletableUsers = state => get(state, 'adminSettings.portalUserListSelectedUsers.selectedUndeletableUsers') || {};
 

@@ -21,7 +21,7 @@
  */
 
 import { Utils } from 'services/Utils';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import StudyObjectiveView from './presenter';
 
 export default class studyObjectiveViewBuilder {

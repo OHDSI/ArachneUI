@@ -25,7 +25,7 @@ import { connect } from 'react-redux';
 import { push as goToPage } from 'react-router-redux';
 import actions from 'actions';
 import { asyncConnect } from 'redux-async-connect';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { leaveIfAuthed } from 'modules/Auth/utils';
 import presenter from './presenter';
 

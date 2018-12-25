@@ -21,7 +21,7 @@
  */
 
 import { Component, PropTypes } from 'react';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import actions from 'actions';
 import { Utils } from 'services/Utils';
 import presenter from './presenter';

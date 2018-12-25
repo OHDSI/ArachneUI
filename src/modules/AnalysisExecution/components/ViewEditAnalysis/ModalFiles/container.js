@@ -22,7 +22,7 @@
 
 import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { ModalUtils } from 'arachne-ui-components';
 import { apiPaths, modal, maxFilesCount, paths } from 'modules/AnalysisExecution/const';
 import actions from 'actions/index';

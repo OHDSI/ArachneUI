@@ -23,7 +23,7 @@
 import { Component, PropTypes } from 'react';
 import actions from 'actions/index';
 import { connect } from 'react-redux';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { reportFilenames, paths } from 'modules/DataCatalog/const';
 import { push as goToPage } from 'react-router-redux';
 import sortBy from 'lodash/sortBy';

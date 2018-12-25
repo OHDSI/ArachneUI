@@ -22,7 +22,7 @@
 
 import moment from 'moment';
 import actions from 'actions';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { connect } from 'react-redux';
 import { reduxForm, reset as resetForm } from 'redux-form';
 import { forms, maxDescriptionLength } from 'modules/ExpertFinder/const';

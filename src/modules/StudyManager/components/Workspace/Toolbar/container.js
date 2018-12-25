@@ -20,7 +20,7 @@
 
 // @ts-check
 import { Utils, ContainerBuilder } from 'services/Utils';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { ModalUtils } from 'arachne-ui-components';
 import actions from 'actions';
 import WorkspaceToolbar from './presenter';

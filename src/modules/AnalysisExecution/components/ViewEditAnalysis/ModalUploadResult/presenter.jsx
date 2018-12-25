@@ -28,7 +28,7 @@ import {
   FormInput,
   FormFileInput
 } from 'arachne-ui-components';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 
 require('./style.scss');
 

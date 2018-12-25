@@ -22,7 +22,7 @@
 
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 
 import actions from 'actions/index';
 import { ModalUtils } from 'arachne-ui-components';

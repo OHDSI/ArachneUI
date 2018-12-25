@@ -21,7 +21,7 @@
  */
 
 import { createSelector } from 'reselect';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { healthStatuses } from 'const/dataSource';
 
 const getRawStudySourceList = state => get(state, 'analysisExecution.studyDataSourceList.queryResult.result') || [];
