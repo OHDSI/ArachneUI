@@ -21,7 +21,7 @@
  */
 
 import { createSelector } from 'reselect';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 
 const getRawAdminList = state => get(state, 'adminSettings.adminList.queryResult.result') || [];
 

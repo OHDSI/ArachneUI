@@ -22,7 +22,7 @@
 
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import actions from 'actions';
 import {
   characterizationStatuses,
