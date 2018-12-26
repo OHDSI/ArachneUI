@@ -99,8 +99,7 @@ function image({ classes, container, setContainer, data }) {
       <Viewer
         attribute={false}
         images={[{ src: `data:image;base64,${data}` }]}
-        visible={true}
-        activeIndex={data !== null ? 1 : 0 /* To force re-calculation of container size */ }
+        visible={data !== null}
         container={container}
         zIndex={10}
         onClose={() => {
