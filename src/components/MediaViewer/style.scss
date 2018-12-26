@@ -33,11 +33,12 @@ $pdf-background-color: #fafafa;
     display: flex;
     padding: 15px 30px;
     flex-shrink: 0;
+    z-index: $z-index-modal-overlay;
+
 
     &__actions {
       display: flex;
       margin-left: auto;
-
       &--custom {
         margin-left: 5.5rem;
       }
@@ -220,9 +221,6 @@ $pdf-background-color: #fafafa;
 }
 .react-viewer-canvas > img {
   display: block;
-  margin: 15px auto;
-  width: auto;
-  height: auto;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;

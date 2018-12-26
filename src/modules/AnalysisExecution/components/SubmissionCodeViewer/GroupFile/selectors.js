@@ -20,7 +20,7 @@
  *
  */
 import { SubmissionCodeSelectorsBuilder } from 'modules/AnalysisExecution/components/SubmissionCodeViewer/selectors';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 
 export default class SubmissionGroupSelectors extends SubmissionCodeSelectorsBuilder {
   getIsFileLoading(state) {

@@ -26,7 +26,7 @@ import Table from 'components/Charts/Table';
 import * as d3 from 'd3';
 import { chartSettings } from 'modules/DataCatalog/const';
 import { convertDataToTreemapData } from 'components/Reports/converters';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import Chart from 'components/Reports/Chart';
 import ReportUtils from 'components/Reports/Utils';
 import DrugByIndexDetails from './DrugByIndexDetails';

@@ -24,7 +24,7 @@ import { createSelector } from 'reselect';
 import { extractPaginationData } from 'components/Grid';
 import { viewModePageSize } from 'const/viewModes';
 import DsAttrListSelector from 'modules/DataCatalog/selectors/DsAttrListSelector';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import dsInfoConvertor from 'modules/DataCatalog/converters/dsInfoConvertor';
 
 export default class SelectorsBuilder extends DsAttrListSelector {

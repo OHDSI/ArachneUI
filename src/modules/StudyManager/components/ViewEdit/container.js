@@ -22,7 +22,7 @@
 
 import { Component, PropTypes } from 'react';
 import actions from 'actions';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { push as goToPage } from 'react-router-redux';
 import { paths as workspacePaths } from 'modules/Workspace/const';
 import { studyKind, participantRoles as roles } from 'modules/StudyManager/const';

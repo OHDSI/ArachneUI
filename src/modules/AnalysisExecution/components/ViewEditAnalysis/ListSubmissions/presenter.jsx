@@ -414,13 +414,13 @@ function ListSubmissions(props) {
     groupCount,
   } = props;
 
-  const data = submissionGroupList.map((item, index) => {
+  const data = submissionGroupList.map(item => {
     return (
       <div>
         <SubmissionGroup
           {...classes('group')}
           item={item}
-          index={groupCount - index}
+          key={`${item.id}`}
           showCodeFileList={showCodeFileList}
         />
         <div
@@ -440,6 +440,7 @@ function ListSubmissions(props) {
             isEditable={isEditable}
             analysisType={item.analysisType}
             toggleVisibility={toggleVisibility}
+            key={`${submission.id}`}
           />
         )}
         </div>
