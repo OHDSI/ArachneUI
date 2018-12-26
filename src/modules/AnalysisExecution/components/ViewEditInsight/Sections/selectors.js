@@ -21,7 +21,7 @@
  */
 
 import { createSelector } from 'reselect';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { pageSize, paths } from 'modules/AnalysisExecution/const';
 import fileConverter from 'components/FileInfo/converter';
 

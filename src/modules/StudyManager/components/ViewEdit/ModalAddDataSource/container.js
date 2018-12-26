@@ -27,7 +27,7 @@ import {
 import { ModalUtils } from 'arachne-ui-components';
 import { modal } from 'modules/StudyManager/const';
 import presenter from './presenter';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 
 const ModalAddDataSource = ModalUtils.connect({
   name: modal.addDataSource,

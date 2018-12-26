@@ -23,7 +23,7 @@
 import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { inviteActionTypes } from 'modules/Portal/const';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import ducks from 'modules/Portal/ducks';
 import presenter from './presenter';
 import selectors from './selectors';

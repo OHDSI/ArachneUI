@@ -21,7 +21,7 @@
  */
 
 import URI from 'urijs';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import api from 'services/Api';
 import { validators } from 'services/Utils';
 import { action } from './CrudActionNameBuilder';

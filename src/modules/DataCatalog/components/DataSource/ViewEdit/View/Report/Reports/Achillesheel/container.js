@@ -21,7 +21,7 @@
  */
 
 import { connect } from 'react-redux';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { convertDataToHeelData } from 'components/Reports/converters';
 import Achillesheel from './presenter';
 

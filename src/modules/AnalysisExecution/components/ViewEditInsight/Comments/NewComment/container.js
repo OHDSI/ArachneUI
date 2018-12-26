@@ -22,7 +22,7 @@
 
 import { connect } from 'react-redux';
 import { reduxForm, reset as resetForm } from 'redux-form';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { form } from 'modules/AnalysisExecution/const';
 import actions from 'actions/index';
 import NewComment from './presenter';

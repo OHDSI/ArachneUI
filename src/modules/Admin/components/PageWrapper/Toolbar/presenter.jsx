@@ -24,7 +24,7 @@ import React from 'react';
 import { Toolbar } from 'arachne-ui-components';
 import { Select } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import AdminPagesSelector from './AdminPagesSelector';
 
 require('./style.scss');

@@ -22,7 +22,7 @@
 
 // @ts-check
 import { Utils } from 'services/Utils';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { ModalUtils } from 'arachne-ui-components';
 import actions from 'actions/index';
 import { modal, apiPaths, studyPermissions } from 'modules/StudyManager/const';

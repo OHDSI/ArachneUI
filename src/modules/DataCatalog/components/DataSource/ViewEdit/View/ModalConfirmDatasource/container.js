@@ -20,7 +20,7 @@
  *
  */
 
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { modal } from 'modules/DataCatalog/const';
 import { ContainerBuilder } from 'services/Utils';
 import ModalConfirmDatasource from './presenter';
