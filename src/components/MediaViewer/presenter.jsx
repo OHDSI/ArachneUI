@@ -34,7 +34,6 @@ import { usDateTime as dateFormat } from 'const/formats';
 import CSV from './CsvViewer';
 import { getScanResultDescription } from 'const/antivirus';
 
-let firstImageRender = true;
 const imageViewerRef = 'viewerCore';
 
 class Viewer extends OriginalViewer {
@@ -51,19 +50,14 @@ class Viewer extends OriginalViewer {
     const res = super.render();
 
     if (this.component && this.component.refs[imageViewerRef]) {
-      
-      // The plugin waits for the event and displays content only after the event has taken place.
-      // But in some cases the event listener is attached after the event took place. That's why we manually throw event again
-      if (firstImageRender) {
-        setTimeout(() => this.component.refs[imageViewerRef].dispatchEvent(new Event('transitionend')), 0);
-        firstImageRender = false;
-      }
-  
       if (this.props.visible) {
         // React-viewer plugin has hardcoded "transitionDuration"
         // If duration between the switch from visible = false to visible = true is less than the hardcoded duration (300ms),
         // new image won't show up. See "componentWillReceiveProps" and "render" -> "if (!this.state.visible && this.state.visibleStart) {"
         this.component.refs[imageViewerRef].classList.add('force-visible');
+        
+        // The plugin waits for the event and displays content only after the event has taken place
+        setTimeout(() => this.component.refs[imageViewerRef].dispatchEvent(new Event('transitionend')), 350);
       } else {
         this.component.refs[imageViewerRef].classList.remove('force-visible');
       }
