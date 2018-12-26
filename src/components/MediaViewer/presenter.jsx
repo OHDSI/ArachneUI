@@ -63,10 +63,9 @@ class Viewer extends OriginalViewer {
         // React-viewer plugin has hardcoded "transitionDuration"
         // If duration between the switch from visible = false to visible = true is less than the hardcoded duration (300ms),
         // new image won't show up. See "componentWillReceiveProps" and "render" -> "if (!this.state.visible && this.state.visibleStart) {"
-        setTimeout(() => {
-          this.component.refs[imageViewerRef].style.display = 'block';
-          this.component.refs[imageViewerRef].style.opacity = 1;
-        }, 0);
+        this.component.refs[imageViewerRef].classList.add('force-visible');
+      } else {
+        this.component.refs[imageViewerRef].classList.remove('force-visible');
       }
     }
 

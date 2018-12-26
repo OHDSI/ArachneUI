@@ -163,6 +163,11 @@ $pdf-background-color: #fafafa;
 
 .react-viewer {
   opacity: 0;
+
+  &.force-visible {
+    opacity: 1 !important;
+    display: block !important;
+  }
 }
 .react-viewer.inline {
   position: relative;
