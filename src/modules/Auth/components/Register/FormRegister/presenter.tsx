@@ -215,6 +215,7 @@ function FormRegister(props) {
           mods: ['bordered'],
           placeholder: 'Mobile',
           type: 'text',
+          required: true,
           tabindex: 14,
         }
       }
