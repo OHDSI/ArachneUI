@@ -27,7 +27,7 @@ import { Header, Sidebar, ModalUtils } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
 import { connect } from 'react-redux';
 import actions from 'actions';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 
 import AboutInfo from 'modules/Portal/components/AboutInfo';
 import { modal } from 'modules/Portal/const';

@@ -24,7 +24,7 @@
 import { Component } from 'react';
 import { Utils } from 'services/Utils';
 import { reduxForm } from 'redux-form';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import actions from 'actions/index';
 import presenter from './presenter';
 

@@ -21,7 +21,7 @@
  */
 
 import { createSelector } from 'reselect';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 
 const getRawUserOptionList = state => get(state, 'adminSettings.userOptionList.data') || [];
 const getRawProfessionalTypesList = state => get(state, 'auth.professionalType.queryResult.result') || [];

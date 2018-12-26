@@ -21,7 +21,7 @@
  */
 
 import { Component } from 'react';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 
 export class BaseChart extends Component {
   constructor(props) {

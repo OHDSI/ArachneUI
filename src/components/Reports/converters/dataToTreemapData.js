@@ -23,7 +23,7 @@
 import {
   treemap,
 } from '@ohdsi/atlascharts/dist/atlascharts.umd';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 
 export default (
   data,

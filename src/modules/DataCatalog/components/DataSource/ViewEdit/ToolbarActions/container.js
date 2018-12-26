@@ -24,7 +24,7 @@ import { connect } from 'react-redux';
 import { push as goToPage } from 'react-router-redux';
 import { dataSourcePermissions, paths } from 'modules/DataCatalog/const';
 import actions from 'actions';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { Utils } from 'services/Utils';
 import URI from 'urijs';
 import ToolbarActions from './presenter';

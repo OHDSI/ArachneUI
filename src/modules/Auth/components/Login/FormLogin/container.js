@@ -26,7 +26,7 @@ import { reduxForm } from 'redux-form';
 import { push } from 'react-router-redux';
 import actions from 'actions/index';
 import { paths, loginMessages, authMethods } from 'modules/Auth/const';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import FormLogin from './presenter';
 import Auth from 'services/Auth';
 

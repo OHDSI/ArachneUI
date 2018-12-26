@@ -24,7 +24,7 @@ import { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { ModalUtils } from 'arachne-ui-components';
 import { modal, paths, submissionFilters, submissionStatuses, submissionGroupsPageSize } from 'modules/AnalysisExecution/const';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import isEmpty from 'lodash/isEmpty';
 import actions from 'actions';
 import Uri from 'urijs';

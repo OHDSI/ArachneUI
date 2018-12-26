@@ -33,10 +33,13 @@ function Viewer(props) {
     downloadLink,
     language,
     title,
-    value,
     antivirusStatus,
     antivirusDescription,
   } = props;
+  let { value } = props;
+  if (!value) {
+    value = '';
+  }
 
   return (
     <CodeEditor

@@ -22,7 +22,7 @@
 
 import { createSelector } from 'reselect';
 import { paths } from 'modules/AnalysisExecution/const';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 
 const getRawAuthor = state => get(state, 'analysisExecution.analysisCode.data.result.author');
 const getRawUpdatedBy = state => get(state, 'analysisExecution.analysisCode.data.result.updatedBy');

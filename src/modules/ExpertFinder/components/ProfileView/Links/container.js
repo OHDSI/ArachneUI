@@ -22,7 +22,7 @@
 
 import { connect } from 'react-redux';
 import { reduxForm, reset as resetForm } from 'redux-form';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import actions from 'actions';
 import { forms } from 'modules/ExpertFinder/const';
 import { Utils } from 'services/Utils';

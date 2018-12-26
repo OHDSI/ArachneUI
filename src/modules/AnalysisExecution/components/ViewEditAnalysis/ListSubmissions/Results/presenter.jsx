@@ -22,7 +22,7 @@
 
 import React, { Component } from 'react';
 import BEMHelper from 'services/BemHelper';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { numberFormatter } from 'services/Utils';
 import pluralize from 'pluralize';
 
