@@ -21,8 +21,11 @@
  */
 
 import React, { PropTypes } from 'react';
+import ReactDOM from 'react-dom';
+import cloneDeep from 'lodash/cloneDeep';
 import BEMHelper from 'services/BemHelper';
 import OriginalViewer from 'react-viewer';
+import OriginalViewerCore from 'react-viewer/lib/ViewerCore';
 import Loadable from 'react-loadable';
 import EmptyState from 'components/EmptyState';
 import { isText } from 'services/MimeTypeUtil';
@@ -34,7 +37,18 @@ import { usDateTime as dateFormat } from 'const/formats';
 import CSV from './CsvViewer';
 import { getScanResultDescription } from 'const/antivirus';
 
-const imageViewerRef = 'viewerCore';
+class ViewerCore extends OriginalViewerCore {
+  render() {
+    // Workarounds for:
+    
+    // 1) React-viewer plugin has hardcoded "transitionDuration"
+    // If duration between the switch from visible = false to visible = true is less than the hardcoded duration (300ms),
+    // new image won't show up. See "componentWillReceiveProps" and "render" -> "if (!this.state.visible && this.state.visibleStart) {"
+    
+    // 2) The plugin waits for the "transitionend" event and displays content only after the event has taken place
+    return super.render.apply(Object.assign(cloneDeep(this), { state: { ...this.state, visible: this.props.visible, transitionEnd: true, visibleStart: true } }));
+  }
+}
 
 class Viewer extends OriginalViewer {
 
@@ -46,24 +60,29 @@ class Viewer extends OriginalViewer {
     }
   }
 
-  render() {
-    const res = super.render();
-
-    if (this.component && this.component.refs[imageViewerRef]) {
-      if (this.props.visible) {
-        // React-viewer plugin has hardcoded "transitionDuration"
-        // If duration between the switch from visible = false to visible = true is less than the hardcoded duration (300ms),
-        // new image won't show up. See "componentWillReceiveProps" and "render" -> "if (!this.state.visible && this.state.visibleStart) {"
-        this.component.refs[imageViewerRef].classList.add('force-visible');
-        
-        // The plugin waits for the event and displays content only after the event has taken place
-        setTimeout(() => this.component.refs[imageViewerRef].dispatchEvent(new Event('transitionend')), 350);
-      } else {
-        this.component.refs[imageViewerRef].classList.remove('force-visible');
+  // Copy-paste of the original method just to reference extended ViewerCore
+  renderViewer() {
+    if (this.props.visible || this.component) {
+      if (!this.container) {
+        if (this.props.container) {
+          this.container = this.props.container;
+        }else {
+          this.container = this.defaultContainer;
+          document.body.appendChild(this.container);
+        }
       }
+      let instance = this;
+      ReactDOM.unstable_renderSubtreeIntoContainer(
+        this,
+        <ViewerCore
+          {...this.props}
+          />,
+        this.container,
+        function () {
+          instance.component = this;
+        },
+      );
     }
-
-    return res;
   }
 }
 
