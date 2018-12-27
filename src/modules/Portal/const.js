@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,6 +22,7 @@
 
 import keyMirror from 'keymirror';
 import types from 'const/modelAttributes';
+import { paths as commonPaths } from 'const/paths';
 
 const form = keyMirror({
   changePassword: null,
@@ -41,11 +42,13 @@ const apiPaths = {
   invitationsSubscription: () => '/user/topic/invitations',
   userpic: id => `/api/v1/user-management/users/${id}/avatar`,
   search: () => '/api/v1/search',
+  myProfile: () => '/api/v1/auth/me',
+  userSettings: () => `/api/v1/user-management/users/settings`,
 };
 
 const paths = {
   study: id => `/study-manager/studies/${id}`,
-  userProfile: id => `/expert-finder/profile/${id}`,
+  userProfile: commonPaths.profile,
   odysseus: () => 'http://odysseusinc.com/',
   search: ({ query }) => `/portal/search?query=${query}`,
 };
@@ -67,6 +70,10 @@ const domains = keyMirror({
   USER: null,
   DATA_SOURCE: null,
   PAPER: null,
+  INSIGHT: null,
+  STUDY_FILE: null,
+  SUBMISSION: null,
+  SUBMISSION_GROUP: null,
 });
 
 const domainNames = {

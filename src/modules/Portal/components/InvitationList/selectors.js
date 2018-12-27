@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,13 +21,13 @@
  */
 
 import { createSelector } from 'reselect';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import moment from 'moment';
 import { paths, apiPaths } from 'modules/Portal/const';
 import { paths as analysisPaths } from 'modules/AnalysisExecution/const';
 import { paths as paperPaths } from 'modules/InsightsLibrary/const';
 
-const getRawInvitations = state => get(state, 'portal.invitation.queryResult.result', []) || [];
+const getRawInvitations = state => get(state, 'portal.invitation.list.queryResult.result', []) || [];
 
 const getInvitations = createSelector(
   [getRawInvitations],

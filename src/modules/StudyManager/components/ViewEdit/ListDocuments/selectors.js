@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,17 +21,17 @@
  */
 
 import { createSelector } from 'reselect';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { paths } from 'modules/StudyManager/const';
 import fileConverter from 'components/FileInfo/converter';
 
 export default class selectorsBuilder {
   getStudyId(state) {
-    return get(state, 'studyManager.study.data.result.id') || [];
+    return get(state, 'studyManager.study.data.id') || [];
   }
 
   getRawDocumentList(state) {
-    return get(state, 'studyManager.study.data.result.files') || [];
+    return get(state, 'studyManager.study.data.files') || [];
   }
 
   getDocumentList(studyId, documentList) {

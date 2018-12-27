@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,10 +22,14 @@
 
 import { Component, PropTypes } from 'react';
 import actions from 'actions';
-import get from 'lodash/get';
-import { ContainerBuilder } from 'services/Utils';
-import { goBack } from 'react-router-redux';
+import { get } from 'services/Utils';
+import { push as goToPage } from 'react-router-redux';
+import { paths as workspacePaths } from 'modules/Workspace/const';
+import { studyKind, participantRoles as roles } from 'modules/StudyManager/const';
 import presenter from './presenter';
+import { ActiveModuleAwareContainerBuilder } from 'modules/StudyManager/utils';
+import isEmpty from 'lodash/isEmpty';
+import { isViewable } from 'services/Utils';
 
 export class ViewEditStudy extends Component {
   static get propTypes() {
@@ -40,6 +44,8 @@ export class ViewEditStudy extends Component {
       loadStudy: PropTypes.func,
       loadInsights: PropTypes.func,
       loadTransitions: PropTypes.func,
+      canView: PropTypes.bool,
+      isStudyLoadingComplete: PropTypes.bool,
     };
   }
 
@@ -52,13 +58,18 @@ export class ViewEditStudy extends Component {
 
 
   componentWillReceiveProps(nextProps) {
+    if (this.props.kind && this.props.participants && this.props.kind === studyKind.WORKSPACE) {
+      const leadId = this.props.participants.find(v => v.role.id === roles.LEAD_INVESTIGATOR).id;
+      this.props.goToWorkspace(leadId);
+      return;
+    }
     if (this.props.id !== nextProps.id && nextProps.id) {
-      this.props.loadTypeList();
-      this.props.loadAnalysisTypeList();
-      this.props.loadStatusList();
-      this.props.loadStudy(nextProps.id);
-      this.props.loadInsights({ studyId: nextProps.id });
-      this.props.loadTransitions({ studyId: nextProps.id });
+      this.props.loadStudy({ id: nextProps.id });
+    }
+    if (this.props.isStudyLoadingComplete === false && nextProps.isStudyLoadingComplete === true
+      && nextProps.canView
+    ) {
+      this.loadDetailedInfo(nextProps);
     }
   }
 
@@ -66,6 +77,14 @@ export class ViewEditStudy extends Component {
     this.setState({
       openedSection,
     });
+  }
+
+  loadDetailedInfo(nextProps) {
+    this.props.loadTypeList();
+    this.props.loadAnalysisTypeList();
+    this.props.loadStatusList();
+    this.props.loadInsights({ studyId: nextProps.id });
+    this.props.loadTransitions({ studyId: nextProps.id });
   }
 
   render() {
@@ -77,26 +96,35 @@ export class ViewEditStudy extends Component {
   }
 }
 
-export default class ViewEditStudyBuilder extends ContainerBuilder {
+export default class ViewEditStudyBuilder extends ActiveModuleAwareContainerBuilder {
   getComponent() {
     return ViewEditStudy;
   }
 
   mapStateToProps(state, ownProps) {
     const moduleState = get(state, 'studyManager');
-    const studyData = get(moduleState, 'study.data.result');
+    const studyData = get(moduleState, 'study.data', {});
     const pageTitle = [
       studyData ? get(studyData, 'title') : '',
       'My studies',
     ];
     const isStudyLoading = get(moduleState, 'study.isLoading');
     const isTypesLoading = get(moduleState, 'typeList.isLoading');
-    const isParticipantsLoading = get(moduleState, 'study.participants.isSaving');
+    const participants = get(studyData, 'participants');
+    const isParticipantsLoading = get(participants, 'isSaving');
+
+    const kind = get(studyData, 'kind');
+    const isStudyLoadingComplete = !isEmpty(studyData) && !isStudyLoading;
+    const canView = isViewable(studyData);    
 
     return {
       id: parseInt(ownProps.routeParams.studyId, 10),
       studyTitle: pageTitle.join(' | '),
       isLoading: isStudyLoading || isTypesLoading || isParticipantsLoading || get(state, 'studyManager.studyInvitations.isLoading'),
+      participants,
+      kind,
+      canView,
+      isStudyLoadingComplete,
     };
   }
 
@@ -105,13 +133,13 @@ export default class ViewEditStudyBuilder extends ContainerBuilder {
   */
   getMapDispatchToProps() {
     return {
-      goBack,
       loadTypeList: actions.studyManager.typeList.find,
       loadAnalysisTypeList: actions.studyManager.analysisTypes.find,
       loadStatusList: actions.studyManager.statusList.find,
       loadStudy: actions.studyManager.study.find,
       loadInsights: actions.studyManager.studyInsights.find,
       loadTransitions: actions.studyManager.availableTransitions.query,
+      goToWorkspace: leadId => goToPage(workspacePaths.userWorkspace(leadId)),
     };
   }
 
@@ -120,19 +148,16 @@ export default class ViewEditStudyBuilder extends ContainerBuilder {
       ...ownProps,
       ...stateProps,
       ...dispatchProps,
-      onBannerActed: () => dispatchProps.loadStudy(stateProps.id),
+      onBannerActed: () => dispatchProps.loadStudy({ id: stateProps.id }),
     };
   }
 
-  getFetchers({ params }) {
+  getFetchers({ params, dispatch, getState }) {
     const studyId = params.studyId;
     return {
-      loadTypeList: actions.studyManager.typeList.find,
-      loadAnalysisTypeList: actions.studyManager.analysisTypes.find,
-      loadStatusList: actions.studyManager.statusList.find,
-      loadStudy: () => actions.studyManager.study.find(studyId),
-      loadInsights: () => actions.studyManager.studyInsights.find({ studyId }),
-      loadTransitions: () => actions.studyManager.availableTransitions.query({ studyId }),
+      ...super.getFetchers({ params, dispatch, getState }),
+      loadStudy: dispatch(actions.studyManager.study.find({ id: studyId }))
+        .then(studyData => this.setKind(get(studyData, 'kind'))),
     };
   }
 

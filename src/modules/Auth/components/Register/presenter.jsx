@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,18 +27,18 @@ import FormRegister from './FormRegister/index';
 
 require('modules/Auth/styles/auth.scss');
 
-function Register() {
+function Register(props) {
   const classes = new BEMHelper('auth');
   const colorScheme = __APP_TYPE_NODE__ ? 'node' : 'default';
 
   return (
     <PageContent mods={['bg-primary']} colorScheme={colorScheme} title='Register | Arachne'>
-      <div {...classes()}>
+      <div {...classes({modifiers: 'register'})}>
         <div {...classes('title')}>
           New user registration
         </div>
         <div {...classes('form')}>
-          <FormRegister />
+          <FormRegister {...props} />
         </div>
       </div>
     </PageContent>

@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,24 +21,51 @@
  */
 
 import { createSelector } from 'reselect';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import moment from 'moment-timezone';
 import { commonDate as commonDateFormat } from 'const/formats';
+import { submissionStatusesTitles } from 'modules/AnalysisExecution/const';
 
 const getRawStatusList = state => get(state, 'analysisExecution.statusHistory.queryResult.result') || [];
 
 const getStatusList = createSelector(
   [getRawStatusList],
-  statuses => statuses.map(status =>
-    ({
-      ...status,
-      author: get(status, 'author') || {
-        id: null,
-        firstname: 'System',
-      },
-      date: moment(status.date).tz(moment.tz.guess()).format(commonDateFormat),
-    })
-  )
+  (statuses) => {
+    let finishedStatusIndex = -1;
+    let approvedStatus = {
+      value: 'APPROVED',
+      title: 'Approved',
+      comment: null,
+    };
+    const statusList = statuses.map((status, index) => {
+      const statusMeta = {
+        author: get(status, 'author') || {
+          id: null,
+          firstname: 'System',
+        },
+        date: moment(status.date).tz(moment.tz.guess()).format(commonDateFormat),
+        title: submissionStatusesTitles[status.value],
+      };
+      if (status.value === 'EXECUTED_PUBLISHED') {
+        finishedStatusIndex = index;
+        approvedStatus = {
+          ...statusMeta,
+          ...approvedStatus,
+        };
+      }
+
+      return {
+        ...status,
+        ...statusMeta,
+      };
+    });
+
+    if (finishedStatusIndex !== -1) {
+      statusList.splice(finishedStatusIndex, 0, approvedStatus);
+    }
+
+    return statusList;
+  }
 );
 
 export default {

@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -52,7 +52,17 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...stateProps,
     ...dispatchProps,
     doSubmit(data) {
-      const submitPromise = dispatchProps.register({}, data);
+      const reg = {
+        ...data,
+        address: {
+          ...data.address,
+          country: (data.address && data.address.country) ? ownProps.countries.filter(c => c.value === data.address.country)
+            .map(c => ({isoCode: c.value,})).shift() : null,
+          stateProvince: (data.address && data.address.stateProvince) ? ownProps.provinces.filter(p => p.value === data.address.stateProvince)
+            .map(p => ({isoCode: p.value,})).shift() : null,
+        }
+      };
+      const submitPromise = dispatchProps.register({}, reg);
       submitPromise
         .then(() => dispatchProps.goToWelcome())
         .catch(() => {});

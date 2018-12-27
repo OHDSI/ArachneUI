@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,14 +20,14 @@
  *
  */
 
-import { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { ModalUtils } from 'arachne-ui-components';
 import { modal, paths } from 'modules/Admin/const';
 import actions from 'actions';
-import presenter from './presenter';
+import List from './presenter';
 import { ContainerBuilder, get, Utils } from 'services/Utils';
 import UserListSelectorBuilder from './selectors';
-import userFilterFields from './Filters';
+import getFields from './Filters/fields';
 import { saveFilter, getSavedFilter } from "modules/Admin/ducks/portalUserList";
 import values from 'lodash/values';
 import Uri from 'urijs';
@@ -43,7 +43,7 @@ class UserList extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.query !== this.props.query) {
-      nextProps.loadUsersWithCurrentQuery();
+      nextProps.loadUsers();
     }
   }
 
@@ -56,6 +56,7 @@ class UserList extends Component {
         this.props.applySavedFilters(savedFilter);
       }
     }
+    this.props.loadTenantList();
   }
 
   componentWillUnmount() {
@@ -69,7 +70,7 @@ class UserList extends Component {
   }
 
   render() {
-    return presenter(this.props);
+    return <List {...this.props} />;
   }
 }
 
@@ -90,7 +91,9 @@ class UserListBuilder extends ContainerBuilder {
       isLoading,
       query: get(state, 'routing.locationBeforeTransitions.query', {}, 'Object'),
       paginationDetails: selectors.getPaginationDetails(state),
-      filterFields: userFilterFields,
+      filterFields: getFields({
+        tenantOptions: selectors.getTenantOptions(state),
+      }),
       ...Utils.getPlainFiltersEncodeDecoder(),
     };
   }
@@ -98,6 +101,8 @@ class UserListBuilder extends ContainerBuilder {
   getMapDispatchToProps() {
     return {
       loadUserList: actions.adminSettings.portalUserList.query,
+      loadTenantList: actions.adminSettings.tenantList.find,
+      cleanSelectedUsers: () => actions.adminSettings.portalUserListSelectedUsers.updateSelectedUsers({}),
       openModal: () => ModalUtils.actions.toggle(modal.addUser, true),
       redirect: addr => push(addr),
     }
@@ -108,14 +113,18 @@ class UserListBuilder extends ContainerBuilder {
       ...stateProps,
       ...dispatchProps,
       ...ownProps,
-      loadUsersWithCurrentQuery: () => {
-        dispatchProps.loadUserList({ query: stateProps.query });
+      loadUsers: () => {
+        dispatchProps.loadUserList({ query: stateProps.query })
+          .then(() => dispatchProps.cleanSelectedUsers());
       },
       applySavedFilters(filters) {
         const url = new Uri(paths.users());
         url.setSearch(filters);
         dispatchProps.redirect(url.href());
       },
+      onPageOutOfRange() {
+        dispatchProps.redirect(paths.users());
+      }
     };
   }
 

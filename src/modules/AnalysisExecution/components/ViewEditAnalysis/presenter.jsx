@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -43,6 +43,7 @@ import ModalUploadResult from './ModalUploadResult';
 import ModalRejectSubmission from './ModalRejectSubmission';
 import ModalAddDataSource from 'modules/StudyManager/components/ViewEdit/ModalAddDataSource';
 import ModalError from './ModalCreateCode/components/ModalError';
+import EmptyState from 'components/EmptyState';
 
 import './style.scss';
 
@@ -82,11 +83,13 @@ export default class ViewEditAnalysis extends Component {
 
     const {
       isLoading,
-      isEditable
+      isEditable,
+      canView,
     } = this.props;
 
     return (
       <PageContent title={this.pageTitle}>
+        {canView ?
         <div {...this.classes()}>
           <InviteRestrictedArea
             {...this.classes('container')}
@@ -115,6 +118,8 @@ export default class ViewEditAnalysis extends Component {
           {this.getModals()}
           <LoadingPanel active={isLoading} />
         </div>
+        : <EmptyState message={'Access denied or analysis does not exist'} />
+        }
       </PageContent>
     );
   }

@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,7 +26,7 @@ import Table from 'components/Charts/Table';
 import * as d3 from 'd3';
 import { chartSettings } from 'modules/DataCatalog/const';
 import { convertDataToTreemapData } from 'components/Reports/converters';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import Chart from 'components/Reports/Chart';
 import ReportUtils from 'components/Reports/Utils';
 import DrugByIndexDetails from './DrugByIndexDetails';

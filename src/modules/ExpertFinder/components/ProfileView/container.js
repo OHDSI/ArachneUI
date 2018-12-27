@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,11 +22,11 @@
 
 import { Component, PropTypes } from 'react';
 import { ModalUtils } from 'arachne-ui-components';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { modal } from 'modules/ExpertFinder/const';
 import actions from 'actions';
 import { goBack } from 'react-router-redux';
-import { ContainerBuilder } from 'services/Utils';
+import { ContainerBuilder, isViewable } from 'services/Utils';
 import presenter from './presenter';
 
 
@@ -65,12 +65,14 @@ export default class ProfileViewBuilder extends ContainerBuilder {
     if (!firstname && !middlename && !lastname) {
       firstname = 'an expert';
     }
+    const canView = isViewable(moduleState.data);
 
     return {
       editable,
       name: [firstname, middlename, lastname].filter(val => !!val).join(' '),
       id,
       isLoading: isLoading || isCreatingSkill,
+      canView,
     };
   }
 

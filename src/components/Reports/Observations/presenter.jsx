@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -33,6 +33,7 @@ import { convertDataToTreemapData } from 'components/Reports/converters';
 import Chart from 'components/Reports/Chart';
 import ObservationsDetails from './ObservationsDetails';
 import ReportUtils from 'components/Reports/Utils';
+import { tablePageSize } from '../const';
 
 require('./style.scss');
 
@@ -53,7 +54,7 @@ function Observations(props) {
   const table = <Table
     data={tableData}
     columns={tableColumns}
-    pageSize={5}
+    pageSize={tablePageSize}
     onRowClick={node => loadConditionDetails(node.id.value)}
   />;
 

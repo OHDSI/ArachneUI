@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,7 +23,7 @@
 // @ts-check
 import { reduxForm } from 'redux-form';
 import { Utils } from 'services/Utils';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import actions from 'actions/index';
 import { ModalUtils } from 'arachne-ui-components';
 import { modal, form, paths } from 'modules/StudyManager/const';
@@ -49,7 +49,7 @@ export default class ModalCreateAnalysisBuilder {
   mapStateToProps(state) {
     const moduleData = get(state, 'studyManager');
     return {
-      studyId: get(moduleData, 'study.data.result.id'),
+      studyId: get(moduleData, 'study.data.id'),
       analysisTypes: selectors.getAnalysisTypesList(state),
       initialValues: {
         attachDefaultCodeFiles: true,

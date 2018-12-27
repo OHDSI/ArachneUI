@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -67,7 +67,7 @@ function Skills(props) {
     <Panel title="Skills" {...classes()}>
       {props.editable ?
         <div>
-          <div {...classes({ element: 'content', modifiers: {empty: !props.items.length} })}> 
+          <div {...classes({ element: 'content', modifiers: {empty: !props.items.length} })}>
             {!props.items.length &&
               <span>No skills yet</span>
             }
@@ -84,12 +84,15 @@ function Skills(props) {
             addButtonTitle="Add skill"
             formTitle="Add Skill"
             onSubmit={props.doSubmit}
-            submitBtnConfig={submitBtnConfig}
+            submitBtnConfig={{
+              ...submitBtnConfig,
+              disabled: props.skillValue === null,
+            }}
             cancelBtnConfig={cancelBtnConfig}
             {...props}
           />
         </div>
-        : 
+        :
         <div {...classes({ element: 'content', modifiers: {empty: !props.items.length} })}>
           {!props.items.length &&
             <span>No skills yet</span>

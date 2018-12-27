@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,6 +28,7 @@ import { LoadingPanel } from 'arachne-ui-components';
 import { Link } from 'arachne-ui-components';
 
 import { paths, images } from 'modules/Portal/const';
+import moment from 'moment';
 
 require('./style.scss');
 
@@ -52,7 +53,7 @@ function AboutInfo(props) {
           />
         </Link>
         <p {...classes('line', 'emphasized')}>
-          @ 2015-2017, Odysseus Data Services, Inc. All rights reserved
+          @ 2015-{moment().format('YYYY')}, Odysseus Data Services, Inc. All rights reserved
         </p>
         {projectVersion && buildNumber &&
           <p {...classes('line', 'additional')}>

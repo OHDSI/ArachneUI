@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -38,7 +38,7 @@ import SubmissionsTableFilter from 'modules/AnalysisExecution/components/ViewEdi
 
 require('./style.scss');
 
-function CellResults({ className, resultInfo, resultFilesCount, analysisType, showList, canUploadResult, showUploadForm }) {
+function CellResults({ className, resultInfo, resultFilesCount, analysisType, showList, canUploadResult, showUploadForm, hasAccess }) {
   const classes = new BEMHelper('submissions-cell-files');
 
   return (
@@ -49,13 +49,22 @@ function CellResults({ className, resultInfo, resultFilesCount, analysisType, sh
       </Link>
       }
       {!!resultFilesCount ?
-        <Link {...classes('file')}onClick={showList}>
+        hasAccess ?
+          <Link {...classes('file')} onClick={showList}>
+            <Results
+              resultInfo={resultInfo}
+              resultFilesCount={resultFilesCount}
+              analysisType={analysisType}
+              hasAccess={hasAccess}
+            />
+          </Link>
+          :
           <Results
             resultInfo={resultInfo}
             resultFilesCount={resultFilesCount}
             analysisType={analysisType}
+            hasAccess={hasAccess}
           />
-        </Link>
         :
         <span>No documents</span>
       }
@@ -135,7 +144,7 @@ function CellActions(props) {
   );
 }
 
-function CellInsight({ hasInsight, isDisabled, name, showCreateInsight, submissionId, isEditable }) {
+function CellInsight({ hasInsight, isDisabled, name, showCreateInsight, submissionId, isEditable, hasAccessToResults }) {
   const classes = new BEMHelper('submissions-insight-ico');
   const tooltipClass = new BEMHelper('tooltip');
 
@@ -147,6 +156,18 @@ function CellInsight({ hasInsight, isDisabled, name, showCreateInsight, submissi
           extra: tooltipClass().className
         })}
         aria-label={ 'No results are available yet' }
+        data-tootik-conf="left"
+      ></i>
+    );
+  }
+  else if (!hasAccessToResults) {
+    return (
+      <i
+        {...classes({
+          modifiers: ['disabled'],
+          extra: tooltipClass().className
+        })}
+        aria-label={'Only contributors can view the insight'}
         data-tootik-conf="left"
       ></i>
     );
@@ -333,6 +354,7 @@ function SubmissionLine(props) {
           showList={showResultFileList.bind(null, submission)}
           canUploadResult={submission.canUploadResult}
           showUploadForm={showUploadForm.bind(null, submission.id)}
+          hasAccess={submission.hasAccessToResults}
         />
       </div>
       <div {...classes('cell', 'publish')}>
@@ -350,6 +372,7 @@ function SubmissionLine(props) {
           name={get(submission, 'insight.name')}
           showCreateInsight={showCreateInsight}
           submissionId={submission.id}
+          hasAccessToResults={submission.hasAccessToResults}
         />
       </div>
       <div {...classes('cell', ['visibility', isVisibilityTogglable ? '' : 'hidden'])}>
@@ -388,16 +411,16 @@ function ListSubmissions(props) {
     isFiltered,
     selectedFilters,
     toggleVisibility,
+    groupCount,
   } = props;
 
-  const groupCount = submissionGroupList.length;
-  const data = submissionGroupList.map((item, index) => {
+  const data = submissionGroupList.map(item => {
     return (
       <div>
         <SubmissionGroup
           {...classes('group')}
           item={item}
-          index={groupCount - index}
+          key={`${item.id}`}
           showCodeFileList={showCodeFileList}
         />
         <div
@@ -417,6 +440,7 @@ function ListSubmissions(props) {
             isEditable={isEditable}
             analysisType={item.analysisType}
             toggleVisibility={toggleVisibility}
+            key={`${submission.id}`}
           />
         )}
         </div>

@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,7 +24,7 @@
 import { Component } from 'react';
 import { Utils } from 'services/Utils';
 import { reduxForm } from 'redux-form';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import actions from 'actions/index';
 import presenter from './presenter';
 
@@ -63,7 +63,7 @@ export default class StudyObjectiveEditBuilder {
   }
 
   mapStateToProps(state) {
-    const studyData = get(state, 'studyManager.study.data.result');
+    const studyData = get(state, 'studyManager.study.data');
 
     return {
       studyId: get(studyData, 'id'),
@@ -86,8 +86,8 @@ export default class StudyObjectiveEditBuilder {
       ...stateProps,
       ...dispatchProps,
       setDescr: ({ description }) => dispatchProps
-        .updateStudy(stateProps.studyId, { description })
-        .then(() => dispatchProps.load(stateProps.studyId))
+        .updateStudy({ id: stateProps.studyId }, { description })
+        .then(() => dispatchProps.load({ id: stateProps.studyId }))
         .then(ownProps.setViewMode),
       cancel: () => ownProps.setViewMode(),
     };

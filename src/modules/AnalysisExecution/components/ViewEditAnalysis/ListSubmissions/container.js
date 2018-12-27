@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,7 +24,7 @@ import { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { ModalUtils } from 'arachne-ui-components';
 import { modal, paths, submissionFilters, submissionStatuses, submissionGroupsPageSize } from 'modules/AnalysisExecution/const';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import isEmpty from 'lodash/isEmpty';
 import actions from 'actions';
 import Uri from 'urijs';
@@ -48,7 +48,7 @@ function mapStateToProps(state) {
 
   const rawSelectedFilters = Utils.getFilterValues(get(state, 'routing.locationBeforeTransitions.search', '', 'String'));
   const selectedFilters = {};
-  const datasources = get(state, 'studyManager.study.data.result.dataSources', [], 'Array');
+  const datasources = get(state, 'studyManager.study.data.dataSources', [], 'Array');
   Object.entries(rawSelectedFilters)
     .forEach(([filterId, filter]) => {
       switch (filterId) {
@@ -71,17 +71,22 @@ function mapStateToProps(state) {
           break;
       }
     });
+  const page = number + 1;
+  const submissionGroupList = selectors.getSubmissionGroupList(state);
+  const pageSize = get(state, 'analysisExecution.submissionGroups.queryResult.size', 0);
+  const groupCount = get(state, 'analysisExecution.submissionGroups.queryResult.totalElements', submissionGroupList.length) - (number * pageSize);
 
   return {
     analysisId: get(analysisData, 'id'),
-    submissionGroupList: selectors.getSubmissionGroupList(state),
+    submissionGroupList,
     isPaginationAvailable,
     totalPages,
-    page: number + 1,
+    page,
     path: url.href(),
     isFiltered: !isEmpty(selectedFilters),
     selectedFilters: Object.entries(selectedFilters),
     filter: getFilter(search),
+    groupCount,
   };
 }
 

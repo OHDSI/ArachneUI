@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,7 +21,7 @@
  */
 
 import React, { Component, PropTypes } from 'react';
-import { get, ContainerBuilder, Utils } from 'services/Utils';
+import { get, Utils, isViewable } from 'services/Utils';
 import { refreshTime, analysisPermissions, submissionGroupsPageSize, modal } from 'modules/AnalysisExecution/const';
 import { modal as studyModal } from 'modules/StudyManager/const';
 import actions from 'actions/index';
@@ -29,6 +29,7 @@ import isEqual from 'lodash/isEqual';
 import qs from 'qs';
 import { ModalUtils } from 'arachne-ui-components';
 import Presenter from './presenter';
+import { ActiveModuleAwareContainerBuilder } from 'modules/StudyManager/utils';
 
 export function getFilter(search) {
   let filter = Utils.getFilterValues(search);
@@ -69,6 +70,7 @@ class ViewEditAnalysis extends Component {
     if (nextProps.id !== this.props.id) {
       const analysis = await this.props.loadAnalysis({ id: nextProps.id });
       const studyId = analysis.result.study.id;
+      this.props.setActiveModule(analysis.result.study.kind);
       this.props.loadStudyDataSources({ studyId });
     }
     if (nextProps.id !== this.props.id || nextProps.page !== this.props.page || !isEqual(this.props.filter, nextProps.filter)) {
@@ -86,7 +88,7 @@ class ViewEditAnalysis extends Component {
   }
 }
 
-export default class ViewEditAnalysisBuilder extends ContainerBuilder {
+export default class ViewEditAnalysisBuilder extends ActiveModuleAwareContainerBuilder {
   getComponent() {
     return ViewEditAnalysis;
   }
@@ -103,6 +105,7 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
     const studyId = get(analysisData, 'study.id', -1);
     const currentQuery = state.routing.locationBeforeTransitions.query;
     const filter = getFilter(state.routing.locationBeforeTransitions.search);
+    const canView = isViewable(analysis.data);
 
     return {
       id: parseInt(ownProps.routeParams.analysisId, 10),
@@ -112,11 +115,13 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
       isEditable: get(analysisData, `permissions[${analysisPermissions.editAnalysis}]`, false),
       page: get(currentQuery, 'page', 1),
       filter,
+      canView,
     };
   }
 
   getMapDispatchToProps() {
     return {
+      ...super.getMapDispatchToProps(),
       loadAnalysis: actions.analysisExecution.analysis.find,
       loadTypeList: actions.analysisExecution.analysisTypes.query,
       unloadAnalysis: actions.analysisExecution.analysis.unload,
@@ -135,6 +140,7 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
       ...ownProps,
       ...stateProps,
       ...dispatchProps,
+      ...super.mergeProps(stateProps, dispatchProps, ownProps),
       onBannerActed: async () => {
         await dispatchProps.loadAnalysis({ id: stateProps.id });
         return dispatchProps.loadSubmissionGroups({ analysisId: stateProps.id, page: stateProps.page, filter: stateProps.filter });
@@ -153,11 +159,16 @@ export default class ViewEditAnalysisBuilder extends ContainerBuilder {
     const page = get(currentQuery, 'page', 1);
     const filter = getFilter(getState().routing.locationBeforeTransitions.search);
     return {
+      ...super.getFetchers({ params, dispatch, getState }),
       loadAnalysisWDataSources: dispatch(componentActions.loadAnalysis({ id: params.analysisId }))
-        .then(() => {
-          const studyId = getState().analysisExecution.analysis.data.result.study.id;
-          dispatch(componentActions.loadSubmissionGroups({ analysisId: params.analysisId, page, filter }));
-          return dispatch(componentActions.loadStudyDataSources({ studyId }));
+        .then((analysis) => {
+          const studyId = get(analysis, 'result.study.id');
+          const kind = get(analysis, 'result.study.kind');
+          this.setKind(kind);
+          if (isViewable(analysis)) {
+            dispatch(componentActions.loadSubmissionGroups({ analysisId: params.analysisId, page, filter }));
+            dispatch(componentActions.loadStudyDataSources({ studyId }));
+          }
         }),
       loadTypeList: componentActions.loadTypeList,
     };

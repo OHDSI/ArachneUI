@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2018 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -62,10 +62,10 @@ class ModalCreateEditBuilder extends ContainerBuilder {
     return {
       isOpened: get(state, 'modal.atlasDetails.isOpened'),
       id: get(state, 'modal.atlasDetails.data.id'),
-      isLoading: get(state, 'externalResourceManager.atlases.isLoading'),
+      isLoading: get(state, 'externalResourceManager.atlases.list.isLoading'),
       initialValues: {
         authType: atlasAuthTypeList.none.value,
-        ...get(state, 'externalResourceManager.atlases.data', {}, 'Object'),
+        ...get(state, 'externalResourceManager.atlases.list.data', {}, 'Object'),
       },
     };
   }

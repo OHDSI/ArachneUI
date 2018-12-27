@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,6 +22,8 @@
 
 import keyMirror from 'keymirror';
 import { Utils } from 'services/Utils';
+import { paths as commonPaths } from 'const/paths';
+import { domains } from 'modules/Portal/const'
 
 const modal = keyMirror({
   analysisFiles: null,
@@ -37,6 +39,7 @@ const modal = keyMirror({
   rejectSubmission: null,
   submissionsTableFilter: null,
   modalError: null,
+  editFileName: null,
 });
 
 const form = keyMirror({
@@ -56,6 +59,7 @@ const form = keyMirror({
   importCodeList: null,
   rejectSubmission: null,
   submissionsTableFilter: null,
+  editFileName: null,
 });
 
 const paths = {
@@ -68,7 +72,7 @@ const paths = {
   insightCodeFile: ({ submissionId, fileId }) => `/analysis-execution/submissions/${submissionId}/insight/code/${fileId}`,
   insightResultFile: ({ submissionId, fileId }) => `/analysis-execution/submissions/${submissionId}/insight/results/${fileId}`,
   insight: ({ submissionId }) => `/analysis-execution/submissions/${submissionId}/insight`,
-  profile: id => `/expert-finder/profile/${id}`,
+  profile: commonPaths.profile,
 };
 
 function importEntityPathByType(type) {
@@ -236,9 +240,9 @@ const fileSources = keyMirror({
 const maxFilesCount = 10000;
 
 const breadcrumbTypes = keyMirror({
-  ANALYSIS: null,
-  STUDY: null,
-  INSIGHT: null,
+  [domains.ANALYSIS]: null,
+  [domains.STUDY]: null,
+  [domains.INSIGHT]: null,
 });
 
 const analysisTypes = keyMirror({
@@ -262,7 +266,7 @@ const submissionStatuses = [
   },
   {
     value: 'STARTING',
-    label: 'In queue',
+    label: 'Submitted',
   },
   {
     value: 'QUEUE_PROCESSING',
@@ -270,7 +274,7 @@ const submissionStatuses = [
   },
   {
     value: 'IN_PROGRESS',
-    label: 'In progress',
+    label: 'Processing',
   },
   {
     value: 'EXECUTED',
@@ -279,6 +283,10 @@ const submissionStatuses = [
   {
     value: 'FAILED',
     label: 'Awaiting approval (failed)',
+  },
+  {
+    value: 'APPROVED',
+    label: 'Approved',
   },
   {
     value: 'EXECUTED_REJECTED',
@@ -297,6 +305,11 @@ const submissionStatuses = [
     label: 'Failed (published)',
   },
 ];
+
+const submissionStatusesTitles = {};
+submissionStatuses.forEach((status) => {
+  submissionStatusesTitles[status.value] = status.label;
+});
 
 const submissionFilters = {
   showHidden: {
@@ -339,5 +352,6 @@ export {
   analysisTypes,
   submissionGroupsPageSize,
   submissionStatuses,
+  submissionStatusesTitles,
   submissionFilters,
 };

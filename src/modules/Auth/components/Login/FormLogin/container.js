@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,22 +26,26 @@ import { reduxForm } from 'redux-form';
 import { push } from 'react-router-redux';
 import actions from 'actions/index';
 import { paths, loginMessages, authMethods } from 'modules/Auth/const';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import FormLogin from './presenter';
+import Auth from 'services/Auth';
 
 function mapStateToProps(state) {
   const authMethod = get(state, 'auth.authMethod.data.result.userOrigin', authMethods.NATIVE);
   const isUnactivated = get(state, 'form.login.submitErrors.unactivated', false);
   const userEmail = get(state, 'form.login.values.username', '');
+  const userRequest = Auth.getUserRequest();
 
   return {
     authMethod,
     remindPasswordLink: paths.remindPassword(),
     initialValues: {
+      username: userRequest,
       redirectTo: state.auth.authRoutingHistory.backUrl,
     },
     isUnactivated,
     userEmail,
+    userRequest,
   };
 }
 
@@ -61,6 +65,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
       .then(() => dispatchProps.redirect(paths.login(loginMessages.resendDone)))
       .catch(() => {}),
     doSubmit: (data) => dispatchProps.login(data.username, data.password)
+      .then(() => Auth.clearUserRequest())
       .then(() => dispatchProps.redirect((/\/auth\/logout/i).test(stateProps.initialValues.redirectTo) ? '/'
         : stateProps.initialValues.redirectTo || '/'))
       .then(() => dispatchProps.principal()),
@@ -69,6 +74,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
 
 const ReduxFormLogin = reduxForm({
   form: 'login',
+  enableReinitialize: true,
 })(FormLogin);
 
 export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(ReduxFormLogin);

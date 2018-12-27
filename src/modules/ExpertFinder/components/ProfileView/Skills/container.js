@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,7 +21,7 @@
  */
 
 import actions from 'actions';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { connect } from 'react-redux';
 import { reduxForm, reset as resetForm } from 'redux-form';
 import { forms } from 'modules/ExpertFinder/const';
@@ -36,6 +36,7 @@ function mapStateToProps(state) {
   const isCreating = get(moduleState, 'skills.isSaving', false);
   const isLoading = get(moduleState, 'skills.isLoading', false);
   const skillsDictionary = get(moduleState, 'skills.queryResult.result', []);
+  const skillValue = get(state.form, 'skills.values.skill', null);
 
   return {
     id,
@@ -44,6 +45,7 @@ function mapStateToProps(state) {
     skillsDictionary,
     editable,
     isCreating,
+    skillValue,
   };
 }
 
@@ -67,6 +69,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         name: skill.value,
       })
         .then(res => this.doSubmit({ skill: res.result.id }))
+        .then(() => { dispatchProps.resetForm() })
         .catch(() => {});
 
       return createPromise;

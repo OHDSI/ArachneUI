@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,13 +21,10 @@
  */
 
 import React, { PropTypes } from 'react';
-import { Toolbar } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
-import { Button } from 'arachne-ui-components';
-import { Pagination } from 'arachne-ui-components';
 import InviteModal from 'modules/ExpertFinder/components/InviteModal';
 import InviteConfirmModal from 'modules/ExpertFinder/components/InviteConfirmModal';
-
+import EmptyState from 'components/EmptyState';
 import ExpertCard from './ExpertCard';
 
 require('./style.scss');
@@ -41,8 +38,10 @@ function List(props) {
 
   return (
     <div {...classes()}>
-      <div {...classes('list')}>
-        {userList.map((expert, key) =>
+      <div {...classes('list', userList.length === 0 ? 'empty' : null)}>
+        {userList.length === 0
+          ? <EmptyState message={'No results found'} />
+          : userList.map((expert, key) =>
           <ExpertCard key={key} expert={expert} showInviteDialog={showInviteDialog} />
         )}
       </div>

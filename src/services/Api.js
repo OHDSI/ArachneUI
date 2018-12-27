@@ -2,7 +2,7 @@
 
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,6 +25,7 @@
 import URI from 'urijs';
 import SockJS from 'sockjs-client/dist/sockjs';
 import { Stomp } from '@stomp/stompjs/lib/stomp';
+import { Notifier } from 'services/Notifier';
 
 const STATUS = {
   OK: 200,
@@ -58,8 +59,16 @@ class Api {
     console.error('Replace this interface with implementation');
   }
 
+  getUserRequested() {
+  }
+
   setUserTokenGetter(getUserToken) {
     this.getUserToken = getUserToken;
+    return this;
+  }
+
+  setUserRequestedGetter(getUserRequested) {
+    this.getUserRequested = getUserRequested;
     return this;
   }
 
@@ -75,7 +84,7 @@ class Api {
 
   // eslint-disable-next-line class-methods-use-this
   handleUnexpectedError() {
-    alert('Oooops!.. Something went wrong :(');
+    Notifier.alert({ message: 'Oooops!.. Something went wrong :(' });
   }
 
   getHeaders() {
@@ -84,6 +93,11 @@ class Api {
 
     if (token) {
       headers[AUTH_TOKEN_HEADER] = token;
+    }
+
+    const requested = this.getUserRequested();
+    if (requested) {
+      headers['Arachne-User-Request'] = requested;
     }
 
     return headers;

@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,7 +27,7 @@ import {
 import { ModalUtils } from 'arachne-ui-components';
 import { modal } from 'modules/StudyManager/const';
 import presenter from './presenter';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 
 const ModalAddDataSource = ModalUtils.connect({
   name: modal.addDataSource,

@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,10 +21,11 @@
  */
 
 import { createSelector } from 'reselect';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { healthStatuses } from 'const/dataSource';
 
 const getRawStudySourceList = state => get(state, 'analysisExecution.studyDataSourceList.queryResult.result') || [];
+const getLastSubmissionGroup = state => get(state, 'analysisExecution.submissionGroups.queryResult.content[0]');
 
 const getDataSourceOptions = createSelector(
   [getRawStudySourceList],
@@ -38,6 +39,21 @@ const getDataSourceOptions = createSelector(
   }))
 );
 
+const getLastSources = createSelector(
+  [getLastSubmissionGroup, getDataSourceOptions],
+  (lastSubmissionGroup, dsOptions) => {
+    if (lastSubmissionGroup) {
+      const dataSources = [];
+      lastSubmissionGroup.submissions.filter(s => dsOptions.find(o => o.id === s.dataSource.id)).forEach((submission) => {
+        dataSources[submission.dataSource.id] = true;
+      });
+
+      return { dataSources };
+    }
+  }
+);
+
 export default {
   getDataSourceOptions,
+  getLastSources,
 };

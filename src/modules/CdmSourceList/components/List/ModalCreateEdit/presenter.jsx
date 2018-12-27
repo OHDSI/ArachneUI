@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,6 +28,7 @@ import {
 } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
 import { getDataSourceCreationFields } from 'const/dataSource';
+import TabbedForm from './TabbedForm';
 
 require('./style.scss');
 
@@ -35,11 +36,9 @@ function ModalCreateEdit(props) {
   const classes = new BEMHelper('data-source-list-form-create');
 
   const {
-    cdmVersionList,
     isLoading,
-    dataLicenseTypeList,
-    dataTypeList,
     dbmsTypeList,
+    dbmsType,
   } = props;
 
   let modalTitle;
@@ -64,17 +63,20 @@ function ModalCreateEdit(props) {
 
   const fields = getDataSourceCreationFields(dbmsTypeList);
 
+  const form = 'IMPALA' === dbmsType ? <TabbedForm {...props} /> : (<Form
+      {...classes()}
+      fields={fields}
+      submitBtn={submitBtn}
+      cancelBtn={cancelBtn}
+      onSubmit={props.doSubmit}
+      onCancel={props.modal.close}
+      {...props}
+    />
+  );
+
   return (
-    <Modal modal={props.modal} title={modalTitle}>
-      <Form
-        {...classes()}
-        fields={fields}
-        submitBtn={submitBtn}
-        cancelBtn={cancelBtn}
-        onSubmit={props.doSubmit}
-        onCancel={props.modal.close}
-        {...props}
-      />
+    <Modal modal={props.modal} title={modalTitle} mods={['no-padding']}>
+      {form}
       <LoadingPanel active={isLoading}/>
     </Modal>
   );

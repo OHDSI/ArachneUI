@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,7 +24,7 @@
 import { Component, PropTypes } from 'react';
 import { Utils } from 'services/Utils';
 import { reduxForm, reset as resetForm } from 'redux-form';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import actions from 'actions';
 import { ModalUtils } from 'arachne-ui-components';
 import { modal, form, newParticipantRolesOptions } from 'modules/StudyManager/const';
@@ -75,8 +75,8 @@ export default class ModalAddParticipantBuilder {
     }));
 
     return {
-      studyId: get(moduleData, 'study.data.result.id'),
-      studyName: get(moduleData, 'study.data.result.title'),
+      studyId: get(moduleData, 'study.data.id'),
+      studyName: get(moduleData, 'study.data.title'),
       isOpened: get(state, 'modal.addParticipant.isOpened', false),
       participantOptions,
       initialValues: {
@@ -128,7 +128,7 @@ export default class ModalAddParticipantBuilder {
           .then(() => dispatchProps.resetForm())
           .then(() => dispatchProps.closeModal())
           .then(() => dispatchProps.openConfirmParticipant(participant, stateProps.studyName))
-          .then(() => dispatchProps.loadStudy(stateProps.studyId))
+          .then(() => dispatchProps.loadStudy({ id: stateProps.studyId }))
           .catch(() => {});
 
         // We have to return a submission promise back to redux-form

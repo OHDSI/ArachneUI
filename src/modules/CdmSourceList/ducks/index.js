@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,6 +24,7 @@ import characterization from './characterization';
 import dataSource from './dataSource';
 import dataSourceList from './dataSourceList';
 import dataSourceBusiness from './dataSourceBusiness';
+import dataSourceKeytab from './dataSourceKeytab';
 import dbmsTypes from './dbmsTypes';
 import achillesResults from './achillesResults';
 
@@ -32,6 +33,7 @@ export default {
     characterization: characterization.actions,
     dataSource: dataSource.actions,
     dataSourceList: dataSourceList.actions,
+    dataSourceKeytab: dataSourceKeytab.actions,
     dataSourceBusiness: dataSourceBusiness.actions,
     dbmsTypes: dbmsTypes.actions,
     achillesResults: achillesResults.actions,
@@ -41,6 +43,7 @@ export default {
     characterization: characterization.reducer,
     dataSource: dataSource.reducer,
     dataSourceList: dataSourceList.reducer,
+    dataSourceKeytab: dataSourceKeytab.reducer,
     dataSourceBusiness: dataSourceBusiness.reducer,
     dbmsTypes: dbmsTypes.reducer,
     achillesResults: achillesResults.reducer,

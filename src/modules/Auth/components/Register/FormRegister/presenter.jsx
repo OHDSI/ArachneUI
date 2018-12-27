@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -41,6 +41,10 @@ function FormRegister(props) {
 
   return (
     <div {...classes()}>
+      <div {...classes('title-pane')}>
+        <div {...classes('column-title')}>General</div>
+        <div {...classes('column-title')}>Contact Info</div>
+      </div>
       <Form fields={registerFields(props)} submitBtn={submitBtn} onSubmit={props.doSubmit} {...props} />
       <span {...classes('login-caption')}>
         Already Registered? <Link to={paths.login()}>Login here</Link>

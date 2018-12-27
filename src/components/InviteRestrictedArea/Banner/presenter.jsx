@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -37,6 +37,8 @@ export default function Banner(props) {
     className,
     showDeclineModal,
     disabled,
+    // sticky.js internal needs
+    ref,
   } = props;
   let {
     invitation,
@@ -66,6 +68,7 @@ export default function Banner(props) {
         extra: className,
         modifiers,
       })}
+      ref={ref}
     >
       {isActive &&
         [<div key={0} {...classes('avatar')}>
