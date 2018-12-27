@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,7 +22,7 @@
 
 // @ts-check
 import { Utils } from 'services/Utils';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import { modal, paths, studyPermissions } from 'modules/StudyManager/const';
 import { ModalUtils } from 'arachne-ui-components';
 import actions from 'actions';
@@ -34,7 +34,7 @@ export default class StudyToolbarBuilder {
   }
 
   mapStateToProps(state) {
-    const studyData = get(state, 'studyManager.study.data.result');
+    const studyData = get(state, 'studyManager.study.data');
     const isFavourite = get(studyData, 'favourite', false);
 
     return {
@@ -68,7 +68,7 @@ export default class StudyToolbarBuilder {
           ownProps.studyId,
           (!stateProps.isFavourite).toString()
         )
-        .then(() => dispatchProps.loadStudy(ownProps.studyId))
+        .then(() => dispatchProps.loadStudy({ id: ownProps.studyId }))
         .catch(() => {}),
     };
   }

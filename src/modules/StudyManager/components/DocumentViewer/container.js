@@ -1,5 +1,5 @@
 /*
- *  Copyright 2017 Observational Health Data Sciences and Informatics
+ *  Copyright 2018 Odysseus Data Services, inc.
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
@@ -19,12 +19,13 @@
  *
  */
 
-import { get, ContainerBuilder } from 'services/Utils';
+import { get } from 'services/Utils';
 import actions from 'actions/index';
 import { apiPaths, paths } from 'modules/StudyManager/const';
+import { ActiveModuleAwareContainerBuilder } from 'modules/StudyManager/utils';
 import { FileLoader } from 'services/FileLoader';
-import fileConverter from 'components/FileInfo/converter';
 import presenter from './presenter';
+import { domains } from 'modules/Portal/const';
 
 class DocumentViewer extends FileLoader {
   render() {
@@ -32,12 +33,20 @@ class DocumentViewer extends FileLoader {
   }
 }
 
-export default class StudyDocumentBuilder extends ContainerBuilder {
+export default class StudyDocumentBuilder extends ActiveModuleAwareContainerBuilder {
 
   getComponent() {
     return DocumentViewer;
   }
 
+  getType({ params }) {
+    return domains.STUDY;
+  }
+  
+  getId({ params }) {
+    return params.studyId;
+  }
+  
   mapStateToProps(state, ownProps) {
     const fileUuid = ownProps.params.fileUuid;
     const studyId = ownProps.params.studyId;

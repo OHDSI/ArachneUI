@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,16 +22,18 @@
 
 import { paths, breadcrumbTypes } from 'modules/AnalysisExecution/const';
 
-function buildBreadcrumbList(breadcrumbs = []) {
+function buildBreadcrumbList(breadcrumbs = [], doAddStudiesList = true) {
   const breadcrumbList = [];
 
   breadcrumbs.forEach((crumb) => {
     switch (crumb.entityType) {
       case breadcrumbTypes.STUDY:
-        breadcrumbList.push({
-          label: 'My studies',
-          link: paths.studies(),
-        });
+        if (doAddStudiesList) {
+          breadcrumbList.push({
+            label: 'My studies',
+            link: paths.studies(),
+          });
+        }
         breadcrumbList.push({
           label: crumb.title,
           link: paths.studies(crumb.id),

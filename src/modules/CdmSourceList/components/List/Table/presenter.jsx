@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -33,7 +33,7 @@ import { Utils } from 'services/Utils';
 
 require('./style.scss');
 
-function CellRegister({ published, onClick, centralId, centralDomain }) {
+function CellRegister({ published, onClick, centralId, centralDomain, username }) {
   const classes = new BEMHelper('data-source-list-cell-register');
 
   return <div {...classes()}>
@@ -41,7 +41,7 @@ function CellRegister({ published, onClick, centralId, centralDomain }) {
       {...classes('btn', { publish: !published })}
       mods={['submit', 'rounded']}
       label={published ? 'Edit catalog' : 'Publish'}
-      link={`${centralDomain}${centralPaths.edit(centralId)}`}
+      link={`${centralDomain}${centralPaths.edit(centralId)}?user-req=${username}`}
       target={'_blank'}
     />
     {published &&
@@ -101,6 +101,7 @@ function DataSourceTable(props) {
     setSearch,
     sorting,
     centralDomain,
+    username,
   } = props;
 
   return (
@@ -137,6 +138,7 @@ function DataSourceTable(props) {
         {...tableClasses('model-type')}
         header="Model"
         field="modelType"
+        isSortable={false}
       />
       <CellRegister
         {...tableClasses('register')}
@@ -146,6 +148,7 @@ function DataSourceTable(props) {
             onClick: () => goToDataSource(entity.id),
             centralId: entity.centralId,
             centralDomain,
+            username,
           })
         }
       />

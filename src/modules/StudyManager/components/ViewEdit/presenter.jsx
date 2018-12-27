@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -39,6 +39,7 @@ import ModalCreateAnalysis from './ModalCreateAnalysis';
 
 import LeftColumn from './LeftColumn';
 import RightColumn from './RightColumn';
+import EmptyState from 'components/EmptyState';
 
 require('./style.scss');
 
@@ -50,35 +51,38 @@ function ViewEditStudy(props) {
     onBannerActed,
     openedSection,
     onTabChange,
+    canView,
   } = props;
-  const classes = new BEMHelper('study-manager-view');
+  const classes = new BEMHelper('study-manager-view');  
 
   return (
     <PageContent title={`${studyTitle} | Arachne`}>
       <div {...classes()}>
-        <InviteRestrictedArea
-          {...classes('container')}
-          studyId={id}
-          onAction={onBannerActed}
-          disabled={isLoading}
-        >
-          <Toolbar studyId={id} />
-          <div {...classes('content')}>
-            <div className="row">
-              <div className="col-xs-12 col-lg-6">
-                <DateInterval />
-                <div className="row">
-                  <div className="col-xs-12">
-                    <LeftColumn openedSection={openedSection} onTabChange={onTabChange} />
+        {canView
+          ? (<InviteRestrictedArea
+            {...classes('container')}
+            studyId={id}
+            onAction={onBannerActed}
+            disabled={isLoading}
+          >
+            <Toolbar studyId={id} />
+            <div {...classes('content')}>
+              <div className="row">
+                <div className="col-xs-12 col-lg-6">
+                  <DateInterval />
+                  <div className="row">
+                    <div className="col-xs-12">
+                      <LeftColumn openedSection={openedSection} onTabChange={onTabChange} />
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="col-xs-12 col-lg-6">
-                <RightColumn studyId={id} />
+                <div className="col-xs-12 col-lg-6">
+                  <RightColumn studyId={id} />
+                </div>
               </div>
             </div>
-          </div>
-        </InviteRestrictedArea>
+          </InviteRestrictedArea>)
+        : <EmptyState message={'Access denied or study does not exist'} />}
         <LoadingPanel active={isLoading} />
       </div>
       <ModalEditTitle />

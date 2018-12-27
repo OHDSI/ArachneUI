@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,7 +27,7 @@ import moment from 'moment-timezone';
 import { get } from 'services/Utils';
 import { commonDate as commonDateFormat } from 'const/formats';
 import { dsConverter } from 'components/LabelDataSource';
-import { submissionActionTypes } from 'modules/AnalysisExecution/const';
+import { submissionActionTypes, submissionStatusesTitles } from 'modules/AnalysisExecution/const';
 import pick from 'lodash/pick';
 
 class SubmissionListSelectorsBuilder {
@@ -50,7 +50,10 @@ class SubmissionListSelectorsBuilder {
     const submission = {
       id: source.id,
       dataSource: dsConverter(source.dataSource),
-      status: source.status || {},
+      status: {
+        value: source.status.value,
+        title: submissionStatusesTitles[source.status.value],
+      } || {},
       actions,
       resultFilesCount: source.resultFilesCount,
       resultInfo: source.resultInfo,
@@ -61,6 +64,7 @@ class SubmissionListSelectorsBuilder {
         && actions[submissionActionTypes.MANUAL_UPLOAD].hasPermsission,
       canHide: get(actions, `[${submissionActionTypes.HIDE}].available`, false)
         && source.permissions.UPDATE_SUBMISSION,
+      hasAccessToResults: source.permissions.ACCESS_SUBMISSION_RESULTS,
     };
 
     return submission;

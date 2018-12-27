@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,7 +24,7 @@
 import { Component, PropTypes } from 'react';
 import { Utils } from 'services/Utils';
 import { reduxForm, reset as resetForm } from 'redux-form';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import actions from 'actions/index';
 import { ModalUtils } from 'arachne-ui-components';
 import { modal, form } from 'modules/StudyManager/const';
@@ -66,7 +66,7 @@ export default class AddDataCatalogSourceBuilder {
   }
 
   mapStateToProps(state) {
-    const studyData = get(state, 'studyManager.study.data.result');
+    const studyData = get(state, 'studyManager.study.data');
     const isSaving = get(state, 'form.addCatalogSource.submitting', false);
     const restItemsCount = get(state, 'studyManager.dataSourceList.data.totalElements', 0);
 
@@ -122,7 +122,7 @@ export default class AddDataCatalogSourceBuilder {
           })
           .then(() => dispatchProps.resetForm())
           .then(() => dispatchProps.closeModal())
-          .then(() => dispatchProps.loadStudy(stateProps.studyId))
+          .then(() => dispatchProps.loadStudy({ id: stateProps.studyId }))
           .then(() => {
             if (!allApproved) {
               return dispatchProps.openConfirmDatasource(dataSources, stateProps.studyName);

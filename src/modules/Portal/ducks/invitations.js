@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,17 +22,27 @@
 
 import Duck from 'services/Duck';
 import api from 'services/Api';
+import { combineReducers } from 'redux';
 import { apiPaths } from 'modules/Portal/const';
+
+const subscriptionName = 'PORTAL_INVITATION_SUBSCRIPTION';
 
 const invitation = new Duck({
   name: 'PORTAL_INVITATION',
   urlBuilder: apiPaths.invitations,
 });
 
-function subscritionChanged() {
+const subscription = new Duck({
+  name: subscriptionName,
+  urlBuilder: () => '',
+});
+
+function subscritionChanged(active) {
   return {
-    type: 'PORTAL_INVITATION_SUBSCRIPTION',
-    payload: null,
+    type: `${subscriptionName}_FIND_FULFILLED`,
+    payload: {
+      active,
+    },
   };
 }
 
@@ -45,7 +55,7 @@ export default {
       invitation.actions.create({}, { accepted: false, ...urlParams }),
     subscribeToInvitations: () => {
       return (dispatch) => {
-        dispatch(subscritionChanged());
+        dispatch(subscritionChanged(true));
         api.subscribe(apiPaths.invitationsSubscription(), () => {
           dispatch(invitation.actions.query());
         });
@@ -53,10 +63,13 @@ export default {
     },
     unsubscribeOfInvitations: () => {
       return (dispatch) => {
-        dispatch(subscritionChanged());
+        dispatch(subscritionChanged(false));
         api.unsubscribe(apiPaths.invitationsSubscription());
       };
     },
   },
-  reducer: invitation.reducer,
+  reducer: combineReducers({
+    list: invitation.reducer,
+    subscription: subscription.reducer,
+  }),
 };

@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,6 +24,7 @@ import errors from 'const/errors';
 import isEqual from 'lodash/isEqual';
 import reduce from 'lodash/reduce';
 import _get from 'lodash/get';
+import set from 'lodash/set';
 import { types as fieldTypes } from 'const/modelAttributes';
 import mimeTypes from 'const/mimeTypes';
 import {
@@ -44,6 +45,7 @@ import { reports } from 'const/reports';
 import URI from 'urijs';
 import { createSelector } from 'reselect';
 import qs from 'qs';
+import { resultErrorCodes } from 'modules/StudyManager/const';
 
 function buildFormData(obj) {
   const formData = new FormData();
@@ -187,10 +189,12 @@ const validators = {
   checkValidationError(response) {
     if (typeof response.errorCode !== 'undefined') {
       if ([errors.VALIDATION_ERROR, errors.ALREADY_EXIST].includes(response.errorCode)) {
-        throw new SubmissionError({
+        const errors = {
           _error: response.errorMessage,
-          ...response.validatorErrors,
-        });
+        };
+        // Properly handle nested keys (e.g. for FieldArray)
+        Object.keys(response.validatorErrors).forEach(reKey => set(errors, reKey, response.validatorErrors[reKey]));
+        throw new SubmissionError(errors);
       } else if (response.errorCode === errors.UNACTIVATED) {
         throw new SubmissionError({
           _error: 'Please verify your account using link in the email that was sent to you.',
@@ -243,6 +247,8 @@ const detectMimeTypeByExtension = (file) => {
   }
   return type;
 };
+
+const DEFAULT_PROTOCOL = "https://";
 
 class Utils {
 
@@ -371,18 +377,23 @@ class Utils {
 
   static prepareFilterValues(query, fieldsSpecification = [], defaultVals = {}) {
     const initialValues = {};
-    const fieldsMap = {};
 
-    fieldsSpecification.forEach(field => {
+    fieldsSpecification.forEach((field) => {
       if (typeof query[field.name] !== undefined || defaultVals[field.name] !== undefined) {
-        const paramValue = query[field.name] || defaultVals[field.name];
+        let paramValue = query[field.name] || defaultVals[field.name];
         switch (field.type) {
           case fieldTypes.enum:
-            if (field.isMulti) {
-              initialValues[field.name] = Array.isArray(paramValue) ? paramValue : ((typeof paramValue === 'object' && paramValue !== null) ? Object.values(paramValue) : [paramValue]);
-            } else {
-              initialValues[field.name] = paramValue;
+            initialValues[field.name] = paramValue;
+            break;
+          case fieldTypes.enumMulti:
+            if (!Array.isArray(paramValue)) {
+              if (typeof paramValue === 'object' && paramValue !== null) {
+                paramValue = Object.values(paramValue);
+              } else {
+                paramValue = [paramValue];
+              }
             }
+            initialValues[field.name] = paramValue;
             break;
           case fieldTypes.toggle:
             initialValues[field.name] = !!paramValue;
@@ -392,7 +403,7 @@ class Utils {
             break;
         }
       }
-    })
+    });
 
     return initialValues;
   }
@@ -501,8 +512,18 @@ class Utils {
     }
   }
 
+  static normalizeUrl(link) {
+    if (link) {
+      const uri = new URI(link);
+      if (!uri.is('domain') && !link.startsWith('/')) {
+        return DEFAULT_PROTOCOL + link;
+      }
+    }
+    return link;
+  }
+
   static getSecureLink(link) {
-    let data = { link };
+    let data = { link: Utils.normalizeUrl(link) };
 
     if (data.link && Utils.isOuterLink(data.link)) {
       data = { onClick: Utils.confirmOuterLink.bind(null, [data.link]) };
@@ -600,6 +621,10 @@ class TreemapSelectorsBuilder {
   }
 }
 
+function isViewable(entity) {
+  return get(entity, 'errorCode', resultErrorCodes.NO_ERROR) !== resultErrorCodes.PERMISSION_DENIED;
+}
+
 export {
   buildFormData,
   get,
@@ -616,4 +641,5 @@ export {
   TreemapSelectorsBuilder,
   addAnyOption,
   anyOptionValue,
+  isViewable,
 };

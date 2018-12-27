@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,11 +29,12 @@ import { usDateTime as dateFormat } from 'const/formats';
 require('./style.scss');
 
 function AnalysisCodeToolbar(props) {
-  const classes = new BEMHelper('analysis-code-toolbar');
   const {
     backUrl,
     breadcrumbList,
     title,
+    openEditFileNameModal,
+    isEditable,
   } = props;
 
   return (
@@ -42,6 +43,8 @@ function AnalysisCodeToolbar(props) {
       caption={title}
       breadcrumbList={breadcrumbList}
       backUrl={backUrl}
+      onEdit={openEditFileNameModal}
+      isEditable={isEditable}
     />
   );
 }

@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,45 +20,47 @@
  *
  */
 
-import React from 'react';
-import BEMHelper from 'services/BemHelper';
+import React, { Component } from 'react';
 import PageWrapper from 'modules/Admin/components/PageWrapper';
 import Table from './Table';
 import ModalAddUser from './ModalAddUser';
-import {
-  LoadingPanel,
-  PageContent,
-} from 'arachne-ui-components';
+import ModalAddUserBatch from './ModalAddUserBatch';
 import Grid from 'components/Grid';
-import AdminPagesSelector from 'modules/Admin/components/PageWrapper/Toolbar/AdminPagesSelector';
 import PortalUserListActions from './Actions';
 
 require('./style.scss');
 
-function UserList(props) {
-  const {
-    isLoading,
-    paginationDetails,
-    filterFields,
-    searchQueryDecode,
-    searchQueryEncode,
-  } = props;
-  return (
-    <PageWrapper>
-      <Grid
-        isLoading={isLoading}
-        title="Settings | Users"
-        paginationDetails={paginationDetails}
-        filterFields={filterFields}
-        Actions={<PortalUserListActions />}
-        searchQueryDecode={searchQueryDecode}
-        searchQueryEncode={searchQueryEncode}
-      >
-        <Table />
-      </Grid>
-      <ModalAddUser />
-    </PageWrapper>
-  );
-}
+export default class UserList extends Component {
 
-export default UserList;
+  getModals() {
+    return [<ModalAddUser />, <ModalAddUserBatch />];
+  }
+
+  render() {
+    const {
+      isLoading,
+      paginationDetails,
+      filterFields,
+      searchQueryDecode,
+      searchQueryEncode,
+      onPageOutOfRange,
+    } = this.props;
+    return (
+      <PageWrapper>
+        <Grid
+          isLoading={isLoading}
+          title="Settings | Users"
+          paginationDetails={paginationDetails}
+          filterFields={filterFields}
+          Actions={<PortalUserListActions />}
+          searchQueryDecode={searchQueryDecode}
+          searchQueryEncode={searchQueryEncode}
+          onPageOutOfRange={onPageOutOfRange}
+        >
+          <Table />
+        </Grid>
+        { this.getModals() }
+      </PageWrapper>
+    );
+  }
+}

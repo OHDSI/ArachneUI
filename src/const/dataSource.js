@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -27,8 +27,12 @@ import { get } from 'services/Utils';
 import {
   FormInput,
   FormSelect,
+  FormCheckbox,
+  FormFileInput,
+  FormRadioList,
 } from 'arachne-ui-components';
 import PasswordField from 'components/PasswordField/connected';
+import { kerberosAuthType } from "modules/CdmSourceList/const";
 
 const attributeNames = keyMirror({
   name: null,
@@ -41,6 +45,12 @@ const attributeNames = keyMirror({
   cohortTargetTable: null,
   dbmsType: null,
   executionPolicy: null,
+  useKerberos: null,
+  krbKeytab: null,
+  krbRealm: null,
+  krbFQDN: null,
+  krbUser: null,
+  krbPassword: null,
 });
 
 const modelTypesValues = keyMirror({
@@ -183,7 +193,6 @@ const staticAttrList = [
     label: 'Model Type',
     name: attributeNames.modelType,
     type: fieldTypes.enum,
-    isMulti: true,
     faceted: true,
     showInList: true,
     options: modelTypes,
@@ -194,7 +203,6 @@ const staticAttrList = [
     label: 'Version',
     name: attributeNames.cdmVersion,
     type: fieldTypes.enum,
-    isMulti: true,
     faceted: true,
     showInList: true,
     options: cdmVersionList,
@@ -251,6 +259,44 @@ const immutableAttributes = [
 const fieldHints = {
   [attributeNames.name]: 'Name can be changed at Node side',
 };
+
+const kerberosAttributes = [
+  {
+    label: 'Kerberos Realm',
+    name: attributeNames.krbRealm,
+    type: fieldTypes.string,
+    faceted: false,
+    showInList: false,
+  },
+  {
+    label: 'Kerberos FQDN',
+    name: attributeNames.krbFQDN,
+    type: fieldTypes.string,
+    faceted: false,
+    showInList: false,
+  },
+  {
+    label: 'Kerberos Username',
+    name: attributeNames.krbUser,
+    type: fieldTypes.string,
+    faceted: false,
+    showInList: false,
+  },
+];
+
+function mapAttributeToField(section, attribute, index){
+  return {
+    name: attribute.name,
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: attribute.label,
+          title: index === 0 ? section : null,
+        },
+      },
+    };
+}
 
 function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false) {
   const virtualSourceFields = [
@@ -331,21 +377,77 @@ function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false) {
         },
       },
     },
-    ...cdmSpecificAttributes.map((attribute, index) => ({
-      name: attribute.name,
-      InputComponent: {
-        component: FormInput,
-        props: {
-          mods: ['bordered'],
-          placeholder: attribute.label,
-          title: index === 0 ? 'CDM settings' : null,
-        },
-      },
-    })),
+
+    ...cdmSpecificAttributes.map((attribute, index) => mapAttributeToField('CDM Settings', attribute, index)),
   ];
 
   return useOnlyVirtual ? virtualSourceFields : physicalSourceFields;
 }
+
+const getDataSourceKerberosFields = function() {
+  return ([
+    {
+      name: 'useKerberos',
+      InputComponent: {
+        component: FormCheckbox,
+        props: {
+            required: false,
+            options: {
+                label: 'Use Kerberos',
+            },
+            title: 'Kerberos',
+        },
+      }
+    },
+      ...kerberosAttributes.map((attr, index) => mapAttributeToField(null, attr, index)),
+    {
+      name: "krbAuthMethod",
+      className: 'radiolist',
+      InputComponent: {
+        component: FormRadioList,
+        props: {
+          required: false,
+          options: [
+            {
+              label: 'Authenticate using password',
+              value: kerberosAuthType.PASSWORD,
+            },
+            {
+              label: 'Authenticate using keytab file',
+              value: kerberosAuthType.KEYTAB,
+            }
+          ],
+        }
+      },
+    },
+    {
+      name: 'krbPassword',
+      InputComponent: {
+        component: PasswordField,
+        props: {
+          mods: ['bordered'],
+          showHint: false,
+          placeholder: 'Kerberos password',
+          required: false,
+          type: 'password',
+        },
+      },
+    },
+  {
+      name: 'krbKeytab',
+      InputComponent: {
+        component: FormFileInput,
+        props: {
+          name: 'krbKeytab',
+          multiple: false,
+          mods: ['bordered'],
+          placeholder: 'Browse keytab file',
+          filePlaceholder: 'Label',
+          dropzonePlaceholder: 'Drag and drop keytab file',
+        },
+      }
+  }]);
+};
 
 export {
   healthStatuses,
@@ -358,5 +460,6 @@ export {
   fieldHints,
   cdmSpecificAttributes,
   getDataSourceCreationFields,
+  getDataSourceKerberosFields,
   executionPolicy,
 };

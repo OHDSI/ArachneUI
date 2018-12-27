@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,12 +26,12 @@ import { apiPaths } from 'modules/StudyManager/const';
 import { Utils } from 'services/Utils';
 import Uri from 'urijs';
 
-const actionCoreName = 'SM_STUDY';
+const actionCoreName = 'SM_STUDY_LIST';
 
 const ducks = new Duck({
   name: actionCoreName,
   urlBuilder: (params) => {
-    const url = new Uri(apiPaths.studies());
+    const url = new Uri(apiPaths.studies({}));
     url.setSearch(params);
     return url.href();
   },

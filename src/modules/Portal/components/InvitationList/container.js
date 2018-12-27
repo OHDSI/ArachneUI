@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,20 +23,31 @@
 import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { inviteActionTypes } from 'modules/Portal/const';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import ducks from 'modules/Portal/ducks';
 import presenter from './presenter';
 import selectors from './selectors';
+import { Notifier } from 'services/Notifier';
+import { getTextActivity } from 'modules/Portal/components/InvitationList/ActivityListItem/presenter';
 
 class InvitationList extends Component {
-  componentWillMount() {
-    this.props.loadInvitations();
+  async componentWillMount() {
+    await this.props.loadInvitations();
     this.props.subscribeToInvitations();
   }
 
   componentWillUnmount() {
     this.props.unsubscribeOfInvitations();
   }
+  
+  componentWillReceiveProps(nextProps) {
+    if (this.props.unreadCount < nextProps.unreadCount && nextProps.isSubscribed) {
+      const message = nextProps.unreadCount > 1
+        ? { body: 'New invitations pending your attention' }
+        : getTextActivity(nextProps.invitations[0]);
+      Notifier.alert({ message: message.body, icon: message.icon, useFallback: false });
+    } 
+  }  
 
   render() {
     return presenter(this.props);
@@ -47,11 +58,13 @@ function mapStateToProps(state) {
   const invitations = selectors.getInvitations(state);
   const unreadCount = invitations.length;
   const isLoading = get(state, 'portal.invitation.isLoading', false);
+  const isSubscribed = get(state, 'portal.invitation.subscription.data.active', false);
 
   return {
     invitations,
     unreadCount,
     isLoading,
+    isSubscribed,
   };
 }
 

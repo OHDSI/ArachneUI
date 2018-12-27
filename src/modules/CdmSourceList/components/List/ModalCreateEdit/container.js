@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,11 +23,11 @@
 import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, reset as resetForm } from 'redux-form';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 
 import actions from 'actions';
 import { ModalUtils } from 'arachne-ui-components';
-import { modal, form } from 'modules/CdmSourceList/const';
+import { modal, form, kerberosAuthType } from 'modules/CdmSourceList/const';
 import presenter from './presenter';
 import selectors from './selectors';
 
@@ -61,6 +61,9 @@ ModalCreateEdit.propTypes = {
 function mapStateToProps(state) {
   const dataSourceData = get(state, 'cdmSourceList.dataSource.queryResult.result', [], 'Array');
   const isOpened = get(state, 'modal.createDataSource.isOpened', false);
+  const dbmsType = get(state, 'form.createDataSource.values.dbmsType');
+
+  dataSourceData.krbAuthMethod = dataSourceData.krbAuthMethod || kerberosAuthType.PASSWORD;
 
   return {
     dbmsTypeList: selectors.getDbmsTypeList(state),
@@ -68,11 +71,14 @@ function mapStateToProps(state) {
     currentListQuery: state.routing.locationBeforeTransitions.query,
     dataSourceId: get(state.modal[form.createDataSource], 'data.id'),
     isLoading: state.cdmSourceList.dataSource.isLoading,
+    hasKeytab: dataSourceData.hasKeytab,
+    authMethod: get(state, 'form.createDataSource.values.krbAuthMethod'),
     initialValues: {
       ...dataSourceData,
       dbmsType: get(dataSourceData, 'dbmsType'),
     },
     isOpened,
+    dbmsType,
   };
 }
 
@@ -84,6 +90,8 @@ const mapDispatchToProps = {
   resetForm: () => resetForm(form.createDataSource),
   closeModal: () => ModalUtils.actions.toggle(modal.createDataSource, false),
   loadDataSourceList: actions.cdmSourceList.dataSourceList.query,
+  deleteDataSourceKeytab: actions.cdmSourceList.dataSourceKeytab.delete,
+  refreshBuildInfo: actions.portal.buildInfo.find,
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
@@ -92,6 +100,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...stateProps,
     ...dispatchProps,
     doSubmit(data) {
+      data.useKerberos = !!data.useKerberos;
       const submitPromise = stateProps.dataSourceId
         ? dispatchProps.updateDataSource({id: stateProps.dataSourceId}, data)
         : dispatchProps.createDataSource({}, data);
@@ -99,12 +108,17 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
       submitPromise
         .then(() => dispatchProps.resetForm())
         .then(() => dispatchProps.closeModal())
+        .then(() => dispatchProps.refreshBuildInfo())
         .then(() => dispatchProps.loadDataSourceList({}, {query: stateProps.currentListQuery}))
         .catch(() => {});
 
       // We have to return a submission promise back to redux-form
       // to allow it update the state
       return submitPromise;
+    },
+    deleteKeytab() {
+      const id = stateProps.dataSourceId;
+      dispatchProps.deleteDataSourceKeytab({id}).then(() => dispatchProps.loadDataSource({id}));
     },
   });
 }

@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,7 +22,7 @@
 
 // @ts-check
 import { Utils } from 'services/Utils';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import actions from 'actions/index';
 import { studyPermissions } from 'modules/StudyManager/const';
 import StudySettings from './presenter';
@@ -52,7 +52,7 @@ export default class StudySettingsBuilder {
   }
 
   mapStateToProps(state) {
-    const studyState = get(state, 'studyManager.study.data.result');
+    const studyState = get(state, 'studyManager.study.data');
 
     const typeOptions = selectors.getTypeOptions(state);
     const statusOptions = selectors.getStatusOptions(state);
@@ -98,26 +98,26 @@ export default class StudySettingsBuilder {
       ...dispatchProps,
       setPrivacy: privacy =>
         dispatchProps
-          .updateStudy(stateProps.studyId, { privacy })
-          .then(() => dispatchProps.load(stateProps.studyId)),
+          .updateStudy({ id: stateProps.studyId }, { privacy })
+          .then(() => dispatchProps.load({ id: stateProps.studyId })),
       setType: (type) => {
         dispatchProps
-          .updateStudy(stateProps.studyId, {
+          .updateStudy({ id: stateProps.studyId }, {
             type: {
               id: type,
             },
           })
-          .then(() => dispatchProps.load(stateProps.studyId));
+          .then(() => dispatchProps.load({ id: stateProps.studyId }));
       },
       setStatus: (status) => {
         dispatchProps
-          .updateStudy(stateProps.studyId, {
+          .updateStudy({ id: stateProps.studyId }, {
             status: {
               id: status,
             },
           })
           .then(() => {
-            dispatchProps.load(stateProps.studyId);
+            dispatchProps.load({ id: stateProps.studyId });
             dispatchProps.loadTransitions({ studyId: stateProps.studyId });
           });
       },

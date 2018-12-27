@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,7 +22,7 @@
 
 // @ts-check
 import { Utils } from 'services/Utils';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import actions from 'actions/index';
 import { ModalUtils } from 'arachne-ui-components';
 import { modal, studyPermissions } from 'modules/StudyManager/const';
@@ -37,13 +37,14 @@ export default class ListAnalysesBuilder {
   }
 
   mapStateToProps(state) {
-    const studyData = get(state, 'studyManager.study.data.result');
+    const studyData = get(state, 'studyManager.study.data');
+    const grantedPermissions = get(state, 'studyManager.study.data.permissions', []);
 
     return {
       studyId: get(studyData, 'id'),
       analysisList: selectors.getAnalysisList(state),
       isEditable: get(studyData, `permissions[${studyPermissions.createAnalysis}]`, false),
-
+      grantedPermissions,
     };
   }
   
@@ -71,7 +72,7 @@ export default class ListAnalysesBuilder {
             analysisId: movedItem.id,
             newIndex,
           })
-          .then(() => dispatchProps.loadStudy(stateProps.studyId));
+          .then(() => dispatchProps.loadStudy({ id: stateProps.studyId }));
       },
       removeAnalysis(id, title) {
         Utils.confirmDelete({
@@ -81,7 +82,7 @@ export default class ListAnalysesBuilder {
             dispatchProps
               .removeAnalysis(id)
               .then(() => {
-                dispatchProps.loadStudy(stateProps.studyId);
+                dispatchProps.loadStudy({ id: stateProps.studyId });
                 dispatchProps.getTransitions({ studyId: stateProps.studyId });
               });
           });

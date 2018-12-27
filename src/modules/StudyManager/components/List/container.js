@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,14 +24,15 @@
 import actions from 'actions';
 import { Component, PropTypes } from 'react';
 import { push } from 'react-router-redux';
-import { Utils, ContainerBuilder, get } from 'services/Utils';
+import { Utils, get } from 'services/Utils';
 import viewModes from 'const/viewModes';
-import { studyListPageSize, studyListPageSizeCards, paths } from 'modules/StudyManager/const';
+import { studyListPageSize, studyListPageSizeCards, paths, studyKind } from 'modules/StudyManager/const';
 import Uri from 'urijs';
 import isEmpty from 'lodash/isEmpty';
 import getFields from './Filter/fields';
 import presenter from './presenter';
 import SelectorsBuilder from './selectors';
+import { ActiveModuleAwareContainerBuilder } from 'modules/StudyManager/utils';
 
 const selectors = (new SelectorsBuilder()).build();
 
@@ -103,7 +104,8 @@ export class List extends Component {
   }
 }
 
-export default class ListBuilder extends ContainerBuilder {
+export default class ListBuilder extends ActiveModuleAwareContainerBuilder {
+  
   getComponent() {
     return List;
   }
@@ -153,9 +155,11 @@ export default class ListBuilder extends ContainerBuilder {
     };
   }
 
-  getFetchers({ params, state, dispatch }) {
-    const query = state.routing.locationBeforeTransitions.query;
+  getFetchers({ params, dispatch, getState }) {
+    this.setKind('study-manager');
+    const query = getState().routing.locationBeforeTransitions.query;
     return {
+      ...super.getFetchers({ params, getState, dispatch }),
       loadStudies: actions.studyManager.studyList.find.bind(null, {
         ...query,
         pagesize: query.view === viewModes.CARDS ? studyListPageSizeCards : studyListPageSize,

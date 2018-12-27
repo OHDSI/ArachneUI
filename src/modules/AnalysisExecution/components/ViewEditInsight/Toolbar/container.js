@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,7 +23,8 @@
 import { connect } from 'react-redux';
 import { get } from 'services/Utils';
 import { ModalUtils } from 'arachne-ui-components';
-import { modal, paths } from 'modules/AnalysisExecution/const';
+import { modal, paths, breadcrumbTypes } from 'modules/AnalysisExecution/const';
+import { buildBreadcrumbList } from 'modules/AnalysisExecution/utils';
 import InsightToolbar from './presenter';
 
 function mapStateToProps(state) {
@@ -33,24 +34,27 @@ function mapStateToProps(state) {
   const studyId = get(insightData, 'analysis.study.id');
   const studyTitle = get(insightData, 'analysis.study.title');
   const analysisUrl = paths.analyses(analysisId);
+  const isWorkspace = get(state, 'modules.active') === 'workspace';
+  const breadcrumbList = buildBreadcrumbList(
+    [
+      {
+        entityType: breadcrumbTypes.STUDY,
+        title: studyTitle,
+        id: studyId,
+      },
+      {
+        entityType: breadcrumbTypes.ANALYSIS,
+        title: analysisTitle,
+        id: analysisId,
+      },
+    ],
+    !isWorkspace
+  );  
 
   return {
     insightTitle: get(insightData, 'name'),
     backUrl: analysisUrl,
-    breadcrumbList: [
-      {
-        label: 'My studies',
-        link: paths.studies(),
-      },
-      {
-        label: studyTitle,
-        link: paths.studies(studyId),
-      },
-      {
-        label: analysisTitle,
-        link: analysisUrl,
-      },
-    ],
+    breadcrumbList,
   };
 }
 

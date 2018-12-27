@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -33,6 +33,7 @@ import { Field } from 'redux-form';
 import { paths, authMethods } from 'modules/Auth/const';
 import BEMHelper from 'services/BemHelper';
 import PasswordField from 'components/PasswordField/connected';
+import UsernameField from './components/UsernameField/index';
 
 require('./style.scss');
 
@@ -51,6 +52,7 @@ function RemindPasswordLink({ className, link }) {
 function FormLogin(props) {
   const {
     doSubmit,
+    doCancel,
     remindPasswordLink,
     // redux-form
     error,
@@ -60,16 +62,18 @@ function FormLogin(props) {
     resendEmail,
     isLoading,
     authMethod,
+    userRequest,
   } = props;
 
   const fields = {
     username: {
       name: 'username',
       InputComponent: {
-        component: FormInput,
+        component: UsernameField,
         props: {
           placeholder: 'Email address',
           type: 'text',
+          disabled: Boolean(userRequest),
         }
       },
     },

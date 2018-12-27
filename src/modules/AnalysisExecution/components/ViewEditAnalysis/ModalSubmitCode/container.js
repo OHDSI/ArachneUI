@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,7 +23,7 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, reset as resetForm, change } from 'redux-form';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 
 import actions from 'actions/index';
 import { ModalUtils } from 'arachne-ui-components';
@@ -36,6 +36,13 @@ class ModalSubmitCode extends Component {
   componentWillReceiveProps(props) {
     if (props.analysisId && !this.props.isOpened && props.isOpened === true) {
       this.props.loadStudyDataSources({ studyId: props.studyId });
+    }
+    // we don't have study permissions yet
+    if (this.props.grantedPermissions.length === 0
+      && this.props.isOpened === false
+      && props.isOpened === true
+    ) {
+      this.props.loadStudy({ id: props.studyId });
     }
   }
 
@@ -57,6 +64,8 @@ function mapStateToProps(state) {
   }
   const isAllSelected = dataSourceOptions.length === selectedDN.length;
   const currentQuery = state.routing.locationBeforeTransitions.query;
+  const initialValues = selectors.getLastSources(state);
+  const grantedPermissions = get(state, 'studyManager.study.data.permissions', []);
 
   return {
     analysisId: get(analysisData, 'id'),
@@ -65,6 +74,8 @@ function mapStateToProps(state) {
     isOpened,
     isAllSelected,
     page: get(currentQuery, 'page', 1),
+    initialValues,
+    grantedPermissions,
   };
 }
 
@@ -81,6 +92,7 @@ const mapDispatchToProps = {
   },
   showInviteModal: () => ModalUtils.actions.toggle(studyModal.addDataSource, true),
   showSubmitModal: () => ModalUtils.actions.toggle(modal.submitCode, true),
+  loadStudy: actions.studyManager.study.find,
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
@@ -129,6 +141,7 @@ let ReduxModalCreateCode = ModalUtils.connect({
 
 ReduxModalCreateCode = reduxForm({
   form: form.submitCode,
+  enableReinitialize: true,
 })(ReduxModalCreateCode);
 
 export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(ReduxModalCreateCode);

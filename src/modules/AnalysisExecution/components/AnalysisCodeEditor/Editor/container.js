@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,7 +23,7 @@
 import { connect } from 'react-redux';
 import { reduxForm, reset as resetForm } from 'redux-form';
 import { push as goToPage } from 'react-router-redux';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import isEqual from 'lodash/isEqual';
 import actions from 'actions/index';
 import { ModalUtils } from 'arachne-ui-components';

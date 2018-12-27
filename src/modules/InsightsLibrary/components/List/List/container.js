@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -69,8 +69,6 @@ export default class InsightsListBuilder extends ContainerBuilder {
         actions.insightsLibrary.insightFavourites.update(insightId, {
           value: isFavourite,
         }),
-      loadInsightsWithCurrentQuery: searchQuery =>
-        actions.insightsLibrary.insights.query(null, searchQuery),
     };
   }
 
@@ -86,9 +84,9 @@ export default class InsightsListBuilder extends ContainerBuilder {
         };
         dispatchProps.search(searchParams);
       },
-      setFavourite(insightId, isFavourite) {
-        dispatchProps.doSetFavourite(insightId, isFavourite)
-          .then(() => dispatchProps.loadInsightsWithCurrentQuery(stateProps.searchQuery));
+      async setFavourite(insightId, isFavourite) {
+        await dispatchProps.doSetFavourite(insightId, isFavourite);
+        ownProps.reload();
       },
     };
   }

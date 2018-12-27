@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -34,6 +34,7 @@ import dataNodeOptions from './dataNodeOptions';
 import registration from './registration';
 import dbmsTypes from './dbmsTypes';
 import organization from './organization';
+import dataNodeDataSources from './dataNodeDataSources';
 
 export default {
   actions: {
@@ -51,6 +52,7 @@ export default {
     registration: registration.actions,
     dbmsTypes: dbmsTypes.actions,
     organization: organization.actions,
+    dataNodeDataSources: dataNodeDataSources.actions,
   },
   reducer: {
     achillesResults: achillesResults.reducer,
@@ -67,5 +69,6 @@ export default {
     registration: registration.reducer,
     dbmsTypes: dbmsTypes.reducer,
     organization: organization.reducer,
+    dataNodeDataSources: dataNodeDataSources.reducer,
   },
 };

@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -34,6 +34,8 @@ import token from './token';
 import { isAuthModulePath } from 'modules/Auth/utils';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import passwordPolicy from './passwordPolicy';
+import countries from './countries';
+import provinces from './provinces';
 
 function setBackUrl(state, action) {
   return !isAuthModulePath(action.payload.pathname) ? { ...state, backUrl: action.payload.pathname } : state;
@@ -56,6 +58,8 @@ const actions = {
   resendEmail: resendEmail.actions.create,
   token: token.actions,
   passwordPolicy: passwordPolicy.actions,
+  countries: countries.actions,
+  provinces: provinces.actions,
 };
 
 const reducer = combineReducers({
@@ -71,6 +75,8 @@ const reducer = combineReducers({
   authRoutingHistory,
   token: token.reducer,
   passwordPolicy: passwordPolicy.reducer,
+  countries: countries.reducer,
+  provinces: provinces.reducer,
 });
 
 export default {

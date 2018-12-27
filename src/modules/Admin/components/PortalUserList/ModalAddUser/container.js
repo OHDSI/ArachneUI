@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,15 +22,16 @@
 
 import { Component, PropTypes } from 'react';
 import { reset as resetForm } from 'redux-form';
-import get from 'lodash/get';
+import { get } from 'services/Utils';
 import actions from 'actions/index';
 import { ModalUtils } from 'arachne-ui-components';
-import { forms, modal } from 'modules/Admin/const';
+import { forms, modal, paths } from 'modules/Admin/const';
 import { validators } from 'services/Utils';
 import presenter from './presenter';
 import selectors from './selectors';
 import authActions from 'modules/Auth/ducks/index';
 import { buildFormData, ContainerBuilder } from 'services/Utils';
+import { push as goToPage } from 'react-router-redux';
 
 class ModalAddUser extends Component {
 
@@ -41,12 +42,47 @@ class ModalAddUser extends Component {
     };
   }
 
+  constructor() {
+    super();
+    this.state = {
+      selectedCountry: null,
+      selectedProvince: null,
+    }
+  }
+
   componentWillMount() {
     this.props.loadProfessionalTypes();
   }
 
+  storeCountry(id) {
+    this.setState({
+      selectedCountry: this.props.countries.find(option => option.value === id),
+    });
+  }
+
+  storeProvince(id) {
+    this.setState({
+      selectedProvince: this.props.provinces.find(option => option.value === id),
+    });
+  }
+
   render() {
-    return presenter(this.props);
+    const countries = [...this.props.countries];
+    const provinces = [...this.props.provinces];
+    if (this.state.selectedCountry) {
+      countries.unshift(this.state.selectedCountry);
+    }
+    if (this.state.selectedProvince) {
+      provinces.unshift(this.state.selectedProvince);
+    }
+
+    return presenter({
+      ...this.props,
+      storeCountry: (id) => this.storeCountry(id),
+      storeProvince: (id) => this.storeProvince(id),
+      countries,
+      provinces,
+    });
   }
 }
 
@@ -58,10 +94,27 @@ class ModalPortalUserListBuilder extends ContainerBuilder {
 
   mapStateToProps(state) {
 
+    const countries = selectors.getCountries(state);
+    const provinces = selectors.getProvinces(state);
+
+    if (state.selectedCountry) {
+      countries.unshift(state.selectedCountry);
+    }
+    if (state.selectedProvince) {
+      provinces.unshift(state.selectedProvince);
+    }
+
+    const formState = get(state, 'form.addUser.values', {});
+
     return {
       isOpened: get(state, `modal.${modal.addUser}.isOpened`, false),
       userOptions: selectors.getUserOptionList(state),
       professionalTypesOptions: selectors.getProfessionalTypes(state),
+      formState,
+      countries,
+      provinces,
+      countryId: state.selectedCountry ? state.selectedCountry.value : null,
+      provinceId: state.selectedProvince ? state.selectedProvince.value : null,
     };
   }
 
@@ -69,10 +122,12 @@ class ModalPortalUserListBuilder extends ContainerBuilder {
     return {
       addUser: actions.adminSettings.portalUserList.create,
       loadUserOptions: actions.adminSettings.userOptionList.query,
-      loadUserList: actions.adminSettings.portalUserList.query,
       closeModal: () => ModalUtils.actions.toggle(modal.addUser, false),
       resetForm: resetForm.bind(null, forms.addUser),
+      resetFilters: () => goToPage(paths.users()),
       loadProfessionalTypes: authActions.actions.professionalType.query,
+      searchCountries: actions.adminSettings.countries.query,
+      searchProvinces: actions.adminSettings.provinces.query,
     }
   }
 
@@ -84,16 +139,42 @@ class ModalPortalUserListBuilder extends ContainerBuilder {
       ...dispatchProps,
       doSubmit(data) {
         const query = { type: stateProps.type };
-        const submitPromise = dispatchProps.addUser({ id: null, query }, data);
+
+        const reg = {
+          ...data,
+          address: {
+            ...data.address,
+            country: (data.address && data.address.country) ? { isoCode: data.address.country } : null,
+            stateProvince: (data.address && data.address.stateProvince) ? { isoCode: data.address.stateProvince } : null,
+          }
+        };
+        const submitPromise = dispatchProps.addUser({ id: null, query }, reg);
 
         submitPromise
-          .then(dispatchProps.loadUserList.bind(null, { id: null, query }))
           .then(dispatchProps.resetForm)
           .then(dispatchProps.closeModal)
+          .then(dispatchProps.resetFilters)
           .catch(() => {
           });
 
         return submitPromise;
+      },
+      searchCountries: (data) => {
+        const query = get(data, 'query', '') || '';
+
+        return dispatchProps.searchCountries({
+          query,
+          includeId: !query ? stateProps.countryId : -1,
+        });
+      },
+      searchProvinces: (data) => {
+        const query = get(data, 'query', '') || '';
+
+        return dispatchProps.searchProvinces({
+          query,
+          countryId: (stateProps.formState.address && stateProps.formState.address.country) || stateProps.countryId,
+          includeId: !query ? stateProps.provinceId : - 1,
+        })
       },
     };
   }

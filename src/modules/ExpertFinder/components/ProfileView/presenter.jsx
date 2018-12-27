@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -39,7 +39,7 @@ import UserPicModal from './UserPicModal';
 import NameEditModal from './NameEditModal';
 import InviteModal from 'modules/ExpertFinder/components/InviteModal';
 import InviteConfirmModal from 'modules/ExpertFinder/components/InviteConfirmModal';
-import { cancelBtnConfig } from 'modules/ExpertFinder/const';
+import EmptyState from 'components/EmptyState';
 
 require('./style.scss');
 
@@ -48,6 +48,7 @@ function ProfileView(props) {
   const {
     goBack,
     name,
+    canView,
   } = props;
 
   const caption = <div {...classes('toolbar')}>
@@ -64,62 +65,65 @@ function ProfileView(props) {
 
   return (
     <PageContent title={`${name} | Arachne`}>
-      <div {...classes()}>
-        <Toolbar
-          caption={caption}
-        />
-        <div {...classes('content')}>
-          <div className="row">
-            <div className="col-xs-2 col-lg-2 col-xl-2">
-              <div className="row">
-                <div className="col-xs-12">
-                  <UserPic/>
-                  {!props.editable &&
-                    <Button
-                      {...classes('invite-button')}
-                      mods={['success', 'rounded']}
-                      onClick={props.invite}
-                      >
-                        Invite
-                      </Button>
-                  }
+      {canView ?
+        <div {...classes()}>
+          <Toolbar
+            caption={caption}
+          />
+          <div {...classes('content')}>
+            <div className="row">
+              <div className="col-xs-2 col-lg-2 col-xl-2">
+                <div className="row">
+                  <div className="col-xs-12">
+                    <UserPic/>
+                    {!props.editable &&
+                      <Button
+                        {...classes('invite-button')}
+                        mods={['success', 'rounded']}
+                        onClick={props.invite}
+                        >
+                          Invite
+                        </Button>
+                    }
+                  </div>
+                </div>
+              </div>
+              <div className="col-xs-12 col-lg-5">
+                <div {...classes('card', 'uncut')}>
+                  <Info/>
+                </div>
+                <div {...classes('card', 'uncut')}>
+                  <ContactInfo/>
+                </div>
+                <div {...classes('card', 'shadowed')}>
+                  <Summary/>
+                </div>
+                <div {...classes('card', 'uncut')}>
+                  <Skills/>
+                </div>
+              </div>
+              <div className="col-xs-12 col-lg-5">
+                <div {...classes('card', 'shadowed')}>
+                  <Publications/>
+                </div>
+                <div {...classes('card', 'shadowed')}>
+                  <Links/>
                 </div>
               </div>
             </div>
-            <div className="col-xs-12 col-lg-5">
-              <div {...classes('card', 'uncut')}>
-                <Info/>
-              </div>
-              <div {...classes('card', 'uncut')}>
-                <ContactInfo/>
-              </div>
-              <div {...classes('card', 'shadowed')}>
-                <Summary/>
-              </div>
-              <div {...classes('card', 'uncut')}>
-                <Skills/>
-              </div>
-            </div>
-            <div className="col-xs-12 col-lg-5">
-              <div {...classes('card', 'shadowed')}>
-                <Publications/>
-              </div>
-              <div {...classes('card', 'shadowed')}>
-                <Links/>
-              </div>
-            </div>
           </div>
+          {props.editable &&
+          <div>
+            <UserPicModal />
+            <NameEditModal />
+          </div>
+          }
+          <InviteModal />
+          <InviteConfirmModal />
+          <LoadingPanel active={props.isLoading} />   
         </div>
-        {props.editable &&
-        <div>
-          <UserPicModal />
-          <NameEditModal />
-        </div>
-        }
-        <InviteModal />
-        <InviteConfirmModal />
-        <LoadingPanel active={props.isLoading} />   
-      </div>
+        : <EmptyState message={'Access denied or user does not exist'} />
+      }
     </PageContent>
   );
 }

@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -43,8 +43,7 @@ export default function getFields(props) {
     {
       label: 'Type',
       name: 'type',
-      type: types.enum,
-      isMulti: true,
+      type: types.enumMulti,
       forceOpened: true,
       hasTitle: true,
       options: props.typeOptions,
@@ -52,8 +51,7 @@ export default function getFields(props) {
     {
       label: 'Status',
       name: 'status',
-      type: types.enum,
-      isMulti: true,
+      type: types.enumMulti,
       forceOpened: true,
       hasTitle: true,
       options: props.statusOptions.map(opts => ({
@@ -67,7 +65,6 @@ export default function getFields(props) {
       type: types.enum,
       forceOpened: true,
       hasTitle: true,
-      isMulti: false,
       options: [
         {
           label: 'Private',

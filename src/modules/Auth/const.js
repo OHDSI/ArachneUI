@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,6 +23,7 @@
 import keyMirror from 'keymirror';
 import { FormInput, FormSelect } from 'arachne-ui-components';
 import PasswordField from 'components/PasswordField/connected';
+import StatefulFormAutocomplete from 'components/StatefulFormAutocomplete';
 
 const form = keyMirror({
   remindPassword: null,
@@ -40,6 +41,8 @@ const loginMessages = {
   resetDone: 'password-reset-done',
   resendDone: 'email-resend-done',
 };
+
+const autocompleteResultsLimit = 10;
 
 const paths = {
   login(message) {
@@ -68,6 +71,10 @@ const apiPaths = {
   refresh: () => '/api/v1/auth/refresh',
   //
   passwordPolicy: () => '/api/v1/auth/password-policies',
+  searchCountry: ({ query, includeId } = {}) =>
+    `/api/v1/user-management/countries/search?limit=${autocompleteResultsLimit}&query=${query}${includeId ? `&includeId=${includeId}` : ''}`,
+  searchProvince: ({ countryId, query, includeId } = {}) =>
+    `/api/v1/user-management/state-province/search?limit=${autocompleteResultsLimit}&query=${query}&countryId=${countryId}${includeId ? `&includeId=${includeId}` : ''}`,
 };
 
 const authMethods = keyMirror({
@@ -75,7 +82,13 @@ const authMethods = keyMirror({
   NATIVE: null,
 });
 
-const registerFields = function ({ professionalTypesOptions }) {
+const registerFields = function ({ professionalTypesOptions,
+                                   countries,
+                                   provinces,
+                                   searchCountries,
+                                   storeCountry,
+                                   searchProvinces,
+                                   storeProvince, }) {
 
   return [
     {
@@ -87,8 +100,22 @@ const registerFields = function ({ professionalTypesOptions }) {
           placeholder: 'First Name',
           type: 'text',
           required: true,
+          tabindex: 1,
         },
       },
+    },
+    {
+      name: 'address.address1',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Address',
+          required: true,
+          type: 'text',
+          tabindex: 10,
+        }
+      }
     },
     {
       name: 'middlename',
@@ -98,8 +125,22 @@ const registerFields = function ({ professionalTypesOptions }) {
           mods: ['bordered'],
           placeholder: 'Middle Name',
           type: 'text',
+          tabindex: 2,
         },
       },
+    },
+    {
+      name: 'address.city',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'City',
+          type: 'text',
+          required: true,
+          tabindex: 11,
+        }
+      }
     },
     {
       name: 'lastname',
@@ -110,8 +151,22 @@ const registerFields = function ({ professionalTypesOptions }) {
           placeholder: 'Last Name',
           type: 'text',
           required: true,
+          tabindex: 3,
         },
       },
+    },
+    {
+      name: 'address.zipCode',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Zip code',
+          type: 'text',
+          required: true,
+          tabindex: 12,
+        }
+      }
     },
     {
       name: 'email',
@@ -122,8 +177,27 @@ const registerFields = function ({ professionalTypesOptions }) {
           placeholder: 'Email',
           type: 'text',
           required: true,
+          tabindex: 4,
         },
       },
+    },
+    {
+      name: 'address.country',
+      InputComponent: {
+        component: StatefulFormAutocomplete,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Country',
+          required: true,
+          options: countries,
+          fetchOptions: searchCountries,
+          clearable: false,
+          onSelectResetsInput: true,
+          onBlurResetsInput: true,
+          storeSelectedOption: storeCountry,
+          tabindex: 13,
+        }
+      }
     },
     {
       name: 'password',
@@ -132,8 +206,26 @@ const registerFields = function ({ professionalTypesOptions }) {
         props: {
           mods: ['bordered'],
           required: true,
+          tabindex: 5,
         },
       },
+    },
+    {
+      name: 'address.stateProvince',
+      InputComponent: {
+        component: StatefulFormAutocomplete,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'State/Province',
+          options: provinces,
+          fetchOptions: searchProvinces,
+          clearable: false,
+          onSelectResetsInput: true,
+          onBlurResetsInput: true,
+          storeSelectedOption: storeProvince,
+          tabindex: 14,
+        }
+      }
     },
     {
       name: 'passwordConfirmation',
@@ -144,7 +236,46 @@ const registerFields = function ({ professionalTypesOptions }) {
           placeholder: 'Confirm password',
           required: true,
           showHint: false,
+          tabindex: 6,
         },
+      },
+    },
+    {
+      name: 'address.mobile',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Mobile',
+          required: true,
+          type: 'text',
+          tabindex: 15,
+        }
+      }
+    },
+    {
+      name: 'organization',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Organization',
+          type: 'text',
+          required: true,
+          tabindex: 7,
+        },
+      },
+    },
+    {
+      name: 'department',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Department',
+          type: 'text',
+          tabindex: 8,
+        }
       },
     },
     {
@@ -154,7 +285,9 @@ const registerFields = function ({ professionalTypesOptions }) {
         props: {
           mods: ['bordered'],
           placeholder: 'Professional type',
+          required: true,
           options: professionalTypesOptions,
+          tabindex: 9,
         },
       },
     },
@@ -165,6 +298,7 @@ export {
   actionTypes,
   authMethods,
   apiPaths,
+  autocompleteResultsLimit,
   form,
   loginMessages,
   paths,

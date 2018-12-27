@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,10 +22,13 @@
 
 import React from 'react';
 import BEMHelper from 'services/BemHelper';
-import { Modal } from 'arachne-ui-components';
-import { Fieldset, Checkbox, ListItem, Button } from 'arachne-ui-components';
+import { Modal, Fieldset, Checkbox, ListItem, Button } from 'arachne-ui-components';
 import { Field } from 'redux-form';
 import DataSources from 'modules/AnalysisExecution/components/ViewEditAnalysis/DataSources';
+import GuardedComponent from 'components/Guarded/container';
+import { Guard } from 'services/Guard';
+import { studyPermissions } from 'modules/StudyManager/const';
+import EmptyState from 'components/EmptyState';
 
 require('./style.scss');
 
@@ -50,6 +53,7 @@ function ModalSubmitCode(props) {
     closeModal,
     inviteDatasource,
     error,
+    grantedPermissions,
   } = props;
 
   const fields = [
@@ -86,14 +90,29 @@ function ModalSubmitCode(props) {
           />
         </ListItem>
         <form {...props} onSubmit={handleSubmit(doSubmit)}>
-          {fields.map(field => <Field {...field} component={Fieldset} />)}
+          {props.dataSourceOptions.length === 0
+            ? <div {...classes('empty-state')}>
+              <EmptyState message={'No data sources were attached to the study. You need at least one approved data source to create a submission'} />
+            </div>
+            : fields.map(field => <Field {...field} component={Fieldset} />)
+          }
           {error && <div {...classes('error')}>{error}</div>}
           <div {...classes('actions')}>
-            <Button {...classes('invite-button')} onClick={inviteDatasource}>
-              <span {...classes('invite-button-icon')}>add_circle_outline</span>
-              Invite Data Sources
-            </Button>
-            <Button {...classes('submit')} type={'submit'} mods={['success', 'rounded']} disabled={submitting}>
+            <GuardedComponent
+              rules={new Guard({
+                rules: [studyPermissions.inviteDatanode],
+                grantedPermissions,
+                tooltip: {
+                  [studyPermissions.inviteDatanode]: 'you should be lead investigator or datasource owner',
+                },
+              })}
+            >
+              <Button {...classes('invite-button')} onClick={inviteDatasource}>
+                <span {...classes('invite-button-icon')}>add_circle_outline</span>
+                Invite Data Sources
+              </Button>
+            </GuardedComponent>
+            <Button {...classes('submit')} type={'submit'} mods={['success', 'rounded']} disabled={submitting || props.dataSourceOptions.length === 0}>
               {submitting ? 'Submitting...' : 'Submit'}
             </Button>
             <Button {...classes('cancel')} mods={['cancel', 'rounded']} onClick={closeModal}>

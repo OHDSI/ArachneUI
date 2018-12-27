@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -30,6 +30,8 @@ import { LinkBuilder } from 'modules/AnalysisExecution/ducks/linkBuilder';
 import FileTreeUtils from 'services/FileTreeUtils';
 import { FileLoader } from 'services/FileLoader';
 import presenter from './presenter';
+import { ActiveModuleAwareContainerBuilder } from 'modules/StudyManager/utils'
+import { domains } from 'modules/Portal/const';
 
 export class SubmissionCode extends FileLoader {
   constructor() {
@@ -71,7 +73,7 @@ export class SubmissionCode extends FileLoader {
   }
 }
 
-export class SubmissionCodeBuilder extends ContainerBuilder {
+export class SubmissionCodeBuilder extends ActiveModuleAwareContainerBuilder {
   constructor() {
     super();
     this.selectors = {};
@@ -106,8 +108,9 @@ export class SubmissionCodeBuilder extends ContainerBuilder {
       submissionId,
       fileId: fileId,
     };
+    const isWorkspace = get(state, 'modules.active') === 'workspace';
 
-    const breadcrumbList = buildBreadcrumbList(get(state, 'analysisExecution.breadcrumbs.queryResult.result'));
+    const breadcrumbList = buildBreadcrumbList(get(state, 'analysisExecution.breadcrumbs.queryResult.result'), !isWorkspace);
     const backUrl = breadcrumbList.length > 0 ? breadcrumbList[breadcrumbList.length - 1].link : null;
     const analysis = this.selectors.getAnalysis(state);
 
@@ -146,6 +149,14 @@ export class SubmissionCodeBuilder extends ContainerBuilder {
       loadBreadcrumbs: actions.analysisExecution.breadcrumbs.query,
       clearDetailsData: actions.analysisExecution.submissionFileDetails.clear,
     };
+  }
+  
+  getId({ params }) {
+    return params.submissionId;
+  }
+  
+  getType({ params }) {
+    return domains.SUBMISSION;
   }
 }
 

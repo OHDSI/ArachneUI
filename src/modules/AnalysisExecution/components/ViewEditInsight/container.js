@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,6 +24,7 @@ import { Component, PropTypes } from 'react';
 import { get, ContainerBuilder } from 'services/Utils';
 import actions from 'actions';
 import presenter from './presenter';
+import { ActiveModuleAwareContainerBuilder } from 'modules/StudyManager/utils';
 
 const moduleActions = actions.analysisExecution;
 
@@ -46,7 +47,7 @@ ViewEditInsight.propTypes = {
   submissionId: PropTypes.number.isRequired,
 };
 
-export default class ViewEditInsightBuilder extends ContainerBuilder {
+export default class ViewEditInsightBuilder extends ActiveModuleAwareContainerBuilder {
 
   getComponent() {
     return ViewEditInsight;
@@ -93,11 +94,16 @@ export default class ViewEditInsightBuilder extends ContainerBuilder {
     };
   }
 
-  getFetchers({ params }) {
+  getFetchers({ params, dispatch, getState }) {
+    const componentActions = this.getMapDispatchToProps();
     const submissionId = params.submissionId;
-    const load = moduleActions.insight.find;
     return {
-      loadInsight: load.bind(null, { submissionId }),
+      ...super.getFetchers({ params, dispatch, getState }),
+      loadInsight: dispatch(componentActions.loadInsight({ submissionId }))
+        .then(result => {
+          const kind = get(result, 'result.analysis.study.kind', '');
+          this.setKind(kind);
+        }),
       unloadComments: moduleActions.insightComments.unload,
       unloadFile: moduleActions.insightFile.unload,
     };

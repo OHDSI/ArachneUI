@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,19 +22,28 @@
 
 import Duck from 'services/Duck';
 import { Utils } from 'services/Utils';
-import { apiPaths } from 'modules/StudyManager/const';
+import { apiPaths, studyKind } from 'modules/StudyManager/const';
 import { apiPaths as paperApiPaths } from 'modules/InsightsLibrary/const';
+import { apiPaths as workspacePaths } from 'modules/Workspace/const';
 
 const studiesCoreName = 'SM_STUDY';
 const paperCoreName = 'SM_STUDY_PAPER';
 const documentCoreName = 'SM_STUDY_DOCUMENT';
 const participantsCoreName = 'SM_STUDY_PARTICIPANTS';
 const dsCoreName = 'SM_STUDY_DATA_SOURCE';
+const studiesKind = 'SM_KIND';
 const analysisMoveCoreName = 'SM_ANALYSIS_MOVE';
 
 const ducks = new Duck({
   name: studiesCoreName,
-  urlBuilder: apiPaths.studies,
+  urlBuilder: ({ id, kind = studyKind.REGULAR }) => {
+    return kind === studyKind.WORKSPACE ? workspacePaths.workspace({ id }) : apiPaths.studies({ id });
+  }
+});
+
+const studyKindDuck = new Duck({
+  name: studiesKind,
+  urlBuilder: apiPaths.kind,
 });
 
 const paperDuck = new Duck({
@@ -82,6 +91,7 @@ export default {
     participants: participantsDuck.actions,
     dataSource: {...datasourceDuck.actions, unload: unloadDataSource},
     analysisMove: analysisMoveDuck.actions,
+    studyKind: studyKindDuck.actions,
   },
   reducer: Utils.extendReducer(ducks.reducer, {
     paper: paperDuck.reducer,

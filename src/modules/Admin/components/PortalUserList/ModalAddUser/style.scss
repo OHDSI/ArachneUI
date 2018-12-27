@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2017 Observational Health Data Sciences and Informatics
+ * Copyright 2018 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,10 +22,54 @@
 
 @import 'styles/vars-and-mixins.scss';
 
+$reg-field-width: 24rem;
+
 .#{$namespace} {
 
-	&admin-panel-modal-add-user {
-		width: 260px;
-	}
 
+	&admin-panel-modal-add-user {
+		width: 50rem;
+
+		&__title-pane {
+			display: flex;
+			align-content: flex-start;
+			justify-content: space-between;
+			margin-bottom: 1.2rem;
+		}
+
+		&__column-title {
+			width: $reg-field-width;
+			text-align: left;
+			font-size: 1.4rem;
+			font-family: "Montserrat";
+			font-weight: bold;
+			text-transform: uppercase;
+		}
+
+		.ac-form {
+			flex-direction: row;
+			flex-wrap: wrap;
+
+			&__actions {
+				width: 100%
+			}
+		}
+
+		.ac-fieldset {
+			margin-right: 2rem;
+			width: $reg-field-width;
+		}
+
+		.ac-fieldset:nth-child(even) {
+			margin-right: 0;
+		}
+
+		.ac-fieldset:nth-child(13), .ac-fieldset:nth-child(14) {
+			width: 100%;
+
+			input, span {
+				width: $reg-field-width;
+			}
+		}
+	}
 }
