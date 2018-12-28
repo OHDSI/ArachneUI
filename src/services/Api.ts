@@ -25,7 +25,7 @@ import * as feathers from 'feathers/client';
 import * as hooks from 'feathers-hooks';
 import * as rest from 'feathers-rest-arachne/client';
 import * as superagent from 'superagent';
-import { get } from 'lodash';
+import { get, set } from 'lodash';
 import { SubmissionError } from 'redux-form';
 import Auth from 'services/Auth';
 import { Api as OhdsiApi } from 'ohdsi-ui-toolbox';
@@ -83,10 +83,11 @@ function configure(props: ApiConfig): Promise<any> {
       } else {
         const validationErrors = get(hook, 'error.validatorErrors');
         if (validationErrors) {
-          throw new SubmissionError({
+          const errors = {
             _error: get(hook, 'error.errorMessage', ''),
-            ...validationErrors,
-          });
+          };
+          Object.keys(validationErrors).forEach(reKey => set(errors, reKey, validationErrors[reKey]));
+          throw new SubmissionError(errors);
         }
       }
     }

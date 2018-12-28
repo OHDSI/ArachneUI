@@ -8,7 +8,12 @@
     "noImplicitAny": false,
     "sourceMap": true,
     "outDir": "ts-build",
-    "jsx": "react"
+    "jsx": "react",
+    "types": [
+      "react",
+      "redux",
+      "core-js"
+    ]
   },
   "exclude": [
     "node_modules"

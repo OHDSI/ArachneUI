@@ -37,6 +37,7 @@ import {
 import AboutInfo from 'modules/Portal/components/AboutInfo';
 import imgs from 'const/images';
 import { get } from 'lodash';
+import LicenseAgreement from 'modules/Portal/components/LicenseAgreement';
 
 interface IAppState extends Props<App> {
   isUserAuthed: boolean;
@@ -71,6 +72,7 @@ class App extends Component<IAppProps, {}> {
         {this.props.children}
         <LoadingPanel active={this.props.isLoggingOut} />
         <AboutInfo />
+        <LicenseAgreement />
       </div>
     );
   }

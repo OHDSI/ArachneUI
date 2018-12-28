@@ -26,7 +26,8 @@ import {
   Form,
   FormInput,
   FormSelect,
-  LoadingPanel
+  FormAutocomplete,
+  LoadingPanel,
 } from 'arachne-ui-components';
 import { paths } from 'modules/Auth/const';
 import BEMHelper from 'services/BemHelper';
@@ -39,6 +40,20 @@ interface IFormRegisterProps {
   professionalTypesOptions: any,
 };
 
+function StatefulFormAutocomplete(props) {
+  const input = {
+    ...props.input,
+    onChange: (option) => {
+      props.storeSelectedOption(option);
+      return props.input.onChange(option);
+    }
+  };
+  return <FormAutocomplete
+    {...props}
+    input={input}
+  />;
+}
+
 function FormRegister(props) {
   const fields = [
     {
@@ -50,8 +65,22 @@ function FormRegister(props) {
           placeholder: 'First Name',
           type: 'text',
           required: true,
+          tabindex: 1,
         },
       },
+    },
+    {
+      name: 'address.address1',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Address',
+          type: 'text',
+          required: true,
+          tabindex: 9,
+        }
+      }
     },
     {
       name: 'middlename',
@@ -61,8 +90,22 @@ function FormRegister(props) {
           mods: ['bordered'],
           placeholder: 'Middle Name',
           type: 'text',
+          tabindex: 2,
         },
       },
+    },
+    {
+      name: 'address.city',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'City',
+          type: 'text',
+          required: true,
+          tabindex: 10,
+        }
+      }
     },
     {
       name: 'lastname',
@@ -73,8 +116,22 @@ function FormRegister(props) {
           placeholder: 'Last Name',
           type: 'text',
           required: true,
+          tabindex: 3,
         },
       },
+    },
+    {
+      name: 'address.zipCode',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Zip code',
+          type: 'text',
+          required: true,
+          tabindex: 11,
+        }
+      }
     },
     {
       name: 'email',
@@ -85,8 +142,27 @@ function FormRegister(props) {
           placeholder: 'Email',
           type: 'text',
           required: true,
+          tabindex: 4,
         },
       },
+    },
+    {
+      name: 'address.country',
+      InputComponent: {
+        component: StatefulFormAutocomplete,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Country',
+          required: true,
+          options: props.countries,
+          fetchOptions: props.searchCountries,
+          clearable: false,
+          onSelectResetsInput: true,
+          onBlurResetsInput: true,
+          storeSelectedOption: props.storeCountry,
+          tabindex: 12,
+        }
+      }
     },
     {
       name: 'password',
@@ -97,10 +173,28 @@ function FormRegister(props) {
           placeholder: 'Password',
           type: 'password',
           required: true,
+          tabindex: 5,
         },
       },
     },
-/*    {
+    {
+      name: 'address.stateProvince',
+      InputComponent: {
+        component: StatefulFormAutocomplete,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'State/Province',
+          options: props.provinces,
+          fetchOptions: props.searchProvinces,
+          clearable: false,
+          onSelectResetsInput: true,
+          onBlurResetsInput: true,
+          storeSelectedOption: props.storeProvince,
+          tabindex: 13,
+        }
+      }
+    },
+    {
       name: 'organization',
       InputComponent: {
         component: FormInput,
@@ -109,9 +203,35 @@ function FormRegister(props) {
           placeholder: 'Organization',
           type: 'text',
           required: true,
+          tabindex: 6,
         },
       },
-    },*/
+    },
+    {
+      name: 'address.mobile',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Mobile',
+          type: 'text',
+          required: true,
+          tabindex: 14,
+        }
+      }
+    },
+    {
+      name: 'department',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Department',
+          type: 'text',
+          tabindex: 7,
+        }
+      },
+    },
     {
       name: 'professionalTypeId',
       InputComponent: {
@@ -121,6 +241,7 @@ function FormRegister(props) {
           placeholder: 'Professional type',
           options: props.professionalTypes,
           required: true,
+          tabindex: 8,
         },
       },
     },
@@ -133,6 +254,10 @@ function FormRegister(props) {
 
   return (
     <div {...classes()}>
+      <div {...classes('title-pane')}>
+        <div {...classes('column-title')}>General</div>
+        <div {...classes('column-title')}>Contact Info</div>
+      </div>
       <Form
         fields={fields}
         submitBtn={submitBtn}

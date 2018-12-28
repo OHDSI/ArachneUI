@@ -23,6 +23,7 @@
 import * as numeral from 'numeral';
 import keyMirror = require('keymirror');
 import * as URI from 'urijs';
+import * as moment from 'moment';
 
 numeral.register('locale', 'arachne', {
   delimiters: {
@@ -75,7 +76,15 @@ const isOuterLink = function(link) {
   return givenUri.domain().length !== 0 && currentUri.domain() !== givenUri.domain();
 }
 
+function diffInDays(fromDate: moment.Moment | number, toDate: moment.Moment | number) {
+  const fd = moment(fromDate);
+  const td = moment(toDate);
+
+  return td.diff(fd, 'days');
+}
+
 export {
   numberFormatter,
   isOuterLink,
+  diffInDays,
 };
