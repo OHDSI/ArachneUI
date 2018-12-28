@@ -35,7 +35,7 @@ require('./style.scss');
 
 type initialValues = { [key: string]: string | Array<string> };
 
-interface initialFormState {
+export interface initialFormState {
   filter: initialValues | {};
 };
 

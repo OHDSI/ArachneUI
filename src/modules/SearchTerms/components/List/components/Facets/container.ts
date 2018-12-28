@@ -62,11 +62,12 @@ function mapStateToProps(state: Object): IFacetStateProps {
   const query = get(state, 'form.toolbar.values.searchString', '');
   const submittedQuery = get(currentAddress, 'query.query', '');
   const initialValues = selectors.getFilterInitialValues(state);
+  const filterFormState = selectors.getFilterValues(state);
 
   return {
   	facets,
     initialValues,
-    filterFormState: get(state, `form.${forms.filter}.values`, { filter: {} }),
+    filterFormState,
     // to be used in filter
     pageSize,
     currentAddress,
