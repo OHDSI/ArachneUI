@@ -59,7 +59,7 @@ const getFacets = createSelector(
     faceted: true,
     label: getFacetTitle(facet),
     name: getFacetKey(facet),
-    type: types.enum,
+    type: types.enumMulti,
     options: Object.keys(rawFacets[facet]).map(option => ({
       facetCount: rawFacets[facet][option],
       label: `${option} (${rawFacets[facet][option]})`,
