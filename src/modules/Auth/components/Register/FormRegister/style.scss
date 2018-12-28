@@ -22,6 +22,8 @@
 
 @import 'styles/vars-and-mixins.scss';
 
+$reg-field-width: 24rem;
+
 .#{$namespace} {
 
 	&form-register {
@@ -31,6 +33,50 @@
 			display: block;
 	    text-align: center;
 	    margin-top: 15px;
+		}
+
+		&__title-pane {
+			display: flex;
+			align-content: flex-start;
+			margin-bottom: 1.2rem;
+			div:first-child {
+				margin-right: 2rem;
+			}
+		}
+
+		&__column-title {
+			width: $reg-field-width;
+			text-align: left;
+			font-size: 1.4rem;
+			font-family: "Montserrat";
+			font-weight: bold;
+			text-transform: uppercase;
+		}
+
+		.ac-form {
+			flex-direction: row;
+			flex-wrap: wrap;
+
+			&__actions {
+				width: 100%
+			}
+		}
+
+		.ac-fieldset {
+			margin-right: 2rem;
+			width: $reg-field-width;
+		}
+
+		.ac-fieldset:nth-child(even) {
+			margin-right: 0;
+		}
+
+		.ac-fieldset:nth-child(13) {
+			width: 100%;
+
+			input, span {
+				width: $reg-field-width;
+			}
 		}
 	}
 

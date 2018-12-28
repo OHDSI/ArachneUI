@@ -27,6 +27,8 @@ interface IAuthApiServices {
 	users: any;
 	auth_principal: any,
 	auth_professionalTypes: any,
+	auth_countries: any,
+	auth_provinces: any,
 	auth_logout: any,
 	remind_password: any;
 	reset_password: any;
@@ -37,8 +39,10 @@ export default <IAuthApiServices> reduxifyServices(
 	{
 		'users': 'auth_principal',
 		'users/professional-types': 'auth_professionalTypes',
-		'users/logout': 'auth_logout',
-		'users/remind-password': 'remind_password',
-		'users/reset-password': 'reset_password',
+    'users/countries': 'auth_countries',
+		'users/provinces': 'auth_provinces',
+    'users/logout': 'auth_logout',
+    'users/remind-password': 'remind_password',
+    'users/reset-password': 'reset_password',
 	}
 );

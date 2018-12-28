@@ -41,7 +41,7 @@ function Register(props: IRegisterProps) {
         title="New user registration"
       >
         <div {...classes('form-container')}>
-          <FormRegister />
+          <FormRegister {...props} />
         </div>
       </Panel>
     </div>
