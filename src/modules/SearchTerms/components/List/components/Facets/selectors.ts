@@ -24,8 +24,9 @@ import { createSelector } from 'reselect';
 import { get } from 'lodash';
 import * as URI from 'urijs';
 import types from 'const/metadataTypes';
-import { facetKeys } from 'modules/SearchTerms/const';
+import { facetKeys, forms } from 'modules/SearchTerms/const';
 import { FacetTitles } from '../FacetTitles';
+import { initialFormState } from './presenter';
 
 type map = {
   [key: string]: any;
@@ -50,6 +51,7 @@ function getFacetKey(facetId: string): string {
 
 const getRawFacets = (state: Object) => get(state, 'searchTerms.terms.queryResult.facets') || [];
 const getRawInitialValues = (state: Object) => get(state, 'routing.locationBeforeTransitions.query') || {};
+const getRawValues = (state: Object) => get(state, `form.${forms.filter}.values.filter`, { });
 
 const getFacets = createSelector(
   getRawFacets,
@@ -66,23 +68,31 @@ const getFacets = createSelector(
   })),
 );
 
+function makeFilterFormValues(rawValues: map): initialFormState {
+  let filter: map = {};
+  // filter out pageSize etc
+  const facets = Object.keys(rawValues).filter(facetName => facetName in facetKeys);
+  facets.map((facetKey: string) => {
+    filter[`${facetKey}`] = Array.isArray(rawValues[facetKey]) ? rawValues[facetKey] : [rawValues[facetKey]];
+  });
+
+  return {
+    filter
+  };
+};
+
 const getFilterInitialValues = createSelector(
   getRawInitialValues,
-  (rawValues: map) => {
-      let filter: map = {};
-      // filter out pageSize etc
-      const facets = Object.keys(rawValues).filter(facetName => facetName in facetKeys);
-      facets.map((facetKey: string) => {
-        filter[`${facetKey}`] = Array.isArray(rawValues[facetKey]) ? rawValues[facetKey] : [rawValues[facetKey]];
-      });
-
-      return {
-        filter
-      };
-    }
+  makeFilterFormValues
   );
+
+const getFilterValues = createSelector(
+  getRawValues,
+  makeFilterFormValues
+);
 
 export default {
   getFacets,
   getFilterInitialValues,
+  getFilterValues,
 };
