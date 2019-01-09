@@ -113,6 +113,7 @@ const registerFields = function ({ professionalTypesOptions,
           placeholder: 'Address',
           required: true,
           type: 'text',
+          required: true,
           tabindex: 10,
         }
       }
@@ -249,6 +250,7 @@ const registerFields = function ({ professionalTypesOptions,
           placeholder: 'Mobile',
           required: true,
           type: 'text',
+          required: true,
           tabindex: 15,
         }
       }
