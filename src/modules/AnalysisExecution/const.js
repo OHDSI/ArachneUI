@@ -82,6 +82,7 @@ function importEntityPathByType(type) {
     case 'ESTIMATION': return 'estimations';
     case 'PREDICTION': return 'predictions';
     case 'INCIDENCE': return 'incidence-rates';
+    case 'COHORT_PATHWAY': return 'cohort-pathways';
     default: return '';
   }
 }
@@ -196,7 +197,7 @@ const submissionActionTypes = keyMirror({
   HIDE: null,
 });
 
-const importableAnalysisTypes = ['COHORT', 'ESTIMATION', 'PREDICTION', 'COHORT_CHARACTERIZATION', 'INCIDENCE'];
+const importableAnalysisTypes = ['COHORT', 'ESTIMATION', 'PREDICTION', 'COHORT_CHARACTERIZATION', 'INCIDENCE', 'COHORT_PATHWAY'];
 const analysisTypeNames = {
   COHORT: 'cohort',
   ESTIMATION: 'PLE analysis',
@@ -204,6 +205,7 @@ const analysisTypeNames = {
   COHORT_CHARACTERIZATION: 'cohort',
   INCIDENCE: 'incidence rates',
   CUSTOM: 'custom',
+  COHORT_PATHWAY: 'cohort pathway',
 };
 const pluralAnalysisTypeNames = {
   COHORT: 'cohorts',
@@ -212,6 +214,7 @@ const pluralAnalysisTypeNames = {
   COHORT_CHARACTERIZATION: 'cohorts',
   INCIDENCE: 'incidence rates',
   CUSTOM: 'custom',
+  COHORT_PATHWAY: 'cohort pathways',
 };
 function nameAnalysisType({ analysisType, capitalize = false, plural = false }) {
   const typeNames = plural ? pluralAnalysisTypeNames : analysisTypeNames;
