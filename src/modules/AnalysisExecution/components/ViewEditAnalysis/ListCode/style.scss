@@ -36,6 +36,7 @@ $list-item-height: 53px;
     &__list {
       overflow: auto;
       flex-grow: 1;
+      height: 100%;
     }
 
     &__panel-header {
@@ -127,7 +128,7 @@ $list-item-height: 53px;
       &--upload {
         color: $blue-light;
       }
-  
+
       &--import {
         color: $orange;
       }
@@ -135,7 +136,7 @@ $list-item-height: 53px;
     &__label {
       color: $grey-dark-light;
       font-size: 1.2rem;
-    }    
+    }
   }
 
   &analysis-code-list-download-all {
@@ -152,5 +153,5 @@ $list-item-height: 53px;
     &--autoMargin {
       margin-left: auto;
     }
-  }  
+  }
 }
