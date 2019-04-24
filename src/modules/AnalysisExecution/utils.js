@@ -29,10 +29,10 @@ function buildBreadcrumbList(breadcrumbs = [], isWorkspace = false) {
     switch (crumb.entityType) {
       case breadcrumbTypes.STUDY:
         if (isWorkspace) {
-          buildWorkspaceBreadcrumb(breadcrumbList, crumb);
+          addWorkspaceBreadcrumb(breadcrumbList, crumb);
         }
         else {
-          buildMyStudyBreadcrumb(breadcrumbList, crumb);
+          addMyStudyBreadcrumb(breadcrumbList, crumb);
         }
         break;
       case breadcrumbTypes.ANALYSIS:
@@ -54,7 +54,7 @@ function buildBreadcrumbList(breadcrumbs = [], isWorkspace = false) {
   return breadcrumbList;
 }
 
-function buildMyStudyBreadcrumb(breadcrumbList, crumb) {
+function addMyStudyBreadcrumb(breadcrumbList, crumb) {
   breadcrumbList.push({
     label: 'My studies',
     link: paths.studies(),
@@ -65,7 +65,7 @@ function buildMyStudyBreadcrumb(breadcrumbList, crumb) {
   });
 }
 
-function buildWorkspaceBreadcrumb(breadcrumbList, crumb) {
+function addWorkspaceBreadcrumb(breadcrumbList, crumb) {
   breadcrumbList.push({
     label: crumb.title,
     link: paths.workspace(),
