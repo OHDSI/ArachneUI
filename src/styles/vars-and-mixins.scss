@@ -529,12 +529,18 @@ $default-box-padding: 1.5rem 2rem;
 }
 
 @mixin modal-dropdown-overflow($width) {
-  .ac-form-select {
+
+  .ac-form-select, .ac-autocomplete, .ac-autocomplete__select {
     position: initial;
 
-    .ac-select__options {
+    .ac-select__options, .Select-menu-outer {
       width: $width;
       max-width: $width;
     }
+  }
+
+  .ac-autocomplete__search {
+    right: 2rem;
+    top: -0.25rem;
   }
 }
