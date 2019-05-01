@@ -35,6 +35,8 @@ import Toolbar from 'modules/DataCatalog/components/DataSource/ViewEdit/Toolbar'
 import ModalStatsUpload from 'modules/DataCatalog/components/DataSource/ViewEdit/Edit/ModalStatsUpload';
 import FormCreateDataNode from './FormCreateDataNode';
 import AttributeList from './AttributesList';
+import OwnerList from './OwnerList';
+import ModalAddOwner from './ModalAddOwner';
 
 import './style.scss';
 
@@ -52,6 +54,7 @@ class Edit {
       isDenied,
       isVirtual,
       isCDM,
+      isManual,
       showUploadForm,
       canUploadAchillesResults,
     } = props;
@@ -75,6 +78,10 @@ class Edit {
                   ? [
                     <div className='col-xs-6 col-md-6'>
                       <AttributeList />
+						{isManual ?
+							<OwnerList/>
+							: null
+						}
                     </div>,
                     permissions.EDIT_ACHILLES_REPORT_PERMISSION ? <div className='col-xs-6 col-md-6'>
                       {this.getAchillesSettings()}
@@ -92,6 +99,7 @@ class Edit {
             }
         </div>
         <ModalStatsUpload />
+        <ModalAddOwner />
         <LoadingPanel active={props.isLoading} />
       </PageContent>
     );
