@@ -48,7 +48,7 @@ function mapStateToProps(state) {
         id: analysisId,
       },
     ],
-    !isWorkspace
+    isWorkspace
   );  
 
   return {

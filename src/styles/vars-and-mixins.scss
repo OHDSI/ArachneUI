@@ -31,7 +31,7 @@ $default-box-padding: 1.5rem 2rem;
 @mixin health-indicator() {
 	display: flex;
   align-items: center;
-  
+
   &__indicator {
     background-size: contain;
     border-radius: 50%;
@@ -134,7 +134,7 @@ $default-box-padding: 1.5rem 2rem;
   color: $grey-placeholder;
   cursor: pointer;
   font-weight: 600;
-  
+
   &:hover {
     @include hover-color($grey-placeholder);
   }
@@ -241,7 +241,7 @@ $default-box-padding: 1.5rem 2rem;
     position: relative;
     top: 2px;
   }
-  
+
   &__comment-icon {
     @include material-icon();
     @if $isReversed == true {
@@ -450,7 +450,7 @@ $default-box-padding: 1.5rem 2rem;
     display: inline-flex;
     padding: .5rem 1rem;
     width: 100%;
-    
+
     &:hover {
       cursor: pointer;
       background: $grey-light;
@@ -464,13 +464,13 @@ $default-box-padding: 1.5rem 2rem;
   &-label {
     flex: 1;
   }
-  
+
   &-toggle {
     @include material-icon();
     width: 1.8rem;
     margin-right: .5rem;
     flex-shrink: 0;
-    
+
     &--spinning {
       @include spinning();
     }
@@ -509,7 +509,7 @@ $default-box-padding: 1.5rem 2rem;
 
 @mixin navbar-actions() {
   display: flex;
-  
+
   &__action {
     &:not(:last-child) {
       margin-right: 5px;
@@ -525,5 +525,22 @@ $default-box-padding: 1.5rem 2rem;
     color: $grey-dark;
     font-size: 3rem;
     vertical-align: middle;
+  }
+}
+
+@mixin modal-dropdown-overflow($width) {
+
+  .ac-form-select, .ac-autocomplete, .ac-autocomplete__select {
+    position: initial;
+
+    .ac-select__options, .Select-menu-outer {
+      width: $width;
+      max-width: $width;
+    }
+  }
+
+  .ac-autocomplete__search {
+    right: 2rem;
+    top: -0.25rem;
   }
 }
