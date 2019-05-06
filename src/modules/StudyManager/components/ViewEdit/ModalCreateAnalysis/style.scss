@@ -22,10 +22,13 @@
 
 @import 'styles/vars-and-mixins.scss';
 
+$width: 26rem;
+
 .#{$namespace} {
 
 	&study-form-create-analysis {
-		width: 260px;
+		width: $width;
+		@include modal-dropdown-overflow($width);
 	}
 
 }

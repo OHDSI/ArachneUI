@@ -73,6 +73,7 @@ const paths = {
   insightResultFile: ({ submissionId, fileId }) => `/analysis-execution/submissions/${submissionId}/insight/results/${fileId}`,
   insight: ({ submissionId }) => `/analysis-execution/submissions/${submissionId}/insight`,
   profile: commonPaths.profile,
+  workspace: commonPaths.workspace,
 };
 
 function importEntityPathByType(type) {
