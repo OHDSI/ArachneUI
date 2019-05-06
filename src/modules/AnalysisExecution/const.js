@@ -258,6 +258,7 @@ const analysisTypes = keyMirror({
   COHORT_CHARACTERIZATION: null,
   ESTIMATION: null,
   PREDICTION: null,
+  COHORT_PATHWAY: null,
 });
 
 const submissionGroupsPageSize = 5;

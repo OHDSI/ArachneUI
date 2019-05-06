@@ -23,13 +23,26 @@
 import React from 'react';
 import BEMHelper from 'services/BemHelper';
 import './style.scss';
+import { sunburst } from '@ohdsi/atlascharts/dist/atlascharts.umd';
+import Chart from 'components/Reports/Chart';
 
-export default function SummaryPathway({ className }) {
+export default function SummaryPathway({ className, pathways, sunburstChart }) {
   const classes = BEMHelper('summary-pathway');
 
   return (
     <div {...classes({ extra: className })}>
       <div {...classes('result-info')}>
+        <Chart
+            title = "Sunburst plot"
+            render = {(width, element) => {
+              sunburstChart.render(pathways, element, width, width /3,
+                {
+                  minHeight: 300,
+                  format: {
+                  },
+                });
+            }}
+        />
       </div>
     </div>
   )

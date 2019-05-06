@@ -22,6 +22,10 @@
 
 import { ContainerBuilder, get } from 'services/Utils';
 import SumaryPathway from './presenter';
+import { sunburst } from '@ohdsi/atlascharts/dist/atlascharts.umd';
+import PathwaySummarySelectorsBuilder from './selectors';
+
+const selectors = (new PathwaySummarySelectorsBuilder()).build();
 
 export default class SummayPathwayBuilder extends ContainerBuilder {
 
@@ -31,8 +35,12 @@ export default class SummayPathwayBuilder extends ContainerBuilder {
 
   mapStateToProps(state, ownProps)
   {
-    return {
+    const pathwayGroups = get(ownProps, 'resultInfo.pathwayGroups', [], 'Array');
+    const eventCodes = get(ownProps, 'resultInfo.eventCodes', [], 'Array');
 
+    return {
+      pathways: [],
+      sunburstChart: new sunburst(),
     };
   }
 };
