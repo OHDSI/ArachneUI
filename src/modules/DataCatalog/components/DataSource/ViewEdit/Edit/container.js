@@ -75,7 +75,6 @@ class DataCatalogEditBuilder extends ContainerBuilder {
       isDenied,
       isVirtual,
       isCDM,
-      isManual,
       canUploadAchillesResults: isDatanodeRegistered && !isVirtual && isCDM && permissions.UPLOAD_ACHILLES_REPORTS,
     };
   }

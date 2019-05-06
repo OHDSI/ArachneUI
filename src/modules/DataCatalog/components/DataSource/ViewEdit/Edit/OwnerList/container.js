@@ -26,6 +26,7 @@ import {userInfoConvert} from 'components/LabelUser';
 import presenter from './presenter';
 import {modal} from 'modules/DataCatalog/const';
 import {ModalUtils} from "arachne-ui-components";
+import { executionPolicy } from 'const/dataSource';
 
 /** @augments { Component<any, any> } */
 export class UsersList extends Component {
@@ -61,8 +62,21 @@ export default class UsersListBuilder extends ContainerBuilder {
 	mapStateToProps(state) {
 		const dataNodeId = get(state, 'dataCatalog.dataSource.data.result.dataNode.id');
 		const userList = get(state, 'dataCatalog.dataNodeUsers.data') || [];
+
+		let isManualSource = false;
+		const execPolicy = get(state, 'dataCatalog.dataSource.data.result.executionPolicy', '');
+
+		if (dataNodeId) { // If data is loaded
+			if (!execPolicy) { // By default, we assume that DS is Manual
+				isManualSource = true;
+			} else { // If there is info on executionPolicy provided - check the type
+				isManualSource = execPolicy === executionPolicy.MANUAL;
+			}
+		}
+
 		return {
 			dataNodeId,
+			isManualSource,
 			userList: userList.map(u => userInfoConvert(u)),
 			isLoading: get(state, 'dataCatalog.dataNodeUsers.isLoading') || false,
 		};

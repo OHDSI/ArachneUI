@@ -27,7 +27,7 @@ import People from 'components/People';
 
 require('./style.scss');
 
-export default function UsersList({isLoading, userList, openModal, removeDataOwner}) {
+export default function UsersList({isLoading, isManualSource, userList, openModal, removeDataOwner}) {
 	const classes = new BEMHelper('data-source-users');
 
 	return (
@@ -35,9 +35,9 @@ export default function UsersList({isLoading, userList, openModal, removeDataOwn
 			<People
 				title="Data owners"
 				userList={userList}
-				remove={userList.length > 1 ? removeDataOwner : null}
+				remove={(userList.length > 1 && isManualSource) ? removeDataOwner : null}
 			>
-				<ListItem label="Add owner" mods="add" onClick={openModal}/>
+				{isManualSource ? <ListItem label="Add owner" mods="add" onClick={openModal}/> : null}
 			</People>
         	<LoadingPanel active={isLoading} />
 		</div>

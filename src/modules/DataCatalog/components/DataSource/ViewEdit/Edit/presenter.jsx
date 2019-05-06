@@ -78,10 +78,7 @@ class Edit {
                   ? [
                     <div className='col-xs-6 col-md-6'>
                       <AttributeList />
-						{isManual ?
-							<OwnerList/>
-							: null
-						}
+                      <OwnerList/>
                     </div>,
                     permissions.EDIT_ACHILLES_REPORT_PERMISSION ? <div className='col-xs-6 col-md-6'>
                       {this.getAchillesSettings()}
