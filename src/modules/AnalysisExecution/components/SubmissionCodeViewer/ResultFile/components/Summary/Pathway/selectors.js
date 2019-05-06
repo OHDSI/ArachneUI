@@ -21,6 +21,7 @@
  */
 
 import { get } from 'services/Utils';
+import { createSelector } from 'reselect';
 import { util } from '@ohdsi/atlascharts/dist/atlascharts.umd';
 
 class PathwaySummarySelectorsBuilder {
@@ -37,8 +38,12 @@ class PathwaySummarySelectorsBuilder {
 		return { totalPathways: this.sumChildren(pathway) };
 	}
 
-	getPathways(pathwayGroups) {
-		return pathwayGroups.map(pathwayGroup => {
+	getRawPathwayGroups(state) {
+		return get(state, 'resultInfo.pathwayGroups', [], 'Array');
+	}
+
+	buildSelectorForPathways() {
+		return createSelector([this.getRawPathwayGroups], pathwayGroups => pathwayGroups.map(pathwayGroup => {
 			const pathway = this.buildHierarchy(pathwayGroup.pathways);
 			const targetCohort = {};
 			const summary = {...this.summarizeHierarchy(pathway), cohortPersons: pathwayGroup.targetCohortCount, pathwayPersons: pathwayGroup.totalPathwaysCount};
@@ -49,12 +54,16 @@ class PathwaySummarySelectorsBuilder {
 				personsReported: summary.pathwayPersons,
 				personsReportedPct: summary.pathwayPersons / summary.cohortPersons,
 			};
-		});
+		}));
+	}
+
+	getEventCohorts() {
+
 	}
 
   build() {
     return {
-    	getPathways, 
+    	getPathways: this.buildSelectorForPathways(), 
     };
   }
 }
