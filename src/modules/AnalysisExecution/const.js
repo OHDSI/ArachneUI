@@ -79,7 +79,8 @@ const paths = {
 function importEntityPathByType(type) {
   switch (type) {
     case 'COHORT': return 'cohorts';
-    case 'COHORT_CHARACTERIZATION': return 'cohorts';
+    case 'COHORT_HERACLES': return 'cohorts';
+    case 'COHORT_CHARACTERIZATION': return 'cohort-characterizations';
     case 'ESTIMATION': return 'estimations';
     case 'PREDICTION': return 'predictions';
     case 'INCIDENCE': return 'incidence-rates';
@@ -198,12 +199,13 @@ const submissionActionTypes = keyMirror({
   HIDE: null,
 });
 
-const importableAnalysisTypes = ['COHORT', 'ESTIMATION', 'PREDICTION', 'COHORT_CHARACTERIZATION', 'INCIDENCE', 'COHORT_PATHWAY'];
+const importableAnalysisTypes = ['COHORT', 'ESTIMATION', 'PREDICTION', 'COHORT_HERACLES', 'COHORT_CHARACTERIZATION', 'INCIDENCE', 'COHORT_PATHWAY'];
 const analysisTypeNames = {
   COHORT: 'cohort',
   ESTIMATION: 'PLE analysis',
   PREDICTION: 'PLP analysis',
-  COHORT_CHARACTERIZATION: 'cohort',
+  COHORT_HERACLES: 'cohort',
+  COHORT_CHARACTERIZATION: 'cohort characterization',
   INCIDENCE: 'incidence rates',
   CUSTOM: 'custom',
   COHORT_PATHWAY: 'cohort pathway',
@@ -212,7 +214,8 @@ const pluralAnalysisTypeNames = {
   COHORT: 'cohorts',
   ESTIMATION: 'PLE analyses',
   PREDICTION: 'PLP analyses',
-  COHORT_CHARACTERIZATION: 'cohorts',
+  COHORT_HERACLES: 'cohorts',
+  COHORT_CHARACTERIZATION: 'cohort characterizations',
   INCIDENCE: 'incidence rates',
   CUSTOM: 'custom',
   COHORT_PATHWAY: 'cohort pathways',
