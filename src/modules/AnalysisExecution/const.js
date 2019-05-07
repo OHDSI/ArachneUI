@@ -79,7 +79,7 @@ const paths = {
 function importEntityPathByType(type) {
   switch (type) {
     case 'COHORT': return 'cohorts';
-    case 'COHORT_HERACLES': return 'cohorts';
+    case 'COHORT_HERACLES': return 'cohort-heracles';
     case 'COHORT_CHARACTERIZATION': return 'cohort-characterizations';
     case 'ESTIMATION': return 'estimations';
     case 'PREDICTION': return 'predictions';
@@ -203,7 +203,7 @@ const analysisTypeNames = {
   COHORT: 'cohort',
   ESTIMATION: 'PLE analysis',
   PREDICTION: 'PLP analysis',
-  COHORT_HERACLES: 'cohort',
+  COHORT_HERACLES: 'cohort heracles analysis',
   COHORT_CHARACTERIZATION: 'cohort characterization',
   INCIDENCE: 'incidence rates',
   CUSTOM: 'custom',
@@ -212,7 +212,7 @@ const pluralAnalysisTypeNames = {
   COHORT: 'cohorts',
   ESTIMATION: 'PLE analyses',
   PREDICTION: 'PLP analyses',
-  COHORT_HERACLES: 'cohorts',
+  COHORT_HERACLES: 'cohort heracles analyses',
   COHORT_CHARACTERIZATION: 'cohort characterizations',
   INCIDENCE: 'incidence rates',
   CUSTOM: 'custom',
