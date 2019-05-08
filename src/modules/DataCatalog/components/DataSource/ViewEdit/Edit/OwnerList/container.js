@@ -78,7 +78,7 @@ export default class UsersListBuilder extends ContainerBuilder {
 			dataNodeId,
 			isManualSource,
 			userList: userList.map(u => userInfoConvert(u)),
-			isLoading: get(state, 'dataCatalog.dataNodeUsers.isLoading') || false,
+			isLoading: get(state, 'dataCatalog.dataNodeUsers.isLoading') || get(state, 'dataCatalog.dataNodeUsers.isDeleting') || false,
 		};
 	}
 
