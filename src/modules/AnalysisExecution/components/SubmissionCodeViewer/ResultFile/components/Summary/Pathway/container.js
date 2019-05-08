@@ -39,7 +39,7 @@ export default class SummayPathwayBuilder extends ContainerBuilder {
     const eventCodes = get(ownProps, 'resultInfo.eventCodes', [], 'Array');
 
     return {
-      pathways: selectors.getPathways(),
+      pathways: selectors.getPathways(state),
       sunburstChart: new sunburst(),
     };
   }

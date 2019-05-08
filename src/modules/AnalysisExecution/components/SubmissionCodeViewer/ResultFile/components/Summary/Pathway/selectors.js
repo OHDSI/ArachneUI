@@ -27,7 +27,7 @@ import { util } from '@ohdsi/atlascharts/dist/atlascharts.umd';
 class PathwaySummarySelectorsBuilder {
 
 	buildHierarchy(pathways) {
-		util.buildHierarchy(pathways, d => d.path, d => d.personCount);
+		return util.buildHierarchy(pathways, d => d.path, d => d.personCount);
 	}
 
 	sumChildren(node) {
@@ -39,25 +39,39 @@ class PathwaySummarySelectorsBuilder {
 	}
 
 	getRawPathwayGroups(state) {
-		return get(state, 'resultInfo.pathwayGroups', [], 'Array');
+		return get(state, 'analysisExecution.submissionSummary.submission.data.resultInfo.pathwayGroups', [], 'Array');
+	}
+
+	getRawDesign(state) {
+		return get(state, 'analysisExecution.submissionSummary.submission.data.resultInfo.design', {}, 'Object');	
+	}
+
+	getRawEventCohorts(state) {
+		return get(state, 'analysisExecution.submissionSummary.submission.data.resultInfo.eventCodes', [], 'Array');		
 	}
 
 	buildSelectorForPathways() {
-		return createSelector([this.getRawPathwayGroups], pathwayGroups => pathwayGroups.map(pathwayGroup => {
-			const pathway = this.buildHierarchy(pathwayGroup.pathways);
-			const targetCohort = {};
-			const summary = {...this.summarizeHierarchy(pathway), cohortPersons: pathwayGroup.targetCohortCount, pathwayPersons: pathwayGroup.totalPathwaysCount};
-			return {
-				pathway,
-				targetCohortName: targetCohort.name,
-				targetCohortCount: summary.cohortPersons,
-				personsReported: summary.pathwayPersons,
-				personsReportedPct: summary.pathwayPersons / summary.cohortPersons,
-			};
-		}));
+		return createSelector([this.getRawPathwayGroups, this.getRawDesign], 
+			(pathwayGroups, design) => pathwayGroups.map(pathwayGroup => {
+				pathwayGroup.pathways.forEach(pw => {
+					if (pw.path.split("-").length < design.maxDepth) {
+						pw.path = pw.path + "-end";
+					}
+				})
+				const pathway = this.buildHierarchy(pathwayGroup.pathways);
+				const targetCohort = design.targetCohorts.find(c => pathwayGroup.targetCohortId);
+				const summary = {...this.summarizeHierarchy(pathway), cohortPersons: pathwayGroup.targetCohortCount, pathwayPersons: pathwayGroup.totalPathwaysCount};
+				return {
+					pathway,
+					targetCohortName: targetCohort.name,
+					targetCohortCount: summary.cohortPersons,
+					personsReported: summary.pathwayPersons,
+					personsReportedPct: summary.pathwayPersons / summary.cohortPersons,
+				};
+			}));
 	}
 
-	getEventCohorts() {
+	buildSelectorForEventCohorts() {
 
 	}
 
