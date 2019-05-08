@@ -182,6 +182,10 @@ module.exports = function (env) {
             },
           ]
         },
+        {
+          test: /\.less$/,
+          use: 'null-loader'
+        }
       ],
     },
     plugins: plugins,
