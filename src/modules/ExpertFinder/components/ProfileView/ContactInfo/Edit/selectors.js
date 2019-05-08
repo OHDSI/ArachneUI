@@ -31,6 +31,7 @@ const getProvinces = createSelector(
   rawList => rawList.map(item => ({
     value: item.id,
     label: item.name,
+    isoCode: item.isoCode,
   }))
 );
 
@@ -39,6 +40,7 @@ const getCountries = createSelector(
   rawList => rawList.map(item => ({
     value: item.id,
     label: item.name,
+    isoCode: item.isoCode,
   }))
 );
 

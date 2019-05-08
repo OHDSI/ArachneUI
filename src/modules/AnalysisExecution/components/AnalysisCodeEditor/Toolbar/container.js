@@ -33,7 +33,7 @@ function mapStateToProps(state) {
   const breadcrumbs = get(state, 'analysisExecution.breadcrumbs.queryResult.result');
   const isWorkspace = get(state, 'modules.active') === 'workspace';
 
-  const breadcrumbList = buildBreadcrumbList(breadcrumbs, !isWorkspace);
+  const breadcrumbList = buildBreadcrumbList(breadcrumbs, isWorkspace);
   const backUrl = breadcrumbList.length > 0 ? breadcrumbList[breadcrumbList.length - 1].link : null;
 
   return {

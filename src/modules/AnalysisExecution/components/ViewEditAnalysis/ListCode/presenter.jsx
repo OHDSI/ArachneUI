@@ -254,9 +254,7 @@ export default class ListCode extends Component {
         {this.isSubmittable &&
           this.getActions()
         }
-        {this.isLoading &&
-          <LoadingPanel active={this.isLoading} />
-        }
+        <LoadingPanel active={this.isLoading} />
       </Panel>
     );
   }

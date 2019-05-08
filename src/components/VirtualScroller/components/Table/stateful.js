@@ -44,11 +44,11 @@ export default class VirtualTable extends Component {
     };
     this.setContainer = this.setContainer.bind(this);
   }
-  
+
   setContainer(container) {
-    if (container && !this.state.container) {
+    if (container) {
       const rect = container.getBoundingClientRect();
-      if (rect.height === 0) {
+      if (rect.height === 0 || this.state.containerHeight === rect.height) {
         return false;
       }
       if (this.props.list === true) {
@@ -60,7 +60,7 @@ export default class VirtualTable extends Component {
       });
     }
   }
-  
+
   render() {
     return presenter({
       ...this.props,

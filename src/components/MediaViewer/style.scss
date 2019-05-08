@@ -36,6 +36,7 @@ $pdf-background-color: #fafafa;
     z-index: $z-index-modal-overlay;
 
 
+
     &__actions {
       display: flex;
       margin-left: auto;
@@ -62,6 +63,8 @@ $pdf-background-color: #fafafa;
       @include title();
       margin-bottom: 0.5rem;
     }
+
+    @include multiline-tooltip();
   }
 
   &media-viewer {

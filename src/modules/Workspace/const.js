@@ -17,10 +17,11 @@
  * Authors: Anton Gackovka
  * Created: June 8, 2018
  */
+import { paths as commonPaths } from 'const/paths';
 
 const paths = {
-  workspace: () => '/workspace/home',
   userWorkspace: userId => `/workspace/user/${userId}`,
+  workspace: commonPaths.workspace,
 };
 
 const apiPaths = {
