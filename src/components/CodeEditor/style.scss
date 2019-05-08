@@ -51,7 +51,7 @@
 			display: flex;
 			flex-direction: column;
 		}
-		
+
 		&__title {
 			@include title();
 			margin-bottom: 0.5rem;
@@ -73,7 +73,9 @@
   		&:not(:first-child) {
   			margin-left: 7px;
   		}
-  	}
+		}
+
+		@include multiline-tooltip();
   }
 }
 
