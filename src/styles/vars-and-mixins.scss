@@ -551,3 +551,9 @@ $default-box-padding: 1.5rem 2rem;
     text-align: left;
   }
 }
+
+@mixin text-ellipsis() {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
