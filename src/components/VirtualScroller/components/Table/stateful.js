@@ -64,10 +64,10 @@ export default class VirtualTable extends Component {
   get columns() {
     const { columns = [] } = this.props;
     return columns.map(col => {
-      const { name } = col;
+      const { name = '' } = col;
       const c = document.createElement('canvas').getContext('2d');
       c.font = '14px Montserrat';
-      const mt = c.measureText(name.toUpperCase());
+      const mt = c.measureText(String(name).toUpperCase());
       return {
         ...col,
         width: mt.width + 32,
