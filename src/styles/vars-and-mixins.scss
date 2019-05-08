@@ -544,3 +544,10 @@ $default-box-padding: 1.5rem 2rem;
     top: -0.25rem;
   }
 }
+
+@mixin multiline-tooltip() {
+  [data-tootik]:after, .ac-tooltip:after {
+    white-space: pre;
+    text-align: left;
+  }
+}
