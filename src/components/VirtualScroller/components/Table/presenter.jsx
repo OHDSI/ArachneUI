@@ -34,6 +34,7 @@ function VirtualTable(props) {
     data = [],
     columns = [],
   } = props;
+
   return (
       <div
         {...classes()}

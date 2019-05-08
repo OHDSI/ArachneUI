@@ -44,7 +44,7 @@
         border-color: $grey-medium;
       }
 
-      &-Cell__value div,  {
+      &-Cell__value div {
         @include text-ellipsis();
       }
 
