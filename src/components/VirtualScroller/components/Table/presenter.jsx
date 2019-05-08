@@ -48,7 +48,6 @@ function VirtualTable(props) {
           enableCellSelect={false}
           enableRowSelect={false}
           enableCellAutoFocus={false}
-          rowHeight={47}
           minColumnWidth={200}
         />
       </div>
