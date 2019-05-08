@@ -142,10 +142,10 @@ class ActionFactory {
   onAfterFind(data) {}
 
   buildFind({ resultDataPath = '' } = {}) {
-    return (urlParams) => (dispatch) => {
+    return (urlParams, getParams) => (dispatch) => {
       this.safeDispatch(dispatch, this.onBeforeFind);
       return api.doGet(
-        this.resolveUrl(urlParams),
+        this.resolveUrl(urlParams, getParams),
         (res) => {
           const result = resultDataPath ? get(res, resultDataPath) : res;
           this.safeDispatch(
@@ -212,11 +212,11 @@ class ActionFactory {
   onAfterDelete(data) {}
 
   buildDeleteActionCreator() {
-    return urlParams => (dispatch) => {
+    return (urlParams, data) => (dispatch) => {
       this.safeDispatch(dispatch, this.onBeforeDelete);
       return api.doDelete(
         this.resolveUrl(urlParams),
-        {},
+        data,
         () => {
           this.safeDispatch(dispatch, this.onAfterDelete);
         }

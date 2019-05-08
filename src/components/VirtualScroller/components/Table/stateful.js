@@ -44,11 +44,11 @@ export default class VirtualTable extends Component {
     };
     this.setContainer = this.setContainer.bind(this);
   }
-  
+
   setContainer(container) {
-    if (container && !this.state.container) {
+    if (container) {
       const rect = container.getBoundingClientRect();
-      if (rect.height === 0) {
+      if (rect.height === 0 || this.state.containerHeight === rect.height) {
         return false;
       }
       if (this.props.list === true) {
@@ -60,12 +60,27 @@ export default class VirtualTable extends Component {
       });
     }
   }
-  
+
+  get columns() {
+    const { columns = [] } = this.props;
+    return columns.map(col => {
+      const { name = '' } = col;
+      const c = document.createElement('canvas').getContext('2d');
+      c.font = '14px Montserrat';
+      const mt = c.measureText(String(name).toUpperCase());
+      return {
+        ...col,
+        width: mt.width + 32,
+      };
+    });
+  }
+
   render() {
     return presenter({
       ...this.props,
       ...this.state,
       setContainer: this.setContainer,
+      columns: this.columns,
     });
   }
 }

@@ -38,7 +38,7 @@ function VirtualTable(props) {
   return (
       <div
         {...classes()}
-        ref={setContainer}
+        ref={el => setContainer(el)}
       >
         <ReactDataGrid
           columns={columns}
@@ -48,7 +48,6 @@ function VirtualTable(props) {
           enableCellSelect={false}
           enableRowSelect={false}
           enableCellAutoFocus={false}
-          rowHeight={47}
           minColumnWidth={200}
         />
       </div>

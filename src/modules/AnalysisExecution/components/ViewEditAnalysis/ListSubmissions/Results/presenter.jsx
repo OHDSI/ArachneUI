@@ -56,10 +56,15 @@ export default class Results extends Component {
     return <this.BaseSpan string={pluralize('document', this.resultFilesCount, true)}/>;
   };
 
-  CohortCharacterization = () => {
+  CohortHeracles = () => {
     const persons = get(this.resultInfo, 'persons') || 0;
     const reports = get(this.resultInfo, 'reports') || 0;
     return <this.BaseSpan string={`${pluralize('person', persons, true)}, ${pluralize('report', reports, true)}`}/>;
+  };
+
+  CohortCharacterization = () => {
+    const reports = get(this.resultInfo, 'reports') || 0;
+    return <this.BaseSpan string={pluralize('report', reports, true)}/>;
   };
 
   Incidence = () => {
@@ -89,6 +94,9 @@ export default class Results extends Component {
       case 'COHORT':
         element = <this.Cohort/>;
         break;
+      case 'COHORT_HERACLES':
+        element = <this.CohortHeracles />;
+        break;  
       case 'COHORT_CHARACTERIZATION':
         element = <this.CohortCharacterization/>;
         break;

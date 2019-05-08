@@ -20,6 +20,7 @@
 
 const paths = {
   profile: id => `/expert-finder/profile/${id}`,
+  workspace: () => '/workspace/home',
 };
 
 export {
