@@ -46,9 +46,9 @@ export default class VirtualTable extends Component {
   }
 
   setContainer(container) {
-    if (container && !this.state.container) {
+    if (container) {
       const rect = container.getBoundingClientRect();
-      if (rect.height === 0) {
+      if (rect.height === 0 || this.state.containerHeight === rect.height) {
         return false;
       }
       if (this.props.list === true) {

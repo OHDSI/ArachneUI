@@ -38,7 +38,7 @@ function VirtualTable(props) {
   return (
       <div
         {...classes()}
-        ref={setContainer}
+        ref={el => setContainer(el)}
       >
         <ReactDataGrid
           columns={columns}
