@@ -61,7 +61,7 @@ export default class VirtualTable extends Component {
     }
   }
 
-  get columns() {
+  getAdpativeColumns() {
     const { columns = [] } = this.props;
     return columns.map(col => {
       const { name = '' } = col;
@@ -76,11 +76,14 @@ export default class VirtualTable extends Component {
   }
 
   render() {
-    return presenter({
+    const props = {
       ...this.props,
       ...this.state,
       setContainer: this.setContainer,
-      columns: this.columns,
-    });
+    };
+    if (this.props.adaptiveColumns === true) {
+      props.columns = this.getAdpativeColumns();
+    }
+    return presenter(props);
   }
 }
