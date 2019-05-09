@@ -23,10 +23,7 @@
 import { Component, PropTypes } from 'react';
 import presenter from './presenter';
 
-const defaultHeight = 500;
-const rowHeight = 47;
-const minRowsCount = Math.ceil(defaultHeight / rowHeight);
-const scrollbarHeight = 16;
+const rowHeight = 35;
 
 export default class VirtualTable extends Component {
   static get propTypes() {
@@ -40,7 +37,7 @@ export default class VirtualTable extends Component {
     const rowsCount = props.data.length + 1; // plus header line
     this.state = {
       container: null,
-      containerHeight: rowsCount > minRowsCount ? defaultHeight : rowsCount * rowHeight + scrollbarHeight,
+      containerHeight: rowsCount * rowHeight
     };
     this.setContainer = this.setContainer.bind(this);
   }
