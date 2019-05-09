@@ -48,16 +48,20 @@ export default class VirtualTable extends Component {
   setContainer(container) {
     if (container) {
       const rect = container.getBoundingClientRect();
-      if (rect.height === 0 || this.state.containerHeight === rect.height) {
-        return false;
-      }
+
+      let containerHeight = rect.height;
       if (this.props.list === true) {
-        rect.height += rowHeight; // compensate forcibly hidden header
+        containerHeight += rowHeight; // compensate forcibly hidden header
       }
-      this.setState({
-        container,
-        containerHeight: rect.height,
-      });
+
+      if (rect.height === 0 || this.state.containerHeight === containerHeight) {
+        return false;
+      } else {
+        this.setState({
+          container,
+          containerHeight,
+        });
+      }
     }
   }
 
