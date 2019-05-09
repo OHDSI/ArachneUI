@@ -48,7 +48,7 @@ function VirtualTable(props) {
           enableCellSelect={false}
           enableRowSelect={false}
           enableCellAutoFocus={false}
-          minColumnWidth={200}
+          resizable={true}
         />
       </div>
   );

@@ -28,6 +28,8 @@
     width: 100%;
     background: $white;
     overflow: auto;
+    height: 100%;
+    position: absolute;
 
     &__summary-block {
       display: flex;
@@ -42,10 +44,11 @@
 
     &__panel {
       flex-basis: 50%;
-      margin: 1rem;
+      padding: 1rem;
 
       &--wide {
         flex-basis: 100%;
+        max-width: 100%;
       }
       &--narrow {
         margin-right: calc(50% + 1rem);
