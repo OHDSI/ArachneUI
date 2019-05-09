@@ -31,11 +31,12 @@ function CsvViewer(props) {
   const {
     columns,
     rows,
+    adaptiveColumns = false,
   } = props;
 
   return (
     <div {...classes()}>
-      <VirtualTable columns={columns} data={rows} adaptiveColumns={true} />
+      <VirtualTable columns={columns} data={rows} adaptiveColumns={adaptiveColumns} />
     </div>
   );
 }
