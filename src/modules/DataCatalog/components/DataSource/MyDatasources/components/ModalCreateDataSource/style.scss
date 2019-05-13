@@ -21,10 +21,14 @@
   */
 
 @import 'styles/vars-and-mixins.scss';
- 
-.#{$namespace} { 
+
+$width: 40rem;
+
+.#{$namespace} {
   &modal-create-data-source {
-    width: 400px;
+    width: $width;
+
+    @include modal-dropdown-overflow($width);
 
     & .ac-form {
       &__group-title {
@@ -34,4 +38,4 @@
     }
   }
 }
-  
+
