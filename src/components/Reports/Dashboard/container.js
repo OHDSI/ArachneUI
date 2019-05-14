@@ -66,13 +66,13 @@ export default class DashboardContainerBuilder extends ContainerBuilder {
   mapStateToProps(state, ownProps) {
     const {
       ageAtFirstObservation,
-      cumulativeDuration,
       genderData,
       summary,
       characterizationDate,
     } = ownProps;
     let {
       observedByMonth,
+      cumulativeDuration,
     } = ownProps;
 
     if (observedByMonth) {
@@ -82,10 +82,17 @@ export default class DashboardContainerBuilder extends ContainerBuilder {
       );
     }
 
+    if (observedByMonth) {
+      cumulativeDuration = convertDataToLineChartData(
+        cumulativeDuration,
+        cumulativeDurationDTO
+      );
+    }
+
     return {
       ageAtFirstObservation,
       rawcumulativeDuration: cumulativeDuration,
-      cumulativeDuration: convertDataToLineChartData(cumulativeDuration, cumulativeDurationDTO),
+      cumulativeDuration,
       genderData: ReportUtils.prepareChartDataForDonut(genderData),
       rawGenderData: genderData,
       observedByMonth,
