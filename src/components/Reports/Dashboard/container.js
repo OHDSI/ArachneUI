@@ -82,7 +82,7 @@ export default class DashboardContainerBuilder extends ContainerBuilder {
       );
     }
 
-    if (observedByMonth) {
+    if (cumulativeDuration) {
       cumulativeDuration = convertDataToLineChartData(
         cumulativeDuration,
         cumulativeDurationDTO
