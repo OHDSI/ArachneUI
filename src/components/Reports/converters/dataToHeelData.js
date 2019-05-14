@@ -20,11 +20,13 @@
  *
  */
 
+import { get } from 'services/Utils';
+
 export default (rawData, DTO = {
   valueField: 'ATTRIBUTEVALUE',
 }) => {
   const data = [];
-  rawData[DTO.valueField].forEach((entity) => {
+  get(rawData, DTO.valueField, []).forEach((entity) => {
     const row = entity.split(':');
     data.push({
       type: {
