@@ -21,7 +21,7 @@
  */
 
 import ReportUtils from 'components/Reports/Utils';
-import { convertDataToMonthLineChartData } from 'components/Reports/converters';
+import { convertDataToMonthLineChartData, convertDataToLineChartData } from 'components/Reports/converters';
 import {
   donut,
   histogram,
@@ -43,6 +43,11 @@ const observedByMonthDTO = {
   yPercent: 'PERCENT_VALUE',
 };
 
+const cumulativeDurationDTO = {
+  yValue: 'Y_PERCENT_PERSONS',
+  xValue: 'X_LENGTH_OF_OBSERVATION',
+};
+
 export default class DashboardContainerBuilder extends ContainerBuilder {
   constructor() {
     super();
@@ -61,13 +66,13 @@ export default class DashboardContainerBuilder extends ContainerBuilder {
   mapStateToProps(state, ownProps) {
     const {
       ageAtFirstObservation,
-      cumulativeDuration,
       genderData,
       summary,
       characterizationDate,
     } = ownProps;
     let {
       observedByMonth,
+      cumulativeDuration,
     } = ownProps;
 
     if (observedByMonth) {
@@ -77,10 +82,19 @@ export default class DashboardContainerBuilder extends ContainerBuilder {
       );
     }
 
+    if (cumulativeDuration) {
+      cumulativeDuration = convertDataToLineChartData(
+        cumulativeDuration,
+        cumulativeDurationDTO
+      );
+    }
+
     return {
       ageAtFirstObservation,
+      rawcumulativeDuration: cumulativeDuration,
       cumulativeDuration,
       genderData: ReportUtils.prepareChartDataForDonut(genderData),
+      rawGenderData: genderData,
       observedByMonth,
       summary,
       characterizationDate,
