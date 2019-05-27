@@ -27,9 +27,45 @@
     @include summary-result-block();
     @include bordered-table();
 
+   	display: flex;
+
     &__result-info {
       display: initial;
       border-top: 1px solid $grey-medium;
+      width: 100%;
     }
+
+	&__chart {
+		flex-grow: 1;
+	}
+
+	&__legend-section {
+		padding: 1rem;
+
+		h5 {
+			font-size: 1.6rem;
+		    border-bottom: 1px #a0a0a0 solid;
+		    margin-bottom: 0.5rem;
+		}
+		li {
+			padding: 0.5rem 0;
+			span {
+				font-weight: bold;
+			}
+		}
+	}
+	&__cohort-name {
+		margin-bottom: 1rem;
+		font-weight: bolder;
+	}
+	&__legend-symbol {
+		width: 1rem;
+		height: 1rem;
+		margin-right: 1.5rem;
+	}
+  }
+
+  &chart {
+  	margin-top: 0;
   }
 }

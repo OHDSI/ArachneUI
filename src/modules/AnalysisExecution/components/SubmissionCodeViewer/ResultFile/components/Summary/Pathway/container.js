@@ -21,26 +21,35 @@
  */
 
 import { ContainerBuilder, get } from 'services/Utils';
-import SumaryPathway from './presenter';
+import SummaryPathway from './presenter';
 import { sunburst } from '@ohdsi/atlascharts/dist/atlascharts.umd';
 import PathwaySummarySelectorsBuilder from './selectors';
+import actions from 'actions';
 
 const selectors = (new PathwaySummarySelectorsBuilder()).build();
 
 export default class SummayPathwayBuilder extends ContainerBuilder {
 
   getComponent() {
-    return SumaryPathway;
+    return SummaryPathway;
   }
 
   mapStateToProps(state, ownProps)
   {
-    const pathwayGroups = get(ownProps, 'resultInfo.pathwayGroups', [], 'Array');
-    const eventCodes = get(ownProps, 'resultInfo.eventCodes', [], 'Array');
+    const details = get(state, 'analysisExecution.pathwaySummary.details', [], 'Array');
 
     return {
       pathways: selectors.getPathways(state),
       sunburstChart: new sunburst(),
+      details,
     };
   }
+
+  getMapDispatchToProps() 
+  {
+    return {
+      loadPathwayDetails: actions.analysisExecution.pathwaySummary.getDetails,
+    };
+  }
+
 };

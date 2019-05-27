@@ -23,6 +23,7 @@
 import { get } from 'services/Utils';
 import { createSelector } from 'reselect';
 import { util } from '@ohdsi/atlascharts/dist/atlascharts.umd';
+import * as d3 from 'd3';
 
 class PathwaySummarySelectorsBuilder {
 
@@ -46,13 +47,13 @@ class PathwaySummarySelectorsBuilder {
 		return get(state, 'analysisExecution.submissionSummary.submission.data.resultInfo.design', {}, 'Object');	
 	}
 
-	getRawEventCohorts(state) {
+	getRawEventCodes(state) {
 		return get(state, 'analysisExecution.submissionSummary.submission.data.resultInfo.eventCodes', [], 'Array');		
 	}
 
 	buildSelectorForPathways() {
-		return createSelector([this.getRawPathwayGroups, this.getRawDesign], 
-			(pathwayGroups, design) => pathwayGroups.map(pathwayGroup => {
+		return createSelector([this.getRawPathwayGroups, this.getRawEventCodes, this.getRawDesign], 
+			(pathwayGroups, eventCodes, design) => pathwayGroups.map(pathwayGroup => {
 				pathwayGroup.pathways.forEach(pw => {
 					if (pw.path.split("-").length < design.maxDepth) {
 						pw.path = pw.path + "-end";
@@ -61,18 +62,42 @@ class PathwaySummarySelectorsBuilder {
 				const pathway = this.buildHierarchy(pathwayGroup.pathways);
 				const targetCohort = design.targetCohorts.find(c => pathwayGroup.targetCohortId);
 				const summary = {...this.summarizeHierarchy(pathway), cohortPersons: pathwayGroup.targetCohortCount, pathwayPersons: pathwayGroup.totalPathwaysCount};
+				const colorScheme = d3.scaleOrdinal(eventCodes.length > 10 ? d3.schemeCategory20 : d3.schemeCategory10);
+				const fixedColors = {"end": "rgba(185, 184, 184, 0.23)"};
+				const colors = (d) => (fixedColors[d] || colorScheme(d));
+
+				const getAncestors = (node) => {
+					var path = [];
+					var current = node;
+					while (current.parent) {
+						path.unshift(current);
+						current = current.parent;
+					}
+					return path;
+				}
+
+				const getPathToNode = (node) => {
+					let ancestors = getAncestors(node);
+					let pathway = ancestors.map(p => (p.data.name == "end") ? {names: [{name: "end", color: colors("end")}], count: p.value} : {
+						names: eventCodes.filter(c => (c.code & Number.parseInt(p.data.name)) > 0)
+										.map(ec => ({name: ec.name, color: colors(ec.code)})), count: p.value});
+					return pathway;
+				}
+
+				const tooltips = (d) => getPathToNode(d);
 				return {
 					pathway,
+					tooltips,
 					targetCohortName: targetCohort.name,
 					targetCohortCount: summary.cohortPersons,
 					personsReported: summary.pathwayPersons,
 					personsReportedPct: summary.pathwayPersons / summary.cohortPersons,
+					eventCodes,
+					summary,
+					colors,
+					getPathToNode,
 				};
 			}));
-	}
-
-	buildSelectorForEventCohorts() {
-
 	}
 
   build() {
