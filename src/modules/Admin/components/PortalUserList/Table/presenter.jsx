@@ -34,9 +34,9 @@ import ActionsToolbar from './ActionsToolbar';
 
 require('./style.scss');
 
-function CellRemove({ id, removeUser, name }) {
+function CellRemove({ id, removeUser }) {
   return (
-    <Link onClick={() => removeUser(id, name)}>
+    <Link onClick={() => removeUser(id)}>
       <BadgedIcon icon="delete" />
     </Link>
   );
