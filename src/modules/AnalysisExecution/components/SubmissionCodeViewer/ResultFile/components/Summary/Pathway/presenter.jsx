@@ -37,6 +37,15 @@ function tooltipBuilder({ path }) {
   return `<div class="${classes('tip-container')}"">${path.map(s => stepBuilder(s)).join("")}</div>`;
 }
 
+function formatPct(val) {
+  return d3.format(".1%")(val);
+}
+
+function PathNameCell({ className, mods, value }) {
+  const classes = BEMHelper('pathname-cell');
+  return (<span {...classes({ modifiers: mods, extra: className })} title={value}>{value}</span>);
+}
+
 export default function SummaryPathway({ className, pathways, sunburstChart, loadPathwayDetails, details }) {
   const classes = BEMHelper('summary-pathway');
 
@@ -54,7 +63,7 @@ export default function SummaryPathway({ className, pathways, sunburstChart, loa
                     <ul {...classes('legend-props-list')}>
                       <li>Target cohort count: <span>{pathway.targetCohortCount}</span></li>
                       <li>Persons with pathways count: <span>{pathway.personsReported}</span></li>
-                      <li>Persons with pathways portion: <span>{ d3.format(".1%")(pathway.personsReportedPct) }</span></li>
+                      <li>Persons with pathways portion: <span>{ formatPct(pathway.personsReportedPct) }</span></li>
                     </ul>
                   </div>
                   <div {...classes('legend-section')}>
@@ -72,8 +81,9 @@ export default function SummaryPathway({ className, pathways, sunburstChart, loa
                 <Panel title={'Path details'}>
                   <div {...classes()}>
                     <Table data={ details }>
-                      <TableCellText header="% Remain" field="remainPct" />
-                      <TableCellText header="% Diff" field="diffPct" />
+                      <PathNameCell {...classes("cell-name")} header="Name" field="names" format={names => names.map(n => n.name).join(", ")} />
+                      <TableCellText header="% Remain" field="remainPct" format={pct => formatPct(pct)} />
+                      <TableCellText header="% Diff" field="diffPct" format={pct => formatPct(pct)} />
                     </Table>
                   </div>
                 </Panel>
@@ -84,17 +94,17 @@ export default function SummaryPathway({ className, pathways, sunburstChart, loa
                   {...classes('chart')}
                   isDataPresent={ pathways.length > 0 }
                   render = {({width, element}) => {
-                    sunburstChart.render(pathway.pathway, element, width, width /3,
+                    sunburstChart.render(pathway.pathway, element, width, width * 0.5,
                       {
                         minHeight: 300,
-                        tipClass: classes('d3-tip'),
-/*                        tooltip: (d) => {
+                        tipClass: 'pathway-tip',
+                        tooltip: (d) => {
                           const path = pathway.tooltips(d);
                           return tooltipBuilder({ path });
                         },
-*/                        useTip: false,
+                        useTip: true,
                         colors: pathway.colors,
-                        onclick: (node) => loadPathwayDetails({ pathway, node }),
+                        onclick: (node) => { sunburstChart.destroyTipIfExists(); loadPathwayDetails({ pathway, node }); },
                         ...chartSettings,
                       });
                   }}

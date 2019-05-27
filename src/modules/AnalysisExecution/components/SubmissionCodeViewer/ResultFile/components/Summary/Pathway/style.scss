@@ -37,6 +37,13 @@
 
 	&__chart {
 		flex-grow: 1;
+		margin-top: 0;
+		&__panel-header {
+			margin-top: 0;
+		}
+		&__panel-content {
+			margin-top: 2rem;
+		}
 	}
 
 	&__legend-section {
@@ -63,9 +70,20 @@
 		height: 1rem;
 		margin-right: 1.5rem;
 	}
+	&__cell-name {
+		width: 17rem;
+    	overflow: hidden;
+    	text-overflow: ellipsis;
+    	display: -webkit-box;
+    	-webkit-box-orient: vertical;
+    	-webkit-line-clamp: 1;
+	}
   }
+}
 
-  &chart {
-  	margin-top: 0;
-  }
+.pathway-tip {
+  padding: 5px;
+  border-radius: 4px;
+  background-color: white;
+  border: solid 1px black;
 }
