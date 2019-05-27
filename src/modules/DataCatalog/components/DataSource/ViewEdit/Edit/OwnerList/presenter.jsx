@@ -14,31 +14,32 @@
  * limitations under the License.
  *
  * Company: Odysseus Data Services, Inc.
- * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: August 11, 2017
+ * Authors: Pavel Grafkin
+ * Created: April 26, 2019
  *
  */
 
+
 import React from 'react';
-import { VirtualTable } from 'components/VirtualScroller';
 import BEMHelper from 'services/BemHelper';
+import {ListItem, LoadingPanel} from 'arachne-ui-components';
+import People from 'components/People';
 
-import './style.scss';
+require('./style.scss');
 
-function CsvViewer(props) {
-  const classes = BEMHelper('csv-viewer');
-  const {
-    columns,
-    rows,
-    adaptiveColumns = false,
-  } = props;
+export default function UsersList({isLoading, isManualSource, userList, openModal, removeDataOwner}) {
+	const classes = new BEMHelper('data-source-users');
 
-  return (
-    <div {...classes()}>
-      <VirtualTable columns={columns} data={rows} adaptiveColumns={adaptiveColumns} />
-    </div>
-  );
+	return (
+		<div {...classes()}>
+			<People
+				title="Data owners"
+				userList={userList}
+				remove={(userList.length > 1 && isManualSource) ? removeDataOwner : null}
+			>
+				{isManualSource ? <ListItem label="Add owner" mods="add" onClick={openModal}/> : null}
+			</People>
+        	<LoadingPanel active={isLoading} />
+		</div>
+	)
 }
-
-export default CsvViewer;

@@ -14,21 +14,35 @@
  * limitations under the License.
  *
  * Company: Odysseus Data Services, Inc.
- * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 13, 2016
+ * Authors: Pavel Grafkin
+ * Created: April 26, 2019
  *
  */
-
 @import 'styles/vars-and-mixins.scss';
-
-$width: 26rem;
 
 .#{$namespace} {
 
-	&study-form-create-analysis {
-		width: $width;
-		@include modal-dropdown-overflow($width);
-	}
+  &people-list {
+
+    @include list-item-actions();
+
+    &--empty {
+    }
+
+    &__user {
+      padding: 0.75rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      &:not(:first-child) {
+        border-top: 1px solid $grey-light;
+      }
+    }
+
+    .ac-list-item--add .ac-list-item__add {
+      width: 6rem;
+    }
+  }
 
 }

@@ -14,31 +14,11 @@
  * limitations under the License.
  *
  * Company: Odysseus Data Services, Inc.
- * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: August 11, 2017
+ * Authors: Pavel Grafkin
+ * Created: April 26, 2019
  *
  */
 
-import React from 'react';
-import { VirtualTable } from 'components/VirtualScroller';
-import BEMHelper from 'services/BemHelper';
+import UsersListBuilder from './container';
 
-import './style.scss';
-
-function CsvViewer(props) {
-  const classes = BEMHelper('csv-viewer');
-  const {
-    columns,
-    rows,
-    adaptiveColumns = false,
-  } = props;
-
-  return (
-    <div {...classes()}>
-      <VirtualTable columns={columns} data={rows} adaptiveColumns={adaptiveColumns} />
-    </div>
-  );
-}
-
-export default CsvViewer;
+export default (new UsersListBuilder()).build();

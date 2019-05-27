@@ -21,3 +21,4 @@
  */
 
  export const tablePageSize = 10;
+ export const chartSettings = {};

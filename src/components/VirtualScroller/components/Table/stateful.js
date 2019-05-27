@@ -23,10 +23,7 @@
 import { Component, PropTypes } from 'react';
 import presenter from './presenter';
 
-const defaultHeight = 500;
-const rowHeight = 47;
-const minRowsCount = Math.ceil(defaultHeight / rowHeight);
-const scrollbarHeight = 16;
+const rowHeight = 35;
 
 export default class VirtualTable extends Component {
   static get propTypes() {
@@ -40,32 +37,54 @@ export default class VirtualTable extends Component {
     const rowsCount = props.data.length + 1; // plus header line
     this.state = {
       container: null,
-      containerHeight: rowsCount > minRowsCount ? defaultHeight : rowsCount * rowHeight + scrollbarHeight,
+      containerHeight: rowsCount * rowHeight
     };
     this.setContainer = this.setContainer.bind(this);
   }
-  
+
   setContainer(container) {
-    if (container && !this.state.container) {
+    if (container) {
       const rect = container.getBoundingClientRect();
-      if (rect.height === 0) {
-        return false;
-      }
+
+      let containerHeight = rect.height;
       if (this.props.list === true) {
-        rect.height += rowHeight; // compensate forcibly hidden header
+        containerHeight += rowHeight; // compensate forcibly hidden header
       }
-      this.setState({
-        container,
-        containerHeight: rect.height,
-      });
+
+      if (rect.height === 0 || this.state.containerHeight === containerHeight) {
+        return false;
+      } else {
+        this.setState({
+          container,
+          containerHeight,
+        });
+      }
     }
   }
-  
+
+  getAdpativeColumns() {
+    const { columns = [] } = this.props;
+    return columns.map(col => {
+      const { name = '' } = col;
+      const c = document.createElement('canvas').getContext('2d');
+      c.font = '14px Montserrat';
+      const mt = c.measureText(String(name).toUpperCase());
+      return {
+        ...col,
+        width: mt.width + 32,
+      };
+    });
+  }
+
   render() {
-    return presenter({
+    const props = {
       ...this.props,
       ...this.state,
       setContainer: this.setContainer,
-    });
+    };
+    if (this.props.adaptiveColumns === true) {
+      props.columns = this.getAdpativeColumns();
+    }
+    return presenter(props);
   }
 }

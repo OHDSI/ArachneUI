@@ -30,6 +30,8 @@ import reportDetails from './reportDetails';
 import characterization from './characterization';
 import myDatasources from './myDatasources';
 import dataNode from './dataNode';
+import dataNodeUserSuggestions from './dataNodeUserSuggestions';
+import dataNodeUsers from './dataNodeUsers';
 import dataNodeOptions from './dataNodeOptions';
 import registration from './registration';
 import dbmsTypes from './dbmsTypes';
@@ -48,6 +50,8 @@ export default {
     characterization: characterization.actions,
     myDatasources: myDatasources.actions,
     dataNode: dataNode.actions,
+    dataNodeUsers: dataNodeUsers.actions,
+    dataNodeUserSuggestions: dataNodeUserSuggestions.actions,
     dataNodeOptions: dataNodeOptions.actions,
     registration: registration.actions,
     dbmsTypes: dbmsTypes.actions,
@@ -65,6 +69,8 @@ export default {
     characterization: characterization.reducer,
     myDatasources: myDatasources.reducer,
     dataNode: dataNode.reducer,
+    dataNodeUserSuggestions: dataNodeUserSuggestions.reducer,
+    dataNodeUsers: dataNodeUsers.reducer,
     dataNodeOptions: dataNodeOptions.reducer,
     registration: registration.reducer,
     dbmsTypes: dbmsTypes.reducer,

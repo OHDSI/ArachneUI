@@ -281,7 +281,7 @@ function MediaViewer({
       break;
     case MimeTypes.csv:
       element = (
-        <CSV data={data} />
+        <CSV data={data} adaptiveColumns={true} />
       );
       break;
     default:

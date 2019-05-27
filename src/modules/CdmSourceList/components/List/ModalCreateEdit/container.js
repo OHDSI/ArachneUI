@@ -59,7 +59,7 @@ ModalCreateEdit.propTypes = {
 };
 
 function mapStateToProps(state) {
-  const dataSourceData = get(state, 'cdmSourceList.dataSource.queryResult.result', [], 'Array');
+  const dataSourceData = get(state, 'cdmSourceList.dataSource.queryResult.result', {}, 'Object');
   const isOpened = get(state, 'modal.createDataSource.isOpened', false);
   const dbmsType = get(state, 'form.createDataSource.values.dbmsType');
 
