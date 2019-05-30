@@ -54,6 +54,9 @@ class PathwaySummarySelectorsBuilder {
 	buildSelectorForPathways() {
 		return createSelector([this.getRawPathwayGroups, this.getRawEventCodes, this.getRawDesign], 
 			(pathwayGroups, eventCodes, design) => pathwayGroups.map(pathwayGroup => {
+				if (!pathwayGroup.pathways) {
+					return null;
+				}
 				pathwayGroup.pathways.forEach(pw => {
 					if (pw.path.split("-").length < design.maxDepth) {
 						pw.path = pw.path + "-end";
@@ -62,7 +65,8 @@ class PathwaySummarySelectorsBuilder {
 				const pathway = this.buildHierarchy(pathwayGroup.pathways);
 				const targetCohort = design.targetCohorts.find(c => pathwayGroup.targetCohortId);
 				const summary = {...this.summarizeHierarchy(pathway), cohortPersons: pathwayGroup.targetCohortCount, pathwayPersons: pathwayGroup.totalPathwaysCount};
-				const colorScheme = d3.scaleOrdinal(eventCodes.length > 10 ? d3.schemeCategory20 : d3.schemeCategory10);
+				const eventCohorts = eventCodes.filter(ec => !ec.isCombo)
+				const colorScheme = d3.scaleOrdinal(eventCohorts.length > 10 ? d3.schemeCategory20 : d3.schemeCategory10);
 				const fixedColors = {"end": "rgba(185, 184, 184, 0.23)"};
 				const colors = (d) => (fixedColors[d] || colorScheme(d));
 
@@ -79,7 +83,7 @@ class PathwaySummarySelectorsBuilder {
 				const getPathToNode = (node) => {
 					let ancestors = getAncestors(node);
 					let pathway = ancestors.map(p => (p.data.name == "end") ? {names: [{name: "end", color: colors("end")}], count: p.value} : {
-						names: eventCodes.filter(c => (c.code & Number.parseInt(p.data.name)) > 0)
+						names: eventCohorts.filter(c => (c.code & Number.parseInt(p.data.name)) > 0)
 										.map(ec => ({name: ec.name, color: colors(ec.code)})), count: p.value});
 					return pathway;
 				}
@@ -92,12 +96,13 @@ class PathwaySummarySelectorsBuilder {
 					targetCohortCount: summary.cohortPersons,
 					personsReported: summary.pathwayPersons,
 					personsReportedPct: summary.pathwayPersons / summary.cohortPersons,
-					eventCodes,
+					eventCodes: eventCohorts,
 					summary,
 					colors,
 					getPathToNode,
 				};
-			}));
+			}).filter(v => !!v)
+			);
 	}
 
   build() {
