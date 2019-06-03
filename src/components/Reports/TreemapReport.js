@@ -49,7 +49,7 @@ class TreemapReport extends BaseChart {
     this.initialZoomedConcept = concept;
   }
 
-  loadConditioonDetails(conceptId) {
+  loadConditionDetails(conceptId) {
     this.props.loadDetails({
       id: this.props.dataSourceId,
       path: this.props.filePath,
