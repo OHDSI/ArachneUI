@@ -43,6 +43,9 @@ class AppContainer extends Component {
       this.props.refreshToken()
         .catch(() => this.props.logout(`${this.props.currentLocation}${this.props.currentSearch}`));
     }
+    if (this.props.isUserAuthed !== nextProps.isUserAuthed) {
+      setTimeout(() => window.dispatchEvent(new Event('resize')), 0);
+    }
   }
 
   render() {

@@ -21,31 +21,7 @@
  */
 
 import React from 'react';
-import BEMHelper from 'services/BemHelper';
-import LabelUser from 'components/LabelUser';
-import { Panel } from 'arachne-ui-components';
-
-export function People({ title, userList }) {
-  const classes = new BEMHelper('insight-view-data-people');
-
-  return (
-    <Panel title={title}>
-      {userList.length ?
-        <div {...classes()}>
-          {userList.map(user => 
-            <div {...classes('user')}>
-              <LabelUser mods="md" user={user} />
-            </div>
-          )}
-        </div>
-        :
-        <div {...classes({ modifiers: 'empty' })}>
-          Empty list
-        </div>
-      }
-    </Panel>
-  )
-}
+import People from 'components/People';
 
 export default class PeopleBuilder {
   constructor(props, bemHelper) {

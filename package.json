@@ -1,6 +1,6 @@
 {
   "name": "arachne-ui",
-  "version": "1.14.42",
+  "version": "1.15.2",
   "licenses": [
     {
       "type": "Apache-2.0",
@@ -46,7 +46,7 @@
   "dependencies": {
     "@ohdsi/atlascharts": "^1.7.1",
     "@stomp/stompjs": "github:stomp-js/stomp-websocket",
-    "arachne-ui-components": "^1.14.5",
+    "arachne-ui-components": "^1.15.0",
     "autoprefixer": "^6.7.6",
     "clamp-js": "^0.7.0",
     "classnames": "^2.2.5",
@@ -85,7 +85,7 @@
     "react": "^15.3.2",
     "react-bem-helper": "^1.2.0",
     "react-codemirror": "^0.3.0",
-    "react-data-grid": "^3.0.11",
+    "react-data-grid": "^5.0.5",
     "react-datepicker": "0.40.0",
     "react-dom": "^15.3.2",
     "react-draggable-list": "3.1.2",

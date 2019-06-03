@@ -51,5 +51,5 @@ export function getScanResultDescription(status, message) {
     return messages[status];
   }
 
-  return message;
+  return `${messages[status]}\n${message}`;
 }

@@ -102,7 +102,7 @@ function ReportViewer(props) {
                 DATA: data.ageAtDeath,
                 INTERVALS: getIntervalIndexLength('ageAtDeath'),
                 INTERVAL_SIZE: 1,
-                MAX: data.ageAtDeath.INTERVAL_INDEX.length - 1,
+                MAX: getIntervalIndexLength('ageAtDeath'),
                 MIN: 0,
               }}
               cumulativeDuration={data.cumulativeDuration}
