@@ -43,7 +43,7 @@ function AboutInfo(props: IAboutInfo) {
     projectVersion,
     buildId,
   } = props;
-
+  const currentYear = new Date().getFullYear();
   return (
     <Modal modal={props.modal} title="Athena – OHDSI Vocabularies Repository">
       <div {...classes()}>
@@ -56,7 +56,7 @@ function AboutInfo(props: IAboutInfo) {
           />
         </Link>
         <p {...classes('line', 'emphasized')}>
-          @ 2015-2017, Odysseus Data Services, Inc. All rights reserved
+          @ 2015-{currentYear}, Odysseus Data Services, Inc. All rights reserved
         </p>
         {projectVersion && buildNumber &&
           <p {...classes('line', ['additional', 'padded'])}>
