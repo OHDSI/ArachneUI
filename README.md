@@ -5,7 +5,7 @@ Network infrastructure for collaborative studies across disparate data nodes and
 
 After initiating project copy community code into `community-src` folder: 
 ```
-git clone https://bitbucket.org/Odysseus/arachnefront.git community-src
+git clone https://github.com/OHDSI/ArachneUI.git community-src
 ```
 
 # Development guide
@@ -29,22 +29,14 @@ git clone https://bitbucket.org/Odysseus/arachnefront.git community-src
 
 ### Container
 
-Implements `ConnectedComponentBuilder.ts`:
+Extends `ContainerBuilder.js`:
 ```
-interface ConnectedComponentBuilder {
+component ContainerBuilder {
   mapStateToProps: Function;
   mapDispatchToProps: Function;
   mergeProps: Function;
   getFetchers: Function;
   build: Function;
-}
-```
-
-### Selectors
-Implements `ISelectorsBuilder`:
-```
-interface ISelectorsBuilder {
-  build: () => Map<string, Selector<Object, any>>;
 }
 ```
 
