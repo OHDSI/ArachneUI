@@ -39,13 +39,15 @@ In order to start portal web app please start [ArachneCentralAPI](https://github
 ```
 npm run portal
 ```
+Webpack dev server should start at [localhost:8010](http://localhost:8010)
+
 
 In order to start datanode web app please start [ArachneNodeAPI](https://github.com/OHDSI/ArachneNodeAPI) backend run following command:
 ```
 npm run node
 ```
+Webpack dev server should start at [localhost:8020](http://localhost:8020)
 
-Webpack dev serser should start at [localhost:3010](http://localhost:3010)
 
 ### Module structure
 
