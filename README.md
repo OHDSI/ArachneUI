@@ -45,6 +45,8 @@ In order to start datanode web app please start [ArachneNodeAPI](https://github.
 npm run node
 ```
 
+Webpack dev serser should start at [localhost:3010](http://localhost:3010)
+
 ### Module structure
 
 - /components
