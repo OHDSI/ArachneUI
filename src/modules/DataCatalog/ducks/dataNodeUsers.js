@@ -14,21 +14,22 @@
  * limitations under the License.
  *
  * Company: Odysseus Data Services, Inc.
- * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 13, 2016
+ * Authors: Pavel Grafkin
+ * Created: April 26, 2019
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+import Duck from 'services/Duck';
+import { apiPaths } from '../const';
 
-$width: 26rem;
+const coreName = 'CSL_DATA_NODE_USERS';
 
-.#{$namespace} {
+const dataNode = new Duck({
+  name: coreName,
+  urlBuilder: apiPaths.dataNodeUsers,
+});
 
-	&study-form-create-analysis {
-		width: $width;
-		@include modal-dropdown-overflow($width);
-	}
-
-}
+export default {
+  actions: dataNode.actions,
+  reducer: dataNode.reducer,
+};

@@ -43,8 +43,10 @@ require('./style.scss');
 function Dashboard(props) {
   const {
     ageAtFirstObservation,
+    rawcumulativeDuration,
     cumulativeDuration,
     genderData,
+    rawGenderData,
     observedByMonth,
     summary,
     characterizationDate,
@@ -59,8 +61,8 @@ function Dashboard(props) {
   } = detailsCharts;
   const classes = new BEMHelper('report-dashboard');
   const emptyClasses = new BEMHelper('report-empty');
-
-  return (  
+  const isAgeAtFirstObservationDataPresent = !!ageAtFirstObservation && !!ageAtFirstObservation.DATA && !isEmpty(ageAtFirstObservation.DATA);
+  return (
     <div {...classes({ extra: 'row' })}>
       {showSummary &&
         <div className='col-xs-6'>
@@ -98,7 +100,7 @@ function Dashboard(props) {
       <div className='col-xs-6'>
         <Chart
           title='Population by Gender'
-          isDataPresent={!isEmpty(genderData)}
+          isDataPresent={!isEmpty(rawGenderData)}
           render={({ width, element }) => {
             genderDataChart.render(
               genderData,
@@ -113,7 +115,7 @@ function Dashboard(props) {
       <div className='col-xs-12'>
         <Chart
           title='Age at First Observation'
-          isDataPresent={!isEmpty(ageAtFirstObservation)}
+          isDataPresent={isAgeAtFirstObservationDataPresent}
           render={({ width, element }) => {
             ageAtFirstObservationChart.render(
               histogram.mapHistogram(ageAtFirstObservation),
@@ -159,7 +161,7 @@ function Dashboard(props) {
       <div className='col-xs-12'>
         <Chart
           title='Cumulative Observation'
-          isDataPresent={!isEmpty(cumulativeDuration)}
+          isDataPresent={!isEmpty(rawcumulativeDuration)}
           render={({ width, element }) => {
             cumulativeDurationChart.render(
               cumulativeDuration,
@@ -168,8 +170,9 @@ function Dashboard(props) {
               width/4,
               {
                 ...chartSettings,
-                yValue: 'Y_PERCENT_PERSONS',
-                xValue: 'X_LENGTH_OF_OBSERVATION',
+                yFormat: d3.format('0.0%'),
+                xFormat: d => d3.format('d')(d),
+                interpolate: cumulativeDurationChart.interpolation.curveStepBefore,
                 yLabel: 'Percent of population',
                 xLabel: 'Days',
               }

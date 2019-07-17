@@ -22,22 +22,18 @@
 
 import { paths, breadcrumbTypes } from 'modules/AnalysisExecution/const';
 
-function buildBreadcrumbList(breadcrumbs = [], doAddStudiesList = true) {
+function buildBreadcrumbList(breadcrumbs = [], isWorkspace = false) {
   const breadcrumbList = [];
 
   breadcrumbs.forEach((crumb) => {
     switch (crumb.entityType) {
       case breadcrumbTypes.STUDY:
-        if (doAddStudiesList) {
-          breadcrumbList.push({
-            label: 'My studies',
-            link: paths.studies(),
-          });
+        if (isWorkspace) {
+          addWorkspaceBreadcrumb(breadcrumbList, crumb);
         }
-        breadcrumbList.push({
-          label: crumb.title,
-          link: paths.studies(crumb.id),
-        });
+        else {
+          addMyStudyBreadcrumb(breadcrumbList, crumb);
+        }
         break;
       case breadcrumbTypes.ANALYSIS:
         breadcrumbList.push({
@@ -56,6 +52,24 @@ function buildBreadcrumbList(breadcrumbs = [], doAddStudiesList = true) {
   });
 
   return breadcrumbList;
+}
+
+function addMyStudyBreadcrumb(breadcrumbList, crumb) {
+  breadcrumbList.push({
+    label: 'My studies',
+    link: paths.studies(),
+  });
+  breadcrumbList.push({
+    label: crumb.title,
+    link: paths.studies(crumb.id),
+  });
+}
+
+function addWorkspaceBreadcrumb(breadcrumbList, crumb) {
+  breadcrumbList.push({
+    label: crumb.title,
+    link: paths.workspace(),
+  });
 }
 
 export default {

@@ -24,6 +24,7 @@ import keyMirror from 'keymirror';
 import { reports } from 'const/reports';
 
 const forms = keyMirror({
+  addDataOwner: null,
   facetedSearch: null,
   inviteDataSource: null,
   report: null,
@@ -37,6 +38,7 @@ const forms = keyMirror({
 });
 
 const modal = keyMirror({
+  addDataOwner: null,
   inviteDataSource: null,
   confirmDatasource: null,
   modalCreateDatanode: null,
@@ -61,6 +63,8 @@ const apiPaths = {
     `/api/v1/achilles/datasource/${id}/files/${path ? `${path}/${filename}` : filename}`,
   myDatasources: () => '/api/v1/data-sources/my',
   dataNode: ({ id }) => `/api/v1/data-nodes${id ? `/${id}` : ''}`,
+  dataNodeUsers: ({ dataNodeId }) => `/api/v1/user-management/datanodes/${dataNodeId}/users`,
+  dataNodeUserSuggestions: ({ query, excludeEmails }) => `/api/v1/user-management/users/suggest?target=DATANODE&query=${query}&excludeEmails=${excludeEmails.join(',')}`,
   dataNodeCreate: () => `/api/v1/data-nodes/manual`,
   dataNodeOptions: () => `/api/v1/data-nodes/suggest`,
   dataNodeSources: ({ id }) => `/api/v1/data-nodes/${id}/data-sources`,

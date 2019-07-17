@@ -73,12 +73,14 @@ const paths = {
   insightResultFile: ({ submissionId, fileId }) => `/analysis-execution/submissions/${submissionId}/insight/results/${fileId}`,
   insight: ({ submissionId }) => `/analysis-execution/submissions/${submissionId}/insight`,
   profile: commonPaths.profile,
+  workspace: commonPaths.workspace,
 };
 
 function importEntityPathByType(type) {
   switch (type) {
     case 'COHORT': return 'cohorts';
-    case 'COHORT_CHARACTERIZATION': return 'cohorts';
+    case 'COHORT_HERACLES': return 'cohort-heracles';
+    case 'COHORT_CHARACTERIZATION': return 'cohort-characterizations';
     case 'ESTIMATION': return 'estimations';
     case 'PREDICTION': return 'predictions';
     case 'INCIDENCE': return 'incidence-rates';
@@ -196,12 +198,13 @@ const submissionActionTypes = keyMirror({
   HIDE: null,
 });
 
-const importableAnalysisTypes = ['COHORT', 'ESTIMATION', 'PREDICTION', 'COHORT_CHARACTERIZATION', 'INCIDENCE'];
+const importableAnalysisTypes = ['COHORT', 'ESTIMATION', 'PREDICTION', 'COHORT_HERACLES', 'COHORT_CHARACTERIZATION', 'INCIDENCE'];
 const analysisTypeNames = {
   COHORT: 'cohort',
   ESTIMATION: 'PLE analysis',
   PREDICTION: 'PLP analysis',
-  COHORT_CHARACTERIZATION: 'cohort',
+  COHORT_HERACLES: 'cohort heracles analysis',
+  COHORT_CHARACTERIZATION: 'cohort characterization',
   INCIDENCE: 'incidence rates',
   CUSTOM: 'custom',
 };
@@ -209,7 +212,8 @@ const pluralAnalysisTypeNames = {
   COHORT: 'cohorts',
   ESTIMATION: 'PLE analyses',
   PREDICTION: 'PLP analyses',
-  COHORT_CHARACTERIZATION: 'cohorts',
+  COHORT_HERACLES: 'cohort heracles analyses',
+  COHORT_CHARACTERIZATION: 'cohort characterizations',
   INCIDENCE: 'incidence rates',
   CUSTOM: 'custom',
 };

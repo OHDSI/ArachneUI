@@ -71,5 +71,7 @@ $reg-field-width: 24rem;
 				width: $reg-field-width;
 			}
 		}
+
+		@include modal-dropdown-overflow($reg-field-width);
 	}
 }

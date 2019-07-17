@@ -77,7 +77,7 @@ export default function SubmissionResultSummary(props) {
       specificSummaryMods.padded = false;
       specificSummary = <SummaryIncidence resultInfo={resultInfo} />;
       break;
-    case analysisTypes.COHORT: case analysisTypes.COHORT_CHARACTERIZATION:
+    case analysisTypes.COHORT: case analysisTypes.COHORT_HERACLES:
       specificSummary = <SummaryCohort resultInfo={resultInfo} />;
       break;
     case analysisTypes.ESTIMATION: case analysisTypes.PREDICTION:

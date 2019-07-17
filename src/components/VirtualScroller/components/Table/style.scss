@@ -21,8 +21,8 @@
   */
 
 @import 'styles/vars-and-mixins.scss';
- 
-.#{$namespace} { 
+
+.#{$namespace} {
   &virtual-table {
     height: 100%;
     line-height: 1.2;
@@ -40,8 +40,12 @@
       }
 
       &-HeaderCell, &-Cell {
-        padding: 1rem 1.5rem;
+        padding: 0 1.5rem;
         border-color: $grey-medium;
+      }
+
+      &-Cell__value div {
+        @include text-ellipsis();
       }
 
       &-Grid {
@@ -53,4 +57,4 @@
       }
     }
   }
-}  
+}

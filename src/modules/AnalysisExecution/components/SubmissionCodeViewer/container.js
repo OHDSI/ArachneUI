@@ -110,7 +110,7 @@ export class SubmissionCodeBuilder extends ActiveModuleAwareContainerBuilder {
     };
     const isWorkspace = get(state, 'modules.active') === 'workspace';
 
-    const breadcrumbList = buildBreadcrumbList(get(state, 'analysisExecution.breadcrumbs.queryResult.result'), !isWorkspace);
+    const breadcrumbList = buildBreadcrumbList(get(state, 'analysisExecution.breadcrumbs.queryResult.result'), isWorkspace);
     const backUrl = breadcrumbList.length > 0 ? breadcrumbList[breadcrumbList.length - 1].link : null;
     const analysis = this.selectors.getAnalysis(state);
 

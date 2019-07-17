@@ -111,8 +111,8 @@ const registerFields = function ({ professionalTypesOptions,
         props: {
           mods: ['bordered'],
           placeholder: 'Address',
-          type: 'text',
           required: true,
+          type: 'text',
           tabindex: 10,
         }
       }
@@ -220,8 +220,8 @@ const registerFields = function ({ professionalTypesOptions,
           options: provinces,
           fetchOptions: searchProvinces,
           clearable: false,
-          onSelectResetsInput: true,
-          onBlurResetsInput: true,
+          onSelectResetsInput: false,
+          onBlurResetsInput: false,
           storeSelectedOption: storeProvince,
           tabindex: 14,
         }
@@ -247,8 +247,8 @@ const registerFields = function ({ professionalTypesOptions,
         props: {
           mods: ['bordered'],
           placeholder: 'Mobile',
-          type: 'text',
           required: true,
+          type: 'text',
           tabindex: 15,
         }
       }
