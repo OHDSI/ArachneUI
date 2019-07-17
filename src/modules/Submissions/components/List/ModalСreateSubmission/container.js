@@ -67,8 +67,12 @@ class ModalCreateSubmissionBuilder extends ContainerBuilder {
       },
       async populateEntryPointsOptionList(files, callback) {
         callback(files);
-        const options = await getFileNamesFromZip(files[0]);
-        dispatchProps.setEntryPointsOptionList(options);
+        try {
+          const options = await getFileNamesFromZip(files[0]);
+          dispatchProps.setEntryPointsOptionList(options);
+        } catch (err) {
+          console.error(err);
+        }
       },
       clearAndClose() {
         dispatchProps.resetForm();

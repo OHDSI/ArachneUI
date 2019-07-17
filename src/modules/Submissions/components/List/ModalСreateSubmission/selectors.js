@@ -18,7 +18,7 @@ const getEntryPointsOptionList = createSelector(
   [getRawEntryPointsOptionList, getRawFileField],
   (rawEntryPointsOptionList, fileField) => fileField.length !== 0
     ? rawEntryPointsOptionList
-      // .filter(item => extensionsForEntryPoints.some(ext => item.endsWith(ext)))
+      .filter(item => extensionsForEntryPoints.some(ext => item.endsWith(ext)))
       .map((item) => ({ label: item, value: item }))
     : []
 );

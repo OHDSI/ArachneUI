@@ -46,19 +46,15 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...ownProps,
     ...stateProps,
     ...dispatchProps,
-    invalidateAndRefresh: () => {
-      Utils
-        .confirmDelete({message: "Do you really want to invalidate all unfinished submissions?"})
-        .then(() => {
-          dispatchProps
-            .invalidateAnalyses()
-        .then(dispatchProps.loadSubmissionList({query: null}))
-        .catch(() => {})
-       });
+    async invalidateAndRefresh() {
+      try {
+        await Utils.confirmDelete({message: "Do you really want to invalidate all unfinished submissions?"});
+        await dispatchProps.invalidateAnalyses();
+        await dispatchProps.loadSubmissionList({query: null});
+      } catch (err) {
+        console.error(err);
+      }
     },
-    // reloadList() {
-    //   dispatchProps.loadList({}, { query: stateProps.currentQuery });
-    // },
   };
 }
 

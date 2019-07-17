@@ -633,14 +633,15 @@ function isViewable(entity) {
   return get(entity, 'errorCode', resultErrorCodes.NO_ERROR) !== resultErrorCodes.PERMISSION_DENIED;
 }
 
-function getFileNamesFromZip(zipFile) {
-  return new Promise((resolve, reject) => {
-    const items = [];
-    JSZip.loadAsync(zipFile).then((zip) => {
-      zip.forEach(entry => items.push(entry));
-      resolve(items);
-    }).catch(e => reject(e));
-  });
+async function getFileNamesFromZip(zipFile) {
+  const items = [];
+  try {
+    const files = await JSZip.loadAsync(zipFile);
+    files.forEach(file => items.push(file));
+    return items;
+  } catch (err) {
+    throw new Error(err);
+  }
 }
 
 export {
