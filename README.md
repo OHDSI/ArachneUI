@@ -5,13 +5,13 @@ ArachneUI is the web application which can be assembled in the Arachne Central o
 
 # Build Web Applications
 
-###Get sources
+### Get sources
 Checkout [ArachneUI repository](https://github.com/OHDSI/ArachneUI.git): 
 ```
 git clone https://github.com/OHDSI/ArachneUI.git 
 ```
 
-###Install npm packages
+### Install npm packages
 
 After getting the sources please execute following commands: 
 
@@ -20,7 +20,7 @@ cd ArachneUI
 npm install
 ```
 
-###Build
+### Build
 
 In order to assemble Arachne Central web application please run:
 ```
