@@ -47,6 +47,8 @@ import { createSelector } from 'reselect';
 import qs from 'qs';
 import { resultErrorCodes } from 'modules/StudyManager/const';
 import JSZip from 'jszip';
+import FileSaver from 'file-saver';
+import Api from './Api';
 
 function buildFormData(obj, jsonObj) {
   const formData = new FormData();
@@ -644,6 +646,16 @@ async function getFileNamesFromZip(zipFile) {
   }
 }
 
+async function downloadFile(url, filename) {
+  try {
+    await Api.doFileDownload(url, (blob) => {
+      FileSaver.saveAs(blob, filename);
+    });
+  } catch (err) {
+    throw new Error(err);
+  }
+}
+
 export {
   buildFormData,
   get,
@@ -662,4 +674,5 @@ export {
   anyOptionValue,
   isViewable,
   getFileNamesFromZip,
+  downloadFile,
 };

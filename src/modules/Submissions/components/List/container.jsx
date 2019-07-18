@@ -1,6 +1,6 @@
 import actions from 'actions/index';
 import { Component, PropTypes } from 'react';
-import { paths } from '../../const';
+import { paths, pollTime, modal } from '../../const';
 import presenter from './presenter';
 import { ContainerBuilder, get, Utils } from 'services/Utils';
 
@@ -11,8 +11,30 @@ class Submissions extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.query !== this.props.query) {
+      if (this.poll) {
+        clearInterval(this.poll);
+      }
+      this.setPolling(nextProps.query);
       this.props.loadSubmissionList({ query: nextProps.query });
     }
+  }
+
+  componentDidMount() {
+    this.setPolling(this.props.query);
+  }
+
+  componentWillUnmount() {
+    console.log('cwU');
+    if (this.poll) {
+      clearInterval(this.poll);
+    }
+  }
+
+  setPolling(query) {
+    this.poll = setInterval(() => {
+      const { isModalOpened } = this.props;
+      !isModalOpened && this.props.loadSubmissionList({ query })
+    }, pollTime);
   }
 
   render() {
@@ -32,6 +54,7 @@ class SubmissionsBuilder extends ContainerBuilder {
     });
     return {
       isLoading: state.submissions.submissionList.isLoading,
+      isModalOpened: get(state, `modal.${modal.createSubmission}.isOpened`, false),
       query: state.routing.locationBeforeTransitions.query,
       currentPage: parseInt(get(state, 'routing.locationBeforeTransitions.query.page', 0), 0),
       pages: get(state, 'submissions.submissionList.queryResult.totalPages', 1),

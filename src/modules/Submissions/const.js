@@ -10,7 +10,7 @@ const modal = keyMirror({
 });
 
 const paths = {
-  submissions: () => '/submissions',
+  submissions: () => '/submissions/list',
 };
 
 const apiPaths = {
@@ -27,7 +27,7 @@ const apiPaths = {
 };
 
 const links = {
-  downloadResults: id => `/api/v1/analysis/${id}/result`,
+  downloadResults: id => `/api/v1/analysis/${id}/results`,
 };
 
 const imgs = {
@@ -35,6 +35,8 @@ const imgs = {
 };
 
 const extensionsForEntryPoints = ['R', 'r', 'sql', 'SQL'];
+
+const pollTime = 10000;
 
 const statusDictionary = {
   CREATED: {
@@ -84,4 +86,4 @@ const statusDictionary = {
   },
 };
 
-export { forms, modal, paths, apiPaths, imgs, links, statusDictionary, extensionsForEntryPoints };
+export { forms, modal, paths, apiPaths, imgs, links, statusDictionary, extensionsForEntryPoints, pollTime };
