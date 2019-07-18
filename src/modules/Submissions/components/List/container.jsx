@@ -1,6 +1,6 @@
 import actions from 'actions/index';
 import { Component, PropTypes } from 'react';
-import { paths, pollTime } from '../../const';
+import { paths, pollTime, modal } from '../../const';
 import presenter from './presenter';
 import { ContainerBuilder, get, Utils } from 'services/Utils';
 
@@ -31,7 +31,10 @@ class Submissions extends Component {
   }
 
   setPolling(query) {
-    this.poll = setInterval(() => this.props.loadSubmissionList({ query }), pollTime);
+    this.poll = setInterval(() => {
+      const { isModalOpened } = this.props;
+      !isModalOpened && this.props.loadSubmissionList({ query })
+    }, pollTime);
   }
 
   render() {
@@ -51,6 +54,7 @@ class SubmissionsBuilder extends ContainerBuilder {
     });
     return {
       isLoading: state.submissions.submissionList.isLoading,
+      isModalOpened: get(state, `modal.${modal.createSubmission}.isOpened`, false),
       query: state.routing.locationBeforeTransitions.query,
       currentPage: parseInt(get(state, 'routing.locationBeforeTransitions.query.page', 0), 0),
       pages: get(state, 'submissions.submissionList.queryResult.totalPages', 1),

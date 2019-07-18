@@ -3,6 +3,7 @@ import invalidateAnalyses from './invalidate';
 import entryPointsOptionList from './entryPointsOptionList';
 import analyses from './analyses';
 import dataSourcesOptionList from './dataSourcesOptionList';
+import fileDownload from './fileDownload';
 
 const actions = {
     submissionList: submissionList.actions,
@@ -10,6 +11,7 @@ const actions = {
     entryPointsOptionList: entryPointsOptionList.actions,
     analyses: analyses.actions,
     dataSourcesOptionList: dataSourcesOptionList.actions,
+    fileDownload: fileDownload.actions,
 }
 
 const reducer = {
@@ -18,6 +20,7 @@ const reducer = {
     entryPointsOptionList: entryPointsOptionList.reducer,
     analyses: analyses.reducer,
     dataSourcesOptionList: dataSourcesOptionList.reducer,
+    fileDownload: fileDownload.reducer,
 }
 
 export default {

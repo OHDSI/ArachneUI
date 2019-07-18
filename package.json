@@ -155,6 +155,7 @@
     "eslint-plugin-react": "^6.4.1",
     "exports-loader": "^0.6.3",
     "extract-text-webpack-plugin": "^1.0.1",
+    "file-saver": "2.0.2",
     "ignore-loader": "^0.1.2",
     "imports-loader": "^0.6.5",
     "jsdom": "^9.8.0",

@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 import BEMHelper from 'services/BemHelper';
 import moment from 'moment';
 import { usDateTime } from 'const/formats';
-import { links, statusDictionary } from 'modules/Submissions/const';
+import { statusDictionary } from 'modules/Submissions/const';
 import {
   Table,
   TableCellText as Cell,
@@ -12,22 +12,41 @@ import {
 
 require('./style.scss');
 
-function CellDownload({ id, status }) {
-  const classes = new BEMHelper('submission-download');
-
-  if (status.key !== statusDictionary.EXECUTED.key) {
-    return <span>-</span>;
+class CellDownload extends Component {
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
   }
 
-  return (
-    <Button
-      {...classes('btn', 'download')}
-      label="Download"
-      mods={['submit', 'rounded']}
-      link={links.downloadResults(id)}
-      target="_self"
-    />
-  );
+  async handleClick(ev) {
+    ev.preventDefault();
+    const { id, downloadResults } = this.props;
+    downloadResults(id, 'results.zip');
+  }
+
+  get isDisabled() {
+    const { downloadingIds, id } = this.props;
+    return downloadingIds.includes(id);
+  }
+
+  get isDownloadAvailable() {
+    const { status } = this.props;
+    return status.key === statusDictionary.EXECUTED.key;
+  }
+
+  render() {
+    const classes = new BEMHelper('submission-download');
+
+    return this.isDownloadAvailable ? (
+      <Button
+        {...classes('btn', 'download')}
+        label={this.isDisabled ? 'Downloading' : 'Download'}
+        mods={['submit', 'rounded']}
+        disabled={this.isDisabled}
+        onClick={this.handleClick}
+      />
+    ) : (<span>-</span>);
+  }
 }
 
 function Status({ value }) {
@@ -39,74 +58,71 @@ function Status({ value }) {
   );
 }
 
-function formatCell(val) {
-  return val ? val : '-';
-}
+export default class SubmissionsTable extends Component {
+  state = {
+    tableClasses: new BEMHelper('submissions-table'),
+  };
 
-function formatDateCell(val) {
-  return val ? moment(val).format(usDateTime) : '-';
-}
+  formatCell(val) {
+    return val ? val : '-';
+  }
 
-function SubmissionsTable(props) {
-  const tableClasses = new BEMHelper('submissions-table');
-  const { submissionList, sorting, setSort } = props;
+  formatDateCell(val) {
+    return val ? moment(val).format(usDateTime) : '-';
+  }
 
-  return (
-    <Table
-      {...tableClasses()}
-      mods={['hover', 'padded']}
-      data={submissionList}
-      sorting={sorting}
-      setSorting={setSort}
-    >
+  getCellsList() {
+    const { tableClasses } = this.state;
+    const { downloadResults, downloadingIds } = this.props;
+    return [
       <Cell
         {...tableClasses('id')}
         header="No"
         field="id"
-        format={formatCell}
-      />
+        format={this.formatCell}
+      />,
       <Cell
         {...tableClasses('author')}
         header="Author"
         field="author.fullName"
-        format={formatCell}
-      />
+        format={this.formatCell}
+      />,
       <Cell
         {...tableClasses('study')}
         header="Study"
         field="study"
-        format={formatCell}
-      />
+        format={this.formatCell}
+      />,
       <Cell
         {...tableClasses('analysis')}
         header="Analysis"
         field="analysis"
-        format={formatCell}
-      />
+        format={this.formatCell}
+      />,
       <Cell
         {...tableClasses('data-source')}
         header="Data source"
         field="dataSource.name"
-        format={formatCell}
-      />
+        format={this.formatCell}
+      />,
       <Cell
         {...tableClasses('submitted')}
         header="Submitted"
         field="submitted"
-        format={formatDateCell}
-      />
+        format={this.formatDateCell}
+      />,
       <Cell
         {...tableClasses('finished')}
         header="Finished"
         field="finished"
-        format={formatDateCell}
-      />
+        format={this.formatDateCell}
+      />,
       <Status
         {...tableClasses('status')}
         header="Status"
         field="status"
-        format={formatCell}
-      />
+        format={this.formatCell}
+      />,
       <CellDownload
         {...tableClasses('results')}
         header="Results"
@@ -116,11 +132,28 @@ function SubmissionsTable(props) {
           entity => ({
             id: entity.id,
             status: entity.status,
+            downloadResults,
+            downloadingIds
           })
         }
-      />
-    </Table>
-  );
+      />,
+    ];
+  }
+
+  render() {
+    const { submissionList, sorting, setSort } = this.props;
+    const { tableClasses } = this.state;
+    return (
+      <Table
+        {...tableClasses()}
+        mods={['hover', 'padded']}
+        data={submissionList}
+        sorting={sorting}
+        setSorting={setSort}
+      >
+        {this.getCellsList()}
+      </Table>
+    );
+  }
 }
 
-export default SubmissionsTable;

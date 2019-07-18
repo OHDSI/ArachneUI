@@ -2,7 +2,8 @@ import actions from 'actions';
 import SubmissionsTable from './presenter';
 import selectors from './selectors';
 import { get, ContainerBuilder } from 'services/Utils';
-
+import { downloadFile } from 'services/Utils';
+import { links } from 'modules/Submissions/const';
 function getSorting(location) {
   const sort = get(location, 'query.sort', '').split(',');
   const sortBy = get(sort, '[0]', 'id');
@@ -21,6 +22,7 @@ class SubmissionsTableBuilder extends ContainerBuilder {
   mapStateToProps(state) {
     return {
       submissionList: selectors.getSubmissionList(state),
+      downloadingIds: get(state, 'submissions.fileDownload.ids', []),
       sorting: getSorting(state.routing.locationBeforeTransitions),
     };
   }
@@ -28,6 +30,8 @@ class SubmissionsTableBuilder extends ContainerBuilder {
   getMapDispatchToProps() {
     return {
       setSearch: actions.router.setSearch,
+      addToDownloadQueue: (id) => actions.submissions.fileDownload.addToQueue(id),
+      removeFromDownloadQueue: (id) => actions.submissions.fileDownload.removeFromQueue(id),
     };
   }
 
@@ -41,6 +45,17 @@ class SubmissionsTableBuilder extends ContainerBuilder {
           sort: `${sortBy},${sortAsc ? 'ASC' : 'DESC'}`,  // eslint-disable-line space-infix-ops
         });
       },
+      async downloadResults(id, filename) {
+        const url = links.downloadResults(id);
+        try {
+          dispatchProps.addToDownloadQueue(id);
+          await downloadFile(url, filename);
+        } catch (err) {
+          console.error(err);
+        } finally {
+          dispatchProps.removeFromDownloadQueue(id);
+        }
+      }
     };
   }
 }
