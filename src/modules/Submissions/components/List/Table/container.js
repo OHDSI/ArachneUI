@@ -16,6 +16,8 @@ class SubmissionsTableBuilder extends ContainerBuilder {
     return SubmissionsTable;
   }
 
+
+
   mapStateToProps(state) {
     return {
       submissionList: selectors.getSubmissionList(state),

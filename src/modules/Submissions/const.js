@@ -36,6 +36,8 @@ const imgs = {
 
 const extensionsForEntryPoints = ['R', 'r', 'sql', 'SQL'];
 
+const pollTime = 10000;
+
 const statusDictionary = {
   CREATED: {
     key: 'CREATED',
@@ -84,4 +86,4 @@ const statusDictionary = {
   },
 };
 
-export { forms, modal, paths, apiPaths, imgs, links, statusDictionary, extensionsForEntryPoints };
+export { forms, modal, paths, apiPaths, imgs, links, statusDictionary, extensionsForEntryPoints, pollTime };

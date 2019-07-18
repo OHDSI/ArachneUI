@@ -66,12 +66,6 @@ function SubmissionsTable(props) {
         format={formatCell}
       />
       <Cell
-        {...tableClasses('origin')}
-        header="Origin"
-        field="origin"
-        format={formatCell}
-      />
-      <Cell
         {...tableClasses('author')}
         header="Author"
         field="author.fullName"
