@@ -6,7 +6,15 @@ require('./style.scss');
 
 function ModalCreateSubmission(props) {
   const classes = new BEMHelper('submission-modal-create-submission');
-  const { populateEntryPointsOptionList, entryPointsOptionList, dataSourcesOptionList, modal, doSubmit, clearAndClose } = props;
+  const {
+    populateEntryPointsOptionList,
+    entryPointsOptionList,
+    dataSourcesOptionList,
+    analysisTypesOptionList,
+    modal,
+    doSubmit,
+    clearAndClose,
+  } = props;
   const fields = [
     {
       name: 'file',
@@ -56,6 +64,18 @@ function ModalCreateSubmission(props) {
           placeholder: 'Analysis',
           required: true,
           type: 'text',
+        },
+      },
+    },
+    {
+      name: 'type',
+      InputComponent: {
+        component: FormSelect,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Type',
+          options: analysisTypesOptionList,
+          required: true,
         },
       },
     },

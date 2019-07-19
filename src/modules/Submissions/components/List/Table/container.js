@@ -12,12 +12,9 @@ function getSorting(location) {
 }
 
 class SubmissionsTableBuilder extends ContainerBuilder {
-
   getComponent() {
     return SubmissionsTable;
   }
-
-
 
   mapStateToProps(state) {
     return {

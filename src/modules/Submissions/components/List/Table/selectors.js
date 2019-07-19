@@ -2,7 +2,6 @@ import { createSelector } from 'reselect';
 import { get } from 'services/Utils';
 import { statusDictionary } from 'modules/Submissions/const';
 
-
 const getRawSubmissionList = state => get(state, 'submissions.submissionList.queryResult.content') || [];
 
 const getSubmissionList = createSelector(

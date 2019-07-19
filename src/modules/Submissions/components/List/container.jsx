@@ -1,30 +1,36 @@
 import actions from 'actions/index';
-import { Component, PropTypes } from 'react';
-import { paths, pollTime, modal } from '../../const';
-import presenter from './presenter';
+import React, { Component, PropTypes } from 'react';
+import { paths, pollTime, modal } from 'modules/Submissions/const';
+import Presenter from './presenter';
 import { ContainerBuilder, get, Utils } from 'services/Utils';
 
 class Submissions extends Component {
   static propTypes = {
+    loadSubmissionList: PropTypes.string,
+    loadAnalysisTypesOptionList: PropTypes.func,
     loadSubmissionList: PropTypes.func,
+    invalidateAnalyses: PropTypes.func,
   };
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.query !== this.props.query) {
       if (this.poll) {
+        this.isPolledData = false;
         clearInterval(this.poll);
       }
-      this.setPolling(nextProps.query);
       this.props.loadSubmissionList({ query: nextProps.query });
+      this.setPolling(nextProps.query);
     }
   }
 
   componentDidMount() {
-    this.setPolling(this.props.query);
+    const { query, loadAnalysisTypesOptionList, loadDataSourcesOptionList  } = this.props;
+    this.setPolling(query);
+    loadAnalysisTypesOptionList();
+    loadDataSourcesOptionList();
   }
 
   componentWillUnmount() {
-    console.log('cwU');
     if (this.poll) {
       clearInterval(this.poll);
     }
@@ -32,13 +38,14 @@ class Submissions extends Component {
 
   setPolling(query) {
     this.poll = setInterval(() => {
-      const { isModalOpened } = this.props;
-      !isModalOpened && this.props.loadSubmissionList({ query })
+      const { isModalOpened, loadSubmissionList } = this.props;
+      this.isPolledData = true;
+      !isModalOpened && loadSubmissionList({ query })
     }, pollTime);
   }
 
   render() {
-    return presenter(this.props);
+    return <Presenter {...this.props} isLoading={this.props.isLoading && !this.isPolledData} />;
   }
 }
 
@@ -66,6 +73,8 @@ class SubmissionsBuilder extends ContainerBuilder {
     return {
       loadSubmissionList: actions.submissions.submissionList.query,
       invalidateAnalyses: actions.submissions.invalidateAnalyses.create,
+      loadAnalysisTypesOptionList: actions.submissions.analysisTypesOptionList.query,
+      loadDataSourcesOptionList: actions.submissions.dataSourcesOptionList.query,
     };
   }
 
