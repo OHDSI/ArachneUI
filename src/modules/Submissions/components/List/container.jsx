@@ -40,7 +40,7 @@ class Submissions extends Component {
   }
 
   render() {
-    return <Presenter {...this.props} isLoading={this.props.isLoading && !this.isPolledData} />
+    return <Presenter {...this.props} isLoading={this.props.isLoading && !this.isPolledData} />;
   }
 }
 
