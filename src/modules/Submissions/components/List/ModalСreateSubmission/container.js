@@ -1,0 +1,85 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { reset as resetForm } from 'redux-form';
+import actions from 'actions';
+import { ModalUtils } from 'arachne-ui-components';
+import { forms, modal } from 'modules/Submissions/const';
+import Presenter from './presenter';
+import selectors from './selectors';
+import { get, buildFormData, ContainerBuilder, getFileNamesFromZip } from 'services/Utils';
+
+class ModalCreateSubmissionBuilder extends ContainerBuilder {
+  getComponent() {
+    return Presenter;
+  }
+
+  mapStateToProps(state) {
+    return {
+      isOpened: get(state, `modal.${modal.createSubmission}.isOpened`, false),
+      entryPointsOptionList: selectors.getEntryPointsOptionList(state),
+      dataSourcesOptionList: selectors.getDataSourcesOptionList(state),
+      analysisTypesOptionList: selectors.getAnalysisTypesOptionList(state),
+    };
+  }
+
+  getMapDispatchToProps() {
+    return {
+      createSubmission: actions.submissions.analyses.create,
+      setEntryPointsOptionList: (options) => actions.submissions.entryPointsOptionList.set(options),
+      closeModal: () => ModalUtils.actions.toggle(modal.createSubmission, false),
+      resetForm: resetForm.bind(null, forms.createSubmission),
+      loadSubmissionList: actions.submissions.submissionList.query,
+    };
+  }
+
+  mergeProps(stateProps, dispatchProps, ownProps) {
+    return {
+      ...ownProps,
+      ...stateProps,
+      ...dispatchProps,
+      async doSubmit({ file: files, datasourceId, title, study, executableFileName, type }) {
+        const file = Array.isArray(files) && files.length > 0 ? files[0] : null;
+        const data = buildFormData({ file }, { analysis: { executableFileName, datasourceId, title, study, type } });
+        const submitPromise = dispatchProps.createSubmission(null, data);
+        try {
+          await submitPromise;
+          dispatchProps.closeModal();
+          dispatchProps.resetForm();
+          dispatchProps.loadSubmissionList({ query: null });
+        } catch (err) {
+          console.error(err);
+        }
+
+        return submitPromise;
+      },
+      async populateEntryPointsOptionList(files, callback) {
+        callback(files);
+        try {
+          const options = await getFileNamesFromZip(files[0]);
+          dispatchProps.setEntryPointsOptionList(options);
+        } catch (err) {
+          console.error(err);
+        }
+      },
+      clearAndClose() {
+        dispatchProps.resetForm();
+        dispatchProps.closeModal();
+      },
+    };
+  }
+
+  getModalParams() {
+    return {
+      name: modal.createSubmission,
+    }
+  }
+
+  getFormParams() {
+    return {
+      form: forms.createSubmission,
+    }
+  }
+}
+
+
+export default ModalCreateSubmissionBuilder;

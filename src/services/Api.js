@@ -211,6 +211,21 @@ class Api {
     return this.sendRequest(METHODS.DELETE, path, payload, callback);
   }
 
+  async doFileDownload(path, callback) {
+    try {
+      const request = fetch(path, {
+        headers: {
+          [AUTH_TOKEN_HEADER]: this.getUserToken(),
+        }
+      });
+      const response = await request;
+      const blob = await response.blob();
+      callback(blob);
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
   // Websockets
 
   initWS() {

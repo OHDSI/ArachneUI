@@ -46,14 +46,24 @@ import URI from 'urijs';
 import { createSelector } from 'reselect';
 import qs from 'qs';
 import { resultErrorCodes } from 'modules/StudyManager/const';
+import JSZip from 'jszip';
+import FileSaver from 'file-saver';
+import Api from './Api';
 
-function buildFormData(obj) {
+function buildFormData(obj, jsonObj) {
   const formData = new FormData();
 
   Object
     .keys(obj)
     .forEach(key => formData.append(key, obj[key]));
 
+  if (jsonObj) {
+    Object
+      .keys(jsonObj)
+      .forEach(key => formData.append(key, new Blob([JSON.stringify(jsonObj[key])], {
+        type: 'application/json'
+      })));
+  }
   return formData;
 }
 
@@ -625,6 +635,27 @@ function isViewable(entity) {
   return get(entity, 'errorCode', resultErrorCodes.NO_ERROR) !== resultErrorCodes.PERMISSION_DENIED;
 }
 
+async function getFileNamesFromZip(zipFile) {
+  const items = [];
+  try {
+    const files = await JSZip.loadAsync(zipFile);
+    files.forEach(file => items.push(file));
+    return items;
+  } catch (err) {
+    throw new Error(err);
+  }
+}
+
+async function downloadFile(url, filename) {
+  try {
+    await Api.doFileDownload(url, (blob) => {
+      FileSaver.saveAs(blob, filename);
+    });
+  } catch (err) {
+    throw new Error(err);
+  }
+}
+
 export {
   buildFormData,
   get,
@@ -642,4 +673,6 @@ export {
   addAnyOption,
   anyOptionValue,
   isViewable,
+  getFileNamesFromZip,
+  downloadFile,
 };

@@ -23,12 +23,12 @@
   "scripts": {
     "portal": "webpack-dev-server --env.app central --env.mode dev --config webpack/app.config.js",
     "node": "webpack-dev-server --env.app node --env.mode dev --config webpack/app.config.js",
-    "build": "webpack --env production --progress --config webpack/app.config.js",
-    "build-node": "webpack --env production --app node --progress --config webpack/app.config.js --watch",
+    "build": "webpack --env.mode production --progress --config webpack/app.config.js",
+    "build-node": "webpack --env.mode production --env.app node --progress --config webpack/app.config.js",
     "test": "size-limit",
     "qa": "webpack --env.app central --env.mode qa --config webpack/app.config.js",
-    "portal-ssr-app": "webpack --app central --production --progress --config webpack/ssr-app.config.js --watch",
-    "portal-ssr-node": "webpack --app node --production --progress --config webpack/ssr-app.config.js --watch",
+    "portal-ssr-app": "webpack --env.app central --env.mode production --progress --config webpack/ssr-app.config.js --watch",
+    "portal-ssr-node": "webpack --env.app node --env.mode production --progress --config webpack/ssr-app.config.js --watch",
     "ssr-server-central-watch": "webpack --config webpack/server.config.js --watch"
   },
   "size-limit": [
@@ -67,6 +67,7 @@
     "isomorphic-fetch": "^2.2.1",
     "js-cookie": "^2.1.3",
     "json-loader": "^0.5.4",
+    "jszip": "3.2.2",
     "keymirror": "^0.1.1",
     "lodash": "^4.17.2",
     "moment": "^2.21.0",
@@ -154,6 +155,7 @@
     "eslint-plugin-react": "^6.4.1",
     "exports-loader": "^0.6.3",
     "extract-text-webpack-plugin": "^1.0.1",
+    "file-saver": "2.0.2",
     "ignore-loader": "^0.1.2",
     "imports-loader": "^0.6.5",
     "jsdom": "^9.8.0",
