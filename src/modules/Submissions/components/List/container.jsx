@@ -6,7 +6,7 @@ import { ContainerBuilder, get, Utils } from 'services/Utils';
 
 class Submissions extends Component {
   static propTypes = {
-    loadSubmissionList: PropTypes.string,
+    loadDataSourcesOptionList: PropTypes.func,
     loadAnalysisTypesOptionList: PropTypes.func,
     loadSubmissionList: PropTypes.func,
     invalidateAnalyses: PropTypes.func,
