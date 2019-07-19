@@ -1,7 +1,7 @@
 import actions from 'actions/index';
-import { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { paths, pollTime, modal } from '../../const';
-import presenter from './presenter';
+import Presenter from './presenter';
 import { ContainerBuilder, get, Utils } from 'services/Utils';
 
 class Submissions extends Component {
@@ -12,10 +12,11 @@ class Submissions extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.query !== this.props.query) {
       if (this.poll) {
+        this.isPolledData = false;
         clearInterval(this.poll);
       }
-      this.setPolling(nextProps.query);
       this.props.loadSubmissionList({ query: nextProps.query });
+      this.setPolling(nextProps.query);
     }
   }
 
@@ -32,13 +33,14 @@ class Submissions extends Component {
 
   setPolling(query) {
     this.poll = setInterval(() => {
+      this.isPolledData = true;
       const { isModalOpened } = this.props;
       !isModalOpened && this.props.loadSubmissionList({ query })
     }, pollTime);
   }
 
   render() {
-    return presenter(this.props);
+    return <Presenter {...this.props} isLoading={this.props.isLoading && !this.isPolledData} />
   }
 }
 
