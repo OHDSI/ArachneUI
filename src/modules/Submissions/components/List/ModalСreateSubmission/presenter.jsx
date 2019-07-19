@@ -25,9 +25,9 @@ function ModalCreateSubmission(props) {
           multiple: false,
           mods: ['bordered'],
           onChangeCustom: populateEntryPointsOptionList,
-          placeholder: 'Archive',
+          placeholder: 'Zip file with code',
           filePlaceholder: 'Archive',
-          dropzonePlaceholder: 'Drag and drop zip file',
+          dropzonePlaceholder: 'Drag and drop Zip file with code',
         },
       }
     },
