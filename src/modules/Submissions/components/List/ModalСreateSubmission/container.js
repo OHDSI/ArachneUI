@@ -1,29 +1,16 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { reset as resetForm } from 'redux-form';
 import actions from 'actions';
 import { ModalUtils } from 'arachne-ui-components';
 import { forms, modal } from 'modules/Submissions/const';
-import presenter from './presenter';
+import Presenter from './presenter';
 import selectors from './selectors';
 import { get, buildFormData, ContainerBuilder, getFileNamesFromZip } from 'services/Utils';
 
-class ModalCreateSubmission extends Component {
-
-  componentWillReceiveProps(props) {
-    if (this.props.isOpened === false && props.isOpened === true) {
-      this.props.loadDataSourcesOptionList();
-    }
-  }
-
-  render() {
-    return presenter(this.props);
-  }
-}
-
 class ModalCreateSubmissionBuilder extends ContainerBuilder {
-
   getComponent() {
-    return ModalCreateSubmission;
+    return Presenter;
   }
 
   mapStateToProps(state) {
@@ -31,6 +18,7 @@ class ModalCreateSubmissionBuilder extends ContainerBuilder {
       isOpened: get(state, `modal.${modal.createSubmission}.isOpened`, false),
       entryPointsOptionList: selectors.getEntryPointsOptionList(state),
       dataSourcesOptionList: selectors.getDataSourcesOptionList(state),
+      analysisTypesOptionList: selectors.getAnalysisTypesOptionList(state),
     };
   }
 
@@ -39,7 +27,6 @@ class ModalCreateSubmissionBuilder extends ContainerBuilder {
       createSubmission: actions.submissions.analyses.create,
       setEntryPointsOptionList: (options) => actions.submissions.entryPointsOptionList.set(options),
       closeModal: () => ModalUtils.actions.toggle(modal.createSubmission, false),
-      loadDataSourcesOptionList: actions.submissions.dataSourcesOptionList.query,
       resetForm: resetForm.bind(null, forms.createSubmission),
       loadSubmissionList: actions.submissions.submissionList.query,
     };
@@ -50,9 +37,9 @@ class ModalCreateSubmissionBuilder extends ContainerBuilder {
       ...ownProps,
       ...stateProps,
       ...dispatchProps,
-      async doSubmit({ file: files, datasourceId, title, study, executableFileName }) {
+      async doSubmit({ file: files, datasourceId, title, study, executableFileName, type }) {
         const file = Array.isArray(files) && files.length > 0 ? files[0] : null;
-        const data = buildFormData({ file }, { analysis: { executableFileName, datasourceId, title, study } });
+        const data = buildFormData({ file }, { analysis: { executableFileName, datasourceId, title, study, type } });
         const submitPromise = dispatchProps.createSubmission(null, data);
         try {
           await submitPromise;

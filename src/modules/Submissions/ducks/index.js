@@ -3,6 +3,7 @@ import invalidateAnalyses from './invalidate';
 import entryPointsOptionList from './entryPointsOptionList';
 import analyses from './analyses';
 import dataSourcesOptionList from './dataSourcesOptionList';
+import analysisTypesOptionList from './analysisTypesOptionList';
 import fileDownload from './fileDownload';
 
 const actions = {
@@ -11,6 +12,7 @@ const actions = {
     entryPointsOptionList: entryPointsOptionList.actions,
     analyses: analyses.actions,
     dataSourcesOptionList: dataSourcesOptionList.actions,
+    analysisTypesOptionList: analysisTypesOptionList.actions,
     fileDownload: fileDownload.actions,
 }
 
@@ -20,6 +22,7 @@ const reducer = {
     entryPointsOptionList: entryPointsOptionList.reducer,
     analyses: analyses.reducer,
     dataSourcesOptionList: dataSourcesOptionList.reducer,
+    analysisTypesOptionList: analysisTypesOptionList.reducer,
     fileDownload: fileDownload.reducer,
 }
 

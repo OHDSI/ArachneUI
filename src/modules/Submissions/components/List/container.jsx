@@ -1,12 +1,15 @@
 import actions from 'actions/index';
 import React, { Component, PropTypes } from 'react';
-import { paths, pollTime, modal } from '../../const';
+import { paths, pollTime, modal } from 'modules/Submissions/const';
 import Presenter from './presenter';
 import { ContainerBuilder, get, Utils } from 'services/Utils';
 
 class Submissions extends Component {
   static propTypes = {
+    loadSubmissionList: PropTypes.string,
+    loadAnalysisTypesOptionList: PropTypes.func,
     loadSubmissionList: PropTypes.func,
+    invalidateAnalyses: PropTypes.func,
   };
 
   componentWillReceiveProps(nextProps) {
@@ -21,11 +24,13 @@ class Submissions extends Component {
   }
 
   componentDidMount() {
-    this.setPolling(this.props.query);
+    const { query, loadAnalysisTypesOptionList, loadDataSourcesOptionList  } = this.props;
+    this.setPolling(query);
+    loadAnalysisTypesOptionList();
+    loadDataSourcesOptionList();
   }
 
   componentWillUnmount() {
-    console.log('cwU');
     if (this.poll) {
       clearInterval(this.poll);
     }
@@ -33,9 +38,9 @@ class Submissions extends Component {
 
   setPolling(query) {
     this.poll = setInterval(() => {
+      const { isModalOpened, loadSubmissionList } = this.props;
       this.isPolledData = true;
-      const { isModalOpened } = this.props;
-      !isModalOpened && this.props.loadSubmissionList({ query })
+      !isModalOpened && loadSubmissionList({ query })
     }, pollTime);
   }
 
@@ -68,6 +73,8 @@ class SubmissionsBuilder extends ContainerBuilder {
     return {
       loadSubmissionList: actions.submissions.submissionList.query,
       invalidateAnalyses: actions.submissions.invalidateAnalyses.create,
+      loadAnalysisTypesOptionList: actions.submissions.analysisTypesOptionList.query,
+      loadDataSourcesOptionList: actions.submissions.dataSourcesOptionList.query,
     };
   }
 
