@@ -25,14 +25,14 @@ import {
   reduxForm,
   reset as resetForm,
 } from 'redux-form';
-import { get } from 'services/Utils';
+import { get, buildFormData } from 'services/Utils';
 
 import actions from 'actions/index';
 import { ModalUtils } from 'arachne-ui-components';
 import { modal, form, submissionGroupsPageSize } from 'modules/AnalysisExecution/const';
-import { buildFormData } from 'services/Utils';
 import ModalUploadResult from './presenter';
 import { getFilter } from 'modules/AnalysisExecution/components/ViewEditAnalysis/container';
+import { SECTIONS } from './const';
 
 function mapStateToProps(state) {
   const analysisData = get(state, 'analysisExecution.analysis.data.result');
@@ -64,9 +64,9 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...ownProps,
     ...stateProps,
     ...dispatchProps,
-    async doSubmit({ result }) {
+    async doSubmit({ result }, type) {
       const submitPromises = [];
-
+      const isArchive = type === SECTIONS.ARCHIVE;
       if (Array.isArray(result)) {
         // If a file selected
         result.map((file) => {
@@ -75,6 +75,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
               label: file.label,
               file,
               submissionId: stateProps.submissionId,
+              archive: isArchive,
             })
           ));
         });

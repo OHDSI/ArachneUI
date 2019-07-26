@@ -25,7 +25,11 @@
 .#{$namespace} {
 
   &analysis-form-upload-result {
-    width: 340px;
-  }
+    width: 34rem;
+    overflow-x: hidden;
 
+    .ac-tabs {
+      margin-bottom: 2rem;
+    }
+  }
 }
