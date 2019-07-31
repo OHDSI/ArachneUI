@@ -89,7 +89,7 @@ interface IDownloadHistoryStatefulProps {
   expandedBundleId: number;
 };
 
-function BundleName({ name, date, onClick, isOpened }) {
+function BundleName({ name, date, onClick, isOpened, releaseVersion }) {
   const dateFormat = fullDateFormat;
   const classes = BEMHelper('bundle-caption');
 
@@ -98,6 +98,7 @@ function BundleName({ name, date, onClick, isOpened }) {
     <div {...classes('title-wrapper')}>
       {name}
       <span {...classes('date')}>{moment(date).format(dateFormat)}</span>
+      <span {...classes('version')}>{releaseVersion}</span>
      </div>
   </div>;
 }

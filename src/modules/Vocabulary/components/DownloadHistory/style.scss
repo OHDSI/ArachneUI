@@ -114,6 +114,10 @@
       font-weight: initial !important;
     }
 
+    &__version {
+      font-size: $font-size-small;
+    }
+
     &__title-wrapper {
       display: flex;
       flex-direction: column;

@@ -25,11 +25,13 @@ import API from 'services/Api';
 
 interface IPortalServices {
 	buildInfo: any,
+	vocabularyReleaseVersion: any,
 }
 
 export default <IPortalServices> reduxifyServices(
 	API,
 	{
 		'build-number': 'buildInfo',
+		'vocabularies/releaseVersion'	:'vocabularyReleaseVersion',
 	}
 );

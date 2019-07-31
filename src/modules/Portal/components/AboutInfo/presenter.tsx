@@ -32,6 +32,7 @@ interface IAboutInfo {
   isLoading: boolean,
   projectVersion: string,
   buildId: string,
+  vocabularyReleaseVersion,
   modal: Object,
 }
 
@@ -42,6 +43,7 @@ function AboutInfo(props: IAboutInfo) {
     isLoading,
     projectVersion,
     buildId,
+    vocabularyReleaseVersion,
   } = props;
   const currentYear = new Date().getFullYear();
   return (
@@ -63,6 +65,9 @@ function AboutInfo(props: IAboutInfo) {
             Version { projectVersion }.{ buildNumber }.{ buildId }
           </p>
         }
+        <p {...classes('line', ['additional', 'padded'])}>
+          OMOP Vocabulary version: {vocabularyReleaseVersion}
+        </p>
         <p {...classes('line', 'padded')}>
           <Link href={'mailto:support@odysseusinc.com'}>support@odysseusinc.com</Link>
         </p>
