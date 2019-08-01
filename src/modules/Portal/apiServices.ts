@@ -32,6 +32,6 @@ export default <IPortalServices> reduxifyServices(
 	API,
 	{
 		'build-number': 'buildInfo',
-		'vocabularies/releaseVersion'	:'vocabularyReleaseVersion',
+		'vocabularies/release-version'	:'vocabularyReleaseVersion',
 	}
 );
