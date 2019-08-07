@@ -75,6 +75,8 @@ const apiPaths = {
     `/api/v1/user-management/countries/search?limit=${autocompleteResultsLimit}&query=${query}${includeId ? `&includeId=${includeId}` : ''}`,
   searchProvince: ({ countryId, query, includeId } = {}) =>
     `/api/v1/user-management/state-province/search?limit=${autocompleteResultsLimit}&query=${query}&countryId=${countryId}${includeId ? `&includeId=${includeId}` : ''}`,
+
+  nodeMode: () => '/api/v1/datanode/mode',
 };
 
 const authMethods = keyMirror({
@@ -294,6 +296,11 @@ const registerFields = function ({ professionalTypesOptions,
   ];
 }
 
+const nodeFunctionalModes = {
+  Standalone: 'STANDALONE',
+  Network: 'NETWORK',
+}
+
 export {
   actionTypes,
   authMethods,
@@ -303,4 +310,5 @@ export {
   loginMessages,
   paths,
   registerFields,
+  nodeFunctionalModes,
 };

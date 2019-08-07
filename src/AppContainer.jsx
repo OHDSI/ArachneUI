@@ -36,6 +36,8 @@ import { asyncConnect } from 'redux-async-connect';
 class AppContainer extends Component {
   componentDidMount() {
     this.props.getPasswordPolicies();
+    this.props.getNodeMode();
+    this.setPolling();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -46,6 +48,20 @@ class AppContainer extends Component {
     if (this.props.isUserAuthed !== nextProps.isUserAuthed) {
       setTimeout(() => window.dispatchEvent(new Event('resize')), 0);
     }
+    if (this.poll) {
+      clearInterval(this.poll);
+    }
+    this.setPolling();
+  }
+
+  componentWillUnmount() {
+    if (this.poll) {
+      clearInterval(this.poll);
+    }    
+  }
+
+  setPolling() {
+    this.poll = setInterval(() => this.props.getNodeMode(), 5000);
   }
 
   render() {
@@ -133,6 +149,7 @@ const mapDispatchToProps = {
   refreshToken: () => actions.auth.token.refresh(),
   logout: (backurl) => actions.auth.clearToken(backurl),
   getPasswordPolicies: () => actions.auth.passwordPolicy.find(),
+  getNodeMode: () => actions.auth.nodeMode.find(),
 };
 
 export default (navItems) => {

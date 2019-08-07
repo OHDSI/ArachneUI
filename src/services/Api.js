@@ -29,6 +29,7 @@ import { Notifier } from 'services/Notifier';
 
 const STATUS = {
   OK: 200,
+  BAD_REQUEST: 400,
   UNAUTHORIZED: 401,
 };
 const METHODS = {
@@ -69,6 +70,15 @@ class Api {
 
   setUserRequestedGetter(getUserRequested) {
     this.getUserRequested = getUserRequested;
+    return this;
+  }
+
+  handleBadRequest() {
+    console.warn('Replace badRequest handler with implementation');
+  }
+
+  setBadRequestHandler(handler) {
+    this.handleBadRequest = handler;
     return this;
   }
 
@@ -114,6 +124,9 @@ class Api {
     switch (status) {
       case STATUS.OK:
         return true;
+      case STATUS.BAD_REQUEST:
+        this.handleBadRequest(response.json);
+        break;
       case STATUS.UNAUTHORIZED:
         this.handleUnauthorized(response.json);
         break;

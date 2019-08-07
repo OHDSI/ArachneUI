@@ -36,6 +36,7 @@ import { LOCATION_CHANGE } from 'react-router-redux';
 import passwordPolicy from './passwordPolicy';
 import countries from './countries';
 import provinces from './provinces';
+import nodeMode from './nodeMode';
 
 function setBackUrl(state, action) {
   return !isAuthModulePath(action.payload.pathname) ? { ...state, backUrl: action.payload.pathname } : state;
@@ -60,6 +61,7 @@ const actions = {
   passwordPolicy: passwordPolicy.actions,
   countries: countries.actions,
   provinces: provinces.actions,
+  nodeMode: nodeMode.actions,
 };
 
 const reducer = combineReducers({
@@ -77,6 +79,7 @@ const reducer = combineReducers({
   passwordPolicy: passwordPolicy.reducer,
   countries: countries.reducer,
   provinces: provinces.reducer,
+  nodeMode: nodeMode.reducer,
 });
 
 export default {
