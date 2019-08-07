@@ -26,8 +26,8 @@ import { apiPaths } from 'modules/Auth/const';
 const actionCoreName = "AU_NODE_MODE";
 
 const modeDuck = new Duck({
-	name: actionCoreName,
-	urlBuilder: apiPaths.nodeMode,
+		name: actionCoreName,
+		urlBuilder: apiPaths.nodeMode,
 });
 
 const actions = modeDuck.actions;
