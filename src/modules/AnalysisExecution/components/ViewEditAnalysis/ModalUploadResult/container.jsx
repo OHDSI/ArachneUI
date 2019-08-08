@@ -24,6 +24,7 @@ import { connect } from 'react-redux';
 import {
   reduxForm,
   reset as resetForm,
+  getFormValues,
 } from 'redux-form';
 import { get, buildFormData } from 'services/Utils';
 
@@ -39,12 +40,13 @@ function mapStateToProps(state) {
   const modalData = state.modal.uploadResult;
   const currentQuery = state.routing.locationBeforeTransitions.query;
   const filter = getFilter(state.routing.locationBeforeTransitions.search);
-
+  const formValues = getFormValues(form.uploadResult)(state) || { result: [] };
   return {
     analysisId: get(analysisData, 'id'),
     submissionId: get(modalData, 'data.submissionId'),
     page: get(currentQuery, 'page', 1),
     filter,
+    isUploadFormValid: formValues.result.length > 0,
   };
 }
 

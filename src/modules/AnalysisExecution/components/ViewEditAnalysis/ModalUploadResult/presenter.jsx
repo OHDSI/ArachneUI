@@ -43,6 +43,7 @@ class ModalSubmitCode extends Component {
       label: 'Upload',
       loadingLabel: 'Uploading...',
       mods: ['success', 'rounded'],
+      disabled: !this.props.isUploadFormValid,
     }
   };
 
