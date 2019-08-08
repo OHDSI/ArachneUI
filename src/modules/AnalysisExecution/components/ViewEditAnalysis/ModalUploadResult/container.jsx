@@ -86,7 +86,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         dispatchProps.resetForm();
         dispatchProps.closeModal();
         await dispatchProps.loadAnalysis({ id: stateProps.analysisId });
-        dispatchProps.loadSubmissionGroups({
+        await dispatchProps.loadSubmissionGroups({
           analysisId: stateProps.analysisId,
           page: stateProps.page,
           filter: stateProps.filter,

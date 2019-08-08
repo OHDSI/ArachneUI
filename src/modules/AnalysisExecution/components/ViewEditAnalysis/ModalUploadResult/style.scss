@@ -29,7 +29,10 @@
     overflow-x: hidden;
 
     .ac-tabs {
-      margin-bottom: 2rem;
+      margin-bottom: 2.5rem;
+      &__item {
+        min-height: 3rem;
+      }
     }
   }
 }
