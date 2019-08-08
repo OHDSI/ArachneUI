@@ -20,62 +20,107 @@
  *
  */
 
-import React from 'react';
+import React, { Component } from 'react';
 import BEMHelper from 'services/BemHelper';
 import {
   Modal,
   Form,
-  FormInput,
-  FormFileInput
+  FormFileInput,
+  TabbedPane,
 } from 'arachne-ui-components';
+import { SECTIONS } from './const';
 import { get } from 'services/Utils';
 
 require('./style.scss');
 
-function ModalSubmitCode(props) {
-  const classes = new BEMHelper('analysis-form-upload-result');
+class ModalSubmitCode extends Component {
+  state = {
+    selectedTab: SECTIONS.FILES,
+  }
 
-  const fields = [
-    {
-      name: 'result',
-      InputComponent: {
-        component: FormFileInput,
-        props: {
-          mods: ['bordered'],
-          placeholder: 'Add link or browse document',
-          dropzonePlaceholder: 'Drag and drop document',
-          multiple: true,
-          filePlaceholder: 'Document name',
+  get submitBtn() {
+    return {
+      label: 'Upload',
+      loadingLabel: 'Uploading...',
+      mods: ['success', 'rounded'],
+      disabled: !this.props.isUploadFormValid,
+    }
+  };
+
+  get cancelBtn() {
+    return {
+      label: 'Cancel',
+    };
+  }
+
+  get Form() {
+    const { resetForm, closeModal, doSubmit, ...props } = this.props;
+    return (
+      <Form
+        mods="spacing-sm"
+        fields={this.fields}
+        submitBtn={this.submitBtn}
+        cancelBtn={this.cancelBtn}
+        onSubmit={(values) => doSubmit(values, this.state.selectedTab)}
+        onCancel={() => { resetForm(); closeModal() }}
+        {...props}
+      />
+    );
+  }
+
+  get fields() {
+    const { selectedTab } = this.state;
+    const isFiles = selectedTab === SECTIONS.FILES;
+    const placeholder = isFiles ? 'Add separate files' : 'Add files in archive';
+
+    return [
+      {
+        name: 'result',
+        InputComponent: {
+          component: FormFileInput,
+          props: {
+            mods: ['bordered'],
+            placeholder,
+            dropzonePlaceholder: 'Drag and drop file',
+            multiple: isFiles,
+            accept: isFiles ? [] : ['.zip'],
+            filePlaceholder: 'Document name',
+          },
         },
       },
-    },
-  ];
+    ];
+  }
 
-  const submitBtn = {
-    label: 'Upload',
-    loadingLabel: 'Uploading...',
-    mods: ['success', 'rounded'],
-  };
+  get sections() {
+    return [
+      {
+        label: SECTIONS.FILES,
+        content: this.Form,
+      },
+      {
+        label: SECTIONS.ARCHIVE,
+        content: this.Form,
+      },
+    ];
+  }
 
-  const cancelBtn = {
-    label: 'Cancel',
-  };
+  changeTab = tabName => {
+    this.props.resetForm();
+    this.setState({ selectedTab: tabName });
+  }
 
-  return (
-    <Modal modal={props.modal} title="Add result files">
-      <div {...classes()}>
-        <Form
-          mods="spacing-sm"
-          fields={fields}
-          submitBtn={submitBtn}
-          cancelBtn={cancelBtn}
-          onSubmit={props.doSubmit}
-          onCancel={() => { props.resetForm(); props.closeModal() }}
-          {...props}
-        />
-      </div>
-    </Modal>
-  );
+  render() {
+    const { modal } = this.props;
+    const { selectedTab } = this.state;
+    const classes = new BEMHelper('analysis-form-upload-result');
+    return (
+      <Modal modal={modal} title="Add result files">
+        <div {...classes()}>
+          <TabbedPane sections={this.sections} value={selectedTab} onChange={this.changeTab} />
+        </div>
+      </Modal>
+    );
+  }
 }
 
 export default ModalSubmitCode;
