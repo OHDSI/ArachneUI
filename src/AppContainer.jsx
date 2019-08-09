@@ -32,13 +32,16 @@ import { get } from 'services/Utils';
 import AboutInfo from 'modules/Portal/components/AboutInfo';
 import { modal } from 'modules/Portal/const';
 import { asyncConnect } from 'redux-async-connect';
+import { nodeFunctionalModes } from 'modules/Auth/const';
 
 class AppContainer extends Component {
   componentDidMount() {
-    this.props.getPasswordPolicies();
     if (__APP_TYPE_NODE__) {
       this.props.getNodeMode();
       this.setPolling();
+    }
+    if (__APP_TYPE_CENTRAL__) {
+      this.props.getPasswordPolicies();
     }
   }
 
@@ -52,6 +55,10 @@ class AppContainer extends Component {
     }
     if (this.poll) {
       clearInterval(this.poll);
+    }
+    if (__APP_TYPE_NODE__ && this.props.runningMode !== nextProps.runningMode 
+        && nextProps.runningMode === nodeFunctionalModes.Network) {
+      this.props.getPasswordPolicies();
     }
     this.setPolling();
   }
@@ -119,6 +126,7 @@ function mapStateToProps(state) {
 
   const currentLocation = get(state, 'routing.locationBeforeTransitions.pathname', '');
   const currentSearch = get(state, 'routing.locationBeforeTransitions.search', '');
+  const runningMode = get(state, 'auth.nodeMode.data.mode');
 
   if (modules) {
     const activeModule = modules.filter(m => m.path === state.modules.active)[0] || {};
@@ -145,6 +153,7 @@ function mapStateToProps(state) {
     sidebarTabList,
     currentLocation,
     currentSearch,
+    runningMode,
   };
 }
 
