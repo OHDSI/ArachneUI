@@ -121,23 +121,28 @@ export default function ModalCreateSubmission({
     },
   ];
 
+  const onCancel = () => {
+    resetForm();
+    closeModal();
+    setActiveTab(modalSections.FILES);
+  }
   const FilesForm = (<Form
     mods="spacing-sm"
     fields={fields}
     submitBtn={submitBtn}
     cancelBtn={cancelBtn}
     onSubmit={doSubmit}
-    onCancel={() => { resetForm(); closeModal() }}
+    onCancel={onCancel}
     {...props}
   />);
 
   const sections = [
     {
-      label: modalSections.ARCHIVE,
+      label: modalSections.FILES,
       content: FilesForm,
     },
     {
-      label: modalSections.FILES,
+      label: modalSections.ARCHIVE,
       content: FilesForm,
     },
   ];

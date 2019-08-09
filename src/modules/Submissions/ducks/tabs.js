@@ -9,7 +9,7 @@ function set(options) {
   };
 }
 
-function reducer(state = { activeTab: sections.ARCHIVE }, action) {
+function reducer(state = { activeTab: sections.FILES }, action) {
   switch (action.type) {
     case actionCoreName:
       return {
