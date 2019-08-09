@@ -61,7 +61,7 @@ class ModalCreateSubmissionBuilder extends ContainerBuilder {
           file = files[0];
         }
         const data = buildFormData({ file }, { analysis: { executableFileName, datasourceId, title, study, type } });
-        const submitPromise = await dispatchProps.createSubmission(null, data);
+        const submitPromise = dispatchProps.createSubmission(null, data);
         try {
           await submitPromise;
           dispatchProps.closeModal();
