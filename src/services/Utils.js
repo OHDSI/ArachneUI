@@ -646,6 +646,29 @@ async function getFileNamesFromZip(zipFile) {
   }
 }
 
+async function readFilesAsync(files) {
+  const items = [];
+  for (const file of files) {
+    try {
+      const data = await new Response(file).blob();
+      items.push({ name: file.name, content: data });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  return items;
+}
+
+async function packFilesInZip(files) {
+  const zip = new JSZip();
+  const items = await readFilesAsync(files);
+  items.forEach(item => zip.file(item.name, item.content));
+  const content = await zip.generateAsync({ type: 'blob' });
+  return new File([content], 'submission.zip', {
+    type: 'application/x-zip-compressed',
+  });
+}
+
 async function downloadFile(url, filename) {
   try {
     await Api.doFileDownload(url, (blob) => {
@@ -674,5 +697,7 @@ export {
   anyOptionValue,
   isViewable,
   getFileNamesFromZip,
+  readFilesAsync,
+  packFilesInZip,
   downloadFile,
 };
