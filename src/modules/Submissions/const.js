@@ -87,4 +87,9 @@ const statusDictionary = {
   },
 };
 
-export { forms, modal, paths, apiPaths, imgs, links, statusDictionary, extensionsForEntryPoints, pollTime };
+const sections = {
+  ARCHIVE: 'Files in archive',
+  FILES: 'Separate files',
+};
+
+export { forms, modal, paths, apiPaths, imgs, links, statusDictionary, extensionsForEntryPoints, pollTime, sections };

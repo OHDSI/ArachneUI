@@ -31,6 +31,13 @@ $width: 50rem;
 		overflow-x: hidden;
 
 		@include modal-dropdown-overflow($width);
+
+		.ac-tabs {
+			margin-bottom: 2.5rem;
+			&__item {
+				min-height: 3rem;
+			}
+		}
 	}
 
 }
