@@ -30,21 +30,24 @@ import {
 import { healthStatuses, modelTypesValues } from 'const/dataSource';
 import { paths as centralPaths } from 'modules/DataCatalog/const';
 import { Utils } from 'services/Utils';
+import { nodeFunctionalModes } from 'modules/Auth/const';
 
 require('./style.scss');
 
-function CellRegister({ published, onClick, centralId, centralDomain, username }) {
+function CellRegister({ published, onClick, centralId, centralDomain, username, runningMode }) {
   const classes = new BEMHelper('data-source-list-cell-register');
+  const standalone = runningMode === nodeFunctionalModes.Standalone;
 
   return <div {...classes()}>
-    <Button
+    {!standalone && <Button
       {...classes('btn', { publish: !published })}
       mods={['submit', 'rounded']}
       label={published ? 'Edit catalog' : 'Publish'}
       link={`${centralDomain}${centralPaths.edit(centralId)}?user-req=${username}`}
+      disabled={standalone}
       target={'_blank'}
-    />
-    {published &&
+    />}
+    {(published || standalone) &&
       <Button
         {...classes('btn')}
         mods={['success', 'rounded']}
@@ -55,7 +58,7 @@ function CellRegister({ published, onClick, centralId, centralDomain, username }
   </div>;
 }
 
-function CellEdit({ editDataSource, removeDataSource, value, published, name }) {
+function CellEdit({ editDataSource, removeDataSource, value, published, name, centralId, runningMode }) {
   const classes = new BEMHelper('data-source-list-cell-edit');
   return (
     <div {...classes('btn-block')}>
@@ -68,7 +71,7 @@ function CellEdit({ editDataSource, removeDataSource, value, published, name }) 
         })
           .then(() => removeDataSource({ id: value, published }))
           .catch(() => {});
-      }}>
+      }} disabled={ runningMode === nodeFunctionalModes.Standalone && centralId }>
         <i {...classes('btn-ico')}>delete</i>
       </Button>
     </div>
@@ -102,6 +105,7 @@ function DataSourceTable(props) {
     sorting,
     centralDomain,
     username,
+    runningMode,
   } = props;
 
   return (
@@ -142,6 +146,7 @@ function DataSourceTable(props) {
       />
       <CellRegister
         {...tableClasses('register')}
+        runningMode={runningMode}
         props={
           entity => ({
             published: entity.published,
@@ -157,7 +162,8 @@ function DataSourceTable(props) {
         field="id"
         editDataSource={editDataSource}
         removeDataSource={remove}
-        props={entity => ({ published: entity.published, name: entity.name })}
+        runningMode={runningMode}
+        props={entity => ({ published: entity.published, name: entity.name, centralId: entity.centralId })}
       />
     </Table>
   );

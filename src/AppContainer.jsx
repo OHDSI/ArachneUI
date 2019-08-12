@@ -38,7 +38,6 @@ class AppContainer extends Component {
   componentDidMount() {
     if (__APP_TYPE_NODE__) {
       this.props.getNodeMode();
-      this.setPolling();
     }
     if (__APP_TYPE_CENTRAL__) {
       this.props.getPasswordPolicies();
@@ -53,25 +52,9 @@ class AppContainer extends Component {
     if (this.props.isUserAuthed !== nextProps.isUserAuthed) {
       setTimeout(() => window.dispatchEvent(new Event('resize')), 0);
     }
-    if (this.poll) {
-      clearInterval(this.poll);
-    }
     if (__APP_TYPE_NODE__ && this.props.runningMode !== nextProps.runningMode 
         && nextProps.runningMode === nodeFunctionalModes.Network) {
       this.props.getPasswordPolicies();
-    }
-    this.setPolling();
-  }
-
-  componentWillUnmount() {
-    if (this.poll) {
-      clearInterval(this.poll);
-    }    
-  }
-
-  setPolling() {
-    if (__APP_TYPE_NODE__) {
-      this.poll = setInterval(() => this.props.getNodeMode(), 5000);
     }
   }
 
@@ -135,11 +118,16 @@ function mapStateToProps(state) {
         if (module.isAdminOnly && !isUserAdmin) {
           return;
         }
+        if (runningMode === nodeFunctionalModes.Standalone && module.path === 'external-resource-manager') {
+          return;
+        }
+
         const tab = { ...module.sidebar };
 
         if ((activeModule.sidebarPath || activeModule.path) === module.path) {
           tab.isSelected = true;
         }
+
 
         sidebarTabList.push(tab);
       }
