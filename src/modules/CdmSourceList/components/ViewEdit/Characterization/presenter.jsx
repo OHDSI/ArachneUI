@@ -28,6 +28,7 @@ import {
 } from 'arachne-ui-components';
 import moment from 'moment';
 import { commonDate } from 'const/formats';
+import { nodeFunctionalModes } from 'modules/Auth/const';
 
 require('./style.scss');
 
@@ -41,10 +42,12 @@ function Characterization(props) {
     update,
     importResults,
     characterizationSource,
+    runningMode,
   } = props;
 
   const isImporting = isCharacterizationStarted && characterizationSource === 'IMPORT';
   const isGenerating = isCharacterizationStarted && characterizationSource === 'GENERATION';
+  const isStandalone = runningMode === nodeFunctionalModes.Standalone;
 
   return (
     <div {...classes()}>
@@ -65,7 +68,7 @@ function Characterization(props) {
             {...classes('btn')}
             label={isImporting ? 'Importing' : lastCharacterization ? 'Re-import' : 'Import'}
             mods={['success', 'rounded']}
-            disabled={isCharacterizationStarted || !hasResults}
+            disabled={isCharacterizationStarted || !hasResults || isStandalone}
             onClick={importResults}
           />
           <Button
