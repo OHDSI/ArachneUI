@@ -1,20 +1,47 @@
 import React from 'react';
-import { Modal, Form, FormInput, FormFileInput, FormSelect } from 'arachne-ui-components';
+import {
+  Modal,
+  Form,
+  FormInput,
+  FormFileInput,
+  FormSelect,
+  TabbedPane,
+} from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
+import { sections as modalSections } from 'modules/Submissions/const';
 
 require('./style.scss');
 
-function ModalCreateSubmission(props) {
+export default function ModalCreateSubmission({
+  activeTab,
+  setActiveTab,
+  modal,
+  doSubmit,
+  resetForm,
+  closeModal,
+  populateEntryPointsOptionList,
+  entryPointsOptionList,
+  dataSourcesOptionList,
+  analysisTypesOptionList,
+  isFormValid,
+  ...props
+}) {
   const classes = new BEMHelper('submission-modal-create-submission');
-  const {
-    populateEntryPointsOptionList,
-    entryPointsOptionList,
-    dataSourcesOptionList,
-    analysisTypesOptionList,
-    modal,
-    doSubmit,
-    clearAndClose,
-  } = props;
+
+  const submitBtn = {
+    label: 'Create',
+    loadingLabel: 'Creating...',
+    mods: ['success', 'rounded'],
+    disabled: !isFormValid,
+  };
+
+  const cancelBtn = {
+    label: 'Cancel',
+  };
+
+  const isFilesTab = activeTab === modalSections.FILES;
+  const placeholder = isFilesTab ? 'Add separate files' : 'Add files in archive';
+
   const fields = [
     {
       name: 'file',
@@ -22,14 +49,15 @@ function ModalCreateSubmission(props) {
         component: FormFileInput,
         props: {
           name: 'zip',
-          multiple: false,
           mods: ['bordered'],
+          placeholder,
+          dropzonePlaceholder: 'Drag and drop file',
+          multiple: isFilesTab,
+          accept: isFilesTab ? [] : ['.zip'],
           onChangeCustom: populateEntryPointsOptionList,
-          placeholder: 'Zip file with code',
-          filePlaceholder: 'Archive',
-          dropzonePlaceholder: 'Drag and drop Zip file with code',
+          filePlaceholder: 'Document name',
         },
-      }
+      },
     },
     {
       name: 'executableFileName',
@@ -93,30 +121,42 @@ function ModalCreateSubmission(props) {
     },
   ];
 
-  const submitBtn = {
-    label: 'Create',
-    loadingLabel: 'Creating...',
-    mods: ['success', 'rounded'],
+  const onCancel = () => {
+    resetForm();
+    closeModal();
+    setActiveTab(modalSections.FILES);
   }
+  const FilesForm = (<Form
+    mods="spacing-sm"
+    fields={fields}
+    submitBtn={submitBtn}
+    cancelBtn={cancelBtn}
+    onSubmit={doSubmit}
+    onCancel={onCancel}
+    {...props}
+  />);
 
-  const cancelBtn = {
-    label: 'Cancel',
-  }
+  const sections = [
+    {
+      label: modalSections.FILES,
+      content: FilesForm,
+    },
+    {
+      label: modalSections.ARCHIVE,
+      content: FilesForm,
+    },
+  ];
+
+  const changeTab = (tab) => {
+    resetForm();
+    setActiveTab(tab);
+  };
 
   return (
     <Modal modal={modal} title="Create submission">
       <div {...classes()}>
-        <Form
-          fields={fields}
-          submitBtn={submitBtn}
-          cancelBtn={cancelBtn}
-          onSubmit={doSubmit}
-          onCancel={clearAndClose}
-          {...props}
-        />
+        <TabbedPane sections={sections} value={activeTab} onChange={changeTab} />
       </div>
     </Modal>
   );
 }
-
-export default ModalCreateSubmission;
