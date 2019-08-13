@@ -66,7 +66,7 @@ function CellEdit({ editDataSource, removeDataSource, value, published, name, ce
         <i {...classes('btn-ico')}>edit</i>
       </Button>
       <span {...tooltipClass()}
-          aria-label={(isStandalone && centralId) && "Deletion of Published DataSource is prohibited"} 
+          aria-label={(isStandalone && centralId) && "Deletion of published Data source is prohibited in Standalone mode"}
           data-tootik-conf="left">
         <Button {...classes('btn')} onClick={() => {
           Utils.confirmDelete({
