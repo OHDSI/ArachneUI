@@ -32,6 +32,16 @@ import { nodeFunctionalModes } from 'modules/Auth/const';
 
 require('./style.scss');
 
+function getImportTooltip({ isStandalone, isCharacterizationStarted, hasResults } = {}) {
+  if (isStandalone) {
+    return "Import of Results is not available in Standalone mode";
+  } else if (isCharacterizationStarted) {
+    return "Please, wait when characterization has finished";
+  } else if (!hasResults) {
+    return "No results available. Please, run characterization first";
+  }
+}
+
 function Characterization(props) {
   const classes = new BEMHelper('report-characterization');
 
@@ -48,6 +58,7 @@ function Characterization(props) {
   const isImporting = isCharacterizationStarted && characterizationSource === 'IMPORT';
   const isGenerating = isCharacterizationStarted && characterizationSource === 'GENERATION';
   const isStandalone = runningMode === nodeFunctionalModes.Standalone;
+  const tooltipClass = new BEMHelper('tooltip');
 
   return (
     <div {...classes()}>
@@ -64,13 +75,18 @@ function Characterization(props) {
           </div>
         </div>
         <div {...classes({ element: 'row', modifiers: 'actions' })}>
-          <Button
-            {...classes('btn')}
-            label={isImporting ? 'Importing' : lastCharacterization ? 'Re-import' : 'Import'}
-            mods={['success', 'rounded']}
-            disabled={isCharacterizationStarted || !hasResults || isStandalone}
-            onClick={importResults}
-          />
+          <span {...tooltipClass()}
+            aria-label={getImportTooltip({isStandalone, isCharacterizationStarted, hasResults})}
+            data-tootik-conf="top"
+          >
+            <Button
+              {...classes('btn')}
+              label={isImporting ? 'Importing' : lastCharacterization ? 'Re-import' : 'Import'}
+              mods={['success', 'rounded']}
+              disabled={isCharacterizationStarted || !hasResults || isStandalone}
+              onClick={importResults}
+            />
+          </span>
           <Button
             {...classes('btn')}
             label={isGenerating ? 'Generating' : lastCharacterization ? 'Re-generate' : 'Generate'}
