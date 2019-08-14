@@ -82,9 +82,7 @@ function CellEdit({ editDataSource, removeDataSource, value, published, name, ce
         <i {...classes('btn-ico')}>edit</i>
       </Button>
       {buttonWithTooltip}
-    </div>
-
-  );
+    </div>);
 }
 
 function CellName({ value, healthStatus }) {
