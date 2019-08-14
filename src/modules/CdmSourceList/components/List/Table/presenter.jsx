@@ -71,7 +71,7 @@ function CellEdit({ editDataSource, removeDataSource, value, published, name, ce
         </Button>
   );
   const buttonWithTooltip = (isStandalone && centralId) ? (<span {...tooltipClass()}
-          aria-label={"Deletion of published Data source is prohibited in the Standalone mode"}
+          aria-label={"Deletion of Published DataSource is prohibited"} 
           data-tootik-conf="left multiline">
           {button}
       </span>
@@ -117,9 +117,10 @@ function DataSourceTable(props) {
   } = props;
 
   const isStandalone = runningMode === nodeFunctionalModes.Standalone;
+  const className = (title) => title + (isStandalone ? '_standalone' : '');
   const cells = [
       <CellName
-        {...tableClasses('name')}
+        {...tableClasses(className('name'))}
         header="Name"
         field="name"
         mods={['bold']}
@@ -131,7 +132,7 @@ function DataSourceTable(props) {
         field="dbmsType"
       />,
       <Cell
-        {...tableClasses('db-name')}
+        {...tableClasses(className('db-name'))}
         header="Database"
         field="connectionString"
       />,
@@ -147,7 +148,7 @@ function DataSourceTable(props) {
         isSortable={false}
       />,
       <CellRegister
-        {...tableClasses('register')}
+        {...tableClasses(className('register'))}
         props={
           entity => ({
             published: entity.published,
