@@ -34,11 +34,11 @@ require('./style.scss');
 
 function getImportTooltip({ isStandalone, isCharacterizationStarted, hasResults } = {}) {
   if (isStandalone) {
-    return "Import of Results is not available in the Standalone mode";
+    return "Import of results is not available in the Standalone mode";
   } else if (isCharacterizationStarted) {
-    return "Generation is in progress. Please, wait until it finished.";
+    return "Please, wait until Achilles generation is finished";
   } else if (!hasResults) {
-    return "No results available. Please, generate it first.";
+    return "No results available. Please, run Achilles generation first";
   }
 }
 
