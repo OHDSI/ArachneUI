@@ -60,15 +60,7 @@ function CellRegister({ published, onClick, centralId, centralDomain, username, 
 function CellEdit({ editDataSource, removeDataSource, value, published, name, centralId, isStandalone }) {
   const classes = new BEMHelper('data-source-list-cell-edit');
   const tooltipClass = new BEMHelper('tooltip');
-  return (
-    <div {...classes('btn-block')}>
-      <Button {...classes('btn')} onClick={() => editDataSource(value)}>
-        <i {...classes('btn-ico')}>edit</i>
-      </Button>
-      <span {...tooltipClass()}
-          aria-label={(isStandalone && centralId) && "Deletion of Published DataSource is prohibited"} 
-          data-tootik-conf="left">
-        <Button {...classes('btn')} onClick={() => {
+  const button = (<Button {...classes('btn')} onClick={() => {
           Utils.confirmDelete({
             message: `Delete data source '${name}'?`,
           })
@@ -77,7 +69,19 @@ function CellEdit({ editDataSource, removeDataSource, value, published, name, ce
         }} disabled={ isStandalone && centralId }>
           <i {...classes('btn-ico')}>delete</i>
         </Button>
+  );
+  const buttonWithTooltip = (isStandalone && centralId) ? (<span {...tooltipClass()}
+          aria-label={"Deletion of Published DataSource is prohibited"} 
+          data-tootik-conf="left multiline">
+          {button}
       </span>
+  ) : button;
+  return (
+    <div {...classes('btn-block')}>
+      <Button {...classes('btn')} onClick={() => editDataSource(value)}>
+        <i {...classes('btn-ico')}>edit</i>
+      </Button>
+      {buttonWithTooltip}
     </div>
 
   );
