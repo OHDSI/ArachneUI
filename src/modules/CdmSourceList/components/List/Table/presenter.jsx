@@ -70,7 +70,7 @@ function CellEdit({ editDataSource, removeDataSource, value, published, name, ce
           <i {...classes('btn-ico')}>delete</i>
         </Button>
   );
-  const buttonWithTooltip = (isStandalone && centralId) ? (<span {...tooltipClass()}
+  const buttonWithTooltip = (isStandalone && centralId) ? (<span {...tooltipClass({extra: 'source-list-cell-tooltip'})}
           aria-label={"Deletion of published Data Source is prohibited in the Standalone mode"} 
           data-tootik-conf="left multiline">
           {button}
