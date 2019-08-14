@@ -40,6 +40,7 @@ function mapStateToProps(state) {
   const query = state.routing.locationBeforeTransitions.query;
   const centralDomain = get(state, 'portal.buildInfo.data.centralUrl');
   const username = get(state, 'auth.principal.queryResult.result.username');
+  const runningMode = get(state, 'auth.nodeMode.data.mode');
 
   return {
     query,
@@ -47,6 +48,7 @@ function mapStateToProps(state) {
     sorting: getSorting(state.routing.locationBeforeTransitions),
     centralDomain,
     username,
+    runningMode,
   };
 }
 

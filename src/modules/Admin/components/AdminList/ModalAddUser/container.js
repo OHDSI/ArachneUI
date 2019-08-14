@@ -79,7 +79,7 @@ class ModalAddUserBuilder extends ContainerBuilder {
       ...stateProps,
       ...dispatchProps,
       doSubmit({ userId }) {
-        const submitPromise = dispatchProps.addAdmin({ id: userId });
+        const submitPromise = dispatchProps.addAdmin({ id: encodeURIComponent(userId) });
 
         submitPromise
           .then(dispatchProps.loadAdminList)

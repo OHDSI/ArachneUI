@@ -16,23 +16,24 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: April 12, 2017
+ * Created: August 6, 2019
  *
  */
 
-import { createSelector } from 'reselect';
-import { get } from 'services/Utils';
+import Duck from 'services/Duck';
+import { apiPaths } from 'modules/Auth/const';
 
-const getRawAdminOptionList = state => get(state, 'adminSettings.adminOptionList.queryResult.result') || [];
+const actionCoreName = "AU_NODE_MODE";
 
-const getAdminOptionList = createSelector(
-  [getRawAdminOptionList],
-  rawAdminOptionList => rawAdminOptionList.map(user => ({
-    label: `${user.firstname} ${user.lastname}`,
-    value: user.username,
-  }))
-);
+const modeDuck = new Duck({
+		name: actionCoreName,
+		urlBuilder: apiPaths.nodeMode,
+});
+
+const actions = modeDuck.actions;
+const reducer = modeDuck.reducer;
 
 export default {
-  getAdminOptionList,
+	actions,
+	reducer,
 };

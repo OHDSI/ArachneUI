@@ -23,6 +23,7 @@
 import { Component, PropTypes } from 'react';
 import { ModalUtils } from 'arachne-ui-components';
 import { modal } from 'modules/Admin/const';
+import { nodeFunctionalModes } from 'modules/Auth/const';
 import { ContainerBuilder, get } from 'services/Utils';
 import actions from 'actions';
 import presenter from './presenter';
@@ -47,9 +48,12 @@ class AdminListBuilder extends ContainerBuilder {
   }
 
   mapStateToProps(state) {
+    const isStandalone = get(state, 'auth.nodeMode.data.mode') === nodeFunctionalModes.Standalone;
+
     return {
       isLoading: state.adminSettings.adminList.isLoading,
       query: state.routing.locationBeforeTransitions.query,
+      isStandalone,
     };
   }
 
