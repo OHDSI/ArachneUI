@@ -37,6 +37,7 @@ function ModalCreateEdit(props) {
 
   const {
     isLoading,
+    isStandalone,
     dbmsTypeList,
     dbmsType,
   } = props;
@@ -61,7 +62,7 @@ function ModalCreateEdit(props) {
     label: 'Cancel',
   };
 
-  const fields = getDataSourceCreationFields(dbmsTypeList);
+  const fields = getDataSourceCreationFields(dbmsTypeList, false, isStandalone && props.initialValues.centralId);
 
   const form = 'IMPALA' === dbmsType ? <TabbedForm {...props} /> : (<Form
       {...classes()}
