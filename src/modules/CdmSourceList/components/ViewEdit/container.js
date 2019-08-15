@@ -34,6 +34,7 @@ class StatefulViewEdit extends Component {
       loadDataSource: PropTypes.func.isRequired,
       loadCharacterization: PropTypes.func.isRequired,
       loadAchillesResults: PropTypes.func.isRequired,
+      resetDataSource: PropTypes.func.isRequired,
     };
   }
 
@@ -43,6 +44,10 @@ class StatefulViewEdit extends Component {
       this.props.loadCharacterization({ datasourceId: nextProps.dataSourceId });
       this.props.loadAchillesResults({ datasourceId: nextProps.dataSourceId });
     }
+  }
+
+  componentWillUnmount() {
+    this.props.resetDataSource();
   }
 
   render() {
@@ -71,6 +76,7 @@ class CdmSourceListViewEditBuilder {
   getMapDispatchToProps() {
     return {
       loadDataSource: actions.cdmSourceList.dataSource.query,
+      resetDataSource: () => actions.cdmSourceList.dataSource.reset,
     };
   }
 
