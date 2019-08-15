@@ -98,7 +98,7 @@ class Api {
   }
 
   getHeaders() {
-    const headers = { ...HEADERS };
+    const headers = {};
     const token = this.getUserToken();
 
     if (token) {
@@ -139,9 +139,13 @@ class Api {
   }
 
   sendRequest(method, path, payload, callback) {
+    return this.sendRequestUnsecured(method, path, payload, callback, this.getHeaders());
+  }
+
+  sendRequestUnsecured(method, path, payload, callback, headers) {
     const params = {
       method,
-      headers: this.getHeaders(),
+      headers: { ...HEADERS, ...headers },
     };
 
     if (payload && payload instanceof FormData) {
@@ -191,6 +195,16 @@ class Api {
   }
 
   doGet(path, payload, callback) {
+
+    return this.internalGet(path, payload, callback, (...args) => this.sendRequest(...args));
+  }
+
+  doGetUnsecured(path, payload, callback) {
+
+    return this.internalGet(path, payload, callback, (...args) => this.sendRequestUnsecured(...args));
+  }
+
+  internalGet(path, payload, callback, sendRequest) {
     // Path with attached GET params
     let pathWithParams;
     // Callback, taking in account function overloads
@@ -209,7 +223,7 @@ class Api {
       resolvedCb = callback;
     }
 
-    return this.sendRequest(METHODS.GET, pathWithParams, null, resolvedCb);
+    return sendRequest(METHODS.GET, pathWithParams, null, resolvedCb);
   }
 
   doPost(path, payload, callback) {

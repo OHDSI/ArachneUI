@@ -149,8 +149,8 @@ const mapDispatchToProps = {
   showAboutInfo: () => ModalUtils.actions.toggle(modal.portalAboutInfo, true),
   refreshToken: () => actions.auth.token.refresh(),
   logout: (backurl) => actions.auth.clearToken(backurl),
-  getPasswordPolicies: () => actions.auth.passwordPolicy.find(),
-  getNodeMode: () => (__APP_TYPE_NODE__) ? actions.auth.nodeMode.find() : true,
+  getPasswordPolicies: () => actions.auth.passwordPolicy.findUnsecured(),
+  getNodeMode: () => (__APP_TYPE_NODE__) ? actions.auth.nodeMode.findUnsecured() : true,
 };
 
 export default (navItems) => {

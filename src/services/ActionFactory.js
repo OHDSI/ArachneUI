@@ -104,7 +104,7 @@ class ActionFactory {
   onAfterLoad(data) {}
 
   // Legacy. For JsonResult
-  buildLoadActionCreator({ resultDataPath = 'result' } = {}) {
+  buildLoadActionCreator({ resultDataPath = 'result', doGet = () => ({}) } = {}) {
     return (urlParams, getParams) => (dispatch) => {
       const requestParams = { url: urlParams, query: getParams };
 
@@ -113,7 +113,7 @@ class ActionFactory {
         this.onBeforeLoad,
         requestParams
       );
-      return api.doGet(
+      return doGet(
         this.resolveUrl(urlParams, getParams),
         (res) => {
           const result = resultDataPath ? get(res, resultDataPath) : res;
@@ -131,7 +131,11 @@ class ActionFactory {
   }
 
   buildLoad({ resultDataPath = null } = {}) {
-    return this.buildLoadActionCreator({ resultDataPath });
+    return this.buildLoadActionCreator({ resultDataPath, doGet: (...args) => api.doGet(...args) });
+  }
+
+  buildLoadUnsecured({ resultDataPath = null } = {}) {
+    return this.buildLoadActionCreator({ resultDataPath, doGet: (...args) => api.doGetUnsecured(...args) });
   }
 
   /**
@@ -141,10 +145,10 @@ class ActionFactory {
   onBeforeFind(data) {}
   onAfterFind(data) {}
 
-  buildFind({ resultDataPath = '' } = {}) {
+  internalBuildFind(resultDataPath, doGet) {
     return (urlParams, getParams) => (dispatch) => {
       this.safeDispatch(dispatch, this.onBeforeFind);
-      return api.doGet(
+      return doGet(
         this.resolveUrl(urlParams, getParams),
         (res) => {
           const result = resultDataPath ? get(res, resultDataPath) : res;
@@ -156,6 +160,14 @@ class ActionFactory {
         }
       );
     };
+  }
+
+  buildFind({ resultDataPath = '' } = {}) {
+    return this.internalBuildFind(resultDataPath, (...args) => api.doGet(...args));
+  }
+
+  buildFindUnsecured({resultDataPath = ''} = {}) {
+    return this.internalBuildFind(resultDataPath, (...args) => api.doGetUnsecured(...args));
   }
   
   /**
