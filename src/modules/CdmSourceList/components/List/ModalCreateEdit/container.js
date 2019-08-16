@@ -104,7 +104,6 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...dispatchProps,
     doSubmit(data) {
       data.useKerberos = !!data.useKerberos;
-      const oldName = stateProps.dataSourceName;
       const submitPromise = stateProps.dataSourceId
         ? dispatchProps.updateDataSource({id: stateProps.dataSourceId}, data)
           : dispatchProps.createDataSource({}, data);

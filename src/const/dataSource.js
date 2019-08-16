@@ -298,7 +298,7 @@ function mapAttributeToField(section, attribute, index){
     };
 }
 
-function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false, isStandaloneAndPublished = false) {
+function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false, disabledFields = {}) {
   const virtualSourceFields = [
     {
       name: 'name',
@@ -310,7 +310,7 @@ function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false, isSta
           required: true,
           type: 'text',
           title: 'General',
-          disabled: isStandaloneAndPublished,
+          disabled: disabledFields.name,
         },
       },
     },
