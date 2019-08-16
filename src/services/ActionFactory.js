@@ -104,7 +104,7 @@ class ActionFactory {
   onAfterLoad(data) {}
 
   // Legacy. For JsonResult
-  buildLoadActionCreator({ resultDataPath = 'result', doGet = () => ({}) } = {}) {
+  buildLoadActionCreator({ resultDataPath = 'result', doGet = (...args) => api.doGet(...args) } = {}) {
     return (urlParams, getParams) => (dispatch) => {
       const requestParams = { url: urlParams, query: getParams };
 
@@ -131,7 +131,7 @@ class ActionFactory {
   }
 
   buildLoad({ resultDataPath = null } = {}) {
-    return this.buildLoadActionCreator({ resultDataPath, doGet: (...args) => api.doGet(...args) });
+    return this.buildLoadActionCreator({ resultDataPath });
   }
 
   buildLoadUnsecured({ resultDataPath = null } = {}) {
