@@ -72,7 +72,6 @@ function mapStateToProps(state) {
     cdmVersionList: selectors.getCDMVersionList(state),
     currentListQuery: state.routing.locationBeforeTransitions.query,
     dataSourceId: get(state.modal[form.createDataSource], 'data.id'),
-    dataSourceName: get(state, 'form.createDataSource.values.name'),
     isLoading: state.cdmSourceList.dataSource.isLoading,
     hasKeytab: dataSourceData.hasKeytab,
     authMethod: get(state, 'form.createDataSource.values.krbAuthMethod'),
@@ -108,12 +107,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
       const oldName = stateProps.dataSourceName;
       const submitPromise = stateProps.dataSourceId
         ? dispatchProps.updateDataSource({id: stateProps.dataSourceId}, data)
-          .then((updated) => {
-            if (oldName !== updated.result.name) {
-              alert("Data source name was not changed since there is another data source with the same name.");
-            }
-          })
-        : dispatchProps.createDataSource({}, data);
+          : dispatchProps.createDataSource({}, data);
 
       submitPromise
         .then(() => dispatchProps.resetForm())
