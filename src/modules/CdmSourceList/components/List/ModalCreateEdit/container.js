@@ -30,6 +30,7 @@ import { ModalUtils } from 'arachne-ui-components';
 import { modal, form, kerberosAuthType } from 'modules/CdmSourceList/const';
 import presenter from './presenter';
 import selectors from './selectors';
+import { nodeFunctionalModes } from 'modules/Auth/const';
 
 class ModalCreateEdit extends Component {
   componentWillReceiveProps(nextProps) {
@@ -62,6 +63,7 @@ function mapStateToProps(state) {
   const dataSourceData = get(state, 'cdmSourceList.dataSource.queryResult.result', {}, 'Object');
   const isOpened = get(state, 'modal.createDataSource.isOpened', false);
   const dbmsType = get(state, 'form.createDataSource.values.dbmsType');
+  const runningMode = get(state, 'auth.nodeMode.data.mode');
 
   dataSourceData.krbAuthMethod = dataSourceData.krbAuthMethod || kerberosAuthType.PASSWORD;
 
@@ -77,6 +79,7 @@ function mapStateToProps(state) {
       ...dataSourceData,
       dbmsType: get(dataSourceData, 'dbmsType'),
     },
+    isStandalone: runningMode === nodeFunctionalModes.Standalone,
     isOpened,
     dbmsType,
   };
@@ -103,7 +106,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
       data.useKerberos = !!data.useKerberos;
       const submitPromise = stateProps.dataSourceId
         ? dispatchProps.updateDataSource({id: stateProps.dataSourceId}, data)
-        : dispatchProps.createDataSource({}, data);
+          : dispatchProps.createDataSource({}, data);
 
       submitPromise
         .then(() => dispatchProps.resetForm())
