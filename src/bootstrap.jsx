@@ -143,14 +143,16 @@ function initBrowserHistory(store) {
  * Initialize API
  */
 function initializeApi(store) {
-  ApiService
-    .setUserTokenGetter(() => AuthService.getToken())
-    .setUserRequestedGetter(() => AuthService.getUserRequest())
-    .setUnauthorizedHandler(() => {
+  const logoffHandler = () => {
       if (store.getState().auth.principal.queryResult !== null) {
         store.dispatch(actions.auth.clearToken(store.getState().routing.locationBeforeTransitions.pathname));
       }
-    });
+    };
+  ApiService
+    .setUserTokenGetter(() => AuthService.getToken())
+    .setUserRequestedGetter(() => AuthService.getUserRequest())
+    .setUnauthorizedHandler(logoffHandler)
+    .setBadRequestHandler(logoffHandler);
 }
 
 function initRootRoute({ store, routes, indexRedirect, menuItems, redirects }) {
