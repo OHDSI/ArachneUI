@@ -61,6 +61,7 @@ function ImportList(props) {
     /* redux-forms */
     handleSubmit,
     submitting,
+    submitFailed,
   } = props;
   const fuseSearch = new Fuse(entities, {
     ...searchSettings,
@@ -85,7 +86,7 @@ function ImportList(props) {
   const SubmitBtn = (
     <Button
       {...classes('submit')}
-      disabled={!isAnySelected || submitting}
+      disabled={!isAnySelected || submitting || submitFailed}
       type="submit"
       mods={['success']}
       label={submitting ? "Importing..." : "Import"}
