@@ -23,7 +23,8 @@
 import keyMirror = require('keymirror');
 
 const forms = keyMirror({
-	download: null,
+  download: null,
+  share: null,
 	toolbar: null,
   downloadSettings: null,
   bundle: null,
@@ -32,6 +33,7 @@ const forms = keyMirror({
 
 const modal = keyMirror({
   download: null,
+  share: null,
   downloadResult: null,
   requestLicense: null,
   confirmLicense: null,
@@ -50,6 +52,7 @@ const paths = {
 
 const apiPaths = {
   availability: id => `/vocabularies/check/${id}`,
+  share: id => `/vocabularies/downloads/${id}/share`,
 };
 
 const resultsPageSize = 15;

@@ -38,6 +38,7 @@ import {
 import { fullDateFormat } from 'const/formats';
 import ModalEditNotifications from './components/ModalEditNotifications';
 import ModalRequestLicenses from './components/ModalRequestLicenses';
+import ModalShare from './components/ModalShare';
 
 require('./style.scss');
 
@@ -67,15 +68,18 @@ interface IHistoryItem extends IVocabulary {
 interface IDownloadHistoryStateProps {
   isLoading: boolean;
   history: Array<IDownloadRequest>,
+  currentUser: string;
 };
 
 interface IDownloadHistoryDispatchProps {
   load: () => (dispatch: Function) => any;
   remove: (id: number) => Promise<void>;
   restore: (id: number) => Promise<void>;
+  share: (id: number) => Promise<void>;
   showNotifications: Function;
   checkAvailability: Function;
   showRequestModal: Function;
+  showShareModal: Function;
 };
 
 interface IDownloadHistoryProps extends IDownloadHistoryStateProps, IDownloadHistoryDispatchProps {
@@ -89,25 +93,28 @@ interface IDownloadHistoryStatefulProps {
   expandedBundleId: number;
 };
 
-function BundleName({ name, date, onClick, isOpened, releaseVersion }) {
+function BundleName({ name, date, onClick, isOpened, releaseVersion, downloadShareDTO, currentUser }) {
   const dateFormat = fullDateFormat;
   const classes = BEMHelper('bundle-caption');
-
+  const isAlreadyShared = downloadShareDTO && downloadShareDTO.ownerUsername === currentUser;
   return <div {...classes()} onClick={onClick}>
     <span {...classes({ element: 'opener', modifiers: { opened: isOpened } })}>keyboard_arrow_right</span>
     <div {...classes('title-wrapper')}>
       {name}
       <span {...classes('date')}>{moment(date).format(dateFormat)}</span>
       <span {...classes('version')}>{releaseVersion}</span>
+      {downloadShareDTO && !isAlreadyShared && <span {...classes('shared-by')}>Shared by {downloadShareDTO.ownerUsername}</span>}
      </div>
   </div>;
 }
 
-function BundleTitle({ bundle, removeBundle, toggle, isExpanded, restore, download }) {
+function BundleTitle({ bundle, removeBundle, toggle, isExpanded, restore, download, share, showShareModal, currentUser }) {
   const classes = BEMHelper('download-history');
-
+  const isAlreadyShared = bundle.downloadShareDTO && bundle.downloadShareDTO.ownerUsername === currentUser;
+  const isShareable = isAlreadyShared || !bundle.downloadShareDTO;
+  const shareBtnTitle = isAlreadyShared ? 'Edit share' : !bundle.downloadShareDTO ? 'Share' : '';
   return <Toolbar
-    caption={<BundleName {...bundle} onClick={() => toggle(bundle.id)} isOpened={isExpanded} />}
+    caption={<BundleName {...bundle} onClick={() => toggle(bundle.id)} isOpened={isExpanded} currentUser={currentUser} />}
   >
     {[bundleStatuses.READY].includes(bundle.status)
       ? <div>
@@ -118,16 +125,28 @@ function BundleTitle({ bundle, removeBundle, toggle, isExpanded, restore, downlo
           >
             Download
           </Button>
-          <Button
-            {...classes('remove-button')}
-            onClick={() => removeBundle(bundle.id)}
+          {isShareable && (
+            <Button
+            {...classes('share-button')}
+            onClick={() => showShareModal(bundle)}
+            mods={['rounded']}
           >
-            Archive
-        </Button>
+            {shareBtnTitle}
+          </Button>
+          )}
+
+          {isShareable && (
+            <Button
+              {...classes('remove-button')}
+              onClick={() => removeBundle(bundle.id)}
+            >
+              Archive
+            </Button>
+          )}
       </div>
      : <div>
          <span {...classes('status')}>{bundle.status}</span>
-         {bundle.status === bundleStatuses.ARCHIVED &&
+         {bundle.status === bundleStatuses.ARCHIVED && isShareable &&
            <Button
              {...classes('restore-button')}
              mods={['success', 'rounded']}
@@ -149,12 +168,15 @@ function VocabsList(props: IDownloadHistoryProps & IDownloadHistoryStatefulProps
     toggle,
     expandedBundleId,
     restoreBundle,
+    share,
     showNotifications,
+    showShareModal,
     download,
+    currentUser,
   } = props;
   const classes = BEMHelper('download-history');
 
-  return (    
+  return (
     <div {...classes()}>
       <Toolbar
         caption='Download history'
@@ -172,6 +194,9 @@ function VocabsList(props: IDownloadHistoryProps & IDownloadHistoryStatefulProps
               isExpanded={bundle.id === expandedBundleId}
               restore={restoreBundle}
               download={download}
+              share={share}
+              showShareModal={showShareModal}
+              currentUser={currentUser}
              />}
             {...classes('bundle-caption')}
             key={`caption${index}`}
@@ -202,13 +227,14 @@ function VocabsList(props: IDownloadHistoryProps & IDownloadHistoryStatefulProps
                   header='Name'
                   field='name'
                 />
-            </Table>          
+            </Table>
           </AccordionItem>
         )}
       </Accordion>
       <LoadingPanel active={isLoading} />
       <ModalEditNotifications />
       <ModalRequestLicenses />
+      <ModalShare />
     </div>
   );
 }

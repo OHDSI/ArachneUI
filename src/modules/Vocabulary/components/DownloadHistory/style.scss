@@ -26,7 +26,7 @@
   &download-history {
   	display: flex;
   	flex-direction: column;
-    
+
     &__download-button {
     	background: $purple-darker;
     	color: $white;
@@ -35,6 +35,17 @@
     	&:hover {
     		background: $purple;
     	}
+    }
+
+    &__share-button {
+      background: $green;
+      color: $white;
+      width: 12rem;
+      margin-left: 1rem;
+
+      &:hover {
+        background: darken($green, 5%);
+      }
     }
 
     &__restore-button {
@@ -89,12 +100,12 @@
       &:not(.react-sanfona-item-expanded) {
         border-bottom: 1px solid lighten($grey-dark-light, 30%);
       }
-      
+
       & .ac {
         &-toolbar {
           &__content {
             flex-grow: 1;
-            cursor: pointer;          
+            cursor: pointer;
           }
           &__header {
             flex-grow: 1;
@@ -107,6 +118,15 @@
   &bundle-caption {
     display: flex;
     align-items: center;
+
+
+
+    &__shared-by {
+      display: block;
+      font-size: $font-size-base;
+      font-weight: initial !important;
+      color: $blue;
+    }
 
     &__date {
       display: block;

@@ -17,7 +17,7 @@
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Alexandr Saltykov, Pavel Grafkin, Vitaly Koulakov, Anton Gackovka
  * Created: March 3, 2017
- *  
+ *
  */
 
 import reduxifyServices from 'feathers-reduxify-services';

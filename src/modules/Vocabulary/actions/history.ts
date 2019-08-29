@@ -20,8 +20,9 @@
  *
  */
 
-import API from 'services/Api';
+import API, { ohdsiApi } from 'services/Api';
 import services from '../apiServices';
+import { apiPaths } from 'modules/Vocabulary/const';
 
 function load() {
   return services.history.find();
@@ -35,8 +36,15 @@ function restore(id: number) {
 	return services.restore.update(id, {});
 }
 
+function share(values: string, id: number) {
+  return (dispatch: Function) => {
+    return ohdsiApi.doPost(apiPaths.share(id), values);
+  };
+}
+
 export default {
   load,
   remove,
   restore,
+  share,
 };
