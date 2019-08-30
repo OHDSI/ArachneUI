@@ -57,7 +57,7 @@ function mapStateToProps(state: any): IModalStateProps {
 
 const mapDispatchToProps = {
   close: () => ModalUtils.actions.toggle(modal.notifications, false),
-  notify: actions.download.requestNotification,
+  removeNotification: actions.download.removeNotification,
   getNotifications: actions.download.getNotifications,
 };
 
@@ -70,8 +70,8 @@ function mergeProps(
     ...stateProps,
     ...ownProps,
     ...dispatchProps,
-    removeVocabulary: (vocabularyV4Id: number) => {
-      dispatchProps.notify({ notify: false, vocabularyV4Id })
+    removeVocabulary: (vocabularyCode: string) => {
+      dispatchProps.removeNotification(vocabularyCode)
         .then(() => dispatchProps.getNotifications()
           .then(() => {
             if (stateProps.selectedVocabs.length === 1) { // was 1

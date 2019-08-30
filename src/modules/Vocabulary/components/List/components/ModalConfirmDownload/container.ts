@@ -22,15 +22,13 @@
 
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { push as goToPage } from 'react-router-redux';
 import actions from 'modules/Vocabulary/actions';
-import { reduxForm, change as reduxFormChange, SubmissionError, reset } from 'redux-form';
-import { ModalUtils } from 'arachne-ui-components';
-import { modal, forms, paths, cdmVersions } from 'modules/Vocabulary/const';
+import { change as reduxFormChange, reduxForm, reset, SubmissionError } from 'redux-form';
+import {ModalUtils} from 'arachne-ui-components';
+import { cdmVersions, forms, modal } from 'modules/Vocabulary/const';
 import { get } from 'lodash';
 import selectors from 'modules/Vocabulary/components/List/components/Results/selectors';
-import presenter from './presenter';
-import { IModalProps, IModalStateProps, IModalDispatchProps } from './presenter';
+import presenter, { IModalDispatchProps, IModalProps, IModalStateProps } from './presenter';
 
 class ModalConfirmDownload extends Component<IModalProps, {}> {
   componentWillReceiveProps(nextProps) {
@@ -75,15 +73,15 @@ const mapDispatchToProps = {
   close: () => ModalUtils.actions.toggle(modal.download, false),
   showResult: () => ModalUtils.actions.toggle(modal.downloadResult, true),
   reset: () => reset(forms.bundle),
-  notify: actions.download.requestNotification,
+  updateNotifications: actions.download.requestNotifications,
   loadList: actions.vocabularies.load,
 };
 
 function mergeProps(
-  stateProps: IModalStateProps,
-  dispatchProps: IModalDispatchProps,
-  ownProps
-  ): IModalProps {
+    stateProps: IModalStateProps,
+    dispatchProps: IModalDispatchProps,
+    ownProps
+): IModalProps {
   return {
     ...stateProps,
     ...ownProps,
@@ -94,31 +92,28 @@ function mergeProps(
         dispatchProps.close();
       }
     },
-    download: ({ bundleName, cdmVersion, notify }) => {
-      const promises = [];
-      promises.push(dispatchProps.requestDownload({
-          cdmVersion: cdmVersion,
-          ids: stateProps.selectedVocabIds.join(','),
-          name: bundleName,
-        })
-       );
+    download: ({bundleName, cdmVersion, notify}) => {
+      let downloadVocabsAction = dispatchProps.requestDownload({
+        cdmVersion: cdmVersion,
+        ids: stateProps.selectedVocabIds.join(','),
+        name: bundleName,
+      });
+
       if (notify) {
-        stateProps.selectedVocabIds.forEach(vocabularyV4Id =>
-          promises.push(dispatchProps.notify({
-            notify: true,
-            vocabularyV4Id,
-          })
-        ));
+        const codes = stateProps.selectedVocabs.map(vocab => vocab.code);
+        downloadVocabsAction = downloadVocabsAction.then(_ => dispatchProps.updateNotifications(codes)
+        );
       }
-      const promise = Promise.all(promises)
-        .then(() => dispatchProps.close())
-        .then(() => dispatchProps.showResult())
-        .then(() => dispatchProps.loadList())  
-        .catch(({ message }) => {
-          throw new SubmissionError({
-            _error: message,
+
+      const promise = Promise.resolve(downloadVocabsAction)
+          .then(() => dispatchProps.close())
+          .then(() => dispatchProps.showResult())
+          .then(() => dispatchProps.loadList())
+          .catch(({message}) => {
+            throw new SubmissionError({
+              _error: message,
+            });
           });
-        });
 
       return promise;
     },

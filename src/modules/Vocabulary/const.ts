@@ -63,11 +63,11 @@ const cdmVersions = [
     value: '',
   },
 	{
-    label: '4.5',
+    label: '4.x',
     value: '4.5',
   },
 	{
-    label: '5.1.0',
+    label: '5.x',
     value: '5',
   },
 ];
