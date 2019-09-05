@@ -25,7 +25,7 @@ import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import { push } from 'react-router-redux';
 import actions from 'actions/index';
-import { paths, loginMessages, authMethods } from 'modules/Auth/const';
+import { paths, loginMessages, authMethods, nodeFunctionalModes } from 'modules/Auth/const';
 import { get } from 'services/Utils';
 import FormLogin from './presenter';
 import Auth from 'services/Auth';
@@ -34,6 +34,8 @@ function mapStateToProps(state) {
   const authMethod = get(state, 'auth.authMethod.data.result.userOrigin', authMethods.NATIVE);
   const isUnactivated = get(state, 'form.login.submitErrors.unactivated', false);
   const userEmail = get(state, 'form.login.values.username', '');
+  const isStandalone = get(state, 'auth.nodeMode.data.mode') === nodeFunctionalModes.Standalone;
+
   const userRequest = Auth.getUserRequest();
 
   return {
@@ -46,6 +48,7 @@ function mapStateToProps(state) {
     isUnactivated,
     userEmail,
     userRequest,
+    isStandalone,
   };
 }
 

@@ -62,6 +62,7 @@ function FormLogin(props) {
     resendEmail,
     isLoading,
     authMethod,
+    isStandalone,
     userRequest,
   } = props;
 
@@ -118,7 +119,7 @@ function FormLogin(props) {
           component={Fieldset}
           {...fields.redirectTo}
         />
-        {authMethod !== authMethods.LDAP &&
+        {!isStandalone && authMethod !== authMethods.LDAP &&
           <RemindPasswordLink
             {...formClasses('group')}
             link={remindPasswordLink}
@@ -146,7 +147,7 @@ function FormLogin(props) {
         </div>
       </form>
 
-      {authMethod !== authMethods.LDAP &&
+      {!isStandalone && authMethod !== authMethods.LDAP &&
         <span {...classes('register-caption')}>
           Don't have an account? <Link to={paths.register()}>Register here</Link>
         </span>

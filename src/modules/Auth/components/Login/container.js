@@ -27,6 +27,7 @@ import actions from 'actions';
 import { asyncConnect } from 'redux-async-connect';
 import { get } from 'services/Utils';
 import { leaveIfAuthed } from 'modules/Auth/utils';
+import { nodeFunctionalModes } from 'modules/Auth/const';
 import presenter from './presenter';
 
 class Login extends Component {
@@ -34,9 +35,19 @@ class Login extends Component {
     leaveIfAuthed(this.props);
   }
 
+  componentDidMount() {
+    if (__APP_TYPE_CENTRAL__) {
+      this.props.authMethod();
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     if (this.props.isUserAuthed !== nextProps.isUserAuthed) {
       leaveIfAuthed(nextProps);
+    }
+    if (__APP_TYPE_NODE__ && this.props.runningMode !== nextProps.runningMode 
+        && nextProps.runningMode === nodeFunctionalModes.Network) {
+      this.props.authMethod();
     }
   }
 
@@ -51,18 +62,17 @@ Login.propTypes = {
 };
 
 function mapStateToProps(state) {
+  const runningMode = get(state, 'auth.nodeMode.data.mode');
   return {
     message: state.routing.locationBeforeTransitions.query.message,
     isUserAuthed: !!get(state, 'auth.principal.queryResult.result.id'),
+    runningMode,
   };
 }
 
 const mapDispatchToProps = {
   goToRoot: goToPage.bind(null, '/'),
+  authMethod: actions.auth.authMethod.find,
 };
 
-const connectedLogin = connect(mapStateToProps, mapDispatchToProps)(Login);
-
-export default asyncConnect([{
-  promise: ({ store: { dispatch } }) => dispatch(actions.auth.authMethod.find()),
-}])(connectedLogin);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

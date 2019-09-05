@@ -32,10 +32,16 @@ import { get } from 'services/Utils';
 import AboutInfo from 'modules/Portal/components/AboutInfo';
 import { modal } from 'modules/Portal/const';
 import { asyncConnect } from 'redux-async-connect';
+import { nodeFunctionalModes } from 'modules/Auth/const';
 
 class AppContainer extends Component {
   componentDidMount() {
-    this.props.getPasswordPolicies();
+    if (__APP_TYPE_NODE__) {
+      this.props.getNodeMode();
+    }
+    if (__APP_TYPE_CENTRAL__) {
+      this.props.getPasswordPolicies();
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -45,6 +51,10 @@ class AppContainer extends Component {
     }
     if (this.props.isUserAuthed !== nextProps.isUserAuthed) {
       setTimeout(() => window.dispatchEvent(new Event('resize')), 0);
+    }
+    if (__APP_TYPE_NODE__ && this.props.runningMode !== nextProps.runningMode 
+        && nextProps.runningMode === nodeFunctionalModes.Network) {
+      this.props.getPasswordPolicies();
     }
   }
 
@@ -99,6 +109,7 @@ function mapStateToProps(state) {
 
   const currentLocation = get(state, 'routing.locationBeforeTransitions.pathname', '');
   const currentSearch = get(state, 'routing.locationBeforeTransitions.search', '');
+  const runningMode = get(state, 'auth.nodeMode.data.mode');
 
   if (modules) {
     const activeModule = modules.filter(m => m.path === state.modules.active)[0] || {};
@@ -107,11 +118,16 @@ function mapStateToProps(state) {
         if (module.isAdminOnly && !isUserAdmin) {
           return;
         }
+        if (runningMode === nodeFunctionalModes.Standalone && module.path === 'external-resource-manager') {
+          return;
+        }
+
         const tab = { ...module.sidebar };
 
         if ((activeModule.sidebarPath || activeModule.path) === module.path) {
           tab.isSelected = true;
         }
+
 
         sidebarTabList.push(tab);
       }
@@ -125,6 +141,7 @@ function mapStateToProps(state) {
     sidebarTabList,
     currentLocation,
     currentSearch,
+    runningMode,
   };
 }
 
@@ -133,6 +150,7 @@ const mapDispatchToProps = {
   refreshToken: () => actions.auth.token.refresh(),
   logout: (backurl) => actions.auth.clearToken(backurl),
   getPasswordPolicies: () => actions.auth.passwordPolicy.find(),
+  getNodeMode: () => (__APP_TYPE_NODE__) ? actions.auth.nodeMode.find() : true,
 };
 
 export default (navItems) => {
