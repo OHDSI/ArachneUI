@@ -21,6 +21,7 @@
  */
 
 @import 'styles/vars-and-mixins.scss';
+@import 'balloon-css/src/balloon.scss';
 
 .#{$namespace} {
 
@@ -39,6 +40,10 @@
   		display: flex;
       min-width: 255px;
   	}
+
+    &__tooltip-wrapper {
+      text-transform: none;
+    }
 
   	&__title {
   		width: 100%;
@@ -73,5 +78,10 @@
     & .ac-form__group {
       margin-bottom: 0;
     }
+
+    &__tooltip {
+      --balloon-color: darkgray
+    }
+
   }
 }
