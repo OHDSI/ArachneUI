@@ -30,6 +30,7 @@ import { Field } from 'redux-form';
 require('./style.scss');
 
 interface IVocab {
+	code: string;
 	name: string;
 	id: number;
 };
@@ -48,10 +49,11 @@ interface IModalDispatchProps {
 	remove: (id: number) => any;
 	close: () => null;
 	download: () => null;
-  requestDownload: (params: DownloadParams) => any;
+	requestDownload: (params: DownloadParams) => any;
 	showResult: () => null;
 	reset: Function;
 	notify: Function;
+	updateNotifications: Function;
 	loadList: Function;
 };
 

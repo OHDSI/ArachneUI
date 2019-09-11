@@ -1,0 +1,56 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+    &email-list-input {
+        width: 40rem;
+
+        &__email-input-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+            .ac-form-input {
+                @include input();
+                @include input-border();
+                &:disabled {
+                    background: $white;
+                }
+            }
+
+            .ac-list-item__content {
+                padding-left: 0;
+            }
+
+            .ac-list-item__remove {
+                padding: 0;
+                padding-left: 2rem;
+                padding-right: 0.5rem;
+                width: 2.5rem;
+            }
+        }
+
+        &__add-button-container {
+            margin-bottom: 2rem;
+        }
+
+        &__add-button {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            margin: 1rem 0;
+            margin-bottom: auto;
+        }
+
+        &__icon {
+            @include material-icon();
+            color: $green;
+            display: inline-block;
+            margin-right: 1rem;
+            font-size: 2.5rem;
+        }
+        &__submit {
+            margin-top: 1rem;
+            width: 100%;
+        }
+    }
+}

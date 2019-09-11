@@ -38,12 +38,13 @@ function AboutInfo(props : IAboutInfo) {
   return (
     <Modal
       modal={props.modal}
-      title="SNOMED International SNOMED CT Browser License Agreement"
+      title="License Agreement"
       mods={['no-padding']}
       onBeforeClose={() => false}
     >
       <div {...classes()}>
-        <p {...classes('line')}>In order to use the SNOMED International SNOMED CT Browser, please accept the following license agreement:</p>
+        <p {...classes('line')}>In order to use the SNOMED International SNOMED CT Browser and HemOnc, please accept the following license agreement:</p>
+        <h1 {...classes('title')}>SNOMED INTERNATIONAL SNOMED CT LICENSE AGREEMENT</h1>
         <p {...classes('line')}>
           <span {...classes('strong')}>SNOMED International SNOMED CT Browser</span> includes SNOMED Clinical Terms® (SNOMED CT®) which is used by permission of the
           SNOMED International. All rights reserved. SNOMED CT® was originally created by
@@ -114,7 +115,56 @@ function AboutInfo(props : IAboutInfo) {
         </li>
       </ol>
       </div>
-    </div>
+        <h1 {...classes('title')}>HemOnc license agreement</h1>
+        <div {...classes('line')}>
+          The HemOnc Vocabulary is a derivative product of HemOnc.org, which is wholly owned and operated by HemOnc.org LLC. Use of the HemOnc Vocabulary is governed by the conditions of this License Agreement issued by HemOnc.org LLC:
+          <ol {...classes('list')}>
+            <li>
+              The meaning of the terms “Data Analysis System”, “Data Creation System”, and “License” is defined below.
+            </li>
+            <li>
+              If you are already holding a HemOnc ontology License, you are subject to the terms and conditions of the License for the version of the HemOnc Vocabulary which was provided to you. If you wish to obtain this version of the HemOnc Vocabulary, you are subject to the following limitations.
+            </li>
+            <li>
+              If you currently do not hold a HemOnc ontology License, you may access the HemOnc Vocabulary subject to acceptance of and adherence to the following limitations:
+
+              <ol {...classes('sublist')}>
+                <li>
+                  You are permitted to access HemOnc using this software for the purpose of exploring and evaluating the terminology.
+                </li>
+                <li>
+                  You are permitted to use HemOnc as part of a system that constitutes a Data Analysis System, as defined below.
+                </li>
+                <li>
+                  You are not permitted the use of HemOnc as part of a system that constitutes a Data Creation System, as defined  below. This means that you must not use HemOnc identifiers in any type of system intended for direct or indirect patient care.
+                </li>
+                <li>
+                  If you share the Licensed Material with a third party, attribution of the HemOnc vocabulary must be given to HemOnc.org LLC, with a URI or hyperlink to HemOnc.org provided if reasonably possible. Use of HemOnc by a third party would be limited to a Data Analysis System and a copy of this License Agreement must be supplied to the third party.
+                </li>
+                <li>
+                  You may not use HemOnc as a substitute for formal medical training, substitute it for independent clinical judgment, and construe it as offering medical advice.
+                </li>
+              </ol>
+            </li>
+          </ol>
+        </div>
+        <p {...classes('line')}>
+          If you wish to utilize the vocabulary for purposes other than specified here, contact us by emailing <a href="mailto:licensing@hemonc.org">licensing@hemonc.org</a>.
+        </p>
+        <p {...classes('line')}>
+          You agree to indemnify and hold HemOnc.org LLC and all parties who have contributed to HemOnc.org and this derivative product harmless from and against all claims, liability, losses, damages, costs, and expenses, including--but not limited to--legal fees
+        </p>
+        <p {...classes('line')}>Definitions</p>
+        <p {...classes('line')}>
+          Data Analysis System: a computer system that is used to analyze records or other data, but not if that system is also a Data Creation System
+        </p>
+        <p {...classes('line')}>
+          Data Creation System: a computer system that is used to create records or other data that is encoded using HemOnc, for the purposes of facilitating patient care
+        </p>
+        <p {...classes('line')}>
+          License: the separate <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> license to the full HemOnc ontology
+        </p>
+      </div>
     <div {...classes('actions')}>
       <Button mods={['rounded', 'success']} onClick={accept}>Accept</Button>
     </div>

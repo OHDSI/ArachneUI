@@ -32,6 +32,7 @@ interface IAboutInfo {
   isLoading: boolean,
   projectVersion: string,
   buildId: string,
+  vocabularyReleaseVersion,
   modal: Object,
 }
 
@@ -42,8 +43,9 @@ function AboutInfo(props: IAboutInfo) {
     isLoading,
     projectVersion,
     buildId,
+    vocabularyReleaseVersion,
   } = props;
-
+  const currentYear = new Date().getFullYear();
   return (
     <Modal modal={props.modal} title="Athena – OHDSI Vocabularies Repository">
       <div {...classes()}>
@@ -56,13 +58,16 @@ function AboutInfo(props: IAboutInfo) {
           />
         </Link>
         <p {...classes('line', 'emphasized')}>
-          @ 2015-2017, Odysseus Data Services, Inc. All rights reserved
+          @ 2015-{currentYear}, Odysseus Data Services, Inc. All rights reserved
         </p>
         {projectVersion && buildNumber &&
           <p {...classes('line', ['additional', 'padded'])}>
             Version { projectVersion }.{ buildNumber }.{ buildId }
           </p>
         }
+        <p {...classes('line', ['additional', 'padded'])}>
+          OMOP Vocabulary version: {vocabularyReleaseVersion}
+        </p>
         <p {...classes('line', 'padded')}>
           <Link href={'mailto:support@odysseusinc.com'}>support@odysseusinc.com</Link>
         </p>
