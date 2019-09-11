@@ -74,13 +74,22 @@ function Toolbar(props: IToolbarProps) {
     		<span {...classes('title')}>Search by keyword</span>
     	</div>
     	<div {...classes({ element: 'search-string' })}>
-        <Form
-          fields={fields}
-          onSubmit={props.filter}
-          submitBtn={submitBtn}
-          actionsClassName={classes('search-button-wrapper').className}
-          {...props}
-        />
+          <div {...classes({
+                     element: 'tooltip'
+                })}
+               aria-label="Here are several options to use the search: &#10;&#10; 1. Usage of quotation marks forces an exact-   match search &#10; 2. In case of a typo, or if there is a similar spelling of the word, the most similar result will be presented &#10; 3. In case of search for a phrase, results are sorted according to the following criteria: &#10;-    full phrase match &#10; -    concepts contain all the words from the search phrase &#10; -    result based on the number of matching words in the result and importance of each word (rearer words come first) &#10; 4. For special symbols, the rules below are applied: &#10; -    The following special symbols are always ignored and treated as words separation symbols: / \ | ? ! , ;   . &#10; -    All other special symbols are ignored only if they form a separate word: + -    ( ) : ^ [ ] { } ~ * ? | & ; &#10; -    Results including the special symbols are ranked higher"
+               data-balloon-pos="down"
+               data-balloon-break
+               data-balloon-length="fit"
+          >
+              <Form
+                fields={fields}
+                onSubmit={props.filter}
+                submitBtn={submitBtn}
+                actionsClassName={classes('search-button-wrapper').className}
+                {...props}
+              />
+          </div>
     	</div>
     </div>
   );
