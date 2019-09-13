@@ -17,7 +17,7 @@
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Alexandr Saltykov, Pavel Grafkin, Vitaly Koulakov, Anton Gackovka
  * Created: March 3, 2017
- *  
+ *
  */
 
 import * as React from 'react';
@@ -26,8 +26,10 @@ import {
   Button,
   Form,
   FormInput,
+  Panel,
 } from 'arachne-ui-components';
 import { push } from 'react-router-redux';
+import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
 import { locationDescriptor } from 'modules/SearchTerms/components/List/presenter';
 import { searchParams } from 'modules/SearchTerms/actions/termList';
 
@@ -46,6 +48,43 @@ interface IToolbarDispatchProps {
 
 interface IToolbarProps extends IToolbarStateProps, IToolbarDispatchProps {
   filter: Function;
+}
+
+function SearchTooltip() {
+  const classes = BEMHelper('search-tooltip-dropdown');
+  return (
+    <Dropdown {...classes()}>
+    <DropdownTrigger {...classes('icon')}>
+      <i {...classes('search-tooltip-icon')}>help_outline</i>
+    </DropdownTrigger>
+    <DropdownContent>
+      <Panel title="Here are several options to use the search:" mods="black-header" {...classes('content')}>
+        <div {...classes('search-tooltip-text')}>
+          <ol>
+            <li>Usage of quotation marks forces an exact-match search</li>
+            <li>In case of a typo, or if there is a similar spelling of the word, the most similar result will be presented</li>
+            <li>
+              In case of search for a phrase, results are sorted according to the following criteria:
+              <ul>
+                <li>full phrase match</li>
+                <li>concepts contain all the words from the search phrase</li>
+                <li>result based on the number of matching words in the result and importance of each word (rearer words come first)</li>
+              </ul>
+            </li>
+            <li>
+              For special symbols, the rules below are applied:
+              <ul>
+                <li>The following special symbols are always ignored and treated as words separation symbols: / \ | ? ! , ; .</li>
+                <li>All other special symbols are ignored only if they form a separate word: + - ( ) : ^ [ ] { } ~ * ? | & ;</li>
+                <li>Results including the special symbols are ranked higher</li>
+              </ul>
+            </li>
+          </ol>
+        </div>
+      </Panel>
+    </DropdownContent>
+  </Dropdown>
+  )
 }
 
 function Toolbar(props: IToolbarProps) {
@@ -74,23 +113,15 @@ function Toolbar(props: IToolbarProps) {
     		<span {...classes('title')}>Search by keyword</span>
     	</div>
     	<div {...classes({ element: 'search-string' })}>
-          <div {...classes({
-                     element: 'tooltip'
-                })}
-               aria-label="Here are several options to use the search: &#10;&#10; 1. Usage of quotation marks forces an exact-   match search &#10; 2. In case of a typo, or if there is a similar spelling of the word, the most similar result will be presented &#10; 3. In case of search for a phrase, results are sorted according to the following criteria: &#10;-    full phrase match &#10; -    concepts contain all the words from the search phrase &#10; -    result based on the number of matching words in the result and importance of each word (rearer words come first) &#10; 4. For special symbols, the rules below are applied: &#10; -    The following special symbols are always ignored and treated as words separation symbols: / \ | ? ! , ;   . &#10; -    All other special symbols are ignored only if they form a separate word: + -    ( ) : ^ [ ] { } ~ * ? | & ; &#10; -    Results including the special symbols are ranked higher"
-               data-balloon-pos="down"
-               data-balloon-break
-               data-balloon-length="fit"
-          >
-              <Form
-                fields={fields}
-                onSubmit={props.filter}
-                submitBtn={submitBtn}
-                actionsClassName={classes('search-button-wrapper').className}
-                {...props}
-              />
-          </div>
-    	</div>
+        <Form
+          fields={fields}
+          onSubmit={props.filter}
+          submitBtn={submitBtn}
+          actionsClassName={classes('search-button-wrapper').className}
+          {...props}
+        />
+      </div>
+      <SearchTooltip />
     </div>
   );
 }

@@ -21,7 +21,6 @@
  */
 
 @import 'styles/vars-and-mixins.scss';
-@import 'balloon-css/src/balloon.scss';
 
 .#{$namespace} {
 
@@ -41,20 +40,15 @@
       min-width: 255px;
   	}
 
-    &__tooltip-wrapper {
-      text-transform: none;
-    }
-
   	&__title {
   		width: 100%;
   		margin-left: 2rem;
   	}
 
   	&__search-string {
-      margin-right: 4rem;
       flex-grow: 1;
       position: relative;
-  	}
+    }
 
     &__search-button-wrapper {
       margin-top: 0px;
@@ -78,10 +72,60 @@
     & .ac-form__group {
       margin-bottom: 0;
     }
+  }
 
-    &__tooltip {
-      --balloon-color: darkgray;
+  &search-tooltip-dropdown {
+    height: 2.6rem;
+    margin-right: 1.5rem;
+    @include dropdown-content();
+
+    &__content {
+      right: 0.8rem;
+      margin-top: $header-height / 2;
+      width: 80rem;
     }
 
+    &__icon {
+      display: inline-block;
+      @include material-icon();
+      font-size: 2.2rem;
+      color: #FFFFFF;
+      line-height: 3rem;
+      margin: 0 2rem;
+      text-decoration: none;
+    }
+
+    &__search-tooltip-text {
+      margin: 2rem 4rem;
+
+      ol {
+        list-style: decimal;
+
+        li {
+          margin-bottom: 1.5rem;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+
+      ul {
+        list-style: disc;
+        padding-left: 2rem;
+
+        li {
+          margin-bottom: 1rem;
+
+          &:first-child {
+            margin-top: 1rem;
+          }
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
   }
 }
