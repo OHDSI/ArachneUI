@@ -30,6 +30,7 @@ import presenter from './presenter';
 import actions from 'actions';
 import { paths, modal } from 'modules/ExternalResourceManager/const';
 import SelectorsBuilder from './selectors';
+import { Utils } from 'services/Utils';
 
 const selectors = (new SelectorsBuilder()).build();
 
@@ -94,8 +95,13 @@ export default class ListBuilder extends ContainerBuilder {
       setSorting: PageableUtils.setSorting.bind(null, dispatchProps.search, stateProps.query),
       reload: () => dispatchProps.loadAtlasList({}, stateProps.query),
       async deleteAtlas(id) {
-        await dispatchProps.deleteAtlas({ id });
-        dispatchProps.loadAtlasList();
+        try {
+          await Utils.confirmDelete({ message: 'Are you sure you want to delete this Atlas?' });
+          await dispatchProps.deleteAtlas({ id });
+          dispatchProps.loadAtlasList();
+        } catch (err) {
+          console.error(err); // eslint-disable-line no-console
+        }
       },
       onPageOutOfRange() {
         dispatchProps.redirect(paths.atlases());
