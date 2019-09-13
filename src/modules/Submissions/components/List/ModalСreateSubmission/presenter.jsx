@@ -124,7 +124,7 @@ export default function ModalCreateSubmission({
   const onCancel = () => {
     resetForm();
     closeModal();
-    setActiveTab(modalSections.FILES);
+    setActiveTab(modalSections.ARCHIVE);
   }
   const FilesForm = (<Form
     mods="spacing-sm"
@@ -138,11 +138,11 @@ export default function ModalCreateSubmission({
 
   const sections = [
     {
-      label: modalSections.FILES,
+      label: modalSections.ARCHIVE,
       content: FilesForm,
     },
     {
-      label: modalSections.ARCHIVE,
+      label: modalSections.FILES,
       content: FilesForm,
     },
   ];
