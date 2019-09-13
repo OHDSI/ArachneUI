@@ -136,6 +136,10 @@ const cdmVersionList = [
     label: '5.3',
     value: 'V5_3',
   },
+  {
+    label: '5.3.1',
+    value: 'V5_3_1',
+  },
 ];
 
 /**
