@@ -69,11 +69,16 @@ export default class Results extends Component {
     let label;
 
     if (Array.isArray(resultInfo) && resultInfo.length > 1) {
-      tooltipString = `Rate: ${min(resultInfo.map(o => o.RATE))} - ${max(resultInfo.map(o => o.RATE))}
-        Cases: ${min(resultInfo.map(o => o.CASES))} - ${max(resultInfo.map(o => o.CASES))}
-        Persons: ${min(resultInfo.map(o => o.PERSON_COUNT))} - ${max(resultInfo.map(o => o.PERSON_COUNT))}
-        Time at risk: ${min(resultInfo.map(o => o.TIME_AT_RISK))} - ${max(resultInfo.map(o => o.TIME_AT_RISK))}
-        Proportion: ${min(resultInfo.map(o => o.PROPORTION))} - ${max(resultInfo.map(o => o.PROPORTION))}`;
+      const rates = resultInfo.map(o => o.RATE);
+      const cases = resultInfo.map(o => o.CASES);
+      const persons = resultInfo.map(o => o.PERSON_COUNT);
+      const timesAtRisk = resultInfo.map(o => o.TIME_AT_RISK);
+      const proportions = resultInfo.map(o => o.PROPORTION);
+      tooltipString = `Rate: ${min(rates)} - ${max(rates)}
+        Cases: ${min(cases)} - ${max(cases)}
+        Persons: ${min(persons)} - ${max(persons)}
+        Time at risk: ${min(timesAtRisk)} - ${max(timesAtRisk)}
+        Proportion: ${min(proportions)} - ${max(proportions)}`;
       label = `${resultInfo.length} ${pluralize('combination', resultInfo.length)}`;
     } else if (Array.isArray(resultInfo) && resultInfo.length === 1) {
       const entry = resultInfo[0];
