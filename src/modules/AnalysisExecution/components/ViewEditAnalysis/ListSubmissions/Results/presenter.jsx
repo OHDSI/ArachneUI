@@ -66,7 +66,7 @@ export default class Results extends Component {
     const { resultInfo } = this.props;
 
     let tooltipString;
-    let label;
+    let label = "View results";
 
     if (Array.isArray(resultInfo) && resultInfo.length > 1) {
       const rates = resultInfo.map(o => o.RATE);
