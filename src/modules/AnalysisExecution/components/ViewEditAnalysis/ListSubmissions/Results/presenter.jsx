@@ -66,7 +66,7 @@ export default class Results extends Component {
     const { resultInfo } = this.props;
 
     let tooltipString;
-    let label = "View results";
+    let label;
 
     if (Array.isArray(resultInfo) && resultInfo.length > 1) {
       const rates = resultInfo.map(o => o.RATE);
@@ -93,8 +93,9 @@ export default class Results extends Component {
   Time at risk: ${timeAtRisk}
   Proportion: ${proportion}`;
       label = `${numberFormatter.format(cases, 'short')} ${pluralize('case', cases)}, ${numberFormatter.format(personCount, 'short')} ${pluralize('person', personCount)}`;
+    } else {
+      return this.Default();
     }
-
 
     return (<div
       {...this.tooltipClass({ modifiers: 'preformatted' })}
