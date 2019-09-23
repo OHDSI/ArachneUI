@@ -37,8 +37,8 @@ export default function SummaryIncidence({ resultInfo = [], className }) {
   let data;
   if (Array.isArray(resultInfo)) {
       data = resultInfo.map(r => ({
-          targetCohort: get(r, 'TARGET_COHORT'),
-          outcomeCohort: get(r, 'OUTCOME_COHORT'),
+          targetCohort: get(r, 'TARGET_NAME'),
+          outcomeCohort: get(r, 'OUTCOME_NAME'),
           cases: get(r, 'CASES', 0),
           personCount: get(r, 'PERSON_COUNT', 0),
           proportion: get(r, 'PROPORTION', 0),
