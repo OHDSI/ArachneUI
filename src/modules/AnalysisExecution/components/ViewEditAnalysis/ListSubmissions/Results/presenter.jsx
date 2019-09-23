@@ -93,8 +93,9 @@ export default class Results extends Component {
   Time at risk: ${timeAtRisk}
   Proportion: ${proportion}`;
       label = `${numberFormatter.format(cases, 'short')} ${pluralize('case', cases)}, ${numberFormatter.format(personCount, 'short')} ${pluralize('person', personCount)}`;
+    } else {
+      return this.Default();
     }
-
 
     return (<div
       {...this.tooltipClass({ modifiers: 'preformatted' })}
