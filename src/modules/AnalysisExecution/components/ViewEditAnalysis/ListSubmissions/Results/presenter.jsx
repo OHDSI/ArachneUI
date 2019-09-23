@@ -25,6 +25,8 @@ import BEMHelper from 'services/BemHelper';
 import { get } from 'services/Utils';
 import { numberFormatter } from 'services/Utils';
 import pluralize from 'pluralize';
+import min from 'lodash/min';
+import max from 'lodash/max';
 
 require('./style.scss');
 
@@ -62,23 +64,44 @@ export default class Results extends Component {
 
   Incidence = () => {
     const { resultInfo } = this.props;
-    const personCount = get(resultInfo, 'PERSON_COUNT') || 0;
-    const timeAtRisk = get(resultInfo, 'TIME_AT_RISK') || 0;
-    const cases = get(resultInfo, 'CASES') || 0;
-    const rate = get(resultInfo, 'RATE') || 0;
-    const proportion = get(resultInfo, 'PROPORTION') || 0;
-    const tooltipString = `Rate: ${rate}
+
+    let tooltipString;
+    let label;
+
+    if (Array.isArray(resultInfo) && resultInfo.length > 1) {
+      const rates = resultInfo.map(o => o.RATE);
+      const cases = resultInfo.map(o => o.CASES);
+      const persons = resultInfo.map(o => o.PERSON_COUNT);
+      const timesAtRisk = resultInfo.map(o => o.TIME_AT_RISK);
+      const proportions = resultInfo.map(o => o.PROPORTION);
+      tooltipString = `Rate: ${min(rates)} - ${max(rates)}
+        Cases: ${min(cases)} - ${max(cases)}
+        Persons: ${min(persons)} - ${max(persons)}
+        Time at risk: ${min(timesAtRisk)} - ${max(timesAtRisk)}
+        Proportion: ${min(proportions)} - ${max(proportions)}`;
+      label = `${resultInfo.length} ${pluralize('combination', resultInfo.length)}`;
+    } else if (Array.isArray(resultInfo) && resultInfo.length === 1) {
+      const entry = resultInfo[0];
+      const personCount = get(entry, 'PERSON_COUNT') || 0;
+      const timeAtRisk = get(entry, 'TIME_AT_RISK') || 0;
+      const cases = get(entry, 'CASES') || 0;
+      const rate = get(entry, 'RATE') || 0;
+      const proportion = get(entry, 'PROPORTION') || 0;
+      tooltipString = `Rate: ${rate}
   ${pluralize('Case', cases)}: ${cases}
   ${pluralize('Person', personCount)}: ${personCount}
   Time at risk: ${timeAtRisk}
   Proportion: ${proportion}`;
+      label = `${numberFormatter.format(cases, 'short')} ${pluralize('case', cases)}, ${numberFormatter.format(personCount, 'short')} ${pluralize('person', personCount)}`;
+    }
+
 
     return (<div
       {...this.tooltipClass({ modifiers: 'preformatted' })}
       aria-label={tooltipString}
       data-tootik-conf='left'
     >
-      {numberFormatter.format(cases, 'short')} {pluralize('case', cases)}, {numberFormatter.format(personCount, 'short')} {pluralize('person', personCount)}
+      {label}
     </div>);
   };
 
