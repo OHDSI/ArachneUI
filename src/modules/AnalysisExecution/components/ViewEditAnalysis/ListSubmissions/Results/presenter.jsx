@@ -82,7 +82,7 @@ export default class Results extends Component {
       const cases = get(entry, 'CASES') || 0;
       const rate = get(entry, 'RATE') || 0;
       const proportion = get(entry, 'PROPORTION') || 0;
-      const tooltipString = `Rate: ${rate}
+      tooltipString = `Rate: ${rate}
   ${pluralize('Case', cases)}: ${cases}
   ${pluralize('Person', personCount)}: ${personCount}
   Time at risk: ${timeAtRisk}
