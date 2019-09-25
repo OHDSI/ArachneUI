@@ -40,6 +40,7 @@ function ModalCreateEdit(props) {
     isStandalone,
     dbmsTypeList,
     dbmsType,
+    isFormValid,
   } = props;
 
   let modalTitle;
@@ -49,12 +50,14 @@ function ModalCreateEdit(props) {
      submitBtn  = {
         label: 'Save',
         loadingLabel: 'Saving...',
+        disabled: !isFormValid,
       }
   } else {
     modalTitle = 'Create data source';
     submitBtn = {
       label: 'Create',
       loadingLabel: 'Creating...',
+      disabled: !isFormValid,
     }
   }
 
@@ -65,7 +68,7 @@ function ModalCreateEdit(props) {
   const disabledFields = {
     name: isStandalone && props.initialValues.centralId,
   };
-  const fields = getDataSourceCreationFields(dbmsTypeList, false, disabledFields);
+  const fields = getDataSourceCreationFields(dbmsTypeList, false, disabledFields, dbmsType);
 
   const form = 'IMPALA' === dbmsType ? <TabbedForm {...props} /> : (<Form
       {...classes()}

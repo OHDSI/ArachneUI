@@ -22,7 +22,7 @@
 
 import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { reduxForm, reset as resetForm } from 'redux-form';
+import { reduxForm, reset as resetForm, getFormValues } from 'redux-form';
 import { get } from 'services/Utils';
 
 import actions from 'actions';
@@ -59,11 +59,28 @@ ModalCreateEdit.propTypes = {
   resetDataSource: PropTypes.func.isRequired,
 };
 
+function validateForm(state) {
+  const formValues = getFormValues(form.createDataSource)(state);
+  const dbmsType = get(state, 'form.createDataSource.values.dbmsType');
+  let requiredFields = ['name', 'dbmsType', 'connectionString', 'cdmSchema'];
+  if (dbmsType === 'BIGQUERY') {
+    const dataSourceData = get(state, 'cdmSourceList.dataSource.queryResult.result', {}, 'Object');
+    const isEdit = dataSourceData && dataSourceData.id;
+    if (!isEdit) {
+      requiredFields = [...requiredFields, 'keyfile'];
+    }
+  } else {
+    requiredFields = [...requiredFields, 'dbUsername', 'dbPassword'];
+  }
+  return formValues && requiredFields.every(f => !!formValues[f] && formValues[f].length > 0);
+}
+
 function mapStateToProps(state) {
   const dataSourceData = get(state, 'cdmSourceList.dataSource.queryResult.result', {}, 'Object');
   const isOpened = get(state, 'modal.createDataSource.isOpened', false);
   const dbmsType = get(state, 'form.createDataSource.values.dbmsType');
   const runningMode = get(state, 'auth.nodeMode.data.mode');
+  const isFormValid = validateForm(state);
 
   dataSourceData.krbAuthMethod = dataSourceData.krbAuthMethod || kerberosAuthType.PASSWORD;
 
@@ -82,6 +99,7 @@ function mapStateToProps(state) {
     isStandalone: runningMode === nodeFunctionalModes.Standalone,
     isOpened,
     dbmsType,
+    isFormValid,
   };
 }
 
@@ -105,8 +123,8 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     doSubmit(data) {
       data.useKerberos = !!data.useKerberos;
       const submitPromise = stateProps.dataSourceId
-        ? dispatchProps.updateDataSource({id: stateProps.dataSourceId}, data)
-          : dispatchProps.createDataSource({}, data);
+        ? dispatchProps.updateDataSource({ id: stateProps.dataSourceId }, data, stateProps.dbmsType)
+        : dispatchProps.createDataSource({}, data, stateProps.dbmsType);
 
       submitPromise
         .then(() => dispatchProps.resetForm())
