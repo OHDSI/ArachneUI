@@ -20,7 +20,7 @@
  *
  */
 
-import API, { ohdsiApi } from 'services/Api';
+import { ohdsiApi } from 'services/Api';
 import services from '../apiServices';
 
 import { actionTypes, apiPaths } from 'modules/Vocabulary/const';
@@ -55,10 +55,14 @@ function requestDownload(downloadParams: DownloadParams) {
 	return services.download.find({ query: downloadParams });
 }
 
-function requestNotification(props: { notify: boolean, vocabularyV4Id: number }) {
-  const { notify, vocabularyV4Id } = props;
-  return services.notifications.create({ notify, vocabularyV4Id });
+function requestNotifications(vocabularyCodes: [string]) {
+  return services.notifications.create(vocabularyCodes);
 }
+
+function removeNotification(vocabularyCode: string) {
+  return services.notifications.remove(vocabularyCode);
+}
+
 
 function getNotifications() {
   return services.notifications.find();
@@ -67,7 +71,8 @@ function getNotifications() {
 export default {
   toggleAllVocabs,
   requestDownload,
-  requestNotification,
+  removeNotification,
+  requestNotifications,
   getNotifications,
   checkBundleAvailability,
 };

@@ -223,11 +223,11 @@ function Term(props: ITermProps) {
               }
               <ListItem>
                 <span {...classes('attribute-name')}>Valid start</span>
-                <span>{moment(validStart, 'x').format(commonDateFormat)}</span>
+                <span>{moment.utc(validStart).format(commonDateFormat)}</span>
               </ListItem>
               <ListItem>
                 <span {...classes('attribute-name')}>Valid end</span>
-                <span>{moment(validEnd, 'x').format(commonDateFormat)}</span>
+                <span>{moment.utc(validEnd).format(commonDateFormat)}</span>
               </ListItem>
             </ul>
           </Panel>
