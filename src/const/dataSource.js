@@ -302,7 +302,7 @@ function mapAttributeToField(section, attribute, index){
     };
 }
 
-function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false, disabledFields = {}) {
+function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false, disabledFields = {}, dbmsType) {
   const virtualSourceFields = [
     {
       name: 'name',
@@ -327,6 +327,49 @@ function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false, disab
           placeholder: 'DBMS Type',
           options: dbmsTypeList,
           required: true,
+        },
+      },
+    },
+  ];
+  const credentialFields = dbmsType === 'BIGQUERY'
+  ? [
+    {
+      name: 'keyfile',
+      InputComponent: {
+        component: FormFileInput,
+        props: {
+          name: 'keyfile',
+          multiple: false,
+          mods: ['bordered'],
+          placeholder: 'Browse keyfile file',
+          filePlaceholder: 'Label',
+          dropzonePlaceholder: 'Drag and drop keyfile file',
+        },
+      },
+    },
+  ] : [
+    {
+      name: 'dbUsername',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Username',
+          required: true,
+          type: 'text',
+        },
+      },
+    },
+    {
+      name: 'dbPassword',
+      InputComponent: {
+        component: PasswordField,
+        props: {
+          mods: ['bordered'],
+          showHint: false,
+          placeholder: 'Password',
+          required: true,
+          type: 'password',
         },
       },
     },
@@ -357,32 +400,8 @@ function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false, disab
         },
       },
     },
-    {
-      name: 'dbUsername',
-      InputComponent: {
-        component: FormInput,
-        props: {
-          mods: ['bordered'],
-          placeholder: 'Username',
-          required: true,
-          type: 'text',
-        },
-      },
-    },
-    {
-      name: 'dbPassword',
-      InputComponent: {
-        component: PasswordField,
-        props: {
-          mods: ['bordered'],
-          showHint: false,
-          placeholder: 'Password',
-          required: true,
-          type: 'password',
-        },
-      },
-    },
 
+    ...credentialFields,
     ...cdmSpecificAttributes.map((attribute, index) => mapAttributeToField('CDM Settings', attribute, index)),
   ];
 
