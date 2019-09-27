@@ -26,5 +26,6 @@ import licenseAgreement from './licenseAgreement';
 
 export default combineReducers({
 	buildInfo: services.buildInfo.reducer,
+	vocabularyReleaseVersion: services.vocabularyReleaseVersion.reducer,
 	licenseAgreement,
 });

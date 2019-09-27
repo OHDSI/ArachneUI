@@ -29,23 +29,49 @@
 $namespace: 'at-';
 
 @mixin facet-badge() {
-  &--domain {      
-    background-color: $red;  
+  &--domain {
+    background-color: $red;
   }
-  &--standardConcept {      
-    background-color: $blue;  
+  &--standardConcept {
+    background-color: $blue;
   }
-  &--conceptClass {      
-    background-color: $violet-light;  
+  &--conceptClass {
+    background-color: $violet-light;
   }
-  &--vocabulary {      
-    background-color: $orange;  
+  &--vocabulary {
+    background-color: $orange;
   }
-  &--invalidReason {      
-    background-color: $purple-darker;  
+  &--invalidReason {
+    background-color: $purple-darker;
   }
 
   &--purple {
     background-color: $purple;
+  }
+}
+
+@mixin dropdown-content() {
+  position: relative;
+
+  & > .dropdown__content {
+    position: initial;
+  }
+
+  &__content {
+    overflow: visible;
+    position: absolute;
+    z-index: $z-notify-dropdown-window;
+  }
+
+  &__content:before {
+    background: $black;
+    content: "";
+    display: block;
+    height: 2rem;
+    position: absolute;
+    right: calc( 1rem + 5px );
+    top: -1rem;
+    transform: rotateZ(45deg);
+    width: 2rem;
   }
 }

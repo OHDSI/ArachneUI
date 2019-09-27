@@ -27,6 +27,7 @@ import { Modal, ListItem, Button, LoadingPanel } from 'arachne-ui-components';
 require('./style.scss');
 
 interface IVocab {
+	code: string;
 	name: string;
 	id: number;
 };
@@ -38,14 +39,14 @@ interface IModalStateProps {
 };
 
 interface IModalDispatchProps {
-	notify: ({ notify: boolean, vocabularyV4Id: number }) => any;
+	removeNotification: (vocabularyCode: string) => any;
 	close: Function;
 	getNotifications: Function;
 };
 
 interface IModalProps extends IModalStateProps, IModalDispatchProps {
 	modal: string;
-	removeVocabulary: (id: number) => any;
+	removeVocabulary: (code: string) => any;
 };
 
 function ModalEditNotifications(props: IModalProps) {
@@ -64,7 +65,7 @@ function ModalEditNotifications(props: IModalProps) {
 	      {selectedVocabs && selectedVocabs.map((voc: IVocab, index: number) =>
 	      	<ListItem key={index}>
 	      		{voc.name}
-	      		<Button {...classes('remove-button')} onClick={() => removeVocabulary(voc.id)}>
+	      		<Button {...classes('remove-button')} onClick={() => removeVocabulary(voc.code)}>
 	      			Stop tracking
 	      		</Button>
 	      	</ListItem>

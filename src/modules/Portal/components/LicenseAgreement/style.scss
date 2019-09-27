@@ -23,12 +23,17 @@
  @import 'styles/vars-and-mixins.scss';
 
  .#{$namespace} {
- 
+
    &license-agreement-modal {
      max-width: 900px;
      height: 500px;
      overflow: auto;
      padding: 1rem;
+
+     &__title {
+       font-weight: bold;
+       font-size: 1.5rem;
+     }
 
      &__line, & li {
       margin: 1rem 0;

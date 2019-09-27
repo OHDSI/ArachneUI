@@ -92,6 +92,7 @@ function mapStateToProps(state: Object): IDownloadHistoryStateProps {
     isLoading: get(state, 'vocabulary.history.isLoading', false)
       || get(state, 'vocabulary.restore.isSaving', false),
     history,
+    currentUser: get(state, 'auth.principal.data.email', ''),
   };
 }
 
@@ -99,9 +100,11 @@ const mapDispatchToProps = {
   load: actions.history.load,
   remove: actions.history.remove,
   restore: actions.history.restore,
+  share: actions.history.share,
   showNotifications: () => ModalUtils.actions.toggle(modal.notifications, true),
   checkAvailability: actions.download.checkBundleAvailability,
   showRequestModal: (ids = [], message) => ModalUtils.actions.toggle(modal.licenses, true, { licenses: ids, message }),
+  showShareModal: (bundle) => ModalUtils.actions.toggle(modal.share, true, { bundle }),
 };
 
 function mergeProps(
@@ -135,7 +138,7 @@ function mergeProps(
             window.open(bundle.link, '_blank');
           } else {
             dispatchProps.showRequestModal(vocabularyIds, 'download');
-          }					
+          }
         });
     },
   };
