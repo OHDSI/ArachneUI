@@ -359,7 +359,7 @@ function getDataSourceCreationFields(opts = {}) {
         props: {
           mods: ['bordered'],
           placeholder: 'Username',
-          required: dbmsType !== 'IMPALA',
+          required: true,
           type: 'text',
         },
       },
@@ -372,7 +372,7 @@ function getDataSourceCreationFields(opts = {}) {
           mods: ['bordered'],
           showHint: false,
           placeholder: 'Password',
-          required: dbmsType !== 'IMPALA',
+          required: true,
           type: 'password',
         },
       },
