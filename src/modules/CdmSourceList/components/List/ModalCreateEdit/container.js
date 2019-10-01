@@ -64,18 +64,18 @@ function validateForm(state) {
   const dbmsType = get(state, 'form.createDataSource.values.dbmsType');
   const authMethod = get(state, 'form.createDataSource.values.krbAuthMechanism');
   let requiredFields = ['name', 'dbmsType', 'connectionString', 'cdmSchema'];
+  const dataSourceData = get(state, 'cdmSourceList.dataSource.queryResult.result', {}, 'Object');
+  const isEdit = dataSourceData && dataSourceData.id;
 
   switch (dbmsType) {
     case 'BIGQUERY':
-      const dataSourceData = get(state, 'cdmSourceList.dataSource.queryResult.result', {}, 'Object');
-      const isEdit = dataSourceData && dataSourceData.id;
       if (!isEdit) {
         requiredFields = [...requiredFields, 'keyfile'];
       }
       break;
     case 'IMPALA':
       const { krbAuthMechanism = kerberosAuthType.PASSWORD } = formValues;
-      if (krbAuthMechanism === kerberosAuthType.KEYTAB) {
+      if (krbAuthMechanism === kerberosAuthType.KEYTAB && !isEdit) {
         requiredFields = [...requiredFields, 'keyfile'];
       }
       break;
