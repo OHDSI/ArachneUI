@@ -61,12 +61,11 @@ ModalCreateEdit.propTypes = {
 
 function validateForm(state) {
   const formValues = getFormValues(form.createDataSource)(state) || {};
-  const dbmsType = get(state, 'form.createDataSource.values.dbmsType');
   const dataSourceData = get(state, 'cdmSourceList.dataSource.queryResult.result', {}, 'Object');
   const isEdit = dataSourceData && dataSourceData.id;
   let requiredFields = ['name', 'dbmsType', 'connectionString', 'cdmSchema'];
 
-  switch (dbmsType) {
+  switch (formValues.dbmsType) {
     case 'BIGQUERY':
       if (!isEdit) {
         requiredFields = [...requiredFields, 'keyfile'];
