@@ -429,7 +429,7 @@ const getDataSourceKerberosFields = function() {
     },
       ...kerberosAttributes.map((attr, index) => mapAttributeToField(null, attr, index)),
     {
-      name: "krbAuthMethod",
+      name: "krbAuthMechanism",
       className: 'radiolist',
       InputComponent: {
         component: FormRadioList,

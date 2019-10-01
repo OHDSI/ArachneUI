@@ -43,8 +43,12 @@ const actions = dataSource.actions;
 const _create = actions.create;
 const _update = actions.update;
 const dsBlob = (data) => {
-  const { dbmsType } = data;
-  const omittedKeys = dbmsType === 'BIGQUERY' ? ['dbPassword', 'dbUsername', 'keyfile', 'useKerberos', 'krbAuthMethod'] : ['keyfile'];
+  const { dbmsType, useKerberos } = data;
+  const omittedKeys = dbmsType === 'BIGQUERY'
+    ? ['dbPassword', 'dbUsername', 'keyfile', 'useKerberos', 'krbAuthMechanism']
+    : dbmsType === 'IMPALA' && !!useKerberos
+    ? ['dbPassword', 'dbUsername', 'keyfile']
+    : ['keyfile'];
   return new Blob(
     [JSON.stringify(omit(data, omittedKeys))],
     { type: 'application/json' },

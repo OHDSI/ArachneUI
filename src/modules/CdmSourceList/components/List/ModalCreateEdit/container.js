@@ -62,7 +62,7 @@ ModalCreateEdit.propTypes = {
 function validateForm(state) {
   const formValues = getFormValues(form.createDataSource)(state) || {};
   const dbmsType = get(state, 'form.createDataSource.values.dbmsType');
-  const authMethod = get(state, 'form.createDataSource.values.krbAuthMethod');
+  const authMethod = get(state, 'form.createDataSource.values.krbAuthMechanism');
   let requiredFields = ['name', 'dbmsType', 'connectionString', 'cdmSchema'];
 
   switch (dbmsType) {
@@ -103,7 +103,7 @@ function mapStateToProps(state) {
     dataSourceId: get(state.modal[form.createDataSource], 'data.id'),
     isLoading: state.cdmSourceList.dataSource.isLoading,
     hasKeytab: dataSourceData.hasKeytab,
-    authMethod: get(state, 'form.createDataSource.values.krbAuthMethod'),
+    authMethod: get(state, 'form.createDataSource.values.krbAuthMechanism'),
     initialValues: {
       ...dataSourceData,
       dbmsType: get(dataSourceData, 'dbmsType'),
