@@ -76,7 +76,7 @@ function validateForm(state) {
     case 'IMPALA':
       const { krbAuthMethod = kerberosAuthType.PASSWORD } = formValues;
       if (krbAuthMethod === kerberosAuthType.KEYTAB) {
-        requiredFields = [...requiredFields, 'krbKeytab'];
+        requiredFields = [...requiredFields, 'keyfile'];
       }
       break;
     default:

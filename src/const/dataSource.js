@@ -46,7 +46,7 @@ const attributeNames = keyMirror({
   dbmsType: null,
   executionPolicy: null,
   useKerberos: null,
-  krbKeytab: null,
+  keyfile: null,
   krbRealm: null,
   krbFQDN: null,
   krbUser: null,
@@ -303,8 +303,8 @@ function mapAttributeToField(section, attribute, index){
 }
 
 function getDataSourceCreationFields(opts = {}) {
-  const { dbmsTypeList = [], useOnlyVirtual = false, disabledFields = {}, dbmsType = '', formValues = {} } = opts;
-  const { useKerberos } = formValues;
+  const { dbmsTypeList = [], useOnlyVirtual = false, disabledFields = {}, formValues = {} } = opts;
+  const { useKerberos, dbmsType } = formValues;
   const virtualSourceFields = [
     {
       name: 'name',
@@ -462,11 +462,11 @@ const getDataSourceKerberosFields = function() {
       },
     },
   {
-      name: 'krbKeytab',
+      name: 'keyfile',
       InputComponent: {
         component: FormFileInput,
         props: {
-          name: 'krbKeytab',
+          name: 'keyfile',
           multiple: false,
           mods: ['bordered'],
           placeholder: 'Browse keytab file',

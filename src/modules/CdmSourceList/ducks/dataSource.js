@@ -44,17 +44,14 @@ const _create = actions.create;
 const _update = actions.update;
 const dsBlob = (data) => {
   const { dbmsType } = data;
-  const omittedKeys = dbmsType === 'BIGQUERY' ? ['dbPassword', 'dbUsername', 'keyfile', 'useKerberos', 'krbAuthMethod'] : ['krbKeytab'];
+  const omittedKeys = dbmsType === 'BIGQUERY' ? ['dbPassword', 'dbUsername', 'keyfile', 'useKerberos', 'krbAuthMethod'] : ['keyfile'];
   return new Blob(
     [JSON.stringify(omit(data, omittedKeys))],
     { type: 'application/json' },
   );
 }
-const formData = (data) => {
-  const { dbmsType } = data;
-  const file = dbmsType === 'BIGQUERY' ? { keyfile: data.keyfile[0] } : { krbKeytab: data.krbKeytab ? data.krbKeytab[0] : null };
-  return buildFormData({ dataSource: dsBlob(data), ...file });
-};
+const formData = (data) =>
+  buildFormData({ dataSource: dsBlob(data), keyfile: data.keyfile ? data.keyfile[0] : null });
 actions.create = (urlParams, data) => _create(urlParams, formData(data));
 actions.update = (urlParams, data) => _update(urlParams, formData(data));
 

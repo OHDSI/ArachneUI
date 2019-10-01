@@ -40,9 +40,9 @@ function TabbedForm(props) {
   const classes = new BEMHelper('tabbed-form');
 
   function isFieldVisible(field) {
-    return (field.name !== 'krbPassword' && field.name !== 'krbKeytab' )
+    return (field.name !== 'krbPassword' && field.name !== 'keyfile' )
       || (field.name === 'krbPassword' && authMethod === kerberosAuthType.PASSWORD)
-      || (field.name === 'krbKeytab' && authMethod === kerberosAuthType.KEYTAB);
+      || (field.name === 'keyfile' && authMethod === kerberosAuthType.KEYTAB);
   }
 
   function KeytabControl({ hasKeytab } = props) {
@@ -58,7 +58,7 @@ function TabbedForm(props) {
         field.InputComponent && field.InputComponent.props && field.InputComponent.props.title
           ? <span {...classes('group-title')}>{field.InputComponent.props.title}</span>
           : null,
-        field.name === 'krbKeytab' && authMethod === kerberosAuthType.KEYTAB ? <KeytabControl {...props} /> : null,
+        field.name === 'keyfile' && authMethod === kerberosAuthType.KEYTAB ? <KeytabControl {...props} /> : null,
         isFieldVisible(field) ? <Field {...field} {...classes('group', field.mods, field.className)} component={Fieldset} key={key}/> : null,
       ]
     )
@@ -75,11 +75,10 @@ function TabbedForm(props) {
     error,
     handleSubmit,
     submitting,
-    dbmsType,
     isFormValid,
-    useKerberos,
+    formValues,
   } = props;
-  const fields = getDataSourceCreationFields({ dbmsTypeList, dbmsType, useKerberos }).map(mapField());
+  const fields = getDataSourceCreationFields({ dbmsTypeList, formValues }).map(mapField());
   const kerberosFields = getDataSourceKerberosFields().map(mapField());
 
   const sections = [
