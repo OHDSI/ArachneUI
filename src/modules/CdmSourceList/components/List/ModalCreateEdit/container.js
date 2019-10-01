@@ -74,8 +74,8 @@ function validateForm(state) {
       }
       break;
     case 'IMPALA':
-      const { krbAuthMethod = kerberosAuthType.PASSWORD } = formValues;
-      if (krbAuthMethod === kerberosAuthType.KEYTAB) {
+      const { krbAuthMechanism = kerberosAuthType.PASSWORD } = formValues;
+      if (krbAuthMechanism === kerberosAuthType.KEYTAB) {
         requiredFields = [...requiredFields, 'keyfile'];
       }
       break;
@@ -94,7 +94,7 @@ function mapStateToProps(state) {
   const isFormValid = validateForm(state);
   const formValues = getFormValues(form.createDataSource)(state) || {};
 
-  dataSourceData.krbAuthMethod = dataSourceData.krbAuthMethod || kerberosAuthType.PASSWORD;
+  dataSourceData.krbAuthMechanism = dataSourceData.krbAuthMechanism || kerberosAuthType.PASSWORD;
 
   return {
     dbmsTypeList: selectors.getDbmsTypeList(state),
