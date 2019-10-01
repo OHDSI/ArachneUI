@@ -60,17 +60,27 @@ ModalCreateEdit.propTypes = {
 };
 
 function validateForm(state) {
-  const formValues = getFormValues(form.createDataSource)(state);
+  const formValues = getFormValues(form.createDataSource)(state) || {};
   const dbmsType = get(state, 'form.createDataSource.values.dbmsType');
+  const authMethod = get(state, 'form.createDataSource.values.krbAuthMethod');
   let requiredFields = ['name', 'dbmsType', 'connectionString', 'cdmSchema'];
-  if (dbmsType === 'BIGQUERY') {
-    const dataSourceData = get(state, 'cdmSourceList.dataSource.queryResult.result', {}, 'Object');
-    const isEdit = dataSourceData && dataSourceData.id;
-    if (!isEdit) {
-      requiredFields = [...requiredFields, 'keyfile'];
-    }
-  } else {
-    requiredFields = [...requiredFields, 'dbUsername', 'dbPassword'];
+
+  switch (dbmsType) {
+    case 'BIGQUERY':
+      const dataSourceData = get(state, 'cdmSourceList.dataSource.queryResult.result', {}, 'Object');
+      const isEdit = dataSourceData && dataSourceData.id;
+      if (!isEdit) {
+        requiredFields = [...requiredFields, 'keyfile'];
+      }
+      break;
+    case 'IMPALA':
+      const { krbAuthMethod = kerberosAuthType.PASSWORD } = formValues;
+      if (krbAuthMethod === kerberosAuthType.KEYTAB) {
+        requiredFields = [...requiredFields, 'krbKeytab'];
+      }
+      break;
+    default:
+      requiredFields = [...requiredFields, 'dbUsername', 'dbPassword'];
   }
   return formValues && requiredFields.every(f => !!formValues[f] && formValues[f].length > 0);
 }
@@ -82,6 +92,7 @@ function mapStateToProps(state) {
   const dbmsType = get(state, 'form.createDataSource.values.dbmsType');
   const runningMode = get(state, 'auth.nodeMode.data.mode');
   const isFormValid = validateForm(state);
+  const formValues = getFormValues(form.createDataSource)(state) || {};
 
   dataSourceData.krbAuthMethod = dataSourceData.krbAuthMethod || kerberosAuthType.PASSWORD;
 
@@ -101,6 +112,7 @@ function mapStateToProps(state) {
     isOpened,
     dbmsType,
     isFormValid,
+    formValues,
   };
 }
 

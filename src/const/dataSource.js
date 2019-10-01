@@ -302,7 +302,9 @@ function mapAttributeToField(section, attribute, index){
     };
 }
 
-function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false, disabledFields = {}, dbmsType) {
+function getDataSourceCreationFields(opts = {}) {
+  const { dbmsTypeList = [], useOnlyVirtual = false, disabledFields = {}, dbmsType = '', formValues = {} } = opts;
+  const { useKerberos } = formValues;
   const virtualSourceFields = [
     {
       name: 'name',
@@ -347,7 +349,9 @@ function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false, disab
         },
       },
     },
-  ] : [
+  ] : dbmsType === 'IMPALA' && !!useKerberos
+  ? []
+  : [
     {
       name: 'dbUsername',
       InputComponent: {
@@ -355,7 +359,7 @@ function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false, disab
         props: {
           mods: ['bordered'],
           placeholder: 'Username',
-          required: true,
+          required: dbmsType !== 'IMPALA',
           type: 'text',
         },
       },
@@ -368,7 +372,7 @@ function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false, disab
           mods: ['bordered'],
           showHint: false,
           placeholder: 'Password',
-          required: true,
+          required: dbmsType !== 'IMPALA',
           type: 'password',
         },
       },

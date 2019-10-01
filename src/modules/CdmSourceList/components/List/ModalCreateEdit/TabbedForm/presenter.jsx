@@ -75,9 +75,11 @@ function TabbedForm(props) {
     error,
     handleSubmit,
     submitting,
+    dbmsType,
+    isFormValid,
+    useKerberos,
   } = props;
-
-  const fields = getDataSourceCreationFields(dbmsTypeList).map(mapField());
+  const fields = getDataSourceCreationFields({ dbmsTypeList, dbmsType, useKerberos }).map(mapField());
   const kerberosFields = getDataSourceKerberosFields().map(mapField());
 
   const sections = [
@@ -98,18 +100,19 @@ function TabbedForm(props) {
     submitBtn  = {
       label: 'Save',
       loadingLabel: 'Saving...',
+      disabled: !isFormValid,
     }
   } else {
     submitBtn = {
       label: 'Create',
       loadingLabel: 'Creating...',
+      disabled: !isFormValid,
     }
   }
 
   const cancelBtn = {
     label: 'Cancel',
   };
-
   return (<form
     {...classes({mods: 'form'})}
     onSubmit={handleSubmit(props.doSubmit)}>
