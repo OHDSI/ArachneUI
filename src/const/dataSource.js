@@ -302,9 +302,60 @@ function mapAttributeToField(section, attribute, index){
     };
 }
 
+function getCredentialFields(formValues = {}) {
+  const { useKerberos, dbmsType } = formValues;
+
+  if (dbmsType === 'BIGQUERY') {
+    return [
+      {
+        name: 'keyfile',
+        InputComponent: {
+          component: FormFileInput,
+          props: {
+            name: 'keyfile',
+            multiple: false,
+            mods: ['bordered'],
+            placeholder: 'Browse keyfile file',
+            filePlaceholder: 'Label',
+            dropzonePlaceholder: 'Drag and drop keyfile file',
+          },
+        },
+      },
+    ];
+  } else if (dbmsType === 'IMPALA' && !!useKerberos) {
+    return [];
+  }
+  return [
+    {
+      name: 'dbUsername',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Username',
+          required: true,
+          type: 'text',
+        },
+      },
+    },
+    {
+      name: 'dbPassword',
+      InputComponent: {
+        component: PasswordField,
+        props: {
+          mods: ['bordered'],
+          showHint: false,
+          placeholder: 'Password',
+          required: true,
+          type: 'password',
+        },
+      },
+    },
+  ];
+}
+
 function getDataSourceCreationFields(opts = {}) {
   const { dbmsTypeList = [], useOnlyVirtual = false, disabledFields = {}, formValues = {} } = opts;
-  const { useKerberos, dbmsType } = formValues;
   const virtualSourceFields = [
     {
       name: 'name',
@@ -333,51 +384,7 @@ function getDataSourceCreationFields(opts = {}) {
       },
     },
   ];
-  const credentialFields = dbmsType === 'BIGQUERY'
-  ? [
-    {
-      name: 'keyfile',
-      InputComponent: {
-        component: FormFileInput,
-        props: {
-          name: 'keyfile',
-          multiple: false,
-          mods: ['bordered'],
-          placeholder: 'Browse keyfile file',
-          filePlaceholder: 'Label',
-          dropzonePlaceholder: 'Drag and drop keyfile file',
-        },
-      },
-    },
-  ] : dbmsType === 'IMPALA' && !!useKerberos
-  ? []
-  : [
-    {
-      name: 'dbUsername',
-      InputComponent: {
-        component: FormInput,
-        props: {
-          mods: ['bordered'],
-          placeholder: 'Username',
-          required: true,
-          type: 'text',
-        },
-      },
-    },
-    {
-      name: 'dbPassword',
-      InputComponent: {
-        component: PasswordField,
-        props: {
-          mods: ['bordered'],
-          showHint: false,
-          placeholder: 'Password',
-          required: true,
-          type: 'password',
-        },
-      },
-    },
-  ];
+  const credentialFields = getCredentialFields(formValues);
   const physicalSourceFields = [
     ...virtualSourceFields,
     {
