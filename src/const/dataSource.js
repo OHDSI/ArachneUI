@@ -36,6 +36,10 @@ import { kerberosAuthType } from "modules/CdmSourceList/const";
 
 const attributeNames = keyMirror({
   name: null,
+  dbUsername: null,
+  dbPassword: null,
+  connectionString: null,
+  cdmSchema: null,
   organization: null,
   modelType: null,
   cdmVersion: null,
@@ -51,6 +55,7 @@ const attributeNames = keyMirror({
   krbFQDN: null,
   krbUser: null,
   krbPassword: null,
+  krbAuthMechanism: null,
 });
 
 const modelTypesValues = keyMirror({
@@ -308,11 +313,11 @@ function getCredentialFields(formValues = {}) {
   if (dbmsType === 'BIGQUERY') {
     return [
       {
-        name: 'keyfile',
+        name: attributeNames.keyfile,
         InputComponent: {
           component: FormFileInput,
           props: {
-            name: 'keyfile',
+            name: attributeNames.keyfile,
             multiple: false,
             mods: ['bordered'],
             placeholder: 'Browse keyfile file',
@@ -327,7 +332,7 @@ function getCredentialFields(formValues = {}) {
   }
   return [
     {
-      name: 'dbUsername',
+      name: attributeNames.dbUsername,
       InputComponent: {
         component: FormInput,
         props: {
@@ -339,7 +344,7 @@ function getCredentialFields(formValues = {}) {
       },
     },
     {
-      name: 'dbPassword',
+      name: attributeNames.dbPassword,
       InputComponent: {
         component: PasswordField,
         props: {
@@ -358,7 +363,7 @@ function getDataSourceCreationFields(opts = {}) {
   const { dbmsTypeList = [], useOnlyVirtual = false, disabledFields = {}, formValues = {} } = opts;
   const virtualSourceFields = [
     {
-      name: 'name',
+      name: attributeNames.name,
       InputComponent: {
         component: FormInput,
         props: {
@@ -372,7 +377,7 @@ function getDataSourceCreationFields(opts = {}) {
       },
     },
     {
-      name: 'dbmsType',
+      name: attributeNames.dbmsType,
       InputComponent: {
         component: FormSelect,
         props: {
@@ -388,7 +393,7 @@ function getDataSourceCreationFields(opts = {}) {
   const physicalSourceFields = [
     ...virtualSourceFields,
     {
-      name: 'connectionString',
+      name: attributeNames.connectionString,
       InputComponent: {
         component: FormInput,
         props: {
@@ -400,7 +405,7 @@ function getDataSourceCreationFields(opts = {}) {
       },
     },
     {
-      name: 'cdmSchema',
+      name: attributeNames.cdmSchema,
       InputComponent: {
         component: FormInput,
         props: {
@@ -422,7 +427,7 @@ function getDataSourceCreationFields(opts = {}) {
 const getDataSourceKerberosFields = function() {
   return ([
     {
-      name: 'useKerberos',
+      name: attributeNames.useKerberos,
       InputComponent: {
         component: FormCheckbox,
         props: {
@@ -436,7 +441,7 @@ const getDataSourceKerberosFields = function() {
     },
       ...kerberosAttributes.map((attr, index) => mapAttributeToField(null, attr, index)),
     {
-      name: "krbAuthMechanism",
+      name: attributeNames.krbAuthMechanism,
       className: 'radiolist',
       InputComponent: {
         component: FormRadioList,
@@ -456,7 +461,7 @@ const getDataSourceKerberosFields = function() {
       },
     },
     {
-      name: 'krbPassword',
+      name: attributeNames.krbPassword,
       InputComponent: {
         component: PasswordField,
         props: {
@@ -469,11 +474,11 @@ const getDataSourceKerberosFields = function() {
       },
     },
   {
-      name: 'keyfile',
+      name: attributeNames.keyfile,
       InputComponent: {
         component: FormFileInput,
         props: {
-          name: 'keyfile',
+          name: attributeNames.keyfile,
           multiple: false,
           mods: ['bordered'],
           placeholder: 'Browse keytab file',
