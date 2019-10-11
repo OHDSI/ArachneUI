@@ -28,8 +28,19 @@ import {
 } from 'arachne-ui-components';
 import moment from 'moment';
 import { commonDate } from 'const/formats';
+import { nodeFunctionalModes } from 'modules/Auth/const';
 
 require('./style.scss');
+
+function getImportTooltip({ isStandalone, isCharacterizationStarted, hasResults } = {}) {
+  if (isStandalone) {
+    return "Import of results is not available in the Standalone mode";
+  } else if (isCharacterizationStarted) {
+    return "Please, wait until Achilles generation is finished";
+  } else if (!hasResults) {
+    return "No results available. Please, run Achilles generation first";
+  }
+}
 
 function Characterization(props) {
   const classes = new BEMHelper('report-characterization');
@@ -41,10 +52,25 @@ function Characterization(props) {
     update,
     importResults,
     characterizationSource,
+    runningMode,
   } = props;
 
   const isImporting = isCharacterizationStarted && characterizationSource === 'IMPORT';
   const isGenerating = isCharacterizationStarted && characterizationSource === 'GENERATION';
+  const isStandalone = runningMode === nodeFunctionalModes.Standalone;
+  const tooltipClass = new BEMHelper('tooltip');
+  const tooltip = getImportTooltip({isStandalone, isCharacterizationStarted, hasResults});
+  const button = (<Button {...classes('btn')}
+              label={isImporting ? 'Importing' : lastCharacterization ? 'Re-import' : 'Import'}
+              mods={['success', 'rounded']}
+              disabled={isCharacterizationStarted || !hasResults || isStandalone}
+              onClick={importResults}
+            />);
+  const buttonWithTooltip = tooltip ? (<span {...tooltipClass()}
+            aria-label={tooltip}
+            data-tootik-conf="multiline">
+            {button}
+          </span>) : button;
 
   return (
     <div {...classes()}>
@@ -61,13 +87,7 @@ function Characterization(props) {
           </div>
         </div>
         <div {...classes({ element: 'row', modifiers: 'actions' })}>
-          <Button
-            {...classes('btn')}
-            label={isImporting ? 'Importing' : lastCharacterization ? 'Re-import' : 'Import'}
-            mods={['success', 'rounded']}
-            disabled={isCharacterizationStarted || !hasResults}
-            onClick={importResults}
-          />
+          {buttonWithTooltip}
           <Button
             {...classes('btn')}
             label={isGenerating ? 'Generating' : lastCharacterization ? 'Re-generate' : 'Generate'}

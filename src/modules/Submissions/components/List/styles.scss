@@ -1,0 +1,23 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+  &submissions-panel {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    &__table-wrapper {
+      display: flex;
+      flex-grow: 1;
+      overflow-y: auto;
+    }
+
+    &__pagination-wrapper {
+      display: flex;
+    }
+
+    &__pagination {
+      margin: auto;
+    }
+  }
+}

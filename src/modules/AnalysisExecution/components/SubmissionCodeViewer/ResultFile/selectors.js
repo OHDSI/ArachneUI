@@ -36,7 +36,7 @@ export default class SubmissionResultSelectors extends SubmissionCodeSelectorsBu
   }
 
   getSubmissionStatus(state) {
-    return get(state, 'analysisExecution.submissionSummary.submission.data.status.value', {}, 'Object');
+    return get(state, 'analysisExecution.submissionSummary.submission.data.status.value', '', 'String');
   }
 
   build() {

@@ -31,16 +31,16 @@ import {
 
 require('./style.scss');
 
-function AdminList({ isLoading, openModal }) {
+function AdminList({ isLoading, openModal, isStandalone }) {
 	const classes = new BEMHelper('admin-panel-admin-list');
 
 	return (
 		<PageWrapper>
 				<Table/>
-				<div {...classes('add')} onClick={openModal}>
+				{ !isStandalone && (<div {...classes('add')} onClick={openModal}>
 					<span {...classes('add-icon')}>add_circle_outline</span>
 					<span {...classes('add-label')}>Add admin user</span>
-				</div>
+				</div>) }
 				<ModalAddUser />
         <LoadingPanel active={ isLoading } />
 		</PageWrapper>
