@@ -29,7 +29,7 @@ const getAdminOptionList = createSelector(
   [getRawAdminOptionList],
   rawAdminOptionList => rawAdminOptionList.map(user => ({
     label: `${user.firstname} ${user.lastname}`,
-    value: user.id,
+    value: user.username,
   }))
 );
 

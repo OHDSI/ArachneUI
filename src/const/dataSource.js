@@ -36,6 +36,10 @@ import { kerberosAuthType } from "modules/CdmSourceList/const";
 
 const attributeNames = keyMirror({
   name: null,
+  dbUsername: null,
+  dbPassword: null,
+  connectionString: null,
+  cdmSchema: null,
   organization: null,
   modelType: null,
   cdmVersion: null,
@@ -46,11 +50,12 @@ const attributeNames = keyMirror({
   dbmsType: null,
   executionPolicy: null,
   useKerberos: null,
-  krbKeytab: null,
+  keyfile: null,
   krbRealm: null,
   krbFQDN: null,
   krbUser: null,
   krbPassword: null,
+  krbAuthMechanism: null,
 });
 
 const modelTypesValues = keyMirror({
@@ -135,6 +140,10 @@ const cdmVersionList = [
   {
     label: '5.3',
     value: 'V5_3',
+  },
+  {
+    label: '5.3.1',
+    value: 'V5_3_1',
   },
 ];
 
@@ -298,62 +307,32 @@ function mapAttributeToField(section, attribute, index){
     };
 }
 
-function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false) {
-  const virtualSourceFields = [
-    {
-      name: 'name',
-      InputComponent: {
-        component: FormInput,
-        props: {
-          mods: ['bordered'],
-          placeholder: 'Name of data source',
-          required: true,
-          type: 'text',
-          title: 'General',
+function getCredentialFields(formValues = {}) {
+  const { useKerberos, dbmsType } = formValues;
+
+  if (dbmsType === 'BIGQUERY') {
+    return [
+      {
+        name: attributeNames.keyfile,
+        InputComponent: {
+          component: FormFileInput,
+          props: {
+            name: attributeNames.keyfile,
+            multiple: false,
+            mods: ['bordered'],
+            placeholder: 'Browse keyfile file',
+            filePlaceholder: 'Label',
+            dropzonePlaceholder: 'Drag and drop keyfile file',
+          },
         },
       },
-    },
+    ];
+  } else if (dbmsType === 'IMPALA' && !!useKerberos) {
+    return [];
+  }
+  return [
     {
-      name: 'dbmsType',
-      InputComponent: {
-        component: FormSelect,
-        props: {
-          mods: ['bordered'],
-          placeholder: 'DBMS Type',
-          options: dbmsTypeList,
-          required: true,
-        },
-      },
-    },
-  ];
-  const physicalSourceFields = [
-    ...virtualSourceFields,
-    {
-      name: 'connectionString',
-      InputComponent: {
-        component: FormInput,
-        props: {
-          mods: ['bordered'],
-          placeholder: 'Connection string',
-          required: true,
-          type: 'text',
-        },
-      },
-    },
-    {
-      name: 'cdmSchema',
-      InputComponent: {
-        component: FormInput,
-        props: {
-          mods: ['bordered'],
-          placeholder: 'CDM schema name',
-          required: true,
-          type: 'text',
-        },
-      },
-    },
-    {
-      name: 'dbUsername',
+      name: attributeNames.dbUsername,
       InputComponent: {
         component: FormInput,
         props: {
@@ -365,7 +344,7 @@ function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false) {
       },
     },
     {
-      name: 'dbPassword',
+      name: attributeNames.dbPassword,
       InputComponent: {
         component: PasswordField,
         props: {
@@ -377,7 +356,68 @@ function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false) {
         },
       },
     },
+  ];
+}
 
+function getDataSourceCreationFields(opts = {}) {
+  const { dbmsTypeList = [], useOnlyVirtual = false, disabledFields = {}, formValues = {} } = opts;
+  const virtualSourceFields = [
+    {
+      name: attributeNames.name,
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Name of data source',
+          required: true,
+          type: 'text',
+          title: 'General',
+          disabled: disabledFields.name,
+        },
+      },
+    },
+    {
+      name: attributeNames.dbmsType,
+      InputComponent: {
+        component: FormSelect,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'DBMS Type',
+          options: dbmsTypeList,
+          required: true,
+        },
+      },
+    },
+  ];
+  const credentialFields = getCredentialFields(formValues);
+  const physicalSourceFields = [
+    ...virtualSourceFields,
+    {
+      name: attributeNames.connectionString,
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Connection string',
+          required: true,
+          type: 'text',
+        },
+      },
+    },
+    {
+      name: attributeNames.cdmSchema,
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'CDM schema name',
+          required: true,
+          type: 'text',
+        },
+      },
+    },
+
+    ...credentialFields,
     ...cdmSpecificAttributes.map((attribute, index) => mapAttributeToField('CDM Settings', attribute, index)),
   ];
 
@@ -387,7 +427,7 @@ function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false) {
 const getDataSourceKerberosFields = function() {
   return ([
     {
-      name: 'useKerberos',
+      name: attributeNames.useKerberos,
       InputComponent: {
         component: FormCheckbox,
         props: {
@@ -401,7 +441,7 @@ const getDataSourceKerberosFields = function() {
     },
       ...kerberosAttributes.map((attr, index) => mapAttributeToField(null, attr, index)),
     {
-      name: "krbAuthMethod",
+      name: attributeNames.krbAuthMechanism,
       className: 'radiolist',
       InputComponent: {
         component: FormRadioList,
@@ -421,7 +461,7 @@ const getDataSourceKerberosFields = function() {
       },
     },
     {
-      name: 'krbPassword',
+      name: attributeNames.krbPassword,
       InputComponent: {
         component: PasswordField,
         props: {
@@ -434,11 +474,11 @@ const getDataSourceKerberosFields = function() {
       },
     },
   {
-      name: 'krbKeytab',
+      name: attributeNames.keyfile,
       InputComponent: {
         component: FormFileInput,
         props: {
-          name: 'krbKeytab',
+          name: attributeNames.keyfile,
           multiple: false,
           mods: ['bordered'],
           placeholder: 'Browse keytab file',

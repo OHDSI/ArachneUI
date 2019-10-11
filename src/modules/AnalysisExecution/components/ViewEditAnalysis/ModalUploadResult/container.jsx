@@ -24,27 +24,29 @@ import { connect } from 'react-redux';
 import {
   reduxForm,
   reset as resetForm,
+  getFormValues,
 } from 'redux-form';
-import { get } from 'services/Utils';
+import { get, buildFormData } from 'services/Utils';
 
 import actions from 'actions/index';
 import { ModalUtils } from 'arachne-ui-components';
 import { modal, form, submissionGroupsPageSize } from 'modules/AnalysisExecution/const';
-import { buildFormData } from 'services/Utils';
 import ModalUploadResult from './presenter';
 import { getFilter } from 'modules/AnalysisExecution/components/ViewEditAnalysis/container';
+import { SECTIONS } from './const';
 
 function mapStateToProps(state) {
   const analysisData = get(state, 'analysisExecution.analysis.data.result');
   const modalData = state.modal.uploadResult;
   const currentQuery = state.routing.locationBeforeTransitions.query;
   const filter = getFilter(state.routing.locationBeforeTransitions.search);
-
+  const formValues = getFormValues(form.uploadResult)(state) || { result: [] };
   return {
     analysisId: get(analysisData, 'id'),
     submissionId: get(modalData, 'data.submissionId'),
     page: get(currentQuery, 'page', 1),
     filter,
+    isUploadFormValid: formValues.result.length > 0,
   };
 }
 
@@ -64,9 +66,9 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...ownProps,
     ...stateProps,
     ...dispatchProps,
-    async doSubmit({ result }) {
+    async doSubmit({ result }, type) {
       const submitPromises = [];
-
+      const isArchive = type === SECTIONS.ARCHIVE;
       if (Array.isArray(result)) {
         // If a file selected
         result.map((file) => {
@@ -75,6 +77,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
               label: file.label,
               file,
               submissionId: stateProps.submissionId,
+              archive: isArchive,
             })
           ));
         });
@@ -85,7 +88,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         dispatchProps.resetForm();
         dispatchProps.closeModal();
         await dispatchProps.loadAnalysis({ id: stateProps.analysisId });
-        dispatchProps.loadSubmissionGroups({
+        await dispatchProps.loadSubmissionGroups({
           analysisId: stateProps.analysisId,
           page: stateProps.page,
           filter: stateProps.filter,

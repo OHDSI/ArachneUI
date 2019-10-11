@@ -1,0 +1,69 @@
+@import 'styles/vars-and-mixins.scss';
+
+.#{$namespace} {
+
+  &submissions-table {
+    table-layout: fixed;
+
+    &__id-th {
+      width: 6%;
+    }
+
+    &__author-th {
+      width: 15%;
+    }
+
+    &__study-th {
+      width: 15%;
+    }
+
+    &__analysis-th {
+      width: 10%;
+    }
+
+    &__data-source-th {
+      width: 14%;
+    }
+
+    &__submitted-th {
+      width: 10%;
+    }
+
+    &__finished-th {
+      width: 10%;
+    }
+
+    &__status-th {
+      width: 10%;
+    }
+
+    &__results-th {
+      width: 10%;
+    }
+  }
+
+  &submission-status {
+    @include title();
+
+    &--grey {
+      color: $grey;
+    }
+    &--red {
+      color: $red;
+    }
+    &--blue {
+      color: $blue;
+    }
+    &--purple {
+      color: $purple;
+    }
+    &--green {
+      color: $green;
+    }
+  }
+
+  &submission-download__btn {
+    font-size: 1rem;
+  }
+
+}

@@ -30,21 +30,23 @@ import {
 import { healthStatuses, modelTypesValues } from 'const/dataSource';
 import { paths as centralPaths } from 'modules/DataCatalog/const';
 import { Utils } from 'services/Utils';
+import { nodeFunctionalModes } from 'modules/Auth/const';
 
 require('./style.scss');
 
-function CellRegister({ published, onClick, centralId, centralDomain, username }) {
+function CellRegister({ published, onClick, centralId, centralDomain, username, isStandalone }) {
   const classes = new BEMHelper('data-source-list-cell-register');
 
   return <div {...classes()}>
-    <Button
+    {!isStandalone && <Button
       {...classes('btn', { publish: !published })}
       mods={['submit', 'rounded']}
       label={published ? 'Edit catalog' : 'Publish'}
       link={`${centralDomain}${centralPaths.edit(centralId)}?user-req=${username}`}
+      disabled={isStandalone}
       target={'_blank'}
-    />
-    {published &&
+    />}
+    {(published || isStandalone) &&
       <Button
         {...classes('btn')}
         mods={['success', 'rounded']}
@@ -55,25 +57,32 @@ function CellRegister({ published, onClick, centralId, centralDomain, username }
   </div>;
 }
 
-function CellEdit({ editDataSource, removeDataSource, value, published, name }) {
+function CellEdit({ editDataSource, removeDataSource, value, published, name, centralId, isStandalone }) {
   const classes = new BEMHelper('data-source-list-cell-edit');
+  const tooltipClass = new BEMHelper('tooltip');
+  const button = (<Button {...classes('btn')} onClick={() => {
+          Utils.confirmDelete({
+            message: `Delete data source '${name}'?`,
+          })
+            .then(() => removeDataSource({ id: value, published }))
+            .catch(() => {});
+        }} disabled={ isStandalone && centralId }>
+          <i {...classes('btn-ico')}>delete</i>
+        </Button>
+  );
+  const buttonWithTooltip = (isStandalone && centralId) ? (<span {...tooltipClass({extra: 'source-list-cell-tooltip'})}
+          aria-label={"Deletion of published Data Source is prohibited in the Standalone mode"} 
+          data-tootik-conf="left multiline">
+          {button}
+      </span>
+  ) : button;
   return (
     <div {...classes('btn-block')}>
       <Button {...classes('btn')} onClick={() => editDataSource(value)}>
         <i {...classes('btn-ico')}>edit</i>
       </Button>
-      <Button {...classes('btn')} onClick={() => {
-        Utils.confirmDelete({
-          message: `Delete data source '${name}'?`,
-        })
-          .then(() => removeDataSource({ id: value, published }))
-          .catch(() => {});
-      }}>
-        <i {...classes('btn-ico')}>delete</i>
-      </Button>
-    </div>
-
-  );
+      {buttonWithTooltip}
+    </div>);
 }
 
 function CellName({ value, healthStatus }) {
@@ -102,46 +111,42 @@ function DataSourceTable(props) {
     sorting,
     centralDomain,
     username,
+    runningMode,
   } = props;
 
-  return (
-    <Table
-      {...tableClasses()}
-      mods={['hover', 'padded']}
-      data={dataSourceList}
-      sorting={sorting}
-      setSorting={setSearch}
-    >
+  const isStandalone = runningMode === nodeFunctionalModes.Standalone;
+  const className = (title) => title + (isStandalone ? '_standalone' : '');
+  const cells = [
       <CellName
-        {...tableClasses('name')}
+        {...tableClasses(className('name'))}
         header="Name"
         field="name"
         mods={['bold']}
         props={item => item}
-      />
+      />,
       <Cell
         {...tableClasses('dbms-type')}
         header="DBMS Type"
         field="dbmsType"
-      />
+      />,
       <Cell
-        {...tableClasses('db-name')}
+        {...tableClasses(className('db-name'))}
         header="Database"
         field="connectionString"
-      />
+      />,
       <Cell
         {...tableClasses('cdm-schema')}
         header="CDM Schema"
         field="cdmSchema"
-      />
-      <Cell
+      />,
+      !isStandalone && <Cell
         {...tableClasses('model-type')}
         header="Model"
         field="modelType"
         isSortable={false}
-      />
+      />,
       <CellRegister
-        {...tableClasses('register')}
+        {...tableClasses(className('register'))}
         props={
           entity => ({
             published: entity.published,
@@ -149,16 +154,27 @@ function DataSourceTable(props) {
             centralId: entity.centralId,
             centralDomain,
             username,
+            isStandalone,
           })
         }
-      />
+      />,
       <CellEdit
         {...tableClasses('edit')}
         field="id"
         editDataSource={editDataSource}
         removeDataSource={remove}
-        props={entity => ({ published: entity.published, name: entity.name })}
+        props={entity => ({ published: entity.published, name: entity.name, centralId: entity.centralId, isStandalone })}
       />
+    ].filter(c => c);
+
+  return (<Table
+      {...tableClasses()}
+      mods={['hover', 'padded']}
+      data={dataSourceList}
+      sorting={sorting}
+      setSorting={setSearch}
+    >
+    {cells}
     </Table>
   );
 }
