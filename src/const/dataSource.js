@@ -36,6 +36,10 @@ import { kerberosAuthType } from "modules/CdmSourceList/const";
 
 const attributeNames = keyMirror({
   name: null,
+  dbUsername: null,
+  dbPassword: null,
+  connectionString: null,
+  cdmSchema: null,
   organization: null,
   modelType: null,
   cdmVersion: null,
@@ -46,11 +50,12 @@ const attributeNames = keyMirror({
   dbmsType: null,
   executionPolicy: null,
   useKerberos: null,
-  krbKeytab: null,
+  keyfile: null,
   krbRealm: null,
   krbFQDN: null,
   krbUser: null,
   krbPassword: null,
+  krbAuthMechanism: null,
 });
 
 const modelTypesValues = keyMirror({
@@ -135,6 +140,10 @@ const cdmVersionList = [
   {
     label: '5.3',
     value: 'V5_3',
+  },
+  {
+    label: '5.3.1',
+    value: 'V5_3_1',
   },
 ];
 
@@ -298,10 +307,63 @@ function mapAttributeToField(section, attribute, index){
     };
 }
 
-function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false, disabledFields = {}) {
+function getCredentialFields(formValues = {}) {
+  const { useKerberos, dbmsType } = formValues;
+
+  if (dbmsType === 'BIGQUERY') {
+    return [
+      {
+        name: attributeNames.keyfile,
+        InputComponent: {
+          component: FormFileInput,
+          props: {
+            name: attributeNames.keyfile,
+            multiple: false,
+            mods: ['bordered'],
+            placeholder: 'Browse keyfile file',
+            filePlaceholder: 'Label',
+            dropzonePlaceholder: 'Drag and drop keyfile file',
+          },
+        },
+      },
+    ];
+  } else if (dbmsType === 'IMPALA' && !!useKerberos) {
+    return [];
+  }
+  return [
+    {
+      name: attributeNames.dbUsername,
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Username',
+          required: true,
+          type: 'text',
+        },
+      },
+    },
+    {
+      name: attributeNames.dbPassword,
+      InputComponent: {
+        component: PasswordField,
+        props: {
+          mods: ['bordered'],
+          showHint: false,
+          placeholder: 'Password',
+          required: true,
+          type: 'password',
+        },
+      },
+    },
+  ];
+}
+
+function getDataSourceCreationFields(opts = {}) {
+  const { dbmsTypeList = [], useOnlyVirtual = false, disabledFields = {}, formValues = {} } = opts;
   const virtualSourceFields = [
     {
-      name: 'name',
+      name: attributeNames.name,
       InputComponent: {
         component: FormInput,
         props: {
@@ -315,7 +377,7 @@ function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false, disab
       },
     },
     {
-      name: 'dbmsType',
+      name: attributeNames.dbmsType,
       InputComponent: {
         component: FormSelect,
         props: {
@@ -327,10 +389,11 @@ function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false, disab
       },
     },
   ];
+  const credentialFields = getCredentialFields(formValues);
   const physicalSourceFields = [
     ...virtualSourceFields,
     {
-      name: 'connectionString',
+      name: attributeNames.connectionString,
       InputComponent: {
         component: FormInput,
         props: {
@@ -342,7 +405,7 @@ function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false, disab
       },
     },
     {
-      name: 'cdmSchema',
+      name: attributeNames.cdmSchema,
       InputComponent: {
         component: FormInput,
         props: {
@@ -353,32 +416,8 @@ function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false, disab
         },
       },
     },
-    {
-      name: 'dbUsername',
-      InputComponent: {
-        component: FormInput,
-        props: {
-          mods: ['bordered'],
-          placeholder: 'Username',
-          required: true,
-          type: 'text',
-        },
-      },
-    },
-    {
-      name: 'dbPassword',
-      InputComponent: {
-        component: PasswordField,
-        props: {
-          mods: ['bordered'],
-          showHint: false,
-          placeholder: 'Password',
-          required: true,
-          type: 'password',
-        },
-      },
-    },
 
+    ...credentialFields,
     ...cdmSpecificAttributes.map((attribute, index) => mapAttributeToField('CDM Settings', attribute, index)),
   ];
 
@@ -388,7 +427,7 @@ function getDataSourceCreationFields(dbmsTypeList, useOnlyVirtual = false, disab
 const getDataSourceKerberosFields = function() {
   return ([
     {
-      name: 'useKerberos',
+      name: attributeNames.useKerberos,
       InputComponent: {
         component: FormCheckbox,
         props: {
@@ -402,7 +441,7 @@ const getDataSourceKerberosFields = function() {
     },
       ...kerberosAttributes.map((attr, index) => mapAttributeToField(null, attr, index)),
     {
-      name: "krbAuthMethod",
+      name: attributeNames.krbAuthMechanism,
       className: 'radiolist',
       InputComponent: {
         component: FormRadioList,
@@ -422,7 +461,7 @@ const getDataSourceKerberosFields = function() {
       },
     },
     {
-      name: 'krbPassword',
+      name: attributeNames.krbPassword,
       InputComponent: {
         component: PasswordField,
         props: {
@@ -435,11 +474,11 @@ const getDataSourceKerberosFields = function() {
       },
     },
   {
-      name: 'krbKeytab',
+      name: attributeNames.keyfile,
       InputComponent: {
         component: FormFileInput,
         props: {
-          name: 'krbKeytab',
+          name: attributeNames.keyfile,
           multiple: false,
           mods: ['bordered'],
           placeholder: 'Browse keytab file',

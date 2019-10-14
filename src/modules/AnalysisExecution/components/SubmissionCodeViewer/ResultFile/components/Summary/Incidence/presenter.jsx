@@ -31,19 +31,32 @@ import {
 
 import './style.scss';
 
-export default function SummaryIncidence({ resultInfo = {}, className }) {
+export default function SummaryIncidence({ resultInfo = [], className }) {
   const classes = BEMHelper('summary-incidence');
-  const cases = get(resultInfo, 'CASES', 0);
-  const personCount = get(resultInfo, 'PERSON_COUNT', 0);
-  const proportion = get(resultInfo, 'PROPORTION', 0);
-  const rate = get(resultInfo, 'RATE', 0);
-  const timeAtRisk = get(resultInfo, 'TIME_AT_RISK', 0);
+
+  let data;
+  if (Array.isArray(resultInfo)) {
+      data = resultInfo.map(r => ({
+          targetCohort: get(r, 'TARGET_NAME'),
+          outcomeCohort: get(r, 'OUTCOME_NAME'),
+          cases: get(r, 'CASES', 0),
+          personCount: get(r, 'PERSON_COUNT', 0),
+          proportion: get(r, 'PROPORTION', 0),
+          rate: get(r, 'RATE', 0),
+          timeAtRisk: get(r, 'TIME_AT_RISK', 0),
+      }));
+  } else {
+      data = [];
+      console.error("Received improper format of result info for IR");
+  }
 
   return (
     <div {...classes({ extra: className })}>
       <Table
-        data={[{ cases, rate, personCount, proportion, timeAtRisk }]}
+        data={data}
       >
+        <TableCellText header={'Target Cohort'} field={'targetCohort'} />
+        <TableCellText header={'Outcome Cohort'} field={'outcomeCohort'} />
         <TableCellText header={'Persons'} field={'personCount'} />
         <TableCellText header={'Cases'} field={'cases'} />
         <TableCellText

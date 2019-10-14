@@ -22,7 +22,7 @@
 
 import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { reduxForm, reset as resetForm } from 'redux-form';
+import { reduxForm, reset as resetForm, getFormValues } from 'redux-form';
 import { get } from 'services/Utils';
 
 import actions from 'actions';
@@ -59,13 +59,40 @@ ModalCreateEdit.propTypes = {
   resetDataSource: PropTypes.func.isRequired,
 };
 
+function validateForm(state) {
+  const formValues = getFormValues(form.createDataSource)(state) || {};
+  const dataSourceData = get(state, 'cdmSourceList.dataSource.queryResult.result', {}, 'Object');
+  const isEdit = dataSourceData && dataSourceData.id;
+  let requiredFields = ['name', 'dbmsType', 'connectionString', 'cdmSchema'];
+
+  switch (formValues.dbmsType) {
+    case 'BIGQUERY':
+      if (!isEdit) {
+        requiredFields = [...requiredFields, 'keyfile'];
+      }
+      break;
+    case 'IMPALA':
+      const { krbAuthMechanism = kerberosAuthType.PASSWORD } = formValues;
+      if (krbAuthMechanism === kerberosAuthType.KEYTAB && !isEdit) {
+        requiredFields = [...requiredFields, 'keyfile'];
+      }
+      break;
+    default:
+      requiredFields = [...requiredFields, 'dbUsername', 'dbPassword'];
+  }
+  return formValues && requiredFields.every(f => !!formValues[f] && formValues[f].length > 0);
+}
+
+
 function mapStateToProps(state) {
   const dataSourceData = get(state, 'cdmSourceList.dataSource.queryResult.result', {}, 'Object');
   const isOpened = get(state, 'modal.createDataSource.isOpened', false);
   const dbmsType = get(state, 'form.createDataSource.values.dbmsType');
   const runningMode = get(state, 'auth.nodeMode.data.mode');
+  const isFormValid = validateForm(state);
+  const formValues = getFormValues(form.createDataSource)(state) || {};
 
-  dataSourceData.krbAuthMethod = dataSourceData.krbAuthMethod || kerberosAuthType.PASSWORD;
+  dataSourceData.krbAuthMechanism = dataSourceData.krbAuthMechanism || kerberosAuthType.PASSWORD;
 
   return {
     dbmsTypeList: selectors.getDbmsTypeList(state),
@@ -74,7 +101,7 @@ function mapStateToProps(state) {
     dataSourceId: get(state.modal[form.createDataSource], 'data.id'),
     isLoading: state.cdmSourceList.dataSource.isLoading,
     hasKeytab: dataSourceData.hasKeytab,
-    authMethod: get(state, 'form.createDataSource.values.krbAuthMethod'),
+    authMethod: get(state, 'form.createDataSource.values.krbAuthMechanism'),
     initialValues: {
       ...dataSourceData,
       dbmsType: get(dataSourceData, 'dbmsType'),
@@ -82,6 +109,8 @@ function mapStateToProps(state) {
     isStandalone: runningMode === nodeFunctionalModes.Standalone,
     isOpened,
     dbmsType,
+    isFormValid,
+    formValues,
   };
 }
 
@@ -105,8 +134,8 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     doSubmit(data) {
       data.useKerberos = !!data.useKerberos;
       const submitPromise = stateProps.dataSourceId
-        ? dispatchProps.updateDataSource({id: stateProps.dataSourceId}, data)
-          : dispatchProps.createDataSource({}, data);
+        ? dispatchProps.updateDataSource({ id: stateProps.dataSourceId }, data, stateProps.dbmsType)
+        : dispatchProps.createDataSource({}, data, stateProps.dbmsType);
 
       submitPromise
         .then(() => dispatchProps.resetForm())
