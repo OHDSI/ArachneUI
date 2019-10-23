@@ -52,7 +52,7 @@ if (__APP_TYPE_CENTRAL__) {
     isRoot: true,
     isAdminOnly: false,
   });
-  
+
   modules.push({
     ...StudyManager,
     path: 'study-manager',
@@ -107,6 +107,7 @@ if (__APP_TYPE_CENTRAL__) {
 if (__APP_TYPE_NODE__) {
   const CdmSourceList = require('./CdmSourceList/index').default;
   const ExternalResourceManager = require('./ExternalResourceManager').default;
+  const Submissions = require('./Submissions').default;
 
   modules.push({
     ...CdmSourceList,
@@ -119,6 +120,12 @@ if (__APP_TYPE_NODE__) {
     ...ExternalResourceManager,
     path: 'external-resource-manager',
     namespace: 'externalResourceManager',
+  });
+
+  modules.push({
+    ...Submissions,
+    path: 'submissions',
+    namespace: 'submissions',
   });
 
   modules.push({

@@ -34,7 +34,7 @@ export default class MeasurementBuilder extends TreemapReportBuilder {
   constructor() {
     super();
     this.presenter = presenter;
-    this.filePath = 'measurement';
+    this.filePath = 'measurements';
 		this.detailsCharts = {
 			conditionPrevalenceChart: new trellisline(),
 			conditionByMonthChart: new line(),

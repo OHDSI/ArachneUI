@@ -1,16 +1,56 @@
 # Arachne
 Network infrastructure for collaborative studies across disparate data nodes and researches
 
-# Init
+ArachneUI is the web application which can be assembled in the Arachne Central or Datanode mode.
 
-After initiating project copy community code into `community-src` folder: 
+# Build Web Applications
+
+### Get sources
+
+Checkout [ArachneUI repository](https://github.com/OHDSI/ArachneUI.git): 
 ```
-git clone https://bitbucket.org/Odysseus/arachnefront.git community-src
+git clone https://github.com/OHDSI/ArachneUI.git 
+```
+
+### Install npm packages
+
+After getting the sources please execute following commands: 
+
+```
+cd ArachneUI
+npm install
+```
+
+### Build
+
+In order to assemble Arachne Central web application please run:
+```
+npm run build
+```
+In order to assemble ArachneNode web application please run:
+```
+npm run build-node
 ```
 
 # Development guide
 
-## Module structure
+### Run in development mode
+
+In order to start portal web app please start [ArachneCentralAPI](https://github.com/OHDSI/ArachneCentralAPI) backend and execute following command:
+```
+npm run portal
+```
+Webpack dev server should start at [localhost:8010](http://localhost:8010)
+
+
+In order to start datanode web app please start [ArachneNodeAPI](https://github.com/OHDSI/ArachneNodeAPI) backend run following command:
+```
+npm run node
+```
+Webpack dev server should start at [localhost:8020](http://localhost:8020)
+
+
+### Module structure
 
 - /components
   - /Dummy
@@ -25,50 +65,3 @@ git clone https://bitbucket.org/Odysseus/arachnefront.git community-src
 - index
 - routes
 
-## Contracts
-
-### Container
-
-Implements `ConnectedComponentBuilder.ts`:
-```
-interface ConnectedComponentBuilder {
-  mapStateToProps: Function;
-  mapDispatchToProps: Function;
-  mergeProps: Function;
-  getFetchers: Function;
-  build: Function;
-}
-```
-
-### Selectors
-Implements `ISelectorsBuilder`:
-```
-interface ISelectorsBuilder {
-  build: () => Map<string, Selector<Object, any>>;
-}
-```
-
-Separate functions for retrieving data from state, converting data (accept dependencies as function parameters), and for creation of selectors. E.g.:
-```
-class DataCatalogListTableSelectorsBuilder {
-
-  getSearchStr(state) {
-    return get(state, 'routing.locationBeforeTransitions.search', '');
-  }
-
-  getSearchQuery(searchStr) {
-    ...
-    return someData;
-  }
-
-  buildSelectorForGetSearchQuery() {
-    return createSelector([this.getSearchStr], this.getSearchQuery);
-  }
-
-  build() {
-    return {
-      getSearchQuery: this.buildSelectorForGetSearchQuery(),
-    };
-  }
-}
-```

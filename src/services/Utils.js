@@ -46,14 +46,24 @@ import URI from 'urijs';
 import { createSelector } from 'reselect';
 import qs from 'qs';
 import { resultErrorCodes } from 'modules/StudyManager/const';
+import JSZip from 'jszip';
+import FileSaver from 'file-saver';
+import Api from './Api';
 
-function buildFormData(obj) {
+function buildFormData(obj, jsonObj) {
   const formData = new FormData();
 
   Object
     .keys(obj)
     .forEach(key => formData.append(key, obj[key]));
 
+  if (jsonObj) {
+    Object
+      .keys(jsonObj)
+      .forEach(key => formData.append(key, new Blob([JSON.stringify(jsonObj[key])], {
+        type: 'application/json'
+      })));
+  }
   return formData;
 }
 
@@ -625,6 +635,50 @@ function isViewable(entity) {
   return get(entity, 'errorCode', resultErrorCodes.NO_ERROR) !== resultErrorCodes.PERMISSION_DENIED;
 }
 
+async function getFileNamesFromZip(zipFile) {
+  const items = [];
+  try {
+    const files = await JSZip.loadAsync(zipFile);
+    files.forEach(file => items.push(file));
+    return items;
+  } catch (err) {
+    throw new Error(err);
+  }
+}
+
+async function readFilesAsync(files) {
+  const items = [];
+  for (const file of files) {
+    try {
+      const data = await new Response(file).blob();
+      items.push({ name: file.name, content: data });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  return items;
+}
+
+async function packFilesInZip(files) {
+  const zip = new JSZip();
+  const items = await readFilesAsync(files);
+  items.forEach(item => zip.file(item.name, item.content));
+  const content = await zip.generateAsync({ type: 'blob' });
+  return new File([content], 'submission.zip', {
+    type: 'application/x-zip-compressed',
+  });
+}
+
+async function downloadFile(url, filename) {
+  try {
+    await Api.doFileDownload(url, (blob) => {
+      FileSaver.saveAs(blob, filename);
+    });
+  } catch (err) {
+    throw new Error(err);
+  }
+}
+
 export {
   buildFormData,
   get,
@@ -642,4 +696,8 @@ export {
   addAnyOption,
   anyOptionValue,
   isViewable,
+  getFileNamesFromZip,
+  readFilesAsync,
+  packFilesInZip,
+  downloadFile,
 };

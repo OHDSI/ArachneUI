@@ -75,6 +75,8 @@ export default function SubmissionResultSummary(props) {
 
   switch (submissionGroupType) {
     case analysisTypes.INCIDENCE:
+      specificSummaryMods.narrow = false;
+      specificSummaryMods.wide = true;
       specificSummaryMods.padded = false;
       specificSummary = <SummaryIncidence resultInfo={resultInfo} />;
       break;

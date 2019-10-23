@@ -20,33 +20,33 @@
  *
  */
 
-import Duck from 'services/Duck';
 import { apiPaths } from 'modules/Auth/const';
 import AuthService from 'services/Auth';
+import api from 'services/Api';
+import { action } from 'services/CrudActionNameBuilder';
+import ReducerFactory from 'services/ReducerFactory';
 
 const actionCoreName = 'AU_TOKEN';
-
-const token = new Duck(
-  {
-    name: actionCoreName,
-    urlBuilder: apiPaths.refresh,
-  },
-);
-
-const actions = token.actions;
-const reducer = token.reducer;
 
 export default {
   actions: {
     refresh: () => {
-      return (dispatch) => dispatch(actions.create({}))
-        .then((result) => {
-          if (result.error) {
-            throw result.error;
-          }
-          AuthService.setToken(result.result || '');
-        });
+      return async dispatch => {
+        const result = await api.doPost(apiPaths.refresh());
+        if (result.error) {
+          throw result.error;
+        }
+        const token = result.result;
+        AuthService.setToken(token || '');
+        dispatch({ type: action(actionCoreName).create().done().toString(), token });
+      }
     },
   },
-  reducer,
+  reducer: new ReducerFactory()
+    .setActionHandler(action(actionCoreName).create().done().toString(),
+      (state, action) => ({
+          ...state,
+          isSaving: false,
+          data: null,
+      })),
 };
