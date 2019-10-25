@@ -28,6 +28,23 @@ import { newParticipantRolesOptions, participantRoles } from 'modules/StudyManag
 
 require('./style.scss');
 
+function ParticipantName(props) {
+
+  const {participant} = props;
+
+  return (
+      <ListItem key={participant.id}>
+        <div>
+          <Link to={participant.link}>{participant.fullName}</Link>
+        </div>
+      </ListItem>
+  );
+}
+
+ParticipantName.propTypes = {
+  participant: PropTypes.object.isRequired,
+}
+
 function ParticipantItem(props) {
   const classes = new BEMHelper('study-participants-item');
   const tootlopClasses = new BEMHelper('tooltip');
@@ -88,23 +105,12 @@ function ParticipantItem(props) {
       mods={mods}
       actions={actions}
     >
-      <div {...classes('name')}>
-        <Link to={participant.link}>{participant.fullName}</Link>
-        {participant.comment &&
-          <Link
-            {...classes({ element: 'comment', extra: 'ac-tooltip' })}
-            aria-label={`Comment: ${participant.comment}`}
-            data-tootik-conf='top multiline'
-          >
-            <div {...classes('comment-icon')}>chat_bubble</div>
-          </Link>
-        }
-      </div>
+
       <div {...classes('role')}>
         <div 
           className={participant.role.id === participantRoles.DATA_SET_OWNER ? tootlopClasses().className : null}
           aria-label={participant.role.id === participantRoles.DATA_SET_OWNER
-            ? `User was added automatically as following data source owner: ${participant.ownedDataSource.name}`
+            ? `Role was added automatically as following data source owner: ${participant.ownedDataSource.name}`
             : null
           }
           data-tootik-conf='left multiline'
@@ -126,6 +132,26 @@ function ParticipantItem(props) {
           }
         </div>
       </div>
+
+      {participant.comment &&
+      <div>
+        <Link
+            {...classes({ element: 'comment', extra: 'ac-tooltip' })}
+            aria-label={`Comment: ${participant.comment}`}
+            data-tootik-conf='top multiline'
+        >
+          <div {...classes('comment-icon')}>chat_bubble</div>
+        </Link>
+      </div>
+      }
+      {participant.role.id === participantRoles.DATA_SET_OWNER &&
+      <div {...classes('comment')}>
+          <span>
+              {participant.ownedDataSource.name}
+          </span>
+      </div>
+      }
+
       <div {...classes('status', participant.status)}>
         {participant.status}
       </div>
@@ -139,6 +165,16 @@ ParticipantItem.propTypes = {
 }
 
 function ListParticipants(props) {
+
+  function groupParticipantsByUserId(participantList) {
+    const groups = participantList.reduce((map, participant) => {
+      map.set(participant.id,  [...map.get(participant.id) || [], participant]);
+      return map;
+    }, new Map());
+
+    return groups;
+  }
+
   const classes = new BEMHelper('study-participants-list');
   const {
     addParticipant,
@@ -149,25 +185,42 @@ function ListParticipants(props) {
     removeParticipant,
   } = props;
 
+  let listIndex = 0;
+  const participantGroups = groupParticipantsByUserId(participantList);
+
   return (
-    <ul {...classes()}>
-      {participantList.map((participant, key) =>
-        <ParticipantItem
-          participant={participant}
-          hasEditPermissions={hasEditPermissions}
-          addParticipant={addParticipant}
-          changeRole={changeRole}
-          removeParticipant={removeParticipant}
-          key={key}
-        />
-    	)}
-      {participantList.length === 0 &&
-      	<ListItem label="No participants" />
-      }
-      {hasEditPermissions &&
-        <ListItem label="Add participant" mods="add" onClick={openAddParticipantModal} />
-      }
-    </ul>
+      <div>
+
+        <ul {...classes()}>
+          {
+
+            Array.from(participantGroups.values()).filter(v => !!v).map((allRoles, index) =>
+                [<ParticipantName
+                    participant={allRoles[0]}
+                    key={++listIndex}
+                />,
+                  allRoles.map((role) =>
+                  {
+                    return(  <ParticipantItem
+                          participant={role}
+                          hasEditPermissions={hasEditPermissions}
+                          addParticipant={addParticipant}
+                          changeRole={changeRole}
+                          removeParticipant={removeParticipant}
+                          key={++listIndex}
+                      />)
+                  })
+                ]
+            )
+          }
+          {participantGroups.size === 0 &&
+          <ListItem label="No participants" key={++listIndex}/>
+          }
+          {hasEditPermissions &&
+          <ListItem label="Add participant" mods="add" onClick={openAddParticipantModal} key={++listIndex}/>
+          }
+        </ul>
+      </div>
   );
 }
 

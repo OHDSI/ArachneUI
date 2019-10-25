@@ -30,17 +30,10 @@
   &study-participants-item {
   	display: flex;
 
-  	&__name {
-      flex: 5;
-      padding-right: 1.5rem;
-      display: flex;
-      align-items: center;
-  	}
-
   	&__role {
       flex: 3;
       min-width: 150px;
-      padding-right: 1.5rem;
+      padding: 0 1.5rem;
       text-align: left;
   	}
 
@@ -53,6 +46,11 @@
       min-width: 100px;
       text-align: right;
       @include invitation-status();
+    }
+
+    &__comment {
+      flex:2;
+      text-align: center;
     }
 
     @include list-item-actions();
