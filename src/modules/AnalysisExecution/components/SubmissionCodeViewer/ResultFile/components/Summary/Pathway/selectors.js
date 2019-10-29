@@ -61,7 +61,7 @@ class PathwaySummarySelectorsBuilder {
 					if (pw.path.split("-").length < design.maxDepth) {
 						pw.path = pw.path + "-end";
 					}
-				})
+				});
 				const pathway = this.buildHierarchy(pathwayGroup.pathways);
 				const targetCohort = design.targetCohorts.find(c => pathwayGroup.targetCohortId);
 				const summary = {...this.summarizeHierarchy(pathway), cohortPersons: pathwayGroup.targetCohortCount, pathwayPersons: pathwayGroup.totalPathwaysCount};
@@ -78,7 +78,7 @@ class PathwaySummarySelectorsBuilder {
 						current = current.parent;
 					}
 					return path;
-				}
+				};
 
 				const getPathToNode = (node) => {
 					let ancestors = getAncestors(node);
@@ -86,7 +86,30 @@ class PathwaySummarySelectorsBuilder {
 						names: eventCohorts.filter(c => (c.code & Number.parseInt(p.data.name)) > 0)
 										.map(ec => ({name: ec.name, color: colors(ec.code)})), count: p.value});
 					return pathway;
-				}
+				};
+
+				const splitPathway = (node) => {
+					if (isNaN(node.data.name)) {
+						return [node];
+					};
+
+					let splitNodes = [...Number.parseInt(node.data.name).toString(2)].reverse().reduce((result, bit, i) => {
+						if (bit == "1") {
+							let nodeClone = Object.assign({}, node);
+							nodeClone.data = {name: (1<<i).toString()};
+							result.push(nodeClone);
+						}
+						return result;
+					},[])
+
+					const bandWidth = (node.y1 - node.y0) / splitNodes.length;
+
+					return splitNodes.map((node, i) => {
+						node.y0 = node.y0 + (i * bandWidth);
+						node.y1 = node.y0 + bandWidth;
+						return node;
+					})
+				};
 
 				const tooltips = (d) => getPathToNode(d);
 				return {
@@ -100,9 +123,10 @@ class PathwaySummarySelectorsBuilder {
 					summary,
 					colors,
 					getPathToNode,
+					splitPathway,
 				};
 			}).filter(v => !!v)
-			);
+		);
 	}
 
   build() {

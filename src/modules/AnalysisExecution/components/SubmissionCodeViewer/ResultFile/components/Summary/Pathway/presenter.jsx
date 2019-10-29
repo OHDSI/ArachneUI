@@ -105,6 +105,7 @@ export default function SummaryPathway({ className, pathways, sunburstChart, loa
                         useTip: true,
                         colors: pathway.colors,
                         onclick: (node) => { sunburstChart.destroyTipIfExists(); loadPathwayDetails({ pathway, node }); },
+                        split: pathway.splitPathway,
                         ...chartSettings,
                       });
                   }}
