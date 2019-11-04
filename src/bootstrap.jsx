@@ -147,7 +147,9 @@ function initializeApi(store) {
     .setUserTokenGetter(() => AuthService.getToken())
     .setUserRequestedGetter(() => AuthService.getUserRequest())
     .setUnauthorizedHandler(() => {
-        if (store.getState().auth.principal.queryResult !== null) {
+      if (store.getState().auth.authMethod.data.result.userOrigin == "iap") {
+        alert('An error has occurred[User unauthorized exception]. Please contact system administrator.');
+      } else if (store.getState().auth.principal.queryResult !== null) {
         store.dispatch(actions.auth.clearToken(store.getState().routing.locationBeforeTransitions.pathname));
       }
     });
