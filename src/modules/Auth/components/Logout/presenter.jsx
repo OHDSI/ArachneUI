@@ -26,8 +26,16 @@ import { Link } from 'arachne-ui-components';
 
 require('./style.scss');
 
-function Logout({ logout }) {
+function Logout({ logout, iapLogout, authMethod }) {
   const classes = new BEMHelper('user-menu');
+  if (authMethod === "iap") {
+    return (
+      <div {...classes()}>
+        <Link {...classes('link', 'iconified')} onClick={iapLogout}>power_settings_new</Link>
+        <iframe id='google-iap-refresher' src='/_gcp_iap/session_refresher' {...classes('iap', 'iframe')}></iframe>
+      </div>
+    );
+  }
 
   return (
     <div {...classes()}>
