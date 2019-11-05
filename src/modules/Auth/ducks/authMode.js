@@ -16,33 +16,27 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: February 01, 2017
+ * Created: October 12, 2017
  *
  */
 
-import React from 'react';
-import BEMHelper from 'services/BemHelper';
-import { Link } from 'arachne-ui-components';
-import { authenticationModes } from 'modules/Auth/const';
+import Duck from 'services/Duck';
+import { apiPaths } from 'modules/Auth/const';
 
-require('./style.scss');
+const actionCoreName = 'AU_AUTH_MODE';
 
-function Logout({ logout, iapLogout, authMode }) {
-  const classes = new BEMHelper('user-menu');
-  if (authMode === authenticationModes.Proxy) {
-    return (
-      <div {...classes()}>
-        <Link {...classes('link', 'iconified')} onClick={iapLogout}>power_settings_new</Link>
-        <iframe id='google-iap-refresher' src='/_gcp_iap/session_refresher' {...classes('iap', 'iframe')}></iframe>
-      </div>
-    );
-  }
+const authModeDuck = new Duck(
+  {
+    name: actionCoreName,
+    urlBuilder: apiPaths.authMode,
+  },//
+);
 
-  return (
-    <div {...classes()}>
-      <Link {...classes('link', 'iconified')} onClick={logout}>power_settings_new</Link>
-    </div>
-  );
-}
+const actions = authModeDuck.actions;
+const reducer = authModeDuck.reducer;
 
-export default Logout;
+
+export default {
+  actions,
+  reducer,
+};

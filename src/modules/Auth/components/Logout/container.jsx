@@ -28,7 +28,7 @@ import { get } from 'services/Utils';
 
 function mapStateToProps(state) {
   return {
-    authMethod: get(state, 'auth.authMethod.data.result.userOrigin')
+    authMode: get(state, 'auth.authMode.data.result.mode')
   }
 }
 
