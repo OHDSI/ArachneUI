@@ -1,6 +1,6 @@
 {
   "name": "arachne-ui",
-  "version": "1.16.1",
+  "version": "1.16.2",
   "licenses": [
     {
       "type": "Apache-2.0",
@@ -54,7 +54,7 @@
     "comma-separated-values": "^3.6.4",
     "compression": "^1.6.0",
     "core-js": "^2.4.1",
-    "d3": "^4.9.1",
+    "d3": "^4.10.0",
     "d3-scale": "^1.0.6",
     "d3-selection": "^1.1.0",
     "d3-tip": "^0.7.1",
