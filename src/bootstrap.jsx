@@ -35,6 +35,7 @@ import React from 'react';
 import NotFound from 'components/NotFound';
 import pluralize from 'pluralize';
 import AppContainer from './AppContainer';
+import { authenticationModes } from 'modules/Auth/const';
 
 require('styles/appContainer.scss');
 
@@ -147,7 +148,9 @@ function initializeApi(store) {
     .setUserTokenGetter(() => AuthService.getToken())
     .setUserRequestedGetter(() => AuthService.getUserRequest())
     .setUnauthorizedHandler(() => {
-      if (store.getState().auth.principal.queryResult !== null) {
+      if (store.getState().auth.authMode.data.result.mode == authenticationModes.Proxy) {
+        alert('An error has occurred[User unauthorized exception]. Please contact system administrator.');
+      } else if (store.getState().auth.principal.queryResult !== null) {
         store.dispatch(actions.auth.clearToken(store.getState().routing.locationBeforeTransitions.pathname));
       }
     });
