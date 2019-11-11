@@ -148,8 +148,8 @@ function initializeApi(store) {
     .setUserTokenGetter(() => AuthService.getToken())
     .setUserRequestedGetter(() => AuthService.getUserRequest())
     .setUnauthorizedHandler(() => {
-      if (store.getState().auth.authMode.data.result.mode == authenticationModes.Proxy) {
-        alert('An error has occurred[User unauthorized exception]. Please contact system administrator.');
+      if (!!store.getState().auth.authMode.data && store.getState().auth.authMode.data.result.mode == authenticationModes.Proxy) {
+        window.location = '/_gcp_iap/clear_login_cookie';
       } else if (store.getState().auth.principal.queryResult !== null) {
         store.dispatch(actions.auth.clearToken(store.getState().routing.locationBeforeTransitions.pathname));
       }
