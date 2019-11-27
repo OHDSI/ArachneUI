@@ -26,6 +26,7 @@ import actions from 'actions';
 import { form } from 'modules/Portal/const';
 import { validators } from 'services/Utils';
 import FormPassword from './presenter';
+import { Notifier } from 'services/Notifier';
 
 function mapStateToProps(state, ownProps) {
   return {
@@ -51,8 +52,12 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
       });
 
       submitPromise
-        .then(dispatchProps.resetForm)
-        .catch(() => {});
+          .then(() => {
+            dispatchProps.resetForm();
+            Notifier.alert({message: 'Password has been updated successfully.'});
+          })
+          .catch(() => {
+          });
 
       return submitPromise;
     },
