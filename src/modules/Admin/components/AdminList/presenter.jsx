@@ -31,9 +31,12 @@ import {
 
 require('./style.scss');
 
-function AdminList({ isLoading, openModal, isStandalone }) {
+function AdminList({ isLoading, openModal, isStandalone, isAdmin }) {
 	const classes = new BEMHelper('admin-panel-admin-list');
 
+	if (!isAdmin) {
+		return <div {...classes('access-denied-title')}>The page you're looking for can't be found</div>;
+	}
 	return (
 		<PageWrapper>
 				<Table/>

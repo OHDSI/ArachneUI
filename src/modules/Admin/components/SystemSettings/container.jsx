@@ -54,6 +54,7 @@ class SystemSettingsBuilder extends ContainerBuilder {
       isLoading: state.adminSettings.systemSettings.isLoading,
       settingGroupList: selectors.getSystemSettings(state),
       reindexProcess: selectors.getReindexProcess(state),
+      isAdmin: get(state, 'auth.principal.queryResult.result.isAdmin'),
     };
   }
 

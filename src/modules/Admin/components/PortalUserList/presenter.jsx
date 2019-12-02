@@ -27,6 +27,7 @@ import ModalAddUser from './ModalAddUser';
 import ModalAddUserBatch from './ModalAddUserBatch';
 import Grid from 'components/Grid';
 import PortalUserListActions from './Actions';
+import BEMHelper from 'services/BemHelper';
 
 require('./style.scss');
 
@@ -44,7 +45,12 @@ export default class UserList extends Component {
       searchQueryDecode,
       searchQueryEncode,
       onPageOutOfRange,
+      isAdmin,
     } = this.props;
+    const classes = new BEMHelper('admin-panel-user-list');
+    if (!isAdmin) {
+      return <div {...classes('access-denied-title')}>The page you're looking for can't be found</div>;
+    }
     return (
       <PageWrapper>
         <Grid

@@ -68,6 +68,9 @@ function SystemSettings(props) {
     )
   })
 
+  if (!props.isAdmin) {
+    return <div {...classes('access-denied-title')}>The page you're looking for can't be found</div>;
+  }
   return (
     <PageWrapper>
       <div {...classes()}>
