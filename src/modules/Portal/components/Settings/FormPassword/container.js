@@ -51,8 +51,12 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
       });
 
       submitPromise
-        .then(dispatchProps.resetForm)
-        .catch(() => {});
+          .then(() => {
+            dispatchProps.resetForm();
+            alert('Password has been updated successfully.');
+          })
+          .catch(() => {
+          });
 
       return submitPromise;
     },
