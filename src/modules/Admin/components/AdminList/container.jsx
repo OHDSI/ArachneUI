@@ -49,11 +49,10 @@ class AdminListBuilder extends ContainerBuilder {
 
   mapStateToProps(state) {
     const isStandalone = get(state, 'auth.nodeMode.data.mode') === nodeFunctionalModes.Standalone;
-    const isAdmin = get(state, 'auth.principal.queryResult.result.isAdmin');
+
     return {
       isLoading: state.adminSettings.adminList.isLoading,
       query: state.routing.locationBeforeTransitions.query,
-      isAdmin,
       isStandalone,
     };
   }

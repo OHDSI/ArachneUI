@@ -95,7 +95,6 @@ class UserListBuilder extends ContainerBuilder {
         tenantOptions: selectors.getTenantOptions(state),
       }),
       ...Utils.getPlainFiltersEncodeDecoder(),
-      isAdmin: get(state, 'auth.principal.queryResult.result.isAdmin'),
     };
   }
 

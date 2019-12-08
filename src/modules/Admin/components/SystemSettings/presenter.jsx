@@ -31,6 +31,7 @@ import {
   LoadingPanel,
 } from 'arachne-ui-components';
 import { get } from 'services/Utils';
+import ProtectedView from 'modules/Admin/components/ProtectedView';
 
 require('./style.scss');
 
@@ -67,83 +68,82 @@ function SystemSettings(props) {
       </div>
     )
   })
-
-  if (!props.isAdmin) {
-    return <div {...classes('access-denied-title')}>The page you're looking for can't be found</div>;
-  }
+  
   return (
-    <PageWrapper>
-      <div {...classes()}>
-        {!isApplied &&
-          <div {...classes('apply-banner')}>
-            <span {...classes('apply-banner-hint')}>
-              Some settings were changed, but have not been applied yet. To apply settings, you need to restart server.
-            </span>
-            <Button
-              {...classes('apply-banner-btn')}
-              label={'Restart server'}
-              onClick={applySettings}
-            />
-          </div>
-        }
-        {__APP_TYPE_CENTRAL__
-          ?
-            <div {...classes('action-bar')}>
-              <div {...classes('action-bar-btn')}>
-                <Button
-                  mods={['default']}
-                  label={getReindexLabel(solrDomains.users.value, 'Expert Finder')}
-                  onClick={() => solrReindex({ domain: solrDomains.users })}
-                  disabled={isReindexing(solrDomains.users.value)}
-                />
-              </div>
-              <div {...classes('action-bar-btn')}>
-                <Button
-                  {...classes('reindex-solr')}
-                  mods={['default']}
-                  label={getReindexLabel(solrDomains.dataSources.value, 'Data Catalog')}
-                  onClick={() => solrReindex({ domain: solrDomains.dataSources })}
-                  disabled={isReindexing(solrDomains.dataSources.value)}
-                />
-              </div>
-              <div {...classes('action-bar-btn')}>
-                <Button
-                  {...classes('reindex-solr')}
-                  mods={['default']}
-                  label={getReindexLabel(solrDomains.studies.value, 'Study Notebook')}
-                  onClick={() => solrReindex({ domain: solrDomains.studies })}
-                  disabled={isReindexing(solrDomains.studies.value)}
-                />
-              </div>
-              <div {...classes('action-bar-btn')}>
-                <Button
-                  {...classes('reindex-solr')}
-                  mods={['default']}
-                  label={getReindexLabel(solrDomains.analyses.value, 'Analyses')}
-                  onClick={() => solrReindex({ domain: solrDomains.analyses })}
-                  disabled={isReindexing(solrDomains.analyses.value)}
-                />
-              </div>
-              <div {...classes('action-bar-btn')}>
-                <Button
-                  {...classes('reindex-solr')}
-                  mods={['default']}
-                  label={getReindexLabel(solrDomains.papers.value, 'Papers')}
-                  onClick={() => solrReindex({ domain: solrDomains.papers })}
-                  disabled={isReindexing(solrDomains.papers.value)}
-                />
-              </div>
+    <ProtectedView>
+      <PageWrapper>
+        <div {...classes()}>
+          {!isApplied &&
+            <div {...classes('apply-banner')}>
+              <span {...classes('apply-banner-hint')}>
+                Some settings were changed, but have not been applied yet. To apply settings, you need to restart server.
+              </span>
+              <Button
+                {...classes('apply-banner-btn')}
+                label={'Restart server'}
+                onClick={applySettings}
+              />
             </div>
-          : null
-        }
-        <div {...classes('content')}>
-          <div className="row">
-            {formComponentList}
+          }
+          {__APP_TYPE_CENTRAL__
+            ?
+              <div {...classes('action-bar')}>
+                <div {...classes('action-bar-btn')}>
+                  <Button
+                    mods={['default']}
+                    label={getReindexLabel(solrDomains.users.value, 'Expert Finder')}
+                    onClick={() => solrReindex({ domain: solrDomains.users })}
+                    disabled={isReindexing(solrDomains.users.value)}
+                  />
+                </div>
+                <div {...classes('action-bar-btn')}>
+                  <Button
+                    {...classes('reindex-solr')}
+                    mods={['default']}
+                    label={getReindexLabel(solrDomains.dataSources.value, 'Data Catalog')}
+                    onClick={() => solrReindex({ domain: solrDomains.dataSources })}
+                    disabled={isReindexing(solrDomains.dataSources.value)}
+                  />
+                </div>
+                <div {...classes('action-bar-btn')}>
+                  <Button
+                    {...classes('reindex-solr')}
+                    mods={['default']}
+                    label={getReindexLabel(solrDomains.studies.value, 'Study Notebook')}
+                    onClick={() => solrReindex({ domain: solrDomains.studies })}
+                    disabled={isReindexing(solrDomains.studies.value)}
+                  />
+                </div>
+                <div {...classes('action-bar-btn')}>
+                  <Button
+                    {...classes('reindex-solr')}
+                    mods={['default']}
+                    label={getReindexLabel(solrDomains.analyses.value, 'Analyses')}
+                    onClick={() => solrReindex({ domain: solrDomains.analyses })}
+                    disabled={isReindexing(solrDomains.analyses.value)}
+                  />
+                </div>
+                <div {...classes('action-bar-btn')}>
+                  <Button
+                    {...classes('reindex-solr')}
+                    mods={['default']}
+                    label={getReindexLabel(solrDomains.papers.value, 'Papers')}
+                    onClick={() => solrReindex({ domain: solrDomains.papers })}
+                    disabled={isReindexing(solrDomains.papers.value)}
+                  />
+                </div>
+              </div>
+            : null
+          }
+          <div {...classes('content')}>
+            <div className="row">
+              {formComponentList}
+            </div>
           </div>
         </div>
-      </div>
-      <LoadingPanel active={ isLoading } />
-    </PageWrapper>
+        <LoadingPanel active={ isLoading } />
+      </PageWrapper>
+    </ProtectedView>
   );
 }
 

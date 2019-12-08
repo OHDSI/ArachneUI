@@ -16,35 +16,41 @@
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
  * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: September 29, 2017
+ * Created: January 24, 2017
  *
  */
 
-@import 'styles/vars-and-mixins.scss';
+import { Component } from 'react';
+import { get, ContainerBuilder } from 'services/Utils';
+import ProtectedViewPresenter from './presenter';
 
-.#{$namespace} {
 
-	&admin-panel-user-list {
-		&__add {
-      align-items: center;
-			cursor: pointer;
-      display: flex;
-      padding: 15px 27px;
-			width: 100%;
-		}
+class ProtectedView extends Component {
 
-		&__add-icon {
-		  @include material-icon();
-		  color: $green;
-		  display: inline-block;
-		  margin-right: 1rem;
-		  font-size: 2.5rem;
-		}
-
-		&__add-label {
-		  @include title();
-		  color: $grey-dark-light;
-		}
-	}
-
+  render() {
+    return ProtectedViewPresenter({
+      ...this.props,
+    });
+  }
 }
+
+class ProtectedViewBuilder extends ContainerBuilder {
+  getComponent() {
+    return ProtectedView;
+  }
+
+  mapStateToProps(state) {
+    return {
+      isAdmin: get(state, 'auth.principal.queryResult.result.isAdmin'),
+    };
+  }
+
+  mergeProps(stateProps, dispatchProps, ownProps) {
+    return {
+      ...stateProps,
+      ...dispatchProps,
+      ...ownProps,
+  };
+  }
+}
+export default ProtectedViewBuilder;

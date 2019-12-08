@@ -45,13 +45,6 @@
 		  @include title();
 		  color: $grey-dark-light;
 		}
-
-		&__access-denied-title {
-			width: 100%;
-			text-align: center;
-			margin-top: 15rem;
-			font-size: 2.5rem;
-		}
 	}
 
 }
