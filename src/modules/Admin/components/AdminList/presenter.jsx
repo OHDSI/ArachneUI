@@ -34,7 +34,7 @@ require('./style.scss');
 
 function AdminList({ isLoading, openModal, isStandalone}) {
 	const classes = new BEMHelper('admin-panel-admin-list');
-	
+
 	return (
 		<ProtectedView>
 			<PageWrapper>

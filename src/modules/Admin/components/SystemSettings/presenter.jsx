@@ -68,7 +68,7 @@ function SystemSettings(props) {
       </div>
     )
   })
-  
+
   return (
     <ProtectedView>
       <PageWrapper>
