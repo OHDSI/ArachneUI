@@ -28,22 +28,25 @@ import ModalAddUser from './ModalAddUser';
 import {
 	LoadingPanel,
 } from 'arachne-ui-components';
+import ProtectedView from 'modules/Admin/components/ProtectedView';
 
 require('./style.scss');
 
-function AdminList({ isLoading, openModal, isStandalone }) {
+function AdminList({ isLoading, openModal, isStandalone}) {
 	const classes = new BEMHelper('admin-panel-admin-list');
 
 	return (
-		<PageWrapper>
-				<Table/>
-				{ !isStandalone && (<div {...classes('add')} onClick={openModal}>
-					<span {...classes('add-icon')}>add_circle_outline</span>
-					<span {...classes('add-label')}>Add admin user</span>
-				</div>) }
-				<ModalAddUser />
-        <LoadingPanel active={ isLoading } />
-		</PageWrapper>
+		<ProtectedView>
+			<PageWrapper>
+					<Table/>
+					{ !isStandalone && (<div {...classes('add')} onClick={openModal}>
+						<span {...classes('add-icon')}>add_circle_outline</span>
+						<span {...classes('add-label')}>Add admin user</span>
+					</div>) }
+					<ModalAddUser />
+					<LoadingPanel active={ isLoading } />
+			</PageWrapper>
+		</ProtectedView>
 	);
 }
 

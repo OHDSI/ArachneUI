@@ -27,6 +27,7 @@ import ModalAddUser from './ModalAddUser';
 import ModalAddUserBatch from './ModalAddUserBatch';
 import Grid from 'components/Grid';
 import PortalUserListActions from './Actions';
+import ProtectedView from 'modules/Admin/components/ProtectedView';
 
 require('./style.scss');
 
@@ -46,21 +47,23 @@ export default class UserList extends Component {
       onPageOutOfRange,
     } = this.props;
     return (
-      <PageWrapper>
-        <Grid
-          isLoading={isLoading}
-          title="Settings | Users"
-          paginationDetails={paginationDetails}
-          filterFields={filterFields}
-          Actions={<PortalUserListActions />}
-          searchQueryDecode={searchQueryDecode}
-          searchQueryEncode={searchQueryEncode}
-          onPageOutOfRange={onPageOutOfRange}
-        >
-          <Table />
-        </Grid>
-        { this.getModals() }
-      </PageWrapper>
+      <ProtectedView>
+        <PageWrapper>
+          <Grid
+            isLoading={isLoading}
+            title="Settings | Users"
+            paginationDetails={paginationDetails}
+            filterFields={filterFields}
+            Actions={<PortalUserListActions />}
+            searchQueryDecode={searchQueryDecode}
+            searchQueryEncode={searchQueryEncode}
+            onPageOutOfRange={onPageOutOfRange}
+          >
+            <Table />
+          </Grid>
+          { this.getModals() }
+        </PageWrapper>
+      </ProtectedView>
     );
   }
 }
