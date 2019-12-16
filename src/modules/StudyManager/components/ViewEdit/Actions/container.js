@@ -111,7 +111,7 @@ export default class StudyActionsBuilder {
           message: `Are you sure you want to delete study '${stateProps.title}'?`,
         })
           .then(() => {
-            dispatchProps.remove(stateProps.studyId)
+            dispatchProps.remove({id: stateProps.studyId})
               .then(() => dispatchProps.goBack())
               .catch(() => {});
           });
