@@ -29,6 +29,8 @@
     $half_rem: 0.5rem;
     $avatar_size: 3.5rem;
 
+    font-size: $font-size-base;
+
     & .ac-study-participant-lines {
 
       &__group {
@@ -64,7 +66,7 @@
       display: flex;
 
       &__role {
-        min-width: 150px;
+        min-width: 13rem;
         text-align: left;
       }
 
@@ -74,21 +76,25 @@
 
       &__status {
         flex: 1;
-        min-width: 100px;
+        min-width: 8rem;
         text-align: right;
+        font-size: $font-size-small;
         @include invitation-status();
       }
 
       @include list-item-actions();
 
       &__action {
-        width: 35px;
+        width: 2rem;
+        &-ico {
+          font-size: $font-size-base;
+        }
       }
 
       // For case, when list is editable, so crosses can be shown,
       // but the current line cannot be removed
       &--displaced {
-        padding-right: 35px;
+        padding-right: 2rem;
       }
 
       @include decline-comment();
@@ -96,6 +102,7 @@
       &__comment {
         flex: 4;
         top: 0px;
+        font-size: $font-size-small;
       }
     }
   }
