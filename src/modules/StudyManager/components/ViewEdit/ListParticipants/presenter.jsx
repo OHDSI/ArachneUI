@@ -133,8 +133,8 @@ function ParticipantItem(props) {
         </div>
       </div>
 
-      {participant.comment &&
       <div {...classes('comment')}>
+      {participant.comment &&
         <Link
             {...classes({ element: 'comment', extra: 'ac-tooltip' })}
             aria-label={`Comment: ${participant.comment}`}
@@ -142,16 +142,8 @@ function ParticipantItem(props) {
         >
           <div {...classes('comment-icon')}>chat_bubble</div>
         </Link>
-      </div>
       }
-      {participant.role.id === participantRoles.DATA_SET_OWNER &&
-      <div {...classes('comment')}>
-          <span>
-              {participant.ownedDataSource.name}
-          </span>
       </div>
-      }
-
       <div {...classes('status', participant.status)}>
         {participant.status}
       </div>

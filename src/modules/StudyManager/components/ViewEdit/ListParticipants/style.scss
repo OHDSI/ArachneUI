@@ -39,7 +39,7 @@
         padding: $half_rem;
 
        .ac-participant-card-avatar {
-          flex: 2;
+          flex: 4;
           align-items: center;
           display: flex;
 
@@ -53,7 +53,7 @@
         }
 
         .ac-study-participant-lines__roles {
-          flex: 5;
+          flex: 7;
         }
 
         & .ac-list-item {
@@ -66,7 +66,7 @@
       display: flex;
 
       &__role {
-        min-width: 13rem;
+        flex: 5;
         text-align: left;
       }
 
@@ -75,34 +75,30 @@
       }
 
       &__status {
-        flex: 1;
+        flex: 2;
         min-width: 8rem;
         text-align: right;
-        font-size: $font-size-small;
+        font-size: $font-size-base;
         @include invitation-status();
       }
 
       @include list-item-actions();
 
       &__action {
-        width: 2rem;
-        &-ico {
-          font-size: $font-size-base;
-        }
+        width: 4rem;
       }
 
       // For case, when list is editable, so crosses can be shown,
       // but the current line cannot be removed
       &--displaced {
-        padding-right: 2rem;
+        padding-right: 4rem;
       }
 
       @include decline-comment();
 
       &__comment {
-        flex: 4;
+        flex: 1;
         top: 0px;
-        font-size: $font-size-small;
       }
     }
   }
