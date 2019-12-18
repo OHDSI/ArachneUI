@@ -35,8 +35,10 @@ function ParticipantCard({url, participant}) {
 
   return (
       <div {...classes()}>
-        <Avatar mods={['round', 'bordered']} img={url}/>
-        <Link to={participant.link}>{participant.fullName}</Link>
+        <div {...classes('avatar-container')}>
+          <Avatar mods={['round', 'bordered']} img={url}/>
+          <Link to={participant.link}>{participant.fullName}</Link>
+        </div>
       </div>
   );
 }
