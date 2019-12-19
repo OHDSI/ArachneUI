@@ -143,7 +143,7 @@ function ParticipantItem(props) {
           {...classes({ element: 'comment', extra: 'ac-tooltip' })}
           aria-label={ `Role was added automatically as following data source owner: ${participant.ownedDataSource.name}` }
           data-tootik-conf='top multiline'>
-        <div>?</div>
+        <div {...classes('comment-icon')}>info_outline</div>
       </Link>
       }
       </div>

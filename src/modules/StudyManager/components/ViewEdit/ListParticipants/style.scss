@@ -103,13 +103,8 @@
       @include decline-comment();
 
       &__comment {
-        text-align: center;
         flex: 1;
         top: 0px;
-
-        & div:first-child {
-          font-weight: $font-weight-bold;
-        }
       }
     }
   }
