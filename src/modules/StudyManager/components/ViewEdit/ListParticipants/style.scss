@@ -36,7 +36,6 @@
       &__group {
         display: flex;
         border-bottom: $border;
-        padding: $half_rem;
 
        .ac-participant-card-avatar {
           flex: 4;
@@ -92,20 +91,25 @@
       @include list-item-actions();
 
       &__action {
-        width: 4rem;
+        width: 5rem;
       }
 
       // For case, when list is editable, so crosses can be shown,
       // but the current line cannot be removed
       &--displaced {
-        padding-right: 4rem;
+        padding-right: 5rem;
       }
 
       @include decline-comment();
 
       &__comment {
+        text-align: center;
         flex: 1;
         top: 0px;
+
+        & div:first-child {
+          font-weight: $font-weight-bold;
+        }
       }
     }
   }

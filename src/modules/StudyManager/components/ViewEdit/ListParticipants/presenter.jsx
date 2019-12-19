@@ -109,14 +109,7 @@ function ParticipantItem(props) {
     >
 
       <div {...classes('role')}>
-        <div
-          className={participant.role.id === participantRoles.DATA_SET_OWNER ? tootlopClasses().className : null}
-          aria-label={participant.role.id === participantRoles.DATA_SET_OWNER
-            ? `Role was added automatically as following data source owner: ${participant.ownedDataSource.name}`
-            : null
-          }
-          data-tootik-conf='left multiline'
-        >
+        <div data-tootik-conf='left multiline'>
           {participant.canBeRemoved ?
             <Select
               {...classes('role-select')}
@@ -144,6 +137,14 @@ function ParticipantItem(props) {
         >
           <div {...classes('comment-icon')}>chat_bubble</div>
         </Link>
+      }
+      {participant.role.id === participantRoles.DATA_SET_OWNER &&
+      <Link
+          {...classes({ element: 'comment', extra: 'ac-tooltip' })}
+          aria-label={ `Role was added automatically as following data source owner: ${participant.ownedDataSource.name}` }
+          data-tootik-conf='top multiline'>
+        <div>?</div>
+      </Link>
       }
       </div>
       <div {...classes('status', participant.status)}>
