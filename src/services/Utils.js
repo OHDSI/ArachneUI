@@ -191,7 +191,6 @@ const validators = {
     return isEqual(password, passwordConfirmation)
       ? undefined
       : {
-        password: 'Password and password confirmation must match',
         passwordConfirmation: 'Password and password confirmation must match',
       };
   },
