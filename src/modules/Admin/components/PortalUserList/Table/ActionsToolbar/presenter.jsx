@@ -57,10 +57,10 @@ export default class ActionsToolbar extends Component{
         icon: 'verified_user',
       }),
       this.createButton({
-        onClick: areUndeletableUsersSelected ? () => {} : this.props.batch.bind(null, batchOperationType.DELETE),
-        tooltipText: areUndeletableUsersSelected ? `${pluralize('user', this.props.selectedUndeletableUsers.length, true)} cannot be deleted` : 'Delete',
+        onClick: this.props.batch.bind(null, batchOperationType.DELETE),
+        tooltipText: this.buildDeleteUsersTooltipMessage(areUndeletableUsersSelected),
         icon: 'delete',
-        mods: { invalid:  areUndeletableUsersSelected}
+        mods: { warn:  areUndeletableUsersSelected}
       }),
     ];
   }
@@ -76,7 +76,16 @@ export default class ActionsToolbar extends Component{
       mods,
     }
   }
-  
+
+  buildDeleteUsersTooltipMessage(areUndeletableUsersSelected) {
+
+    if (areUndeletableUsersSelected) {
+      const count = this.props.selectedUndeletableUsers.length;
+      const warningMessage = `${count} user ${pluralize('account', count)} will be deactivated`;
+      return warningMessage;
+    }
+    return null;
+  }
 
   render() {
 

@@ -38,8 +38,8 @@
       &--disabled {
         color: $grey-dark-light
       }
-      &--invalid {
-        color: $dark-red;
+      &--warn {
+        color: $orange;
       }
     }
   }
