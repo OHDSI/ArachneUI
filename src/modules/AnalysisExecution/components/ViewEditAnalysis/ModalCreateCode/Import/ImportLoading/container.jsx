@@ -38,6 +38,7 @@ function mapStateToProps(state, ownProps) {
     ),
     goBack: ownProps.goBack,
     analysisType,
+    analysesImportError: ownProps.analysesImportError,
   };
 }
 
