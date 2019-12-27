@@ -30,7 +30,7 @@ function NotAvailable() {
 
 	return (
     	<div {...classes()}>
-			Import is available for analysis with type Cohort or Population Level Estimation.
+			Import is available for analysis with type Cohort, Incidence Rates, Patient Level Prediction or Population Level Estimation.
 		</div>
 	);
 }
