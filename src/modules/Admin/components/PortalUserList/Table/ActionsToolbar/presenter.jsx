@@ -81,7 +81,8 @@ export default class ActionsToolbar extends Component{
 
     if (areUndeletableUsersSelected) {
       const count = this.props.selectedUndeletableUsers.length;
-      const errorMessage = `${count} user ${pluralize('account', count)} ${pluralize('contain', count)} records`;
+      const have = count === 1 ? 'has' : 'have';
+      const errorMessage = `${count} ${pluralize('user', count)} ${have} records and cannot be removed`;
       return errorMessage;
     }
     return 'Delete';
