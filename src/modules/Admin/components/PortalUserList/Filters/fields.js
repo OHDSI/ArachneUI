@@ -29,7 +29,7 @@ export default function getFields(props) {
       name: 'enabled',
       type: fieldTypes.enum,
       forceOpened: true,
-      hasTitle: false,
+      hasTitle: true,
       options: [
         {label: 'Enabled', value: 'true',},
         {label: 'Disabled', value: 'false',},
@@ -40,7 +40,7 @@ export default function getFields(props) {
       name: 'emailConfirmed',
       type: fieldTypes.enum,
       forceOpened: true,
-      hasTitle: false,
+      hasTitle: true,
       options: [
         {label: 'Yes', value: 'true',},
         {label: 'No', value: 'false',},
