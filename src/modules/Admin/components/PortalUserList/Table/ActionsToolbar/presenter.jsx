@@ -57,10 +57,10 @@ export default class ActionsToolbar extends Component{
         icon: 'verified_user',
       }),
       this.createButton({
-        onClick: this.props.batch.bind(null, batchOperationType.DELETE),
+        onClick: areUndeletableUsersSelected ? () => {} : this.props.batch.bind(null, batchOperationType.DELETE),
         tooltipText: this.buildDeleteUsersTooltipMessage(areUndeletableUsersSelected),
         icon: 'delete',
-        mods: { warn:  areUndeletableUsersSelected}
+        mods: { invalid:  areUndeletableUsersSelected}
       }),
     ];
   }
@@ -81,10 +81,11 @@ export default class ActionsToolbar extends Component{
 
     if (areUndeletableUsersSelected) {
       const count = this.props.selectedUndeletableUsers.length;
-      const warningMessage = `${count} user ${pluralize('account', count)} will be deactivated`;
-      return warningMessage;
+      const have = count === 1 ? 'has' : 'have';
+      const errorMessage = `${count} ${pluralize('user', count)} ${have} records and cannot be removed`;
+      return errorMessage;
     }
-    return null;
+    return 'Delete';
   }
 
   render() {
