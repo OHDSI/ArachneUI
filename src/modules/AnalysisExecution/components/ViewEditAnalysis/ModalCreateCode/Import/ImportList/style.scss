@@ -20,55 +20,55 @@
  *
  */
 
- @import 'styles/vars-and-mixins.scss';
+@import 'styles/vars-and-mixins.scss';
 
- .#{$namespace} {
+.#{$namespace} {
 
-   &code-import-list {
+  &code-import-list {
 
-     &__descr {
-       @include title();
-         display: block;
-         padding: 1.5rem 2rem;
-     }
+    &__descr {
+      @include title();
+    	display: block;
+    	padding: 1.5rem 2rem;
+    }
 
-     &__list {
-       height: 40rem;
-       width: 100%;
-       outline: none;
+    &__list {
+      height: 40rem;
+      width: 100%;
+      outline: none;
 
-       &--hidden {
-         height: 0;
-         display: none;
-       }
-     }
+      &--hidden {
+        height: 0;
+        display: none;
+      }
+    }
 
-     &__filter {
-       @include input();
-       @include input-border();
-     }
+    &__filter {
+      @include input();
+      @include input-border();
+    }
 
-     &__submit {
-         &:disabled {
-             opacity: .55;
-         }
-     }
+    &__submit {
+    	&:disabled {
+    		opacity: .55;
+    	}
+    }
 
-     &__progress {
-         padding: 1.5rem 2rem;
-     }
+    &__progress {
+    	padding: 1.5rem 2rem;
+    }
 
-     &__empty-state {
-       display: inline-block;
-       width: 100%;
-       padding: 4rem 0 2rem;
-       text-align: center;
-     }
+    &__empty-state {
+      display: inline-block;
+      width: 100%;
+      padding: 4rem 0 2rem;
+      text-align: center;
+    }
 
-     &__import-entity {
-       padding-left: 0.5rem;
-       padding-right: 0.5rem;
-     }
-   }
+    &__import-entity {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+  }
 
- }
+}
