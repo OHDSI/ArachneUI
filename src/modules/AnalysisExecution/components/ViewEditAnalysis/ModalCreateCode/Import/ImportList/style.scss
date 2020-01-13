@@ -24,51 +24,51 @@
 
 .#{$namespace} {
 
-  &code-import-list {
-    
-    &__descr {
-      @include title();
-    	display: block;
-    	padding: 1.5rem 2rem;	
-    }
+    &code-import-list {
 
-    &__list {
-      height: 600px;
-      width: 100%;
-      outline: none;
+        &__descr {
+            @include title();
+            display: block;
+            padding: 1.5rem 2rem;
+        }
 
-      &--hidden {
-        height: 0;
-        display: none;
-      }
-    }
+        &__list {
+            height: 40rem;
+            width: 100%;
+            outline: none;
 
-    &__filter {
-      @include input();
-      @include input-border();
-    }
+            &--hidden {
+                height: 0;
+                display: none;
+            }
+        }
 
-    &__submit {
-    	&:disabled {
-    		opacity: .55;
-    	}
-    }
+        &__filter {
+            @include input();
+            @include input-border();
+        }
 
-    &__progress {
-    	padding: 1.5rem 2rem;
-    }
+        &__submit {
+            &:disabled {
+                opacity: .55;
+            }
+        }
 
-    &__empty-state {
-      display: inline-block;
-      width: 100%;
-      padding: 4rem 0 2rem;
-      text-align: center;
-    }
+        &__progress {
+            padding: 1.5rem 2rem;
+        }
 
-    &__import-entity {
-      padding-left: 0.5rem;
-      padding-right: 0.5rem;
+        &__empty-state {
+            display: inline-block;
+            width: 100%;
+            padding: 4rem 0 2rem;
+            text-align: center;
+        }
+
+        &__import-entity {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+        }
     }
-  }
 
 }
