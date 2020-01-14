@@ -683,7 +683,7 @@ async function downloadFile(url, filename) {
 
 function formatNumberWithLabel({
   value,
-  label,
+  label = '',
   pre = false,
   range = false,
   withoutLabel = false,
