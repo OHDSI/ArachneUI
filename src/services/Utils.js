@@ -691,7 +691,7 @@ function formatNumberWithLabel({
 }) {
   const { format: formatFn } = numberFormatter;
   const formattedLabel = pluralize(label, value);
-  const formattedValue = range ? `${formatFn(min(arr), format)} - ${formatFn(max(arr), format)}` : formatFn(value, format);
+  const formattedValue = range ? `${formatFn(min(value), format)} - ${formatFn(max(value), format)}` : formatFn(value, format);
   if (withoutLabel) {
     return formattedValue;
   } else if (pre) {
