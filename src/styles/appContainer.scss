@@ -24,6 +24,11 @@
 @import 'arachne-ui-components/lib/styles/components';
 @import 'introjs.scss';
 
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
 .#{$namespace} {
   &root {
     display: flex;
@@ -53,6 +58,7 @@
       display: flex;
       flex-grow: 1;
       margin-top: $header-height;
+      overflow: auto;
 
       &--left-padded {
         margin-left: $sidebar-width;
