@@ -23,10 +23,7 @@
 import React, { Component } from 'react';
 import BEMHelper from 'services/BemHelper';
 import { get } from 'services/Utils';
-import { numberFormatter } from 'services/Utils';
-import pluralize from 'pluralize';
-import min from 'lodash/min';
-import max from 'lodash/max';
+import { formatNumberWithLabel } from 'services/Utils';
 
 require('./style.scss');
 
@@ -43,23 +40,28 @@ export default class Results extends Component {
 
   Cohort = () => {
     const persons = get(this.props.resultInfo, 'persons');
-    return <this.BaseSpan string={pluralize('person', persons, true)}/>;
+    const string = formatNumberWithLabel({ label: 'person', value: persons });
+    return <this.BaseSpan string={string}/>;
   };
 
   Default = () => {
-    return <this.BaseSpan string={pluralize('document', this.props.resultFilesCount, true)}/>;
+    const documents = this.props.resultFilesCount;
+    const string = formatNumberWithLabel({ label: 'document', value: documents });
+    return <this.BaseSpan string={string}/>;
   };
 
   CohortHeracles = () => {
     const { resultInfo } = this.props;
     const persons = get(resultInfo, 'persons') || 0;
     const reports = get(resultInfo, 'reports') || 0;
-    return <this.BaseSpan string={`${pluralize('person', persons, true)}, ${pluralize('report', reports, true)}`}/>;
+    const string = `${formatNumberWithLabel({ label: 'person', value: persons })}, ${formatNumberWithLabel({ label: 'report', value: reports })}}`
+    return <this.BaseSpan string={string}/>;
   };
 
   CohortCharacterization = () => {
     const reports = get(this.props.resultInfo, 'reports') || 0;
-    return <this.BaseSpan string={pluralize('report', reports, true)}/>;
+    const string = formatNumberWithLabel({ label: 'report', value: reports });
+    return <this.BaseSpan string={string}/>;
   };
 
   Incidence = () => {
@@ -74,12 +76,12 @@ export default class Results extends Component {
       const persons = resultInfo.map(o => o.PERSON_COUNT);
       const timesAtRisk = resultInfo.map(o => o.TIME_AT_RISK);
       const proportions = resultInfo.map(o => o.PROPORTION);
-      tooltipString = `Rate: ${min(rates)} - ${max(rates)}
-        Cases: ${min(cases)} - ${max(cases)}
-        Persons: ${min(persons)} - ${max(persons)}
-        Time at risk: ${min(timesAtRisk)} - ${max(timesAtRisk)}
-        Proportion: ${min(proportions)} - ${max(proportions)}`;
-      label = `${resultInfo.length} ${pluralize('combination', resultInfo.length)}`;
+      tooltipString = `Rate: ${formatNumberWithLabel({ value: rates, range: true, withoutLabel: true })}
+        Cases: ${formatNumberWithLabel({ value: cases, range: true, withoutLabel: true })}
+        Persons: ${formatNumberWithLabel({ value: persons, range: true, withoutLabel: true })}
+        Time at risk: ${formatNumberWithLabel({ value: timesAtRisk, range: true, withoutLabel: true })}
+        Proportion: ${formatNumberWithLabel({ value: proportions, range: true, withoutLabel: true })}`;
+      label = formatNumberWithLabel({ label: 'combination', value: resultInfo.length });
     } else if (Array.isArray(resultInfo) && resultInfo.length === 1) {
       const entry = resultInfo[0];
       const personCount = get(entry, 'PERSON_COUNT') || 0;
@@ -87,12 +89,12 @@ export default class Results extends Component {
       const cases = get(entry, 'CASES') || 0;
       const rate = get(entry, 'RATE') || 0;
       const proportion = get(entry, 'PROPORTION') || 0;
-      tooltipString = `Rate: ${rate}
-  ${pluralize('Case', cases)}: ${cases}
-  ${pluralize('Person', personCount)}: ${personCount}
-  Time at risk: ${timeAtRisk}
-  Proportion: ${proportion}`;
-      label = `${numberFormatter.format(cases, 'short')} ${pluralize('case', cases)}, ${numberFormatter.format(personCount, 'short')} ${pluralize('person', personCount)}`;
+      tooltipString = `Rate: ${formatNumberWithLabel({ value: rate, withoutLabel: true })}
+  ${formatNumberWithLabel({ value: cases, label: 'Case', pre: true })}
+  ${formatNumberWithLabel({ value: personCount, label: 'Person', pre: true })}
+  Time at risk:  ${formatNumberWithLabel({ value: timeAtRisk, withoutLabel: true })}
+  Proportion:  ${formatNumberWithLabel({ value: proportion, withoutLabel: true })}`;
+      label = `${formatNumberWithLabel({ label: 'case', value: cases, format: 'short' })}, ${formatNumberWithLabel({ label: 'person', value: personCount, format: 'short' })}`;
     } else {
       return this.Default();
     }
