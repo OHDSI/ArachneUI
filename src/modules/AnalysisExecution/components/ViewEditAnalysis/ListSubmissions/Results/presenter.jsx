@@ -54,7 +54,7 @@ export default class Results extends Component {
     const { resultInfo } = this.props;
     const persons = get(resultInfo, 'persons') || 0;
     const reports = get(resultInfo, 'reports') || 0;
-    const string = `${formatNumberWithLabel({ label: 'person', value: persons })}, ${formatNumberWithLabel({ label: 'report', value: reports })}}`
+    const string = `${formatNumberWithLabel({ label: 'person', value: persons })}, ${formatNumberWithLabel({ label: 'report', value: reports })}`;
     return <this.BaseSpan string={string}/>;
   };
 
