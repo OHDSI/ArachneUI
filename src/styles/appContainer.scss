@@ -29,11 +29,16 @@ body {
   overflow: hidden;
 }
 
+#app {
+  width: 100%;
+}
+
 .#{$namespace} {
   &root {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    width: 100%;
 
     &__header {
       position: fixed;

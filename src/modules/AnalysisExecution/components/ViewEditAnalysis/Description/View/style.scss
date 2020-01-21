@@ -23,11 +23,12 @@
 @import 'styles/vars-and-mixins.scss';
 
 .#{$namespace} {
-	
+
 	&analysis-description-view {
 		display: block;
     padding: 15px 20px;
 		line-height: 2.1rem;
+		word-break: break-all;
 
 		&--empty {
 			color: $grey-placeholder;
