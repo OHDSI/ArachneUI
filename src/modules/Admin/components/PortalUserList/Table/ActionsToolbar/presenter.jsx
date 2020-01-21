@@ -23,18 +23,18 @@ import isEmpty from 'lodash/isEmpty';
 import React, { Component } from 'react';
 import { Button } from 'arachne-ui-components';
 import { batchOperationType } from 'modules/Admin/const';
-import pluralize from 'pluralize';
+import { formatNumberWithLabel } from 'services/Utils';
 
 require('./style.scss');
 
 /** @augments{ Component<any, any>} */
 export default class ActionsToolbar extends Component{
 
-  
+
   getButtons() {
-    
+
     const areUndeletableUsersSelected = !isEmpty(this.props.selectedUndeletableUsers);
-    
+
     return [
       {
         onClick: this.props.openAddUsersBatchModal,
@@ -66,7 +66,7 @@ export default class ActionsToolbar extends Component{
   }
 
   createButton({ onClick, tooltipText, icon, mods = {} }) {
-    
+
     const areUsersSelected = !isEmpty(this.props.selectedUsers);
     return {
       disabled: !areUsersSelected,
@@ -82,7 +82,7 @@ export default class ActionsToolbar extends Component{
     if (areUndeletableUsersSelected) {
       const count = this.props.selectedUndeletableUsers.length;
       const have = count === 1 ? 'has' : 'have';
-      const errorMessage = `${count} ${pluralize('user', count)} ${have} records and cannot be removed`;
+      const errorMessage = `${formatNumberWithLabel({ label: 'user', value: count })} ${have} records and cannot be removed`;
       return errorMessage;
     }
     return 'Delete';
@@ -92,14 +92,14 @@ export default class ActionsToolbar extends Component{
 
     const classes = new BEMHelper('admin-portal-user-list-actions-toolbar');
     const tooltipClass = new BEMHelper('tooltip');
-    
+    const selectedUsers = this.props.selectedUsers.length;
     return (
         <div {...classes()}>
           <div>
             {
               this.getButtons().map(buttonSettings =>
                 <Button onClick={buttonSettings.onClick}>
-                  <i 
+                  <i
                     {...classes({element: 'btn-ico', modifiers: { ...buttonSettings.mods, disabled: buttonSettings.disabled }, extra: tooltipClass().className})}
                     aria-label={buttonSettings.tooltipText}
                     data-tootik-conf="bottom"
@@ -107,7 +107,7 @@ export default class ActionsToolbar extends Component{
                 </Button>)
             }
           </div>
-          <span>{`Selected ${pluralize('user', this.props.selectedUsers.length, true)}`}</span>
+          <span>{`Selected ${formatNumberWithLabel({ label: 'user', value: selectedUsers })}`}</span>
         </div>
     );
   }
