@@ -110,6 +110,14 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         }
       );
 
+      function handleUpdatedDescription(resp) {
+        //debugger;
+        if (!!resp.result) {
+          console.log(resp.result);
+        }
+        //dispatchProps.closeModal();
+      }
+
       submitPromise.then(() => dispatchProps.reset())
         .then(() => dispatchProps.closeModal())
         .then(() => dispatchProps.loadAnalysis({ id: stateProps.analysisId }))
@@ -122,6 +130,8 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
             });
           }
         });
+
+      submitPromise.then(handleUpdatedDescription);
 
       return submitPromise;
     },

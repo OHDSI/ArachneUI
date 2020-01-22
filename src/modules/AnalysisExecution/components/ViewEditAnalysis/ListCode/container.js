@@ -70,6 +70,8 @@ export default class ListCodeBuilder {
   getMapDispatchToProps() {
     return {
       openCreateCodeModal: activeSection => ModalUtils.actions.toggle(modal.createCode, true, { activeSection }),
+      openUpdateDescriptionModal: newDescription => ModalUtils.actions.toggle(modal.updateAnalysisDescription, true, {newDescription}),
+      openEditTitleModal: ModalUtils.actions.toggle.bind(null, modal.editAnalysisTitle, true),
       openSubmitModal: ModalUtils.actions.toggle.bind(null, modal.submitCode, true),
       loadAnalysis: actions.analysisExecution.analysis.find,
       removeCode: actions.analysisExecution.code.delete,
@@ -83,13 +85,22 @@ export default class ListCodeBuilder {
       ...stateProps,
       ...dispatchProps,
       reimportCode(analysisCodeId) {
-        dispatchProps
+        const reimportResult = dispatchProps
           .reimportCode({
             analysisId: stateProps.analysisId,
             fileId: analysisCodeId,
             type: stateProps.analysisType,
-          })
-          .then(() => dispatchProps.loadAnalysis({ id: stateProps.analysisId }));
+          });
+          reimportResult.then((res)=>{
+            if(!!res.result){
+              //ModalUtils.actions.toggle(modal.updateAnalysisDescription, true);
+              //dispatchProps.openSubmitModal();
+              dispatchProps.openUpdateDescriptionModal(res.result);
+              //dispatchProps.openEditTitleModal();
+              console.log("new Description 2:", res.result);
+            }
+          });
+          reimportResult.then(() => dispatchProps.loadAnalysis({ id: stateProps.analysisId }));
       },
       removeCode(analysisCodeId) {
         Utils.confirmDelete({
