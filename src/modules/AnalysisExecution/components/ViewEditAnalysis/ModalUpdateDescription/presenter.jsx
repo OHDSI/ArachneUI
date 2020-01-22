@@ -22,50 +22,37 @@
 
 import React from 'react';
 import BEMHelper from 'services/BemHelper';
-import { Modal} from 'arachne-ui-components';
-import { Form } from 'arachne-ui-components';
-import { FormInput } from 'arachne-ui-components';
+import { Form, Modal } from 'arachne-ui-components';
 
 require('./style.scss');
 
-function ModalUpdateDescription(props){
+function ModalUpdateDescription(props) {
 
     const {newDescription} = props;
     const classes = new BEMHelper('analysis-form-update-description');
 
-    const fields = [
-        // {
-        //     name: 'description',
-        //     InputComponent: {
-        //         component: FormInput,
-        //         props: {
-        //             mods: ['bordered'],
-        //             //value: newDescription,
-        //             //text: newDescription,
-        //             type: 'text',
-        //         },
-        //     },
-        // },
-    ];
-
     const submitBtn = {
-        label: 'Update',
-        loadingLabel: 'Saving...',
+        label: 'Replace',
+        loadingLabel: 'Replacing...',
         mods: ['success', 'rounded'],
     };
 
     const cancelBtn = {
-        label: 'Skip',
+        label: 'Leave existing',
     };
 
-    return(
-        <Modal modal={props.modal} title="Update description">
+    return (
+        <Modal modal={props.modal} title="Update analysis description">
             <div {...classes()}>
-                <p>Would you like to replace the existing description with the:</p>
-                <p>{newDescription}</p>
+                <div>
+                    <div {...classes('question')}>Would you like to replace the existing description with the:</div>
+                    <div {...classes('new-description')}>{newDescription}</div>
+                </div>
+
+
                 <Form
                     mods="spacing-sm"
-                    fields={fields}
+                    fields={[]}
                     submitBtn={submitBtn}
                     cancelBtn={cancelBtn}
                     onSubmit={props.doSubmit}

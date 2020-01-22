@@ -34,93 +34,88 @@ const selectors = (new SelectorsBuilder()).build();
 
 /** @augments{ Component<any, any>} */
 export default class ListCodeBuilder {
-  getComponent() {
-    return ListCode;
-  }
+    getComponent() {
+        return ListCode;
+    }
 
-  mapStateToProps(state) {
-    const analysisData = get(state, 'analysisExecution.analysis.data.result');
-    const analysisId = get(analysisData, 'id');
-    const analysisType = get(analysisData, 'type.id');
-    const codeList = selectors.getCodeList(state);
-    const downloadAllLink = apiPaths.analysisCodeDownloadAll({ analysisId });
-    const isLocked = get(analysisData, 'locked');
+    mapStateToProps(state) {
+        const analysisData = get(state, 'analysisExecution.analysis.data.result');
+        const analysisId = get(analysisData, 'id');
+        const analysisType = get(analysisData, 'type.id');
+        const codeList = selectors.getCodeList(state);
+        const downloadAllLink = apiPaths.analysisCodeDownloadAll({analysisId});
+        const isLocked = get(analysisData, 'locked');
 
-    const permissions = get(analysisData, 'permissions', {});
-    const isSubmittable = get(permissions, analysisPermissions.createSubmission, false);
-    const canAddFiles = get(permissions, analysisPermissions.uploadAnalysisFiles, false);
+        const permissions = get(analysisData, 'permissions', {});
+        const isSubmittable = get(permissions, analysisPermissions.createSubmission, false);
+        const canAddFiles = get(permissions, analysisPermissions.uploadAnalysisFiles, false);
 
-    const canSubmit = codeList.length > 0;
-    const isLoading = selectors.getIsLoading(state);
+        const canSubmit = codeList.length > 0;
+        const isLoading = selectors.getIsLoading(state);
 
-    return {
-      analysisId,
-      analysisType,
-      codeList,
-      downloadAllLink,
-      isSubmittable,
-      isLocked,
-      isLoading,
-      canSubmit,
-      canAddFiles,
-      isExecutableSelected: codeList.find(file => file.isExecutable),
-    };
-  }
+        return {
+            analysisId,
+            analysisType,
+            codeList,
+            downloadAllLink,
+            isSubmittable,
+            isLocked,
+            isLoading,
+            canSubmit,
+            canAddFiles,
+            isExecutableSelected: codeList.find(file => file.isExecutable),
+        };
+    }
 
-  getMapDispatchToProps() {
-    return {
-      openCreateCodeModal: activeSection => ModalUtils.actions.toggle(modal.createCode, true, { activeSection }),
-      openUpdateDescriptionModal: newDescription => ModalUtils.actions.toggle(modal.updateAnalysisDescription, true, {newDescription}),
-      openEditTitleModal: ModalUtils.actions.toggle.bind(null, modal.editAnalysisTitle, true),
-      openSubmitModal: ModalUtils.actions.toggle.bind(null, modal.submitCode, true),
-      loadAnalysis: actions.analysisExecution.analysis.find,
-      removeCode: actions.analysisExecution.code.delete,
-      reimportCode: actions.analysisExecution.importEntity.update,
-    };
-  }
+    getMapDispatchToProps() {
+        return {
+            openCreateCodeModal: activeSection => ModalUtils.actions.toggle(modal.createCode, true, {activeSection}),
+            openUpdateDescriptionModal: newDescription => ModalUtils.actions.toggle(modal.updateAnalysisDescription, true, {newDescription}),
+            openSubmitModal: ModalUtils.actions.toggle.bind(null, modal.submitCode, true),
+            loadAnalysis: actions.analysisExecution.analysis.find,
+            removeCode: actions.analysisExecution.code.delete,
+            reimportCode: actions.analysisExecution.importEntity.update,
+        };
+    }
 
-  mergeProps(stateProps, dispatchProps, ownProps) {
-    return {
-      ...ownProps,
-      ...stateProps,
-      ...dispatchProps,
-      reimportCode(analysisCodeId) {
-        const reimportResult = dispatchProps
-          .reimportCode({
-            analysisId: stateProps.analysisId,
-            fileId: analysisCodeId,
-            type: stateProps.analysisType,
-          });
-          reimportResult.then((res)=>{
-            if(!!res.result){
-              //ModalUtils.actions.toggle(modal.updateAnalysisDescription, true);
-              //dispatchProps.openSubmitModal();
-              dispatchProps.openUpdateDescriptionModal(res.result);
-              //dispatchProps.openEditTitleModal();
-              console.log("new Description 2:", res.result);
-            }
-          });
-          reimportResult.then(() => dispatchProps.loadAnalysis({ id: stateProps.analysisId }));
-      },
-      removeCode(analysisCodeId) {
-        Utils.confirmDelete({
-          message: 'Are you sure you want to delete this file?',
-        })
-          .then(() => {
-            dispatchProps
-              .removeCode({ analysisId: stateProps.analysisId, analysisCodeId })
-              .then(() => dispatchProps.loadAnalysis({ id: stateProps.analysisId }));
-          });
-      },
-    };
-  }
+    mergeProps(stateProps, dispatchProps, ownProps) {
+        return {
+            ...ownProps,
+            ...stateProps,
+            ...dispatchProps,
+            reimportCode(analysisCodeId) {
+                const reimportResult = dispatchProps
+                    .reimportCode({
+                        analysisId: stateProps.analysisId,
+                        fileId: analysisCodeId,
+                        type: stateProps.analysisType,
+                    });
+                reimportResult.then((resp) => {
+                    if (!!resp.result) {
+                        dispatchProps.openUpdateDescriptionModal(resp.result);
+                    }
+                });
+                reimportResult.then(() => dispatchProps.loadAnalysis({id: stateProps.analysisId}));
+            },
+            removeCode(analysisCodeId) {
+                Utils.confirmDelete({
+                    message: 'Are you sure you want to delete this file?',
+                })
+                    .then(() => {
+                        dispatchProps
+                            .removeCode({analysisId: stateProps.analysisId, analysisCodeId})
+                            .then(() => dispatchProps.loadAnalysis({id: stateProps.analysisId}));
+                    });
+            },
+        };
+    }
 
-  build() {
-    return Utils.buildConnectedComponent({
-      Component: this.getComponent(),
-      mapStateToProps: this.mapStateToProps,
-      mapDispatchToProps: this.getMapDispatchToProps(),
-      mergeProps: this.mergeProps,
-    });
-  }
+    build() {
+        return Utils.buildConnectedComponent({
+            Component: this.getComponent(),
+            mapStateToProps: this.mapStateToProps,
+            mapDispatchToProps: this.getMapDispatchToProps(),
+            mergeProps: this.mergeProps,
+        });
+    }
 }

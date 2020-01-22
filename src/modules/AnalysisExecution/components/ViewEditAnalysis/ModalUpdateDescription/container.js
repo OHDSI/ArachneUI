@@ -20,13 +20,12 @@
  *
  */
 
-import { Component } from 'react';
 import { connect } from 'react-redux';
-import { reduxForm, reset as resetForm, change } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import { get } from 'services/Utils';
 import actions from 'actions/index';
 import { ModalUtils } from "arachne-ui-components";
-import { modal, form } from 'modules/AnalysisExecution/const';
+import { form, modal } from 'modules/AnalysisExecution/const';
 import ModalUpdateDescription from './presenter';
 
 function mapStateToProps(state) {
@@ -57,15 +56,16 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         ...dispatchProps,
         doSubmit() {
             const submitPromise = dispatchProps.updateAnalysis(
-                { id: stateProps.analysisId },
-                { description: stateProps.newDescription, typeId: stateProps.typeId },
+                {id: stateProps.analysisId},
+                {description: stateProps.newDescription, typeId: stateProps.typeId},
                 false
             );
 
             submitPromise
                 .then(() => dispatchProps.closeModal())
-                .then(() => dispatchProps.loadAnalysis({ id: stateProps.analysisId }))
-                .catch(() => {});
+                .then(() => dispatchProps.loadAnalysis({id: stateProps.analysisId}))
+                .catch(() => {
+                });
 
             return submitPromise;
         },
