@@ -83,29 +83,28 @@ export default class ListCodeBuilder {
             ...ownProps,
             ...stateProps,
             ...dispatchProps,
-            reimportCode(analysisCodeId) {
-                const reimportResult = dispatchProps
+            async reimportCode(analysisCodeId) {
+
+                const reimportResult = await dispatchProps
                     .reimportCode({
                         analysisId: stateProps.analysisId,
                         fileId: analysisCodeId,
                         type: stateProps.analysisType,
                     });
-                reimportResult.then((resp) => {
-                    if (!!resp.result) {
-                        dispatchProps.openUpdateDescriptionModal(resp.result);
-                    }
-                });
-                reimportResult.then(() => dispatchProps.loadAnalysis({id: stateProps.analysisId}));
+
+                const newDescription = reimportResult.result;
+                if (!!newDescription) {
+                    await dispatchProps.openUpdateDescriptionModal(newDescription);
+                }
+                await dispatchProps.loadAnalysis({id: stateProps.analysisId});
             },
-            removeCode(analysisCodeId) {
-                Utils.confirmDelete({
+            async removeCode(analysisCodeId) {
+                await Utils.confirmDelete({
                     message: 'Are you sure you want to delete this file?',
-                })
-                    .then(() => {
-                        dispatchProps
-                            .removeCode({analysisId: stateProps.analysisId, analysisCodeId})
-                            .then(() => dispatchProps.loadAnalysis({id: stateProps.analysisId}));
-                    });
+                });
+
+                await dispatchProps.removeCode({analysisId: stateProps.analysisId, analysisCodeId});
+                await dispatchProps.loadAnalysis({id: stateProps.analysisId});
             },
         };
     }
