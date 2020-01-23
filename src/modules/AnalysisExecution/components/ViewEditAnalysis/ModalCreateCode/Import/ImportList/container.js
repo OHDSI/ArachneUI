@@ -92,49 +92,49 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         ...ownProps,
         ...stateProps,
         ...dispatchProps,
-        doSubmit({entity}) {
+        async doSubmit({entity}) {
             // TEMP. TODO!
             const datanodeId = stateProps.selectedSource.id;
             const entityGuid = entity;
 
-            const submitPromise = dispatchProps.importEntities(
-                {
-                    analysisId: stateProps.analysisId,
-                    type: stateProps.analysisType,
-                },
-                {
-                    dataNodeId: datanodeId,
-                    entityGuid,
-                }
-            );
-
-            function handleImportAnalysis(importResponse) {
-                dispatchProps.reset();
-                dispatchProps.closeModal();
+            async function handleImportAnalysis(importResponse) {
+                await dispatchProps.reset();
+                await dispatchProps.closeModal();
                 return importResponse.result;
             }
 
-            function handleDescriptionUpdate(newDescription) {
+            async function handleDescriptionUpdate(newDescription) {
                 if (!!newDescription) {
-                    dispatchProps.openUpdateDescriptionModal(newDescription);
+                    await dispatchProps.openUpdateDescriptionModal(newDescription);
                 }
             }
 
-            submitPromise.then(handleImportAnalysis)
-                .then(handleDescriptionUpdate)
-                .then(() => dispatchProps.loadAnalysis({id: stateProps.analysisId}))
-                .catch((error) => {
-                    const errors = get(error, `errors.${entityGuid}`);
-                    if (errors) {
-                        dispatchProps.showModalError({
-                            title: 'Unsuccessful import',
-                            errors,
-                        });
+            try {
+                const importResult = await dispatchProps.importEntities(
+                    {
+                        analysisId: stateProps.analysisId,
+                        type: stateProps.analysisType,
+                    },
+                    {
+                        dataNodeId: datanodeId,
+                        entityGuid,
                     }
-                });
-            submitPromise.then(handleImportAnalysis);
+                );
 
-            return submitPromise;
+                const newDescription = await handleImportAnalysis(importResult);
+                await handleDescriptionUpdate(newDescription);
+                await dispatchProps.loadAnalysis({id: stateProps.analysisId});
+
+            } catch (error) {
+                const errors = get(error, `errors.${entityGuid}`);
+                if (errors) {
+                    await dispatchProps.showModalError({
+                        title: 'Unsuccessful import',
+                        errors,
+                    });
+                }
+
+            }
         },
     };
 }
