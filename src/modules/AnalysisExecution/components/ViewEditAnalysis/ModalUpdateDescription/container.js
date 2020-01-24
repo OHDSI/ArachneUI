@@ -54,20 +54,15 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
         ...ownProps,
         ...stateProps,
         ...dispatchProps,
-        doSubmit() {
-            const submitPromise = dispatchProps.updateAnalysis(
+        async doSubmit() {
+
+            await dispatchProps.updateAnalysis(
                 {id: stateProps.analysisId},
                 {description: stateProps.newDescription, typeId: stateProps.typeId},
                 false
             );
-
-            submitPromise
-                .then(() => dispatchProps.closeModal())
-                .then(() => dispatchProps.loadAnalysis({id: stateProps.analysisId}))
-                .catch(() => {
-                });
-
-            return submitPromise;
+            await dispatchProps.closeModal();
+            dispatchProps.loadAnalysis({id: stateProps.analysisId});
         },
     });
 }
