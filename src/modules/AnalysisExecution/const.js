@@ -288,7 +288,7 @@ const submissionStatuses = [
   },
   {
     value: 'EXECUTED',
-    label: 'Avaiting approval (success)',
+    label: 'Awaiting approval (success)',
   },
   {
     value: 'FAILED',
