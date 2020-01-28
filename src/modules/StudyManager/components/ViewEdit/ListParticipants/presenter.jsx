@@ -15,7 +15,7 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
+ * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov, Alexandr Cumarav
  * Created: December 27, 2016
  *
  */
@@ -25,25 +25,28 @@ import DraggableList from 'react-draggable-list';
 import { ListItem, Link, Select } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
 import { newParticipantRolesOptions, participantRoles } from 'modules/StudyManager/const';
+import { Avatar } from 'arachne-ui-components';
+import { apiPaths } from 'modules/StudyManager/const';
 
 require('./style.scss');
 
-function ParticipantName(props) {
-
-  const {participant} = props;
+function ParticipantCard({url, participant}) {
+  const classes = new BEMHelper('participant-card-avatar');
 
   return (
-      <ListItem key={participant.id}>
-        <div>
+      <div {...classes()}>
+        <div {...classes('avatar-container')}>
+          <Avatar mods={['round', 'bordered']} img={url}/>
           <Link to={participant.link}>{participant.fullName}</Link>
         </div>
-      </ListItem>
+      </div>
   );
 }
 
-ParticipantName.propTypes = {
+ParticipantCard.propTypes = {
+  url: PropTypes.string.isRequired,
   participant: PropTypes.object.isRequired,
-}
+};
 
 function ParticipantItem(props) {
   const classes = new BEMHelper('study-participants-item');
@@ -94,7 +97,6 @@ function ParticipantItem(props) {
     );
   }
 
-
   return (
     <ListItem
       {...classes({
@@ -107,14 +109,7 @@ function ParticipantItem(props) {
     >
 
       <div {...classes('role')}>
-        <div 
-          className={participant.role.id === participantRoles.DATA_SET_OWNER ? tootlopClasses().className : null}
-          aria-label={participant.role.id === participantRoles.DATA_SET_OWNER
-            ? `Role was added automatically as following data source owner: ${participant.ownedDataSource.name}`
-            : null
-          }
-          data-tootik-conf='left multiline'
-        >
+        <div data-tootik-conf='left multiline'>
           {participant.canBeRemoved ?
             <Select
               {...classes('role-select')}
@@ -133,8 +128,8 @@ function ParticipantItem(props) {
         </div>
       </div>
 
+      <div {...classes('comment')}>
       {participant.comment &&
-      <div>
         <Link
             {...classes({ element: 'comment', extra: 'ac-tooltip' })}
             aria-label={`Comment: ${participant.comment}`}
@@ -142,16 +137,16 @@ function ParticipantItem(props) {
         >
           <div {...classes('comment-icon')}>chat_bubble</div>
         </Link>
-      </div>
       }
       {participant.role.id === participantRoles.DATA_SET_OWNER &&
-      <div {...classes('comment')}>
-          <span>
-              {participant.ownedDataSource.name}
-          </span>
-      </div>
+      <Link
+          {...classes({ element: 'comment', extra: 'ac-tooltip' })}
+          aria-label={ `Role was added automatically as following data source owner: ${participant.ownedDataSource.name}` }
+          data-tootik-conf='top multiline'>
+        <div {...classes('comment-icon')}>info_outline</div>
+      </Link>
       }
-
+      </div>
       <div {...classes('status', participant.status)}>
         {participant.status}
       </div>
@@ -160,8 +155,50 @@ function ParticipantItem(props) {
 }
 
 ParticipantItem.propTypes = {
+  endOfGroup: PropTypes.bool.isRequired,
+  hasEditPermissions: PropTypes.bool.isRequired,
   participant: PropTypes.object.isRequired,
   removeParticipant: PropTypes.func.isRequired,
+}
+
+function ParticipantLine(props) {
+  const {roles, hasEditPermissions, addParticipant, changeRole, removeParticipant} = props;
+  const classes = new BEMHelper('study-participant-lines');
+  const participant = roles[0];
+
+  return (
+      <li>
+        <div {...classes('group')}>
+          <ParticipantCard participant={participant} {...classes('card')}
+                           url={apiPaths.userpic(participant.id)}></ParticipantCard>
+          <div {...classes('roles')}>
+            <ul>
+              {
+                roles.map((role, index) => {
+                  return (<ParticipantItem
+                      participant={role}
+                      hasEditPermissions={hasEditPermissions}
+                      addParticipant={addParticipant}
+                      changeRole={changeRole}
+                      removeParticipant={removeParticipant}
+                      key={index}
+                  />)
+                })
+              }
+            </ul>
+
+          </div>
+        </div>
+      </li>
+  )
+}
+
+ParticipantLine.propTypes = {
+  hasEditPermissions: PropTypes.bool.isRequired,
+  openAddParticipantModal: PropTypes.func.isRequired,
+  participantList: PropTypes.array.isRequired,
+  removeParticipant: PropTypes.func.isRequired,
+  roles: PropTypes.array.isRequired,
 }
 
 function ListParticipants(props) {
@@ -185,43 +222,31 @@ function ListParticipants(props) {
     removeParticipant,
   } = props;
 
-  let listIndex = 0;
   const participantGroups = groupParticipantsByUserId(participantList);
 
-  return (
-      <div>
-
-        <ul {...classes()}>
-          {
-
-            Array.from(participantGroups.values()).filter(v => !!v).map((allRoles, index) =>
-                [<ParticipantName
-                    participant={allRoles[0]}
-                    key={++listIndex}
-                />,
-                  allRoles.map((role) =>
-                  {
-                    return(  <ParticipantItem
-                          participant={role}
-                          hasEditPermissions={hasEditPermissions}
-                          addParticipant={addParticipant}
-                          changeRole={changeRole}
-                          removeParticipant={removeParticipant}
-                          key={++listIndex}
-                      />)
-                  })
-                ]
-            )
-          }
-          {participantGroups.size === 0 &&
-          <ListItem label="No participants" key={++listIndex}/>
-          }
-          {hasEditPermissions &&
-          <ListItem label="Add participant" mods="add" onClick={openAddParticipantModal} key={++listIndex}/>
-          }
-        </ul>
-      </div>
-  );
+    return (
+        <div {...classes()}>
+            <ul>
+                {
+                    Array.from(participantGroups.values()).filter(v => !!v).map(
+                        (participantRoles) =>
+                            <ParticipantLine roles={participantRoles} key={participantRoles[0].id}
+                                             hasEditPermissions={hasEditPermissions}
+                                             addParticipant={addParticipant}
+                                             changeRole={changeRole}
+                                             removeParticipant={removeParticipant}
+                            ></ParticipantLine>)
+                }
+                {participantGroups.size === 0 &&
+                <ListItem label="No participants"  {...classes({extra: 'first last'})}/>
+                }
+                {hasEditPermissions &&
+                <ListItem label="Add participant" mods="add"
+                          onClick={openAddParticipantModal}  {...classes({extra: 'first last'})}/>
+                }
+            </ul>
+        </div>
+    );
 }
 
 ListParticipants.propTypes = {

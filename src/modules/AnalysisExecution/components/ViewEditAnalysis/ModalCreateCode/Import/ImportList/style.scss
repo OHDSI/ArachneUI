@@ -25,15 +25,15 @@
 .#{$namespace} {
 
   &code-import-list {
-    
+
     &__descr {
       @include title();
     	display: block;
-    	padding: 1.5rem 2rem;	
+    	padding: 1.5rem 2rem;
     }
 
     &__list {
-      height: 600px;
+      height: 40rem;
       width: 100%;
       outline: none;
 

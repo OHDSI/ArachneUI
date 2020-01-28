@@ -58,12 +58,14 @@ function DataSource({ options, input }) {
           data-tootik-conf="right"
         ></div>
       </div>
-      <span
-        {...classes('checkbox-label')}
+      <div
+        {...classes('checkbox-label-container')}
         onClick={() => input.onChange(!input.value)}
       >
-        {options.label}
-      </span>
+        <span {...classes('checkbox-label')}>
+          {options.label}
+        </span>
+      </div>
     </li>
   );
 }
@@ -76,7 +78,7 @@ function DataSources(props) {
   } = props;
   return (
     <ul {...classes()}>
-      {dataSources && dataSources.map((dataSource, key) => 
+      {dataSources && dataSources.map((dataSource, key) =>
         <Field
           key={key}
           component={DataSource}

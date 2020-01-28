@@ -45,14 +45,18 @@ function StatusListItem({ status }) {
             {...classes({ element: 'status', modifiers })}
           >
               {status.title}
-              <div
-                {...classes({ element: 'comment', extra: 'ac-tooltip' })}
-                aria-label={`Comment: ${status.comment}`}
-                data-tootik-conf='bottom multiline'
-              >
+              <div {...classes('tooltip-container')}>
+                  <div {...classes('tooltip-wrapper')}>
+                      <div
+                          {...classes({element: 'comment', extra: 'ac-tooltip'})}
+                          aria-label={`Comment: ${status.comment}`}
+                          data-tootik-conf='bottom multiline'
+                      >
                 <span
-                  {...classes('comment-ico')}
+                    {...classes('comment-ico')}
                 >comment</span>
+                      </div>
+                  </div>
               </div>
           </td>
       }
