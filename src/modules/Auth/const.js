@@ -81,7 +81,7 @@ const apiPaths = {
 
 const authMethods = keyMirror({
   LDAP: null,
-  DB: null,
+  JDBC: null,
 });
 
 const registerFields = function ({ professionalTypesOptions,
