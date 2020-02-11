@@ -38,7 +38,6 @@ class AppContainer extends Component {
   componentDidMount() {
     if (__APP_TYPE_NODE__) {
       this.props.getNodeMode();
-      this.props.getAuthMode();
     }
     if (__APP_TYPE_CENTRAL__) {
       this.props.getPasswordPolicies();
@@ -152,7 +151,6 @@ const mapDispatchToProps = {
   logout: (backurl) => actions.auth.clearToken(backurl),
   getPasswordPolicies: () => actions.auth.passwordPolicy.find(),
   getNodeMode: () => (__APP_TYPE_NODE__) ? actions.auth.nodeMode.find() : true,
-  getAuthMode: () => (__APP_TYPE_NODE__) ? actions.auth.authMode.find() : true
 };
 
 export default (navItems) => {

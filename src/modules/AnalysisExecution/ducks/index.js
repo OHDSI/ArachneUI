@@ -45,6 +45,8 @@ import fileTreeData from './fileTreeData';
 import submissionSummary from './submissionSummary';
 import submissionGroups from './submissionGroups';
 
+import pathwaySummary from './pathwaySummary';
+
 export default {
   actions: {
     analysis: analysis.actions,
@@ -70,6 +72,7 @@ export default {
     fileTreeData: fileTreeData.actions,
     submissionSummary: submissionSummary.actions,
     submissionGroups: submissionGroups.actions,
+    pathwaySummary: pathwaySummary.actions,
   },
   reducer: {
     analysis: analysis.reducer,
@@ -89,5 +92,6 @@ export default {
     fileTreeData: fileTreeData.reducer,
     submissionSummary: submissionSummary.reducer,
     submissionGroups: submissionGroups.reducer,
+    pathwaySummary: pathwaySummary.reducer,
   },
 };

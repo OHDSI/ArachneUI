@@ -1,6 +1,6 @@
 {
   "name": "arachne-ui",
-  "version": "1.15.24-qa",
+  "version": "1.16.32",
   "licenses": [
     {
       "type": "Apache-2.0",
@@ -46,7 +46,7 @@
   "dependencies": {
     "@ohdsi/atlascharts": "^1.7.3",
     "@stomp/stompjs": "github:stomp-js/stomp-websocket",
-    "arachne-ui-components": "^1.15.3",
+    "arachne-ui-components": "1.16.3",
     "autoprefixer": "^6.7.6",
     "clamp-js": "^0.7.0",
     "classnames": "^2.2.5",
@@ -54,7 +54,7 @@
     "comma-separated-values": "^3.6.4",
     "compression": "^1.6.0",
     "core-js": "^2.4.1",
-    "d3": "^4.9.1",
+    "d3": "^4.10.0",
     "d3-scale": "^1.0.6",
     "d3-selection": "^1.1.0",
     "d3-tip": "^0.7.1",

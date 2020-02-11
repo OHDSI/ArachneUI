@@ -38,6 +38,7 @@ function ImportCode(props) {
     resetSource,
     selectSource,
     analysisType,
+    analysesImportError,
   } = props;
 
   let panels;
@@ -56,6 +57,7 @@ function ImportCode(props) {
         element: <ImportLoading
           selectedSource={selectedSource}
           goBack={resetSource}
+          analysesImportError={analysesImportError}
         />,
         showIf: () => selectedSource && isImportRunning,
       },

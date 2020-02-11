@@ -25,6 +25,9 @@ import isEqual from 'lodash/isEqual';
 import reduce from 'lodash/reduce';
 import _get from 'lodash/get';
 import set from 'lodash/set';
+import min from 'lodash/min';
+import max from 'lodash/max';
+import pluralize from 'pluralize';
 import { types as fieldTypes } from 'const/modelAttributes';
 import mimeTypes from 'const/mimeTypes';
 import {
@@ -70,7 +73,7 @@ function buildFormData(obj, jsonObj) {
 if (!numeral['locales']['arachne']) {
   numeral.register('locale', 'arachne', {
     delimiters: {
-      thousands: ' ',
+      thousands: ',',
       decimal: '.',
     },
     abbreviations: keyMirror({
@@ -191,7 +194,6 @@ const validators = {
     return isEqual(password, passwordConfirmation)
       ? undefined
       : {
-        password: 'Password and password confirmation must match',
         passwordConfirmation: 'Password and password confirmation must match',
       };
   },
@@ -679,6 +681,25 @@ async function downloadFile(url, filename) {
   }
 }
 
+function formatNumberWithLabel({
+  value,
+  label = '',
+  pre = false,
+  range = false,
+  withoutLabel = false,
+  format = 'whole',
+}) {
+  const { format: formatFn } = numberFormatter;
+  const formattedLabel = pluralize(label, value);
+  const formattedValue = range ? `${formatFn(min(value), format)} - ${formatFn(max(value), format)}` : formatFn(value, format);
+  if (withoutLabel) {
+    return formattedValue;
+  } else if (pre) {
+    return `${formattedLabel}: ${formattedValue}`;
+  }
+  return `${formattedValue} ${formattedLabel}`;
+}
+
 export {
   buildFormData,
   get,
@@ -700,4 +721,5 @@ export {
   readFilesAsync,
   packFilesInZip,
   downloadFile,
+  formatNumberWithLabel
 };

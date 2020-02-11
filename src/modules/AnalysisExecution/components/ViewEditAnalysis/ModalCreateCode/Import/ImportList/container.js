@@ -22,118 +22,129 @@
 
 import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import {
-  reduxForm,
-  reset as resetForm,
-} from 'redux-form';
+import { reduxForm, reset as resetForm, } from 'redux-form';
 import { ModalUtils } from 'arachne-ui-components';
-import { get, getFormSelectedCheckboxes } from 'services/Utils';
+import { get } from 'services/Utils';
 import actions from 'actions';
 import { form, modal } from 'modules/AnalysisExecution/const';
 import presenter from './presenter';
 import selectors from './selectors';
 
 class ImportList extends Component {
-  constructor() {
-    super();
-    this.state = {
-      filterText: '',
-    };
-    this.filter = this.filter.bind(this);
-  }
+    constructor() {
+        super();
+        this.state = {
+            filterText: '',
+        };
+        this.filter = this.filter.bind(this);
+    }
 
-  filter(filterText) {
-    this.setState({
-      filterText,
-    });
-  }
+    filter(filterText) {
+        this.setState({
+            filterText,
+        });
+    }
 
-  render() {
-    return presenter({
-      ...this.props,
-      ...this.state,
-      filter: this.filter,
-    });
-  }
+    render() {
+        return presenter({
+            ...this.props,
+            ...this.state,
+            filter: this.filter,
+        });
+    }
 }
 
 ImportList.propTypes = {
-  selectedSource: PropTypes.shape({
-    id: PropTypes.number,
-  }),
-  analysisType: PropTypes.string,
+    selectedSource: PropTypes.shape({
+        id: PropTypes.number,
+    }),
+    analysisType: PropTypes.string,
 };
 
 function mapStateToProps(state, ownProps) {
-  const analysisType = get(state, 'analysisExecution.analysis.data.result.type.id', '', 'String');
-  const selectedSource = get(ownProps, 'selectedSource', {}, 'Object');
-  const selectedEntity = selectors.getFormEntity(state);
+    const analysisType = get(state, 'analysisExecution.analysis.data.result.type.id', '', 'String');
+    const selectedSource = get(ownProps, 'selectedSource', {}, 'Object');
+    const selectedEntity = selectors.getFormEntity(state);
 
-  return {
-    selectedSource,
-    isAnySelected: selectedEntity,
-    entities: selectors.getList(state),
-    totalSteps: ownProps.totalSteps,
-    step: ownProps.step,
-    goBack: ownProps.goBack,
-    analysisId: get(state, 'analysisExecution.analysis.data.result.id', 'Number'),
-    analysisType,
-  };
+    return {
+        selectedSource,
+        isAnySelected: selectedEntity,
+        entities: selectors.getList(state),
+        totalSteps: ownProps.totalSteps,
+        step: ownProps.step,
+        goBack: ownProps.goBack,
+        analysisId: get(state, 'analysisExecution.analysis.data.result.id', 'Number'),
+        analysisType,
+    };
 }
 
 const mapDispatchToProps = {
-  importEntities: actions.analysisExecution.importEntity.create,
-  closeModal: () => ModalUtils.actions.toggle(modal.createCode, false),
-  loadAnalysis: actions.analysisExecution.analysis.find,
-  reset: () => resetForm(form.importCodeList),
-  showModalError: params => ModalUtils.actions.toggle(modal.modalError, true, params),
+    importEntities: actions.analysisExecution.importEntity.create,
+    closeModal: () => ModalUtils.actions.toggle(modal.createCode, false),
+    loadAnalysis: actions.analysisExecution.analysis.find,
+    openUpdateDescriptionModal: newDescription => ModalUtils.actions.toggle(modal.updateAnalysisDescription, true, {newDescription}),
+    reset: () => resetForm(form.importCodeList),
+    showModalError: params => ModalUtils.actions.toggle(modal.modalError, true, params),
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
-  return {
-    ...ownProps,
-    ...stateProps,
-    ...dispatchProps,
-    doSubmit({ entity }) {
-      // TEMP. TODO!
-      const datanodeId = stateProps.selectedSource.id;
-      const entityGuid = entity;
+    return {
+        ...ownProps,
+        ...stateProps,
+        ...dispatchProps,
+        async doSubmit({entity}) {
+            // TEMP. TODO!
+            const datanodeId = stateProps.selectedSource.id;
+            const entityGuid = entity;
 
-      const submitPromise = dispatchProps.importEntities(
-        {
-          analysisId: stateProps.analysisId,
-          type: stateProps.analysisType,
+            async function handleImportAnalysis(importResponse) {
+                await dispatchProps.reset();
+                await dispatchProps.closeModal();
+                return importResponse.result;
+            }
+
+            async function handleDescriptionUpdate(newDescription) {
+                if (!!newDescription) {
+                    await dispatchProps.openUpdateDescriptionModal(newDescription);
+                }
+            }
+
+            try {
+                const importResult = await dispatchProps.importEntities(
+                    {
+                        analysisId: stateProps.analysisId,
+                        type: stateProps.analysisType,
+                    },
+                    {
+                        dataNodeId: datanodeId,
+                        entityGuid,
+                    }
+                );
+
+                const newDescription = await handleImportAnalysis(importResult);
+                await handleDescriptionUpdate(newDescription);
+                await dispatchProps.loadAnalysis({id: stateProps.analysisId});
+
+            } catch (error) {
+                const errors = get(error, `errors.${entityGuid}`);
+                if (errors) {
+                    await dispatchProps.showModalError({
+                        title: 'Unsuccessful import',
+                        errors,
+                    });
+                }
+
+            }
         },
-        {
-          dataNodeId: datanodeId,
-          entityGuid,
-        }
-      );
-
-      submitPromise.then(() => dispatchProps.reset())
-        .then(() => dispatchProps.closeModal())
-        .then(() => dispatchProps.loadAnalysis({ id: stateProps.analysisId }))
-        .catch((error) => {
-          const errors = get(error, `errors.${entityGuid}`);
-          if (errors) {
-            dispatchProps.showModalError({
-              title: 'Unsuccessful import',
-              errors,
-            });
-          }
-        });
-
-      return submitPromise;
-    },
-  };
+    };
 }
 
 const ReduxImportList = reduxForm({
-  form: form.importCodeList,
+    form: form.importCodeList,
 })(ImportList);
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-  mergeProps
+    mapStateToProps,
+    mapDispatchToProps,
+    mergeProps
 )(ReduxImportList);

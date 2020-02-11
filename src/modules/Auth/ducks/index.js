@@ -37,7 +37,6 @@ import passwordPolicy from './passwordPolicy';
 import countries from './countries';
 import provinces from './provinces';
 import nodeMode from './nodeMode';
-import authMode from './authMode';
 
 function setBackUrl(state, action) {
   return !isAuthModulePath(action.payload.pathname) ? { ...state, backUrl: action.payload.pathname } : state;
@@ -53,7 +52,6 @@ const actions = {
   clearToken: authLogout.actions.clearToken,
   principal: principal.actions,
   authMethod: authMethod.actions,
-  authMode: authMode.actions,
   register: authRegister.actions.create,
   professionalType: professionalType.actions,
   remindPassword: remindPassword.actions,
@@ -71,7 +69,6 @@ const reducer = combineReducers({
   authLogout: authLogout.reducer,
   principal: principal.reducer,
   authMethod: authMethod.reducer,
-  authMode: authMode.reducer,
   authRegister: authRegister.reducer,
   professionalType: professionalType.reducer,
   remindPassword: remindPassword.reducer,
