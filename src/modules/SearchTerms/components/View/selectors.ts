@@ -15,27 +15,13 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Alexandr Saltykov, Pavel Grafkin, Vitaly Koulakov, Anton Gackovka
- * Created: March 3, 2017
- *  
+ * Authors: Alexandr Cumarav
+ * Created: February 06, 2020
+ *
  */
 
-import reduxifyServices from 'feathers-reduxify-services';
-import API from 'services/Api';
+import { get } from 'lodash';
 
-interface ISearchTermsServices {
-	terms: any,
-	relations: any,
-	relationships: any,
-	anyRelations: any,
-}
+const getHasAnyRelationsFlag = (state: Object) => get(state, 'searchTerms.anyRelations.data.result', false);
 
-export default <ISearchTermsServices> reduxifyServices(
-	API,
-	{
-		'concepts': 'terms',
-		'concepts/:id/relations': 'relations',
-		'concepts/:id/relationships': 'relationships',
-		'concepts/:id/relations/any': 'anyRelations',
-	}
-);
+export default  getHasAnyRelationsFlag;
