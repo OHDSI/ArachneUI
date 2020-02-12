@@ -23,20 +23,11 @@
 import React from 'react';
 import BEMHelper from 'services/BemHelper';
 import { Link } from 'arachne-ui-components';
-import { authenticationModes } from 'modules/Auth/const';
 
 require('./style.scss');
 
-function Logout({ logout, iapLogout, authMode }) {
+function Logout({ logout }) {
   const classes = new BEMHelper('user-menu');
-  if (authMode === authenticationModes.Proxy) {
-    return (
-      <div {...classes()}>
-        <Link {...classes('link', 'iconified')} onClick={iapLogout}>power_settings_new</Link>
-        <iframe id='google-iap-refresher' src='/_gcp_iap/session_refresher' {...classes('iap', 'iframe')}></iframe>
-      </div>
-    );
-  }
 
   return (
     <div {...classes()}>
