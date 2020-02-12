@@ -24,21 +24,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import authDucks from 'modules/Auth/ducks';
 import Logout from './presenter';
-import { get } from 'services/Utils';
 
-function mapStateToProps(state) {
-  return {
-    authMode: get(state, 'auth.authMode.data.result.mode')
-  }
+function mapStateToProps() {
+  return {};
 }
 
 const mapDispatchToProps = {
-  iapLogout: () => {
-      window.location = '/_gcp_iap/clear_login_cookie';
-  },
   logout: () => authDucks.actions.logout(),
-
 };
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(Logout);
