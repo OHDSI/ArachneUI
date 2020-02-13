@@ -8,14 +8,14 @@ const outPath = path.join(__dirname, './dist');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const ENV_TYPE = {
-  DEV: 'dev',
+  DEV: 'development',
   PRODUCTION: 'production',
 };
 
 module.exports = function(env) {
   const mode = env.mode || ENV_TYPE.PRODUCTION;
-
   return {
+    mode: mode,
     context: sourcePath,
     entry: {
       main: './index.tsx',
@@ -23,7 +23,7 @@ module.exports = function(env) {
     output: {
       path: outPath,
       publicPath: '/',
-      filename: 'app.js',
+      filename: 'app.[hash].js',
     },
     devtool: 'source-map',
     resolve: {
@@ -102,13 +102,6 @@ module.exports = function(env) {
           to: path.join(outPath, 'icons')
         },
       ]),
-      new webpack.DefinePlugin({
-        __DEV__: mode === ENV_TYPE.DEV,
-        //
-        'process.env': {
-          NODE_ENV: mode === ENV_TYPE.PRODUCTION ? '"production"' : '"development"',
-        },
-      }),
     ],
     node: {
       // workaround for webpack-dev-server issue 
