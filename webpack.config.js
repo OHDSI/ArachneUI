@@ -41,12 +41,12 @@ module.exports = function(env) {
         {
           test: /\.tsx?$/,
           exclude: /(node_modules|ArachneUIComponents|@types)/gi,
-          loaders: ['react-hot-loader', 'awesome-typescript-loader']
+          loaders: ['ts-loader']
         },
         {
           test: /\.jsx?$/,
           exclude: /(node_modules|ArachneUIComponents)/,
-          loaders: ['react-hot-loader', 'babel-loader']
+          loaders: ['babel-loader']
         },
         {
           test: /\.scss$/,
@@ -72,8 +72,9 @@ module.exports = function(env) {
       ]
     },
     devServer: {
-      contentBase: outPath,
+      contentBase: sourcePath,
       historyApiFallback: true,
+      hot: true,
       port: 3000,
       stats: {
         warnings: false
@@ -102,6 +103,9 @@ module.exports = function(env) {
           to: path.join(outPath, 'icons')
         },
       ]),
+      new webpack.DefinePlugin({
+        __DEV__: mode === ENV_TYPE.DEV,
+      }),
     ],
     node: {
       // workaround for webpack-dev-server issue 

@@ -1,4 +1,7 @@
 {
-  "presets": ["latest", "stage-2", "react"],
-	"sourceMaps": true
+  "presets": [
+    "@babel/preset-env",
+    "@babel/preset-react"
+  ],
+  "sourceMaps": true
 }

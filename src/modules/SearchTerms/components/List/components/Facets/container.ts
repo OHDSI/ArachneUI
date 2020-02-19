@@ -22,7 +22,7 @@
 
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { reduxForm, reset, change as reduxFormChange } from 'redux-form';
+import { reduxForm, change as reduxFormChange, initialize } from 'redux-form';
 import { forms, paths, resultsPageSize } from 'modules/SearchTerms/const';
 import actions from 'modules/SearchTerms/actions';
 import { push as goToPage } from 'react-router-redux';
@@ -78,8 +78,7 @@ function mapStateToProps(state: Object): IFacetStateProps {
 
 const mapDispatchToProps = {
   search: (address: string) => goToPage(address),
-  resetForm: () => reset(forms.filter),
-  resetToolbar: () => reset(forms.toolbar),
+  cleanForm: () => initialize(forms.filter, {}, false),
   changeFacets: (fieldName: string, value: Array<string>) => reduxFormChange(forms.filter, fieldName, value),
 };
 
@@ -105,14 +104,7 @@ function mergeProps(stateProps: IFacetStateProps, dispatchProps: IFacetDispatchP
       dispatchProps.search(query.href());
     },
     clearFilter: () => {
-      const currentAddress = new URI(stateProps.currentAddress.pathname);
-      currentAddress.addSearch('pageSize', stateProps.pageSize);
-      currentAddress.addSearch('page', 1);
-      currentAddress.addSearch('query', '');
-
-      dispatchProps.search(currentAddress.href());
-      dispatchProps.resetForm();
-      dispatchProps.resetToolbar();
+      dispatchProps.cleanForm();
     },
     removeFacetValue: (facet: string, index: number) => {
       const facets = clone(stateProps.filterFormState.filter[facet]);
@@ -124,7 +116,6 @@ function mergeProps(stateProps: IFacetStateProps, dispatchProps: IFacetDispatchP
       const uri = new URI(currentAddress.pathname+currentAddress.search);
       uri.setSearch('query', '');
       dispatchProps.search(uri.href());
-      dispatchProps.resetToolbar();
     },
   };
 
