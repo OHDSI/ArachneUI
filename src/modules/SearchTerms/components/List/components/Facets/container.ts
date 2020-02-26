@@ -24,28 +24,15 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, change as reduxFormChange, initialize } from 'redux-form';
 import { forms, paths, resultsPageSize } from 'modules/SearchTerms/const';
-import actions from 'modules/SearchTerms/actions';
-import { push as goToPage } from 'react-router-redux';
+import {push as goToPage} from 'react-router-redux';
 import * as URI from 'urijs';
-import { get, clone, isEqual } from 'lodash';
+import { get, clone } from 'lodash';
 import presenter from './presenter';
 import selectors from './selectors';
 
-import { IFacetStateProps, IFacetDispatchProps, IFacets } from './presenter';
+import {IFacetStateProps, IFacetDispatchProps, IFacets} from './presenter';
 
-class Facets extends Component<IFacets, void> {
-  componentWillReceiveProps(props: IFacets) {
-    if (
-      ( // if form was cleared
-        typeof this.props.filterFormState !== 'undefined' &&
-        typeof props.filterFormState === 'undefined'
-      ) ||
-      // or updated
-      !isEqual(this.props.filterFormState, props.filterFormState)
-    ) {
-      this.props.doFilter(props.filterFormState);
-    }
-  }
+class Facets extends Component<IFacets, {}> {
 
   render() {
     return presenter(this.props);
@@ -121,10 +108,15 @@ function mergeProps(stateProps: IFacetStateProps, dispatchProps: IFacetDispatchP
 
 }
 
+function formChangesHandler(filter, dispatch?, props?: IFacets) {
+    props.doFilter(filter);
+}
+
 const FormFacets = reduxForm({
-  form: forms.filter,
+    form: forms.filter,
+    onChange: formChangesHandler,
 })(Facets);
 
-export default connect<IFacetStateProps, IFacetDispatchProps, {}>
+export default connect<IFacetStateProps, IFacetDispatchProps, any>
 (mapStateToProps, mapDispatchToProps, mergeProps)
 (FormFacets);
