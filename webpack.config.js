@@ -87,6 +87,8 @@ module.exports = function(env) {
     },
     plugins: [
       new HtmlWebpackPlugin({
+        inject: false,
+        hash: true,
         template: 'index.html',
         favicon: 'favicon.ico',
       }),
