@@ -27,8 +27,10 @@
   &datasources-list {
     min-width: 500px;
     min-height: 264px;
+    max-height: 27rem;
+    overflow-y: auto;
 
-    &__data-source {      
+    &__data-source {
       align-items: center;
       border-bottom: 1px solid $grey;
       cursor: pointer;
@@ -42,11 +44,19 @@
       }
     }
 
-    &__checkbox-label {
+    &__checkbox-label-container {
       align-items: center;
       display: flex;
       height: 34px;
       width: 100%;
+      overflow: hidden;
+    }
+
+    &__checkbox-label {
+      text-overflow: ellipsis;
+      white-space:nowrap;
+      overflow: hidden;
+      line-height: 1.5;
     }
 
   }
@@ -60,5 +70,5 @@
       height: 2rem;
     }
   }
-  
+
 }
