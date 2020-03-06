@@ -19,50 +19,93 @@
  * Created: December 13, 2016
  *
  */
-
 @import 'styles/vars-and-mixins.scss';
 
 .#{$namespace} {
+
   &study-participants-list {
-    margin-bottom: 10px;
-  }
 
-  &study-participants-item {
-  	display: flex;
+    $border: 1px solid $grey-light;
+    $half_rem: 0.5rem;
+    $avatar_size: 3.5rem;
 
-  	&__name {
-      flex: 5;
-      padding-right: 1.5rem;
+    font-size: $font-size-base;
+
+    & .ac-study-participant-lines {
+
+      &__group {
+        display: flex;
+        border-bottom: $border;
+
+       .ac-participant-card-avatar {
+          flex: 4;
+          align-items: flex-start;
+          display: flex;
+
+         &__avatar-container {
+           display: flex;
+           flex-direction: row;
+           align-items: center;
+           margin-top: $half_rem;
+         }
+
+          & .ac-avatar {
+            width: $avatar_size;
+            height: $avatar_size;
+            min-width: $avatar_size;
+            min-height: $avatar_size;
+            margin: 0 1rem;
+          }
+        }
+
+        .ac-study-participant-lines__roles {
+          flex: 7;
+        }
+
+        & .ac-list-item {
+          border: none;
+        }
+      }
+    }
+
+    & .ac-study-participants-item {
       display: flex;
-      align-items: center;
-  	}
 
-  	&__role {
-      flex: 3;
-      min-width: 150px;
-      padding-right: 1.5rem;
-      text-align: left;
-  	}
+      &__role {
+        width: 15rem;
+        text-align: left;
+      }
 
-    &__role-select {
-      margin-left: -1rem;      
+      &__role-select {
+        margin-left: -1rem;
+      }
+
+      &__status {
+        flex: 2;
+        min-width: 8rem;
+        text-align: right;
+        font-size: $font-size-base;
+        @include invitation-status();
+      }
+
+      @include list-item-actions();
+
+      &__action {
+        width: 5rem;
+      }
+
+      // For case, when list is editable, so crosses can be shown,
+      // but the current line cannot be removed
+      &--displaced {
+        padding-right: 5rem;
+      }
+
+      @include decline-comment();
+
+      &__comment {
+        flex: 1;
+        top: 0px;
+      }
     }
-
-    &__status {
-      flex: 3;
-      min-width: 100px;
-      text-align: right;
-      @include invitation-status();
-    }
-
-    @include list-item-actions();
-
-    // For case, when list is editable, so crosses can be shown,
-    // but the current line cannot be removed
-    &--displaced {
-      padding-right: 50px;
-    }
-
-    @include decline-comment();  
   }
 }

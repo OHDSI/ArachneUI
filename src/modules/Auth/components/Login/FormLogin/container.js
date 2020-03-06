@@ -31,7 +31,7 @@ import FormLogin from './presenter';
 import Auth from 'services/Auth';
 
 function mapStateToProps(state) {
-  const authMethod = get(state, 'auth.authMethod.data.result.userOrigin', authMethods.NATIVE);
+  const authMethod = get(state, 'auth.authMethod.data.result.userOrigin', authMethods.JDBC);
   const isUnactivated = get(state, 'form.login.submitErrors.unactivated', false);
   const userEmail = get(state, 'form.login.values.username', '');
   const isStandalone = get(state, 'auth.nodeMode.data.mode') === nodeFunctionalModes.Standalone;

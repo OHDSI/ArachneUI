@@ -20,23 +20,31 @@
  *
  */
 
-import { types as fieldTypes } from 'const/modelAttributes';
+import {types as fieldTypes} from 'const/modelAttributes';
 
 export default function getFields(props) {
   return [
     {
-      label: 'Enabled',
+      label: 'Status',
       name: 'enabled',
-      type: fieldTypes.toggle,
+      type: fieldTypes.enum,
       forceOpened: true,
-      hasTitle: false
+      hasTitle: true,
+      options: [
+        {label: 'Enabled', value: 'true',},
+        {label: 'Disabled', value: 'false',},
+      ],
     },
     {
-      label: 'E-mail confirm',
+      label: 'E-mail confirmed',
       name: 'emailConfirmed',
-      type: fieldTypes.toggle,
+      type: fieldTypes.enum,
       forceOpened: true,
-      hasTitle: false
+      hasTitle: true,
+      options: [
+        {label: 'Yes', value: 'true',},
+        {label: 'No', value: 'false',},
+      ]
     },
     {
       label: 'Tenant',

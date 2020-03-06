@@ -58,7 +58,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...stateProps,
     ...dispatchProps,
     setType: (type) => {
-      dispatchProps
+      type && dispatchProps
         .update(
           { id: stateProps.analysisId },
           { typeId: type }

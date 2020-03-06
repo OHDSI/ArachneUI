@@ -22,13 +22,13 @@
 
 import React from 'react';
 import BEMHelper from 'services/BemHelper';
-import { Button, LoadingPanel } from 'arachne-ui-components';
+import { Button, LoadingPanel, Panel } from 'arachne-ui-components';
 import ProgressDots from 'components/ProgressDots';
 import { nameAnalysisType } from 'modules/AnalysisExecution/const';
 
 require('./style.scss');
 
-function CohortLoading({ selectedSource, totalSteps, step, goBack, analysisType }) {
+function CohortLoading({ selectedSource, totalSteps, step, goBack, analysisType, analysesImportError }) {
   const classes = new BEMHelper('code-import-loader');
 
   const BackBtn = (
@@ -39,21 +39,29 @@ function CohortLoading({ selectedSource, totalSteps, step, goBack, analysisType 
     />
   );
 
+  const errorOccur = !!analysesImportError;
   return (
-    <div {...classes()}>
-      <div {...classes('panel')}>
-        <LoadingPanel
-          active={true}
-          label={
-            `${nameAnalysisType({ analysisType, capitalize: true, plural: true })} are being retrieved.
+      <div {...classes()}>
+          <div {...classes('panel')}>
+              {!errorOccur &&
+              <LoadingPanel
+                  active={true}
+                  label={
+                      `${nameAnalysisType({analysisType, capitalize: true, plural: true})} are being retrieved.
             Please wait a moment...`
-          }
-        />
+                  }
+              />}
+              {errorOccur &&
+              <Panel title="Analyses Import Error">
+                  <div> {analysesImportError}</div>
+              </Panel>
+              }
+          </div>
+
+          <div {...classes('progress')}>
+              <ProgressDots totalSteps={totalSteps} step={step} backBtn={BackBtn}/>
+          </div>
       </div>
-      <div {...classes('progress')}>
-        <ProgressDots totalSteps={totalSteps} step={step} backBtn={BackBtn} />
-      </div>
-    </div>
   );
 }
 

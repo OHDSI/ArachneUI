@@ -53,6 +53,17 @@
 	    text-transform: initial;
 		}
 
+		&__tooltip-container {
+			position: absolute;
+			display: inline;
+		}
+
+		&__tooltip-wrapper {
+			position: relative;
+			display: inline;
+			bottom: 1rem;
+		}
+
 		&__comment-ico {
 			@include material-icon();
 			color: $black;
