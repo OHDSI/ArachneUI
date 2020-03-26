@@ -45,6 +45,8 @@ class Results extends Component<IResultProps, {}> {
 
 function mapStateToProps(state: Object): IResultStateProps {
   const searchResults = selectors.getResults(state);
+  const debugResults  = selectors.getDebugResults(state);
+  const queryResults  = selectors.getQueryResults(state);
   const searchLocation = get(state, 'routing.locationBeforeTransitions', {
   	pathname: '',
   	search: '',

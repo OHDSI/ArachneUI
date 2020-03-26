@@ -68,8 +68,30 @@ const getResults = createSelector(
     },
   );
 
+const getDebugResults = createSelector(
+    function (state: Object){
+      return get(state, 'searchTerms.terms.queryResult.debug', "");
+    },
+    function (debug) {
+      console.log(debug);
+      return debug;
+    },
+);
+
+const getQueryResults = createSelector(
+    function (state: Object){
+      return get(state, 'searchTerms.terms.queryResult.query', "");
+    },
+    function (query) {
+      console.log(query);
+      return query;
+    },
+);
+
 export default {
   getResults,
   getConceptFieldId,
   getConceptFieldName,
+  getDebugResults,
+  getQueryResults,
 };

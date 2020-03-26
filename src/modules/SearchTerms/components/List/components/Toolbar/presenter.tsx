@@ -39,8 +39,7 @@ require('./style.scss');
 interface IToolbarStateProps {
   initialValues: { [key: string]: Object };
   locationSearch: locationDescriptor;
-  filterParams: searchParams,
-  debugInfo: any
+  filterParams: searchParams
 }
 
 interface IToolbarDispatchProps {
