@@ -48,18 +48,20 @@ class Term extends Component<ITermProps, { isFullscreen: boolean }> {
     this.toggleFullscreen = this.toggleFullscreen.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.fetch(this.props.termId);
     this.props.fetchConceptAnyRelations(this.props.termId);
-    if (!this.props.isTableMode) {
+    this.props.fetchRelationships(this.props.termId, this.props.termFilters.standardsOnly);
+  }
+
+  componentDidUpdate(prevProps: ITermProps) {
+    if (!isEqual(prevProps.hasConnections, this.props.hasConnections) && !this.props.isTableMode) {
       this.props.fetchConceptAncestors(
           this.props.termId,
           this.props.termFilters.levels,
           this.props.termFilters.zoomLevel
       );
     }
-    this.props.fetchRelationships(this.props.termId, this.props.termFilters.standardsOnly);
-
   }
 
   componentWillReceiveProps(props: ITermProps) {
