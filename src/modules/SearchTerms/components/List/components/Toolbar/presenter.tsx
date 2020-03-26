@@ -26,6 +26,7 @@ import {
   Button,
   Form,
   FormInput,
+  FormTextarea,
   Panel,
 } from 'arachne-ui-components';
 import { push } from 'react-router-redux';
@@ -39,6 +40,7 @@ interface IToolbarStateProps {
   initialValues: { [key: string]: Object };
   locationSearch: locationDescriptor;
   filterParams: searchParams,
+  debugInfo: any
 }
 
 interface IToolbarDispatchProps {
@@ -99,7 +101,16 @@ function Toolbar(props: IToolbarProps) {
           placeholder: 'aspirin',
         }
       }
-    }
+    },
+    {
+      name: 'boosts',
+      InputComponent: {
+        component: FormTextarea,
+        props: {
+          ...classes('textaria')
+        }
+      }
+    },
   ];
   const submitBtn = {
     label: 'search',

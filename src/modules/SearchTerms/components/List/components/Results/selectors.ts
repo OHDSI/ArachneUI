@@ -20,10 +20,10 @@
  *  
  */
 
-import { createSelector } from 'reselect';
-import { get } from 'lodash';
-import { resultsPageSize, paths } from 'modules/SearchTerms/const';
-import { Term } from './presenter';
+import {createSelector} from 'reselect';
+import {get} from 'lodash';
+import {paths} from 'modules/SearchTerms/const';
+import {Term} from './presenter';
 
 function getConceptFieldId(fieldName: string): string {
   let id = fieldName;
@@ -54,14 +54,18 @@ function getConceptFieldName(fieldId: string): string {
   return name;
 }
 
-const getRawResults = (state: Object) => get(state, 'searchTerms.terms.queryResult.content', []);
+const getRawResults = function (state: Object) {
+  return get(state, 'searchTerms.terms.queryResult.content', []);
+};
 
 const getResults = createSelector(
     getRawResults,
-    rawResults => rawResults.map((term: Term) => ({
-      ...term,
-      link: paths.term(term.id),
-    })),
+    function (rawResults) {
+      return rawResults.map((term: Term) => ({
+        ...term,
+        link: paths.term(term.id),
+      }));
+    },
   );
 
 export default {

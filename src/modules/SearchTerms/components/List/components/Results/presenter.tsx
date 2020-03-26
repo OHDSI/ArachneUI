@@ -167,6 +167,11 @@ function Results(props: IResultProps) {
           header='Vocab'
           field='vocabulary'
         />
+        <Cell
+            {...classes('score')}
+            header='score'
+            field='score'
+        />
       </Table>
     </div>
   );

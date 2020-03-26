@@ -39,6 +39,7 @@ class Toolbar extends Component<IToolbarProps, void> {
 }
 
 function mapStateToProps(state: Object): IToolbarStateProps {
+  let debugInfo = get(state, 'searchTerms.terms.queryResult', {})
   const locationSearch = get(state, 'routing.locationBeforeTransitions', {
   	pathname: '',
   	search: '',
@@ -54,6 +55,7 @@ function mapStateToProps(state: Object): IToolbarStateProps {
   	},
   	locationSearch,
     filterParams,
+	debugInfo
   };
 }
 
@@ -70,16 +72,21 @@ function mergeProps(
 		...stateProps,
 		...dispatchProps,
 		...ownProps,
-		filter: (data: { searchString: string }) => {
-		  const currentAddress = new URI(`${stateProps.locationSearch.pathname}${stateProps.locationSearch.search}`);
-		  currentAddress.setSearch('query', data.searchString);
+
+		filter: async (data: { searchString: string, boosts: string }) => {
+
+			const currentAddress = new URI(`${stateProps.locationSearch.pathname}${stateProps.locationSearch.search}`);
+			currentAddress.setSearch('query', data.searchString);
+			currentAddress.setSearch('boosts', data.boosts);
 			currentAddress.setSearch('page', 1);
-		  const search = currentAddress.href();
-		  dispatchProps.search(search);
-		  const filterParams = {
-			...stateProps.filterParams,
-			query: data.searchString,
-		  };
+			const search = currentAddress.href();
+			await dispatchProps.search(search);
+			console.log(stateProps.debugInfo.query);
+			console.log(stateProps.debugInfo.debug);
+			const filterParams = {
+				...stateProps.filterParams,
+				query: data.searchString,
+			};
 
 		},
 	};
