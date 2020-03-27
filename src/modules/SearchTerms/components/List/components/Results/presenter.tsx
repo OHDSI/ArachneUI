@@ -110,64 +110,66 @@ function Results(props: IResultProps) {
         </div>
         <Pagination resultsCount={searchResults.length}/>
       </div>
-      <Table
-        {...classes('table')}
-        data={searchResults}
-        mods={['hover', 'selectable']}
-        onRowClick={showResult}
-        sorting={sorting}
-        setSorting={setSorting}
-      >
-        <Cell
-          {...classes('id')}
-          header='ID'
-          field='id'
-        />
-        <Cell
-          {...classes('code')}
-          header='CODE'
-          field='code'
-        />
-        <CellLink
-          {...classes('name')}
-          header='NAME'
-          field='name'
-          props={(result: { [key: string]: string }) => {
-            const { name, link } = result;
-            return {
-              value: {
-                label: name,
-                link: link,
-              },
-            }
-          }}
-        />
-        <Cell
-          {...classes('class')}
-          header='CLASS'
-          field='className'
-        />
-        <Cell
-          {...classes('concept')}
-          header='Concept'
-          field='standardConcept'
-        />
-        <Cell
-          {...classes('invalid')}
-          header='Validity'
-          field='invalidReason'
-        />
-        <Cell
-          {...classes('domain')}
-          header='DOMAIN'
-          field='domain'
-        />
-        <Cell
-          {...classes('vocabulary')}
-          header='Vocab'
-          field='vocabulary'
-        />
-      </Table>
+      <div {...classes('table-wrapper')}>
+        <Table
+          {...classes('table')}
+          data={searchResults}
+          mods={['hover', 'selectable']}
+          onRowClick={showResult}
+          sorting={sorting}
+          setSorting={setSorting}
+        >
+          <Cell
+            {...classes('id')}
+            header='ID'
+            field='id'
+          />
+          <Cell
+            {...classes('code')}
+            header='CODE'
+            field='code'
+          />
+          <CellLink
+            {...classes('name')}
+            header='NAME'
+            field='name'
+            props={(result: { [key: string]: string }) => {
+              const { name, link } = result;
+              return {
+                value: {
+                  label: name,
+                  link: link,
+                },
+              }
+            }}
+          />
+          <Cell
+            {...classes('class')}
+            header='CLASS'
+            field='className'
+          />
+          <Cell
+            {...classes('concept')}
+            header='Concept'
+            field='standardConcept'
+          />
+          <Cell
+            {...classes('invalid')}
+            header='Validity'
+            field='invalidReason'
+          />
+          <Cell
+            {...classes('domain')}
+            header='DOMAIN'
+            field='domain'
+          />
+          <Cell
+            {...classes('vocabulary')}
+            header='Vocab'
+            field='vocabulary'
+          />
+        </Table>
+      </div>
     </div>
   );
 }
