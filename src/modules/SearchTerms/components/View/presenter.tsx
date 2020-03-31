@@ -52,11 +52,11 @@ interface ITermStateProps {
   termId: number;
   isTableMode: boolean;
   isStandard: boolean;
-  relationshipsCount: number;
   termFilters: any;
-  connectionsCount: number;
   zoomLevel?: number;
   isFullscreen?: boolean;
+  termConnections: number;
+  hasConnections: boolean;
 };
 
 interface ITermDispatchProps {
@@ -65,6 +65,7 @@ interface ITermDispatchProps {
   fetchConceptAncestors: (termId: number, levels: number, zoomLevel: number) => (dispatch: Function) => any;
   fetchRelationships: (termId: number, standards: boolean) => (dispatch: Function) => any;
   redirect: (address: string) => (dispatch: Function) => any;
+  fetchConceptAnyRelations: (termId: number) => (dispatch: Function) => any;
 };
 
 interface ITermProps extends ITermStateProps, ITermDispatchProps {
@@ -81,13 +82,13 @@ function Term(props: ITermProps) {
     name,
     isTableMode,
     isStandard,
-    relationshipsCount,
     termId,
     changeTab,
-    connectionsCount,
     isFullscreen,
     toggleFullscreen,
     goToLicenses,
+    termConnections,
+    hasConnections,
   } = props;
   const classes = BEMHelper('term');
 
@@ -107,8 +108,8 @@ function Term(props: ITermProps) {
   }
 
   let title = 'Term connections';
-  if (relationshipsCount) {
-    title += ` (${relationshipsCount})`;
+  if (termConnections) {
+    title += ` (${termConnections})`;
   }
   const tabs = [
     {
@@ -143,7 +144,7 @@ function Term(props: ITermProps) {
       </li>
     </ul>
   </div>;
-  const onlyTable = !isStandard || connectionsCount === 0;
+  const onlyTable = !isStandard || !hasConnections;
 
   return (    
     <div {...classes({ modifiers: { fullscreen: isFullscreen } })}>

@@ -42,7 +42,7 @@ interface IListDispatchProps {
 interface IListProps extends IListStateProps, IListDispatchProps {
 };
 
-class LicensesList extends Component<IListProps, void> {
+class LicensesList extends Component<IListProps, {}> {
 	render() {
 		return presenter(this.props);
 	}
@@ -87,7 +87,7 @@ function mergeProps(
   };
 }
 
-export default connect<IListStateProps, IListDispatchProps, void>(
+export default connect<IListStateProps, IListDispatchProps, {}>(
 	mapStateToProps,
 	mapDispatchToProps,
 	mergeProps,

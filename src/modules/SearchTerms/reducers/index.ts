@@ -31,5 +31,6 @@ export default combineReducers({
 	terms: services.terms.reducer,
 	relations: services.relations.reducer,
 	relationships: services.relationships.reducer,
+	anyRelations: services.anyRelations.reducer,
 	graph,
 });

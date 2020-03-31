@@ -42,7 +42,7 @@
     }
 
     &__results-wrapper {
-      overflow-y: scroll;
+      overflow-y: hidden;
       flex-grow: 1;
       display: flex;
     }

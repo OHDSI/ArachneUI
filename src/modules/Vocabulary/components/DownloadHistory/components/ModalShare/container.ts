@@ -62,7 +62,7 @@ function mergeProps(
   };
 }
 
-let ReduxModalWindow = reduxForm({ form: forms.share, enableReinitialize: true })(ModalShare);
+let ReduxModalWindow = reduxForm({ form: forms.share, enableReinitialize: true })<any>(ModalShare);
 ReduxModalWindow =  ModalUtils.connect({ name: modal.share })(ReduxModalWindow);
 
 export default connect<IModalStateProps, IModalDispatchProps, {}>(

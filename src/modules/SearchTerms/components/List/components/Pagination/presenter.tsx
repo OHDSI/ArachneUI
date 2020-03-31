@@ -77,6 +77,7 @@ function Pages(props: IPaginationProps) {
         mods={['rounded', 'bordered']}
         options={pageSizeSelectOptions}
         value={pageSize}
+        unselectable={false}
         onChange={changePageSize}
       /> items
       <span {...classes('total')}>

@@ -27,6 +27,7 @@ interface ISearchTermsServices {
 	terms: any,
 	relations: any,
 	relationships: any,
+	anyRelations: any,
 }
 
 export default <ISearchTermsServices> reduxifyServices(
@@ -35,5 +36,6 @@ export default <ISearchTermsServices> reduxifyServices(
 		'concepts': 'terms',
 		'concepts/:id/relations': 'relations',
 		'concepts/:id/relationships': 'relationships',
+		'concepts/:id/relations/any': 'anyRelations',
 	}
 );

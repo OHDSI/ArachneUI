@@ -15,15 +15,13 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Alexandr Saltykov, Pavel Grafkin, Vitaly Koulakov, Anton Gackovka
- * Created: March 3, 2017
+ * Authors: Alexandr Cumarav
+ * Created: February 06, 2020
  *
  */
 
-const fullDateFormat = 'hh:mm A | DD-MMM-YYYY';
-const commonDateFormat = 'DD-MMM-YYYY';
+import { get } from 'lodash';
 
-export {
-	fullDateFormat,
-	commonDateFormat,
-};
+const getHasAnyRelationsFlag = (state: Object) => get(state, 'searchTerms.anyRelations.data.result', false);
+
+export default  getHasAnyRelationsFlag;
