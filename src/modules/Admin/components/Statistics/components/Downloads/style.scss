@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2018 Odysseus Data Services, inc.
+ * Copyright 2020 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,15 +15,20 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Alexandr Saltykov, Pavel Grafkin, Vitaly Koulakov, Anton Gackovka
- * Created: March 3, 2017
+ * Authors: Alex Cumarav
+ * Created: March 30, 2020
  *
  */
 
-import licenses from './licenses';
-import statistics from './statistics';
+@import 'styles/vars-and-mixins.scss';
 
-export default {
-	licenses,
-	statistics,
-};
+.#{$namespace} {
+  &downloads {
+    width: 100%;
+
+  }
+
+  &downloads-history-table {
+
+  }
+}

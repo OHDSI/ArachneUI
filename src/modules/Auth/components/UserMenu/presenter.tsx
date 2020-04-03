@@ -90,6 +90,11 @@ function UserMenu(props) {
                 {...classes('dropdown-link')}
                 to={AdminPaths.licenses(false)}>Licenses</Link>
             }
+            {isAdmin &&
+            <Link
+                {...classes('dropdown-link')}
+                to={AdminPaths.statistics}>Statistics</Link>
+            }
             <Link
               {...classes('dropdown-link')}
               onClick={logout}
