@@ -28,6 +28,7 @@ interface IAdminServices {
 	licenses: any;
 	users: any;
 	licenseAccept: any;
+	statistics: any;
 }
 
 export default <IAdminServices> reduxifyServices(
@@ -37,5 +38,6 @@ export default <IAdminServices> reduxifyServices(
 		'vocabularies/licenses': 'licenses',
 		'users/suggest': 'users',
 		'vocabularies/licenses/accept': 'licenseAccept',
+		'statistics':'statistics',
 	}
 );

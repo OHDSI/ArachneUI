@@ -76,9 +76,6 @@ function mergeProps(stateProps: IFacetStateProps, dispatchProps: IFacetDispatchP
     ...dispatchProps,
     ...ownProps,
     doFilter: (data: { filter: { [key: number]: string; } }) => {
-      if (!data.filter) {
-        return;
-      }
       const currentAddress = stateProps.currentAddress;
       const query = new URI(`${currentAddress.pathname}`);
       query.addSearch({
@@ -108,8 +105,8 @@ function mergeProps(stateProps: IFacetStateProps, dispatchProps: IFacetDispatchP
 
 }
 
-function formChangesHandler(filter, dispatch?, props?: IFacets) {
-    props.doFilter(filter);
+function formChangesHandler(formData, dispatch?, props?: IFacets) {
+    props.doFilter(formData);
 }
 
 const FormFacets = reduxForm({

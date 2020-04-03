@@ -35,6 +35,7 @@ function getConceptFieldId(fieldName: string): string {
     case 'invalidreason': id = 'invalid_reason'; break;
     case 'domain': id = 'domain_id'; break;
     case 'vocabulary': id = 'vocabulary_id'; break;
+    case 'id': id = 'concept_id'; break;
   }
 
   return id;
@@ -49,6 +50,7 @@ function getConceptFieldName(fieldId: string): string {
     case 'invalid_reason': name = 'invalidReason'; break;
     case 'domain_id': name = 'domain'; break;
     case 'vocabulary_id': name = 'vocabulary'; break;
+    case 'concept_id': name = 'id'; break;
   }
 
   return name;
