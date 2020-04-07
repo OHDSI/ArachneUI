@@ -50,7 +50,7 @@ class Downloads extends Component<IDownloadsProps, {}> {
     setSorting(sorting: SortingParams) {
 
         this.props.updateStatisticsSorting(sorting);
-        this.props.runSearch();
+        this.props.runSearch(sorting);
     }
 }
 
