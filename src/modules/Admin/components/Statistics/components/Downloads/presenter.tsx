@@ -37,7 +37,7 @@ interface IDownloadsProps extends IDownloadStateProps, IDownloadDispatchProps, I
 }
 
 interface IDownloadsOwnProps {
-    runSearch: Function;
+    runSearch: (sorting?: SortingParams) => void;
 }
 
 interface IDownloadStateProps {

@@ -26,6 +26,7 @@ import actions from 'modules/Admin/actions';
 import { connect } from "react-redux";
 import presenter, { IStatisticsDispatchProps, IStatisticsProps, IStatisticsStateProps } from "./presenter";
 import { getSorting, getStatisticFilterForQuery } from './components/selectors';
+import { SortingParams } from "../../actions/statistics";
 
 class Statistics extends Component<IStatisticsProps, {}> {
 
@@ -35,13 +36,14 @@ class Statistics extends Component<IStatisticsProps, {}> {
     }
 
     componentDidMount(): void {
-        this.runSearch();
+        this.runSearch(null);
     }
 
-    runSearch() {
+    runSearch(sorting?: SortingParams) {
         const query = {
             ...this.props.filter,
-            ...this.props.sorting
+            ...this.props.sorting,
+            ...sorting,
         };
         this.props.loadStatistics(query);
     }

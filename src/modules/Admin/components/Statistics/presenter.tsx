@@ -32,7 +32,7 @@ require('./style.scss');
 
 interface IStatisticsProps extends IStatisticsStateProps, IStatisticsDispatchProps {
 
-    runSearch: Function
+    runSearch: (sorting?: SortingParams) => void
 
 }
 
