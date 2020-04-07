@@ -26,6 +26,7 @@ import BEMHelper from "services/BemHelper";
 
 import { Button, Form, FormDatepicker, FormInput, FormToggle, LoadingPanel } from 'arachne-ui-components';
 import { commonDateFormat } from "const/formats";
+import { SortingParams } from "modules/Admin/actions/statistics";
 
 require('./style.scss');
 
@@ -51,7 +52,7 @@ interface IStatisticsFilterStateProps {
 }
 
 interface IStatisticsFilterOwnProps {
-    runSearch: Function;
+    runSearch: (sorting?: SortingParams) => void
 }
 
 function Filters(props: IStatisticsFilterStateProps) {
