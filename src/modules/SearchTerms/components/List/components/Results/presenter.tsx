@@ -122,7 +122,7 @@ function Results(props: IResultProps) {
           <Cell
             {...classes('id')}
             header='ID'
-            field='conceptId'
+            field='id'
           />
           <Cell
             {...classes('code')}
