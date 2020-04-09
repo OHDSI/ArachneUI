@@ -39,7 +39,7 @@ require('./style.scss');
 interface IToolbarStateProps {
   initialValues: { [key: string]: Object };
   locationSearch: locationDescriptor;
-  filterParams: searchParams
+  filterParams: searchParams,
 }
 
 interface IToolbarDispatchProps {
@@ -90,7 +90,7 @@ function SearchTooltip() {
 
 function Toolbar(props: IToolbarProps) {
   const classes = BEMHelper('search-toolbar');
-  const fields = [
+  var fields = [
     {
       name: 'searchString',
       InputComponent: {
@@ -100,17 +100,21 @@ function Toolbar(props: IToolbarProps) {
           placeholder: 'aspirin',
         }
       }
-    },
-    {
-      name: 'boosts',
-      InputComponent: {
-        component: FormTextarea,
-        props: {
-          ...classes('textaria')
-        }
-      }
-    },
+    }
   ];
+
+  if (props.locationSearch.query.debug === 'true') {
+    fields.push(
+        {
+          name: 'boosts',
+          InputComponent: {
+            component: FormTextarea,
+            props: {
+              ...classes('textaria'),
+            }
+          }
+        });
+  }
   const submitBtn = {
     label: 'search',
     ...classes('search-button'),

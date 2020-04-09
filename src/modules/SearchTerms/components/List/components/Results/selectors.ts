@@ -88,10 +88,21 @@ const getQueryResults = createSelector(
     },
 );
 
+const isDebug = function (state: Object) {
+    let query =  get(state, 'routing.locationBeforeTransitions', {
+        query: {
+            query: '',
+            debug: 'false'
+        },
+    });
+    return query.query.debug;
+};
+
 export default {
   getResults,
   getConceptFieldId,
   getConceptFieldName,
   getDebugResults,
   getQueryResults,
+  isDebug,
 };
