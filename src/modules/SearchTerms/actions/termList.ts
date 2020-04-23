@@ -83,6 +83,10 @@ function fetchConceptAnyRelations(conceptId: number) {
   return services.anyRelations.get(conceptId);
 }
 
+function fetchTermsCount(){
+  return services.termsCount.find();
+}
+
 export default {
   changePageSize,
   load,
@@ -90,6 +94,7 @@ export default {
   fetchConceptAncestors,
   fetchRelationships,
   fetchConceptAnyRelations,
+  fetchTermsCount,
 };
 
 export { searchParams };

@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2018 Odysseus Data Services, inc.
+ * Copyright 2020 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,23 +15,11 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Alexandr Saltykov, Pavel Grafkin, Vitaly Koulakov, Anton Gackovka
- * Created: March 3, 2017
- *  
+ * Authors: Alex Cumarav
+ * Created: April 20, 2020
+ *
  */
 
-import { combineReducers } from 'redux';
-import services from '../apiServices';
+import SearchOverview from './container';
 
-import termList from './termList';
-import graph from './graph';
-
-export default combineReducers({
-	termList,
-	terms: services.terms.reducer,
-	termsCount: services.termsCount.reducer,
-	relations: services.relations.reducer,
-	relationships: services.relationships.reducer,
-	anyRelations: services.anyRelations.reducer,
-	graph,
-});
+export default SearchOverview;
