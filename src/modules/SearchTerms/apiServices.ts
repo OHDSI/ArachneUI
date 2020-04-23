@@ -25,6 +25,7 @@ import API from 'services/Api';
 
 interface ISearchTermsServices {
 	terms: any,
+	termsCount: any,
 	relations: any,
 	relationships: any,
 	anyRelations: any,
@@ -34,6 +35,7 @@ export default <ISearchTermsServices> reduxifyServices(
 	API,
 	{
 		'concepts': 'terms',
+		'concepts/terms-count': 'termsCount',
 		'concepts/:id/relations': 'relations',
 		'concepts/:id/relationships': 'relationships',
 		'concepts/:id/relations/any': 'anyRelations',
