@@ -69,14 +69,13 @@ function mergeProps(stateProps: ISearchOverviewStateProps, dispatchProps: ISearc
         ...dispatchProps,
         ...ownProps,
         runQuerySearch: ({searchString}) => {
-            console.log("runQuerySearch: ",searchString);
-             const searchQuery=`${paths.termsList()}/?query=${searchString}`;
-             const address = new URI(searchQuery);
+             const address = new URI(paths.termsList());
+            address.setSearch('query', searchString);
             dispatchProps.goToAddress(address.href());
         },
         runDomainSearch: (domainName: String) => {
-            const searchQuery=`${paths.termsList()}/?domain=${domainName}`;
-            const address = new URI(searchQuery);
+            const address = new URI(paths.termsList());
+            address.setSearch('domain', domainName);
             dispatchProps.goToAddress(address.href());
         }
     }
