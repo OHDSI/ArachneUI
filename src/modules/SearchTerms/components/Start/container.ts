@@ -43,12 +43,12 @@ class SearchOverview extends Component<ISearchOverviewProps, ISearchOverviewOwnP
 }
 
 function mapStateToProps(state: Object) :ISearchOverviewStateProps {
-    const drugCount = numeral(get(state,'searchTerms.termsCount.queryResult.Drug',0)).format('0,0');
-    const conditionCount = numeral(get(state,'searchTerms.termsCount.queryResult.Condition',0)).format('0,0');
-    const procedureCount = numeral(get(state,'searchTerms.termsCount.queryResult.Procedure',0)).format('0,0');
-    const deviceCount = numeral(get(state,'searchTerms.termsCount.queryResult.Device',0)).format('0,0');
-    const observationCount = numeral(get(state,'searchTerms.termsCount.queryResult.Observation',0)).format('0,0');
-    const measurementCount = numeral(get(state,'searchTerms.termsCount.queryResult.Measurement',0)).format('0,0');
+    const drugCount = numeral(get(state,'searchTerms.termsCount.queryResult.drug',0)).format('0,0');
+    const conditionCount = numeral(get(state,'searchTerms.termsCount.queryResult.condition',0)).format('0,0');
+    const procedureCount = numeral(get(state,'searchTerms.termsCount.queryResult.procedure',0)).format('0,0');
+    const deviceCount = numeral(get(state,'searchTerms.termsCount.queryResult.device',0)).format('0,0');
+    const observationCount = numeral(get(state,'searchTerms.termsCount.queryResult.observation',0)).format('0,0');
+    const measurementCount = numeral(get(state,'searchTerms.termsCount.queryResult.measurement',0)).format('0,0');
 
     return {drugCount,
         conditionCount,
