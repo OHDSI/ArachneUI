@@ -21,7 +21,7 @@
  */
 
 import { Component, PropTypes } from 'react';
-import { ContainerBuilder, get } from 'services/Utils';
+import { ContainerBuilder, get, buildFormData } from 'services/Utils';
 import { reset as resetForm } from 'redux-form';
 import { ModalUtils } from 'arachne-ui-components';
 import { atlasAuthTypeList, modal, form } from 'modules/ExternalResourceManager/const';
@@ -63,6 +63,7 @@ class ModalCreateEditBuilder extends ContainerBuilder {
       isOpened: get(state, 'modal.atlasDetails.isOpened'),
       id: get(state, 'modal.atlasDetails.data.id'),
       isLoading: get(state, 'externalResourceManager.atlases.list.isLoading'),
+      authType: get(state, 'form.atlasDetails.values.authType'),
       initialValues: {
         authType: atlasAuthTypeList.none.value,
         ...get(state, 'externalResourceManager.atlases.list.data', {}, 'Object'),
@@ -93,6 +94,12 @@ class ModalCreateEditBuilder extends ContainerBuilder {
       },
       async doSubmit(data) {
         let createOrUpdate;
+
+        const {keyfile, ...atlas} = data;
+        data = buildFormData({
+          keyfile: keyfile ? keyfile[0] : null,
+          atlas: new Blob([JSON.stringify(atlas)], { type: 'application/json'}),
+        });
         if (stateProps.id) {
           createOrUpdate = await dispatchProps.updateAtlas({ id: stateProps.id }, data);
         } else {
