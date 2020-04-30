@@ -34,9 +34,8 @@ import * as moment from "moment";
 import actions from 'modules/Admin/actions';
 import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
-import { apiPaths, forms } from 'modules/Admin/const';
-import * as URI from 'urijs';
-import { getStatisticFilter, getStatisticFilterForQuery } from '../selectors';
+import { forms } from 'modules/Admin/const';
+import { getStatisticFilter } from '../selectors';
 
 class Filters extends Component<IStatisticsFilterProps, {}> {
 
@@ -51,21 +50,15 @@ const mapDispatchToProps = {
 
 function mapStateToProps(state: Object): IStatisticsFilterStateProps {
     const isLoading = get(state, 'services.statistics.isLoading', false);
-    const filer = getStatisticFilter(state);
-    const query = getStatisticFilterForQuery(state);
-    const csvDownloadLink = new URI();
-    csvDownloadLink.setSearch(query);
-    const downloadCsvLink = apiPaths.statisticsCsv(csvDownloadLink.search());
+    const filter = getStatisticFilter(state);
 
     return {
         isLoading,
-        downloadCsvLink,
-        filter: filer
+        filter: filter
     };
 }
 
 function formSubmitHandler(values: IStatisticsFilter, dispatch, props: IStatisticsFilterProps) {
-
     props.runSearch();
 }
 
@@ -90,5 +83,3 @@ export default connect<IStatisticsFilterStateProps, IStatisticsFilterDispatchPro
     mapDispatchToProps,
     mergeProps
 )(FormFilters);
-
-export { IStatisticsFilterProps };

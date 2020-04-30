@@ -31,15 +31,13 @@ import { IStatisticsFilter } from "./components/Filters/presenter";
 require('./style.scss');
 
 interface IStatisticsProps extends IStatisticsStateProps, IStatisticsDispatchProps {
-
-    runSearch: (sorting?: SortingParams) => void
-
+    runSearch: (sorting?: SortingParams) => void,
+    downloadCSV: Function
 }
 
 interface IStatisticsStateProps {
     sorting: SortingParams,
     filter: IStatisticsFilter
-
 }
 
 interface IStatisticsDispatchProps {
@@ -48,12 +46,11 @@ interface IStatisticsDispatchProps {
 
 function Statistics(props: IStatisticsProps) {
     const classes = BEMHelper('statistics');
-
     return (
         <div {...classes()}>
             <div {...classes({element: 'content'})}>
                 <div {...classes({element: 'filters-wrapper'})}>
-                    <Filters runSearch={props.runSearch}/>
+                    <Filters runSearch={props.runSearch} downloadCSV={props.downloadCSV}/>
                 </div>
                 <div {...classes({element: 'downloads-wrapper'})}>
                     <Downloads runSearch={props.runSearch}/>

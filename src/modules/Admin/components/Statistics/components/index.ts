@@ -22,6 +22,6 @@
 
 
 import Downloads from "./Downloads/container";
-import Filters, { IStatisticsFilterProps } from "./Filters/container";
+import Filters from "./Filters/container";
 
-export { Downloads, Filters, IStatisticsFilterProps };
+export { Downloads, Filters };

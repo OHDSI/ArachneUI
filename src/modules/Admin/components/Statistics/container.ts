@@ -24,15 +24,18 @@
 import { Component } from "react";
 import actions from 'modules/Admin/actions';
 import { connect } from "react-redux";
+import * as URI from 'urijs';
 import presenter, { IStatisticsDispatchProps, IStatisticsProps, IStatisticsStateProps } from "./presenter";
 import { getSorting, getStatisticFilterForQuery } from './components/selectors';
-import { SortingParams } from "../../actions/statistics";
+import { SortingParams } from "modules/Admin/actions/statistics";
+import { apiPaths } from 'modules/Admin/const';
 
 class Statistics extends Component<IStatisticsProps, {}> {
 
     constructor() {
         super();
         this.runSearch = this.runSearch.bind(this);
+        this.downloadCSV = this.downloadCSV.bind(this);
     }
 
     componentDidMount(): void {
@@ -48,10 +51,18 @@ class Statistics extends Component<IStatisticsProps, {}> {
         this.props.loadStatistics(query);
     }
 
+    downloadCSV() {
+        const csvDownloadLink = new URI();
+        csvDownloadLink.setSearch(Object.assign({}, this.props.filter, this.props.sorting));
+        const downloadCsvLink = apiPaths.statisticsCsv(csvDownloadLink.search());
+        window.open(downloadCsvLink, '_blank');
+    }
+
     render() {
         return presenter({
             ...this.props,
-            runSearch: this.runSearch
+            runSearch: this.runSearch,
+            downloadCSV: this.downloadCSV
         });
     }
 }

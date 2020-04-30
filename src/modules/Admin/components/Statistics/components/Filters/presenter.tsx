@@ -47,15 +47,15 @@ interface IStatisticsFilterDispatchProps {
 
 interface IStatisticsFilterStateProps {
     isLoading: boolean,
-    downloadCsvLink: string,
     filter: IStatisticsFilter
 }
 
 interface IStatisticsFilterOwnProps {
-    runSearch: (sorting?: SortingParams) => void
+    runSearch: (sorting?: SortingParams) => void,
+    downloadCSV: Function
 }
 
-function Filters(props: IStatisticsFilterStateProps) {
+function Filters(props: IStatisticsFilterProps) {
     const classes = BEMHelper('filters');
 
     const fields = [
@@ -134,8 +134,7 @@ function Filters(props: IStatisticsFilterStateProps) {
 
                     })}
                     mods={['rounded']}
-                    link={props.downloadCsvLink}
-                    target='_self'
+                    onClick={props.downloadCSV}
                 >
                     Export CSV
                 </Button>

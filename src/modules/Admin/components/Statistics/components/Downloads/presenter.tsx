@@ -64,15 +64,9 @@ function DownloadsHistoryTable(props) {
 
             <Cell
                 {...classes('code')}
-                header='CODE'
+                header='Vocabulary'
                 field='code'
             />
-            <Cell
-                {...classes('class')}
-                header='NAME'
-                field='vocabularyName'
-            />
-
             <Cell
                 {...classes('concept')}
                 header='DATE'
@@ -82,6 +76,11 @@ function DownloadsHistoryTable(props) {
                 {...classes('invalid')}
                 header='USER'
                 field='userName'
+            />
+            <Cell
+                {...classes('invalid')}
+                header='Email'
+                field='email'
             />
             <Cell
                 {...classes('domain')}
