@@ -1,6 +1,6 @@
 {
   "name": "Athena",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "main": "public/index.js",
   "license": "Apache-2.0",
   "repository": {
@@ -79,7 +79,7 @@
     "jquery-param": "0.2.0",
     "lodash": "4.17.15",
     "moment": "^2.24.0",
-    "node-sass": "4.9.3",
+    "node-sass": "4.14.1",
     "numeral": "2.0.6",
     "react": "15.6.2",
     "react-dom": "15.6.2",
