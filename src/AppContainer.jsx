@@ -53,7 +53,7 @@ class AppContainer extends Component {
     if (this.props.isUserAuthed !== nextProps.isUserAuthed) {
       setTimeout(() => window.dispatchEvent(new Event('resize')), 0);
     }
-    if (__APP_TYPE_NODE__ && this.props.runningMode !== nextProps.runningMode 
+    if (__APP_TYPE_NODE__ && this.props.runningMode !== nextProps.runningMode
         && nextProps.runningMode === nodeFunctionalModes.Network) {
       this.props.getPasswordPolicies();
     }
