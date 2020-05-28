@@ -39,10 +39,10 @@ function getFacetTitle(facetId: string): string {
 function getFacetKey(facetId: string): string {
   let key = facetId;
   switch(facetId.toLowerCase()) {
-    case 'domain_id': key = facetKeys.domain; break;
+    case 'domain_id_ci': key = facetKeys.domain; break;
     case 'standard_concept': key = facetKeys.standardConcept; break;
-    case 'concept_class_id': key = facetKeys.conceptClass; break;
-    case 'vocabulary_id': key = facetKeys.vocabulary; break;
+    case 'concept_class_id_ci': key = facetKeys.conceptClass; break;
+    case 'vocabulary_id_ci': key = facetKeys.vocabulary; break;
     case 'invalid_reason': key = facetKeys.invalidReason; break;
   }
 
