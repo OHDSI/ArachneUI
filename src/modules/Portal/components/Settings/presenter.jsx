@@ -20,40 +20,49 @@
  *
  */
 
-import React, { PropTypes } from 'react';
+import React, { Component } from 'react';
 import BEMHelper from 'services/BemHelper';
 import {
-	Form,
-	FormInput,
-	LoadingPanel,
-	PageContent,
-	Toolbar
+    LoadingPanel,
+    PageContent,
+    Toolbar
 } from 'arachne-ui-components';
 
 import FormPassword from './FormPassword';
 
 require('./style.scss');
 
-function Settings(props) {
-  const classes = new BEMHelper('portal-settings');
+export default class Settings extends Component {
 
-  return (
-    <PageContent title='Settings | Arachne'>
-      <div {...classes()}>
-        <Toolbar
-          caption={'Settings'}
-        />
-        <div {...classes('content')}>
-        	<div className="row">
-        		<div className="col-xs-12 col-md-4">
-        			<FormPassword {...classes('panel')} />
-        		</div>
-        	</div>
-        </div>
-        <LoadingPanel active={false}/>
-      </div>
-    </PageContent>
-  );
+    constructor(props) {
+        super(props);
+    }
+
+    renderContent(classes) {
+
+        return <div className="row">
+            <div className="col-xs-12 col-md-4">
+                <FormPassword {...classes('panel')} />
+            </div>
+        </div>;
+    }
+
+    render() {
+
+        const classes = new BEMHelper('portal-settings');
+        return (
+            <PageContent title='Settings | Arachne'>
+                <div {...classes()}>
+                    <Toolbar
+                        caption={'Settings'}
+                    />
+                    <div {...classes('content')}>
+                        {this.renderContent(classes)}
+                    </div>
+                    <LoadingPanel active={false}/>
+                </div>
+            </PageContent>
+        );
+    }
 }
 
-export default Settings;
