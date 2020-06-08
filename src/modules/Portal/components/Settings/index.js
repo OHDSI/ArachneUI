@@ -20,6 +20,6 @@
  *
  */
 
-import Settings from './container';
+import SettingsContainerBuilder from './container';
 
-export default Settings;
+export default new SettingsContainerBuilder().build();
