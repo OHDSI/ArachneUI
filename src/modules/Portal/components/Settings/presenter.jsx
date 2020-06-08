@@ -38,11 +38,13 @@ export default class Settings extends Component {
 
     renderContent() {
 
-        return (<div className="row">
-            <div className="col-xs-12 col-md-4">
-                <FormPassword {...classes('panel')} />
+        return (
+            <div className="row">
+                <div className="col-xs-12 col-md-4">
+                    <FormPassword {...classes('panel')} />
+                </div>
             </div>
-        </div>);
+        );
     }
 
     render() {
