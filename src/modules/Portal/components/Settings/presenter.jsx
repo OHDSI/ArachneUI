@@ -32,7 +32,7 @@ import FormPassword from './FormPassword';
 
 require('./style.scss');
 
-const classes = new BEMHelper('portal-settings');
+export const classes = new BEMHelper('portal-settings');
 
 export default class Settings extends Component {
 
@@ -64,6 +64,3 @@ export default class Settings extends Component {
         );
     }
 }
-
-export { classes }
-
