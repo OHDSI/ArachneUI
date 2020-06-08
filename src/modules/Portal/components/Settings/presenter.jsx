@@ -34,24 +34,18 @@ require('./style.scss');
 
 const classes = new BEMHelper('portal-settings');
 
-class Settings extends Component {
-
-    constructor(props) {
-        super(props);
-    }
-
+export default class Settings extends Component {
 
     renderContent() {
 
-        return <div className="row">
+        return (<div className="row">
             <div className="col-xs-12 col-md-4">
                 <FormPassword {...classes('panel')} />
             </div>
-        </div>;
+        </div>);
     }
 
     render() {
-
 
         return (
             <PageContent title='Settings | Arachne'>
@@ -69,6 +63,5 @@ class Settings extends Component {
     }
 }
 
-export default Settings;
 export { classes }
 
