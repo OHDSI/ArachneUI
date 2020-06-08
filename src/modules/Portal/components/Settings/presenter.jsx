@@ -32,13 +32,16 @@ import FormPassword from './FormPassword';
 
 require('./style.scss');
 
-export default class Settings extends Component {
+const classes = new BEMHelper('portal-settings');
+
+class Settings extends Component {
 
     constructor(props) {
         super(props);
     }
 
-    renderContent(classes) {
+
+    renderContent() {
 
         return <div className="row">
             <div className="col-xs-12 col-md-4">
@@ -49,7 +52,7 @@ export default class Settings extends Component {
 
     render() {
 
-        const classes = new BEMHelper('portal-settings');
+
         return (
             <PageContent title='Settings | Arachne'>
                 <div {...classes()}>
@@ -57,7 +60,7 @@ export default class Settings extends Component {
                         caption={'Settings'}
                     />
                     <div {...classes('content')}>
-                        {this.renderContent(classes)}
+                        {this.renderContent()}
                     </div>
                     <LoadingPanel active={false}/>
                 </div>
@@ -65,4 +68,7 @@ export default class Settings extends Component {
         );
     }
 }
+
+export default Settings;
+export { classes }
 
