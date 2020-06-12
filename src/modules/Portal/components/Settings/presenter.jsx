@@ -22,11 +22,7 @@
 
 import React, { Component } from 'react';
 import BEMHelper from 'services/BemHelper';
-import {
-    LoadingPanel,
-    PageContent,
-    Toolbar
-} from 'arachne-ui-components';
+import { LoadingPanel, PageContent, Toolbar } from 'arachne-ui-components';
 
 import FormPassword from './FormPassword';
 
@@ -36,19 +32,23 @@ export const classes = new BEMHelper('portal-settings');
 
 export default class Settings extends Component {
 
-    renderContent() {
+    getSettingsComponents(){
+        return [<FormPassword {...classes('panel')} />];
+    }
 
+    renderContent() {
         return (
-            <div className="row">
-                <div className="col-xs-12 col-md-4">
-                    <FormPassword {...classes('panel')} />
+            this.getSettingsComponents().map(control =>
+                <div className="row">
+                    <div className="col-xs-12 col-md-4">
+                        {control}
+                    </div>
                 </div>
-            </div>
-        );
+            )
+        )
     }
 
     render() {
-
         return (
             <PageContent title='Settings | Arachne'>
                 <div {...classes()}>
