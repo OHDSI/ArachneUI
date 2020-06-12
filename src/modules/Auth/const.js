@@ -244,19 +244,6 @@ const registerFields = function ({ professionalTypesOptions,
       },
     },
     {
-      name: 'address.mobile',
-      InputComponent: {
-        component: FormInput,
-        props: {
-          mods: ['bordered'],
-          placeholder: 'Mobile',
-          required: true,
-          type: 'text',
-          tabindex: 15,
-        }
-      }
-    },
-    {
       name: 'organization',
       InputComponent: {
         component: FormInput,
