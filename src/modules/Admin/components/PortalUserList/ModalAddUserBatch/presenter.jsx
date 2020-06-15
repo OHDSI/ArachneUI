@@ -210,11 +210,6 @@ function UsersTable({ fields, meta: { touched, error }, professionalTypesOptions
             required: true,
           })}
         />
-        <CellTextEditable {...classes('col-mobile')}
-          header="Mobile"
-          field="address.mobile"
-          props={() => ({ required: true, })}
-        />
         <CellTextEditable {...classes('col-address')}
           header="Address"
           field="address.address1"
