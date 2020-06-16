@@ -219,7 +219,7 @@ function UsersTable({ fields, meta: { touched, error }, professionalTypesOptions
           header="Address"
           field="address.address1"
           props={() => ({
-            required: true,
+            required: false,
           })}
         />
         <CellTextEditable {...classes('col-city')}
