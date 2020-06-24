@@ -92,9 +92,12 @@ export default class AddVirtualSourceBuilder {
     const studyData = get(state, 'studyManager.study.data');
     const dataSourceData = get(state, 'studyManager.study.dataSource.data');
     const ownerList = selectors.getDataSourceOwnerList(state);
+    const userId = get(state, 'auth.principal.queryResult.id');
 
     return {
+      userId,
       studyId: get(studyData, 'id'),
+      studyKind: get(studyData, 'kind'),
       ownerOptions: selectors.getOwnerOptions(state),
       focusedOwner: get(state, `form.${form.addVirtualSource}.values.ownerSelector`),
       ownerList: selectors.getSelectedOwnerList(state),
@@ -164,11 +167,18 @@ export default class AddVirtualSourceBuilder {
         );
 
         submitPromise
-          .then(() => dispatchProps.resetForm())
-          .then(() => dispatchProps.closeModal())
-          .then(() => dispatchProps.loadStudy({ id: stateProps.studyId }))
-          .then(ownProps.onAdd)
-          .catch(() => {});
+            .then(() => dispatchProps.resetForm())
+            .then(() => dispatchProps.closeModal())
+            .then(() => {
+              const kind = stateProps.studyKind;
+              if (kind === 'WORKSPACE') {
+                return dispatchProps.loadStudy({id: stateProps.userId, kind});
+              } else {
+                return dispatchProps.loadStudy({id: stateProps.studyId});
+              }
+            })
+            .then(ownProps.onAdd)
+            .catch(() => {});
 
         return submitPromise;
       },
