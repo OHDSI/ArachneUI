@@ -140,9 +140,11 @@ export default class AddVirtualSourceBuilder {
       ...stateProps,
       ...dispatchProps,
       addOwner(user) {
-        const newOwnerList = stateProps.ownerList.slice();
-        newOwnerList.push(user);
-        dispatchProps.setOwnerList(newOwnerList);
+        if (!!user && !!user.id) {
+          const newOwnerList = stateProps.ownerList.slice();
+          newOwnerList.push(user);
+          dispatchProps.setOwnerList(newOwnerList);
+        }
       },
       removeOwner(user) {
         const newOwnerList = stateProps.ownerList.slice();
