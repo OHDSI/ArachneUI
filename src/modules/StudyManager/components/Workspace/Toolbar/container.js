@@ -19,12 +19,10 @@
  */
 
 // @ts-check
-import { Utils, ContainerBuilder } from 'services/Utils';
-import { get } from 'services/Utils';
-import { ModalUtils } from 'arachne-ui-components';
+import { ContainerBuilder } from 'services/Utils';
 import actions from 'actions';
 import WorkspaceToolbar from './presenter';
-import { apiPaths, paths, studyKind } from 'modules/StudyManager/const';
+import { paths, studyKind } from 'modules/StudyManager/const';
 
 export default class WorkspaceToolbarBuilder extends ContainerBuilder {
   getComponent() {
@@ -56,7 +54,7 @@ export default class WorkspaceToolbarBuilder extends ContainerBuilder {
       ...stateProps,
       ...dispatchProps,
       ...ownProps,
-      reload: dispatchProps.loadWorkspace.bind(null, { id: ownProps.toolbarSettings.userId, kind: studyKind.WORKSPACE }),
+      reload: () => dispatchProps.loadWorkspace({id: ownProps.toolbarSettings.userId, kind: studyKind.WORKSPACE}),
     };
   }
 }
