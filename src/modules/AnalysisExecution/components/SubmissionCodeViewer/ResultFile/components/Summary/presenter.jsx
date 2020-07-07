@@ -35,6 +35,7 @@ import isEmpty from 'lodash/isEmpty';
 import SummaryIncidence from './Incidence';
 import SummaryCohort from './Cohort';
 import SummaryPopulationLevel from './PopulationLevel';
+import SummaryPathway from './Pathway';
 
 import './style.scss';
 
@@ -74,6 +75,8 @@ export default function SubmissionResultSummary(props) {
 
   switch (submissionGroupType) {
     case analysisTypes.INCIDENCE:
+      specificSummaryMods.narrow = false;
+      specificSummaryMods.wide = true;
       specificSummaryMods.padded = false;
       specificSummary = <SummaryIncidence resultInfo={resultInfo} />;
       break;
@@ -85,6 +88,12 @@ export default function SubmissionResultSummary(props) {
       specificSummaryMods.wide = true;
       specificSummaryMods.padded = false;
       specificSummary = <SummaryPopulationLevel resultInfo={resultInfo} />;
+      break;
+    case analysisTypes.COHORT_PATHWAY:
+      specificSummaryMods.narrow = false;
+      specificSummaryMods.wide = true;
+      specificSummaryMods.padded = false;
+      specificSummary = <SummaryPathway resultInfo={resultInfo} />;
       break;
   }
   const statusMods = get(submission, 'status.value') ? statusColors[get(submission, 'status.value', '')] : null;

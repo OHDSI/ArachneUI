@@ -68,7 +68,7 @@ function FormPassword(props) {
           mods: ['bordered'],
           placeholder: 'New password confirmation',
           showHint: false,
-        }
+        },
       },
     },
   ];

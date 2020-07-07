@@ -68,6 +68,7 @@ const apiPaths = {
   //
   principal: () => '/api/v1/auth/me',
   authMethod: () => '/api/v1/auth/method',
+  authMode: () => '/api/v1/auth/mode',
   refresh: () => '/api/v1/auth/refresh',
   //
   passwordPolicy: () => '/api/v1/auth/password-policies',
@@ -81,7 +82,7 @@ const apiPaths = {
 
 const authMethods = keyMirror({
   LDAP: null,
-  NATIVE: null,
+  JDBC: null,
 });
 
 const registerFields = function ({ professionalTypesOptions,
@@ -249,7 +250,6 @@ const registerFields = function ({ professionalTypesOptions,
         props: {
           mods: ['bordered'],
           placeholder: 'Mobile',
-          required: true,
           type: 'text',
           tabindex: 15,
         }
@@ -301,6 +301,11 @@ const nodeFunctionalModes = {
   Network: 'NETWORK',
 }
 
+const authenticationModes = {
+  Standard: 'STANDARD',
+  Proxy: 'PROXY',
+}
+
 export {
   actionTypes,
   authMethods,
@@ -311,4 +316,5 @@ export {
   paths,
   registerFields,
   nodeFunctionalModes,
+  authenticationModes,
 };

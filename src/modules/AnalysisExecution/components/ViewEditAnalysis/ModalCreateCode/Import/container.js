@@ -46,17 +46,25 @@ class ImportCode extends Component {
   resetSource() {
     this.setState({
       selectedSource: null,
+      analysesImportError: null,
     });
   }
+
+  handleError = (error) => {
+    this.setState({
+      analysesImportError: error.message,
+    });
+  };
 
   selectSource(selectedSource) {
     this.setState({
       selectedSource,
     });
+
     this.props.loadList({
       dataNodeId: selectedSource.id,
       type: this.props.analysisType,
-    });
+    }).catch(this.handleError);
   }
 
   render() {

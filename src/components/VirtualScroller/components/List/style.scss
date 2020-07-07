@@ -21,8 +21,8 @@
   */
 
 @import 'styles/vars-and-mixins.scss';
- 
-.#{$namespace} { 
+
+.#{$namespace} {
   &virtual-list {
     & .react-grid-Header {
       display: none;
@@ -33,6 +33,10 @@
       /* compensate hidden header */
       top: 0 !important;
     }
+
+    & .react-grid-Canvas {
+      max-height: 40rem;
+    }
   }
 }
-  
+

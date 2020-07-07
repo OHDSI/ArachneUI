@@ -22,10 +22,18 @@
 
 @import 'styles/vars-and-mixins.scss';
 
+$width: 26rem;
+
 .#{$namespace} {
 
 	&admin-panel-modal-add-admin {
-		width: 260px;
+		width: $width;
+
+		@include modal-dropdown-overflow($width);
+
+		.ac-autocomplete__search {
+			top: -3.5rem;
+		}
 	}
 
-}
+ }

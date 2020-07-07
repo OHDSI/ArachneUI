@@ -38,6 +38,7 @@ class AppContainer extends Component {
   componentDidMount() {
     if (__APP_TYPE_NODE__) {
       this.props.getNodeMode();
+      this.props.getAuthMode();
     }
     if (__APP_TYPE_CENTRAL__) {
       this.props.getPasswordPolicies();
@@ -52,7 +53,7 @@ class AppContainer extends Component {
     if (this.props.isUserAuthed !== nextProps.isUserAuthed) {
       setTimeout(() => window.dispatchEvent(new Event('resize')), 0);
     }
-    if (__APP_TYPE_NODE__ && this.props.runningMode !== nextProps.runningMode 
+    if (__APP_TYPE_NODE__ && this.props.runningMode !== nextProps.runningMode
         && nextProps.runningMode === nodeFunctionalModes.Network) {
       this.props.getPasswordPolicies();
     }
@@ -151,6 +152,7 @@ const mapDispatchToProps = {
   logout: (backurl) => actions.auth.clearToken(backurl),
   getPasswordPolicies: () => actions.auth.passwordPolicy.findUnsecured(),
   getNodeMode: () => (__APP_TYPE_NODE__) ? actions.auth.nodeMode.findUnsecured() : true,
+  getAuthMode: () => (__APP_TYPE_NODE__) ? actions.auth.authMode.find() : true
 };
 
 export default (navItems) => {
