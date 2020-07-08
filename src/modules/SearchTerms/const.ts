@@ -80,10 +80,10 @@ const facetKeys = keyMirror({
 });
 const facetTitles = {
   [facetKeys.domain]: 'Domain',
-  [facetKeys.standardConcept]: 'Standard concept',
+  [facetKeys.standardConcept]: 'Concept',
   [facetKeys.conceptClass]: 'Class',
-  [facetKeys.vocabulary]: 'Vocabulary',
-  [facetKeys.invalidReason]: 'Invalid reason',
+  [facetKeys.vocabulary]: 'Vocab',
+  [facetKeys.invalidReason]: 'Validity',
 };
 const zoomLevels = [
   {
