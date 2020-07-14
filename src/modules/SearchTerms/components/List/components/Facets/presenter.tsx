@@ -67,8 +67,7 @@ interface IFacetStateProps {
 
 interface IFacetDispatchProps {
   search: (address: string) => typeof push;
-  resetForm: () => Action;
-  resetToolbar: () => Action;
+  cleanForm: () => Action;
   changeFacets: (fieldName: string, value: Array<string>) => typeof reduxFormChange;
 }
 

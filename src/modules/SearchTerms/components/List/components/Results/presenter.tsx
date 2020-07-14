@@ -57,6 +57,7 @@ interface IResultStateProps {
   sorting: SortingParams;
   searchLocation: locationDescriptor;
   downloadLink: string;
+  debug: string;
 };
 
 interface IResultDispatchProps {
@@ -82,93 +83,194 @@ function Results(props: IResultProps) {
   } = props;
   const classes = BEMHelper('search-results');
   const tooltipClass = BEMHelper('ac-tooltip', false);
-
-  return (
-    <div {...classes()}>
+  let tableTemplate
+  if (props.debug === 'true') {
+    tableTemplate = <div {...classes()}>
       <div {...classes('management-panel')}>
-      <div
-        {...classes({
-          element: 'download-button-wrapper',
-          extra: downloadingEnabled ? '' : tooltipClass().className,
-        })}
-        aria-label='Enter at least 3 letters of keyword'
-        data-tootik-conf='bottom'
-       >
-        <Button
-          {...classes({
-            element: 'download-button',
-            modifiers: {
-              disabled: !downloadingEnabled
-            }
-          })}
-          mods={['rounded']}
-          link={downloadLink}
-          target='_self'
+        <div
+            {...classes({
+              element: 'download-button-wrapper',
+              extra: downloadingEnabled ? '' : tooltipClass().className,
+            })}
+            aria-label='Enter at least 3 letters of keyword'
+            data-tootik-conf='bottom'
         >
-          Download results
-        </Button>
+          <Button
+              {...classes({
+                element: 'download-button',
+                modifiers: {
+                  disabled: !downloadingEnabled
+                }
+              })}
+              mods={['rounded']}
+              link={downloadLink}
+              target='_self'
+          >
+            Download results
+          </Button>
         </div>
         <Pagination resultsCount={searchResults.length}/>
       </div>
-      <Table
-        {...classes('table')}
-        data={searchResults}
-        mods={['hover', 'selectable']}
-        onRowClick={showResult}
-        sorting={sorting}
-        setSorting={setSorting}
-      >
-        <Cell
-          {...classes('id')}
-          header='ID'
-          field='id'
-        />
-        <Cell
-          {...classes('code')}
-          header='CODE'
-          field='code'
-        />
-        <CellLink
-          {...classes('name')}
-          header='NAME'
-          field='name'
-          props={(result: { [key: string]: string }) => {
-            const { name, link } = result;
-            return {
-              value: {
-                label: name,
-                link: link,
-              },
-            }
-          }}
-        />
-        <Cell
-          {...classes('class')}
-          header='CLASS'
-          field='className'
-        />
-        <Cell
-          {...classes('concept')}
-          header='Concept'
-          field='standardConcept'
-        />
-        <Cell
-          {...classes('invalid')}
-          header='Validity'
-          field='invalidReason'
-        />
-        <Cell
-          {...classes('domain')}
-          header='DOMAIN'
-          field='domain'
-        />
-        <Cell
-          {...classes('vocabulary')}
-          header='Vocab'
-          field='vocabulary'
-        />
-      </Table>
-    </div>
+      <div {...classes('table-wrapper')}>
+        <Table
+            {...classes('table')}
+            data={searchResults}
+            mods={['hover', 'selectable']}
+            onRowClick={showResult}
+            sorting={sorting}
+            setSorting={setSorting}
+        >
+          <Cell
+              {...classes('id')}
+              header='ID'
+              field='id'
+          />
+          < Cell
+              {...classes('code')}
+              header='score'
+              field='score'
+          />
+          <Cell
+              {...classes('code')}
+              header='CODE'
+              field='code'
+          />
+          <CellLink
+              {...classes('name')}
+              header='NAME'
+              field='name'
+              props={(result: { [key: string]: string }) => {
+                const { name, link } = result;
+                return {
+                  value: {
+                    label: name,
+                    link: link,
+                  },
+                }
+              }}
+          />
+          <Cell
+              {...classes('class')}
+              header='CLASS'
+              field='className'
+          />
+          <Cell
+              {...classes('concept')}
+              header='Concept'
+              field='standardConcept'
+          />
+          <Cell
+              {...classes('invalid')}
+              header='Validity'
+              field='invalidReason'
+          />
+          <Cell
+              {...classes('domain')}
+              header='DOMAIN'
+              field='domain'
+          />
+          <Cell
+              {...classes('vocabulary')}
+              header='Vocab'
+              field='vocabulary'
+          />
+
+        </Table>
+      </div>
+    </div>;
+  } else {
+    tableTemplate = <div {...classes()}>
+      <div {...classes('management-panel')}>
+        <div
+            {...classes({
+              element: 'download-button-wrapper',
+              extra: downloadingEnabled ? '' : tooltipClass().className,
+            })}
+            aria-label='Enter at least 3 letters of keyword'
+            data-tootik-conf='bottom'
+        >
+          <Button
+              {...classes({
+                element: 'download-button',
+                modifiers: {
+                  disabled: !downloadingEnabled
+                }
+              })}
+              mods={['rounded']}
+              link={downloadLink}
+              target='_self'
+          >
+            Download results
+          </Button>
+        </div>
+        <Pagination resultsCount={searchResults.length}/>
+      </div>
+      <div {...classes('table-wrapper')}>
+        <Table
+            {...classes('table')}
+            data={searchResults}
+            mods={['hover', 'selectable']}
+            onRowClick={showResult}
+            sorting={sorting}
+            setSorting={setSorting}
+        >
+          <Cell
+              {...classes('id')}
+              header='ID'
+              field='id'
+          />
+
+          <Cell
+              {...classes('code')}
+              header='CODE'
+              field='code'
+          />
+          <CellLink
+              {...classes('name')}
+              header='NAME'
+              field='name'
+              props={(result: { [key: string]: string }) => {
+                const { name, link } = result;
+                return {
+                  value: {
+                    label: name,
+                    link: link,
+                  },
+                }
+              }}
+          />
+          <Cell
+              {...classes('class')}
+              header='CLASS'
+              field='className'
+          />
+          <Cell
+              {...classes('concept')}
+              header='Concept'
+              field='standardConcept'
+          />
+          <Cell
+              {...classes('invalid')}
+              header='Validity'
+              field='invalidReason'
+          />
+          <Cell
+              {...classes('domain')}
+              header='DOMAIN'
+              field='domain'
+          />
+          <Cell
+              {...classes('vocabulary')}
+              header='Vocab'
+              field='vocabulary'
+          />
+
+        </Table>
+      </div>
+    </div>;
+  }
+  return (
+    tableTemplate
   );
 }
 

@@ -44,6 +44,11 @@ function rootRoute(path: string): PlainRoute {
         component: require('./components/Licenses').default,
         onEnter: Auth.requireOnPathEnter,
       },
+      {
+        path: 'statistics',
+        component: require('./components/Statistics').default,
+        onEnter: Auth.requireOnPathEnter,
+      },
     ],
   };
 }

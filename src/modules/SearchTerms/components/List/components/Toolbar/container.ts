@@ -53,7 +53,7 @@ function mapStateToProps(state: Object): IToolbarStateProps {
   		searchString: get(locationSearch, 'query.query') || '',
   	},
   	locationSearch,
-    filterParams,
+    filterParams
   };
 }
 
@@ -70,16 +70,20 @@ function mergeProps(
 		...stateProps,
 		...dispatchProps,
 		...ownProps,
-		filter: (data: { searchString: string }) => {
-		  const currentAddress = new URI(`${stateProps.locationSearch.pathname}${stateProps.locationSearch.search}`);
-		  currentAddress.setSearch('query', data.searchString);
+
+		filter: (data: { searchString: string, boosts: string }) => {
+
+			const currentAddress = new URI(`${stateProps.locationSearch.pathname}${stateProps.locationSearch.search}`);
+			currentAddress.setSearch('query', data.searchString);
+			currentAddress.setSearch('boosts', data.boosts);
 			currentAddress.setSearch('page', 1);
-		  const search = currentAddress.href();
-		  dispatchProps.search(search);
-		  const filterParams = {
-			...stateProps.filterParams,
-			query: data.searchString,
-		  };
+			const search = currentAddress.href();
+			dispatchProps.search(search);
+
+			const filterParams = {
+				...stateProps.filterParams,
+				query: data.searchString,
+			};
 
 		},
 	};

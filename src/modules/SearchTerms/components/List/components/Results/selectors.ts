@@ -20,10 +20,10 @@
  *  
  */
 
-import { createSelector } from 'reselect';
-import { get } from 'lodash';
-import { resultsPageSize, paths } from 'modules/SearchTerms/const';
-import { Term } from './presenter';
+import {createSelector} from 'reselect';
+import {get} from 'lodash';
+import {paths} from 'modules/SearchTerms/const';
+import {Term} from './presenter';
 
 function getConceptFieldId(fieldName: string): string {
   let id = fieldName;
@@ -35,6 +35,7 @@ function getConceptFieldId(fieldName: string): string {
     case 'invalidreason': id = 'invalid_reason'; break;
     case 'domain': id = 'domain_id'; break;
     case 'vocabulary': id = 'vocabulary_id'; break;
+    case 'id': id = 'concept_id'; break;
   }
 
   return id;
@@ -49,23 +50,61 @@ function getConceptFieldName(fieldId: string): string {
     case 'invalid_reason': name = 'invalidReason'; break;
     case 'domain_id': name = 'domain'; break;
     case 'vocabulary_id': name = 'vocabulary'; break;
+    case 'concept_id': name = 'id'; break;
   }
 
   return name;
 }
 
-const getRawResults = (state: Object) => get(state, 'searchTerms.terms.queryResult.content', []);
+const getRawResults = function (state: Object) {
+  return get(state, 'searchTerms.terms.queryResult.content', []);
+};
 
 const getResults = createSelector(
     getRawResults,
-    rawResults => rawResults.map((term: Term) => ({
-      ...term,
-      link: paths.term(term.id),
-    })),
+    function (rawResults) {
+      return rawResults.map((term: Term) => ({
+        ...term,
+        link: paths.term(term.id),
+      }));
+    },
   );
+
+const getDebugResults = createSelector(
+    function (state: Object){
+      return get(state, 'searchTerms.terms.queryResult.debug', "");
+    },
+    function (debug) {
+      console.log(debug);
+      return debug;
+    },
+);
+
+const getQueryResults = createSelector(
+    function (state: Object){
+      return get(state, 'searchTerms.terms.queryResult.query', "");
+    },
+    function (query) {
+      console.log(query);
+      return query;
+    },
+);
+
+const isDebug = function (state: Object) {
+    let query =  get(state, 'routing.locationBeforeTransitions', {
+        query: {
+            query: '',
+            debug: 'false'
+        },
+    });
+    return query.query.debug;
+};
 
 export default {
   getResults,
   getConceptFieldId,
   getConceptFieldName,
+  getDebugResults,
+  getQueryResults,
+  isDebug,
 };

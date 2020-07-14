@@ -29,10 +29,14 @@ function rootRoute(path: string): PlainRoute {
     component: ({ children }) => children,
     indexRoute: {
       onEnter: (nextState, replace) => {
-        replace(`/${path}/terms`);
+        replace(`/${path}/start`);
       }
     },
     childRoutes: [
+      {
+        path: 'start',
+        component: require('./components/Start').default,
+      },
       {
         path: 'terms',
         component: require('./components/List').default,
@@ -48,32 +52,5 @@ function rootRoute(path: string): PlainRoute {
     ],
   };
 }
-
-/*
-
-function rootRoute(path: string): PlainRoute {
-  return {
-    path,
-    component: ({ children }) => children,
-    getIndexRoute: (partialNextState, callback): any => {
-      callback(null, {
-        onEnter: (nextState, replace) => {
-          replace(path + '/terms');
-        }
-      });
-    },
-    getChildRoutes: (partialNextState, callback): any => {
-      callback(null, [
-        {
-          path: 'terms',
-          component: SearchTermsList,
-        },
-      ]);
-    },
-  };
-}
-
-
- */
 
 export default rootRoute;
