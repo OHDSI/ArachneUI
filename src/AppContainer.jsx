@@ -98,7 +98,7 @@ class AppContainer extends Component {
 AppContainer.propTypes = {
   children: PropTypes.node.isRequired,
   isUserAuthed: PropTypes.bool.isRequired,
-  navItems: PropTypes.node.isRequired,
+  navItems: PropTypes.node,
   sidebarTabList: PropTypes.array.isRequired,
 };
 
