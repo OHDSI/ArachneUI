@@ -20,6 +20,10 @@
     &__analysis-th {
       width: 10%;
     }
+    &__analysis-td {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
     &__data-source-th {
       width: 14%;
