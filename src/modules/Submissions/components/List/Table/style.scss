@@ -22,7 +22,7 @@
     }
     &__analysis-td {
       overflow: hidden;
-      text-overflow: ellipsis;
+      word-break:break-word
     }
 
     &__data-source-th {
