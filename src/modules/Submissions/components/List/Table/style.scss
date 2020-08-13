@@ -20,6 +20,10 @@
     &__analysis-th {
       width: 10%;
     }
+    &__analysis-td {
+      overflow: hidden;
+      word-break:break-word
+    }
 
     &__data-source-th {
       width: 14%;
