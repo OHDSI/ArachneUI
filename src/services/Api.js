@@ -195,12 +195,12 @@ class Api {
   }
 
   doGet(path, payload, callback) {
-
+    // @ts-ignore
     return this.internalGet(path, payload, callback, (...args) => this.sendRequest(...args));
   }
 
   doGetUnsecured(path, payload, callback) {
-
+    // @ts-ignore
     return this.internalGet(path, payload, callback, (...args) => this.sendRequestUnsecured(...args));
   }
 
