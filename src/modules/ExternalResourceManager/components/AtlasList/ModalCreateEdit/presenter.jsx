@@ -26,6 +26,7 @@ import {
   Form,
   FormInput,
   FormSelect,
+  FormFileInput,
   Modal,
   LoadingPanel,
 } from 'arachne-ui-components';
@@ -38,6 +39,7 @@ function ModalCreateEdit(props) {
     isLoading,
     id,
     doSubmit,
+    authType,
   } = props;
 
   let modalTitle;
@@ -97,6 +99,9 @@ function ModalCreateEdit(props) {
         },
       },
     },
+  ];
+
+  const passwordFields = [
     {
       name: 'username',
       InputComponent: {
@@ -121,12 +126,40 @@ function ModalCreateEdit(props) {
     },
   ];
 
+  const accessTokenFields = [
+    {
+      name: 'serviceId',
+      InputComponent: {
+        component: FormInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Service Id',
+          type: 'text'
+        }
+      }
+    },
+    {
+      name: 'keyfile',
+      InputComponent: {
+        component: FormFileInput,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Add keyfile',
+          dropzonePlaceholder: 'Drag and drop file',
+          multiple: false,
+          accept: [],
+          filePlaceholder: 'Keyfile name',
+        }
+      }
+    }
+  ];
+
   return (
     <Modal modal={props.modal} title={modalTitle}>
       <Form
         {...classes()}
         actionsClassName="col-xs-12"
-        fields={fields}
+        fields={fields.concat(authType === 'ACCESS_TOKEN' ? accessTokenFields : passwordFields)}
         submitBtn={submitBtn}
         cancelBtn={cancelBtn}
         onSubmit={doSubmit}

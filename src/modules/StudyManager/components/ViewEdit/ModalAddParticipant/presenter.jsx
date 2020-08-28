@@ -32,7 +32,7 @@ require('./style.scss');
 
 function ModalAddParticipant(props) {
   const classes = new BEMHelper('study-form-add-participant');
-  
+
   const fields = [
     {
       name: 'role',
@@ -41,6 +41,7 @@ function ModalAddParticipant(props) {
         props: {
           mods: ['bordered'],
           placeholder: 'Role',
+          unselectable: false,
           options: newParticipantRolesOptions
         }
       },

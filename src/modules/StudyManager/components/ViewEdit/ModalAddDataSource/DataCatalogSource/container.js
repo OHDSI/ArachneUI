@@ -69,9 +69,12 @@ export default class AddDataCatalogSourceBuilder {
     const studyData = get(state, 'studyManager.study.data');
     const isSaving = get(state, 'form.addCatalogSource.submitting', false);
     const restItemsCount = get(state, 'studyManager.dataSourceList.data.totalElements', 0);
+    const userId = get(state, 'auth.principal.queryResult.id');
 
     return {
+      userId,
       studyId: get(studyData, 'id'),
+      studyKind: get(studyData, 'kind'),
       dataSourceOptions: selectors.getDataSourceList(state),
       isOpened: get(state, 'modal.addDataSource.isOpened', false),
       studyName: get(studyData, 'title'),
@@ -122,7 +125,14 @@ export default class AddDataCatalogSourceBuilder {
           })
           .then(() => dispatchProps.resetForm())
           .then(() => dispatchProps.closeModal())
-          .then(() => dispatchProps.loadStudy({ id: stateProps.studyId }))
+          .then(() => {
+            const kind = stateProps.studyKind;
+            if (kind === 'WORKSPACE') {
+              return dispatchProps.loadStudy({id: stateProps.userId, kind});
+            } else {
+              return dispatchProps.loadStudy({id: stateProps.studyId});
+            }
+          })
           .then(() => {
             if (!allApproved) {
               return dispatchProps.openConfirmDatasource(dataSources, stateProps.studyName);

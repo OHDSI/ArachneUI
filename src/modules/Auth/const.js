@@ -250,7 +250,6 @@ const registerFields = function ({ professionalTypesOptions,
         props: {
           mods: ['bordered'],
           placeholder: 'Mobile',
-          required: true,
           type: 'text',
           tabindex: 15,
         }

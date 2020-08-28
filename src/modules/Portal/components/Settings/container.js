@@ -20,18 +20,27 @@
  *
  */
 
-import { connect } from 'react-redux';
-import { get } from 'services/Utils';
+import { get, ContainerBuilder } from 'services/Utils';
 import { form } from 'modules/Portal/const';
 import Settings from './presenter';
 
-function mapStateToProps(state) {
-  return {
-    isLoading: get(state, `form.${form.changePassword}.submitting`, false),
-  };
+
+class SettingsContainerBuilder extends ContainerBuilder {
+
+  getComponent() {
+    return Settings;
+  }
+
+  mapStateToProps(state) {
+    return {
+      isLoading: get(state, `form.${form.changePassword}.submitting`, false),
+    };
+  }
+
+  getMapDispatchToProps() {
+    return {};
+  }
+
 }
 
-const mapDispatchToProps = {
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Settings);
+export default SettingsContainerBuilder;

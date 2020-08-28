@@ -56,6 +56,10 @@ const atlasAuthTypeList = {
     label: 'LDAP',
     value: 'LDAP',
   },
+  accessToken: {
+    label: 'Google Access Token',
+    value: 'ACCESS_TOKEN',
+  },
 };
 
 export {
