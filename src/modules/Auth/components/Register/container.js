@@ -105,9 +105,9 @@ function mapStateToProps(state, ownProps) {
 
 const mapDispatchToProps = {
   goToRoot: goToPage.bind(null, '/'),
-  loadProfessionalTypes: actions.auth.professionalType.query,
-  searchCountries: actions.auth.countries.query,
-  searchProvinces: actions.auth.provinces.query,
+  loadProfessionalTypes: actions.auth.professionalType.queryUnsecured,
+  searchCountries: actions.auth.countries.queryUnsecured,
+  searchProvinces: actions.auth.provinces.queryUnsecured,
 };
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
