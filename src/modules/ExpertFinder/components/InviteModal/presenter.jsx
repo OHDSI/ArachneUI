@@ -61,6 +61,7 @@ function InviteModal(props) {
         props: {
           placeholder: 'User role',
           required: true,
+          unselectable: false,
           options: Object.values(roles),
           mods: ['bordered'],
         },

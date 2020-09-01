@@ -72,7 +72,7 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = {
   goToRoot: goToPage.bind(null, '/'),
-  authMethod: actions.auth.authMethod.find,
+  authMethod: actions.auth.authMethod.findUnsecured,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

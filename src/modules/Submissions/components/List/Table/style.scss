@@ -12,17 +12,33 @@
     &__author-th {
       width: 15%;
     }
+    &__author-td {
+      overflow: hidden;
+      word-break:break-word
+    }
 
     &__study-th {
       width: 15%;
+    }
+    &__study-td {
+      overflow: hidden;
+      word-break:break-word
     }
 
     &__analysis-th {
       width: 10%;
     }
+    &__analysis-td {
+      overflow: hidden;
+      word-break:break-word
+    }
 
     &__data-source-th {
       width: 14%;
+    }
+    &__data-source-td {
+      overflow: hidden;
+      word-break:break-word
     }
 
     &__submitted-th {
