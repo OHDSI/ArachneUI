@@ -85,9 +85,9 @@ function CellEdit({ editDataSource, removeDataSource, value, published, name, ce
     </div>);
 }
 
-function CellName({ value, healthStatus }) {
+function CellName({ value, healthStatus, index }) {
   const classes = new BEMHelper('ds-name');
-  return <div {...classes()}>
+  return <div key={index + 'indicator-span'} {...classes()}>
     <div {...classes({
       element: 'indicator',
       modifiers: [healthStatus.title],
@@ -96,7 +96,7 @@ function CellName({ value, healthStatus }) {
       aria-label={healthStatuses.getTitle(healthStatus.title)}
       data-tootik-conf="right"
     ></div>
-    <span {...classes('name')}>{value}</span>
+    <span  {...classes('name')}>{value}</span>
   </div>;
 }
 

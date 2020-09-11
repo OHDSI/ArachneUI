@@ -37,7 +37,9 @@ class Duck {
     actionFactory.initCrud({ name });
     return {
       query: actionFactory.buildLoad(),
+      queryUnsecured: actionFactory.buildLoadUnsecured(),
       find: actionFactory.buildFind(),
+      findUnsecured: actionFactory.buildFindUnsecured(),
       create: actionFactory.buildCreateActionCreator(),
       update: actionFactory.buildUpdateActionCreator(),
       delete: actionFactory.buildDeleteActionCreator(),

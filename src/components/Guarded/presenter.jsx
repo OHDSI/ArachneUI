@@ -47,7 +47,7 @@ export default function GuardedComponent({ isMet, children, rules, className }) 
 
 GuardedComponent.propTypes = {
   isMet: PropTypes.bool,
-  children: PropTypes.oneOf(PropTypes.node, PropTypes.arrayOf(PropTypes.node)),
+  children: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node)]),
   rules: PropTypes.instanceOf(Guard),
   className: PropTypes.string,
 };

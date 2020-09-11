@@ -37,9 +37,11 @@ export default class ListDataSourcesBuilder {
 
   mapStateToProps(state) {
     const studyData = get(state, 'studyManager.study.data');
-
+    const userId = get(state, 'auth.principal.queryResult.id');
     return {
+      userId,
       studyId: get(studyData, 'id'),
+      studyKind: get(studyData, 'kind'),
       dataSourceList: selectors.getDataSourceList(state),
       hasAttachPermissions: selectors.hasAttachPermissions(state),
       hasDeletePermissions: selectors.hasDeletePermissions(state),
@@ -76,7 +78,14 @@ export default class ListDataSourcesBuilder {
           .then(() => {
             dispatchProps
               .removeDataSource({ studyId: stateProps.studyId, dataSourceId })
-              .then(() => dispatchProps.loadStudy({ id: stateProps.studyId }));
+              .then(() => {
+                const kind = stateProps.studyKind;
+                if (kind === 'WORKSPACE') {
+                  return dispatchProps.loadStudy({id: stateProps.userId, kind});
+                } else {
+                  return dispatchProps.loadStudy({id: stateProps.studyId});
+                }
+              });
           });
       },
       editDataSource(dataSourceId) {

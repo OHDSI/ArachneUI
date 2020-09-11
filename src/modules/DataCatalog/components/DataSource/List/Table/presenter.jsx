@@ -28,9 +28,9 @@ import {
 } from 'arachne-ui-components';
 import LabelDataSource from 'components/LabelDataSource';
 
-function CellName({ dataSource, className }) {
+function CellName({ dataSource, className, key }) {
   return (
-    <div className={className}>
+    <div className={className} key={key}>
       <LabelDataSource {...dataSource} />
     </div>
   );
@@ -45,7 +45,6 @@ function DataSourcesTable(props) {
     sorting,
   } = props;
   const tableClasses = new BEMHelper('data-catalog-table');
-
   return (
     <Table
       {...tableClasses()}
@@ -60,6 +59,7 @@ function DataSourcesTable(props) {
             return <CellName
               {...tableClasses('ds-name', '', tableClasses('meta').className)}
               header={col.label}
+              key={key}
               field={'dataNode,name'}
               props={dataSource => ({ dataSource })}
             />

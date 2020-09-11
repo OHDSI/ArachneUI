@@ -98,7 +98,7 @@ class AppContainer extends Component {
 AppContainer.propTypes = {
   children: PropTypes.node.isRequired,
   isUserAuthed: PropTypes.bool.isRequired,
-  navItems: PropTypes.node.isRequired,
+  navItems: PropTypes.node,
   sidebarTabList: PropTypes.array.isRequired,
 };
 
@@ -150,8 +150,8 @@ const mapDispatchToProps = {
   showAboutInfo: () => ModalUtils.actions.toggle(modal.portalAboutInfo, true),
   refreshToken: () => actions.auth.token.refresh(),
   logout: (backurl) => actions.auth.clearToken(backurl),
-  getPasswordPolicies: () => actions.auth.passwordPolicy.find(),
-  getNodeMode: () => (__APP_TYPE_NODE__) ? actions.auth.nodeMode.find() : true,
+  getPasswordPolicies: () => actions.auth.passwordPolicy.findUnsecured(),
+  getNodeMode: () => (__APP_TYPE_NODE__) ? actions.auth.nodeMode.findUnsecured() : true,
   getAuthMode: () => (__APP_TYPE_NODE__) ? actions.auth.authMode.find() : true
 };
 

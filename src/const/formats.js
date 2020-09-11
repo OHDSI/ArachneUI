@@ -22,7 +22,7 @@
 
 const commonDate = 'MMM D, YYYY h:mmA z';
 const shortDate = 'MM/D/YYYY hh:mma z';
-const usDateTime = 'MM/D/YY hh:mm:ss z';
+const usDateTime = 'MM/D/YY hh:mma z';
 const usDateOnly = 'MM/D/YY';
 const humanDate = 'DD MMM YYYY';
 const chartTime = '%b %Y';

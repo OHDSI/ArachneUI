@@ -52,7 +52,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  loadBuildInfo: () => actions.portal.buildInfo.find(),
+  loadBuildInfo: () => actions.portal.buildInfo.findUnsecured(),
   hideModal: () => ModalUtils.actions.toggle(modal.portalAboutInfo, false),
 };
 
