@@ -39,7 +39,6 @@ const defaultParams = {
 class SearchResults extends Component {
   componentWillReceiveProps(nextProps) {
     if (!isEqual(this.props.searchParams, nextProps.searchParams)) {
-      console.log('notEqualC', this.props.searchParams, nextProps.searchParams);
       this.props.search(nextProps.searchParams);
     }
   }
@@ -99,11 +98,9 @@ export default class SearchResultsBuilder extends ContainerBuilder {
     const filterValues = Utils.getFilterValues(search);
     const { collections = [] } = filterValues;
     const prevCollections = get(state, 'portal.search.requestParams.url.collections', [], 'Array');
-    console.log(prevCollections, collections);
     const { page: p = defaultParams.page, pageSize = defaultParams.pageSize, query: q = defaultParams.query } = query;
     let page = p;
     if (!_.isEqual(prevCollections, collections)) {
-      console.log('notEqual')
       page = defaultParams.page;
     }
     return {
