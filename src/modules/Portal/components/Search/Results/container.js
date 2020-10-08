@@ -69,7 +69,7 @@ export default class SearchResultsBuilder extends ContainerBuilder {
   mapStateToProps(state) {
     const searchResults = get(state, 'portal.search.queryResult', {}, 'Object');
     const search = get(state, 'routing.locationBeforeTransitions.search', '', 'String');
-    const query = get(state, 'routing.locationBeforeTransitions.query.query', '', 'String');
+    const query = get(state, 'routing.locationBeforeTransitions.query', {}, 'Object');
     const numOfElsPerPage = searchResultsPageSize;
     const searchParams = this.getSearchParams(search, query);
 
@@ -94,16 +94,26 @@ export default class SearchResultsBuilder extends ContainerBuilder {
     };
   }
 
-  getSearchParams(search, query) {
-    const searchParams = Utils.getFilterValues(search);
-
-    return { ...defaultParams, ...searchParams, query };
+  getSearchParams(search, query, state) {
+    const filterValues = Utils.getFilterValues(search);
+    const { collections = [] } = filterValues;
+    const prevCollections = get(state, 'portal.search.requestParams.url.collections', [], 'Array');
+    const { page: p = defaultParams.page, pageSize = defaultParams.pageSize, query: q = defaultParams.query } = query;
+    let page = p;
+    if (!_.isEqual(prevCollections, collections)) {
+      page = defaultParams.page;
+    }
+    return {
+      query: q,
+      pageSize,
+      page,
+      ...filterValues,
+    };
   }
 
   getFetchers({ params, state, dispatch }) {
     const search = get(state, 'routing.locationBeforeTransitions.search', '', 'String');
-    const query = get(state, 'routing.locationBeforeTransitions.query.query', '', 'String');
-
+    const query = get(state, 'routing.locationBeforeTransitions.query', {}, 'Object');
      return {
        search: () => actions.portal.search.query(this.getSearchParams(search, query)),
      };
