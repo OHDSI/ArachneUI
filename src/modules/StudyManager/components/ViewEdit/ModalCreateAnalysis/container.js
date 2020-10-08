@@ -52,7 +52,7 @@ export default class ModalCreateAnalysisBuilder {
       studyId: get(moduleData, 'study.data.id'),
       analysisTypes: selectors.getAnalysisTypesList(state),
       initialValues: {
-        attachDefaultCodeFiles: true,
+        attachDefaultCodeFiles: false,
       },
     };
   }
