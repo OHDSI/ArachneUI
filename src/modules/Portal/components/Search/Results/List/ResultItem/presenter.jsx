@@ -45,8 +45,8 @@ export default function ResultItem(props) {
     <div {...classes()}>
       <Domain {...domain} />
       <Link {...classes('title')} to={path}>{title}</Link>
-      <div {...classes('description')}>{highlight.map(match =>
-        <Highlight {...match} />
+      <div {...classes('description')}>{highlight.map((match, idx) =>
+        <Highlight key={idx} {...match} />
       )}</div>
       {breadcrumbs &&
         <Breadcrumbs {...classes('breadcrumbs')} data={breadcrumbs} />
