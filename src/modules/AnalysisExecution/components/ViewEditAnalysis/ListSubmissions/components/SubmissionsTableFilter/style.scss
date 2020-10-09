@@ -61,8 +61,14 @@
       &--cols {
         column-count: 2;
         border-top: none;
+        padding-bottom: 0;
         
         & .ac-checkbox {
+          display: inline-flex;
+          width: 90%;
+          transform: scale(1);
+          margin-top: 0;
+          margin-bottom: 1.5rem;
           &__checkbox-label {
             display: flex;
             width: 100%;
