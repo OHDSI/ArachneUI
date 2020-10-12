@@ -97,7 +97,7 @@ class TableStudies extends Component {
         format={this.props.timestampFormatter}
       />,
       <Cell
-        {...this.tableClasses('created')}
+        {...this.tableClasses('updated')}
         header="Updated"
         field="updated"
         format={this.props.timestampFormatter}
