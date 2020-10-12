@@ -54,9 +54,9 @@ function StudyStatus(props) {
 }
 
 StudyStatus.propTypes = {
-  downloadLink: PropTypes.string.isRequired,
+  downloadLink: PropTypes.string,
   language: PropTypes.string,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
 };
 
 export default StudyStatus;

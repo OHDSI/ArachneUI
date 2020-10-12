@@ -94,7 +94,13 @@ class TableStudies extends Component {
         {...this.tableClasses('created')}
         header="Created"
         field="created"
-        format={this.props.createdFormatter}
+        format={this.props.timestampFormatter}
+      />,
+      <Cell
+        {...this.tableClasses('updated')}
+        header="Updated"
+        field="updated"
+        format={this.props.timestampFormatter}
       />,
       <Cell
         {...this.tableClasses('type')}
@@ -115,13 +121,8 @@ class TableStudies extends Component {
     const {
       data,
       sorting,
-      createdFormatter,
-      typeFormatter,
-      statusFormatter,
       setSorting,
       goToStudy,
-      userLinkFormatter,
-      setFavourite,
     } = this.props;
 
     return (
@@ -142,17 +143,15 @@ class TableStudies extends Component {
 }
 
 TableStudies.propTypes = {
-  createdFormatter: PropTypes.func.isRequired,
+  timestampFormatter: PropTypes.func.isRequired,
   data: PropTypes.array.isRequired,
-  isLoading: PropTypes.bool.isRequired,
   goToStudy: PropTypes.func.isRequired,
-  linkFormatter: PropTypes.func.isRequired,
+  userLinkFormatter: PropTypes.func.isRequired,
   setSorting: PropTypes.func.isRequired,
   sorting: PropTypes.object.isRequired,
   statusFormatter: PropTypes.func.isRequired,
   typeFormatter: PropTypes.func.isRequired,
   pages: PropTypes.number,
-  currentPage: PropTypes.currentPage,
   path: PropTypes.string,
 };
 
