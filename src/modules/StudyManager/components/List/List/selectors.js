@@ -37,6 +37,7 @@ class selectorsBuilder {
       leadList: rawStudy.leadList,
       role: get(rawStudy, 'role', 'Reader', 'String'),
       created: rawStudy.created,
+      updated: rawStudy.updated,
       type: rawStudy.type,
       status: rawStudy.status,
       endDate: rawStudy.endDate,
