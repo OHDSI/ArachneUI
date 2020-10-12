@@ -53,7 +53,7 @@ class selectorsBuilder {
         leadList: Array<{ link: string, label: string }>,
         role: string,
         created: number,
-        type: string,
+        type: object,
         status: string,
         endDate: number,
       }>
