@@ -39,7 +39,7 @@ const selectors = (new SelectorsBuilder()).build();
 class InsightsList extends Component {
   static get propTypes() {
     return {
-      searchQuery: PropTypes.string,
+      searchQuery: PropTypes.object,
       loadInsightsWithCurrentQuery: PropTypes.func,
     };
   }
