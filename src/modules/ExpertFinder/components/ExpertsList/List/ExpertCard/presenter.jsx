@@ -84,7 +84,7 @@ function ExpertCard(props) {
 
 ExpertCard.propTypes = {
   expert: PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.string,
     userPic: PropTypes.string,
     address: PropTypes.string,
     affiliation: PropTypes.string,
