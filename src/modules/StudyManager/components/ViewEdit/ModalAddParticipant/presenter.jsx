@@ -25,6 +25,7 @@ import { Modal } from 'arachne-ui-components';
 import { Form } from 'arachne-ui-components';
 import { FormInput, FormSelect } from 'arachne-ui-components';
 import { FormAutocomplete } from 'arachne-ui-components';
+import { FormTextarea } from "arachne-ui-components";
 import { newParticipantRolesOptions } from 'modules/StudyManager/const';
 import BEMHelper from 'services/BemHelper';
 
@@ -56,6 +57,15 @@ function ModalAddParticipant(props) {
           options: props.participantOptions,
           fetchOptions: props.loadParticipantOptions,
           clearable: false,
+        }
+      }
+    },
+    {
+      name: 'message',
+      InputComponent: {
+        component: FormTextarea,
+        props: {
+          placeholder: 'Message for invitee (optional)',
         }
       }
     },

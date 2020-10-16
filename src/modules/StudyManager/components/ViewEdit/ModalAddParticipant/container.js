@@ -109,7 +109,7 @@ export default class ModalAddParticipantBuilder {
       ...ownProps,
       ...stateProps,
       ...dispatchProps,
-      doSubmit({ participantId, role }) {
+      doSubmit({ participantId, role, message }) {
         const submitPromise = dispatchProps.addParticipant(
           {
             studyId: stateProps.studyId,
@@ -117,6 +117,7 @@ export default class ModalAddParticipantBuilder {
           {
             userId: participantId,
             role,
+            message
           }
         );
 
