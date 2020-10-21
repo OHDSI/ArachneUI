@@ -26,7 +26,15 @@
   &invite-modal {
   
     &__invite-form {
-      width: 300px;
+      width: 52rem;
+
+      .ac-form-textarea {
+        resize: none;
+      }
+
+      .ac-form-textarea::placeholder {
+        color: #A9A9A9;
+      }
     }
   }
 }
