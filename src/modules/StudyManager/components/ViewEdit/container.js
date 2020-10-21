@@ -109,18 +109,19 @@ export default class ViewEditStudyBuilder extends ActiveModuleAwareContainerBuil
       'My studies',
     ];
     const isStudyLoading = get(moduleState, 'study.isLoading');
+    const isStudyUpdating = get(moduleState, 'study.isUpdating');
     const isTypesLoading = get(moduleState, 'typeList.isLoading');
     const participants = get(studyData, 'participants');
     const isParticipantsLoading = get(participants, 'isSaving');
 
     const kind = get(studyData, 'kind');
     const isStudyLoadingComplete = !isEmpty(studyData) && !isStudyLoading;
-    const canView = isViewable(studyData);    
+    const canView = isViewable(studyData);
 
     return {
       id: parseInt(ownProps.routeParams.studyId, 10),
       studyTitle: pageTitle.join(' | '),
-      isLoading: isStudyLoading || isTypesLoading || isParticipantsLoading || get(state, 'studyManager.studyInvitations.isLoading'),
+      isLoading: isStudyLoading || isStudyUpdating || isTypesLoading || isParticipantsLoading || get(state, 'studyManager.studyInvitations.isLoading'),
       participants,
       kind,
       canView,
