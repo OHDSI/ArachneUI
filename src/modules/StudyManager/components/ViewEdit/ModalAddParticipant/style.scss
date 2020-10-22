@@ -22,7 +22,7 @@
 
 @import 'styles/vars-and-mixins.scss';
 
-$width: 26rem;
+$width: 52rem;
 
 .#{$namespace} {
 
@@ -30,6 +30,19 @@ $width: 26rem;
 		width: $width;
 
 		@include modal-dropdown-overflow($width);
+
+		.ac-autocomplete__search {
+			right: 2rem;
+			top: -17.5rem;
+		}
+
+		.ac-form-textarea {
+			resize: none;
+		}
+
+		.ac-form-textarea::placeholder {
+			color: #A9A9A9;
+		}
 	}
 
 }

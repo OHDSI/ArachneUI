@@ -78,12 +78,13 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     ...stateProps,
     ...ownProps,
     ...dispatchProps,
-    invite: ({ study, role }) => {
+    invite: ({ study, role, message }) => {
       const submitPromise = dispatchProps.inviteParticipant(
         { studyId: study },
         {
           userId: stateProps.userToInvite,
           role,
+          message
         }
       );
       submitPromise.then(() => {
