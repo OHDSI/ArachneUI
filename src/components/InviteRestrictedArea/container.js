@@ -32,9 +32,9 @@ const selectors = (new SelectorsBuilder()).build();
 class InviteRestrictedArea extends Component {
   static get propTypes() {
     return {
-      studyId: PropTypes.number.isRequired,
+      studyId: PropTypes.number,
       className: PropTypes.string,
-      onBannerActed: PropTypes.func.isRequired,
+      onBannerActed: PropTypes.func,
     };
   }
 

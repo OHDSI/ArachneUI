@@ -69,7 +69,7 @@ function AddDataCatalogSource(props) {
 
   return (
 		<div {...classes({ modifiers: { 'has-options': props.dataSourceOptions.length } })}>
-      <form {...props} onSubmit={props.handleSubmit(props.doSubmit)}>
+      <form onSubmit={props.handleSubmit(props.doSubmit)}>
         {props.isOpened &&
           <Field component={Fieldset} {...filterField} />
         }

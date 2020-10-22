@@ -75,9 +75,9 @@ function WorkspaceToolbar(props) {
 WorkspaceToolbar.propTypes = {
   breadcrumbList: PropTypes.array.isRequired,
   backurl: PropTypes.string,
-  isEditable: PropTypes.bool.isRequired,
-  openEditTitleModal: PropTypes.func.isRequired,
-  studyTitle: PropTypes.string.isRequired,
+  isEditable: PropTypes.bool,
+  openEditTitleModal: PropTypes.func,
+  studyTitle: PropTypes.string,
   isFavourite: PropTypes.bool,
   setFavourite: PropTypes.func,
 };
