@@ -68,3 +68,12 @@ export class SubmissionGroupLinkBuilder extends LinkBuilder {
     return apiPaths.submissionGroupCodeBySubmission(urlParams);
   }
 }
+
+export class SubmissionResultZipEntryLinkBuilder extends LinkBuilder {
+  getLink() {
+    return apiPaths.submissionResultsZipEntry({
+      submissionId: this.params.submissionId,
+      query: this.params.query,
+    });
+  }
+}

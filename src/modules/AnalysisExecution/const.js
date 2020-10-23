@@ -122,6 +122,7 @@ const apiPaths = {
   submissionGroupCode: ({ submissionGroupId, fileId, downloadFile, query }) => Utils.setUrlParams(`/api/v1/analysis-management/submission-groups/${submissionGroupId}/files/${fileId}${downloadFile ? '/download' : ''}`, query),
   submissionGroupCodeBySubmission: ({ submissionId, fileId, downloadFile, query }) => Utils.setUrlParams(`/api/v1/analysis-management/submissions/${submissionId}/files/${fileId}${downloadFile ? '/download' : ''}`, query),
   submissionResults: ({ submissionId, fileId, downloadFile, query }) => Utils.setUrlParams(`/api/v1/analysis-management/submissions/${submissionId}/results/${fileId}${downloadFile ? '/download' : ''}`, query),
+  submissionResultsZipEntry: ({submissionId, query}) => Utils.setUrlParams(`/api/v1/analysis-management/submissions/${submissionId}/results/zip-entry`, query),
   submissionGroupCodeAll: ({ submissionGroupId }) => `/api/v1/analysis-management/submission-groups/${submissionGroupId}/files/all`,
   submissionResultsDownload: ({ submissionId, fileId }) => `/api/v1/analysis-management/submissions/${submissionId}/results/${fileId}/download`,
   submissionFilesDownload: ({ submissionGroupId, fileId }) => `/api/v1/analysis-management/submission-groups/${submissionGroupId}/files/${fileId}/download`,
