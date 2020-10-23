@@ -53,7 +53,6 @@ function ModalCreateDocument(props) {
 }
 
 ModalCreateDocument.propTypes = {
-  doSubmit: PropTypes.func.isRequired,
   modal: PropTypes.object.isRequired,
 };
 

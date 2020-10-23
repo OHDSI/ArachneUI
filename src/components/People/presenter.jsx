@@ -39,8 +39,9 @@ function People({ title, userList, children, remove }) {
     <Panel title={title}>
       {userList.length ?
         <div {...classes()}>
-          {userList.map(user =>
+          {userList.map((user, index) =>
             <ListItem
+              key={index}
               {...classes('user')}
               mods={listItemMods}
               onRemove={() => remove(user)}

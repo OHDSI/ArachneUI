@@ -41,7 +41,8 @@ function InsightsList(props) {
 
   return (
     <div {...classes()}>
-      {insightList.map(insight => <Card
+      {insightList.map((insight, i) => <Card
+        key={i}
         {...insight}
         setFavourite={setFavourite}
         participantsExpanded={participantsExpanded}

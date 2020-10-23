@@ -34,7 +34,7 @@ require('./style.scss');
 export default class UserList extends Component {
 
   getModals() {
-    return [<ModalAddUser />, <ModalAddUserBatch />];
+    return [<ModalAddUser key="modalAddUser" />, <ModalAddUserBatch key="modalAddUserBatch" />];
   }
 
   render() {

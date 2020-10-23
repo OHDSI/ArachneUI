@@ -65,6 +65,7 @@ class TableStudies extends Component {
   getColumns() {
     return [
       <CellName
+        key="title"
         {...this.tableClasses('study')}
         header="Study"
         field="title"
@@ -80,35 +81,41 @@ class TableStudies extends Component {
         })}
       />,
       <LeadList
+        key="leadList"
         {...this.tableClasses('lead')}
         header="Lead"
         field="leadList"
         userLinkFormatter={this.props.userLinkFormatter}
       />,
       <Cell
+        key="role"
         {...this.tableClasses('role')}
         header="My role"
         field="role"
       />,
       <Cell
+        key="created"
         {...this.tableClasses('created')}
         header="Created"
         field="created"
         format={this.props.timestampFormatter}
       />,
       <Cell
+        key="updated"
         {...this.tableClasses('updated')}
         header="Updated"
         field="updated"
         format={this.props.timestampFormatter}
       />,
       <Cell
+        key="type"
         {...this.tableClasses('type')}
         header="Type"
         field="type"
         format={this.props.typeFormatter}
       />,
       <CellStatus
+        key="status"
         {...this.tableClasses('status')}
         header="Status"
         field="status"

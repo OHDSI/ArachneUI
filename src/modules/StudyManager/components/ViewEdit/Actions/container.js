@@ -65,7 +65,7 @@ export default class StudyActionsBuilder {
       canDelete,
       publishedPaperId,
       isEditable,
-      isFilledForPaper,
+      isFilledForPaper: Boolean(isFilledForPaper),
       canCreatePaper,
       title: get(studyData, 'title'),
     };

@@ -40,7 +40,7 @@ const getSystemSettings = createSelector(
     formData.fieldList.forEach((field) => {
       fieldList.push({
         label: field.label,
-        name: field.id,
+        name: String(field.id),
         value: field.value,
         type: field.type,
         isSet: field.isSet,
