@@ -38,8 +38,8 @@ export default class Settings extends Component {
 
     renderContent() {
         return (
-            this.getSettingsComponents().map(control =>
-                <div className="row">
+            this.getSettingsComponents().map((control, idx) =>
+                <div className="row" key={idx}>
                     <div className="col-xs-12 col-md-4">
                         {control}
                     </div>

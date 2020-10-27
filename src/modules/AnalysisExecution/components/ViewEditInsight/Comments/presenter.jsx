@@ -57,8 +57,8 @@ function Comments(props) {
       >
         {commentsExist ?
           <div>
-            {commentGroupList.map(commentGroup =>
-              <div>
+            {commentGroupList.map((commentGroup, idx) =>
+              <div key={idx}>
                 <div
                   {...classes('group-name')}
                   onClick={() => loadComments(commentGroup.file)}

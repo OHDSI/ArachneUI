@@ -58,8 +58,8 @@ function DataSources({ dataSourceList }) {
     <Panel title="Data sources used">
       {dataSourceList.length ?
         <ul {...classes()}>
-          {dataSourceList.map(ds => 
-            <ListItem>
+          {dataSourceList.map((ds, idx) => 
+            <ListItem key={idx}>
               <LabelDataSource {...ds} isLink={true} />
             </ListItem>
           )}

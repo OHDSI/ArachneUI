@@ -21,7 +21,7 @@
  */
 
 import React from 'react';
-import { Route, IndexRedirect } from 'react-router';
+import { Route } from 'react-router';
 
 import List from './components/List';
 import ViewEdit from './components/ViewEdit';
@@ -45,7 +45,6 @@ function Routes() {
     />,
     <Route path="insights/:insightId" component={ViewEdit} />,
     <Route path="insights/:insightId/files/:fileUuid" component={FileViewer} />,
-    <IndexRedirect to="insights" />,
   ];
 }
 

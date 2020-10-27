@@ -30,7 +30,6 @@ class AdminRoutes {
     return [
       <Route path="admins" component={AdminList} />,
       <Route path="system-settings" component={SystemSettings} />,
-      <IndexRedirect to="admins" />,
     ];
 	}
 }

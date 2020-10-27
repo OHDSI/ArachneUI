@@ -44,7 +44,7 @@ function DocumentPanel(props) {
   return (
     <Panel {...classes()} title={title}>
       {files && files.length ?
-        files.map(file => <ListItem
+        files.map((file, idx) => <ListItem key={idx}
           {...classes('value')}
         >
           <i {...classes('doctype-ico', file.docType)} />

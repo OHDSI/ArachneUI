@@ -69,7 +69,7 @@ function OwnerList({ removeOwner, /* redux */ input }) {
         </label>
         <ul {...classes('user-list')}>
           {input.value.map(user =>
-            <Owner user={user} removeOwner={removeOwner} />
+            <Owner key={user.id} user={user} removeOwner={removeOwner} />
           )}
         </ul>
       </div>

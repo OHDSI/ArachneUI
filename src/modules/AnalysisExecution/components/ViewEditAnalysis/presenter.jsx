@@ -50,7 +50,7 @@ import './style.scss';
 
 /** @augments{ Component<any, any> } */
 export default class ViewEditAnalysis extends Component {
-  get propTypes() {
+  static get propTypes() {
     return {
       studyUrl: PropTypes.string,
       isLoading: PropTypes.bool,
@@ -58,24 +58,24 @@ export default class ViewEditAnalysis extends Component {
     };
   }
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.classes = BEMHelper('analysis-view');
   }
 
   getModals() {
     return [
-      <ModalEditTitle />,
-      <ModalCreateCode />,
-      <ModalCreateInsight />,
-      <ModalSubmitCode />,
-      <ModalFiles />,
-      <ModalStatusHistory />,
-      <ModalUploadResult />,
-      <ModalUpdateDescription />,
-      <ModalRejectSubmission />,
-      <ModalAddDataSource onAdd={this.props.refreshStudyDataSources} />,
-      <ModalError />,
+      <ModalEditTitle key="editTitle" />,
+      <ModalCreateCode key="createCode" />,
+      <ModalCreateInsight key="createInsight" />,
+      <ModalSubmitCode key="submitCode" />,
+      <ModalFiles key="files" />,
+      <ModalStatusHistory key="statusHistory" />,
+      <ModalUploadResult key="uploadResult" />,
+      <ModalUpdateDescription key="updateDescription" />,
+      <ModalRejectSubmission key="rejectSubmission" />,
+      <ModalAddDataSource onAdd={this.props.refreshStudyDataSources} key="addDataSource" />,
+      <ModalError key="error" />,
     ];
   }
 
