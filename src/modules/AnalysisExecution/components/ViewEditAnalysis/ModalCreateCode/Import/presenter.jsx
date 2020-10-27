@@ -85,8 +85,8 @@ function ImportCode(props) {
     <div {...classes()}>
       {panels
         .filter(panel => panel.showIf())
-        .map(panel =>
-          <div {...classes('panel')}>
+        .map((panel, idx) =>
+          <div key={idx} {...classes('panel')}>
             {React.cloneElement(
               panel.element,
               {

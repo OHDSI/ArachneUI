@@ -21,7 +21,7 @@
  */
 
 import React from 'react';
-import { Route, IndexRedirect } from 'react-router';
+import { Route } from 'react-router';
 import ListDataSources from './components/DataSource/List';
 import ViewDataSource from './components/DataSource/ViewEdit/View';
 import EditDataSource from './components/DataSource/ViewEdit/Edit';
@@ -36,7 +36,6 @@ function Routes() {
     <Route path="data-sources/:dataSourceId/profile" component={ViewDataSource} params={{ isProfileSelected: true }} />,
     <Route path="data-sources/:dataSourceId/edit" component={EditDataSource} />,
     <Route path="data-nodes/:datanodeId" component={ViewEditDatanode} />,
-    <IndexRedirect to="data-sources"/>,
   ];
 }
 

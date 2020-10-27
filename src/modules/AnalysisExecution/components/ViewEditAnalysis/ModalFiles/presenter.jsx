@@ -86,8 +86,8 @@ function FileAddressBar({ path = '', loadFolder }) {
 
   return (
     <div {...classes()}>
-      {itemList.map((item) =>
-        <Link {...classes('item')} onClick={() => loadFolder({ path: item.path })}>
+      {itemList.map((item, idx) =>
+        <Link key={idx} {...classes('item')} onClick={() => loadFolder({ path: item.path })}>
           {item.label}
         </Link>
       )}

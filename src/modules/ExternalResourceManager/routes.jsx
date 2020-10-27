@@ -21,13 +21,12 @@
  */
 
 import React from 'react';
-import { Route, IndexRedirect } from 'react-router';
+import { Route } from 'react-router';
 import AtlasList from './components/AtlasList';
 
 function Routes() {
   return [
     <Route path="atlases" component={AtlasList} />,
-    <IndexRedirect to="atlases" />,
   ];
 }
 

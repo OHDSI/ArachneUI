@@ -35,12 +35,12 @@ function LabelSubmissionStatus({ className, mods, status, type = 'default' }) {
     mods,
   );
   const defaultLabel = [
-    <span {...classes('icon')}>open_in_new</span>,
-    <span {...classes('title')}>{status.title}</span>,
+    <span key="1" {...classes('icon')}>open_in_new</span>,
+    <span key="2" {...classes('title')}>{status.title}</span>,
   ];
   const dotLabel = [
-    <span {...classes('dot')}>brightness_1</span>,
-    <span {...classes('title')}>{status.title}</span>,
+    <span key="3" {...classes('dot')}>brightness_1</span>,
+    <span key="4" {...classes('title')}>{status.title}</span>,
   ];
 
   return (

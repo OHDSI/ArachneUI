@@ -44,7 +44,7 @@ export function getFilter(search) {
 }
 
 class ViewEditAnalysis extends Component {
-  get propTypes() {
+  static get propTypes() {
     return {
       id: PropTypes.number.isRequired,
       loadAnalysis: PropTypes.func.isRequired,
@@ -53,7 +53,7 @@ class ViewEditAnalysis extends Component {
       studyId: PropTypes.number,
       unloadAnalysis: PropTypes.func.isRequired,
       loadSubmissionGroups: PropTypes.func,
-      filter: PropTypes.object,
+      filter: PropTypes.string,
     };
   }
 
