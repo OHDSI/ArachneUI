@@ -175,14 +175,14 @@ function UsersTable({ fields, meta: { touched, error }, professionalTypesOptions
     <div {...classes()}>
       <Table  {...classes('table')} data={fields}>
         <CellTextEditable {...classes('col-first-name')}
-          header="First name"
+          header="First Name"
           field="firstname"
           props={() => ({
             required: true,
           })}
         />
         <CellTextEditable {...classes('col-last-name')}
-          header="Last name"
+          header="Last Name"
           field="lastname"
           props={() => ({
             required: true,
