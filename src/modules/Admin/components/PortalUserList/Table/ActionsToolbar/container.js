@@ -57,7 +57,7 @@ class UserListActionsToolbarBuilder extends ContainerBuilder {
     const messages = {
       [batchOperationType.ENABLE]: "toggle enabled flag for",
       [batchOperationType.DELETE]: "delete",
-      [batchOperationType.RESEND]: "render confirmation email to",
+      [batchOperationType.RESEND]: "resend confirmation email to",
       [batchOperationType.CONFIRM]: "toggle confirmed flag for",
     };
     

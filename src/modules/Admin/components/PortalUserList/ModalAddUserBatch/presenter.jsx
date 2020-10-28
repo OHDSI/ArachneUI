@@ -213,13 +213,15 @@ function UsersTable({ fields, meta: { touched, error }, professionalTypesOptions
         <CellTextEditable {...classes('col-mobile')}
           header="Mobile"
           field="address.mobile"
-          props={() => ({ required: true, })}
+          props={() => ({
+            required: false,
+          })}
         />
         <CellTextEditable {...classes('col-address')}
           header="Address"
           field="address.address1"
           props={() => ({
-            required: false,
+            required: true,
           })}
         />
         <CellTextEditable {...classes('col-city')}
@@ -249,7 +251,7 @@ function UsersTable({ fields, meta: { touched, error }, professionalTypesOptions
           header="Province"
           field="address.stateProvince.isoCode"
           props={() => ({
-            required: true,
+            required: false,
             options: provinceProps.provinces,
             fetchOptions: provinceProps.searchProvinces,
           })}
