@@ -121,7 +121,7 @@ export default class ViewEditStudyBuilder extends ActiveModuleAwareContainerBuil
     return {
       id: parseInt(ownProps.routeParams.studyId, 10),
       studyTitle: pageTitle.join(' | '),
-      isLoading: isStudyLoading || isStudyUpdating || isTypesLoading || isParticipantsLoading || get(state, 'studyManager.studyInvitations.isLoading'),
+      isLoading: isStudyLoading || isStudyUpdating || isTypesLoading || isParticipantsLoading,
       participants,
       kind,
       canView,

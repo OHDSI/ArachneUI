@@ -82,7 +82,6 @@ export default class StudyActionsBuilder {
       goBack,
       remove: actions.studyManager.study.delete,
       goToPaper: (insightId) => goToPage(paperPaths.insights({ insightId })),
-      loadSudyInvitations: actions.studyManager.studyInvitations.query,
     };
   }
 
@@ -104,7 +103,6 @@ export default class StudyActionsBuilder {
       reload: () => {
         dispatchProps.loadStudy({ id: stateProps.studyId });
         dispatchProps.loadInsights({ studyId: stateProps.studyId });
-        dispatchProps.loadSudyInvitations({ studyId: stateProps.studyId });
       },
       remove: () => {
         Utils.confirmDelete({

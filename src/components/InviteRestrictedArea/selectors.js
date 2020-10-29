@@ -26,8 +26,9 @@ import { get } from 'services/Utils';
 
 export default class SelectorsBuilder {
 
-  getInvitations(state) {
-    return get(state, 'studyManager.studyInvitations.queryResult.result');
+  getInvitations(state, studyId) {
+    const invitations = get(state, 'portal.invitation.list.queryResult.result', [], 'Array');
+    return invitations.filter(invitation => get(invitation, 'entity.id') === studyId);
   }
 
   getPendingInvitation(invitations) {
