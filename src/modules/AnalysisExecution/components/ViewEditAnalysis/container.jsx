@@ -110,7 +110,7 @@ export default class ViewEditAnalysisBuilder extends ActiveModuleAwareContainerB
     return {
       id: parseInt(ownProps.routeParams.analysisId, 10),
       studyId,
-      isLoading: get(analysis, 'isLoading', false) || isSubmissionGroupsLoading || get(state, 'studyManager.studyInvitations.isLoading'),
+      isLoading: get(analysis, 'isLoading', false) || isSubmissionGroupsLoading,
       pageTitle: pageTitle.join(' | '),
       isEditable: get(analysisData, `permissions[${analysisPermissions.editAnalysis}]`, false),
       page: get(currentQuery, 'page', 1),
