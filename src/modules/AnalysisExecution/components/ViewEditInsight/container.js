@@ -68,7 +68,7 @@ export default class ViewEditInsightBuilder extends ActiveModuleAwareContainerBu
     ];
   
     return {
-      isLoading: get(moduleState, 'insight.isLoading', false) || get(state, 'studyManager.studyInvitations.isLoading'),
+      isLoading: get(moduleState, 'insight.isLoading', false),
       submissionId: parseInt(ownProps.routeParams.submissionId, 10),
       insightTitle: get(insightData, 'name', ''),
       pageTitle: pageTitle.join(' | '),
