@@ -67,7 +67,7 @@ function CellSelectEditable({ options, header, field, index, required = false })
   );
 }
 
-function CellAutocomplete({ header, field, index, required = false, options, fetchOptions }) {
+function CellAutocomplete({ header, field, index, required = false, tethered = false, options, fetchOptions }) {
   return (
     <Field
       component={Fieldset}
@@ -82,6 +82,7 @@ function CellAutocomplete({ header, field, index, required = false, options, fet
             return fetchOptions({ ...data, rowDataKey: `${fieldArrayName}[${index}]` });
           },
           clearable: false,
+          tethered,
         }
       }}
     />
@@ -243,6 +244,7 @@ function UsersTable({ fields, meta: { touched, error }, professionalTypesOptions
           field="address.country.isoCode"
           props={() => ({
             required: true,
+            tethered: true,
             options: countryProps.countries,
             fetchOptions: countryProps.searchCountries,
           })}
@@ -252,6 +254,7 @@ function UsersTable({ fields, meta: { touched, error }, professionalTypesOptions
           field="address.stateProvince.isoCode"
           props={() => ({
             required: false,
+            tethered: true,
             options: provinceProps.provinces,
             fetchOptions: provinceProps.searchProvinces,
           })}
