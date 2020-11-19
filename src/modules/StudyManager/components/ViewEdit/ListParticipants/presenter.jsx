@@ -20,7 +20,7 @@
  *
  */
 
-import React, { PropTypes } from 'react';
+import React, { PropTypes, Component } from 'react';
 import DraggableList from 'react-draggable-list';
 import { ListItem, Link, Select } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
@@ -29,17 +29,24 @@ import { Avatar } from 'arachne-ui-components';
 import { apiPaths } from 'modules/StudyManager/const';
 
 require('./style.scss');
-
-function ParticipantCard({url, participant}) {
+function ParticipantCard({url, participant, toggleRoles, rolesExpanded}) {
   const classes = new BEMHelper('participant-card-avatar');
 
   return (
+    <div {...classes('container')} onClick={toggleRoles}>
       <div {...classes()}>
         <div {...classes('avatar-container')}>
           <Avatar mods={['round', 'bordered']} img={url}/>
           <Link to={participant.link}>{participant.fullName}</Link>
         </div>
+      </div >
+      <div {...classes('role')}>
+        <div data-tootik-conf='left multiline'>
+          <span>ROLE</span>
+        </div>
       </div>
+      <div {...classes('status')}>STATUS</div>
+    </div>
   );
 }
 
@@ -109,7 +116,7 @@ function ParticipantItem(props) {
       mods={mods}
       actions={actions}
     >
-
+      <div {...classes('avatar-placeholder')}></div>
       <div {...classes('role')}>
         <div data-tootik-conf='left multiline'>
           {participant.canBeRemoved ?
@@ -163,45 +170,68 @@ ParticipantItem.propTypes = {
   removeParticipant: PropTypes.func.isRequired,
 }
 
-function ParticipantLine(props) {
-  const {roles, hasEditPermissions, addParticipant, changeRole, removeParticipant} = props;
-  const classes = new BEMHelper('study-participant-lines');
-  const participant = roles[0];
 
-  return (
+class ParticipantLine extends Component {
+  static propTypes() {
+    return {
+      hasEditPermissions: PropTypes.bool.isRequired,
+      openAddParticipantModal: PropTypes.func,
+      participantList: PropTypes.array,
+      removeParticipant: PropTypes.func.isRequired,
+      roles: PropTypes.array.isRequired,
+    };
+  }
+  constructor(props) {
+    super(props);
+    this.classes = new BEMHelper('study-participant-lines');
+    this.participant = this.props.roles[0];
+    this.state = {
+      rolesExpanded: false,
+    };
+    this.toggleRoles = this.toggleRoles.bind(this);
+  }
+
+  toggleRoles() {
+    this.setState({
+      rolesExpanded: !this.state.rolesExpanded,
+    });
+  }
+
+  render() {
+   return (
       <li>
-        <div {...classes('group')}>
-          <ParticipantCard participant={participant} {...classes('card')}
-                           url={apiPaths.userpic(participant.id)}></ParticipantCard>
-          <div {...classes('roles')}>
-            <ul>
-              {
-                roles.map((role, index) => {
-                  return (<ParticipantItem
-                      participant={role}
-                      hasEditPermissions={hasEditPermissions}
-                      addParticipant={addParticipant}
-                      changeRole={changeRole}
-                      removeParticipant={removeParticipant}
-                      key={index}
-                  />)
-                })
-              }
-            </ul>
-
-          </div>
+        <div {...this.classes('group')}>
+          <ParticipantCard 
+            {...this.classes('card')}
+            participant={this.participant}
+            url={apiPaths.userpic(this.participant.id)}
+            toggleRoles={this.toggleRoles}
+            rolesExpanded={this.state.rolesExpanded}>
+          </ParticipantCard>
+          {this.state.rolesExpanded && 
+            <div {...this.classes('roles')}>
+              <ul>
+                {
+                  this.props.roles.map((role, index) => {
+                    return (<ParticipantItem
+                        participant={role}
+                        hasEditPermissions={this.props.hasEditPermissions}
+                        addParticipant={this.props.addParticipant}
+                        changeRole={this.props.changeRole}
+                        removeParticipant={this.props.removeParticipant}
+                        key={index}
+                    />)
+                  })
+                }
+              </ul>
+            </div>
+            }
         </div>
       </li>
-  )
+    )
+  }
 }
 
-ParticipantLine.propTypes = {
-  hasEditPermissions: PropTypes.bool.isRequired,
-  openAddParticipantModal: PropTypes.func,
-  participantList: PropTypes.array,
-  removeParticipant: PropTypes.func.isRequired,
-  roles: PropTypes.array.isRequired,
-}
 
 function ListParticipants(props) {
 

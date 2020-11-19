@@ -36,18 +36,35 @@
       &__group {
         display: flex;
         border-bottom: $border;
+        flex-wrap: wrap;
 
        .ac-participant-card-avatar {
           flex: 4;
           align-items: flex-start;
           display: flex;
 
+          &__container {
+            display: flex;
+            background: #F9F9F9;
+            color: #909090;
+            font-weight: bold;
+            cursor: pointer;
+            flex-basis: 100%;
+            padding-right: 5rem;
+            align-items: center;
+            font-weight: bold;
+            &:hover {
+              background: darken(#F9F9F9, 3);
+            }
+          }
          &__avatar-container {
            display: flex;
            flex-direction: row;
            align-items: center;
            margin-top: $half_rem;
+           margin-bottom: $half_rem;
          }
+         
 
           & .ac-avatar {
             width: $avatar_size;
@@ -55,6 +72,14 @@
             min-width: $avatar_size;
             min-height: $avatar_size;
             margin: 0 1rem;
+          }
+          &__role, 
+          &__status {
+            flex: 2;
+          }
+
+          &__status {
+            text-align: right;
           }
         }
 
@@ -78,6 +103,10 @@
 
       &__role-select {
         margin-left: -1rem;
+      }
+
+      &__avatar-placeholder {
+        flex: 4;
       }
 
       &__status {
