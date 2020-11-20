@@ -93,12 +93,12 @@
         <snapshotRepository>
             <id>artifactory</id>
             <name>Odysseus community snapshots</name>
-            <url>http://repo.odysseusinc.com/artifactory/community-libs-snapshot-local</url>
+            <url>https://nexus.odysseusinc.com/repository/community-libs-snapshot-local</url>
         </snapshotRepository>
         <repository>
             <id>artifactory</id>
             <name>Odysseus community releases</name>
-            <url>http://repo.odysseusinc.com/artifactory/community-libs-release-local</url>
+            <url>https://nexus.odysseusinc.com/repository/community-libs-release-local</url>
         </repository>
     </distributionManagement>
 </project>
