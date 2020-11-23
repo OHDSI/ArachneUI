@@ -36,7 +36,6 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>3.0.0</version>
                 <executions>
                     <execution>
                         <id>exec-npm-install</id>
@@ -52,7 +51,7 @@
                         </goals>
                     </execution>
 					<execution>
-                        <id>exec-rub-build</id>
+                        <id>exec-run-build</id>
                         <phase>generate-sources</phase>
                         <configuration>
                             <executable>npm</executable>
@@ -92,14 +91,14 @@
     </build>
     <distributionManagement>
         <snapshotRepository>
-            <id>artifactory</id>
+            <id>nexus</id>
             <name>Odysseus community snapshots</name>
-            <url>https://nexus.odysseusinc.com/community-libs-snapshot-local</url>
+            <url>https://nexus.odysseusinc.com/repository/community-libs-snapshot-local</url>
         </snapshotRepository>
         <repository>
-            <id>artifactory</id>
+            <id>nexus</id>
             <name>Odysseus community releases</name>
-            <url>https://nexus.odysseusinc.com/community-libs-release-local</url>
+            <url>https://nexus.odysseusinc.com/repository/community-libs-release-local</url>
         </repository>
     </distributionManagement>
 </project>
