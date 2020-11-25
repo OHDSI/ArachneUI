@@ -39,7 +39,7 @@ import {
 } from './presenter';
 
 
-class ControlPanel extends Component<IPanelProps, void> {
+class ControlPanel extends Component<IPanelProps, {}> {
   render() {
     return presenter(this.props);
   }
@@ -75,7 +75,7 @@ const FormControlPanel = reduxForm({
   form: forms.downloadSettings,
 })(ControlPanel);
 
-export default connect<IPanelStateProps, IPanelDispatchProps, void>(
+export default connect<IPanelStateProps, IPanelDispatchProps, {}>(
   mapStateToProps,
   mapDispatchToProps,
   mergeProps

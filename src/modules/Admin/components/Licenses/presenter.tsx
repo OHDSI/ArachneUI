@@ -31,7 +31,7 @@ import {
   FormInput,
 } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
-import Table from './components/Table';
+import LicensesList from './components/LicensesList';
 import ModalAddPermission from './components/ModalAddPermission';
 import ModalEditPermissions from './components/ModalEditPermissions';
 
@@ -93,7 +93,7 @@ function Licenses(props: ILicensesProps) {
         </Toolbar>
       </div>
       <div {...classes('table')}>
-        <Table />
+        <LicensesList />
       </div>
       <div {...classes('pagination')}>
         <Pagination currentPage={page} pages={pages} path={path} />

@@ -26,6 +26,7 @@ const forms = keyMirror({
 	addPermission: null,
 	editPermission: null,
 	licenseFilter: null,
+    downloadsFilter:null,
 });
 
 const modal = keyMirror({
@@ -34,13 +35,16 @@ const modal = keyMirror({
 });
 
 const actionTypes = keyMirror({
+    STATISTICS_SORT_ORDER_UPDATED: null,
 });
 
 const paths = {
 	licenses: (pendingOnly: boolean) => `/admin/licenses${pendingOnly ? '/pending' : ''}`,
+    statistics: '/admin/statistics'
 };
 
 const apiPaths = {
+    statisticsCsv: (query: string) => `/api/v1/statistics/csv${query}`,
 };
 
 const pageSize = 12;

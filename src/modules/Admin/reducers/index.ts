@@ -22,9 +22,17 @@
 
 import { combineReducers } from 'redux';
 import services from '../apiServices';
+import ReducerFactory from "services/ReducerFactory";
+import { actionTypes } from "../const";
+
+const statisticsSorting = new ReducerFactory()
+	.setReceiveAction(actionTypes.STATISTICS_SORT_ORDER_UPDATED )
+	.build();
 
 export default combineReducers({
 	vocabularies: services.vocabularies.reducer,
 	licenses: services.licenses.reducer,
 	users: services.users.reducer,
+	statistics: services.statistics.reducer,
+	statisticsSorting,
 });

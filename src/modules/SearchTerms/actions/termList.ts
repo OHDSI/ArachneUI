@@ -78,12 +78,23 @@ function fetchRelationships(conceptId: number, standards = false) {
   return services.relationships.get(conceptId, {query: {std: standards}});
 }
 
+function fetchConceptAnyRelations(conceptId: number) {
+
+  return services.anyRelations.get(conceptId);
+}
+
+function fetchTermsCount(){
+  return services.termsCount.find();
+}
+
 export default {
   changePageSize,
   load,
   fetch,
   fetchConceptAncestors,
   fetchRelationships,
+  fetchConceptAnyRelations,
+  fetchTermsCount,
 };
 
 export { searchParams };

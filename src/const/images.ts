@@ -24,6 +24,15 @@ const images = {
   header: {
     logo: '/icons/Header/logo_Athena_2.png',
   },
+  search:{
+    conditions:'/icons/Search/conditions.svg',
+    devices:'/icons/Search/devices.svg',
+    drugs:'/icons/Search/drugs.svg',
+    measurements:'/icons/Search/measurements.svg',
+    negotiation:'/icons/Search/negotiation.svg',
+    procedures:'/icons/Search/procedures.svg',
+    observations:'/icons/Search/observations.svg',
+  }
 };
 
 export default images;

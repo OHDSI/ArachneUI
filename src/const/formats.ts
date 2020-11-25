@@ -20,8 +20,8 @@
  *
  */
 
-const fullDateFormat = 'h:mm A | MM/DD/YYYY';
-const commonDateFormat = 'MM/DD/YYYY';
+const fullDateFormat = 'hh:mm A | DD-MMM-YYYY';
+const commonDateFormat = 'DD-MMM-YYYY';
 
 export {
 	fullDateFormat,

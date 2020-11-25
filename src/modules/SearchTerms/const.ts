@@ -29,6 +29,7 @@ const forms = keyMirror({
   filter: null,
   toolbar: null,
   termFilters: null,
+  startFilter:null,
 });
 
 const actionTypes = keyMirror({
@@ -39,6 +40,7 @@ const actionTypes = keyMirror({
 
 const paths = {
 	termsList: () => '/search-terms/terms',
+	termsStart: () => '/search-terms/start',
 	term: (id: number, isGraphMode: boolean = false) => `/search-terms/terms/${id}${isGraphMode ? '/graph' : ''}`,
 };
 
@@ -78,10 +80,10 @@ const facetKeys = keyMirror({
 });
 const facetTitles = {
   [facetKeys.domain]: 'Domain',
-  [facetKeys.standardConcept]: 'Standard concept',
+  [facetKeys.standardConcept]: 'Concept',
   [facetKeys.conceptClass]: 'Class',
-  [facetKeys.vocabulary]: 'Vocabulary',
-  [facetKeys.invalidReason]: 'Invalid reason',
+  [facetKeys.vocabulary]: 'Vocab',
+  [facetKeys.invalidReason]: 'Validity',
 };
 const zoomLevels = [
   {
