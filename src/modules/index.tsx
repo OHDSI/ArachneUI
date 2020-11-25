@@ -29,8 +29,8 @@ import Vocabulary  from './Vocabulary';
 import Admin  from './Admin';
 
 const modules: IModule[] = [
-  SearchTerms,
-  Vocabulary,
+	SearchTerms,
+	Vocabulary,
 	Auth,
 	Portal,
 	Admin,

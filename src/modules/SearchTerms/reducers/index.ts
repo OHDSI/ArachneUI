@@ -29,7 +29,9 @@ import graph from './graph';
 export default combineReducers({
 	termList,
 	terms: services.terms.reducer,
+	termsCount: services.termsCount.reducer,
 	relations: services.relations.reducer,
 	relationships: services.relationships.reducer,
+	anyRelations: services.anyRelations.reducer,
 	graph,
 });

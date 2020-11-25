@@ -120,7 +120,7 @@ function mergeProps(
   };
 }
 
-let ReduxModalWindow = reduxForm({ form: forms.bundle })(ModalConfirmDownload);
+let ReduxModalWindow = reduxForm({ form: forms.bundle })<any>(ModalConfirmDownload);
 ReduxModalWindow = ModalUtils.connect({ name: modal.download })(ReduxModalWindow);
 
 export default connect<IModalStateProps, IModalDispatchProps, {}>(

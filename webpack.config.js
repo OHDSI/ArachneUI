@@ -8,14 +8,14 @@ const outPath = path.join(__dirname, './dist');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const ENV_TYPE = {
-  DEV: 'dev',
+  DEV: 'development',
   PRODUCTION: 'production',
 };
 
 module.exports = function(env) {
   const mode = env.mode || ENV_TYPE.PRODUCTION;
-
   return {
+    mode: mode,
     context: sourcePath,
     entry: {
       main: './index.tsx',
@@ -23,7 +23,7 @@ module.exports = function(env) {
     output: {
       path: outPath,
       publicPath: '/',
-      filename: 'app.js',
+      filename: 'app.[hash].js',
     },
     devtool: 'source-map',
     resolve: {
@@ -41,12 +41,12 @@ module.exports = function(env) {
         {
           test: /\.tsx?$/,
           exclude: /(node_modules|ArachneUIComponents|@types)/gi,
-          loaders: ['react-hot-loader', 'awesome-typescript-loader']
+          loaders: ['ts-loader']
         },
         {
           test: /\.jsx?$/,
           exclude: /(node_modules|ArachneUIComponents)/,
-          loaders: ['react-hot-loader', 'babel-loader']
+          loaders: ['babel-loader']
         },
         {
           test: /\.scss$/,
@@ -72,8 +72,9 @@ module.exports = function(env) {
       ]
     },
     devServer: {
-      contentBase: outPath,
+      contentBase: sourcePath,
       historyApiFallback: true,
+      hot: true,
       port: 3000,
       stats: {
         warnings: false
@@ -86,7 +87,10 @@ module.exports = function(env) {
     },
     plugins: [
       new HtmlWebpackPlugin({
-        template: 'index.html'
+        inject: false,
+        hash: true,
+        template: 'index.html',
+        favicon: 'favicon.ico',
       }),
       new CopyWebpackPlugin([
         {
@@ -104,10 +108,6 @@ module.exports = function(env) {
       ]),
       new webpack.DefinePlugin({
         __DEV__: mode === ENV_TYPE.DEV,
-        //
-        'process.env': {
-          NODE_ENV: mode === ENV_TYPE.PRODUCTION ? '"production"' : '"development"',
-        },
       }),
     ],
     node: {

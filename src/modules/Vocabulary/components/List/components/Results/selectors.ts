@@ -23,6 +23,7 @@
 import { createSelector } from 'reselect';
 import { get } from 'lodash';
 import * as moment from 'moment';
+import { commonDateFormat } from 'const/formats';
 
 interface Vocabulary {
   code: string;
@@ -45,7 +46,7 @@ const getVocabs = createSelector(
     getRawVocabs,
     (rawResults: Array<Vocabulary>) => rawResults.map((vocabulary: Vocabulary, index: number) => ({
       ...vocabulary,
-      update: vocabulary.update ? moment(vocabulary.update).format('DD-MMM-YYYY') : '',
+      update: vocabulary.update ? moment(vocabulary.update).format(commonDateFormat) : '',
       isChecked: false,
       isCheckable: vocabulary.available === true,
       // for redux-form

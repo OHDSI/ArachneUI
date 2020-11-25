@@ -21,7 +21,9 @@
  */
 
 import licenses from './licenses';
+import statistics from './statistics';
 
 export default {
 	licenses,
+	statistics,
 };
