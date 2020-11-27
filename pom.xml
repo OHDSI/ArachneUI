@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.odysseusinc.athena</groupId>
     <artifactId>athena-resources</artifactId>
-    <version>1.11.0</version>
+    <version>1.11.1</version>
     <packaging>pom</packaging>
     <name>Athena Resources Bundle</name>
 
@@ -93,12 +93,12 @@
         <snapshotRepository>
             <id>artifactory</id>
             <name>Odysseus community snapshots</name>
-            <url>http://repo.odysseusinc.com/artifactory/community-libs-snapshot-local</url>
+            <url>https://nexus.odysseusinc.com/repository/community-libs-snapshot-local</url>
         </snapshotRepository>
         <repository>
             <id>artifactory</id>
             <name>Odysseus community releases</name>
-            <url>http://repo.odysseusinc.com/artifactory/community-libs-release-local</url>
+            <url>https://nexus.odysseusinc.com/repository/community-libs-release-local</url>
         </repository>
     </distributionManagement>
 </project>
