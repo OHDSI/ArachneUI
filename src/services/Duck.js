@@ -62,8 +62,6 @@ class Duck {
         .setActionHandler(
           actionName(name).query().done().toString(),
           (state, action) => {
-            console.log(state)
-            console.log(action)
             return {
               ...state,
               isLoading: false,
