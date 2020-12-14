@@ -66,16 +66,19 @@ class AppContainer extends Component {
       isUserAuthed = false,
       sidebarTabList = [],
       showAboutInfo = () => {},
-      children = null
+      children = null,
+      isUserExist,
     } = this.props;
     return (
       <div {...classes()}>
-        <Header
-          {...classes('header')}
-          isUserAuthed={isUserAuthed}
-          logo={imgs.header.logo}
-          navItems={isUserAuthed ? AppContainer.navItems : []}
-        />
+        {isUserAuthed && isUserExist
+          <Header
+            {...classes('header')}
+            isUserAuthed={isUserAuthed}
+            logo={imgs.header.logo}
+            navItems={isUserAuthed ? AppContainer.navItems : []}
+          />
+          }
         <div {...classes('main')}>
           {isUserAuthed &&
             <Sidebar
@@ -107,7 +110,7 @@ function mapStateToProps(state) {
 
   const isUserAdmin = get(state, 'auth.principal.queryResult.result.isAdmin');
   const modules = get(state, 'modules.list');
-
+  const isUserExist = get(state, 'portal.myProfile.data.result');
   const currentLocation = get(state, 'routing.locationBeforeTransitions.pathname', '');
   const currentSearch = get(state, 'routing.locationBeforeTransitions.search', '');
   const runningMode = get(state, 'auth.nodeMode.data.mode');
@@ -143,6 +146,7 @@ function mapStateToProps(state) {
     currentLocation,
     currentSearch,
     runningMode,
+    isUserExist,
   };
 }
 
