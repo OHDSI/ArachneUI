@@ -20,10 +20,10 @@
  *
  */
 
-import { get } from 'services/Utils';
-import ActionFactory from './ActionFactory';
-import ReducerFactory from './ReducerFactory';
-import { action as actionName } from './CrudActionNameBuilder';
+import { get } from "services/Utils";
+import ActionFactory from "./ActionFactory";
+import ReducerFactory from "./ReducerFactory";
+import { action as actionName } from "./CrudActionNameBuilder";
 
 class Duck {
   constructor({ name, urlBuilder }) {
@@ -43,101 +43,107 @@ class Duck {
       create: actionFactory.buildCreateActionCreator(),
       update: actionFactory.buildUpdateActionCreator(),
       delete: actionFactory.buildDeleteActionCreator(),
-    }
+    };
   }
 
   buildReducer({ name }) {
-    return new ReducerFactory()
-      // GET_PENDING
-      .setActionHandler(
-        actionName(name).query().pending().toString(),
-        (state, action) => ({
-          ...state,
-          isLoading: true,
-          requestParams: action.payload || null,
-        })
-      )
-      // GET_FULFILLED
-      .setActionHandler(
-        actionName(name).query().done().toString(),
-        (state, action) => ({
-          ...state,
-          isLoading: false,
-          queryResult: get(action.payload, 'result'),
-          requestParams: get(action.payload, 'requestParams'),
-        })
-      )
-      // FIND_PENDING
-      .setActionHandler(
-        actionName(name).find().pending().toString(),
-        (state, action) => ({
-          ...state,
-          isLoading: true,
-        })
-      )
-      // FIND_FULFILLED
-      .setActionHandler(
-        actionName(name).find().done().toString(),
-        (state, action) => ({
-          ...state,
-          isLoading: false,
-          data: action.payload,
-        })
-      )
-      // CREATE_PENDING
-      .setActionHandler(
-        actionName(name).create().pending().toString(),
-        (state, action) => ({
-          ...state,
-          isSaving: true,
-        })
-      )
-      // CREATE_FULFILLED
-      .setActionHandler(
-        actionName(name).create().done().toString(),
-        (state, action) => ({
-          ...state,
-          isSaving: false,
-          data: null,
-        })
-      )
-      // UPDATE_PENDING
-      .setActionHandler(
-        actionName(name).update().pending().toString(),
-        (state, action) => ({
-          ...state,
-          isUpdating: true,
-          newData: get(action, 'payload'),
-        })
-      )
-      // UPDATE_FULFILLED
-      .setActionHandler(
-        actionName(name).update().done().toString(),
-        (state, action) => ({
-          ...state,
-          isUpdating: false,
-          newData: null,
-        })
-      )
-      // DELETE_PENDING
-      .setActionHandler(
-        actionName(name).delete().pending().toString(),
-        (state, action) => ({
-          ...state,
-          isDeleting: true,
-          data: null,
-        })
-      )
-      // DELETE_FULFILLED
-      .setActionHandler(
-        actionName(name).delete().done().toString(),
-        (state, action) => ({
-          ...state,
-          isDeleting: false,
-          data: null,
-        })
-      )
-      .build();
+    return (
+      new ReducerFactory()
+        // GET_PENDING
+        .setActionHandler(
+          actionName(name).query().pending().toString(),
+          (state, action) => ({
+            ...state,
+            isLoading: true,
+            requestParams: action.payload || null,
+          })
+        )
+        // GET_FULFILLED
+        .setActionHandler(
+          actionName(name).query().done().toString(),
+          (state, action) => {
+            console.log(state)
+            console.log(action)
+            return {
+              ...state,
+              isLoading: false,
+              queryResult: get(action.payload, "result"),
+              requestParams: get(action.payload, "requestParams"),
+            };
+          }
+        )
+        // FIND_PENDING
+        .setActionHandler(
+          actionName(name).find().pending().toString(),
+          (state, action) => ({
+            ...state,
+            isLoading: true,
+          })
+        )
+        // FIND_FULFILLED
+        .setActionHandler(
+          actionName(name).find().done().toString(),
+          (state, action) => ({
+            ...state,
+            isLoading: false,
+            data: action.payload,
+          })
+        )
+        // CREATE_PENDING
+        .setActionHandler(
+          actionName(name).create().pending().toString(),
+          (state, action) => ({
+            ...state,
+            isSaving: true,
+          })
+        )
+        // CREATE_FULFILLED
+        .setActionHandler(
+          actionName(name).create().done().toString(),
+          (state, action) => ({
+            ...state,
+            isSaving: false,
+            data: null,
+          })
+        )
+        // UPDATE_PENDING
+        .setActionHandler(
+          actionName(name).update().pending().toString(),
+          (state, action) => ({
+            ...state,
+            isUpdating: true,
+            newData: get(action, "payload"),
+          })
+        )
+        // UPDATE_FULFILLED
+        .setActionHandler(
+          actionName(name).update().done().toString(),
+          (state, action) => ({
+            ...state,
+            isUpdating: false,
+            newData: null,
+          })
+        )
+        // DELETE_PENDING
+        .setActionHandler(
+          actionName(name).delete().pending().toString(),
+          (state, action) => ({
+            ...state,
+            isDeleting: true,
+            data: null,
+          })
+        )
+        // DELETE_FULFILLED
+        .setActionHandler(
+          actionName(name).delete().done().toString(),
+          (state, action) => ({
+            ...state,
+            isDeleting: false,
+            data: null,
+          })
+        )
+        .build()
+    );
   }
 }
 

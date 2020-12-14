@@ -228,7 +228,6 @@ function bootstrap() {
   
   // NOTE: order is important - API goes first!
   initializeApi(store);
-  
   const history = initBrowserHistory(store);
   const router = initRouter({ store, history, routes, indexRedirect, menuItems, redirects });
 
