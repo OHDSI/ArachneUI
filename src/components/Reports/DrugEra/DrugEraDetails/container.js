@@ -36,16 +36,16 @@ const exposureByMonthDTO = {
 
 function mapStateToProps(state, ownProps) {
   const {
-    conditionPrevalence: rawConditionPrevalence,
     ageOfFirstExposure,
-    lengthOfEra,
+    drugPrevalence: rawDrugPrevalence,
     exposureByMonth,
+    lengthOfEra,
   } = ownProps;
 
   const {
     data: drugPrevalence,
   } = convertDataToTrellislineData(
-    rawConditionPrevalence
+      rawDrugPrevalence
   );
 
   return {

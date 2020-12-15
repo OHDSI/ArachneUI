@@ -33,12 +33,12 @@ export default class DrugEraBuilder extends TreemapReportBuilder {
     super();
     this.presenter = presenter;
     this.filePath = 'drugeras';
-    this.reportsDetails = {
+    this.detailsCharts = {
 			drugPrevalenceChart: new trellisline(),
 			exposureByMonthChart: new line(),
 			ageOfFirstExposureChart: new boxplot(),
 			lengthOfEraChart: new boxplot(),
-		}
+		};
   }
 
   getFilename(conceptId) {
