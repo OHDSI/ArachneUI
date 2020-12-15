@@ -47,7 +47,7 @@ function DrugEra(props) {
     tableData,
     tableColumns,
     treemap,
-		reportsDetails,
+    detailsCharts,
     dataPresent,
   } = props;
   const classes = new BEMHelper('report-drugera');
@@ -109,7 +109,7 @@ function DrugEra(props) {
           />
         </div>
       </div>
-      {details && <DrugEraDetails {...details} {...reportsDetails} />}
+      {details && <DrugEraDetails {...details} {...detailsCharts} />}
     </div>
   );
 }
