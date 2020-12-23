@@ -74,9 +74,9 @@ export default class SelectorsBuilder extends TreemapSelectorsBuilder {
 
   extractReportDetails(details) {
     return {
-      conditionPrevalence: get(details, 'PREVALENCE_BY_GENDER_AGE_YEAR'),
-      ageOfFirstExposure: get(details, 'AGE_AT_FIRST_OCCURRENCE'),
-      prevalenceByMonth: get(details, 'PREVALENCE_BY_MONTH'),
+      drugPrevalence: get(details, 'PREVALENCE_BY_GENDER_AGE_YEAR'),
+      ageOfFirstExposure: get(details, 'AGE_AT_FIRST_EXPOSURE'),
+      exposureByMonth: get(details, 'PREVALENCE_BY_MONTH'),
       lengthOfEra: get(details, 'LENGTH_OF_ERA'),
     };
   }
