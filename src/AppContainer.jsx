@@ -67,12 +67,8 @@ class AppContainer extends Component {
       sidebarTabList = [],
       showAboutInfo = () => {},
       children = null,
-      isLoadUser,
     } = this.props;
 
-    if (isLoadUser) {
-      return null;
-    }
     return (
       <div {...classes()}>
         <Header
@@ -111,7 +107,6 @@ function mapStateToProps(state) {
   const sidebarTabList = [];
 
   const isUserAdmin = get(state, 'auth.principal.queryResult.result.isAdmin');
-  const isLoadUser = get(state, 'auth.principal.isLoading');
   const modules = get(state, 'modules.list');
   const currentLocation = get(state, 'routing.locationBeforeTransitions.pathname', '');
   const currentSearch = get(state, 'routing.locationBeforeTransitions.search', '');
@@ -148,7 +143,6 @@ function mapStateToProps(state) {
     currentLocation,
     currentSearch,
     runningMode,
-    isLoadUser,
   };
 }
 
