@@ -65,6 +65,7 @@ class TableStudies extends Component {
   getColumns() {
     return [
       <CellName
+        key="title"
         {...this.tableClasses('study')}
         header="Study"
         field="title"
@@ -80,29 +81,41 @@ class TableStudies extends Component {
         })}
       />,
       <LeadList
+        key="leadList"
         {...this.tableClasses('lead')}
         header="Lead"
         field="leadList"
         userLinkFormatter={this.props.userLinkFormatter}
       />,
       <Cell
+        key="role"
         {...this.tableClasses('role')}
         header="My role"
         field="role"
       />,
       <Cell
+        key="created"
         {...this.tableClasses('created')}
         header="Created"
         field="created"
-        format={this.props.createdFormatter}
+        format={this.props.timestampFormatter}
       />,
       <Cell
+        key="updated"
+        {...this.tableClasses('updated')}
+        header="Updated"
+        field="updated"
+        format={this.props.timestampFormatter}
+      />,
+      <Cell
+        key="type"
         {...this.tableClasses('type')}
         header="Type"
         field="type"
         format={this.props.typeFormatter}
       />,
       <CellStatus
+        key="status"
         {...this.tableClasses('status')}
         header="Status"
         field="status"
@@ -115,13 +128,8 @@ class TableStudies extends Component {
     const {
       data,
       sorting,
-      createdFormatter,
-      typeFormatter,
-      statusFormatter,
       setSorting,
       goToStudy,
-      userLinkFormatter,
-      setFavourite,
     } = this.props;
 
     return (
@@ -142,17 +150,15 @@ class TableStudies extends Component {
 }
 
 TableStudies.propTypes = {
-  createdFormatter: PropTypes.func.isRequired,
+  timestampFormatter: PropTypes.func.isRequired,
   data: PropTypes.array.isRequired,
-  isLoading: PropTypes.bool.isRequired,
   goToStudy: PropTypes.func.isRequired,
-  linkFormatter: PropTypes.func.isRequired,
+  userLinkFormatter: PropTypes.func.isRequired,
   setSorting: PropTypes.func.isRequired,
   sorting: PropTypes.object.isRequired,
   statusFormatter: PropTypes.func.isRequired,
   typeFormatter: PropTypes.func.isRequired,
   pages: PropTypes.number,
-  currentPage: PropTypes.currentPage,
   path: PropTypes.string,
 };
 

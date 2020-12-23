@@ -34,8 +34,8 @@ function MenuBlock({ menuItems, mods }) {
 
   return (
     <ul {...classes({ modifiers: mods })}>
-      {menuItems.map(item =>
-        <MenuItem {...item} classes={classes} />
+      {menuItems.map((item, idx) =>
+        <MenuItem key={idx} {...item} classes={classes} />
       )}
     </ul>
   );
@@ -174,7 +174,7 @@ function MenuDropdown(props) {
 }
 
 MenuDropdown.propTypes = {
-  id: PropTypes.number,
+  id: PropTypes.string,
 };
 
 export default MenuDropdown;

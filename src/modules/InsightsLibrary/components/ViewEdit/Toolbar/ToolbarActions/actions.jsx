@@ -39,6 +39,7 @@ export default class ActionsBuilder {
     const actions = [];
     if (this.permissions.EDIT_PAPER) {
       actions.push(<li
+        key="settings"
         {...this.bemHelper({ element: 'action', extra: 'ac-tooltip' })}
         aria-label={'Manage settings'}
         data-tootik-conf="left"
@@ -51,6 +52,7 @@ export default class ActionsBuilder {
         </Button>
       </li>);
       actions.push(<li
+        key="delete"
         {...this.bemHelper({ element: 'action', extra: 'ac-tooltip' })}
         aria-label="Delete insight"
         data-tootik-conf="left"
@@ -62,6 +64,7 @@ export default class ActionsBuilder {
     } else {
       actions.push(
         <span
+          key="status"
           {...this.bemHelper({ element: 'label', extra: 'ac-tooltip' })}
           aria-label={this.selectedPublishState.tooltip}
           data-tootik-conf="left"

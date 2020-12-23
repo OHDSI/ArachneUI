@@ -42,7 +42,7 @@ export class MyDatasources extends Component {
   static get propTypes() {
     return {
       loadDsList: PropTypes.func,
-      queryParams: PropTypes.array,
+      queryParams: PropTypes.object,
     };
   }
 

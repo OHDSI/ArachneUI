@@ -34,6 +34,7 @@ function ActivityListItem(props) {
     actionList,
     actionType,
     comment,
+    inviteMessage,
     date,
     entity,
     id,
@@ -64,6 +65,12 @@ function ActivityListItem(props) {
         {comment &&
           <span {...classes('comment')}>
             "{comment}"
+          </span>
+        }
+
+        {inviteMessage &&
+          <span {...classes('invite-message')}>
+            {inviteMessage}
           </span>
         }
         

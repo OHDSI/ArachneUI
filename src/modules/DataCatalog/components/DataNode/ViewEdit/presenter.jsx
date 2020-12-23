@@ -78,8 +78,8 @@ function ViewEdit(props) {
           />
           <div {...classes('block')}>
             <Panel title={'Attached Data Sources'}>
-              {dataSources.map(ds =>
-                <ListItem>
+              {dataSources.map((ds, idx) =>
+                <ListItem key={idx}>
                   <LabelDataSource {...ds} />
                 </ListItem>
               )}

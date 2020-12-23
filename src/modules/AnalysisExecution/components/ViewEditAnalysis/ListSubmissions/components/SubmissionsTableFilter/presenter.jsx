@@ -79,8 +79,8 @@ function SubmissionsTableFilter(props) {
       InputComponent: {
         component: FormCheckboxList,
         props: {
-          options: dataSourceIds.map(source => ({
-            label: <span {...classes('datasource')} title={source.label}>{source.label}</span>,
+          options: dataSourceIds.map((source, idx) => ({
+            label: <span key={idx} {...classes('datasource')} title={source.label}>{source.label}</span>,
             value: source.value,
           })),
           label: submissionFilters.dataSourceIds.label,
@@ -93,9 +93,9 @@ function SubmissionsTableFilter(props) {
       InputComponent: {
         component: FormCheckboxList,
         props: {
-          options: submissionStatuses.map(({ label, value }) =>
+          options: submissionStatuses.map(({ label, value }, idx) =>
             ({
-              label: <LabelSubmissionStatus status={{ title: label, value }} type={'dot'} />,
+              label: <LabelSubmissionStatus key={idx} status={{ title: label, value }} type={'dot'} />,
               value,
             })
           ),

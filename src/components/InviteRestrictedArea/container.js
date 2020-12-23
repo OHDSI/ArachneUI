@@ -32,20 +32,10 @@ const selectors = (new SelectorsBuilder()).build();
 class InviteRestrictedArea extends Component {
   static get propTypes() {
     return {
-      studyId: PropTypes.number.isRequired,
+      studyId: PropTypes.number,
       className: PropTypes.string,
-      onBannerActed: PropTypes.func.isRequired,
+      onBannerActed: PropTypes.func,
     };
-  }
-
-  componentWillMount() {
-    this.props.loadSudyInvitations({ studyId: this.props.studyId });
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.studyId !== nextProps.studyId) {
-      nextProps.loadSudyInvitations({ studyId: nextProps.studyId });
-    }
   }
 
   render() {
@@ -67,7 +57,7 @@ export default class InviteRestrictedAreaBuilder extends ContainerBuilder {
     return {
       studyId: studyId,
       accessGranted: studyId !== null,
-      invitation: selectors.getInvitation(state),
+      invitation: selectors.getInvitation(state, studyId),
       isLoading,
     };
   }
@@ -75,7 +65,7 @@ export default class InviteRestrictedAreaBuilder extends ContainerBuilder {
   getMapDispatchToProps() {
     return {
       goBack,
-      loadSudyInvitations: actions.studyManager.studyInvitations.query,
+      loadInvitations: actions.portal.invitation.query,
       acceptInvitation: actions.portal.invitation.acceptInvitation,
       rejectInvitation: actions.portal.invitation.rejectInvitation,
       loadStudy: actions.studyManager.study.find,
@@ -92,8 +82,8 @@ export default class InviteRestrictedAreaBuilder extends ContainerBuilder {
           id: stateProps.invitation.id,
           type: stateProps.invitation.type,
         })
+        .then(() => dispatchProps.loadInvitations())
         .then(ownProps.onAction)
-        .then(() => dispatchProps.loadSudyInvitations({ studyId: ownProps.studyId }));
       },
       onDecline: ownProps.onAction,
     };

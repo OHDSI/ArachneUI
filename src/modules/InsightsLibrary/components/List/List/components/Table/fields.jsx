@@ -79,6 +79,7 @@ export default class FieldsBuilder {
     return {
       name: (
         <CellName
+          key="study.title"
           {...this.bemHelper('name')}
           header="Study"
           field="study.title"
@@ -94,6 +95,7 @@ export default class FieldsBuilder {
       ),
       objective: (
         <CellObjective
+          key="study.objective"
           {...this.bemHelper('objective')}
           header="Objective"
           field="study.objective"
@@ -102,6 +104,7 @@ export default class FieldsBuilder {
       ),
       lead: (
         <CellParticipants
+          key="study.lead"
           {...this.bemHelper('lead')}
           header="Lead"
           field="study.lead"
@@ -110,6 +113,7 @@ export default class FieldsBuilder {
       ),
       proposal: (
         <Cell
+          key="study.created"
           {...this.bemHelper('proposal')}
           header="Proposal"
           field="study.created"
@@ -117,6 +121,7 @@ export default class FieldsBuilder {
       ),
       launch: (
         <Cell
+        key="study.startDate"
           {...this.bemHelper('launch')}
           header="Launch"
           field="study.startDate"
@@ -124,6 +129,7 @@ export default class FieldsBuilder {
       ),
       closure: (
         <Cell
+          key="study.endDate"
           {...this.bemHelper('closure')}
           header="Closure"
           field="study.endDate"

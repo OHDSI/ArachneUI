@@ -21,7 +21,7 @@
  */
 
 import React from 'react';
-import { Route, IndexRedirect } from 'react-router';
+import { Route } from 'react-router';
 import ListDataSources from './components/List/index';
 import ViewEditDataSource from './components/ViewEdit/index';
 
@@ -29,7 +29,6 @@ function Routes() {
 	return [
 		<Route path="data-sources" component={ListDataSources}/>,
 		<Route path="data-sources/:dataSourceId" component={ViewEditDataSource}/>,
-		<IndexRedirect to="data-sources"/>,
 	]
 }
 

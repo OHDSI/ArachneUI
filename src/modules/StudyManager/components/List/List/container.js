@@ -65,7 +65,7 @@ export default class List extends ContainerBuilder {
         link: paths.user(data.id),
         label: `${data.firstname} ${data.lastname}`,
       }),
-      createdFormatter: timestamp => moment(timestamp).format(humanDate),
+      timestampFormatter: timestamp => moment(timestamp).format(humanDate),
       typeFormatter: type => (type ? type.name : null),
       statusFormatter: (status) => {
         if (status) {

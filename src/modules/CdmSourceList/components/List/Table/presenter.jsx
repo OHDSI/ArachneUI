@@ -113,11 +113,11 @@ function DataSourceTable(props) {
     username,
     runningMode,
   } = props;
-
   const isStandalone = runningMode === nodeFunctionalModes.Standalone;
   const className = (title) => title + (isStandalone ? '_standalone' : '');
   const cells = [
       <CellName
+        key="name"
         {...tableClasses(className('name'))}
         header="Name"
         field="name"
@@ -125,27 +125,32 @@ function DataSourceTable(props) {
         props={item => item}
       />,
       <Cell
+        key="dbmsType"
         {...tableClasses('dbms-type')}
         header="DBMS Type"
         field="dbmsType"
       />,
       <Cell
+        key="connectionString"
         {...tableClasses(className('db-name'))}
         header="Database"
         field="connectionString"
       />,
       <Cell
+        key="cdmSchema"
         {...tableClasses('cdm-schema')}
         header="CDM Schema"
         field="cdmSchema"
       />,
       !isStandalone && <Cell
+        key="modelType"
         {...tableClasses('model-type')}
         header="Model"
         field="modelType"
         isSortable={false}
       />,
       <CellRegister
+        key="register"
         {...tableClasses(className('register'))}
         props={
           entity => ({
@@ -159,6 +164,7 @@ function DataSourceTable(props) {
         }
       />,
       <CellEdit
+        key="edit"
         {...tableClasses('edit')}
         field="id"
         editDataSource={editDataSource}

@@ -97,8 +97,8 @@ export default class ActionsToolbar extends Component{
         <div {...classes()}>
           <div>
             {
-              this.getButtons().map(buttonSettings =>
-                <Button onClick={buttonSettings.onClick}>
+              this.getButtons().map((buttonSettings, index) =>
+                <Button key={index} onClick={buttonSettings.onClick}>
                   <i
                     {...classes({element: 'btn-ico', modifiers: { ...buttonSettings.mods, disabled: buttonSettings.disabled }, extra: tooltipClass().className})}
                     aria-label={buttonSettings.tooltipText}

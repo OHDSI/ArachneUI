@@ -68,9 +68,9 @@ export default function SummaryPathway({ className, pathways, sunburstChart, loa
                   </div>
                   <div {...classes('legend-section')}>
                     <h5>Event cohorts</h5>
-                    {pathway.eventCodes.map(ec => {
+                    {pathway.eventCodes.map((ec, idx) => {
                       return (
-                        <div {...classes()}>
+                        <div key={idx} {...classes()}>
                           <div {...classes('legend-symbol')} style={{ 'background-color': pathway.colors(ec.code) }}></div>
                           <div>{ec.name}</div>
                         </div>

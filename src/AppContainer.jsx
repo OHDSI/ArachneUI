@@ -66,8 +66,9 @@ class AppContainer extends Component {
       isUserAuthed = false,
       sidebarTabList = [],
       showAboutInfo = () => {},
-      children = null
+      children = null,
     } = this.props;
+
     return (
       <div {...classes()}>
         <Header
@@ -107,7 +108,6 @@ function mapStateToProps(state) {
 
   const isUserAdmin = get(state, 'auth.principal.queryResult.result.isAdmin');
   const modules = get(state, 'modules.list');
-
   const currentLocation = get(state, 'routing.locationBeforeTransitions.pathname', '');
   const currentSearch = get(state, 'routing.locationBeforeTransitions.search', '');
   const runningMode = get(state, 'auth.nodeMode.data.mode');

@@ -32,10 +32,10 @@ export default class PeopleBuilder {
 
   build() {
     const people = [
-      <div {...this.bemHelper('leads')}>
+      <div key="leadList" {...this.bemHelper('leads')}>
         <People title="Lead investigators" userList={this.leadList} />
       </div>,
-      <div {...this.bemHelper('participants')}>
+      <div key="participants" {...this.bemHelper('participants')}>
         <People title="Contributors" userList={this.participants} />
       </div>,
     ];
