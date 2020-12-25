@@ -92,6 +92,8 @@ class Chart extends Component {
         height: this.height,
         element,
       });
+    } else {
+      this.props.destroy();
     }
   }
 
@@ -147,6 +149,10 @@ class Chart extends Component {
       setContainer: this.setContainer,
       downloadAsPng: this.downloadAsPng,
     });
+  }
+
+  componentWillUnmount() {
+    this.props.destroy();
   }
 }
 
