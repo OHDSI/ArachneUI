@@ -21,15 +21,6 @@
  */
 
 import React from 'react';
-import BEMHelper from 'services/BemHelper';
-import {
-  Panel,
-} from 'arachne-ui-components';
-import {
-  boxplot,
-  line,
-  trellisline,
-} from '@ohdsi/atlascharts/dist/atlascharts.umd';
 import { numberFormatter } from 'services/Utils';
 import * as d3 from 'd3';
 import { chartSettings, defaultTrellisSet } from 'modules/DataCatalog/const';
@@ -38,43 +29,42 @@ import isEmpty from 'lodash/isEmpty';
 import { chartTime } from 'const/formats';
 
 function DrugEraDetails(props) {
-  const {
-    drugPrevalence,
-    exposureByMonth,
-    lengthOfEra,
-    ageOfFirstExposure,
-		drugPrevalenceChart,
-		exposureByMonthChart,
-		ageOfFirstExposureChart,
-		lengthOfEraChart,
-  } = props;
-  const classes = new BEMHelper('report-death');
+    const {
+        ageOfFirstExposure,
+        drugPrevalence,
+        exposureByMonth,
+        lengthOfEra,
+        ageOfFirstExposureChart,
+        drugPrevalenceChart,
+        exposureByMonthChart,
+        lengthOfEraChart,
+    } = props;
 
   return (  
-    <div {...classes({ extra: 'row' })}>
+    <div className='row'>
       <div className='col-xs-12'>
         <Chart
           title='Drug Prevalence'
           isDataPresent={!isEmpty(drugPrevalence)}
           render={({ width, element }) => {
             drugPrevalenceChart.render(
-              drugPrevalence,
-              element,
-              width,
-              width/3,
-              {
-                ...chartSettings,
-                trellisSet: defaultTrellisSet,
-                trellisLabel: 'Age Decile',
-                seriesLabel: 'Year of Observation',
-                yLabel: 'Prevalence Per 1000 People',
-                xFormat: d3.timeFormat(chartTime),
-                yFormat: d3.format('0.2f'),
-                tickPadding: 20,
-                colors: d3.scaleOrdinal()
-                  .domain(['MALE', 'FEMALE'])
-                  .range(['#1f77b4', '#ff7f0e'])
-              }
+                drugPrevalence,
+                element,
+                width,
+                width / 3,
+                {
+                    ...chartSettings,
+                    trellisSet: defaultTrellisSet,
+                    trellisLabel: 'Age Decile',
+                    seriesLabel: 'Year of Observation',
+                    yLabel: 'Prevalence Per 1000 People',
+                    xFormat: d3.timeFormat(chartTime),
+                    yFormat: d3.format('0.2f'),
+                    tickPadding: 20,
+                    colors: d3.scaleOrdinal()
+                        .domain(['MALE', 'FEMALE'])
+                        .range(['#1f77b4', '#ff7f0e'])
+                }
             )
           }}
         />
@@ -104,7 +94,7 @@ function DrugEraDetails(props) {
       </div>
       <div className='col-xs-6'>
         <Chart
-          title='Age at First exposure'
+          title='Age at First Exposure'
           isDataPresent={!isEmpty(ageOfFirstExposure)}
           render={({ width, element }) => {
             ageOfFirstExposureChart.render(
@@ -114,7 +104,7 @@ function DrugEraDetails(props) {
               width/2,
               {
                 ...chartSettings,
-                xLabel: 'Age at first diagnosis',
+                xLabel: 'Age at first Exposure',
                 yLabel: 'Gender',
                 yFormat: d => numberFormatter.format(d, 'short')
               }
@@ -127,18 +117,18 @@ function DrugEraDetails(props) {
           title='Length of Era distribution'
           isDataPresent={!isEmpty(lengthOfEra)}
           render={({ width, element }) => {
-            lengthOfEraChart.render(
-              lengthOfEra,
-              element,
-              width,
-              width/2,                
-              {
-                ...chartSettings,
-                yLabel: 'Days',
-                xLabel: '',
-                yFormat: d => numberFormatter.format(d, 'short')
-              },
-            );
+              lengthOfEraChart.render(
+                  lengthOfEra,
+                  element,
+                  width,
+                  width / 2,
+                  {
+                      ...chartSettings,
+                      yLabel: 'Days',
+                      xLabel: '',
+                      yFormat: d => numberFormatter.format(d, 'short')
+                  },
+              );
           }}
         />
       </div>

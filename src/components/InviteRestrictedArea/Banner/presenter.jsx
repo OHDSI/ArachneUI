@@ -60,6 +60,7 @@ export default function Banner(props) {
     user,
     actionType,
     entity,
+    inviteMessage
   } = invitation;
 
   return (
@@ -84,6 +85,7 @@ export default function Banner(props) {
             </Link>
             <span {...classes('invite-text')}>
               {`${actionType} ${entity.title}`}
+              {inviteMessage && `: ${inviteMessage.length > 100 ? inviteMessage.substring(0, 100) + '...' : inviteMessage}`}
             </span>
           </span>
         </div>,

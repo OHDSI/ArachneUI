@@ -105,7 +105,7 @@ DatePanel.propTypes = {
   isEditable: PropTypes.bool.isRequired,
   maxDate: PropTypes.any,
   minDate: PropTypes.any,
-  onChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
   selected: PropTypes.any,
   title: PropTypes.string.isRequired,
   className: PropTypes.string,

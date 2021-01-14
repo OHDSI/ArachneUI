@@ -50,7 +50,7 @@ export default function SearchResults(props) {
   }));
 
   return (
-    <PageContent {...classes()}>
+    <PageContent title="Global Search" {...classes()}>
       <Grid
         {...classes()}
         isLoading={isLoading}

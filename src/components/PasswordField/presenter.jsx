@@ -38,7 +38,7 @@ function Rule({ description, rules }) {
       {description}
       {rules &&
         <ul>
-          {rules.map(rule => <Rule {...rule} />)}
+          {rules.map((rule, index) => <Rule key={index} {...rule} />)}
         </ul>
       }
     </li>
@@ -83,7 +83,7 @@ export default function PasswordField(props) {
                 {...classes('content')}
               >
                 <ul {...classes('rules')}>
-                  {rules.map(rule => <Rule {...rule} />)}
+                  {rules.map((rule, index) => <Rule key={index} {...rule} />)}
                 </ul>
               </Panel>
             </DropdownContent>

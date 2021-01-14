@@ -76,54 +76,63 @@ export default class SubmissionsTable extends Component {
     const { downloadResults, downloadingIds } = this.props;
     return [
       <Cell
+        key="id"
         {...tableClasses('id')}
         header="No"
         field="id"
         format={this.formatCell}
       />,
       <Cell
+        key="author.fullName"
         {...tableClasses('author')}
         header="Author"
         field="author.fullName"
         format={this.formatCell}
       />,
       <Cell
+        key="study"
         {...tableClasses('study')}
         header="Study"
         field="study"
         format={this.formatCell}
       />,
       <Cell
+        key="analysis"
         {...tableClasses('analysis')}
         header="Analysis"
         field="analysis"
         format={this.formatCell}
       />,
       <Cell
+        key="dataSource.name"
         {...tableClasses('data-source')}
         header="Data source"
         field="dataSource.name"
         format={this.formatCell}
       />,
       <Cell
+        key="submitted"
         {...tableClasses('submitted')}
         header="Submitted"
         field="submitted"
         format={this.formatDateCell}
       />,
       <Cell
+        key="finished"
         {...tableClasses('finished')}
         header="Finished"
         field="finished"
         format={this.formatDateCell}
       />,
       <Status
+        key="status"
         {...tableClasses('status')}
         header="Status"
         field="status"
         format={this.formatCell}
       />,
       <CellDownload
+        key="results"
         {...tableClasses('results')}
         header="Results"
         field="id"

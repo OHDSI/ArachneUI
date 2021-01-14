@@ -21,7 +21,7 @@
  */
 
 import React from 'react';
-import { Route, IndexRedirect } from 'react-router';
+import { Route } from 'react-router';
 
 import Settings from './components/Settings';
 import Results from './components/Search/Results';
@@ -30,7 +30,6 @@ function Routes() {
   return [
     <Route path="settings" component={Settings}/>,
     <Route path="search" component={Results} />,
-    <IndexRedirect to="settings"/>,
   ];
 }
 

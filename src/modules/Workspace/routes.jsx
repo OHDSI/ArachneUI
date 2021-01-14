@@ -19,7 +19,7 @@
  */
 
 import React from 'react';
-import { Route, IndexRedirect } from 'react-router';
+import { Route } from 'react-router';
 
 import Workspace from 'modules/StudyManager/components/Workspace';
 
@@ -27,7 +27,6 @@ function Routes() {
   return [
     <Route path="home" component={Workspace}/>,
     <Route path="user/:userId" component={Workspace}/>,
-    <IndexRedirect to="home" />,
   ];
 }
 

@@ -61,7 +61,7 @@ function AdminTable(props) {
     selectAll,
   } = props;
 
-  const checkBox = <Checkbox isChecked={Object.keys(selectedUsers).length} onChange={() => selectAll(selectedUsers)} />;
+  const checkBox = <Checkbox isChecked={!!Object.keys(selectedUsers).length} onChange={() => selectAll(selectedUsers)} />;
 
   return (
     <div>

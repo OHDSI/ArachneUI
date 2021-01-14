@@ -81,7 +81,7 @@ export default class AnalysisCodeEditorBuilder extends ActiveModuleAwareContaine
     const name = get(fileData, 'name', '');
     const createdAt = get(fileData, 'created');
     const language = detectLanguageByExtension(fileData);
-    const isLoading = get(moduleState, 'analysisCode.isLoading') || get(state, 'studyManager.studyInvitations.isLoading');
+    const isLoading = get(moduleState, 'analysisCode.isLoading');
 
     const studyData = get(moduleState, 'analysis.data.result.study');
     const studyId = get(studyData, 'id', -1);

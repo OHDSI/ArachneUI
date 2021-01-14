@@ -1,6 +1,6 @@
 /*
  *
- * Copyright 2018 Odysseus Data Services, inc.
+ * Copyright 2020 Odysseus Data Services, inc.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,11 +15,20 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon
- * Created: December 11, 2017
+ * Authors: Alex Cumarav, Vlad Belousov, Vitaly Koulakov
+ * Created: October 20, 2020
  *
  */
 
-import InviteBannerBuilder from './container';
+import DuckBuilder from 'modules/AnalysisExecution/ducks/submissionFileDuckBuilder';
+import {SubmissionResultZipEntryLinkBuilder} from 'modules/AnalysisExecution/ducks/linkBuilder';
 
-export default (new InviteBannerBuilder()).build();
+const duck = new DuckBuilder();
+duck.LinkBuilder = SubmissionResultZipEntryLinkBuilder;
+duck.coreName = 'AE_ANALYSIS_SUBMISSION_FILE_ZIP_ENTRY';
+const ducks = duck.build();
+
+export default {
+    actions: ducks.actions,
+    reducer: ducks.reducer
+};

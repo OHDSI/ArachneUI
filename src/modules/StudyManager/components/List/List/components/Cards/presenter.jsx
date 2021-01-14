@@ -20,7 +20,7 @@
  *
  */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
 import BEMHelper from 'services/BemHelper';
 import EmptyState from 'components/EmptyState';
 import Card from './Card';
@@ -29,19 +29,11 @@ require('./style.scss');
 
 function StudiesList(props) {
   const classes = new BEMHelper('studies-cards');
-  const {
-    data,
-    createdFormatter,
-    typeFormatter,
-    statusFormatter,
-    goToStudy,
-    userLinkFormatter,
-    setFavourite,
-  } = props;
+  const { data } = props;
 
   return (
     <div {...classes()}>
-      {data.map(study => <Card {...study} {...props} />)}
+      {data.map(study => <Card key={study.id} {...study} {...props} />)}
       {!data || !data.length
         ? <EmptyState message={'No data available'} />
         : null

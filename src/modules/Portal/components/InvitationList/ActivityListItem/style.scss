@@ -51,9 +51,13 @@
 		&__entity {
 		}
 
-		&__comment {
+		&__comment, &__invite-message {
 			display: block;
 			margin-top: 1rem;
+			white-space: break-spaces;
+			max-height: 150px;
+			overflow-y: auto;
+			line-height: 1.5rem;
 		}
 
 		&__actions {

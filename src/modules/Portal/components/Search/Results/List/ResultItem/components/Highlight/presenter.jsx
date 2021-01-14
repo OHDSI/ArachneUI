@@ -40,7 +40,7 @@ function Highlight(props) {
     <div {...classes()}>
       <span {...classes('field')}>{field}</span>
       <div {...classes('value')}>
-        {value.map(part => <Part {...part} />)}
+        {value.map((part, idx) => <Part key={idx} {...part} />)}
       </div>
     </div>    
   );

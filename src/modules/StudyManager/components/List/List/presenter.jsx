@@ -47,17 +47,16 @@ function ListStudies(props) {
 
 ListStudies.propTypes = {
   isCardsView: PropTypes.bool,
-  createdFormatter: PropTypes.func.isRequired,
+  timestampFormatter: PropTypes.func.isRequired,
   data: PropTypes.array.isRequired,
-  isLoading: PropTypes.bool.isRequired,
+  isLoading: PropTypes.bool,
   goToStudy: PropTypes.func.isRequired,
-  linkFormatter: PropTypes.func.isRequired,
-  setSearch: PropTypes.func.isRequired,
+  userLinkFormatter: PropTypes.func.isRequired,
   sorting: PropTypes.object.isRequired,
   statusFormatter: PropTypes.func.isRequired,
   typeFormatter: PropTypes.func.isRequired,
   pages: PropTypes.number,
-  currentPage: PropTypes.currentPage,
+  currentPage: PropTypes.number,
   path: PropTypes.string,
   resultsCountMessage: PropTypes.bool,
 };

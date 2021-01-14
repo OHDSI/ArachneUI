@@ -41,7 +41,7 @@ function TitleStudy(props) {
   return (
     <div {...classes({ modifiers: mods, extra: className })}>
       <div {...classes('icon-list')}>
-        {getIcons().map(icoEl => React.createElement(icoEl, { ...props, ...classes('icon') }))}
+        {getIcons().map((icoEl, idx) => React.createElement(icoEl, { ...props, key: idx, ...classes('icon') }))}
       </div>
       {link
         ? <Link {...classes('title')} to={link}>{title}</Link>

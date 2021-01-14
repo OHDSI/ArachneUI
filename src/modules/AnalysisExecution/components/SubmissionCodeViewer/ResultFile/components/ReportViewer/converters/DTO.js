@@ -53,8 +53,8 @@ const DTO = {
     prevalenceByGenderAgeYear: 'conditionPrevalence',
     prevalenceByMonth: 'conditionByMonth',
   },
-  [reports.drugera]: {
-    prevalenceByGenderAgeYear: 'conditionPrevalence',
+  [reports.drugeras]: {
+    prevalenceByGenderAgeYear: 'drugPrevalence',
     ageAtFirstExposure: 'ageOfFirstExposure',
     lengthOfEra: 'lengthOfEra',
     prevalenceByMonth: 'exposureByMonth',

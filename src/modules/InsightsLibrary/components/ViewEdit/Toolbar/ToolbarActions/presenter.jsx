@@ -37,7 +37,10 @@ export default function ToolbarActions(props) {
 }
 
 ToolbarActions.propTypes = {
-  permissions: PropTypes.arrayOf(PropTypes.string),
+  permissions: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.string),
+    PropTypes.object,
+  ]),
   remove: PropTypes.func,
   openSettings: PropTypes.func,
   selectedPublishState: PropTypes.object,
