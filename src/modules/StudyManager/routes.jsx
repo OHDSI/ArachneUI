@@ -21,7 +21,7 @@
  */
 
 import React from 'react';
-import { Route, IndexRedirect } from 'react-router';
+import { Route } from 'react-router';
 
 import ListStudies from './components/List';
 import ViewEditStudy from './components/ViewEdit';
@@ -45,7 +45,6 @@ function Routes() {
     />,
     <Route path="studies/:studyId" component={ViewEditStudy} />,
     <Route path="studies/:studyId/documents/:fileUuid" component={DocumentViewer} />,
-    <IndexRedirect to="studies" />,
   ];
 }
 

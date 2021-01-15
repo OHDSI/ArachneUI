@@ -42,12 +42,13 @@ class StudyCard extends Component {
       title: PropTypes.string,
       leadList: PropTypes.array,
       role: PropTypes.string,
-      created: PropTypes.string,
-      type: PropTypes.string,
-      status: PropTypes.string,
+      created: PropTypes.number,
+      updated: PropTypes.number,
+      type: PropTypes.object,
+      status: PropTypes.object,
       favourite: PropTypes.bool,
     
-      createdFormatter: PropTypes.func,
+      timestampFormatter: PropTypes.func,
       typeFormatter: PropTypes.func,
       statusFormatter: PropTypes.func,
       userLinkFormatter: PropTypes.func,
@@ -56,8 +57,8 @@ class StudyCard extends Component {
     };
   }
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.classes = BEMHelper('study-card');
   }
 
@@ -84,7 +85,7 @@ class StudyCard extends Component {
       type,
       status,
 
-      createdFormatter,
+      timestampFormatter,
       typeFormatter,
       statusFormatter,
     } = this.props;
@@ -108,7 +109,7 @@ class StudyCard extends Component {
       <Card
         title={titleEl}
         status={<Status {...this.classes('status')} value={statusFormatter(status)} />}
-        date={<span>Created {createdFormatter(created)}</span>}
+        date={<span>Created {timestampFormatter(created)}</span>}
         userList={leadList.map(user => ({
           id: user.id,
           name: `${user.firstname} ${user.lastname}`,

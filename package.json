@@ -1,12 +1,7 @@
 {
   "name": "arachne-ui",
-  "version": "1.16.59",
-  "licenses": [
-    {
-      "type": "Apache-2.0",
-      "url": "http://www.apache.org/licenses/LICENSE-2.0"
-    }
-  ],
+  "version": "1.17.4",
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/OHDSI/ArachneUI.git"
@@ -46,7 +41,7 @@
   "dependencies": {
     "@ohdsi/atlascharts": "^1.7.3",
     "@stomp/stompjs": "github:stomp-js/stomp-websocket",
-    "arachne-ui-components": "1.16.7",
+    "arachne-ui-components": "1.17.1",
     "autoprefixer": "^6.7.6",
     "clamp-js": "^0.7.0",
     "classnames": "^2.2.5",

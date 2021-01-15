@@ -25,6 +25,7 @@ import BEMHelper from 'services/BemHelper';
 import { Modal } from 'arachne-ui-components';
 import { Form } from 'arachne-ui-components';
 import { FormAutocomplete, FormSelect } from 'arachne-ui-components';
+import { FormTextarea } from "arachne-ui-components";
 import { cancelBtnConfig, roles } from 'modules/ExpertFinder/const';
 
 require('./style.scss');
@@ -66,6 +67,15 @@ function InviteModal(props) {
           mods: ['bordered'],
         },
       },
+    },
+    {
+      name: 'message',
+      InputComponent: {
+        component: FormTextarea,
+        props: {
+          placeholder: 'Message for invitee (optional)',
+        }
+      }
     },
   ];
   const submitBtnConfig = {

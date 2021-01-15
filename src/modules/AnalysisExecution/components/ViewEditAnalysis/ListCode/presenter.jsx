@@ -36,8 +36,8 @@ import './style.scss';
 
 /** @augments{ Component<any, any>} */
 export class CodeItem extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.classes = BEMHelper('analysis-code-item');
   }
 
@@ -49,7 +49,7 @@ export class CodeItem extends Component {
 
   getComponent() {
     return [
-      <div {...this.classes('main-info')}>
+      <div key="1" {...this.classes('main-info')}>
         <FileInfo {...this.code} subtitle={this.getFileDescription()} />
       </div>
     ];
@@ -116,8 +116,8 @@ export class CodeItem extends Component {
 
 /** @augments{ Component<any, any>} */
 export class ActionsLine extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.classes = BEMHelper('analysis-code-actions');
     this.addClasses = BEMHelper('analysis-add-code');
     this.submitClasses = BEMHelper('analysis-submit-code');
@@ -127,6 +127,7 @@ export class ActionsLine extends Component {
   getComponents(useMarginForLastComponent = true) {
     const submit = (
       <Button
+        key="submit"
         {...this.submitClasses({ modifiers: { autoMargin: useMarginForLastComponent} })}
         mods={['success', 'rounded']}
         label="Submit"
@@ -136,6 +137,7 @@ export class ActionsLine extends Component {
     );
     const add = (
       <Button
+        key="add"
         {...this.addClasses({ modifiers: { disabled: !this.canAddFiles } })}
         onClick={() => this.openCreateCodeModal(submissionFileUploadModes.COMPUTER)}
         disabled={!this.canAddFiles}
@@ -146,6 +148,7 @@ export class ActionsLine extends Component {
     );
     const importFromAchilles = (
       <Button
+        key="importFromAchilles"
         {...this.addClasses({ modifiers: { disabled: !this.canAddFiles } })}
         onClick={() => this.openCreateCodeModal(submissionFileUploadModes.IMPORT)}
         disabled={!this.canAddFiles}
@@ -191,8 +194,8 @@ export function DownloadAll({ downloadAllLink }) {
 
 /** @augments{ Component<any, any>} */
 export default class ListCode extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.classes = BEMHelper('analysis-code-list');
   }
 
@@ -213,6 +216,7 @@ export default class ListCode extends Component {
 
   getActions() {
     return (<ActionsLine
+      key="1"
       canAddFiles={this.canAddFiles && !this.isLocked}
       openCreateCodeModal={this.openCreateCodeModal}
       openSubmitModal={this.openSubmitModal}

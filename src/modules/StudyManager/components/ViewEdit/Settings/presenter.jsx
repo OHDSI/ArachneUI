@@ -30,17 +30,17 @@ import './style.scss';
 
 /** @augments { Component<any, any> } */
 class StudySettings extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.classes = BEMHelper('study-settings');
     this.headerClasses = BEMHelper('study-settings-header');
   }
 
   getHeader() {
     const header = [
-      <span {...this.headerClasses('group')}>Permissions</span>,
-      <span {...this.headerClasses({ element: 'group', modifiers: { wide: !this.props.isEditable } })}>Type of Study</span>,
-      <span {...this.headerClasses('group')}>Status</span>,
+      <span key="1" {...this.headerClasses('group')}>Permissions</span>,
+      <span key="2" {...this.headerClasses({ element: 'group', modifiers: { wide: !this.props.isEditable } })}>Type of Study</span>,
+      <span key="3" {...this.headerClasses('group')}>Status</span>,
     ];
 
     return header;
@@ -48,7 +48,7 @@ class StudySettings extends Component {
 
   getSettings() {
     return [
-      <li {...this.classes({ element: 'group', modifiers: { uneditable: !this.props.isEditable } })}>
+      <li key="1" {...this.classes({ element: 'group', modifiers: { uneditable: !this.props.isEditable } })}>
         {this.props.isEditable ?
           <Tabs
             placeholder="Privacy"
@@ -62,7 +62,7 @@ class StudySettings extends Component {
           </span>
         }
       </li>,
-      <li {...this.classes({ element: 'group', modifiers: { wide: !this.props.isEditable, uneditable: !this.props.isEditable } })}>
+      <li key="2" {...this.classes({ element: 'group', modifiers: { wide: !this.props.isEditable, uneditable: !this.props.isEditable } })}>
         {this.props.isEditable ?
           <Select
             mods={['bordered']}
@@ -77,7 +77,7 @@ class StudySettings extends Component {
           </span>
         }
       </li>,
-      <li  {...this.classes({ element: 'group', modifiers: { uneditable: !this.props.isEditable } })}>
+      <li key="3" {...this.classes({ element: 'group', modifiers: { uneditable: !this.props.isEditable } })}>
         {this.props.isEditable ?
           <Select
             {...this.classes('status')}

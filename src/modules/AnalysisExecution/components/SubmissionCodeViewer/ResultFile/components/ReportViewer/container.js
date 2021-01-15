@@ -49,8 +49,8 @@ export default class ReportViewerBuilder extends ContainerBuilder {
     let reportDTO = {};
     let tableData = {};
     let tableColumns = {};
-    const isDetailsLoading = get(state, 'analysisExecution.submissionFileDetails.isLoading', false);
-    const submissionFileDetails = get(state, 'analysisExecution.submissionFileDetails.data.result');
+    const isDetailsLoading = get(state, 'analysisExecution.submissionResultZipEntry.isLoading', false);
+    const submissionFileDetails = get(state, 'analysisExecution.submissionResultZipEntry.data.result');
     const createdAt = get(file, 'created');
     const reportType = ReportUtils.getReportType(get(file, 'docType'));
     const filename = get(file, 'name', '');
@@ -110,8 +110,7 @@ export default class ReportViewerBuilder extends ContainerBuilder {
 
   getMapDispatchToProps() {
     return {
-      loadDetails: actions.analysisExecution.submissionFileDetails.find,
-      loadSubmissionResultFiles: actions.analysisExecution.analysisCode.search,
+      loadHeraclesDrilldownDetails: actions.analysisExecution.submissionResultZipEntry.find,
     };
   }
 
@@ -121,27 +120,18 @@ export default class ReportViewerBuilder extends ContainerBuilder {
       ...dispatchProps,
       ...ownProps,
       loadTreemapDetails({ filename }) {
-        let path = `${stateProps.type}`;
+        let path = `${stateProps.type}.zip`;
         const filepath = get(ownProps.file, 'relativePath', '', 'String');
         const isRoot = filepath.lastIndexOf('/') === -1;
         if (!isRoot) {
-          path = `${filepath.substr(0, filepath.lastIndexOf('/'))}/${stateProps.type}`;
+          path = `${filepath.substr(0, filepath.lastIndexOf('/'))}/${stateProps.type}.zip`;
         }
         const realname = `${filename}.json`;
-        dispatchProps.loadSubmissionResultFiles(
-          {
-            entityId: ownProps.submissionId,
-          },
-          {
-            path,
-            'real-name': realname,
-          }
-        ).then(detailedFiles => dispatchProps.loadDetails({
-          type: 'result',
-          submissionGroupId: ownProps.submissionGroupId,
-          submissionId: ownProps.submissionId,
-          fileId: get(detailedFiles, '[0].uuid', '1'),
-        }));
+        dispatchProps.loadHeraclesDrilldownDetails({submissionId: ownProps.submissionId},
+            {
+              path,
+              'entry-name': realname,
+            });
       },
     };
   }

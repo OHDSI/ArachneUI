@@ -37,6 +37,7 @@ class selectorsBuilder {
       leadList: rawStudy.leadList,
       role: get(rawStudy, 'role', 'Reader', 'String'),
       created: rawStudy.created,
+      updated: rawStudy.updated,
       type: rawStudy.type,
       status: rawStudy.status,
       endDate: rawStudy.endDate,
@@ -53,7 +54,7 @@ class selectorsBuilder {
         leadList: Array<{ link: string, label: string }>,
         role: string,
         created: number,
-        type: string,
+        type: object,
         status: string,
         endDate: number,
       }>

@@ -32,8 +32,8 @@ function ModalError(props) {
   return (
     <Modal modal={props.modal} title={props.title || 'Error'}>
       <ul {...classes()}>
-        {Array.isArray(props.errors) && props.errors.map(error =>
-          <li {...classes('error')}>{error}</li>
+        {Array.isArray(props.errors) && props.errors.map((error, idx) =>
+          <li key={idx} {...classes('error')}>{error}</li>
         )}
       </ul>
     </Modal>

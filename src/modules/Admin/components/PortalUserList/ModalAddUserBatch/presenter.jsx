@@ -67,7 +67,7 @@ function CellSelectEditable({ options, header, field, index, required = false })
   );
 }
 
-function CellAutocomplete({ header, field, index, required = false, options, fetchOptions }) {
+function CellAutocomplete({ header, field, index, required = false, tethered = false, options, fetchOptions }) {
   return (
     <Field
       component={Fieldset}
@@ -82,6 +82,7 @@ function CellAutocomplete({ header, field, index, required = false, options, fet
             return fetchOptions({ ...data, rowDataKey: `${fieldArrayName}[${index}]` });
           },
           clearable: false,
+          tethered,
         }
       }}
     />
@@ -175,14 +176,14 @@ function UsersTable({ fields, meta: { touched, error }, professionalTypesOptions
     <div {...classes()}>
       <Table  {...classes('table')} data={fields}>
         <CellTextEditable {...classes('col-first-name')}
-          header="First name"
+          header="First Name"
           field="firstname"
           props={() => ({
             required: true,
           })}
         />
         <CellTextEditable {...classes('col-last-name')}
-          header="Last name"
+          header="Last Name"
           field="lastname"
           props={() => ({
             required: true,
@@ -213,13 +214,15 @@ function UsersTable({ fields, meta: { touched, error }, professionalTypesOptions
         <CellTextEditable {...classes('col-mobile')}
           header="Mobile"
           field="address.mobile"
-          props={() => ({ required: true, })}
+          props={() => ({
+            required: false,
+          })}
         />
         <CellTextEditable {...classes('col-address')}
           header="Address"
           field="address.address1"
           props={() => ({
-            required: false,
+            required: true,
           })}
         />
         <CellTextEditable {...classes('col-city')}
@@ -241,6 +244,7 @@ function UsersTable({ fields, meta: { touched, error }, professionalTypesOptions
           field="address.country.isoCode"
           props={() => ({
             required: true,
+            tethered: true,
             options: countryProps.countries,
             fetchOptions: countryProps.searchCountries,
           })}
@@ -249,7 +253,8 @@ function UsersTable({ fields, meta: { touched, error }, professionalTypesOptions
           header="Province"
           field="address.stateProvince.isoCode"
           props={() => ({
-            required: true,
+            required: false,
+            tethered: true,
             options: provinceProps.provinces,
             fetchOptions: provinceProps.searchProvinces,
           })}

@@ -69,6 +69,7 @@ function ParticipantItem(props) {
   if (participant.canBeRecreated) {
     actions.push(
       <span
+        key="recreate"
         {...classes('action')}
         onClick={
           () => addParticipant({
@@ -87,6 +88,7 @@ function ParticipantItem(props) {
   if (participant.canBeRemoved) {
     actions.push(
       <span
+        key="remove"
         {...classes('action')}
         onClick={() => removeParticipant(participant.id, participant.fullName)}
       >
@@ -155,7 +157,7 @@ function ParticipantItem(props) {
 }
 
 ParticipantItem.propTypes = {
-  endOfGroup: PropTypes.bool.isRequired,
+  endOfGroup: PropTypes.bool,
   hasEditPermissions: PropTypes.bool.isRequired,
   participant: PropTypes.object.isRequired,
   removeParticipant: PropTypes.func.isRequired,
@@ -195,8 +197,8 @@ function ParticipantLine(props) {
 
 ParticipantLine.propTypes = {
   hasEditPermissions: PropTypes.bool.isRequired,
-  openAddParticipantModal: PropTypes.func.isRequired,
-  participantList: PropTypes.array.isRequired,
+  openAddParticipantModal: PropTypes.func,
+  participantList: PropTypes.array,
   removeParticipant: PropTypes.func.isRequired,
   roles: PropTypes.array.isRequired,
 }
@@ -251,8 +253,8 @@ function ListParticipants(props) {
 
 ListParticipants.propTypes = {
   hasEditPermissions: PropTypes.bool.isRequired,
-  openAddParticipantModal: PropTypes.func.isRequired,
-  participantList: PropTypes.array.isRequired,
+  openAddParticipantModal: PropTypes.func,
+  participantList: PropTypes.array,
   removeParticipant: PropTypes.func.isRequired,
 }
 

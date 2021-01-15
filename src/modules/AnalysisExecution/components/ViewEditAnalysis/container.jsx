@@ -44,7 +44,7 @@ export function getFilter(search) {
 }
 
 class ViewEditAnalysis extends Component {
-  get propTypes() {
+  static get propTypes() {
     return {
       id: PropTypes.number.isRequired,
       loadAnalysis: PropTypes.func.isRequired,
@@ -53,7 +53,7 @@ class ViewEditAnalysis extends Component {
       studyId: PropTypes.number,
       unloadAnalysis: PropTypes.func.isRequired,
       loadSubmissionGroups: PropTypes.func,
-      filter: PropTypes.object,
+      filter: PropTypes.string,
     };
   }
 
@@ -110,7 +110,7 @@ export default class ViewEditAnalysisBuilder extends ActiveModuleAwareContainerB
     return {
       id: parseInt(ownProps.routeParams.analysisId, 10),
       studyId,
-      isLoading: get(analysis, 'isLoading', false) || isSubmissionGroupsLoading || get(state, 'studyManager.studyInvitations.isLoading'),
+      isLoading: get(analysis, 'isLoading', false) || isSubmissionGroupsLoading,
       pageTitle: pageTitle.join(' | '),
       isEditable: get(analysisData, `permissions[${analysisPermissions.editAnalysis}]`, false),
       page: get(currentQuery, 'page', 1),

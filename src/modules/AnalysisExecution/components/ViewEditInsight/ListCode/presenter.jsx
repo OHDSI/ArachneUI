@@ -33,8 +33,9 @@ function ListCode({ files, onSelect, pageCount, currentPage, pageKey, path }) {
   return (
     <div {...classes()}>
       <ul>
-        {files.map(item =>
+        {files.map((item, idx) =>
           <li
+            key={idx}
             {...classes({ element: 'item', modifiers: { selected: item.isSelected } })}
             onClick={ () => onSelect(item) }
           >

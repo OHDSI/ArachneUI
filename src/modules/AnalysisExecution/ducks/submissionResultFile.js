@@ -39,5 +39,5 @@ export default {
     ...ducks.actions,
     delete: deleteDuck.actions.delete,
   },
-  reducer: ducks.reducer,
+  reducer: ducks.reducer
 };

@@ -50,7 +50,7 @@ function ConditionDetails(props) {
     <div {...classes({ extra: 'row' })}>
       <div className='col-xs-12'>
         <Chart
-          title='Condition Prevalence'
+          title='Procedure Prevalence'
           isDataPresent={!isEmpty(conditionPrevalence)}
           render={({ width, element }) => {
             conditionPrevalenceChart.render(
@@ -77,7 +77,7 @@ function ConditionDetails(props) {
       </div>
       <div className='col-xs-12'>
         <Chart
-          title='Condition Prevalence by Month'
+          title='Procedure Prevalence by Month'
           isDataPresent={!isEmpty(conditionByMonth)}
           render={({ width, element }) => {
            conditionByMonthChart.render(

@@ -21,7 +21,7 @@
  */
 
 import React from 'react';
-import { Route, IndexRedirect } from 'react-router';
+import { Route } from 'react-router';
 
 import ProfileView from './components/ProfileView/index';
 import ExpertsList from './components/ExpertsList';
@@ -30,7 +30,6 @@ function Routes() {
   return [
     <Route path="profile/:userId" component={ProfileView} />,
     <Route path="list" component={ExpertsList} />,
-    <IndexRedirect to="list" />,
   ];
 }
 

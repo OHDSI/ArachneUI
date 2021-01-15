@@ -29,14 +29,14 @@ import './style.scss';
 
 /** @augments{ Component<any, any>} */
 export default class ModalAccessSettings extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.classes = BEMHelper('insight-modal-settings');
   }
 
   getSettings() {
     return [
-      <div {...this.classes('setting')}>
+      <div key="publish" {...this.classes('setting')}>
         <div {...this.classes('setting-title')}>Publish state</div>
         <Tabs
           {...this.classes({

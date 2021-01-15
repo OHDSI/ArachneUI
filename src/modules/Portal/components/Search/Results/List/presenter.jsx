@@ -34,12 +34,11 @@ export default function SearchResultsList(props) {
     results,
     isLoading,
   } = props;
-
   return (
     <div {...classes({ modifiers: { empty: results.length === 0 } })}>
       <div {...classes('list')}>
         {results && results.length
-          ? results.map(result => <ResultItem {...result} />)
+          ? results.map((result, idx) => <ResultItem key={idx} {...result} />)
           : <EmptyState message={'No results'} />
         }
       </div>

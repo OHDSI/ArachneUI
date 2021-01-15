@@ -31,6 +31,7 @@ import insight from './insight';
 import studyDataSourceList from './studyDataSourceList';
 import statusHistory from './statusHistory';
 import submissionResultFile from './submissionResultFile';
+import submissionResultZipEntry from './submissionResultZipEntry';
 import submissionGroupFile from './submissionGroupFile';
 import submissionFileDetails from './submissionFileDetails';
 
@@ -60,6 +61,7 @@ export default {
     studyDataSourceList: studyDataSourceList.actions,
     statusHistory: statusHistory.actions,
     submissionResultFile: submissionResultFile.actions,
+    submissionResultZipEntry: submissionResultZipEntry.actions,
     submissionGroupFile: submissionGroupFile.actions,
     submissionFileDetails: submissionFileDetails.actions,
     code: code.actions,
@@ -86,6 +88,7 @@ export default {
     studyDataSourceList: studyDataSourceList.reducer,
     statusHistory: statusHistory.reducer,
     submissionResultFile: submissionResultFile.reducer,
+    submissionResultZipEntry: submissionResultZipEntry.reducer,
     submissionGroupFile: submissionGroupFile.reducer,
     submissionFileDetails: submissionFileDetails.reducer,
     insightFile: insightFile.reducer,
