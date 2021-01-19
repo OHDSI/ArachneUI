@@ -24,6 +24,7 @@
 import * as React from 'react';
 import BEMHelper from "services/BemHelper";
 
+import { LoadingPanel } from 'arachne-ui-components';
 import { Downloads, Filters } from './components';
 import { SortingParams } from "../../actions/statistics";
 import { IStatisticsFilter } from "./components/Filters/presenter";
@@ -37,7 +38,8 @@ interface IStatisticsProps extends IStatisticsStateProps, IStatisticsDispatchPro
 
 interface IStatisticsStateProps {
     sorting: SortingParams,
-    filter: IStatisticsFilter
+    filter: IStatisticsFilter,
+    isLoading: boolean
 }
 
 interface IStatisticsDispatchProps {
@@ -55,6 +57,7 @@ function Statistics(props: IStatisticsProps) {
                 <div {...classes({element: 'downloads-wrapper'})}>
                     <Downloads runSearch={props.runSearch}/>
                 </div>
+                <LoadingPanel active={props.isLoading}/>
             </div>
         </div>);
 }
