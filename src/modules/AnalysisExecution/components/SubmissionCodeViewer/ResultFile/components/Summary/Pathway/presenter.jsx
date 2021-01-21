@@ -32,13 +32,13 @@ import * as d3 from 'd3';
 function tooltipBuilder({ path }) {
   const classes = BEMHelper('summary-pathway-tooltip');
   const nameBuilder = (name, color) => `<span class="${classes('tip-name')}" style="background-color:${color}; color: ${name == 'end' ? 'black' : 'white'}">${name}</span>`;
-  const stepBuilder = (step) => `<div class="${classes('tip-step')}">${step.names.map(n => nameBuilder(n.name, n.color)).join("")}</div>`;
+  const stepBuilder = step => `<div class="${classes('tip-step')}">${step.names.map(n => nameBuilder(n.name, n.color)).join('')}</div>`;
 
-  return `<div class="${classes('tip-container')}"">${path.map(s => stepBuilder(s)).join("")}</div>`;
+  return `<div class="${classes('tip-container')}"">${path.map(s => stepBuilder(s)).join('')}</div>`;
 }
 
 function formatPct(val) {
-  return d3.format(".1%")(val);
+  return d3.format('.1%')(val);
 }
 
 function PathNameCell({ className, mods, value }) {
@@ -52,74 +52,65 @@ export default function SummaryPathway({ className, pathways, sunburstChart, loa
   return (
     <div {...classes({ extra: className })}>
       <div {...classes('result-info')}>
-        {pathways.map((pathway, i) => {
-          return (
-            <div {...classes()} key={`summary-pathway${i}`}>
-              <div {...classes('padded')}>
-                <Panel title={'Legend'}>
-                  <div {...classes('legend-section')}>
-                    <h5>Target cohort</h5>
-                    <div {...classes('cohort-name')}>{pathway.targetCohortName}</div>
-                    <ul {...classes('legend-props-list')}>
-                      <li>Target cohort count: <span>{pathway.targetCohortCount}</span></li>
-                      <li>Persons with pathways count: <span>{pathway.personsReported}</span></li>
-                      <li>Persons with pathways portion: <span>{ formatPct(pathway.personsReportedPct) }</span></li>
-                    </ul>
-                  </div>
-                  <div {...classes('legend-section')}>
-                    <h5>Event cohorts</h5>
-                    {pathway.eventCodes.map((ec, idx) => {
-                      return (
-                        <div key={idx} {...classes()}>
-                          <div {...classes('legend-symbol')} style={{ 'backgroundColor': pathway.colors(ec.code) }}></div>
-                          <div>{ec.name}</div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </Panel>
-                <Panel title={'Path details'}>
-                  <div {...classes()}>
-                    <Table data={ details }>
-                      <PathNameCell {...classes("cell-name")} header="Name" field="names" format={names => names.map(n => n.name).join(", ")} />
-                      <TableCellText header="% Remain" field="remainPct" format={pct => formatPct(pct)} />
-                      <TableCellText header="% Diff" field="diffPct" format={pct => formatPct(pct)} />
-                    </Table>
-                  </div>
-                </Panel>
-              </div>
-              <Chart
-                  key={i}
-                  title = "Sunburst plot"
-                  {...classes('chart')}
-                  isDataPresent={ pathways.length > 0 }
-                  render = {({width, element}) => {
-                    sunburstChart.render(pathway.pathway, element, width, width * 0.5,
-                      {
-                        minHeight: 300,
-                        tipClass: 'pathway-tip',
-                        tooltip: (d) => {
-                          const path = pathway.tooltips(d);
-                          return tooltipBuilder({ path });
-                        },
-                        useTip: true,
-                        colors: pathway.colors,
-                        onclick: (node) => { sunburstChart.destroyTipIfExists(); loadPathwayDetails({ pathway, node }); },
-                        split: pathway.splitPathway,
-                        ...chartSettings,
-                      });
-                  }
-                }
-                destroy = {() => {
-                  // setContainer method in ./container.js is called multiple times
-                  // d3-tip is not being deleted while component becomes destroyed, which makes multiple tooltips appear
-                  d3.selectAll('.d3-tip').remove();
-                }}
-              />
+        {pathways.map((pathway, i) => (
+          <div {...classes()} key={`summary-pathway${i}`}>
+            <div {...classes('padded')}>
+              <Panel title={'Legend'}>
+                <div {...classes('legend-section')}>
+                  <h5>Target cohort</h5>
+                  <div {...classes('cohort-name')}>{pathway.targetCohortName}</div>
+                  <ul {...classes('legend-props-list')}>
+                    <li>Target cohort count: <span>{pathway.targetCohortCount}</span></li>
+                    <li>Persons with pathways count: <span>{pathway.personsReported}</span></li>
+                    <li>Persons with pathways portion: <span>{ formatPct(pathway.personsReportedPct) }</span></li>
+                  </ul>
+                </div>
+                <div {...classes('legend-section')}>
+                  <h5>Event cohorts</h5>
+                  {pathway.eventCodes.map((ec, idx) => (
+                    <div key={idx} {...classes()}>
+                      <div {...classes('legend-symbol')} style={{ backgroundColor: pathway.colors(ec.code) }} />
+                      <div>{ec.name}</div>
+                    </div>
+                      ))}
+                </div>
+              </Panel>
+              <Panel title={'Path details'}>
+                <div {...classes()}>
+                  <Table data={details}>
+                    <PathNameCell {...classes('cell-name')} header="Name" field="names" format={names => names.map(n => n.name).join(', ')} />
+                    <TableCellText header="% Remain" field="remainPct" format={pct => formatPct(pct)} />
+                    <TableCellText header="% Diff" field="diffPct" format={pct => formatPct(pct)} />
+                  </Table>
+                </div>
+              </Panel>
             </div>
-          )
-        })}
+            <Chart
+              key={i}
+              title="Sunburst plot"
+              {...classes('chart')}
+              isDataPresent={pathways.length > 0}
+              render={({ width, element }) => {
+                sunburstChart.render(pathway.pathway, element, width, width * 0.5,
+                  {
+                    minHeight: 300,
+                    tipClass: 'pathway-tip',
+                    tooltip: (d) => {
+                      const path = pathway.tooltips(d);
+                      return tooltipBuilder({ path });
+                    },
+                    useTip: true,
+                    colors: pathway.colors,
+                    onclick: (node) => { sunburstChart.destroyTipIfExists(); loadPathwayDetails({ pathway, node }); },
+                    split: pathway.splitPathway,
+                    ...chartSettings,
+                  });
+              }
+                }
+            />
+          </div>
+          ))}
       </div>
     </div>
-  )
-};
+  );
+}
