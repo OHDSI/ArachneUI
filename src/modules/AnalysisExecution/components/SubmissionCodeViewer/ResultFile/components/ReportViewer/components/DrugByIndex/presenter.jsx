@@ -59,7 +59,7 @@ function DrugByIndex(props) {
       <div className='row'>
         <div className='col-xs-12'>
           <Chart
-            title='Procedures'
+            title='Drugs by Index Date'
             isDataPresent={dataPresent}
             isTreemap
             table={table}

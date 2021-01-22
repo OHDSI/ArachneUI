@@ -22,50 +22,47 @@
 
 import React from 'react';
 import * as d3 from 'd3';
-import { chartSettings } from 'modules/DataCatalog/const';
 import Chart from 'components/Reports/Chart';
 import isEmpty from 'lodash/isEmpty';
 
 function DrugByIndex(props) {
-  const {
-    data,
-    drugsChart,
-  } = props;
+    const {
+        data,
+        scatterplot,
+        title,
+    } = props;
 
-  return (
-    <div>
-      <div className='row'>
-        <div className='col-xs-12'>
-          <Chart
-            title='Drugs by index'
-            isDataPresent={!isEmpty(data)}
-            render={({ width, element }) => {
-              const height = width/3;
-              const minimum_area = 50;
-              const threshold = minimum_area / (width * height);
-              drugsChart.render(
-                data,
-                element,
-                width,
-                height,
-                {
-                  yLabel: 'Count',
-                  xLabel: 'Duration',
-                  xScale: d3.scaleTime().domain(
-                    d3.extent(data[0].values, d => d.xValue)
-                  ),
-                  showLegend: false,
-                  colors: d3.scaleOrdinal()
-                    .range(d3.schemeCategory10),
-                  ...chartSettings,
-                }
-              );
-            }}
-          />
+    return (
+        <div>
+            <div className='row'>
+                <div className='col-xs-12'>
+                    <Chart
+                        title={title}
+                        isDataPresent={!isEmpty(data)}
+                        render={({width, element}) => {
+                            const height = width / 3;
+                            scatterplot.render(
+                                data,
+                                element,
+                                width,
+                                height,
+                                {
+                                    yFormat: d3.format('0.2%'),
+                                    xValue: "duration",
+                                    yValue: "pctPersons",
+                                    xLabel: "Duration Relative to Index",
+                                    yLabel: "% Persons",
+                                    seriesName: "recordType",
+                                    showLegend: true,
+                                    circleRadius: 4
+                                }
+                            );
+                        }}
+                    />
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 }
 
 export default DrugByIndex;

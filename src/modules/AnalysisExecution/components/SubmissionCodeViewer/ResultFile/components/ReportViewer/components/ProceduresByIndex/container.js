@@ -22,11 +22,15 @@
 
 import TreemapReport from 'components/Reports/TreemapReport';
 import ProceduresByIndex from './presenter';
+import { scatterplot } from "@ohdsi/atlascharts";
 
 export default class ProceduresByIndexBuilder extends TreemapReport {
   constructor() {
     super();
     this.presenter = ProceduresByIndex;
+    this.detailsCharts = {
+      scatterplot: new scatterplot(),
+    };
   }
 
 }
