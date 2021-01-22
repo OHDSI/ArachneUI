@@ -92,7 +92,6 @@ class FileTree extends Component {
       selectedFilePath,
       doDelete,
       permissions,
-      index
     } = props;
 
     const isSelected = node.relativePath === selectedFilePath;
@@ -100,7 +99,7 @@ class FileTree extends Component {
     const isFolder = mimeTypes.folder === node.docType;
 
     return (
-      <li {...classes('node', isSelected ? 'selected' : null)} key={`file-tree-${index}`}>
+      <li {...classes('node', isSelected ? 'selected' : null)}>
         <div {...classes('node-details')} onClick={() =>
             node.onClick
               ? node.onClick()
@@ -167,14 +166,13 @@ class FileTree extends Component {
 
     return (
       <ul {...classes({ modifiers: { isFlat, isRoot } })}>
-        {data.map((node, index) => this.getNode({
+        {data.map(node => this.getNode({
           classes,
           node,
           selectedFilePath,
           onNodeClick,
           doDelete,
           permissions,
-          index
         }))}
       </ul>
     );

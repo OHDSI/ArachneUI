@@ -54,7 +54,7 @@ export default function SummaryPathway({ className, pathways, sunburstChart, loa
       <div {...classes('result-info')}>
         {pathways.map((pathway, i) => {
           return (
-            <div {...classes()} key={`summary-pathway${i}`}>
+            <div {...classes()}>
               <div {...classes('padded')}>
                 <Panel title={'Legend'}>
                   <div {...classes('legend-section')}>
@@ -71,7 +71,7 @@ export default function SummaryPathway({ className, pathways, sunburstChart, loa
                     {pathway.eventCodes.map((ec, idx) => {
                       return (
                         <div key={idx} {...classes()}>
-                          <div {...classes('legend-symbol')} style={{ 'backgroundColor': pathway.colors(ec.code) }}></div>
+                          <div {...classes('legend-symbol')} style={{ 'background-color': pathway.colors(ec.code) }}></div>
                           <div>{ec.name}</div>
                         </div>
                       );
@@ -108,13 +108,7 @@ export default function SummaryPathway({ className, pathways, sunburstChart, loa
                         split: pathway.splitPathway,
                         ...chartSettings,
                       });
-                  }
-                }
-                destroy = {() => {
-                  // setContainer method in ./container.js is called multiple times
-                  // d3-tip is not being deleted while component becomes destroyed, which makes multiple tooltips appear
-                  d3.selectAll('.d3-tip').remove();
-                }}
+                  }}
               />
             </div>
           )
