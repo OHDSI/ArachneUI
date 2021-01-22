@@ -93,7 +93,7 @@ class Chart extends Component {
         element,
       });
     } else {
-      d3.selectAll('.d3-tip').remove();
+      this.props.destroy && this.props.destroy();
     }
   }
 
@@ -154,7 +154,7 @@ class Chart extends Component {
   componentWillUnmount() {
         // setContainer method in ./container.js is called multiple times
         // d3-tip is not being deleted while component becomes destroyed, which makes multiple tooltips appear
-        d3.selectAll('.d3-tip').remove();
+        this.props.destroy && this.props.destroy();
   }
 }
 

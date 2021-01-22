@@ -107,6 +107,11 @@ export default function SummaryPathway({ className, pathways, sunburstChart, loa
                   });
               }
                 }
+              destroy={() => {
+                  // setContainer method in ./container.js is called multiple times
+                  // d3-tip is not being deleted while component becomes destroyed, which makes multiple tooltips appear
+                d3.selectAll('.d3-tip').remove();
+              }}
             />
           </div>
           ))}
