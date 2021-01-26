@@ -22,11 +22,15 @@
 
 import TreemapReport from 'components/Reports/TreemapReport';
 import ConditionsByIndex from './presenter';
+import { scatterplot } from "@ohdsi/atlascharts";
+
 
 export default class ConditionsByIndexBuilder extends TreemapReport {
-  constructor() {
-    super();
-    this.presenter = ConditionsByIndex;
-  }
-
+    constructor() {
+        super();
+        this.presenter = ConditionsByIndex;
+        this.detailsCharts = {
+            scatterplot: new scatterplot(),
+        };
+    }
 }
