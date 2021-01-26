@@ -22,7 +22,7 @@
 
 import TreemapReportBuilder from 'components/Reports/TreemapReport';
 import ProcedureByIndexDetails from './presenter';
-import { convertDataToTreemapData, convertDataToScatterplotData } from 'components/Reports/converters';
+import { convertDataToScatterplotData } from 'components/Reports/converters';
 import { get } from 'services/Utils';
 
 export default class ProcedureByIndexDetailsBuilder extends TreemapReportBuilder {
