@@ -43,6 +43,7 @@ function ProceduresByIndex(props) {
     tableData,
     tableColumns,
     treemap,
+    detailsCharts
   } = props;
   const classes = new BEMHelper('report-proc-by-index');
   const dataPresent = conditions && conditions.PERCENT_PERSONS && conditions.PERCENT_PERSONS.length;
@@ -58,7 +59,7 @@ function ProceduresByIndex(props) {
       <div className='row'>
         <div className='col-xs-12'>
           <Chart
-            title='Procedures'
+            title='Procedure Prevalence'
             isDataPresent={dataPresent}
             isTreemap
             table={table}
@@ -107,6 +108,7 @@ function ProceduresByIndex(props) {
       {details && <ProceduresByIndexDetails
         conditions={get(details, 'procedureByIndex', {})}
         details={{}}
+        {...detailsCharts}
       />
       }
     </div>

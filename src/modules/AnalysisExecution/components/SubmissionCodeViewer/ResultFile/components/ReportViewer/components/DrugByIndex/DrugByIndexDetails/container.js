@@ -22,28 +22,24 @@
 
 import { ContainerBuilder, get } from 'services/Utils';
 import {
-  convertDataToLineChartData,
+    convertDataToScatterplotData,
 } from 'components/Reports/converters';
 import DrugByIndexDetails from './presenter';
 
-const DTO = {
-  xValue: 'DURATION',
-  yValue: 'COUNT_VALUE',
-  yPercent: 'PCT_PERSONS',
-};
-
 export default class DrugByIndexDetailsBuilder extends ContainerBuilder {
-  getComponent() {
-    return DrugByIndexDetails;
-  }
+    getComponent() {
+        return DrugByIndexDetails;
+    }
 
-  mapStateToProps(state, ownProps) {
-    const data = get(ownProps, 'data', null);
+    mapStateToProps(state, ownProps) {
+        const data = get(ownProps, 'data', null);
+        const title = get(data, 'CONCEPT_NAME', [''])[0];
 
-    return {
-      data: data
-        ? convertDataToLineChartData(data, DTO)
-        : null,
-    };
-  }
+        return {
+            data: data
+                ? convertDataToScatterplotData(data)
+                : null,
+            title,
+        };
+    }
 }
