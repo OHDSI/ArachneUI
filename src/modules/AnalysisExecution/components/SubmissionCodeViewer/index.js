@@ -20,6 +20,6 @@
  *
  */
 
-import SubmissionCode from './container';
+import { SubmissionCodeBuilder } from './container';
 
-export default SubmissionCode;
+export default SubmissionCodeBuilder;

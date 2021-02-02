@@ -27,104 +27,101 @@ import { formatNumberWithLabel } from 'services/Utils';
 
 require('./style.scss');
 
-export default class Results extends Component {
+const tooltipClass = new BEMHelper('tooltip');
 
-  tooltipClass = new BEMHelper('tooltip');
-
-  BaseSpan = ({ string }) => {
-    return this.props.hasAccess ?
+const BaseSpan = ({ hasAccess, string }) => {
+  return hasAccess ?
       <span>{string}</span>
       :
-      <span {...this.tooltipClass()} data-tootik-conf="top" aria-label="Only contributors can view the results">{string}</span>;
-  };
+      <span {...tooltipClass()} data-tootik-conf="top" aria-label="Only contributors can view the results">{string}</span>;
+};
 
-  Cohort = () => {
-    const persons = get(this.props.resultInfo, 'persons');
-    const string = formatNumberWithLabel({ label: 'person', value: persons });
-    return <this.BaseSpan string={string}/>;
-  };
+const Cohort = ({resultInfo, hasAccess}) => {
+  const persons = get(resultInfo, 'persons');
+  const string = formatNumberWithLabel({ label: 'person', value: persons });
+  return <BaseSpan string={string} hasAccess={hasAccess}/>;
+};
 
-  Default = () => {
-    const documents = this.props.resultFilesCount;
-    const string = formatNumberWithLabel({ label: 'document', value: documents });
-    return <this.BaseSpan string={string}/>;
-  };
+const CohortCharacterization = ({resultInfo, hasAccess}) => {
+  const reports = get(resultInfo, 'reports') || 0;
+  const string = formatNumberWithLabel({ label: 'report', value: reports });
+  return <BaseSpan string={string} hasAccess={hasAccess}/>;
+};
 
-  CohortHeracles = () => {
-    const { resultInfo } = this.props;
-    const persons = get(resultInfo, 'persons') || 0;
-    const reports = get(resultInfo, 'reports') || 0;
-    const string = `${formatNumberWithLabel({ label: 'person', value: persons })}, ${formatNumberWithLabel({ label: 'report', value: reports })}`;
-    return <this.BaseSpan string={string}/>;
-  };
+const Default = ({resultFilesCount, hasAccess}) => {
+  const documents = resultFilesCount;
+  const string = formatNumberWithLabel({ label: 'document', value: documents });
+  return <BaseSpan string={string} hasAccess={hasAccess}/>;
+};
 
-  CohortCharacterization = () => {
-    const reports = get(this.props.resultInfo, 'reports') || 0;
-    const string = formatNumberWithLabel({ label: 'report', value: reports });
-    return <this.BaseSpan string={string}/>;
-  };
+const CohortHeracles = ({ resultInfo, hasAccess }) => {
+  const persons = get(resultInfo, 'persons') || 0;
+  const reports = get(resultInfo, 'reports') || 0;
+  const string = `${formatNumberWithLabel({ label: 'person', value: persons })}, ${formatNumberWithLabel({ label: 'report', value: reports })}`;
+  return <BaseSpan string={string} hasAccess={hasAccess}/>;
+};
 
-  Incidence = () => {
-    const { resultInfo } = this.props;
+const Incidence = ({ resultInfo, resultFilesCount, hasAccess }) => {
+  let tooltipString;
+  let label;
 
-    let tooltipString;
-    let label;
-
-    if (Array.isArray(resultInfo) && resultInfo.length > 1) {
-      const rates = resultInfo.map(o => o.RATE);
-      const cases = resultInfo.map(o => o.CASES);
-      const persons = resultInfo.map(o => o.PERSON_COUNT);
-      const timesAtRisk = resultInfo.map(o => o.TIME_AT_RISK);
-      const proportions = resultInfo.map(o => o.PROPORTION);
-      tooltipString = `Rate: ${formatNumberWithLabel({ value: rates, range: true, withoutLabel: true })}
+  if (Array.isArray(resultInfo) && resultInfo.length > 1) {
+    const rates = resultInfo.map(o => o.RATE);
+    const cases = resultInfo.map(o => o.CASES);
+    const persons = resultInfo.map(o => o.PERSON_COUNT);
+    const timesAtRisk = resultInfo.map(o => o.TIME_AT_RISK);
+    const proportions = resultInfo.map(o => o.PROPORTION);
+    tooltipString = `Rate: ${formatNumberWithLabel({ value: rates, range: true, withoutLabel: true })}
         Cases: ${formatNumberWithLabel({ value: cases, range: true, withoutLabel: true })}
         Persons: ${formatNumberWithLabel({ value: persons, range: true, withoutLabel: true })}
         Time at risk: ${formatNumberWithLabel({ value: timesAtRisk, range: true, withoutLabel: true })}
         Proportion: ${formatNumberWithLabel({ value: proportions, range: true, withoutLabel: true })}`;
-      label = formatNumberWithLabel({ label: 'combination', value: resultInfo.length });
-    } else if (Array.isArray(resultInfo) && resultInfo.length === 1) {
-      const entry = resultInfo[0];
-      const personCount = get(entry, 'PERSON_COUNT') || 0;
-      const timeAtRisk = get(entry, 'TIME_AT_RISK') || 0;
-      const cases = get(entry, 'CASES') || 0;
-      const rate = get(entry, 'RATE') || 0;
-      const proportion = get(entry, 'PROPORTION') || 0;
-      tooltipString = `Rate: ${formatNumberWithLabel({ value: rate, withoutLabel: true })}
+    label = formatNumberWithLabel({ label: 'combination', value: resultInfo.length });
+  } else if (Array.isArray(resultInfo) && resultInfo.length === 1) {
+    const entry = resultInfo[0];
+    const personCount = get(entry, 'PERSON_COUNT') || 0;
+    const timeAtRisk = get(entry, 'TIME_AT_RISK') || 0;
+    const cases = get(entry, 'CASES') || 0;
+    const rate = get(entry, 'RATE') || 0;
+    const proportion = get(entry, 'PROPORTION') || 0;
+    tooltipString = `Rate: ${formatNumberWithLabel({ value: rate, withoutLabel: true })}
   ${formatNumberWithLabel({ value: cases, label: 'Case', pre: true })}
   ${formatNumberWithLabel({ value: personCount, label: 'Person', pre: true })}
   Time at risk:  ${formatNumberWithLabel({ value: timeAtRisk, withoutLabel: true })}
   Proportion:  ${formatNumberWithLabel({ value: proportion, withoutLabel: true })}`;
-      label = `${formatNumberWithLabel({ label: 'case', value: cases, format: 'short' })}, ${formatNumberWithLabel({ label: 'person', value: personCount, format: 'short' })}`;
-    } else {
-      return this.Default();
-    }
+    label = `${formatNumberWithLabel({ label: 'case', value: cases, format: 'short' })}, ${formatNumberWithLabel({ label: 'person', value: personCount, format: 'short' })}`;
+  } else {
+    return <Default resultFilesCount={resultFilesCount} hasAccess={hasAccess} />;
+  }
 
-    return (<div
-      {...this.tooltipClass({ modifiers: 'preformatted' })}
+  return (<div
+      {...tooltipClass({ modifiers: 'preformatted' })}
       aria-label={tooltipString}
       data-tootik-conf='left'
-    >
-      {label}
-    </div>);
-  };
+  >
+    {label}
+  </div>);
+};
+
+export default class Results extends Component {
 
   render() {
     let element;
     switch (this.props.analysisType) {
       case 'COHORT':
-        element = <this.Cohort/>;
+        element = <Cohort resultInfo={this.props.resultInfo} hasAccess={this.props.hasAccess} />;
         break;
       case 'COHORT_HERACLES':
-        element = <this.CohortHeracles />;
+        element = <CohortHeracles resultInfo={this.props.resultInfo} hasAccess={this.props.hasAccess} />;
         break;
       case 'COHORT_CHARACTERIZATION':
-        element = <this.CohortCharacterization/>;
+        element = <CohortCharacterization resultInfo={this.props.resultInfo} hasAccess={this.props.hasAccess} />;
         break;
       case 'INCIDENCE':
-        element = <this.Incidence/>;
+        element = <Incidence resultFilesCount={this.props.resultFilesCount} resultInfo={this.props.resultInfo} hasAccess={this.props.hasAccess}/>;
         break;
       default:
-        element = <this.Default/>;
+        element = <Default resultFilesCount={this.props.resultFilesCount} hasAccess={this.props.hasAccess} />;
     }
     return element;
   }
