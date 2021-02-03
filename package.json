@@ -20,26 +20,13 @@
     "node": "webpack-dev-server --env.app node --env.mode development --config webpack/app.config.js",
     "build": "webpack --env.mode production --progress --config webpack/app.config.js",
     "build-node": "webpack --env.mode production --env.app node --progress --config webpack/app.config.js",
-    "test": "size-limit",
     "qa": "webpack --env.app central --env.mode qa --config webpack/app.config.js",
     "portal-ssr-app": "webpack --env.app central --env.mode production --progress --config webpack/ssr-app.config.js --watch",
     "portal-ssr-node": "webpack --env.app node --env.mode production --progress --config webpack/ssr-app.config.js --watch",
     "ssr-server-central-watch": "webpack --config webpack/server.config.js --watch"
   },
-  "size-limit": [
-    {
-      "path": "public/?/*.js",
-      "webpack": false,
-      "limit": "1024 KB"
-    },
-    {
-      "path": "public/js/*.js",
-      "webpack": false,
-      "limit": "1024 KB"
-    }
-  ],
   "dependencies": {
-    "@ohdsi/atlascharts": "^1.7.4",
+    "@ohdsi/atlascharts": "1.7.3",
     "@stomp/stompjs": "github:stomp-js/stomp-websocket",
     "arachne-ui-components": "1.17.2",
     "autoprefixer": "^6.7.6",
@@ -107,7 +94,6 @@
     "redux-thunk": "2.2.0",
     "reselect": "3.0.1",
     "serialize-javascript": "^1.4.0",
-    "size-limit": "^0.13.2",
     "sockjs-client": "^1.1.2",
     "source-map-loader": "^0.2.1",
     "tootik": "^1.0.2",
