@@ -26,7 +26,7 @@ import {
 	boxplot,
 	line,
 	trellisline,
-} from '@ohdsi/atlascharts/dist/atlascharts.umd';
+} from '@ohdsi/atlascharts';
 
 export default class DrugEraBuilder extends TreemapReportBuilder {
   constructor() {

@@ -21,7 +21,7 @@
  */
 
 import { TreemapSelectorsBuilder } from 'services/Utils';
-import { treemap } from '@ohdsi/atlascharts/dist/atlascharts.umd';
+import { treemap } from '@ohdsi/atlascharts';
 import { get } from 'services/Utils';
 
 export default class SelectorsBuilder extends TreemapSelectorsBuilder {

@@ -28,7 +28,7 @@ import { ContainerBuilder } from 'services/Utils';
 import {
   boxplot,
   line,
-} from '@ohdsi/atlascharts/dist/atlascharts.umd';
+} from '@ohdsi/atlascharts';
 import { BaseChart } from 'components/Reports/BaseChart';
 import presenter from './presenter';
 

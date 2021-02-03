@@ -20,7 +20,7 @@
  *
  */
 
-import { chart } from '@ohdsi/atlascharts/dist/atlascharts.umd';
+import { chart } from '@ohdsi/atlascharts';
 
 export default (data) => {
   const normalizedData = chart.normalizeDataframe(data);

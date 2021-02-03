@@ -23,7 +23,7 @@
 import React from 'react';
 import BEMHelper from 'services/BemHelper';
 import './style.scss';
-import { sunburst } from '@ohdsi/atlascharts/dist/atlascharts.umd';
+import { sunburst } from '@ohdsi/atlascharts';
 import { chartSettings } from 'modules/DataCatalog/const';
 import Chart from 'components/Reports/Chart';
 import { Panel, Table, TableCellText } from 'arachne-ui-components';
