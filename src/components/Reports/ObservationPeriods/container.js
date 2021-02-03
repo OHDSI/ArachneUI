@@ -30,7 +30,7 @@ import {
   histogram,
   boxplot,
   line,
-} from '@ohdsi/atlascharts/dist/atlascharts.umd';
+} from '@ohdsi/atlascharts';
 import { ContainerBuilder } from 'services/Utils';
 import { BaseChart } from 'components/Reports/BaseChart';
 import presenter from './presenter';

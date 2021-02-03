@@ -21,7 +21,7 @@
  */
 
 import TreemapReportBuilder from 'components/Reports/TreemapReport';
-import { scatterplot } from '@ohdsi/atlascharts/dist/atlascharts.umd';
+import { scatterplot } from '@ohdsi/atlascharts';
 import DrugByIndex from './presenter';
 
 export default class DrugByIndexBuilder extends TreemapReportBuilder {

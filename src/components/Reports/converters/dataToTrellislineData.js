@@ -21,7 +21,7 @@
  */
 
 import * as d3 from 'd3';
-import { chart } from '@ohdsi/atlascharts/dist/atlascharts.umd';
+import { chart } from '@ohdsi/atlascharts';
 import ReportUtils from 'components/Reports/Utils';
 
 export default (rawData, DTO = {

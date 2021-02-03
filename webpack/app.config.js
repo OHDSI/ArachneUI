@@ -147,10 +147,6 @@ module.exports = function (env) {
           loaders: 'babel-loader',
         },
         {
-          test: /atlascharts\.js$/,
-          loaders: 'babel-loader',
-        },
-        {
           test: /\.scss$/,
           use: [
             {

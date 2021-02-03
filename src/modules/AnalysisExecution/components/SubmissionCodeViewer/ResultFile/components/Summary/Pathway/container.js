@@ -22,7 +22,7 @@
 
 import { ContainerBuilder, get } from 'services/Utils';
 import SummaryPathway from './presenter';
-import { sunburst } from '@ohdsi/atlascharts/dist/atlascharts.umd';
+import { sunburst } from '@ohdsi/atlascharts';
 import PathwaySummarySelectorsBuilder from './selectors';
 import actions from 'actions';
 
