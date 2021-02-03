@@ -26,7 +26,7 @@
     "ssr-server-central-watch": "webpack --config webpack/server.config.js --watch"
   },
   "dependencies": {
-    "@ohdsi/atlascharts": "1.7.3",
+    "@ohdsi/atlascharts": "^1.7.4",
     "@stomp/stompjs": "github:stomp-js/stomp-websocket",
     "arachne-ui-components": "1.17.2",
     "autoprefixer": "^6.7.6",
