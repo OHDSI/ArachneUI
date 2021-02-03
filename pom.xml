@@ -42,7 +42,7 @@
         <profile>
             <id>test</id>
             <properties>
-                <env>test</env>
+                <env>production</env>
             </properties>
         </profile>
 
