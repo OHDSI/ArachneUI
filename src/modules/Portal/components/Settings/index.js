@@ -22,4 +22,4 @@
 
 import SettingsContainerBuilder from './container';
 
-export default new SettingsContainerBuilder().build();
+export default (new SettingsContainerBuilder()).build();
