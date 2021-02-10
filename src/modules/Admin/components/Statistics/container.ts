@@ -29,6 +29,7 @@ import presenter, { IStatisticsDispatchProps, IStatisticsProps, IStatisticsState
 import { getSorting, getStatisticFilterForQuery } from './components/selectors';
 import { SortingParams } from "modules/Admin/actions/statistics";
 import { apiPaths } from 'modules/Admin/const';
+import { get } from "lodash";
 
 class Statistics extends Component<IStatisticsProps, {}> {
 
@@ -74,7 +75,8 @@ const mapDispatchToProps = {
 function mapStateToProps(state: Object): IStatisticsStateProps {
     const filter = getStatisticFilterForQuery(state);
     const sorting = getSorting(state);
-    return {sorting, filter};
+    const isLoading=  get(state, 'admin.statistics.isLoading', false);
+    return {sorting, filter, isLoading};
 }
 
 export default connect<IStatisticsStateProps, IStatisticsDispatchProps, {}>(

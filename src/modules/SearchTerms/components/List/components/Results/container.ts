@@ -44,7 +44,13 @@ class Results extends Component<IResultProps, {}> {
 }
 
 function mapStateToProps(state: Object): IResultStateProps {
-	const searchResults = selectors.getResults(state);
+  const searchResults = selectors.getResults(state);
+
+  let debug = selectors.isDebug(state);
+  if (debug === 'true') {
+	const debugResults = selectors.getDebugResults(state);
+	const queryResults = selectors.getQueryResults(state);
+  }
   const searchLocation = get(state, 'routing.locationBeforeTransitions', {
   	pathname: '',
   	search: '',
@@ -70,6 +76,7 @@ function mapStateToProps(state: Object): IResultStateProps {
 		searchLocation,
 		downloadLink: apiPaths.downloadCsv(downloadLink.search()),
 		downloadingEnabled,
+		debug
 	};
 }
 

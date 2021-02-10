@@ -199,7 +199,7 @@ function Term(props: ITermProps) {
                 <span>{get(details, 'conceptCode', '')}</span>
               </ListItem>
               <ListItem>
-                <span {...classes('attribute-name')}>Invalid reason</span>
+                <span {...classes('attribute-name')}>Validity</span>
                 <span>
                   {invalidReason}
                   {invalidReason !== 'Valid' && get(validTerm, 'id', -1) !== -1 &&
@@ -210,7 +210,7 @@ function Term(props: ITermProps) {
                 </span>
               </ListItem>
               <ListItem>
-                <span {...classes('attribute-name')}>Standard concept</span>
+                <span {...classes('attribute-name')}>Concept</span>
                 <span>{get(details, 'standardConcept', '')}</span>
               </ListItem>
               {synonyms.length

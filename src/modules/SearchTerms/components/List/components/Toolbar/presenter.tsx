@@ -26,6 +26,7 @@ import {
   Button,
   Form,
   FormInput,
+  FormTextarea,
   Panel,
 } from 'arachne-ui-components';
 import { push } from 'react-router-redux';
@@ -89,7 +90,7 @@ function SearchTooltip() {
 
 function Toolbar(props: IToolbarProps) {
   const classes = BEMHelper('search-toolbar');
-  const fields = [
+  var fields = [
     {
       name: 'searchString',
       InputComponent: {
@@ -101,6 +102,19 @@ function Toolbar(props: IToolbarProps) {
       }
     }
   ];
+
+  if (props.locationSearch.query.debug === 'true') {
+    fields.push(
+        {
+          name: 'boosts',
+          InputComponent: {
+            component: FormTextarea,
+            props: {
+              ...classes('textaria'),
+            }
+          }
+        });
+  }
   const submitBtn = {
     label: 'search',
     ...classes('search-button'),
