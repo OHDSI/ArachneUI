@@ -22,6 +22,8 @@
 
 import React, { PropTypes } from 'react';
 import DraggableList from 'react-draggable-list';
+import { groupBy } from 'lodash';
+import pluralize from 'pluralize';
 import { ListItem, Link, Select } from 'arachne-ui-components';
 import BEMHelper from 'services/BemHelper';
 import { newParticipantRolesOptions, participantRoles } from 'modules/StudyManager/const';
@@ -48,17 +50,11 @@ ParticipantCard.propTypes = {
   participant: PropTypes.object.isRequired,
 };
 
-function ParticipantItem(props) {
+function ParticipantItem({roleGroup, hasEditPermissions, addParticipant, changeRole, removeParticipant}) {
   const classes = new BEMHelper('study-participants-item');
   const tootlopClasses = new BEMHelper('tooltip');
-  const {
-    participant,
-    hasEditPermissions,
-    addParticipant,
-    changeRole,
-    removeParticipant,
-  } = props;
 
+  const participant = roleGroup[0];
   const mods = {
     hover: true,
     actionable: hasEditPermissions,
@@ -143,7 +139,7 @@ function ParticipantItem(props) {
       {participant.role.id === participantRoles.DATA_SET_OWNER &&
       <Link
           {...classes({ element: 'comment', extra: 'ac-tooltip' })}
-          aria-label={ `Role was added automatically as following data source owner: ${participant.ownedDataSource.name}` }
+          aria-label={ `Role was added automatically as following data ${pluralize('datasource', roleGroup.length)} owner: ${roleGroup.map((v)=>v.ownedDataSource.name).join(', ')}` }
           data-tootik-conf='top multiline'>
         <div {...classes('comment-icon')}>info_outline</div>
       </Link>
@@ -159,15 +155,17 @@ function ParticipantItem(props) {
 ParticipantItem.propTypes = {
   endOfGroup: PropTypes.bool,
   hasEditPermissions: PropTypes.bool.isRequired,
-  participant: PropTypes.object.isRequired,
   removeParticipant: PropTypes.func.isRequired,
+  roleGroup: PropTypes.array.isRequired,
 }
 
 function ParticipantLine(props) {
   const {roles, hasEditPermissions, addParticipant, changeRole, removeParticipant} = props;
   const classes = new BEMHelper('study-participant-lines');
   const participant = roles[0];
-
+  const groupByRoleAndStatus = (line)=> `${line.status}_${line.role.id}_${line.id}`;
+  const sameStatusRoles = groupBy(roles, groupByRoleAndStatus);
+  const roleGroups = Object.values(sameStatusRoles);
   return (
       <li>
         <div {...classes('group')}>
@@ -176,9 +174,9 @@ function ParticipantLine(props) {
           <div {...classes('roles')}>
             <ul>
               {
-                roles.map((role, index) => {
+                roleGroups.map((roleGroup, index) => {
                   return (<ParticipantItem
-                      participant={role}
+                      roleGroup={roleGroup}
                       hasEditPermissions={hasEditPermissions}
                       addParticipant={addParticipant}
                       changeRole={changeRole}

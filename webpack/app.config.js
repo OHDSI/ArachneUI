@@ -143,7 +143,7 @@ module.exports = function (env) {
         {
           test: /\.jsx?$/,
           exclude: /(node_modules|ArachneUIComponents)/i,
-          loaders: 'babel-loader',
+          use: 'babel-loader',
         },
         {
           test: /\.scss$/,
