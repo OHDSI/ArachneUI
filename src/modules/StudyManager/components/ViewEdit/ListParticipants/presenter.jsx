@@ -139,7 +139,7 @@ function ParticipantItem({roleGroup, hasEditPermissions, addParticipant, changeR
       {participant.role.id === participantRoles.DATA_SET_OWNER &&
       <Link
           {...classes({ element: 'comment', extra: 'ac-tooltip' })}
-          aria-label={ `Role was added automatically as following data ${pluralize('datasource', roleGroup.length)} owner: ${roleGroup.map((v)=>v.ownedDataSource.name).join(', ')}` }
+          aria-label={ `Role was added automatically as following ${pluralize('datasource', roleGroup.length)} owner: ${roleGroup.map((v)=>v.ownedDataSource.name).join(', ')}` }
           data-tootik-conf='top multiline'>
         <div {...classes('comment-icon')}>info_outline</div>
       </Link>
