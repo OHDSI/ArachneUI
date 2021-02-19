@@ -69,10 +69,10 @@ function AboutInfo(props: IAboutInfo) {
           OMOP Vocabulary version: {vocabularyReleaseVersion}
         </p>
         <p {...classes('line', 'padded')}>
-          <Link href={'mailto:support@odysseusinc.com'}>support@odysseusinc.com</Link>
+          <Link href={'https://github.com/OHDSI/Athena/issues'} target={'_blank'}>Report application issue</Link>
         </p>
         <p {...classes('line', 'padded')}>
-          <Link href={'https://github.com/OHDSI/Athena'} target={'_blank'}>Github</Link>
+          <Link href={'https://github.com/OHDSI/Vocabulary-v5.0/issues'} target={'_blank'}>Report vocabulary content issues</Link>
         </p>
         <LoadingPanel active={isLoading}/>
       </div>
