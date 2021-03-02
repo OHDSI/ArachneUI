@@ -8,7 +8,7 @@ result.then((r) => {
     // version is not published yet
     cmd.run('npm publish');
   }else{
-    console.warn(`Skip publish because version ${name}.${version} is already published`);
+    console.error(`Skip publish because version ${name}.${version} is already published`);
     process.exit(1);
   }
 });
