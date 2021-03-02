@@ -112,7 +112,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>1.6.0</version>
+                <version>3.0.0</version>
                 <executions>
                     <execution>
                         <id>exec-npm-install</id>
@@ -130,7 +130,7 @@
                     <!-- We do not need built bundle file, so publish just sources -->
                     <execution>
                         <id>exec-npm-publish</id>
-                        <phase>generate-sources</phase>
+                        <phase>deploy</phase>
                         <configuration>
                             <executable>node</executable>
                             <arguments>
