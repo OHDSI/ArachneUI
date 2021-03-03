@@ -87,7 +87,7 @@ function mapStateToProps(state) {
     address1: '',
     address2: '',
     city: '',
-    stateProvinceId,
+    stateProvinceId: '',
     zipCode: '',
     country: { id: -1, name: '' },
     phone: '',
