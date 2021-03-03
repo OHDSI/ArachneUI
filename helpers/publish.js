@@ -6,7 +6,6 @@ const viewBuffer = childProcess.execSync(`npm view arachne-ui@${version}`, optio
 const versionFound = viewBuffer.toString().includes(version);
 if (versionFound) {
     console.error(`Skip publish because version ${name}.${version} is already published`);
-    process.exit(1);
 } else {
     const publishBuffer = childProcess.execSync(`npm publish`, options);
     console.log('publishing output:', publishBuffer.toString());
