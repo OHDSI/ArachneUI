@@ -20,7 +20,7 @@
  *
  */
 
-import { chart } from '@ohdsi/atlascharts/dist/atlascharts.umd';
+import { chart } from '@ohdsi/atlascharts';
 
 export default (data, DTO) => {
   let dataIsNormal = true;

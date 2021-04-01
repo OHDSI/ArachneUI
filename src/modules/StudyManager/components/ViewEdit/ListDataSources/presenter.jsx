@@ -51,7 +51,7 @@ function DataSourceItem(props) {
 
   if (dataSource.canBeRecreated) {
     actions.push(
-      <span
+      <span key="add-ds"
         {...classes('action')}
         onClick={ () => addDataSource(dataSource.id) }
       >
@@ -64,7 +64,7 @@ function DataSourceItem(props) {
 
   if (dataSource.canBeRemoved) {
     actions.push(
-      <span
+      <span key="remove-ds"
         {...classes('action')}
         onClick={() => removeDataSource(dataSource.id, dataSource.name)}
       >

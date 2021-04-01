@@ -28,7 +28,7 @@ import {
 	line,
 	trellisline,
 	histogram,
-} from '@ohdsi/atlascharts/dist/atlascharts.umd';
+} from '@ohdsi/atlascharts';
 
 export default class MeasurementBuilder extends TreemapReportBuilder {
   constructor() {

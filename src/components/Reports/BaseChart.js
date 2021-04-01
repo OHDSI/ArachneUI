@@ -31,6 +31,6 @@ export class BaseChart extends Component {
   }
 
   componentWillUnmount() {
-    this.charts.forEach(chart => chart.destroyTipIfExists());
+    this.charts.forEach(chart => !!chart && chart.destroyTipIfExists());
   }
 }

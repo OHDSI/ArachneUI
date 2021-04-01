@@ -22,7 +22,7 @@
 
 import { get } from 'services/Utils';
 import { createSelector } from 'reselect';
-import { util } from '@ohdsi/atlascharts/dist/atlascharts.umd';
+import { util } from '@ohdsi/atlascharts';
 import * as d3 from 'd3';
 
 class PathwaySummarySelectorsBuilder {

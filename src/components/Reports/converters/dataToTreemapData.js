@@ -22,7 +22,7 @@
 
 import {
   treemap,
-} from '@ohdsi/atlascharts/dist/atlascharts.umd';
+} from '@ohdsi/atlascharts';
 import { get } from 'services/Utils';
 
 export default (

@@ -20,12 +20,27 @@
  *
  */
 
+import { get } from 'services/Utils';
 import TreemapReport from 'components/Reports/TreemapReport';
+import { convertDataToScatterplotData } from 'components/Reports/converters';
 import ConditionByIndexDetails from './presenter';
 
 export default class ConditionByIndexDetailsBuilder extends TreemapReport {
-  constructor() {
-    super();
-    this.presenter = ConditionByIndexDetails;
-  }
+    constructor() {
+        super();
+        this.presenter = ConditionByIndexDetails;
+    }
+
+    mapStateToProps(state, ownProps) {
+        const conditions = get(ownProps, 'conditions', null);
+        const title = get(conditions, 'CONCEPT_NAME', [''])[0];
+
+        return {
+            data: conditions
+                ? convertDataToScatterplotData(conditions)
+                : null,
+            title,
+        };
+    }
+
 }

@@ -34,83 +34,85 @@ import ReportUtils from 'components/Reports/Utils';
 import './style.scss';
 
 function ConditionsByIndex(props) {
-  const {
-    conditions,
-    loadConditionDetails,
-    details,
-    onZoom,
-    initialZoomedConcept,
-    tableData,
-    tableColumns,
-    treemap,
-  } = props;
-  const classes = new BEMHelper('report-cond-by-index');
-  const dataPresent = conditions && conditions.PERCENT_PERSONS && conditions.PERCENT_PERSONS.length;
-  const table = <Table
-    data={tableData}
-    columns={tableColumns}
-    pageSize={5}
-    onRowClick={node => loadConditionDetails(node.id.value)}
-  />;
+    const {
+        conditions,
+        loadConditionDetails,
+        details,
+        onZoom,
+        initialZoomedConcept,
+        tableData,
+        tableColumns,
+        treemap,
+        detailsCharts
+    } = props;
+    const classes = new BEMHelper('report-cond-by-index');
+    const dataPresent = conditions && conditions.PERCENT_PERSONS && conditions.PERCENT_PERSONS.length;
+    const table = <Table
+        data={tableData}
+        columns={tableColumns}
+        pageSize={5}
+        onRowClick={node => loadConditionDetails(node.id.value)}
+    />;
 
-  return (
-    <div {...classes()}>
-      <div className='row'>
-        <div className='col-xs-12'>
-          <Chart
-            title='Conditions'
-            isDataPresent={dataPresent}
-            isTreemap
-            table={table}
-            render={({ width, element }) => {
-              const height = width/3;
-              const minimum_area = 50;
-              const threshold = minimum_area / (width * height);
-              treemap.render(
-                convertDataToTreemapData(conditions, threshold, {
-                  numPersons: 'NUM_PERSONS',
-                  id: 'CONCEPT_ID',
-                  path: 'CONCEPT_PATH',
-                  pctPersons: 'PERCENT_PERSONS',
-                  recordsPerPerson: 'RISK_DIFF_AFTER_BEFORE',
-                }),
-                element,
-                width,
-                height,
-                {
-                  ...chartSettings,
-                  onclick: node => loadConditionDetails(node.id),
-                  getsizevalue: node => node.numPersons,
-                  getcolorvalue: node => node.recordsPerPerson,
-                  getcontent: (node) => {
-                    return ReportUtils.getTreemapTooltipContent({
-                      node,
-                      treemap,
-                      label1: 'Prevalence:',
-                      label2:  'Number of People:',
-                      label3:  'Relative Risk per Person:',
-                    });
-                  },
-                  gettitle: (node) => {
-                    return ReportUtils.getTreemapTooltipTitle(node);
-                  },
-                  useTip: true,
-                  getcolorrange: () => d3.schemeCategory20c.slice(1),
-                  onZoom: onZoom,
-                  initialZoomedConcept: initialZoomedConcept,
-                }
-              )
-            }}
-          />
+    return (
+        <div {...classes()}>
+            <div className='row'>
+                <div className='col-xs-12'>
+                    <Chart
+                        title='Conditions'
+                        isDataPresent={dataPresent}
+                        isTreemap
+                        table={table}
+                        render={({width, element}) => {
+                            const height = width / 3;
+                            const minimum_area = 50;
+                            const threshold = minimum_area / (width * height);
+                            treemap.render(
+                                convertDataToTreemapData(conditions, threshold, {
+                                    numPersons: 'NUM_PERSONS',
+                                    id: 'CONCEPT_ID',
+                                    path: 'CONCEPT_PATH',
+                                    pctPersons: 'PERCENT_PERSONS',
+                                    recordsPerPerson: 'RISK_DIFF_AFTER_BEFORE',
+                                }),
+                                element,
+                                width,
+                                height,
+                                {
+                                    ...chartSettings,
+                                    onclick: node => loadConditionDetails(node.id),
+                                    getsizevalue: node => node.numPersons,
+                                    getcolorvalue: node => node.recordsPerPerson,
+                                    getcontent: (node) => {
+                                        return ReportUtils.getTreemapTooltipContent({
+                                            node,
+                                            treemap,
+                                            label1: 'Prevalence:',
+                                            label2: 'Number of People:',
+                                            label3: 'Relative Risk per Person:',
+                                        });
+                                    },
+                                    gettitle: (node) => {
+                                        return ReportUtils.getTreemapTooltipTitle(node);
+                                    },
+                                    useTip: true,
+                                    getcolorrange: () => d3.schemeCategory20c.slice(1),
+                                    onZoom: onZoom,
+                                    initialZoomedConcept: initialZoomedConcept,
+                                }
+                            )
+                        }}
+                    />
+                </div>
+            </div>
+            {details && <ConditionsByIndexDetails
+                conditions={get(details, 'conditionByIndex', {})}
+                details={{}}
+                {...detailsCharts}
+            />
+            }
         </div>
-      </div>
-      {details && <ConditionsByIndexDetails
-        conditions={get(details, 'conditionByIndex', {})}
-        details={{}}
-      />
-      }
-    </div>
-  );
+    );
 }
 
 export default ConditionsByIndex;

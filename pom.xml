@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.odysseusinc.arachne</groupId>
     <artifactId>${final.artifactId}</artifactId>
-    <version>1.17.0-QA</version>
+    <version>1.17.1-QA</version>
     <packaging>pom</packaging>
     <name>Frontend Resources Bundle</name>
 
@@ -35,14 +35,14 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <env>dev</env>
+                <env>development</env>
             </properties>
         </profile>
 
         <profile>
             <id>test</id>
             <properties>
-                <env>test</env>
+                <env>production</env>
             </properties>
         </profile>
 
@@ -112,7 +112,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>1.6.0</version>
+                <version>3.0.0</version>
                 <executions>
                     <execution>
                         <id>exec-npm-install</id>
@@ -130,7 +130,7 @@
                     <!-- We do not need built bundle file, so publish just sources -->
                     <execution>
                         <id>exec-npm-publish</id>
-                        <phase>generate-sources</phase>
+                        <phase>deploy</phase>
                         <configuration>
                             <executable>node</executable>
                             <arguments>

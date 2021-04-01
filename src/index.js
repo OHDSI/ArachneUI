@@ -21,7 +21,6 @@
  */
 
 import './styles/appContainer.scss';
-import * as legacySupport from 'helpers/legacy';
 import * as tweaks from 'helpers/tweaks';
 
 import ReactDOM from 'react-dom';
