@@ -20,12 +20,26 @@
  *
  */
 
-import TreemapReport from 'components/Reports/TreemapReport';
+import TreemapReportBuilder from 'components/Reports/TreemapReport';
 import ProcedureByIndexDetails from './presenter';
+import { convertDataToScatterplotData } from 'components/Reports/converters';
+import { get } from 'services/Utils';
 
-export default class ProcedureByIndexDetailsBuilder extends TreemapReport {
-  constructor() {
-    super();
-    this.presenter = ProcedureByIndexDetails;
-  }
+export default class ProcedureByIndexDetailsBuilder extends TreemapReportBuilder {
+    constructor() {
+        super();
+        this.presenter = ProcedureByIndexDetails;
+    }
+
+    mapStateToProps(state, ownProps) {
+        const conditions = get(ownProps, 'conditions', null);
+        const title = get(conditions, 'CONCEPT_NAME', [''])[0];
+
+        return {
+            data: conditions
+                ? convertDataToScatterplotData(conditions)
+                : null,
+            title,
+        };
+    }
 }

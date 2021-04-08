@@ -25,7 +25,7 @@ import BEMHelper from 'services/BemHelper';
 import {
   boxplot,
   line,
-} from '@ohdsi/atlascharts/dist/atlascharts.umd';
+} from '@ohdsi/atlascharts';
 import { numberFormatter } from 'services/Utils';
 import * as d3 from 'd3';
 import { chartSettings } from 'modules/DataCatalog/const';

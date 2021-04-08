@@ -22,7 +22,7 @@
 
 import * as d3 from 'd3';
 import moment from 'moment';
-import { chart } from '@ohdsi/atlascharts/dist/atlascharts.umd';
+import { chart } from '@ohdsi/atlascharts';
 import { typeCheck } from 'type-check';
 import cloneDeep from 'lodash/cloneDeep';
 import { get } from 'services/Utils';

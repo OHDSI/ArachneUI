@@ -22,69 +22,47 @@
 
 import React from 'react';
 import * as d3 from 'd3';
-import { chartSettings } from 'modules/DataCatalog/const';
-import { convertDataToTreemapData } from 'components/Reports/converters';
 import Chart from 'components/Reports/Chart';
-import ReportUtils from 'components/Reports/Utils';
 import isEmpty from 'lodash/isEmpty';
 
 function ConditionByIndexDetails(props) {
-  const {
-    conditions,
-    treemap,
-  } = props;
+    const {
+        data,
+        scatterplot,
+        title,
+    } = props;
 
-  return (
-    <div>
-      <div className='row'>
-        <div className='col-xs-12'>
-          <Chart
-            title='Conditions'
-            isDataPresent={!isEmpty(conditions)}
-            render={({ width, element }) => {
-                const height = width/3;
-                const minimum_area = 50;
-                const threshold = minimum_area / (width * height);
-                treemap.render(
-                  convertDataToTreemapData(conditions, threshold, {
-                    numPersons: 'COUNT_VALUE',
-                    id: 'CONCEPT_ID',
-                    path: 'CONCEPT_NAME',
-                    pctPersons: 'PCT_PERSONS',
-                    recordsPerPerson: 'DURATION',
-                  }),
-                  element,
-                  width,
-                  height,
-                  {
-                    ...chartSettings,
-                    onclick: () => {},
-                    getsizevalue: node => node.numPersons,
-                    getcolorvalue: node => node.recordsPerPerson,
-                    getcontent: (node) => {
-                      return ReportUtils.getTreemapTooltipContent({
-                        node,
-                        treemap,
-                        label1: 'Prevalence:',
-                        label2:  'Number of People:',
-                        label3:  'Duration:',
-                      });
-                    },
-                    gettitle: (node) => {
-                      return ReportUtils.getTreemapTooltipTitle(node);
-                    },
-                    useTip: true,
-                    getcolorrange: () => d3.schemeCategory20c.slice(1),
-                    onZoom: () => {},
-                    initialZoomedConcept: null,
-                  }
-                )
-            }}
-          />
+    return (
+        <div>
+            <div className='row'>
+                <div className='col-xs-12'>
+                    <Chart
+                        title={title}
+                        isDataPresent={!isEmpty(data)}
+                        render={({width, element}) => {
+                            const height = width / 3;
+                            scatterplot.render(
+                                data,
+                                element,
+                                width,
+                                height,
+                                {
+                                    yFormat: d3.format('0.2%'),
+                                    xValue: "duration",
+                                    yValue: "pctPersons",
+                                    xLabel: "Duration Relative to Index",
+                                    yLabel: "% Persons",
+                                    seriesName: "recordType",
+                                    showLegend: true,
+                                    circleRadius: 4
+                                }
+                            );
+                        }}
+                    />
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 }
 
 export default ConditionByIndexDetails;

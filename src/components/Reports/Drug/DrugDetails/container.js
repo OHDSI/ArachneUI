@@ -21,7 +21,7 @@
  */
 
 import { connect } from 'react-redux';
-import { chart } from '@ohdsi/atlascharts/dist/atlascharts.umd';
+import { chart } from '@ohdsi/atlascharts';
 import ReportUtils from 'components/Reports/Utils';
 import {
   convertDataToBoxplotData,

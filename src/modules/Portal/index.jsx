@@ -31,15 +31,15 @@ import MenuUsername from './components/MenuDropdown/Username';
 require('./styles/index.scss');
 
 // if this is Node, allow if to show build number
-const module = {
+const portalModule = {
   actions: () => ducks.actions,
   reducer: () => combineReducers(ducks.reducer),
 };
 
 if (__APP_TYPE_CENTRAL__) {
   const InvitationList = require('./components/InvitationList/index').default;  // eslint-disable-line global-require,
-	module.routes = () => require('./routes').default(); // eslint-disable-line global-require,
-  module.menuItems = () => [
+	portalModule.routes = () => require('./routes').default(); // eslint-disable-line global-require,
+  portalModule.menuItems = () => [
     <SearchInput />,
     <InvitationList />,
     <MenuDropdown />,
@@ -47,9 +47,9 @@ if (__APP_TYPE_CENTRAL__) {
 }
 
 if (__APP_TYPE_NODE__) {
-  module.menuItems = () => [
+  portalModule.menuItems = () => [
     <MenuUsername mods={['standalone']} />,
   ];
 }
 
-export default module;
+export default portalModule;

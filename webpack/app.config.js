@@ -40,7 +40,7 @@ module.exports = function (env) {
     NODE: 'node',
   };
   const ENV_TYPE = {
-    DEV: 'dev',
+    DEV: 'development',
     TEST: 'test',
     QA: 'qa',
     PRODUCTION: 'production',
@@ -49,8 +49,7 @@ module.exports = function (env) {
   const appType = env.app || APP_TYPE.CENTRAL;
   const mode = env.mode || ENV_TYPE.PRODUCTION;
   const isSilent = env.silent || false;
-
-  const babelOptions = JSON.parse(fs.readFileSync('.babelrc'));
+  const isDevelopment = mode === ENV_TYPE.DEV;
 
   const preLoaders = [];
   if (!isSilent) {
@@ -92,20 +91,14 @@ module.exports = function (env) {
       },
     }),
 
-    // https://medium.com/@adamrackis/vendor-and-code-splitting-in-webpack-2-6376358f1923
-
-    new webpack.optimize.CommonsChunkPlugin({
-      async: 'used-twice',
-      minChunks(module, count) {
-        return count >= 2;
-      },
-    }),
-
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|ru/),
   ];
 
+  if(isDevelopment){
+    plugins.push( new webpack.HotModuleReplacementPlugin())
+  }
+
   if (mode === ENV_TYPE.PRODUCTION) {
-    plugins.push(new webpack.optimize.UglifyJsPlugin());
   } else {
     if (mode === ENV_TYPE.QA) {
       plugins.push(
@@ -118,8 +111,9 @@ module.exports = function (env) {
 
   const config = {
     context: appRoot,
+    mode,
     entry: {
-      main: ['babel-regenerator-runtime', './index.js'],
+      main: ['regenerator-runtime/runtime', './index.js'],
     },
     output: {
       path: webapp,
@@ -149,16 +143,7 @@ module.exports = function (env) {
         {
           test: /\.jsx?$/,
           exclude: /(node_modules|ArachneUIComponents)/i,
-          loaders: 'babel-loader',
-          options: Object.assign(
-            {},
-            babelOptions,
-            { babelrc: false }
-          )
-        },
-        {
-          test: /atlascharts\.js$/,
-          loaders: 'babel-loader',
+          use: 'babel-loader',
         },
         {
           test: /\.scss$/,
@@ -193,6 +178,7 @@ module.exports = function (env) {
       contentBase: webapp,
       historyApiFallback: true,
       port: appType === APP_TYPE.CENTRAL ? 8010 : 8020,
+      hot: true,
       stats: {
         warnings: false
       },

@@ -22,7 +22,7 @@
 
 import { PropTypes } from 'react';
 import isEmpty from 'lodash/isEmpty';
-import { treemap } from '@ohdsi/atlascharts/dist/atlascharts.umd';
+import { treemap } from '@ohdsi/atlascharts';
 import { BaseChart } from './BaseChart';
 import { ContainerBuilder } from 'services/Utils';
 

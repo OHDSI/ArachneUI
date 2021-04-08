@@ -29,7 +29,7 @@ import {
 } from 'arachne-ui-components';
 import {
   histogram,
-} from '@ohdsi/atlascharts/dist/atlascharts.umd';
+} from '@ohdsi/atlascharts';
 import { numberFormatter, get } from 'services/Utils';
 import { chartSettings } from 'components/Reports/const';
 import moment from 'moment';

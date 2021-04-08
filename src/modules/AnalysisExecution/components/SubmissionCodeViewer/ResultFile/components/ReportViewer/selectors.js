@@ -24,7 +24,7 @@
 import { TreemapSelectorsBuilder } from 'services/Utils';
 import { convertDataToTableData } from 'components/Reports/converters';
 import { reports } from 'const/reports';
-import { treemap } from '@ohdsi/atlascharts/dist/atlascharts.umd';
+import { treemap } from '@ohdsi/atlascharts';
 
 export default class SelectorsBuilder extends TreemapSelectorsBuilder {
   constructor() {

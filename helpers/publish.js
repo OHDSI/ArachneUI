@@ -1,12 +1,12 @@
-var cmd = require('node-command-line');
-var version = require('../package.json').version;
-var name = require('../package.json').name;
-
-var result = cmd.run('npm info ' + name + '@' + version);
-result.then((r) => {
-  if (!r.message.length) {
-    // version is not published yet
-    cmd.run('npm publish');
-  }
-
-});
+const childProcess = require('child_process');
+const version = require('../package.json').version;
+const name = require('../package.json').name;
+const options = {encoding: 'utf8', maxBuffer: 50 * 1024 * 1024};
+const viewBuffer = childProcess.execSync(`npm view arachne-ui@${version}`, options);
+const versionFound = viewBuffer.toString().includes(version);
+if (versionFound) {
+    console.error(`Skip publish because version ${name}.${version} is already published`);
+} else {
+    const publishBuffer = childProcess.execSync(`npm publish`, options);
+    console.log('publishing output:', publishBuffer.toString());
+}

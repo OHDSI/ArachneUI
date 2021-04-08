@@ -27,7 +27,7 @@ import {
 	donut,
 	line,
 	trellisline,
-} from '@ohdsi/atlascharts/dist/atlascharts.umd';
+} from '@ohdsi/atlascharts';
 
 export default class ProceduresBuilder extends TreemapReportBuilder {
   constructor() {
