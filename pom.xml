@@ -224,14 +224,14 @@
 
     <distributionManagement>
         <snapshotRepository>
-            <id>artifactory</id>
-            <name>Odysseus community snapshots</name>
-            <url>http://repo.odysseusinc.com/artifactory/community-libs-snapshot-local</url>
+            <id>community-libs-snapshot-local</id>
+            <name>community-libs-snapshot-local</name>
+            <url>https://nexus.odysseusinc.com/repository/community-libs-snapshot-local</url>
         </snapshotRepository>
         <repository>
-            <id>artifactory</id>
-            <name>Odysseus community releases</name>
-            <url>http://repo.odysseusinc.com/artifactory/community-libs-release-local</url>
+            <id>community-libs-release-local</id>
+            <name>community-libs-release-local</name>
+            <url>https://nexus.odysseusinc.com/repository/community-libs-release-local</url>
         </repository>
     </distributionManagement>
 
