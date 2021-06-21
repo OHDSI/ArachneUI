@@ -67,6 +67,7 @@ export default class SelectorsBuilder extends TreemapSelectorsBuilder {
         },
         lengthOfEra: {
           value: normalizedData.LENGTH_OF_ERA[i],
+          formatter: new treemap().formatters.format_fixed,
         },
       };
     });
