@@ -23,7 +23,6 @@
 import { TreemapSelectorsBuilder } from 'services/Utils';
 import { treemap } from '@ohdsi/atlascharts';
 import { get } from 'services/Utils';
-import * as d3 from 'd3';
 
 export default class SelectorsBuilder extends TreemapSelectorsBuilder {
   constructor() {
