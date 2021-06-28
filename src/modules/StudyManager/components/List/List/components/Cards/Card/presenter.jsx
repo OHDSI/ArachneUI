@@ -47,7 +47,8 @@ class StudyCard extends Component {
       type: PropTypes.object,
       status: PropTypes.object,
       favourite: PropTypes.bool,
-    
+      isPrivate: PropTypes.bool,
+
       timestampFormatter: PropTypes.func,
       typeFormatter: PropTypes.func,
       statusFormatter: PropTypes.func,
@@ -73,6 +74,7 @@ class StudyCard extends Component {
         this.props.id,
         (!this.props.favourite).toString()
       ),
+      isPrivate: this.props.isPrivate,
     };
   }
 
