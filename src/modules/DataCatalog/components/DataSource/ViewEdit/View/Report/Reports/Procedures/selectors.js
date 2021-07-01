@@ -65,6 +65,7 @@ export default class SelectorsBuilder extends TreemapSelectorsBuilder {
         },
         recordsPerPerson: {
           value: normalizedData.RECORDS_PER_PERSON[i],
+          formatter: new treemap().formatters.format_fixed,
         },
       };
     });
