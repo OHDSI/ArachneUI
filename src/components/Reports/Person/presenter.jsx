@@ -89,6 +89,7 @@ function Person(props) {
           title='Year of birth'
           isDataPresent={!isEmpty(birthYear)}
           render={({ width, element }) => {
+            birthYear.OFFSET = birthYear.MIN;
             birthYearChart.render(
               histogram.mapHistogram(birthYear),
               element,
@@ -96,7 +97,7 @@ function Person(props) {
               width/3,
               {
                 ...chartSettings,
-                xFormat: d3.timeFormat(chartTime),
+                xFormat: d3.format('d'),
                 xLabel: 'Year',
                 yLabel: 'People',
                 yFormat: d => numberFormatter.format(d, 'short')
