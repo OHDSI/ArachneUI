@@ -89,6 +89,7 @@ export default class FieldsBuilder {
             toggleFavorite: () => this.setFavourite(paper.id, (!paper.favourite).toString()),
             titleLabel: paper.publishState === 'DRAFT' ? 'DRAFT' : null,
             titleLabelDescr: get(publishStateOptions.filter(opt => opt.value === 'DRAFT')[0], 'tooltip'),
+            showPrivacy: false,
           })
           }
         />
