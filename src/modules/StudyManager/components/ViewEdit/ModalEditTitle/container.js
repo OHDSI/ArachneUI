@@ -69,7 +69,7 @@ export default class ModalEditTitleBuilder {
       doSubmit({ title }) {
         const submitPromise = dispatchProps.updateStudy(
           { id: stateProps.studyId },
-          { title },
+          { title: title.trim() },
           false
         );
 
