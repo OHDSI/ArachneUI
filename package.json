@@ -1,6 +1,6 @@
 {
   "name": "arachne-ui",
-  "version": "1.18.22",
+  "version": "1.18.23",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
@@ -49,7 +49,7 @@
     "json-loader": "^0.5.4",
     "jszip": "3.2.2",
     "keymirror": "^0.1.1",
-    "lodash": "^4.17.2",
+    "lodash": "4.17.21",
     "moment": "^2.25.0",
     "moment-timezone": "0.5.28",
     "node-fetch": "^2.6.1",
@@ -94,7 +94,7 @@
     "source-map-loader": "^0.2.1",
     "tootik": "^1.0.2",
     "type-check": "^0.3.2",
-    "urijs": "^1.18.2",
+    "urijs": "1.19.7",
     "url-loader": "^0.5.9",
     "webpack-config-postcss": "^1.0.0-alpha.4",
     "whatwg-fetch": "^1.0.0"
