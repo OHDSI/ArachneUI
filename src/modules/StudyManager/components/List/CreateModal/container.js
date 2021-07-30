@@ -65,7 +65,7 @@ export default class CreateModalBuidler {
       ...dispatchProps,
       ...ownProps,
       createStudy(data) {
-        const promise = dispatchProps.create(data);
+        const promise = dispatchProps.create({...data, title: data.title.trim()});
         promise.then(res => dispatchProps.show(get(res, 'result.id')))
           .catch(() => {});
 

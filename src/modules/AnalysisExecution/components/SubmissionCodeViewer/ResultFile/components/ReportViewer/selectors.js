@@ -180,6 +180,7 @@ export default class SelectorsBuilder extends TreemapSelectorsBuilder {
       lengthOfEra: {
         columnName: 'Length of era',
         value: normalData.LENGTH_OF_ERA[i],
+        formatter: new treemap().formatters.format_fixed,
       },
     };
   }
