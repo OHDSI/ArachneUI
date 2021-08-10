@@ -41,13 +41,13 @@ require('./style.scss');
 function View(props) {
   const classes = new BEMHelper('data-source-entry');
   let content = (
-    <div {...classes('content')}>
+    <div {...classes('content')} key={4}>
       <AttributesList />
     </div>
   );
   if (props.reportsAccessAvailable && props.isProfileSelected) {
     content = (
-      <div {...classes('content')}>
+      <div {...classes('content')} key={3}>
         <Report dataSourceId={props.dataSourceId} />
       </div>
     );
@@ -59,11 +59,12 @@ function View(props) {
         {props.isDenied
           ? <EmptyState message={'You do not have rights to view this data source'} />
           : [
-            <Toolbar mode={'view'} />,
+            <Toolbar mode={'view'} key={1}/>,
             <Actions
               isProfileSelected={props.isProfileSelected}
               dataSourceId={props.dataSourceId}
               reportsAvailable={props.reportsAccessAvailable && props.characterizationAvailable}
+              key={2}
             />,
             content,
           ]

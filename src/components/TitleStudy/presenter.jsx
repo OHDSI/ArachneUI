@@ -36,12 +36,13 @@ function TitleStudy(props) {
     link = null,
     titleLabel,
     titleLabelDescr,
+    showPrivacy = true,
   } = props;
 
   return (
     <div {...classes({ modifiers: mods, extra: className })}>
       <div {...classes('icon-list')}>
-        {getIcons().map((icoEl, idx) => React.createElement(icoEl, { ...props, key: idx, ...classes('icon') }))}
+        {getIcons(showPrivacy).map((icoEl, idx) => React.createElement(icoEl, { ...props, key: idx, ...classes('icon') }))}
       </div>
       {link
         ? <Link {...classes('title')} to={link}>{title}</Link>

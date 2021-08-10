@@ -20,15 +20,6 @@
  *
  */
 
-import IconFavourite from './favourite';
-import IconLock from './lock';
+import IconLock from './presenter';
 
-function getIcons(showPrivacy) {
-  const fields = [IconFavourite];
-  if (showPrivacy) {
-    fields.push(IconLock);
-  }
-  return fields;
-}
-
-export default getIcons;
+export default IconLock;

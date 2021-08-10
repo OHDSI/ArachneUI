@@ -56,6 +56,7 @@ const attributeNames = keyMirror({
   krbUser: null,
   krbPassword: null,
   krbAuthMechanism: null,
+  accessType: null,
 });
 
 const modelTypesValues = keyMirror({
@@ -147,6 +148,11 @@ const cdmVersionList = [
   },
 ];
 
+const accessType = keyMirror({
+  PUBLIC: null,
+  RESTRICTED: null,
+});
+
 /**
  * @type {
     Array<{
@@ -228,6 +234,25 @@ const staticAttrList = [
     options: null,
     calculated: true,
     isRequired: true,
+  },
+  {
+    label: 'Access Type',
+    name: attributeNames.accessType,
+    type: fieldTypes.enum,
+    faceted: true,
+    showInList: true,
+    options: [
+      {
+        label: 'Public',
+        value: accessType.PUBLIC,
+      },
+      {
+        label: 'Restricted',
+        value: accessType.RESTRICTED,
+      },
+    ],
+    isRequired: true,
+    order: 1,
   },
 ];
 
@@ -502,4 +527,5 @@ export {
   getDataSourceCreationFields,
   getDataSourceKerberosFields,
   executionPolicy,
+  accessType,
 };
