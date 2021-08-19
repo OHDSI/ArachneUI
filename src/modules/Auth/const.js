@@ -68,6 +68,7 @@ const apiPaths = {
   //
   principal: () => '/api/v1/auth/me',
   authMethod: () => '/api/v1/auth/method',
+  allAuthMethods: () => '/api/v1/auth/methods',
   authMode: () => '/api/v1/auth/mode',
   refresh: () => '/api/v1/auth/refresh',
   //

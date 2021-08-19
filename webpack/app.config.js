@@ -187,7 +187,7 @@ module.exports = function (env) {
       disableHostCheck: true,
       proxy: [
         {
-          context: ['/api', '/arachne-websocket'],
+          context: ['/oauth2', '/api', '/arachne-websocket'],
           target: {
             "host": "localhost",
             "protocol": 'https:',
