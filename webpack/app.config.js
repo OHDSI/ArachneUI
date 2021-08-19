@@ -33,6 +33,7 @@ const appRoot = path.resolve(currentDir, 'src');
 
 const package = require('../package.json');
 const components = require('arachne-ui-components/package.json');
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 module.exports = function (env) {
   const APP_TYPE = {
@@ -182,13 +183,15 @@ module.exports = function (env) {
       stats: {
         warnings: false
       },
+      https: true,
+      disableHostCheck: true,
       proxy: [
         {
           context: ['/api', '/arachne-websocket'],
           target: {
             "host": "localhost",
             "protocol": 'https:',
-            "port": appType === APP_TYPE.CENTRAL ? 8080 : 8880,
+            "port": appType === APP_TYPE.CENTRAL ? 8443 : 8880,
           },
           secure: false,
         },
@@ -200,7 +203,7 @@ module.exports = function (env) {
           target: {
             host: 'localhost',
             protocol: 'wss:',
-            port: appType === APP_TYPE.CENTRAL ? 8080 : 8880,
+            port: appType === APP_TYPE.CENTRAL ? 8443 : 8880,
           },
           secure: true,
         },
