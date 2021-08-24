@@ -106,7 +106,7 @@ function FormLogin(props) {
   return (
     <div {...classes()}>
       {entries.filter(([name, value]) => !value).map(([authMethod, value]) =>
-        <div>
+        <div id={authMethod}>
           <form onSubmit={handleSubmit(doSubmit)} {...formClasses()}>
             <Field
               {...formClasses('group')}
