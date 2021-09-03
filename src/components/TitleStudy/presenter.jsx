@@ -37,6 +37,7 @@ function TitleStudy(props) {
     titleLabel,
     titleLabelDescr,
     showPrivacy = true,
+    showHover = false,
   } = props;
 
   return (
@@ -46,7 +47,7 @@ function TitleStudy(props) {
       </div>
       {link
         ? <Link {...classes('title')} to={link}>{title}</Link>
-        : <span {...classes('title')}>{title}</span>
+        : <span title={showHover ? title : ''} {...classes('title')}>{title}</span>
       }
       {titleLabel &&
         <span

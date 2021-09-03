@@ -27,6 +27,10 @@
   &title-study {
     align-items: center;
     display: flex;
+
+    &--nooverflow {
+      overflow: hidden;
+    }
     
     &--nowrap {
       & .#{$namespace}title-study__title {

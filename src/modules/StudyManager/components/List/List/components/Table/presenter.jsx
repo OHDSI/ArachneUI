@@ -33,12 +33,18 @@ import TitleStudy from 'components/TitleStudy';
 require('./style.scss');
 
 function LeadList({ userLinkFormatter, value }) {
+  const classes = new BEMHelper('cell-name');
+  
+  const fullTitle = value.map(userLinkFormatter).map((lead, key) =>
+    (key > 0 ? ', ' : '') + lead.label
+  );
+
   return (
-    <div onClick={(e) => { e.stopPropagation(); }}>
-      {value.map(userLinkFormatter).map((lead, key) => 
-        <span key={key}>
+    <div {...classes()}>
+      {value.map(userLinkFormatter).map((lead, key) =>
+        <span title={fullTitle} key={key} {...classes('title')}>
           {key > 0 ? ', ' : ''}
-          <Link to={lead.link}>{lead.label}</Link>
+          {lead.label}
         </span>
       )}
     </div>
@@ -56,6 +62,18 @@ function CellName(props) {
   );
 }
 
+function RoleCell({ value, index }) {
+  const classes = new BEMHelper('cell-name');
+
+  return (
+    <div {...classes()}>
+      <span title={value} key={index + 'table-cell-text-span'} {...classes('title')}>
+        {value}
+      </span>
+    </div>
+  );
+}
+
 class TableStudies extends Component {
   constructor() {
     super();
@@ -69,11 +87,12 @@ class TableStudies extends Component {
         {...this.tableClasses('study')}
         header="Study"
         field="title"
-        mods={['bold']}
+        mods={['bold', 'nowrap', 'nooverflow']}
         props={study => ({
           ...study,
           isFavourite: study.favourite,
           title: study.title,
+          showHover: true,
           toggleFavorite: () => this.props.setFavourite(
             study.id,
             (!study.favourite).toString()
@@ -87,7 +106,7 @@ class TableStudies extends Component {
         field="leadList"
         userLinkFormatter={this.props.userLinkFormatter}
       />,
-      <Cell
+      <RoleCell
         key="role"
         {...this.tableClasses('role')}
         header="My role"
