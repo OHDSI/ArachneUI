@@ -37,7 +37,7 @@ class Login extends Component {
 
   componentDidMount() {
     if (__APP_TYPE_CENTRAL__) {
-      this.props.authMethod();
+      this.props.allAuthMethods();
     }
   }
 
@@ -45,7 +45,7 @@ class Login extends Component {
     if (this.props.isUserAuthed !== nextProps.isUserAuthed) {
       leaveIfAuthed(nextProps);
     }
-    if (__APP_TYPE_NODE__ && this.props.runningMode !== nextProps.runningMode 
+    if (__APP_TYPE_NODE__ && this.props.runningMode !== nextProps.runningMode
         && nextProps.runningMode === nodeFunctionalModes.Network) {
       this.props.authMethod();
     }
@@ -73,6 +73,7 @@ function mapStateToProps(state) {
 const mapDispatchToProps = {
   goToRoot: goToPage.bind(null, '/'),
   authMethod: actions.auth.authMethod.findUnsecured,
+  allAuthMethods: actions.auth.allAuthMethods.findUnsecured,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
