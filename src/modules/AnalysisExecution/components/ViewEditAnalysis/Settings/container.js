@@ -43,6 +43,7 @@ function mapStateToProps(state) {
 
     canLockCode: get(analysisState, 'permissions.LOCK_ANALYSIS_FILE'),
     isCodeLocked: get(analysisState, 'locked', false),
+    files: get(analysisState, 'files') || [],
   };
 }
 
