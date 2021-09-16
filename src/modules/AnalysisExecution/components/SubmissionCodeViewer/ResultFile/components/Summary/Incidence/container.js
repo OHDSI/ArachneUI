@@ -20,11 +20,30 @@
  *
  */
 
-import SummaryIncidence from './presenter';
-import { ContainerBuilder } from 'services/Utils';
+import React from 'react';
+import presenter from './presenter';
 
-export default class SummaryIncidenceBuilder extends ContainerBuilder {
-  getComponent() {
-    return SummaryIncidence;
+export default class SummaryIncidenceContainer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      ratio: 1000,
+    };
+  }
+  
+  changeRatio = (multiplier) => {
+    let ratio = this.state.ratio * multiplier;
+    ratio = Math.min(ratio, 100000);
+    ratio = Math.max(ratio, 100);
+    this.setState({ratio: ratio})
+  }
+  
+  render() {
+    const { ratio } = this.state;
+    return presenter({
+      ...this.props,
+      ratio,
+      changeRatio: this.changeRatio,
+    });
   }
 }

@@ -22,8 +22,7 @@
 
 import React from 'react';
 import BEMHelper from 'services/BemHelper';
-import pluralize from 'pluralize';
-import { get, numberFormatter } from 'services/Utils';
+import { get } from 'services/Utils';
 import {
   Table,
   TableCellText,
@@ -31,7 +30,18 @@ import {
 
 import './style.scss';
 
-export default function SummaryIncidence({ resultInfo = [], className }) {
+function calculateValue(value, ratio) {
+  if (value.count > 0)
+    return (((1.0 * value.cases) / (1.0 * value.count)) * ratio).toFixed(2);
+  else
+    return (0).toFixed(2);
+}
+
+function DynamicCell({value, ratio}) {
+  return <div>{calculateValue(value, ratio)}</div>;
+}
+
+export default function SummaryIncidence({ resultInfo = [], className, ratio, changeRatio }) {
   const classes = BEMHelper('summary-incidence');
 
   let data;
@@ -41,14 +51,22 @@ export default function SummaryIncidence({ resultInfo = [], className }) {
           outcomeCohort: get(r, 'OUTCOME_NAME'),
           cases: get(r, 'CASES', 0),
           personCount: get(r, 'PERSON_COUNT', 0),
-          proportion: get(r, 'PROPORTION', 0),
-          rate: get(r, 'RATE', 0),
+          proportion: {
+            cases: get(r, 'CASES', 0),
+            count: get(r, 'PERSON_COUNT', 0),
+          },
+          rate: {
+            cases: get(r, 'CASES', 0),
+            count: get(r, 'TIME_AT_RISK', 0),
+          },
           timeAtRisk: get(r, 'TIME_AT_RISK', 0),
       }));
   } else {
       data = [];
       console.error("Received improper format of result info for IR");
   }
+
+  const ratioHeader = ratio >= 1000 ? (ratio / 1000) + 'k' : ratio;
 
   return (
     <div {...classes({ extra: className })}>
@@ -59,12 +77,17 @@ export default function SummaryIncidence({ resultInfo = [], className }) {
         <TableCellText header={'Outcome Cohort'} field={'outcomeCohort'} />
         <TableCellText header={'Persons'} field={'personCount'} />
         <TableCellText header={'Cases'} field={'cases'} />
-        <TableCellText
+        <DynamicCell
           header={<div {...classes('header')}>
-            <span>Proportion [+|-]</span>
-            <span {...classes('header-subtitle')}>per 1k persons</span>
+            <span>Proportion [
+              <span {...classes('span-active')} onClick={() => changeRatio(10)}> + </span>
+              |
+              <span {...classes('span-active')} onClick={() => changeRatio(0.1)}> - </span>]
+            </span>
+            <span {...classes('header-subtitle')}>per {ratioHeader} persons</span>
           </div>}
           field={'proportion'}
+          ratio={ratio}
         />
         <TableCellText
           header={<div {...classes('header')}>
@@ -73,12 +96,17 @@ export default function SummaryIncidence({ resultInfo = [], className }) {
           </div>}
           field={'timeAtRisk'}
         />
-        <TableCellText
+        <DynamicCell
           header={<div {...classes('header')}>
-            <span>Rate [+|-]</span>
-            <span {...classes('header-subtitle')}>per 1k years</span>
+            <span>Rate [
+              <span {...classes('span-active')} onClick={() => changeRatio(10)}> + </span>
+              |
+              <span {...classes('span-active')} onClick={() => changeRatio(0.1)}> - </span>]
+            </span>
+            <span {...classes('header-subtitle')}>per {ratioHeader} years</span>
           </div>}
           field={'rate'}
+          ratio={ratio}
         />
       </Table>
     </div>

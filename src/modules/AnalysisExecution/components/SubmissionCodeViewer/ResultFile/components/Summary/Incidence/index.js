@@ -20,7 +20,7 @@
  *
  */
 
-import SummaryIncidenceBuilder from './container';
+import SummaryIncidenceContainer from './container';
 
-export default (new SummaryIncidenceBuilder()).build();
+export default SummaryIncidenceContainer;
 
