@@ -66,7 +66,7 @@ function CellResults({ className, resultInfo, resultFilesCount, analysisType, sh
             hasAccess={hasAccess}
           />
         :
-        <span>No documents</span>
+        <span>No files</span>
       }
     </div>
   );
