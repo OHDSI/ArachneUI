@@ -34,11 +34,11 @@ require('./style.scss');
 
 function LeadList({ userLinkFormatter, value }) {
   return (
-    <div onClick={(e) => { e.stopPropagation(); }}>
+    <div>
       {value.map(userLinkFormatter).map((lead, key) => 
         <span key={key}>
           {key > 0 ? ', ' : ''}
-          <Link to={lead.link}>{lead.label}</Link>
+          {lead.label}
         </span>
       )}
     </div>
