@@ -387,6 +387,14 @@ function SubmissionLine(props) {
   );
 }
 
+// Create HOC to avoid problem with sticky (Cannot read property 'getBoundingClientRect')
+// because stateless functions does not support Ref
+const sticky = (ComposedComponent) => class extends React.Component {
+  render() {
+    return <ComposedComponent {...this.props} />
+  }
+};
+
 function ListSubmissions(props) {
   const classes = new BEMHelper('submissions');
   const {
@@ -448,13 +456,15 @@ function ListSubmissions(props) {
     )
   });
 
+  const StickySubmissionsHeader = sticky(SubmissionsHeader);
+
   return (
     <div {...classes()}>
       <div {...classes('submissions-wrapper')}>
         <div {...classes('shadow-container')}>
           <StickyContainer>
             <Sticky topOffset={-56}>
-              {() => <SubmissionsHeader
+              {() => <StickySubmissionsHeader
                 isFiltered={isFiltered}
                 selectedFilters={selectedFilters}
                 showFilters={showFilters}
