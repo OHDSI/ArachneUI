@@ -89,11 +89,14 @@ class ModalCreateSubmissionBuilder extends ContainerBuilder {
             const parts = fileName.originalName.split("-");
             let name = "";
             let type = "";
-            if (parts.length >= 2) {
+            if (parts.length === 2) {
               type = getTypeByShortPrefix(parts[0]);
+              dispatchProps.setAnalysisType(type);
+              
               name = parts[1];
-            } 
-            dispatchProps.setAnalysisType(type);
+            } else {
+              name = fileName.originalName;
+            }
             dispatchProps.setAnalysisName(name);
           }
           dispatchProps.setEntryPointsOptionList(options);
