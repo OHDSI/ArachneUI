@@ -69,4 +69,8 @@
 		}
 	}
 
+	&indicator-container {
+		@include health-indicator();
+		padding-top: 7px;
+	}
 }
