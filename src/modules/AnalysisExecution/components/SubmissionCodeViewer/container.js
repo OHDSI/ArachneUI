@@ -49,7 +49,7 @@ export class SubmissionCode extends FileLoader {
     if (this.props.params.fileId !== nextProps.params.fileId) {
       this.loadData(nextProps);
     }
-    if (!this.props.submission.id && this.props.submission.id !== nextProps.submission.id) {
+    if (!this.props.submission.id && nextProps.submission.id) {
       if (nextProps.canView) {
         this.props.loadBreadcrumbs({
           entityType: this.props.from,
