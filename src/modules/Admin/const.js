@@ -44,6 +44,7 @@ const apiPaths = {
   userOptions: ({ query }) => `/api/v1/admin/users/suggest?query=${query}`,
 
   systemSettings: () => '/api/v1/admin/system-settings',
+  engineStatus: () => '/api/v1/admin/execution-engine/status',
 
   restartServer: () => '/api/v1/admin/restart',
   ping: () => '/api/v1/auth/me',
@@ -60,6 +61,7 @@ const apiPaths = {
 const paths = {
   admins: () => '/admin-settings/admins',
   systemSettings: () => '/admin-settings/system-settings',
+  operationalDashboard: () => '/admin-settings/operational-dashboard',
   users: () => '/admin-settings/users',
   tenants: () => '/admin-settings/tenants',
 };
@@ -82,6 +84,10 @@ const adminPages = [ // eslint-disable-line import/no-mutable-exports
 
 if (__APP_TYPE_CENTRAL__) {
   adminPages.push({ label: 'Users', value: paths.users() });
+}
+
+if (__APP_TYPE_NODE__) {
+  adminPages.push({ label: 'Operational Dashboard', value: paths.operationalDashboard() });
 }
 
 const solrDomains = {

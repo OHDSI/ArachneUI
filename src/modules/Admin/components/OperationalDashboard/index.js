@@ -15,27 +15,11 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: September 06, 2017
+ * Authors: Sergey Suvorov
+ * Created: September 27, 2021
  *
  */
 
-import React from 'react';
-import AdminRoutes from './routesCommon';
-import { Route } from 'react-router';
-import OperationalDashboard from './components/OperationalDashboard';
+import OperationalDashboardBuilder from './container';
 
-class AdminNodeRoutes extends AdminRoutes {
-  static buildNodeRoutes() {
-    return [
-      <Route path="operational-dashboard" component={OperationalDashboard} />,
-    ];
-  }
-
-  static build() {
-    const routes = super.build();
-    return routes.concat(this.buildNodeRoutes());
-  }
-}
-
-export default AdminNodeRoutes;
+export default new OperationalDashboardBuilder().build();

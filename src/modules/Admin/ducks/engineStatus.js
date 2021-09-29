@@ -15,27 +15,22 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: September 06, 2017
+ * Authors: Sergey Suvorov
+ * Created: September 24, 2021
  *
  */
 
-import React from 'react';
-import AdminRoutes from './routesCommon';
-import { Route } from 'react-router';
-import OperationalDashboard from './components/OperationalDashboard';
+import Duck from 'services/Duck';
+import { apiPaths } from 'modules/Admin/const';
 
-class AdminNodeRoutes extends AdminRoutes {
-  static buildNodeRoutes() {
-    return [
-      <Route path="operational-dashboard" component={OperationalDashboard} />,
-    ];
-  }
+const actionCoreName = 'ENGINE_STATUS';
 
-  static build() {
-    const routes = super.build();
-    return routes.concat(this.buildNodeRoutes());
-  }
-}
+const engineStatusDuck = new Duck({
+  name: actionCoreName,
+  urlBuilder: apiPaths.engineStatus,
+});
 
-export default AdminNodeRoutes;
+export default {
+  actions: engineStatusDuck.actions,
+  reducer: engineStatusDuck.reducer,
+};
