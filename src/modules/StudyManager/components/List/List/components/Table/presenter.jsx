@@ -34,19 +34,14 @@ require('./style.scss');
 
 function LeadList({ userLinkFormatter, value }) {
   const classes = new BEMHelper('cell-name');
-  
-  const fullTitle = value.map(userLinkFormatter).map((lead, key) =>
-    (key > 0 ? ', ' : '') + lead.label
-  );
+
+  const fullTitle = value.map(userLinkFormatter).map(lead => lead.label).join(', ');
 
   return (
     <div {...classes()}>
-      {value.map(userLinkFormatter).map((lead, key) =>
-        <span title={fullTitle} key={key} {...classes('title')}>
-          {key > 0 ? ', ' : ''}
-          {lead.label}
+        <span title={fullTitle} {...classes('title')}>
+          {fullTitle}
         </span>
-      )}
     </div>
   );
 }
