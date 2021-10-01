@@ -33,14 +33,15 @@ import TitleStudy from 'components/TitleStudy';
 require('./style.scss');
 
 function LeadList({ userLinkFormatter, value }) {
+  const classes = new BEMHelper('cell-name');
+
+  const fullTitle = value.map(userLinkFormatter).map(lead => lead.label).join(', ');
+
   return (
-    <div>
-      {value.map(userLinkFormatter).map((lead, key) => 
-        <span key={key}>
-          {key > 0 ? ', ' : ''}
-          {lead.label}
+    <div {...classes()}>
+        <span title={fullTitle} {...classes('title')}>
+          {fullTitle}
         </span>
-      )}
     </div>
   );
 }
@@ -52,6 +53,18 @@ function CellName(props) {
       <TitleStudy
         {...props}
       />
+    </div>
+  );
+}
+
+function RoleCell({ value, index }) {
+  const classes = new BEMHelper('cell-name');
+
+  return (
+    <div {...classes()}>
+      <span title={value} key={index + 'table-cell-text-span'} {...classes('title')}>
+        {value}
+      </span>
     </div>
   );
 }
@@ -69,15 +82,16 @@ class TableStudies extends Component {
         {...this.tableClasses('study')}
         header="Study"
         field="title"
-        mods={['bold']}
+        mods={['bold', 'nowrap', 'nooverflow']}
         props={study => ({
           ...study,
           isFavourite: study.favourite,
           title: study.title,
+          showHover: true,
           toggleFavorite: () => this.props.setFavourite(
             study.id,
             (!study.favourite).toString()
-            ),
+          ),
         })}
       />,
       <LeadList
@@ -87,7 +101,7 @@ class TableStudies extends Component {
         field="leadList"
         userLinkFormatter={this.props.userLinkFormatter}
       />,
-      <Cell
+      <RoleCell
         key="role"
         {...this.tableClasses('role')}
         header="My role"
