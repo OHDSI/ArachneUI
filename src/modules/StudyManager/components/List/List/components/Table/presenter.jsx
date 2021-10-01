@@ -62,7 +62,7 @@ function RoleCell({ value, index }) {
 
   return (
     <div {...classes()}>
-      <span title={value} key={index + 'table-cell-text-span'} {...classes('title')}>
+      <span title={value} key={'table-cell-text-span' + index} {...classes('title')}>
         {value}
       </span>
     </div>
