@@ -35,6 +35,10 @@ function unregisterAll(state) {
   return { ...state, list: [], active: '' };
 }
 
+function registerDisabledModules(state, action) {
+  return { ...state, disabledModules: action.payload };
+}
+
 export default function (state = {}, action) {
   switch (action.type) {
     case actionTypes.MODULE_REGISTER:
@@ -43,6 +47,8 @@ export default function (state = {}, action) {
       return setActive(state, action);
     case actionTypes.MODULE_UNREGISTER_ALL:
       return unregisterAll(state);
+    case actionTypes.DISABLED_MODULES_REGISTER:
+      return registerDisabledModules(state, action);
     default:
       return state;
   }

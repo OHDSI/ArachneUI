@@ -27,5 +27,7 @@ import ReactDOM from 'react-dom';
 import bootstrap from 'bootstrap';
 
 const rootEl = document.getElementById('app');
-const app = bootstrap();
-ReactDOM.render(app, rootEl);
+bootstrap()
+  .then((app) => {
+    ReactDOM.render(app, rootEl);
+  });

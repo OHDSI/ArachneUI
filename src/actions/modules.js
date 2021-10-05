@@ -43,8 +43,16 @@ function unregisterAll() {
   };
 }
 
+function registerDisabledModules(modules) {
+  return {
+    type: actionTypes.DISABLED_MODULES_REGISTER,
+    payload: modules,
+  };
+}
+
 export default {
   register,
   setActive,
   unregisterAll,
+  registerDisabledModules,
 };
