@@ -41,7 +41,7 @@ function DynamicCell({value, ratio}) {
   return <div>{calculateValue(value, ratio)}</div>;
 }
 
-export default function SummaryIncidence({ resultInfo = [], className, ratio, changeRatio }) {
+export default function SummaryIncidence({ resultInfo = [], className, exponent, changeExponent }) {
   const classes = BEMHelper('summary-incidence');
 
   let data;
@@ -66,6 +66,7 @@ export default function SummaryIncidence({ resultInfo = [], className, ratio, ch
       console.error("Received improper format of result info for IR");
   }
 
+  const ratio = Math.pow(10, exponent);
   const ratioHeader = ratio >= 1000 ? (ratio / 1000) + 'k' : ratio;
 
   return (
@@ -80,9 +81,9 @@ export default function SummaryIncidence({ resultInfo = [], className, ratio, ch
         <DynamicCell
           header={<div {...classes('header')}>
             <span>Proportion [
-              <span {...classes('span-active')} onClick={() => changeRatio(10)}> + </span>
+              <span {...classes('span-active')} onClick={() => changeExponent(1)}> + </span>
               |
-              <span {...classes('span-active')} onClick={() => changeRatio(0.1)}> - </span>]
+              <span {...classes('span-active')} onClick={() => changeExponent(-1)}> - </span>]
             </span>
             <span {...classes('header-subtitle')}>per {ratioHeader} persons</span>
           </div>}
@@ -99,9 +100,9 @@ export default function SummaryIncidence({ resultInfo = [], className, ratio, ch
         <DynamicCell
           header={<div {...classes('header')}>
             <span>Rate [
-              <span {...classes('span-active')} onClick={() => changeRatio(10)}> + </span>
+              <span {...classes('span-active')} onClick={() => changeExponent(1)}> + </span>
               |
-              <span {...classes('span-active')} onClick={() => changeRatio(0.1)}> - </span>]
+              <span {...classes('span-active')} onClick={() => changeExponent(-1)}> - </span>]
             </span>
             <span {...classes('header-subtitle')}>per {ratioHeader} years</span>
           </div>}

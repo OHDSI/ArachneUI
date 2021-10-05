@@ -27,23 +27,23 @@ export default class SummaryIncidenceContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      ratio: 1000,
+      exponent: 3,
     };
   }
   
-  changeRatio = (multiplier) => {
-    let ratio = this.state.ratio * multiplier;
-    ratio = Math.min(ratio, 100000);
-    ratio = Math.max(ratio, 100);
-    this.setState({ratio: ratio})
+  changeExponent = (exponentModifier) => {
+    let exponent = this.state.exponent + exponentModifier;
+    exponent = Math.min(exponent, 5);
+    exponent = Math.max(exponent, 2);
+    this.setState({exponent: exponent})
   }
   
   render() {
-    const { ratio } = this.state;
+    const { exponent } = this.state;
     return presenter({
       ...this.props,
-      ratio,
-      changeRatio: this.changeRatio,
+      exponent,
+      changeExponent: this.changeExponent,
     });
   }
 }
