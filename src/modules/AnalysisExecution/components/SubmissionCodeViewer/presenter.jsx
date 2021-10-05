@@ -29,6 +29,7 @@ import BEMHelper from 'services/BemHelper';
 import ModalUploadResult from 'modules/AnalysisExecution/components/ViewEditAnalysis/ModalUploadResult';
 import ReportViewer from './ResultFile/components/ReportViewer';
 import Summary from './ResultFile/components/Summary';
+import EmptyState from 'components/EmptyState';
 
 import './style.scss';
 
@@ -74,6 +75,7 @@ function SubmissionCodeViewer({
   showUploadModal,
   onUpload,
   summary,
+  canView,
 }) {
   const classes = BEMHelper('result-file-tree-add-icon');
 
@@ -88,7 +90,7 @@ function SubmissionCodeViewer({
     );
   }
 
-  const fileViewer = (<FileBrowser
+  const viewer = canView ? (<FileBrowser
     selectedFile={urlParams.fileId}
     toolbarOpts={toolbarOpts}
     toggleFolder={toggleFolder}
@@ -129,10 +131,10 @@ function SubmissionCodeViewer({
     />}
   >
     <ModalUploadResult onUpload={onUpload} />
-  </FileBrowser>);
+  </FileBrowser>) : (<EmptyState message={'Access denied or submission does not exist'} />);
 
   return (
-    fileViewer
+    viewer
   );
 }
 
