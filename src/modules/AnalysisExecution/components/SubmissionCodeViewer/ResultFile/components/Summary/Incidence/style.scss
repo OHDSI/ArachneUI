@@ -32,6 +32,11 @@
       display: flex;
       flex-direction: column;
       line-height: 1.5;
+      user-select: none;
+    }
+
+    &__span-active {
+      cursor: pointer;
     }
 
     &__header-subtitle {
