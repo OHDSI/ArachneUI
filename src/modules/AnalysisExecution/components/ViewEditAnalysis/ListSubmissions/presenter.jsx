@@ -319,6 +319,7 @@ function SubmissionLine(props) {
     isEditable,
     analysisType,
     toggleVisibility,
+    isInsightEnabled,
   } = props;
 
   const isVisibilityTogglable = submission.canHide;
@@ -364,6 +365,7 @@ function SubmissionLine(props) {
           doCancel={() => showRejectionModal(submission.id, submissionActionTypes.PUBLISH, analysisId)}
         />
       </div>
+      {isInsightEnabled &&
       <div {...classes('cell', ['insight', isVisibilityTogglable ? '' : 'wide'])}>
         <CellInsight
           isDisabled={submission.actions[submissionActionTypes.PUBLISH].result !== true}
@@ -375,6 +377,7 @@ function SubmissionLine(props) {
           hasAccessToResults={submission.hasAccessToResults}
         />
       </div>
+      }
       <div {...classes('cell', ['visibility', isVisibilityTogglable ? '' : 'hidden'])}>
         <CellVisibility
           isDisabled={!isVisibilityTogglable}
@@ -420,6 +423,7 @@ function ListSubmissions(props) {
     selectedFilters,
     toggleVisibility,
     groupCount,
+    isInsightEnabled,
   } = props;
 
   const data = submissionGroupList.map(item => {
@@ -449,6 +453,7 @@ function ListSubmissions(props) {
             analysisType={item.analysisType}
             toggleVisibility={toggleVisibility}
             key={`${submission.id}`}
+            isInsightEnabled={isInsightEnabled}
           />
         )}
         </div>

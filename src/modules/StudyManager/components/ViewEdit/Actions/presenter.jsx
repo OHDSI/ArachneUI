@@ -40,6 +40,7 @@ function StudyActions(props) {
     reload,
     canDelete,
     remove,
+    isInsightEnabled,
   } = props;
 
   let publishContent;
@@ -97,7 +98,7 @@ function StudyActions(props) {
         <Checklist />
       </li>
       <li {...classes('item')}>
-        {publishContent}
+        {isInsightEnabled && publishContent}
         <Button {...classes('reload')} onClick={reload}>
           <i {...classes('reload-ico')}>refresh</i>
         </Button>

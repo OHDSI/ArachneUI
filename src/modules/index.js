@@ -23,6 +23,7 @@
 /* eslint-disable global-require */
 
 import Auth from './Auth/index';
+import { modulePaths } from './const';
 
 const modules = [];
 
@@ -47,7 +48,7 @@ if (__APP_TYPE_CENTRAL__) {
 
   modules.push({
     ...Workspace,
-    path: 'workspace',
+    path: modulePaths.workspace,
     namespace: 'workspace',
     isRoot: true,
     isAdminOnly: false,
@@ -55,7 +56,7 @@ if (__APP_TYPE_CENTRAL__) {
 
   modules.push({
     ...StudyManager,
-    path: 'study-manager',
+    path: modulePaths.studyManager,
     namespace: 'studyManager',
     isRoot: true,
     isAdminOnly: false,
@@ -63,7 +64,7 @@ if (__APP_TYPE_CENTRAL__) {
 
   modules.push({
     ...AnalysisExecution,
-    path: 'analysis-execution',
+    path: modulePaths.analysisExecution,
     namespace: 'analysisExecution',
     // TODO
     sidebarPath: 'study-manager',
@@ -72,21 +73,21 @@ if (__APP_TYPE_CENTRAL__) {
 
   modules.push({
     ...ExpertFinder,
-    path: 'expert-finder',
+    path: modulePaths.expertFinder,
     namespace: 'expertFinder',
     isAdminOnly: false,
   });
 
   modules.push({
     ...DataCatalog,
-    path: 'data-catalog',
+    path: modulePaths.dataCatalog,
     namespace: 'dataCatalog',
     isAdminOnly: false,
   });
 
   modules.push({
     ...InsightsLibrary,
-    path: 'insights-library',
+    path: modulePaths.insightsLibrary,
     namespace: 'insightsLibrary',
     isAdminOnly: false,
   });
@@ -98,7 +99,7 @@ if (__APP_TYPE_CENTRAL__) {
         cb(null, require('modules/Admin/routesCentral').default.build()); // eslint-disable-line global-require
       });
     },
-    path: 'admin-settings',
+    path: modulePaths.adminSettings,
     namespace: 'adminSettings',
     isAdminOnly: true,
   });
@@ -111,20 +112,20 @@ if (__APP_TYPE_NODE__) {
 
   modules.push({
     ...CdmSourceList,
-    path: 'cdm-source-list',
+    path: modulePaths.cdmSourceList,
     namespace: 'cdmSourceList',
     isRoot: true,
   });
 
   modules.push({
     ...ExternalResourceManager,
-    path: 'external-resource-manager',
+    path: modulePaths.externalResourceManager,
     namespace: 'externalResourceManager',
   });
 
   modules.push({
     ...Submissions,
-    path: 'submissions',
+    path: modulePaths.submissions,
     namespace: 'submissions',
   });
 
@@ -135,7 +136,7 @@ if (__APP_TYPE_NODE__) {
         cb(null, require('modules/Admin/routesNode').default.build()); // eslint-disable-line global-require
       });
     },
-    path: 'admin-settings',
+    path: modulePaths.adminSettings,
     namespace: 'adminSettings',
     isAdminOnly: true,
   });
