@@ -145,7 +145,7 @@
                         <id>exec-webpack</id>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <executable>node_modules/.bin/webpack.cmd</executable>
+                            <executable>node_modules/.bin/webpack</executable>
                             <arguments>
                                 <argument>--env.app=${app}</argument>
                                 <argument>--env.mode=${env}</argument>
