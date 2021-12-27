@@ -36,6 +36,8 @@ import NotFound from 'components/NotFound';
 import pluralize from 'pluralize';
 import AppContainer from './AppContainer';
 import { authenticationModes } from 'modules/Auth/const';
+import { apiPaths } from 'modules/const';
+import { isModuleEnabled } from './modules/utils';
 
 require('styles/appContainer.scss');
 
@@ -143,10 +145,14 @@ function initBrowserHistory(store) {
 /**
  * Initialize API
  */
-function initializeApi(store) {
+function initializeApiGetters() {
   ApiService
     .setUserTokenGetter(() => AuthService.getToken())
-    .setUserRequestedGetter(() => AuthService.getUserRequest())
+    .setUserRequestedGetter(() => AuthService.getUserRequest());
+}
+
+function initializeApiHandler(store) {
+  ApiService
     .setUnauthorizedHandler(() => {
       if (!!store.getState().auth.authMode.data && store.getState().auth.authMode.data.result.mode == authenticationModes.Proxy) {
         window.location = '/_gcp_iap/clear_login_cookie';
@@ -204,7 +210,26 @@ function initRouter({ store, history, routes, indexRedirect, menuItems, redirect
   );
 }
 
-function bootstrap() {
+async function getModules() {
+  let modules = appModules;
+  let disabledModules = [];
+  try {
+    const { result = [] } = await ApiService.doGet(apiPaths.disabledModules(), {});
+    if (Array.isArray(result)) {
+      disabledModules = result;
+    }
+  } catch (e) {
+    console.error(e);
+  }
+  if (disabledModules.length > 0) {
+    modules = modules.filter(m => !disabledModules.includes(m.path));
+  }
+  return {modules, disabledModules};
+}
+
+async function bootstrap() {
+  initializeApiGetters();
+  const {modules, disabledModules} = await getModules();
   let {
     indexRedirect,
     initialState,
@@ -213,8 +238,8 @@ function bootstrap() {
     reducers,
     routes,
     redirects,
-  } = initModules(appModules);
-
+  } = initModules(modules);
+  
   const dataFromServer = window.__data;
   if (dataFromServer) {
     initialState = { ...initialState, ...dataFromServer };
@@ -222,19 +247,23 @@ function bootstrap() {
 
   const rootReducer = makeRootReducer(reducers);
   const store = configureStore({ rootReducer, middleware, initialState });
+  store.dispatch(actions.modules.registerDisabledModules(disabledModules));
 
   unregisterModules(store);
-  registerModules({ store, modules: appModules });
+  registerModules({ store, modules: modules });
   
   // NOTE: order is important - API goes first!
-  initializeApi(store);
+  initializeApiHandler(store);
   const history = initBrowserHistory(store);
   const router = initRouter({ store, history, routes, indexRedirect, menuItems, redirects });
 
   return router;
 }
 
-export function getRenderInfo({ history }) {
+export async function getRenderInfo({ history }) {
+  initializeApiGetters();
+  const {modules, disabledModules} = await getModules();
+  
   const {
     indexRedirect,
     menuItems,
@@ -242,18 +271,19 @@ export function getRenderInfo({ history }) {
     reducers,
     routes,
     redirects,
-  } = initModules(appModules);
+  } = initModules(modules);
 
   const rootReducer = makeRootReducer(reducers);
   const store = configureStore({ rootReducer, middleware, history });
+  store.dispatch(actions.modules.registerDisabledModules(disabledModules));
 
-  registerModules({ store, modules: appModules });
+  registerModules({ store, modules: modules });
   const rootRoute = initRootRoute({ store, routes, indexRedirect, menuItems, redirects });
 
   // AppContainer.menuItems = menuItems;
 
   // NOTE: order is important - API goes first!
-  initializeApi(store);
+  initializeApiHandler(store);
 
   return {
     store,

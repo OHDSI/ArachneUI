@@ -15,21 +15,30 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 13, 2016
+ * Authors: Sergey Suvorov
+ * Created: September 30, 2021
  *
  */
 
-import keyMirror from 'keymirror';
+const apiPaths = {
+  disabledModules: () => '/api/v1/modules/disabled-modules',
+};
 
-const actionTypes = keyMirror({
-  //
-  SET_AUTH_TOKEN: null,
-  //
-  MODULE_SET_ACTIVE: null,
-  MODULE_REGISTER: null,
-  MODULE_UNREGISTER_ALL: null,
-  DISABLED_MODULES_REGISTER: null,
-});
+const modulePaths = {
+  workspace: 'workspace',
+  studyManager: 'study-manager',
+  analysisExecution: 'analysis-execution',
+  expertFinder: 'expert-finder',
+  dataCatalog: 'data-catalog',
+  insightsLibrary: 'insights-library',
+  adminSettings: 'admin-settings',
+  cdmSourceList: 'cdm-source-list',
+  externalResourceManager: 'external-resource-manager',
+  submissions: 'submissions',
+  auth: 'auth',
+};
 
-export default actionTypes;
+export {
+  apiPaths,
+  modulePaths,
+};

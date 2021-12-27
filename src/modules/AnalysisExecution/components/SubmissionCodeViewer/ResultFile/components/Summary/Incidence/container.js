@@ -20,11 +20,30 @@
  *
  */
 
-import SummaryIncidence from './presenter';
-import { ContainerBuilder } from 'services/Utils';
+import React from 'react';
+import presenter from './presenter';
 
-export default class SummaryIncidenceBuilder extends ContainerBuilder {
-  getComponent() {
-    return SummaryIncidence;
+export default class SummaryIncidenceContainer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      exponent: 3,
+    };
+  }
+  
+  changeExponent = (exponentModifier) => {
+    let exponent = this.state.exponent + exponentModifier;
+    exponent = Math.min(exponent, 5);
+    exponent = Math.max(exponent, 2);
+    this.setState({exponent: exponent})
+  }
+  
+  render() {
+    const { exponent } = this.state;
+    return presenter({
+      ...this.props,
+      exponent,
+      changeExponent: this.changeExponent,
+    });
   }
 }

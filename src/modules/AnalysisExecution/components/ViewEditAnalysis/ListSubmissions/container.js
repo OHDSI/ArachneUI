@@ -32,6 +32,8 @@ import { Utils } from 'services/Utils';
 import ListSubmissions from './presenter';
 import SelectorsBuilder from './selectors';
 import { getFilter } from 'modules/AnalysisExecution/components/ViewEditAnalysis/container';
+import { modulePaths } from '../../../../const';
+import { isModuleEnabled } from '../../../../utils';
 
 const selectors = (new SelectorsBuilder()).build();
 
@@ -42,6 +44,7 @@ function mapStateToProps(state) {
   const cleanPath = get(state, 'routing.locationBeforeTransitions.pathname');
   const currentQuery = state.routing.locationBeforeTransitions.query;
   const search = get(state, 'routing.locationBeforeTransitions.search');
+  const isInsightEnabled = isModuleEnabled(state, modulePaths.insightsLibrary);
 
   const url = new Uri(cleanPath);
   url.setSearch(currentQuery);
@@ -87,6 +90,7 @@ function mapStateToProps(state) {
     selectedFilters: Object.entries(selectedFilters),
     filter: getFilter(search),
     groupCount,
+    isInsightEnabled,
   };
 }
 

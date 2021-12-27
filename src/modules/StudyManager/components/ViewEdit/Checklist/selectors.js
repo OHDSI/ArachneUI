@@ -22,6 +22,8 @@
 
 import { createSelector } from 'reselect';
 import { get } from 'services/Utils';
+import { isModuleEnabled } from '../../../../utils';
+import { modulePaths } from '../../../../const';
 
 const getStudyData = state => get(
   state,
@@ -38,51 +40,58 @@ const getStudyData = state => get(
   'Object'
 );
 
+const isInsightEnabled = state => isModuleEnabled(state, modulePaths.insightsLibrary);
+
 const getStepList = createSelector(
-  [getStudyData],
-  study => ([
-    {
-      element: '#study-dates',
-      position: 'right',
-      title: 'Setup study duration',
-      // descr: 'Lorem Ipsum ...',
-      isDone: study.startDate !== study.endDate && study.endDate,
-    },
-    {
-      element: '#study-objective',
-      position: 'right',
-      title: 'Define objective',
-      isDone: !!study.description,
-    },
-    {
-      element: '#study-docs',
-      position: 'right',
-      title: 'Attach protocol and related documents',
-      isDone: get(study, 'files.length', 0) > 0,
-    },
-    {
-      element: '#study-participants',
-      position: 'right',
-      title: 'Invite contributors',
-      isDone: get(study, 'participants.length', 0) > 0,
-    },
-    {
-      element: '#study-data-sources',
-      position: 'right',
-      title: 'Select data sources',
-      isDone: get(study, 'dataSources.length', 0) > 0,
-    },
-    {
-      element: '#study-analyses',
-      position: 'left',
-      title: 'Create and execute analyses',
-      isDone: get(study, 'analyses.length', 0) > 0,
-    },
-    {
-      title: 'Publish a paper',
-      isDone: study.paperId !== null,
-    },
-  ])
+  [getStudyData, isInsightEnabled],
+  (study, insightEnabled) => {
+    const steps = [
+      {
+        element: '#study-dates',
+        position: 'right',
+        title: 'Setup study duration',
+        // descr: 'Lorem Ipsum ...',
+        isDone: study.startDate !== study.endDate && study.endDate,
+      },
+      {
+        element: '#study-objective',
+        position: 'right',
+        title: 'Define objective',
+        isDone: !!study.description,
+      },
+      {
+        element: '#study-docs',
+        position: 'right',
+        title: 'Attach protocol and related documents',
+        isDone: get(study, 'files.length', 0) > 0,
+      },
+      {
+        element: '#study-participants',
+        position: 'right',
+        title: 'Invite contributors',
+        isDone: get(study, 'participants.length', 0) > 0,
+      },
+      {
+        element: '#study-data-sources',
+        position: 'right',
+        title: 'Select data sources',
+        isDone: get(study, 'dataSources.length', 0) > 0,
+      },
+      {
+        element: '#study-analyses',
+        position: 'left',
+        title: 'Create and execute analyses',
+        isDone: get(study, 'analyses.length', 0) > 0,
+      },
+    ];
+    if (insightEnabled) {
+      steps.push({
+        title: 'Publish a paper',
+        isDone: study.paperId !== null,
+      });
+    }
+    return steps;
+  }
 );
 
 export default {

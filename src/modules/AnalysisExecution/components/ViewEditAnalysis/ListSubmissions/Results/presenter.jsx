@@ -49,8 +49,8 @@ const CohortCharacterization = ({resultInfo, hasAccess}) => {
 };
 
 const Default = ({resultFilesCount, hasAccess}) => {
-  const documents = resultFilesCount;
-  const string = formatNumberWithLabel({ label: 'document', value: documents });
+  const files = resultFilesCount;
+  const string = formatNumberWithLabel({ label: 'file', value: files });
   return <BaseSpan string={string} hasAccess={hasAccess}/>;
 };
 
