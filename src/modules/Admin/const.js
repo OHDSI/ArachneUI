@@ -61,7 +61,6 @@ const apiPaths = {
 const paths = {
   admins: () => '/admin-settings/admins',
   systemSettings: () => '/admin-settings/system-settings',
-  operationalDashboard: () => '/admin-settings/operational-dashboard',
   users: () => '/admin-settings/users',
   tenants: () => '/admin-settings/tenants',
 };

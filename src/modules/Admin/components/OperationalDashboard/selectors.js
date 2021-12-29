@@ -29,7 +29,7 @@ const getOperationalDashboardGroups = createSelector(
   [getEngineStatus],
   (engineStatus) => {
     const fieldList = [];
-    const initialValues = {};
+    const initialValues = [];
     const groups = [];
     const status = engineStatus.toLowerCase();
 
