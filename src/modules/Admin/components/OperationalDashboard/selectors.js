@@ -30,7 +30,6 @@ const getOperationalDashboardGroups = createSelector(
   (engineStatus) => {
     const fieldList = [];
     const initialValues = [];
-    const groups = [];
     const status = engineStatus.toLowerCase();
 
     fieldList.push({
@@ -43,13 +42,12 @@ const getOperationalDashboardGroups = createSelector(
     });
     initialValues[0] = status;
 
-    groups.push({
+    return [{
       label: 'Operational Status',
       name: 'operationalStatus',
       fieldList,
       initialValues,
-    });
-    return groups;
+    }];
   }
 );
 
