@@ -28,19 +28,17 @@ const getEngineStatus = state => get(state, 'adminSettings.engineStatus.queryRes
 const getOperationalDashboardGroups = createSelector(
   [getEngineStatus],
   (engineStatus) => {
-    const fieldList = [];
-    const initialValues = [];
     const status = engineStatus.toLowerCase();
 
-    fieldList.push({
+    const fieldList = [{
       label: 'Engine status',
       name: String(0),
       value: status,
       type: 'label',
       disabled: true,
       indicator: engineStatus === 'ONLINE' ? 'GREEN' : 'RED',
-    });
-    initialValues[0] = status;
+    }];
+    const initialValues = [status];
 
     return [{
       label: 'Operational Status',
