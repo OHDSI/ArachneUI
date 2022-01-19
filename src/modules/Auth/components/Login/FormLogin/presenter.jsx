@@ -160,10 +160,11 @@ function FormLogin(props) {
         </div>
       )}
       <div>
-        {entries.filter(([name, value]) => value).map(([name, value]) => {
+        {entries.filter(([name, value]) => value).map(([name, {url, text, image}]) => {
             return <div {...formClasses('actions')} key={name}>
-              <a href={value} className='ac-link'>
-                {'Login with ' + name}
+              <a href={url} className='ac-link'>
+                <span {...classes('login-method-text')}>{text}</span>
+                <img {...classes('login-method-image')} src={image} alt={'logo of ' + text}/>
               </a>
             </div>;
           })
