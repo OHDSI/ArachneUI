@@ -49,11 +49,11 @@ export class SubmissionCode extends FileLoader {
     if (this.props.params.fileId !== nextProps.params.fileId) {
       this.loadData(nextProps);
     }
-    if (!this.props.submission.id && nextProps.submission.id) {
+    if (this.props.submission.id !== nextProps.submission.id) {
       if (nextProps.canView) {
-        this.props.loadBreadcrumbs({
+        nextProps.loadBreadcrumbs({
           entityType: this.props.from,
-          id: this.props.submissionGroupId || this.props.submissionId,
+          id: nextProps.submissionGroupId || nextProps.submissionId,
         });
       }
     }
