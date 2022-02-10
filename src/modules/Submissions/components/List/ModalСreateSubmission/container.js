@@ -45,6 +45,7 @@ class ModalCreateSubmissionBuilder extends ContainerBuilder {
       loadSubmissionList: actions.submissions.submissionList.query,
       setAnalysisName: value => reduxFormChange(forms.createSubmission, 'title', value),
       setAnalysisType: value => reduxFormChange(forms.createSubmission, 'type', value),
+      setStudyName: value => reduxFormChange(forms.createSubmission, 'study', value),
     };
   }
 
@@ -86,16 +87,19 @@ class ModalCreateSubmissionBuilder extends ContainerBuilder {
           } else {
             options = await getFileNamesFromZip(files[0]);
             const fileName = files[0];
-            const parts = fileName.originalName.split("-");
+            const originalName = fileName.originalName.split(".zip").join("");
+            const parts = originalName.split("-");
             let name = "";
-            let type = "";
-            if (parts.length === 2) {
-              type = getTypeByShortPrefix(parts[0]);
+            if (parts.length > 1) {
+              const type = getTypeByShortPrefix(parts[0]);
               dispatchProps.setAnalysisType(type);
-              
               name = parts[1];
+              if (parts.length > 2) {
+                const offset = parts[0].length + name.length + 2;
+                dispatchProps.setStudyName(originalName.substring(offset));
+              }
             } else {
-              name = fileName.originalName;
+              name = originalName;
             }
             dispatchProps.setAnalysisName(name);
           }
