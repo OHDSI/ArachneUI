@@ -27,6 +27,7 @@ import PathwaySummarySelectorsBuilder from './selectors';
 import actions from 'actions';
 
 const selectors = (new PathwaySummarySelectorsBuilder()).build();
+const sunburstChart = new sunburst();
 
 export default class SummayPathwayBuilder extends ContainerBuilder {
 
@@ -40,7 +41,7 @@ export default class SummayPathwayBuilder extends ContainerBuilder {
 
     return {
       pathways: selectors.getPathways(state),
-      sunburstChart: new sunburst(),
+      sunburstChart: sunburstChart,
       details,
     };
   }

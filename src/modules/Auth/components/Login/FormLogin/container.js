@@ -20,7 +20,6 @@
  *
  */
 
-import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import { push } from 'react-router-redux';
@@ -32,6 +31,7 @@ import Auth from 'services/Auth';
 
 function mapStateToProps(state) {
   const authMethod = get(state, 'auth.authMethod.data.result.userOrigin', authMethods.JDBC);
+  const allAuthMethods = get(state, 'auth.allAuthMethods.data.result', {[authMethods.JDBC]: null});
   const isUnactivated = get(state, 'form.login.submitErrors.unactivated', false);
   const userEmail = get(state, 'form.login.values.username', '');
   const isStandalone = get(state, 'auth.nodeMode.data.mode') === nodeFunctionalModes.Standalone;
@@ -39,7 +39,8 @@ function mapStateToProps(state) {
   const userRequest = Auth.getUserRequest();
 
   return {
-    authMethod,
+    // Fallback for datanode that still relies on /auth/method endpoint while central uses /auth/methods
+    allAuthMethods : allAuthMethods || {[authMethod]: null},
     remindPasswordLink: paths.remindPassword(),
     initialValues: {
       username: userRequest,

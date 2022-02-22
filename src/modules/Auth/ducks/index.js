@@ -25,6 +25,7 @@ import authLogin from './authLogin';
 import authLogout from './authLogout';
 import principal from './principal';
 import authMethod from './authMethod';
+import allAuthMethods from './allAuthMethods';
 import authRegister from './authRegister';
 import professionalType from './professionalTypes';
 import remindPassword from './remindPassword';
@@ -53,6 +54,7 @@ const actions = {
   clearToken: authLogout.actions.clearToken,
   principal: principal.actions,
   authMethod: authMethod.actions,
+  allAuthMethods: allAuthMethods.actions,
   authMode: authMode.actions,
   register: authRegister.actions.create,
   professionalType: professionalType.actions,
@@ -71,6 +73,7 @@ const reducer = combineReducers({
   authLogout: authLogout.reducer,
   principal: principal.reducer,
   authMethod: authMethod.reducer,
+  allAuthMethods: allAuthMethods.reducer,
   authMode: authMode.reducer,
   authRegister: authRegister.reducer,
   professionalType: professionalType.reducer,

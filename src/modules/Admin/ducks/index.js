@@ -35,6 +35,7 @@ import reindexProcess from './reindexProcess';
 import portalUserListSelectedUsers from './portalUserListSelectedUsers';
 import countries from './countries';
 import provinces from './provinces';
+import engineStatus from './engineStatus';
 
 const actions = {
   adminList: adminList.actions,
@@ -45,6 +46,7 @@ const actions = {
   portalUserList: portalUserList.actions,
   solrIndex: solrIndex.actions,
   systemSettings: systemSettings.actions,
+  engineStatus: engineStatus.actions,
   userOptionList: userOptionList.actions,
   userList: userList.actions,
   usersGroup: usersGroup.actions,
@@ -63,6 +65,7 @@ const reducer = {
   portalUserList: portalUserList.reducer,
   solrIndex: solrIndex.reducer,
   systemSettings: systemSettings.reducer,
+  engineStatus: engineStatus.reducer,
   userOptionList: userOptionList.reducer,
   userList: userList.reducer,
   usersGroup: usersGroup.reducer,

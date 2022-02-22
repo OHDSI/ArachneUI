@@ -36,10 +36,13 @@ function AnalysisSettings(props) {
     typeSelected,
     setType,
 
+    files,
     isCodeLocked,
     canLockCode,
     codeLock,
   } = props;
+
+  const isTypeEditable = files.length > 0 ? false : isEditable;
 
   const header = <div {...headerClasses()}>
     <span {...headerClasses('group')}>
@@ -59,7 +62,7 @@ function AnalysisSettings(props) {
             modifiers: { uneditable: !isEditable } 
           })}
         >
-            {isEditable ?
+            {isTypeEditable ?
               <Select
                 mods={['bordered']}
                 placeholder="Type"

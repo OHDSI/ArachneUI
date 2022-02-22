@@ -30,6 +30,8 @@ import presenter from './presenter';
 import { ActiveModuleAwareContainerBuilder } from 'modules/StudyManager/utils';
 import isEmpty from 'lodash/isEmpty';
 import { isViewable } from 'services/Utils';
+import { isModuleEnabled } from '../../../utils';
+import { modulePaths } from '../../../const';
 
 export class ViewEditStudy extends Component {
   static get propTypes() {
@@ -83,7 +85,9 @@ export class ViewEditStudy extends Component {
     this.props.loadTypeList();
     this.props.loadAnalysisTypeList();
     this.props.loadStatusList();
-    this.props.loadInsights({ studyId: nextProps.id });
+    if (this.props.isInsightEnabled) {
+      this.props.loadInsights({ studyId: nextProps.id });
+    }
     this.props.loadTransitions({ studyId: nextProps.id });
   }
 
@@ -117,6 +121,7 @@ export default class ViewEditStudyBuilder extends ActiveModuleAwareContainerBuil
     const kind = get(studyData, 'kind');
     const isStudyLoadingComplete = !isEmpty(studyData) && !isStudyLoading;
     const canView = isViewable(studyData);
+    const isInsightEnabled = isModuleEnabled(state, modulePaths.insightsLibrary);
 
     return {
       id: parseInt(ownProps.routeParams.studyId, 10),
@@ -126,6 +131,7 @@ export default class ViewEditStudyBuilder extends ActiveModuleAwareContainerBuil
       kind,
       canView,
       isStudyLoadingComplete,
+      isInsightEnabled,
     };
   }
 

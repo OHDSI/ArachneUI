@@ -2,52 +2,19 @@ import React, { Component } from 'react';
 import BEMHelper from 'services/BemHelper';
 import moment from 'moment';
 import { usDateTime } from 'const/formats';
-import { statusDictionary } from 'modules/Submissions/const';
-import {
-  Table,
-  TableCellText as Cell,
-  TableCellLink as CellLink,
-  Button,
-} from 'arachne-ui-components';
+import { links, statusDictionary } from 'modules/Submissions/const';
+import { Table, TableCellText as Cell } from 'arachne-ui-components';
 
 require('./style.scss');
 
-class CellDownload extends Component {
-  constructor(props) {
-    super(props);
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  async handleClick(ev) {
-    ev.preventDefault();
-    const { id, downloadResults } = this.props;
-    downloadResults(id, 'results.zip');
-  }
-
-  get isDisabled() {
-    const { downloadingIds, id } = this.props;
-    return downloadingIds.includes(id);
-  }
-
-  get isDownloadAvailable() {
-    const { status } = this.props;
-    return status.key === statusDictionary.EXECUTED.key;
-  }
-
-  render() {
-    const classes = new BEMHelper('submission-download');
-
-    return this.isDownloadAvailable ? (
-      <Button
-        {...classes('btn', 'download')}
-        label={this.isDisabled ? 'Downloading' : 'Download'}
-        mods={['submit', 'rounded']}
-        disabled={this.isDisabled}
-        onClick={this.handleClick}
-      />
-    ) : (<span>-</span>);
-  }
-}
+const CellDownload = ({ id, status }) => {
+  const url = links.downloadResults(id);
+  const {className} = new BEMHelper('submission-download')('btn', 'download');
+  const classes = new BEMHelper('button')({ modifiers: ['rounded', 'submit'], extra: className });
+  return status.key === statusDictionary.EXECUTED.key ? (
+    <a {...classes} href={url} type="button">Download</a>
+  ) : (<span>-</span>);
+};
 
 function Status({ value }) {
   const classes = new BEMHelper('submission-status');
@@ -73,7 +40,6 @@ export default class SubmissionsTable extends Component {
 
   getCellsList() {
     const { tableClasses } = this.state;
-    const { downloadResults, downloadingIds } = this.props;
     return [
       <Cell
         key="id"
@@ -141,8 +107,6 @@ export default class SubmissionsTable extends Component {
           entity => ({
             id: entity.id,
             status: entity.status,
-            downloadResults,
-            downloadingIds
           })
         }
       />,

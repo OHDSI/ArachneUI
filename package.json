@@ -1,6 +1,6 @@
 {
   "name": "arachne-ui",
-  "version": "1.18.25",
+  "version": "1.19.7",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
@@ -28,7 +28,7 @@
   "dependencies": {
     "@ohdsi/atlascharts": "^1.7.4",
     "@stomp/stompjs": "github:stomp-js/stomp-websocket",
-    "arachne-ui-components": "~1.18.0",
+    "arachne-ui-components": "~1.19.0",
     "autoprefixer": "^6.7.6",
     "clamp-js": "^0.7.0",
     "classnames": "^2.2.5",

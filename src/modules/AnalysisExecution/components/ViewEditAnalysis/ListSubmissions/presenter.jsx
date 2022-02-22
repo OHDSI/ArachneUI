@@ -66,7 +66,7 @@ function CellResults({ className, resultInfo, resultFilesCount, analysisType, sh
             hasAccess={hasAccess}
           />
         :
-        <span>No documents</span>
+        <span>No files</span>
       }
     </div>
   );
@@ -319,6 +319,7 @@ function SubmissionLine(props) {
     isEditable,
     analysisType,
     toggleVisibility,
+    isInsightEnabled,
   } = props;
 
   const isVisibilityTogglable = submission.canHide;
@@ -364,6 +365,7 @@ function SubmissionLine(props) {
           doCancel={() => showRejectionModal(submission.id, submissionActionTypes.PUBLISH, analysisId)}
         />
       </div>
+      {isInsightEnabled &&
       <div {...classes('cell', ['insight', isVisibilityTogglable ? '' : 'wide'])}>
         <CellInsight
           isDisabled={submission.actions[submissionActionTypes.PUBLISH].result !== true}
@@ -375,6 +377,7 @@ function SubmissionLine(props) {
           hasAccessToResults={submission.hasAccessToResults}
         />
       </div>
+      }
       <div {...classes('cell', ['visibility', isVisibilityTogglable ? '' : 'hidden'])}>
         <CellVisibility
           isDisabled={!isVisibilityTogglable}
@@ -386,6 +389,14 @@ function SubmissionLine(props) {
     </div>
   );
 }
+
+// Create HOC to avoid problem with sticky (Cannot read property 'getBoundingClientRect')
+// because stateless functions does not support Ref
+const sticky = (ComposedComponent) => class extends React.Component {
+  render() {
+    return <ComposedComponent {...this.props} />
+  }
+};
 
 function ListSubmissions(props) {
   const classes = new BEMHelper('submissions');
@@ -412,6 +423,7 @@ function ListSubmissions(props) {
     selectedFilters,
     toggleVisibility,
     groupCount,
+    isInsightEnabled,
   } = props;
 
   const data = submissionGroupList.map(item => {
@@ -441,6 +453,7 @@ function ListSubmissions(props) {
             analysisType={item.analysisType}
             toggleVisibility={toggleVisibility}
             key={`${submission.id}`}
+            isInsightEnabled={isInsightEnabled}
           />
         )}
         </div>
@@ -448,13 +461,15 @@ function ListSubmissions(props) {
     )
   });
 
+  const StickySubmissionsHeader = sticky(SubmissionsHeader);
+
   return (
     <div {...classes()}>
       <div {...classes('submissions-wrapper')}>
         <div {...classes('shadow-container')}>
           <StickyContainer>
             <Sticky topOffset={-56}>
-              {() => <SubmissionsHeader
+              {() => <StickySubmissionsHeader
                 isFiltered={isFiltered}
                 selectedFilters={selectedFilters}
                 showFilters={showFilters}

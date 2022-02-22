@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { reset as resetForm, getFormValues } from 'redux-form';
+import { reset as resetForm, getFormValues, change as reduxFormChange } from 'redux-form';
 import actions from 'actions';
 import { ModalUtils } from 'arachne-ui-components';
-import { forms, modal, sections } from 'modules/Submissions/const';
+import { forms, modal, sections, getTypeByShortPrefix } from 'modules/Submissions/const';
 import Presenter from './presenter';
 import selectors from './selectors';
 import { get, buildFormData, ContainerBuilder, getFileNamesFromZip, packFilesInZip } from 'services/Utils';
@@ -43,6 +43,9 @@ class ModalCreateSubmissionBuilder extends ContainerBuilder {
       closeModal: () => ModalUtils.actions.toggle(modal.createSubmission, false),
       resetForm: resetForm.bind(null, forms.createSubmission),
       loadSubmissionList: actions.submissions.submissionList.query,
+      setAnalysisName: value => reduxFormChange(forms.createSubmission, 'title', value),
+      setAnalysisType: value => reduxFormChange(forms.createSubmission, 'type', value),
+      setStudyName: value => reduxFormChange(forms.createSubmission, 'study', value),
     };
   }
 
@@ -73,7 +76,7 @@ class ModalCreateSubmissionBuilder extends ContainerBuilder {
 
         return submitPromise;
       },
-      async populateEntryPointsOptionList(files, callback) {
+      async populateData(files, callback) {
         callback(files);
         try {
           const { activeTab } = stateProps;
@@ -83,6 +86,22 @@ class ModalCreateSubmissionBuilder extends ContainerBuilder {
             options = files.map(({ name }) => name);
           } else {
             options = await getFileNamesFromZip(files[0]);
+            const fileName = files[0];
+            const originalName = fileName.originalName.split(".zip").join("");
+            const parts = originalName.split("-");
+            let name = "";
+            if (parts.length > 1) {
+              const type = getTypeByShortPrefix(parts[0]);
+              dispatchProps.setAnalysisType(type);
+              name = parts[1];
+              if (parts.length > 2) {
+                const offset = parts[0].length + name.length + 2;
+                dispatchProps.setStudyName(originalName.substring(offset));
+              }
+            } else {
+              name = originalName;
+            }
+            dispatchProps.setAnalysisName(name);
           }
           dispatchProps.setEntryPointsOptionList(options);
         } catch (err) {

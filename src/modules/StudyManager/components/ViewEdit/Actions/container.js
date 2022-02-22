@@ -31,6 +31,8 @@ import {
 import { studyPermissions, studyActions } from 'modules/StudyManager/const';
 import { paths as paperPaths } from 'modules/InsightsLibrary/const';
 import StudyActions from './presenter';
+import { isModuleEnabled } from '../../../../utils';
+import { modulePaths } from '../../../../const';
 
 export default class StudyActionsBuilder {
   getComponent() {
@@ -59,6 +61,7 @@ export default class StudyActionsBuilder {
       get(studyData, 'endDate');
 
     const canCreatePaper = get(studyData, `status.availableActions`, []).includes(studyActions.createPaper);
+    const isInsightEnabled = isModuleEnabled(state, modulePaths.insightsLibrary);
 
     return {
       studyId: get(studyData, 'id'),
@@ -68,6 +71,7 @@ export default class StudyActionsBuilder {
       isFilledForPaper: Boolean(isFilledForPaper),
       canCreatePaper,
       title: get(studyData, 'title'),
+      isInsightEnabled,
     };
   }
 
