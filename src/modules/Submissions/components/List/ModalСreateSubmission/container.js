@@ -89,19 +89,20 @@ class ModalCreateSubmissionBuilder extends ContainerBuilder {
             const fileName = files[0];
             const originalName = fileName.originalName.split(".zip").join("");
             const parts = originalName.split("-");
-            let name = "";
             if (parts.length > 1) {
               const type = getTypeByShortPrefix(parts[0]);
               dispatchProps.setAnalysisType(type);
-              name = parts[1];
+              const name = parts[1];
               if (parts.length > 2) {
                 const offset = parts[0].length + name.length + 2;
-                dispatchProps.setStudyName(originalName.substring(offset));
+                dispatchProps.setStudyName(name);
+                dispatchProps.setAnalysisName(originalName.substring(offset));
+              } else {
+                dispatchProps.setAnalysisName(name);
               }
             } else {
-              name = originalName;
+              dispatchProps.setAnalysisName(originalName);
             }
-            dispatchProps.setAnalysisName(name);
           }
           dispatchProps.setEntryPointsOptionList(options);
         } catch (err) {
