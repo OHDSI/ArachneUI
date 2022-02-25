@@ -87,7 +87,7 @@ class ModalCreateSubmissionBuilder extends ContainerBuilder {
           } else {
             options = await getFileNamesFromZip(files[0]);
             const fileName = files[0];
-            const originalName = fileName.originalName.split(".zip").join("");
+            const originalName = fileName.originalName.replace(/\.zip$/, '').replace(/-code$/, '');
             const parts = originalName.split("-");
             if (parts.length > 1) {
               const type = getTypeByShortPrefix(parts[0]);
