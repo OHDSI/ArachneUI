@@ -94,7 +94,7 @@
     "source-map-loader": "^0.2.1",
     "tootik": "^1.0.2",
     "type-check": "^0.3.2",
-    "urijs": "1.19.7",
+    "urijs": "1.19.9",
     "url-loader": "^0.5.9",
     "webpack-config-postcss": "^1.0.0-alpha.4",
     "whatwg-fetch": "^1.0.0"
