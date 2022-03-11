@@ -29,11 +29,14 @@ function LeftColumn(props) {
   const {
     openedSection,
     onTabChange,
+    isInsightEnabled,
   } = props;
   return (<div>
     <StudyObjective />
     <Sections openedSection={openedSection} onTabChange={onTabChange} />
-    <InsightList />
+    {isInsightEnabled &&
+    <InsightList/>
+    }
   </div>);
 }
 

@@ -22,8 +22,20 @@
 
 import React from 'react';
 import AdminRoutes from './routesCommon';
+import { Route } from 'react-router';
+import OperationalDashboard from './components/OperationalDashboard';
 
 class AdminNodeRoutes extends AdminRoutes {
+  static buildNodeRoutes() {
+    return [
+      <Route path="operational-dashboard" component={OperationalDashboard} />,
+    ];
+  }
+
+  static build() {
+    const routes = super.build();
+    return routes.concat(this.buildNodeRoutes());
+  }
 }
 
 export default AdminNodeRoutes;

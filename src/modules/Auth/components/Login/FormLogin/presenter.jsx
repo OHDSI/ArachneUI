@@ -61,7 +61,7 @@ function FormLogin(props) {
     isUnactivated,
     resendEmail,
     isLoading,
-    authMethod,
+    allAuthMethods,
     isStandalone,
     userRequest,
   } = props;
@@ -100,59 +100,76 @@ function FormLogin(props) {
 
   const classes = new BEMHelper('form-login-container');
   const formClasses = new BEMHelper('form-login');
-  
+
+  const entries = Object.entries(allAuthMethods);
+
   return (
     <div {...classes()}>
-      <form onSubmit={handleSubmit(doSubmit)} {...formClasses()}>
-        <Field
-          {...formClasses('group')}
-          component={Fieldset}
-          {...fields.username}
-        />
-        <Field
-          {...formClasses('group')}
-          component={Fieldset}
-          {...fields.password}
-        />
-        <Field
-          {...formClasses('group', 'hidden')}
-          component={Fieldset}
-          {...fields.redirectTo}
-        />
-        {!isStandalone && authMethod !== authMethods.LDAP &&
-          <RemindPasswordLink
-            {...formClasses('group')}
-            link={remindPasswordLink}
-          />
-        }
-        {error && 
-          <span {...formClasses('error')}>{error}</span>
-        }
-        {isUnactivated && authMethod !== authMethods.LDAP &&
-          <Button
-            {...classes('resend-button')}
-            onClick={resendEmail}
-          >
-            Resend activation email
-          </Button>
-        }
-        <div {...formClasses('actions')}>
-          <Button
-            {...formClasses('submit')}
-            type="submit"
-            label={submitting ? 'Logging in...' : 'Login'}
-            mods={['submit', 'rounded']}
-            disabled={submitting}
-          />
-        </div>
-      </form>
+      {entries.filter(([name, value]) => !value).map(([authMethod, value]) =>
+        <div id={authMethod}>
+          <form onSubmit={handleSubmit(doSubmit)} {...formClasses()}>
+            <Field
+              {...formClasses('group')}
+              component={Fieldset}
+              {...fields.username}
+            />
+            <Field
+              {...formClasses('group')}
+              component={Fieldset}
+              {...fields.password}
+            />
+            <Field
+              {...formClasses('group', 'hidden')}
+              component={Fieldset}
+              {...fields.redirectTo}
+            />
+            {!isStandalone && authMethod !== authMethods.LDAP &&
+              <RemindPasswordLink
+                {...formClasses('group')}
+                link={remindPasswordLink}
+              />
+            }
+            {error &&
+              <span {...formClasses('error')}>{error}</span>
+            }
+            {isUnactivated && authMethod !== authMethods.LDAP &&
+              <Button
+                {...classes('resend-button')}
+                onClick={resendEmail}
+              >
+                Resend activation email
+              </Button>
+            }
+            <div {...formClasses('actions')}>
+              <Button
+                {...formClasses('submit')}
+                type="submit"
+                label={submitting ? 'Logging in...' : 'Login'}
+                mods={['submit', 'rounded']}
+                disabled={submitting}
+              />
+            </div>
+          </form>
 
-      {!isStandalone && authMethod !== authMethods.LDAP &&
-        <span {...classes('register-caption')}>
-          Don't have an account? <Link to={paths.register()}>Register here</Link>
-        </span>
-      }
-      <LoadingPanel active={isLoading} />
+          {!isStandalone && authMethod !== authMethods.LDAP &&
+            <span {...classes('register-caption')}>
+              Don't have an account? <Link to={paths.register()}>Register here</Link>
+            </span>
+          }
+          <LoadingPanel active={isLoading}/>
+        </div>
+      )}
+      <div>
+        {entries.filter(([name, value]) => value).map(([name, {url, text, image}]) => {
+            return <div {...formClasses('actions')} key={name}>
+              <a href={url} className='ac-link'>
+                <span {...classes('login-method-text')}>{text}</span>
+                <img {...classes('login-method-image')} src={image} alt={'logo of ' + text}/>
+              </a>
+            </div>;
+          })
+        }
+      </div>
     </div>
   );
 }

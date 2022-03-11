@@ -31,12 +31,6 @@
 
 		&__table {
 			table-layout: fixed;
-
-			&__lead, &__role, &__descr, &__created, &__type, &__status {
-				&-td {
-					@include text-ellipsis();
-				}
-			}
 		}
 
 		&__study-th {
@@ -71,6 +65,9 @@
 
 	&cell-name {
 		display: flex;
+		&__title {
+			@include text-ellipsis();
+		}
 	}
 
 }

@@ -92,4 +92,18 @@ const sections = {
   FILES: 'Separate files',
 };
 
-export { forms, modal, paths, apiPaths, imgs, links, statusDictionary, extensionsForEntryPoints, pollTime, sections };
+function getTypeByShortPrefix(prefix) {
+  switch (prefix) {
+    case 'ple': return 'ESTIMATION';
+    case 'plp': return 'PREDICTION';
+    case 'cc': return 'COHORT_CHARACTERIZATION';
+    case 'cc_hrcls': return 'COHORT_HERACLES';
+    case 'c': return 'COHORT';
+    case 'ir': return 'INCIDENCE';
+    case 'txp': return 'COHORT_PATHWAY';
+    default: return '';
+  }
+}
+
+export { forms, modal, paths, apiPaths, imgs, links, statusDictionary,
+  extensionsForEntryPoints, pollTime, sections, getTypeByShortPrefix };

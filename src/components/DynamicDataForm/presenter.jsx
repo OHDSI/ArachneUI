@@ -31,6 +31,8 @@ require('./style.scss');
 
 function DynamicDataForm(props) {
   const classes = new BEMHelper('dynamic-data-form');
+  const indicatorClasses = new BEMHelper('indicator-container');
+  const tooltipClass = new BEMHelper('tooltip');
 
   const {
     doSubmit,
@@ -47,6 +49,8 @@ function DynamicDataForm(props) {
       name: field.name,
       isRequired: field.isRequired,
       type: field.type,
+      indicator: field.indicator,
+      value: field.value,
       InputComponent: {
         component: field.type === 'checkbox' ? FormCheckbox : FormInput,
         props: {
@@ -56,13 +60,14 @@ function DynamicDataForm(props) {
             label: ''
           },
           type: field.type || 'text',
+          disabled: field.disabled,
         },
       }
     };
   });
 
   return (
-    <form onSubmit={handleSubmit(doSubmit)} {...classes()}>
+    <form onSubmit={doSubmit ? handleSubmit(doSubmit) : null} {...classes()}>
       {formFieldList.map((field, key) =>
         <div {...classes({ element: 'row', extra: 'row' })} key={key}>
           <div {...classes({ element: 'label', extra: 'col-xs-5' })}>
@@ -71,24 +76,50 @@ function DynamicDataForm(props) {
               <span {...classes({ element: 'required-mark' })}>*</span>
             }
           </div>
-          <div {...classes({
-            element: 'input',
-            extra: 'col-xs-7',
-            modifiers: { checkbox: field.type === 'checkbox' }
-          })}>
+          {field.indicator ?
+            <div {...classes({
+              element: 'input',
+              extra: 'col-xs-7',
+            })}>
+              <div {...indicatorClasses()}>
+                <div
+                  {...indicatorClasses({
+                    element: 'indicator',
+                    modifiers: field.indicator,
+                    extra: tooltipClass().className,
+                  })}
+                  aria-label={field.value}
+                  data-tootik-conf="right"
+                >
+                </div>
+                <div>
+                  {field.value}
+                </div>
+              </div>
+            </div>
+            :
+            <div {...classes({
+              element: 'input',
+              extra: 'col-xs-7',
+              modifiers: { checkbox: field.type === 'checkbox' }
+            })}>
             <Field
               component={Fieldset}
               name={field.name}
               InputComponent={field.InputComponent}
             />
           </div>
+          }
         </div>
       )}
       <div {...classes({ element: 'row', extra: 'row' })}>
+        {doSubmit &&
         <div {...classes({ element: 'required-notification', extra: 'col-xs-12' })}>
           * Required information
         </div>
+        }
       </div>
+      {doSubmit &&
       <div {...classes({ element: 'row', modifiers: 'actions' })}>
         <Button
           {...classes('btn')}
@@ -98,6 +129,7 @@ function DynamicDataForm(props) {
           disabled={submitting}
         />
       </div>
+      }
     </form>
   );
 }

@@ -21,7 +21,7 @@
  */
 
 import { PropTypes } from 'react';
-import { get, ContainerBuilder } from 'services/Utils';
+import { get, isViewable } from 'services/Utils';
 import actions from 'actions/index';
 import { buildBreadcrumbList } from 'modules/AnalysisExecution/utils';
 import ReportUtils from 'components/Reports/Utils';
@@ -43,15 +43,19 @@ export class SubmissionCode extends FileLoader {
     if (this.props.urlParams.fileId) {
       super.componentWillMount();
     }
-    this.props.loadBreadcrumbs({
-      entityType: this.props.from,
-      id: this.props.submissionGroupId || this.props.submissionId,
-    });
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.params.fileId !== nextProps.params.fileId) {
       this.loadData(nextProps);
+    }
+    if (this.props.submission.id !== nextProps.submission.id) {
+      if (nextProps.canView) {
+        nextProps.loadBreadcrumbs({
+          entityType: this.props.from,
+          id: nextProps.submissionGroupId || nextProps.submissionId,
+        });
+      }
     }
   }
 
@@ -125,6 +129,8 @@ export class SubmissionCodeBuilder extends ActiveModuleAwareContainerBuilder {
       const reportType = ReportUtils.getReportType(get(submissionFileData, 'docType'));
       isReport = reportType !== reports.unknown;
     }
+    const submission = this.selectors.getSubmission(state);
+    const canView = isViewable(submission);
 
     return {
       urlParams,
@@ -135,7 +141,9 @@ export class SubmissionCodeBuilder extends ActiveModuleAwareContainerBuilder {
       from,
       submissionGroupId,
       submissionId,
+      submission,
       isReport,
+      canView,
       selectedFilePath: this.selectors.getSelectedFileFromTree(state),
       permissions: {
         upload: false,

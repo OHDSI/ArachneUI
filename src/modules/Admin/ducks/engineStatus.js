@@ -15,21 +15,22 @@
  *
  * Company: Odysseus Data Services, Inc.
  * Product Owner/Architecture: Gregory Klebanov
- * Authors: Pavel Grafkin, Alexander Saltykov, Vitaly Koulakov, Anton Gackovka, Alexandr Ryabokon, Mikhail Mironov
- * Created: December 13, 2016
+ * Authors: Sergey Suvorov
+ * Created: September 24, 2021
  *
  */
 
-import keyMirror from 'keymirror';
+import Duck from 'services/Duck';
+import { apiPaths } from 'modules/Admin/const';
 
-const actionTypes = keyMirror({
-  //
-  SET_AUTH_TOKEN: null,
-  //
-  MODULE_SET_ACTIVE: null,
-  MODULE_REGISTER: null,
-  MODULE_UNREGISTER_ALL: null,
-  DISABLED_MODULES_REGISTER: null,
+const actionCoreName = 'ENGINE_STATUS';
+
+const engineStatusDuck = new Duck({
+  name: actionCoreName,
+  urlBuilder: apiPaths.engineStatus,
 });
 
-export default actionTypes;
+export default {
+  actions: engineStatusDuck.actions,
+  reducer: engineStatusDuck.reducer,
+};

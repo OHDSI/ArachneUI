@@ -201,12 +201,13 @@ const validators = {
   checkValidationError(response) {
     if (typeof response.errorCode !== 'undefined') {
       if ([errors.VALIDATION_ERROR, errors.ALREADY_EXIST].includes(response.errorCode)) {
-        const errors = {
+        // Validation errors do not need full validation message error
+        const error = response.errorCode === errors.VALIDATION_ERROR ? {} : {
           _error: response.errorMessage,
         };
         // Properly handle nested keys (e.g. for FieldArray)
-        Object.keys(response.validatorErrors).forEach(reKey => set(errors, reKey, response.validatorErrors[reKey]));
-        throw new SubmissionError(errors);
+        Object.keys(response.validatorErrors).forEach(reKey => set(error, reKey, response.validatorErrors[reKey]));
+        throw new SubmissionError(error);
       } else if (response.errorCode === errors.UNACTIVATED) {
         throw new SubmissionError({
           _error: 'Please verify your account using link in the email that was sent to you.',

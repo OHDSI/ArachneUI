@@ -80,10 +80,15 @@ export class SubmissionCodeSelectorsBuilder {
     return get(state, 'analysisExecution.fileTreeData.isLoading', false);
   }
 
+  getSubmission(state) {
+    return get(state, 'analysisExecution.submissionSummary.submission.data', {}, 'Object');
+  }
+
   build() {
     return {
       getSubmissionFilesList: this.buildSelectorForSubmissionFileList(),
       getAnalysis: this.buildSelectorForAnalysis(),
+      getSubmission: this.getSubmission,
       getIsFileLoading: this.getIsFileLoading,
       getFileData: this.getFileData,
       getPageTitle: this.getPageTitle,

@@ -43,6 +43,18 @@
 			text-align: center;
 			margin-top: 15px;
 		}
+		&__login-method-text {
+			text-align: left;
+			width: 50%;
+			display: inline-block;
+			vertical-align: middle;
+		}
+		&__login-method-image {
+			text-align: right;
+			width: 50%;
+			display: inline-block;
+			vertical-align: middle;
+		}
 	}
 
 	&form-login {
