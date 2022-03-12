@@ -35,6 +35,7 @@ const actionTypes = keyMirror({
 });
 
 const loginMessages = {
+  inactive: 'inactive',
   registered: 'registered',
   emailConfirmed: 'email-confirmed',
   remindDone: 'password-remind-done',

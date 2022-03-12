@@ -41,6 +41,9 @@ function Login({ message }) {
     case loginMessages.emailConfirmed:
       messageText = 'Thank you for email confirmation. Now you can login.';
       break;
+    case loginMessages.inactive:
+      messageText = 'A login to the application can’t be performed at this moment, please contact the application administrator';
+      break;
     case loginMessages.remindDone:
       messageText = 'Link for password reset was sent to your email.';
       break;
