@@ -23,7 +23,6 @@
 import React from 'react';
 import {
   Link,
-  Form,
   Fieldset,
   FormInput,
   Button,
@@ -49,64 +48,78 @@ function RemindPasswordLink({ className, link }) {
   )
 }
 
-function FormLogin(props) {
-  const {
-    doSubmit,
-    doCancel,
-    remindPasswordLink,
-    // redux-form
-    error,
-    handleSubmit,
-    submitting,
-    isUnactivated,
-    resendEmail,
-    isLoading,
-    allAuthMethods,
-    isStandalone,
-    userRequest,
-  } = props;
+class FormLogin extends React.Component {
 
-  const fields = {
-    username: {
-      name: 'username',
-      InputComponent: {
-        component: UsernameField,
-        props: {
-          placeholder: 'Email address',
-          type: 'text',
-          disabled: Boolean(userRequest),
-        }
-      },
-    },
-    password: {
-      name: 'password',
-      InputComponent: {
-        component: PasswordField,
-        props: {
-          showHint: false,
+  constructor(props) {
+    super(props);
+    // this.props = props;
+    this.state = {open: false};
+  }
+
+  openCollapsed() {
+    this.setState({open: true});
+  }
+
+  render() {
+    const {
+      doSubmit,
+      remindPasswordLink,
+      // redux-form
+      error,
+      handleSubmit,
+      submitting,
+      isUnactivated,
+      resendEmail,
+      isLoading,
+      allAuthMethods,
+      isStandalone,
+      userRequest,
+    } = this.props;
+
+    const fields = {
+      username: {
+        name: 'username',
+        InputComponent: {
+          component: UsernameField,
+          props: {
+            placeholder: 'Email address',
+            type: 'text',
+            disabled: Boolean(userRequest),
+          }
         },
       },
-    },
-    redirectTo: {
-      name: 'redirectTo',
-      InputComponent: {
-        component: FormInput,
-        props: {
-          type: 'hidden',
-        }
+      password: {
+        name: 'password',
+        InputComponent: {
+          component: PasswordField,
+          props: {
+            showHint: false,
+          },
+        },
       },
-    }
-  };
+      redirectTo: {
+        name: 'redirectTo',
+        InputComponent: {
+          component: FormInput,
+          props: {
+            type: 'hidden',
+          }
+        },
+      }
+    };
 
-  const classes = new BEMHelper('form-login-container');
-  const formClasses = new BEMHelper('form-login');
+    const classes = new BEMHelper('form-login-container');
+    const formClasses = new BEMHelper('form-login');
 
-  const entries = Object.entries(allAuthMethods);
+    const entries = Object.entries(allAuthMethods);
 
-  return (
-    <div {...classes()}>
-      {entries.filter(([name, value]) => !value).map(([authMethod, value]) =>
-        <div id={authMethod}>
+    const collapsedInternalLogin = (collapsedText) =>
+      <div>
+          <a className='ac-link' href='#' onClick={() => this.openCollapsed()}>{collapsedText}</a>
+      </div>
+
+    const internalLogin = authMethod =>
+      <div id={authMethod}>
           <form onSubmit={handleSubmit(doSubmit)} {...formClasses()}>
             <Field
               {...formClasses('group')}
@@ -157,21 +170,27 @@ function FormLogin(props) {
             </span>
           }
           <LoadingPanel active={isLoading}/>
-        </div>
-      )}
-      <div>
-        {entries.filter(([name, value]) => value).map(([name, {url, text, image}]) => {
-            return <div {...formClasses('actions')} key={name}>
-              <a href={url} className='ac-link'>
-                <span {...classes('login-method-text')}>{text}</span>
-                <img {...classes('login-method-image')} src={image} alt={'logo of ' + text}/>
-              </a>
-            </div>;
-          })
-        }
+      </div>;
+
+    const externalMethod = (name, url, classes, text, image) =>
+      <div {...formClasses('actions')} key={name}>
+        <a href={url} className="ac-link">
+          <span {...classes('login-method-text')}>{text}</span>
+          <img {...classes('login-method-image')} src={image} alt={'logo of ' + text}/>
+        </a>
+      </div>;
+
+    return (
+      <div {...classes()}>
+          {entries.map(([name, options]) =>
+            !authMethods[name] ? externalMethod(name, options.url, classes, options.text, options.image)
+              : (options?.collapse && !this.state.open) ? collapsedInternalLogin(options.collapse)
+                : internalLogin(name))
+          }
       </div>
-    </div>
-  );
+    );
+  }
+
 }
 
 export default FormLogin;
