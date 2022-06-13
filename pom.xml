@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.odysseusinc.arachne</groupId>
     <artifactId>${final.artifactId}</artifactId>
-    <version>1.19.1</version>
+    <version>1.19.2</version>
     <packaging>pom</packaging>
     <name>Frontend Resources Bundle</name>
 
