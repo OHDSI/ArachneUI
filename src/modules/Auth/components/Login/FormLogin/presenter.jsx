@@ -119,7 +119,7 @@ class FormLogin extends React.Component {
       </div>
 
     const internalLogin = authMethod =>
-      <div id={authMethod}>
+      <div {...formClasses('actions')} id={authMethod}>
           <form onSubmit={handleSubmit(doSubmit)} {...formClasses()}>
             <Field
               {...formClasses('group')}
