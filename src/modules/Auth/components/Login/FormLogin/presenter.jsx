@@ -118,7 +118,7 @@ class FormLogin extends React.Component {
           <a className='ac-link' href='#' onClick={() => this.openCollapsed()}>{collapsedText}</a>
       </div>
 
-    const internalLogin = authMethod =>
+    const internalLogin = (authMethod, registrationEnabled) =>
       <div {...formClasses('actions')} id={authMethod}>
           <form onSubmit={handleSubmit(doSubmit)} {...formClasses()}>
             <Field
@@ -136,7 +136,7 @@ class FormLogin extends React.Component {
               component={Fieldset}
               {...fields.redirectTo}
             />
-            {!isStandalone && authMethod !== authMethods.LDAP &&
+            {!isStandalone && registrationEnabled &&
               <RemindPasswordLink
                 {...formClasses('group')}
                 link={remindPasswordLink}
@@ -145,7 +145,7 @@ class FormLogin extends React.Component {
             {error &&
               <span {...formClasses('error')}>{error}</span>
             }
-            {isUnactivated && authMethod !== authMethods.LDAP &&
+            {isUnactivated && registrationEnabled &&
               <Button
                 {...classes('resend-button')}
                 onClick={resendEmail}
@@ -164,7 +164,7 @@ class FormLogin extends React.Component {
             </div>
           </form>
 
-          {!isStandalone && authMethod !== authMethods.LDAP &&
+          {!isStandalone && registrationEnabled &&
             <span {...classes('register-caption')}>
               Don't have an account? <Link to={paths.register()}>Register here</Link>
             </span>
@@ -185,7 +185,7 @@ class FormLogin extends React.Component {
           {entries.map(([name, options]) =>
             !authMethods[name] ? externalMethod(name, options.url, classes, options.text, options.image)
               : (options?.collapse && !this.state.open) ? collapsedInternalLogin(options.collapse)
-                : internalLogin(name))
+                : internalLogin(name, options?.registration))
           }
       </div>
     );
