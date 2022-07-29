@@ -169,6 +169,7 @@ function VocabsList(props: IDownloadHistoryProps & IDownloadHistoryStatefulProps
     expandedBundleId,
     restoreBundle,
     share,
+    load,
     showNotifications,
     showShareModal,
     download,
@@ -182,6 +183,7 @@ function VocabsList(props: IDownloadHistoryProps & IDownloadHistoryStatefulProps
         caption='Download history'
         backUrl={paths.vocabsList()}
       >
+        <Button {...classes('download-button')} onClick={load}>Refresh</Button>
         <Button onClick={showNotifications} mods={['submit', 'rounded']}>Notifications</Button>
       </Toolbar>
       <Accordion activeItems={[expandedBundleId]}>
