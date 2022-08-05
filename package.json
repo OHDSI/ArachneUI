@@ -1,6 +1,6 @@
 {
   "name": "Athena",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "main": "public/index.js",
   "license": "Apache-2.0",
   "repository": {
@@ -21,7 +21,7 @@
     "@types/lodash": "4.14.54",
     "@types/redux-logger": "2.6.34",
     "@types/superagent": "2.0.36",
-    "arachne-ui-components": "1.16.4",
+    "arachne-ui-components": "1.19.3",
     "classnames": "2.2.6",
     "core-js": "2.4.1",
     "css-loader": "0.26.2",
@@ -54,9 +54,9 @@
     "redux-promise-middleware": "4.2.0",
     "redux-thunk": "2.2.0",
     "reselect": "2.5.4",
-    "shelljs": "^0.7.8",
+    "shelljs": "0.8.5",
     "superagent": "3.7.0",
-    "urijs": "^1.19.6"
+    "urijs": "1.19.11"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
