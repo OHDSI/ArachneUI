@@ -63,7 +63,7 @@ implements IDownloadHistory {
 
   componentWillMount() {
     this.props.load();
-    this.startPolling();
+    // this.startPolling();
   }
 
   componentWillUnmount() {
