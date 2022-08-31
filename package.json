@@ -51,7 +51,7 @@
     "keymirror": "^0.1.1",
     "lodash": "4.17.21",
     "moment": "^2.25.0",
-    "moment-timezone": "0.5.28",
+    "moment-timezone": "0.5.35",
     "node-fetch": "^2.6.1",
     "node-noop": "^1.0.0",
     "numeral": "^2.0.4",
