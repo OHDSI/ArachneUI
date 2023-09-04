@@ -146,6 +146,10 @@ const cdmVersionList = [
     label: '5.3.1',
     value: 'V5_3_1',
   },
+  {
+    label: '5.4',
+    value: 'V5_4',
+  },
 ];
 
 const accessType = keyMirror({
