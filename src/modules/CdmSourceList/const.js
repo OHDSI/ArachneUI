@@ -97,6 +97,14 @@ const cdmVersionList = [
     label: 'OMOP CDM v 5.1',
     value: 'V5_1',
   },
+  {
+    label: 'OMOP CDM v 5.3',
+    value: 'V5_3',
+  },
+  {
+    label: 'OMOP CDM v 5.4',
+    value: 'V5_4',
+  },
 ];
 
 const characterizationStatuses = keyMirror({
