@@ -42,7 +42,7 @@ import { paths } from 'modules/SearchTerms/const';
 import Dropdown from 'react-simple-dropdown';
 import { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
 import { isOuterLink } from 'services/Utils';
-
+import SynonymsLangTable from './components/SynonymLang';
 require('./style.scss');
 
 interface ITermStateProps {
@@ -214,12 +214,7 @@ function Term(props: ITermProps) {
                 <span>{get(details, 'standardConcept', '')}</span>
               </ListItem>
               {synonyms.length
-                ? <ListItem>
-                    <span {...classes('attribute-name')}>Synonyms</span>
-                    <div>{synonyms.map(synonym => <div>
-                      <span>{synonym}</span>
-                    </div>)}</div>
-                  </ListItem>
+                ? <SynonymsLangTable synonymsLang = {synonyms}/>
                 : null
               }
               <ListItem>
