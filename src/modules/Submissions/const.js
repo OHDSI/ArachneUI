@@ -35,7 +35,7 @@ const imgs = {
   sidebarIco: '/img/icons/Universal_Desktop/Navigation/Arachne_Desktop_icon-Bullet-List.png',
 };
 
-const extensionsForEntryPoints = ['R', 'r', 'sql', 'SQL'];
+const extensionsForEntryPoints = ['R', 'r', 'sql', 'SQL', 'json', 'JSON'];
 
 const pollTime = 10000;
 
@@ -90,6 +90,7 @@ const statusDictionary = {
 const sections = {
   ARCHIVE: 'Files in archive',
   FILES: 'Separate files',
+  STRATEGUS: 'Strategus JSON',
 };
 
 function getTypeByShortPrefix(prefix) {
