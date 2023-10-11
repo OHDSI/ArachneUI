@@ -46,6 +46,7 @@ class ModalCreateSubmissionBuilder extends ContainerBuilder {
       setAnalysisName: value => reduxFormChange(forms.createSubmission, 'title', value),
       setAnalysisType: value => reduxFormChange(forms.createSubmission, 'type', value),
       setStudyName: value => reduxFormChange(forms.createSubmission, 'study', value),
+      setEntryPoint: value => reduxFormChange(forms.createSubmission, 'executableFileName', value),
     };
   }
 
@@ -56,7 +57,7 @@ class ModalCreateSubmissionBuilder extends ContainerBuilder {
       ...dispatchProps,
       async doSubmit({ file: files, datasourceId, title, study, executableFileName, type }) {
         const { activeTab } = stateProps;
-        const isFilesTab = activeTab === sections.FILES;
+        const isFilesTab = activeTab === sections.FILES || sections.STRATEGUS;
         let file;
         if (isFilesTab) {
           file = await packFilesInZip(files);
@@ -80,7 +81,7 @@ class ModalCreateSubmissionBuilder extends ContainerBuilder {
         callback(files);
         try {
           const { activeTab } = stateProps;
-          const isFilesTab = activeTab === sections.FILES;
+          const isFilesTab = activeTab === sections.FILES || sections.STRATEGUS;
           let options;
           if (isFilesTab) {
             options = files.map(({ name }) => name);
