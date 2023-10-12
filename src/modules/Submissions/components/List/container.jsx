@@ -6,6 +6,7 @@ import { ContainerBuilder, get, Utils } from 'services/Utils';
 
 class Submissions extends Component {
   static propTypes = {
+    loadEnvironmentList: PropTypes.func,
     loadDataSourcesOptionList: PropTypes.func,
     loadAnalysisTypesOptionList: PropTypes.func,
     loadSubmissionList: PropTypes.func,
@@ -24,8 +25,9 @@ class Submissions extends Component {
   }
 
   componentDidMount() {
-    const { query, loadAnalysisTypesOptionList, loadDataSourcesOptionList  } = this.props;
+    const { query, loadAnalysisTypesOptionList, loadEnvironmentList, loadDataSourcesOptionList  } = this.props;
     this.setPolling(query);
+    loadEnvironmentList();
     loadAnalysisTypesOptionList();
     loadDataSourcesOptionList();
   }
@@ -74,6 +76,7 @@ class SubmissionsBuilder extends ContainerBuilder {
       loadSubmissionList: actions.submissions.submissionList.query,
       invalidateAnalyses: actions.submissions.invalidateAnalyses.create,
       loadAnalysisTypesOptionList: actions.submissions.analysisTypesOptionList.query,
+      loadEnvironmentList: actions.submissions.environmentList.query,
       loadDataSourcesOptionList: actions.submissions.dataSourcesOptionList.query,
     };
   }

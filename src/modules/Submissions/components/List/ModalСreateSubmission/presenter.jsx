@@ -21,6 +21,7 @@ export default function ModalCreateSubmission({
   closeModal,
   populateData,
   entryPointsOptionList,
+  environmentList,
   dataSourcesOptionList,
   analysisTypesOptionList,
   isFormValid,
@@ -111,6 +112,18 @@ export default function ModalCreateSubmission({
           mods: ['bordered'],
           placeholder: 'Entry Point',
           options: entryPointsOptionList,
+          required: true,
+        },
+      },
+    },
+    {
+      name: 'environmentId',
+      InputComponent: {
+        component: FormSelect,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Runtime Environment',
+          options: environmentList,
           required: true,
         },
       },
