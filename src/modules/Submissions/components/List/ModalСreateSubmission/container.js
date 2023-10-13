@@ -81,7 +81,7 @@ class ModalCreateSubmissionBuilder extends ContainerBuilder {
         callback(files);
         try {
           const { activeTab } = stateProps;
-          const isFilesTab = activeTab === sections.FILES || sections.STRATEGUS;
+          const isFilesTab = activeTab === sections.FILES || activeTab === sections.STRATEGUS;
           let options;
           if (isFilesTab) {
             options = files.map(({ name }) => name);
