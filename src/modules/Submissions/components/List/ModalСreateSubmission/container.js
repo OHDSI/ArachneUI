@@ -57,7 +57,7 @@ class ModalCreateSubmissionBuilder extends ContainerBuilder {
       ...dispatchProps,
       async doSubmit({ file: files, datasourceId, title, study, executableFileName, type }) {
         const { activeTab } = stateProps;
-        const isFilesTab = activeTab === sections.FILES || sections.STRATEGUS;
+        const isFilesTab = activeTab === sections.FILES || activeTab === sections.STRATEGUS;
         let file;
         if (isFilesTab) {
           file = await packFilesInZip(files);
