@@ -41,7 +41,7 @@ export default function ModalCreateSubmission({
     label: 'Cancel',
   };
 
-  const isFilesTab = activeTab === modalSections.FILES || modalSections.STRATEGUS;
+  const isFilesTab = activeTab === modalSections.FILES || activeTab === modalSections.STRATEGUS;
   const isStrategusTab = activeTab === modalSections.STRATEGUS;
   const placeholder = isFilesTab ? 'Add separate files' : 'Add files in archive';
 
