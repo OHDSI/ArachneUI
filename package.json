@@ -1,6 +1,6 @@
 {
   "name": "arachne-ui",
-  "version": "1.19.10",
+  "version": "1.20.0",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
@@ -28,7 +28,7 @@
   "dependencies": {
     "@ohdsi/atlascharts": "^1.7.4",
     "@stomp/stompjs": "github:stomp-js/stomp-websocket",
-    "arachne-ui-components": "~1.19.2",
+    "arachne-ui-components": "~1.20.0",
     "autoprefixer": "^6.7.6",
     "clamp-js": "^0.7.0",
     "classnames": "^2.2.5",
@@ -94,7 +94,7 @@
     "source-map-loader": "^0.2.1",
     "tootik": "^1.0.2",
     "type-check": "^0.3.2",
-    "urijs": "1.19.8",
+    "urijs": "1.19.11",
     "url-loader": "^0.5.9",
     "webpack-config-postcss": "^1.0.0-alpha.4",
     "whatwg-fetch": "^1.0.0"

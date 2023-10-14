@@ -21,9 +21,12 @@ export default function ModalCreateSubmission({
   closeModal,
   populateData,
   entryPointsOptionList,
+  environmentList,
   dataSourcesOptionList,
   analysisTypesOptionList,
   isFormValid,
+  setAnalysisType,
+  setEntryPoint,
   ...props
 }) {
   const classes = new BEMHelper('submission-modal-create-submission');
@@ -39,26 +42,68 @@ export default function ModalCreateSubmission({
     label: 'Cancel',
   };
 
-  const isFilesTab = activeTab === modalSections.FILES;
+  const isFilesTab = activeTab === modalSections.FILES || activeTab === modalSections.STRATEGUS;
+  const isStrategusTab = activeTab === modalSections.STRATEGUS;
   const placeholder = isFilesTab ? 'Add separate files' : 'Add files in archive';
 
-  const fields = [
-    {
-      name: 'file',
-      InputComponent: {
-        component: FormFileInput,
-        props: {
-          name: 'zip',
-          mods: ['bordered'],
-          placeholder,
-          dropzonePlaceholder: 'Drag and drop file',
-          multiple: isFilesTab,
-          accept: isFilesTab ? [] : ['.zip'],
-          onChangeCustom: populateData,
-          filePlaceholder: 'Document name',
-        },
+  const fileField = {
+    name: 'file',
+    InputComponent: {
+      component: FormFileInput,
+      props: {
+        name: 'zip',
+        mods: ['bordered'],
+        placeholder,
+        dropzonePlaceholder: 'Drag and drop file',
+        multiple: isFilesTab && !isStrategusTab,
+        accept: isFilesTab ? [] : ['.zip'],
+        onChangeCustom: populateData,
+        filePlaceholder: 'Document name',
       },
     },
+  };
+
+  const datasourceField = {
+    name: 'datasourceId',
+    InputComponent: {
+      component: FormSelect,
+      props: {
+        mods: ['bordered'],
+        placeholder: 'Data Source',
+        options: dataSourcesOptionList,
+        required: true,
+      },
+    }
+  };
+
+  const titleField = {
+    name: 'title',
+    InputComponent: {
+      component: FormInput,
+      props: {
+        mods: ['bordered'],
+        placeholder: 'Analysis',
+        required: true,
+        type: 'text',
+      },
+    },
+  };
+
+  const studyField = {
+    name: 'study',
+    InputComponent: {
+      component: FormInput,
+      props: {
+        mods: ['bordered'],
+        placeholder: 'Study',
+        required: false,
+        type: 'text',
+      },
+    },
+  };
+
+  const fields = [
+    fileField,
     {
       name: 'executableFileName',
       InputComponent: {
@@ -72,29 +117,19 @@ export default function ModalCreateSubmission({
       },
     },
     {
-      name: 'datasourceId',
+      name: 'environmentId',
       InputComponent: {
         component: FormSelect,
         props: {
           mods: ['bordered'],
-          placeholder: 'Data Source',
-          options: dataSourcesOptionList,
+          placeholder: 'Runtime Environment',
+          options: environmentList,
           required: true,
         },
       },
     },
-    {
-      name: 'title',
-      InputComponent: {
-        component: FormInput,
-        props: {
-          mods: ['bordered'],
-          placeholder: 'Analysis',
-          required: true,
-          type: 'text',
-        },
-      },
-    },
+    datasourceField,
+    titleField,
     {
       name: 'type',
       InputComponent: {
@@ -107,18 +142,38 @@ export default function ModalCreateSubmission({
         },
       },
     },
+    studyField,
+  ];
+
+  const strategusType = 'STRATEGUS';
+
+  const strategusFields = [
+      fileField,
+      datasourceField,
+      titleField,
+      studyField,
+      {
+        name: 'type',
+        InputComponent: {
+          component: FormInput,
+          props: {
+            type: 'hidden',
+            input: {
+            },
+          }
+        }
+      },
     {
-      name: 'study',
+      name: 'executableFileName',
       InputComponent: {
         component: FormInput,
         props: {
-          mods: ['bordered'],
-          placeholder: 'Study',
-          required: false,
-          type: 'text',
-        },
-      },
-    },
+          type: 'hidden',
+          input: {
+          }
+        }
+      }
+    }
   ];
 
   const onCancel = () => {
@@ -135,20 +190,37 @@ export default function ModalCreateSubmission({
     onCancel={onCancel}
     {...props}
   />);
+  const StrategusForm = (<Form
+      mods="spacing-em"
+      fields={strategusFields}
+      submitBtn={submitBtn}
+      cancelBtn={cancelBtn}
+      onSubmit={doSubmit}
+      onCancel={onCancel}
+      {...props}
+  />);
 
   const sections = [
     {
       label: modalSections.ARCHIVE,
       content: FilesForm,
     },
+    // {
+    //   label: modalSections.FILES,
+    //   content: FilesForm,
+    // },
     {
-      label: modalSections.FILES,
-      content: FilesForm,
-    },
+      label: modalSections.STRATEGUS,
+      content: StrategusForm,
+    }
   ];
 
   const changeTab = (tab) => {
     resetForm();
+    if (tab === modalSections.STRATEGUS) {
+      setAnalysisType(strategusType);
+      setEntryPoint("strategusStudy.json");
+    }
     setActiveTab(tab);
   };
 

@@ -6,12 +6,14 @@ import dataSourcesOptionList from './dataSourcesOptionList';
 import analysisTypesOptionList from './analysisTypesOptionList';
 import fileDownload from './fileDownload';
 import tabs from './tabs';
+import environmentList from './environmentList';
 
 const actions = {
     submissionList: submissionList.actions,
     invalidateAnalyses: invalidateAnalyses.actions,
     entryPointsOptionList: entryPointsOptionList.actions,
     analyses: analyses.actions,
+    environmentList: environmentList.actions,
     dataSourcesOptionList: dataSourcesOptionList.actions,
     analysisTypesOptionList: analysisTypesOptionList.actions,
     fileDownload: fileDownload.actions,
@@ -23,6 +25,7 @@ const reducer = {
     invalidateAnalyses: invalidateAnalyses.reducer,
     entryPointsOptionList: entryPointsOptionList.reducer,
     analyses: analyses.reducer,
+    environmentList: environmentList.reducer,
     dataSourcesOptionList: dataSourcesOptionList.reducer,
     analysisTypesOptionList: analysisTypesOptionList.reducer,
     fileDownload: fileDownload.reducer,

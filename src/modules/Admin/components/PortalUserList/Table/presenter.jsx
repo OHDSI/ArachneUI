@@ -29,6 +29,7 @@ import {
   Checkbox,
   BadgedIcon,
 } from 'arachne-ui-components';
+import TableCellEmail from 'components/TableCellEmail';
 
 import ActionsToolbar from './ActionsToolbar';
 
@@ -102,11 +103,16 @@ function AdminTable(props) {
           isSortable={false}
           field="tenantNames"
         />
-        <Cell
+        <TableCellEmail
           {...tableClasses('email')}
           header="Email"
           field="email"
         />
+        <TableCellEmail
+            {...tableClasses('email')}
+            header="Contact email"
+            field="contactEmail"
+          />
         <CellCheck
           {...tableClasses('enabled')}
           header="Enabled"

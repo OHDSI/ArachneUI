@@ -29,6 +29,7 @@ class ModalCreateSubmissionBuilder extends ContainerBuilder {
       isOpened: get(state, `modal.${modal.createSubmission}.isOpened`, false),
       entryPointsOptionList: selectors.getEntryPointsOptionList(state),
       isFormValid: this.isFormValid(state),
+      environmentList: selectors.getEnvironmentList(state),
       dataSourcesOptionList: selectors.getDataSourcesOptionList(state),
       analysisTypesOptionList: selectors.getAnalysisTypesOptionList(state),
       activeTab: get(state, 'submissions.tabs.activeTab'),
@@ -46,6 +47,7 @@ class ModalCreateSubmissionBuilder extends ContainerBuilder {
       setAnalysisName: value => reduxFormChange(forms.createSubmission, 'title', value),
       setAnalysisType: value => reduxFormChange(forms.createSubmission, 'type', value),
       setStudyName: value => reduxFormChange(forms.createSubmission, 'study', value),
+      setEntryPoint: value => reduxFormChange(forms.createSubmission, 'executableFileName', value),
     };
   }
 
@@ -54,16 +56,16 @@ class ModalCreateSubmissionBuilder extends ContainerBuilder {
       ...ownProps,
       ...stateProps,
       ...dispatchProps,
-      async doSubmit({ file: files, datasourceId, title, study, executableFileName, type }) {
+      async doSubmit({ file: files, datasourceId, title, study, executableFileName, environmentId, type }) {
         const { activeTab } = stateProps;
-        const isFilesTab = activeTab === sections.FILES;
+        const isFilesTab = activeTab === sections.FILES || activeTab === sections.STRATEGUS;
         let file;
         if (isFilesTab) {
           file = await packFilesInZip(files);
         } else {
           file = files[0];
         }
-        const data = buildFormData({ file }, { analysis: { executableFileName, datasourceId, title, study, type } });
+        const data = buildFormData({ file }, { analysis: { executableFileName, datasourceId, title, study, type, environmentId } });
         const submitPromise = dispatchProps.createSubmission(null, data);
         try {
           await submitPromise;
@@ -80,7 +82,7 @@ class ModalCreateSubmissionBuilder extends ContainerBuilder {
         callback(files);
         try {
           const { activeTab } = stateProps;
-          const isFilesTab = activeTab === sections.FILES;
+          const isFilesTab = activeTab === sections.FILES || activeTab === sections.STRATEGUS;
           let options;
           if (isFilesTab) {
             options = files.map(({ name }) => name);
