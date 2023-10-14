@@ -24,6 +24,7 @@ const apiPaths = {
   invalidateAnalyses: () => '/api/v1/admin/analysis/invalidate',
   submissions: () => '/api/v1/analysis',
   dataSourcesOptionList: () => '/api/v1/data-sources',
+  environmentList: () => '/api/v1/descriptor',
   analysisTypesOptionList: () => '/api/v1/analysis/types',
 };
 

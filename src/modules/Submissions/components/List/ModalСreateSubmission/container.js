@@ -29,6 +29,7 @@ class ModalCreateSubmissionBuilder extends ContainerBuilder {
       isOpened: get(state, `modal.${modal.createSubmission}.isOpened`, false),
       entryPointsOptionList: selectors.getEntryPointsOptionList(state),
       isFormValid: this.isFormValid(state),
+      environmentList: selectors.getEnvironmentList(state),
       dataSourcesOptionList: selectors.getDataSourcesOptionList(state),
       analysisTypesOptionList: selectors.getAnalysisTypesOptionList(state),
       activeTab: get(state, 'submissions.tabs.activeTab'),
@@ -55,7 +56,7 @@ class ModalCreateSubmissionBuilder extends ContainerBuilder {
       ...ownProps,
       ...stateProps,
       ...dispatchProps,
-      async doSubmit({ file: files, datasourceId, title, study, executableFileName, type }) {
+      async doSubmit({ file: files, datasourceId, title, study, executableFileName, environmentId, type }) {
         const { activeTab } = stateProps;
         const isFilesTab = activeTab === sections.FILES || activeTab === sections.STRATEGUS;
         let file;
@@ -64,7 +65,7 @@ class ModalCreateSubmissionBuilder extends ContainerBuilder {
         } else {
           file = files[0];
         }
-        const data = buildFormData({ file }, { analysis: { executableFileName, datasourceId, title, study, type } });
+        const data = buildFormData({ file }, { analysis: { executableFileName, datasourceId, title, study, type, environmentId } });
         const submitPromise = dispatchProps.createSubmission(null, data);
         try {
           await submitPromise;

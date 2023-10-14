@@ -5,7 +5,19 @@ import { extensionsForEntryPoints } from 'modules/Submissions/const';
 const getRawEntryPointsOptionList = state => get(state, 'submissions.entryPointsOptionList.options') || [];
 const getRawFileField = state => get(state, 'form.createSubmission.values.file') || [];
 const getRawDataSourcesOptionList = state => get(state, 'submissions.dataSourcesOptionList.queryResult.result') || [];
+const getRawEnvironmentList = state => get(state, 'submissions.environmentList.queryResult') || [];
 const getRawAnalysisTypesOptionList = state => get(state, 'submissions.analysisTypesOptionList.queryResult') || [];
+
+const getEnvironmentList = createSelector(
+  [getRawEnvironmentList],
+  items => {
+    const options = items.map(({ label, id }) => ({
+      label: label,
+      value: id.toString(),
+    }));
+    return sortOptions(options);
+  }
+);
 
 const getDataSourcesOptionList = createSelector(
   [getRawDataSourcesOptionList],
@@ -44,6 +56,7 @@ const getEntryPointsOptionList = createSelector(
 
 export default {
   getEntryPointsOptionList,
+  getEnvironmentList,
   getDataSourcesOptionList,
   getAnalysisTypesOptionList,
 };
