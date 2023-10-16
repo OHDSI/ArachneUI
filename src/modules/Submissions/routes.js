@@ -2,6 +2,8 @@ import React from 'react';
 import { Route } from 'react-router';
 import ListDataSources from './components/List/index';
 // import SubmissionResultFile from './components/ResultFile';
+import Test from './components/List/Test';
+
 function Routes() {
   return [
     <Route path="list" component={ListDataSources} />,
@@ -11,10 +13,10 @@ function Routes() {
     //     type="result"
     //     from="SUBMISSION"
     //   />,
-    // <Route
-    //   path="submissions/:submissionId/results"
-    //   component={SubmissionResultFile}
-    // />
+    <Route
+      path=":submissionId/results"
+      component={Test}
+    />
   ];
 }
 
