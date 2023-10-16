@@ -11,6 +11,7 @@ const modal = keyMirror({
 
 const paths = {
   submissions: () => '/submissions/list',
+  detailsExplorer: (id) => `/submissions/${id}/results`
 };
 
 const apiPaths = {
@@ -105,5 +106,7 @@ function getTypeByShortPrefix(prefix) {
   }
 }
 
-export { forms, modal, paths, apiPaths, imgs, links, statusDictionary,
-  extensionsForEntryPoints, pollTime, sections, getTypeByShortPrefix };
+export {
+  forms, modal, paths, apiPaths, imgs, links, statusDictionary,
+  extensionsForEntryPoints, pollTime, sections, getTypeByShortPrefix
+};

@@ -95,8 +95,8 @@ module.exports = function (env) {
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|ru/),
   ];
 
-  if(isDevelopment){
-    plugins.push( new webpack.HotModuleReplacementPlugin())
+  if (isDevelopment) {
+    plugins.push(new webpack.HotModuleReplacementPlugin())
   }
 
   if (mode === ENV_TYPE.PRODUCTION) {
@@ -188,26 +188,35 @@ module.exports = function (env) {
       proxy: [
         {
           context: ['/oauth2', '/api', '/arachne-websocket'],
-          target: {
-            "host": "localhost",
-            "protocol": 'https:',
-            "port": appType === APP_TYPE.CENTRAL ? 8443 : 8880,
-          },
+          target: appType === APP_TYPE.CENTRAL ? 'https://qa.arachnenetwork.com' : 'https://qanode.arachnenetwork.com/',
+          changeOrigin: true,
           secure: false,
-        },
-        {
-          context: [
-            'ws:**/arachne-websocket',
-            'wss:**/arachne-websocket'
-          ],
-          target: {
-            host: 'localhost',
-            protocol: 'wss:',
-            port: appType === APP_TYPE.CENTRAL ? 8443 : 8880,
-          },
-          secure: true,
+
         },
       ]
+      // proxy: [
+      //   {
+      //     context: ['/oauth2', '/api', '/arachne-websocket'],
+      //     target: {
+      //       "host": "localhost",
+      //       "protocol": 'https:',
+      //       "port": appType === APP_TYPE.CENTRAL ? 8443 : 8880,
+      //     },
+      //     secure: false,
+      //   },
+      //   {
+      //     context: [
+      //       'ws:**/arachne-websocket',
+      //       'wss:**/arachne-websocket'
+      //     ],
+      //     target: {
+      //       host: 'localhost',
+      //       protocol: 'wss:',
+      //       port: appType === APP_TYPE.CENTRAL ? 8443 : 8880,
+      //     },
+      //     secure: true,
+      //   },
+      // ]
     },
   };
 

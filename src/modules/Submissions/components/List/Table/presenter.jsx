@@ -2,18 +2,25 @@ import React, { Component } from 'react';
 import BEMHelper from 'services/BemHelper';
 import moment from 'moment';
 import { usDateTime } from 'const/formats';
-import { links, statusDictionary } from 'modules/Submissions/const';
-import { Table, TableCellText as Cell } from 'arachne-ui-components';
+import { links, statusDictionary, paths } from 'modules/Submissions/const';
+import { Table, TableCellText as Cell, Link } from 'arachne-ui-components';
 
 require('./style.scss');
 
 const CellDownload = ({ id, status }) => {
   const url = links.downloadResults(id);
-  const {className} = new BEMHelper('submission-download')('btn', 'download');
+  const { className } = new BEMHelper('submission-download')('btn', 'download');
   const classes = new BEMHelper('button')({ modifiers: ['rounded', 'submit'], extra: className });
-  return status.key === statusDictionary.EXECUTED.key ? (
-    <a {...classes} href={url} type="button">Download</a>
-  ) : (<span>-</span>);
+  return (
+    <div>
+      <Link {...classes} to={paths.detailsExplorer(id)}>
+        Explorer
+      </Link>
+      {status.key === statusDictionary.EXECUTED.key ? (
+        <a {...classes} href={url} type="button">Download</a>
+      ) : (<span>-</span>)}
+    </div>
+  );
 };
 
 function Status({ value }) {
