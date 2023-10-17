@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ContainerBuilder } from '../../../../../services/Utils';
 import Api from 'services/Api';
-import { apiPaths } from '../../../const'
+import { apiPaths, links, paths } from '../../../const'
 import BEMHelper from 'services/BemHelper';
 import {
   Toolbar,
@@ -35,6 +35,7 @@ function FileBrowser(props) {
     summary,
     setContainer,
     container,
+    submission
   } = props;
   // main info
   const {
@@ -48,11 +49,15 @@ function FileBrowser(props) {
   const classes = BEMHelper('file-browser');
   const isFlat = fileTreeData.children.find(entry => entry.docType === mimeTypes.folder) === undefined;
   const isSummaryDisplaced = permissions?.remove || (!permissions?.remove && !isFlat);
+  const classesDownload = new BEMHelper('button')({ modifiers: ['rounded', 'success'], extra: className });
+  const url = links.downloadResults(submission?.id);
 
   return (
     <div {...classes({ extra: className })}>
       {toolbarOpts &&
-        <Toolbar {...toolbarOpts} />
+        <Toolbar {...toolbarOpts} >
+        <a {...classesDownload} href={url} type="button">Download all</a>
+        </Toolbar>
       }
       <div {...classes('content')}>
         {fileTreeData || isTreeLoading
@@ -115,24 +120,35 @@ class Comp extends Component {
     super();
     this.state = {
       files: [],
-      selectedFile: null
+      selectedFile: null,
+      submission: null
     };
   }
   componentDidMount() {
     const that = this;
+    const id = this.props.params.submissionId;
+    // request submissions list to obtain single selected submission data
+    // there is no separate endpoint to request submission details
+    Api.sendRequest('GET', apiPaths.submissionList({query: {size:100000}}), null, function (res) {
+      that.setState({
+        submission: res.content.find(item => item.id == id), 
+      })
+    });
+
     Api.sendRequest(
       'GET',
-      apiPaths.submissionResults(this.props.params.submissionId),
+      apiPaths.submissionResults(id),
       null,
       function (res) {
         that.setState({
-          files: res.map(elem => {
+          files: res?.map(elem => {
             return {
               name: elem.path,
               docType: "text",
+              relativePath: elem.path,
               ...elem
             }
-          }),
+          }) || [],
           selectedFile: null
         })
       }
@@ -144,12 +160,22 @@ class Comp extends Component {
         children: this.state.files
       },
       selectedFile: this.state.selectedFile,
+      selectedFilePath: this.state.selectedFile?.path,
+      submission: this.state.submission,
+      // some hardcode
+      toolbarOpts: {
+        backUrl: paths.submissions(),
+        breadcrumbList: [
+          {
+            label: 'Submissions',
+            link: paths.submissions(),
+          }
+        ],
+        caption: `${this.state.submission?.analysis} (${this.state.submission?.study})`,
+      },
       openFile: (elem) => {
         const that = this;
         const uri = new URI(apiPaths.loadFile(this.props.params.submissionId, elem.name));
-        console.log(uri)
-        console.log(elem)
-        console.log(Api.getFileRequest)
         const mimeType = detectMimeTypeByExtension(elem);
         const language = detectLanguageByExtension(elem);
         Api.getFileRequest(
@@ -164,6 +190,7 @@ class Comp extends Component {
                 language: language,
                 mimeType: mimeType,
                 name: elem.name,
+                path: elem.path // probably redundant
               }
             })
           }

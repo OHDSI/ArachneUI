@@ -10,16 +10,18 @@ require('./style.scss');
 const CellDownload = ({ id, status }) => {
   const url = links.downloadResults(id);
   const { className } = new BEMHelper('submission-download')('btn', 'download');
-  const classes = new BEMHelper('button')({ modifiers: ['rounded', 'submit'], extra: className });
+  const classesExplorer = new BEMHelper('button')({ modifiers: ['rounded', 'submit'], extra: className });
+  const classesDownload = new BEMHelper('button')({ modifiers: ['rounded', 'success'], extra: className });
+
   return (
-    <div>
-      <Link {...classes} to={paths.detailsExplorer(id)}>
-        Explorer
-      </Link>
-      {status.key === statusDictionary.EXECUTED.key ? (
-        <a {...classes} href={url} type="button">Download</a>
-      ) : (<span>-</span>)}
-    </div>
+    status.key === statusDictionary.EXECUTED.key ? (
+      <div>
+        <Link {...classesExplorer} to={paths.detailsExplorer(id)}>
+          Explorer
+        </Link>
+
+        <a {...classesDownload} href={url} type="button">Download</a>
+      </div>) : (<span>-</span>)
   );
 };
 

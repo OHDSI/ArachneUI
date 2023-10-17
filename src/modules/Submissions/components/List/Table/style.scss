@@ -6,7 +6,7 @@
     table-layout: fixed;
 
     &__id-th {
-      width: 6%;
+      width: 5%;
     }
 
     &__author-th {
@@ -18,7 +18,7 @@
     }
 
     &__study-th {
-      width: 15%;
+      width: 14%;
     }
     &__study-td {
       overflow: hidden;
@@ -50,11 +50,17 @@
     }
 
     &__status-th {
-      width: 10%;
+      width: 8%;
     }
 
     &__results-th {
-      width: 10%;
+      width: 14%;
+    }
+
+    &__results-td {
+      a:not(:last-of-type) {
+        margin-right: 8px;
+      }
     }
   }
 
