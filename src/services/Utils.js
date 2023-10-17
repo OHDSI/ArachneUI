@@ -125,7 +125,7 @@ const numberFormatter = {
 const getSelectedOption = (options, value) =>
   // NOTE: initial value of input should not be null
   // otherwise React will mark input as uncontrolled
-   options.filter(o => o.value === value)[0] || { value: '' };
+  options.filter(o => o.value === value)[0] || { value: '' };
 
 // Sorts values in "list" by string value located in "key"
 // And puts "lastValue" value to the end of list
@@ -231,6 +231,7 @@ function canUseDom() {
 
 const detectLanguageByExtension = (file) => {
   let language;
+  console.log(file)
   if (file) {
     const docType = file.docType;
     if (!isText(docType)) {
@@ -382,9 +383,9 @@ class Utils {
   }
 
   static plainDiff(a, b) {
-    return reduce(a, function(result, value, key) {
-        return isEqual(value, b[key]) ?
-            result : result.concat(key);
+    return reduce(a, function (result, value, key) {
+      return isEqual(value, b[key]) ?
+        result : result.concat(key);
     }, []);
   }
 

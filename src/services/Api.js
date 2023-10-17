@@ -142,6 +142,65 @@ class Api {
     return this.sendRequestUnsecured(method, path, payload, callback, this.getHeaders());
   }
 
+  getFileRequest(method, path, payload, callback) {
+    return this.sendRequestUnsecuredFile(method, path, payload, callback, this.getHeaders());
+  }
+
+
+  // TODO: temp method
+  sendRequestUnsecuredFile(method, path, payload, callback, headers) {
+    const params = {
+      method,
+      headers: { ...HEADERS, ...headers },
+    };
+
+    if (payload && payload instanceof FormData) {
+      params.body = payload;
+      // NOTE:
+      // Do not set 'Content-Type' - browser will automatically do this.
+      // Problem is in a 'boundary'.
+      // http://stackoverflow.com/questions/39280438/fetch-missing-boundary-in-multipart-form-data-post
+    } else if (payload) {
+      params.body = JSON.stringify(payload);
+      params.headers['Content-Type'] = JSON_RESPONSE_TYPE;
+    }
+
+    /*
+    // Superagent
+
+    const req = request(method, path);
+
+    return req
+      .set(params.headers)
+      .send(payload)
+      .then((error, res) => {
+        if (this.checkStatusError(res)) {
+          if (typeof callback === 'function') {
+            callback(res.body);
+          }
+        }
+        return res.body;
+      });*/
+
+    const fullpath = this.apiHost + path;
+    return fetch(fullpath, params)
+      .then(res => {
+        return res.text()
+          // Protection from empty response
+          .then(text => {
+            return { ok: res.ok, status: res.status, text }
+          })
+          .then((res) => {
+            if (this.checkStatusError(res)) {
+              if (typeof callback === 'function') {
+                callback(res.text);
+              }
+            }
+            return res.text;
+          });
+      })
+  }
+
   sendRequestUnsecured(method, path, payload, callback, headers) {
     const params = {
       method,
@@ -181,8 +240,12 @@ class Api {
       .then(res => {
         return res.text()
           // Protection from empty response
-          .then(text => text ? JSON.parse(text) : {})
-          .then(json => ({ ok: res.ok, status: res.status, json }))
+          .then(text => {
+            return text ? JSON.parse(text) : {}
+          })
+          .then(json => {
+            return { ok: res.ok, status: res.status, json }
+          })
       })
       .then((res) => {
         if (this.checkStatusError(res)) {

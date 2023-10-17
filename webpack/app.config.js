@@ -188,7 +188,7 @@ module.exports = function (env) {
       proxy: [
         {
           context: ['/oauth2', '/api', '/arachne-websocket'],
-          target: appType === APP_TYPE.CENTRAL ? 'https://qa.arachnenetwork.com' : 'https://qanode.arachnenetwork.com/',
+          target: appType === APP_TYPE.CENTRAL ? 'https://qacommunity.arachnenetwork.com/' : 'https://qacommunitynode.arachnenetwork.com/',
           changeOrigin: true,
           secure: false,
 
