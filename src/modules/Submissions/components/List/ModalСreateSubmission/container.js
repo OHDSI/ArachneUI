@@ -1,12 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { reset as resetForm, getFormValues, change as reduxFormChange } from 'redux-form';
 import actions from 'actions';
 import { ModalUtils } from 'arachne-ui-components';
 import { forms, modal, sections, getTypeByShortPrefix } from 'modules/Submissions/const';
 import Presenter from './presenter';
 import selectors from './selectors';
-import { get, buildFormData, ContainerBuilder, getFileNamesFromZip, packFilesInZip } from 'services/Utils';
+import { get, buildFormData, ContainerBuilder, packFilesInZip } from 'services/Utils';
+import JSZip from 'jszip';
 
 class ModalCreateSubmissionBuilder extends ContainerBuilder {
   getComponent() {
@@ -87,24 +87,37 @@ class ModalCreateSubmissionBuilder extends ContainerBuilder {
           if (isFilesTab) {
             options = files.map(({ name }) => name);
           } else {
-            options = await getFileNamesFromZip(files[0]);
-            const fileName = files[0];
-            const originalName = fileName.originalName.replace(/\.zip$/, '').replace(/-code$/, '');
-            const parts = originalName.split("-");
-            if (parts.length > 1) {
-              const type = getTypeByShortPrefix(parts[0]);
-              dispatchProps.setAnalysisType(type);
-              const name = parts[1];
-              if (parts.length > 2) {
-                const offset = parts[0].length + name.length + 2;
-                dispatchProps.setStudyName(name);
-                dispatchProps.setAnalysisName(originalName.substring(offset));
-              } else {
-                dispatchProps.setAnalysisName(name);
-              }
+            const zip = await JSZip.loadAsync(files[0]);
+            const metaFile = zip.files['analysisMetadata.json'];
+            if (metaFile) {
+              const metaJson = await metaFile.async('string');
+              const meta = JSON.parse(metaJson);
+              dispatchProps.setAnalysisName(meta.analysisName);
+              dispatchProps.setStudyName(meta.studyName);
+              dispatchProps.setEntryPoint(meta.entryPoint);
+              dispatchProps.setAnalysisType(meta.analysisType)
             } else {
-              dispatchProps.setAnalysisName(originalName);
+              const fileName = files[0];
+              const originalName = fileName.originalName.replace(/\.zip$/, '').replace(/-code$/, '');
+              const parts = originalName.split("-");
+              if (parts.length > 1) {
+                const type = getTypeByShortPrefix(parts[0]);
+                dispatchProps.setAnalysisType(type);
+                const name = parts[1];
+                if (parts.length > 2) {
+                  const offset = parts[0].length + name.length + 2;
+                  dispatchProps.setStudyName(name);
+                  dispatchProps.setAnalysisName(originalName.substring(offset));
+                } else {
+                  dispatchProps.setAnalysisName(name);
+                }
+              } else {
+                dispatchProps.setAnalysisName(originalName);
+              }
             }
+            const items = [];
+            zip.forEach(file => items.push(file));
+            options = items;
           }
           dispatchProps.setEntryPointsOptionList(options);
         } catch (err) {
