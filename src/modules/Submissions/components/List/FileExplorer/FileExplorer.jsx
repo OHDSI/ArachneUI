@@ -13,6 +13,8 @@ import mimeTypes from 'const/mimeTypes';
 import fileInfoConverter from 'components/FileInfo/converter';
 import FileViewer from 'components/FileViewer';
 import URI from 'urijs';
+import { detectLanguageByExtension, detectMimeTypeByExtension } from 'services/Utils';
+import MediaViewer from 'components/MediaViewer';
 
 import './style.scss';
 
@@ -79,15 +81,26 @@ function FileBrowser(props) {
         }
         <div {...classes('details')}>
           {selectedFile &&
-            <FileViewer
-              // file={{
-              //   ...file,
-              //   label: createBreadcrumbs(get(file, 'relativePath', '', 'String')),
-              // }}
-              downloadLink={downloadLink}
-              pageTitle={pageTitle}
-              isLoading={isLoading}
+
+            <MediaViewer
+              language={selectedFile.language}
+              mimeType={selectedFile.mimeType}
+              data={selectedFile.content}
+              // downloadLink={downloadLink}
+              name={selectedFile.name}
+              title={selectedFile.title}
+              createdAt={selectedFile.createdAt}
+              antivirusStatus={selectedFile.antivirusStatus}
+              antivirusDescription={selectedFile.antivirusDescription}
             />
+            // <FileViewer
+            //   file={{
+            //     ...selectedFile,
+            //   }}
+            //   downloadLink={downloadLink}
+            //   pageTitle={pageTitle}
+            //   isLoading={isLoading}
+            // />
           }
         </div>
       </div>
@@ -116,6 +129,7 @@ class Comp extends Component {
           files: res.map(elem => {
             return {
               name: elem.path,
+              docType: "text",
               ...elem
             }
           }),
@@ -129,12 +143,15 @@ class Comp extends Component {
       fileTreeData: {
         children: this.state.files
       },
+      selectedFile: this.state.selectedFile,
       openFile: (elem) => {
         const that = this;
         const uri = new URI(apiPaths.loadFile(this.props.params.submissionId, elem.name));
         console.log(uri)
         console.log(elem)
         console.log(Api.getFileRequest)
+        const mimeType = detectMimeTypeByExtension(elem);
+        const language = detectLanguageByExtension(elem);
         Api.getFileRequest(
           'GET',
           uri.normalize().toString(),
@@ -142,7 +159,12 @@ class Comp extends Component {
           function (res) {
             console.log(res)
             that.setState({
-              selectedFile: res
+              selectedFile: {
+                content: res,
+                language: language,
+                mimeType: mimeType,
+                name: elem.name,
+              }
             })
           }
         )
