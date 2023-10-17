@@ -12,6 +12,9 @@ import FileInfo from 'components/FileInfo';
 import mimeTypes from 'const/mimeTypes';
 import fileInfoConverter from 'components/FileInfo/converter';
 import FileViewer from 'components/FileViewer';
+import URI from 'urijs';
+
+import './style.scss';
 
 function FileBrowser(props) {
   const {
@@ -40,7 +43,7 @@ function FileBrowser(props) {
     detailsComponent,
   } = props;
 
-  const classes = BEMHelper('file-browser-d');
+  const classes = BEMHelper('file-browser');
   const isFlat = fileTreeData.children.find(entry => entry.docType === mimeTypes.folder) === undefined;
   const isSummaryDisplaced = permissions?.remove || (!permissions?.remove && !isFlat);
 
@@ -77,10 +80,10 @@ function FileBrowser(props) {
         <div {...classes('details')}>
           {selectedFile &&
             <FileViewer
-              file={{
-                ...file,
-                label: createBreadcrumbs(get(file, 'relativePath', '', 'String')),
-              }}
+              // file={{
+              //   ...file,
+              //   label: createBreadcrumbs(get(file, 'relativePath', '', 'String')),
+              // }}
               downloadLink={downloadLink}
               pageTitle={pageTitle}
               isLoading={isLoading}
@@ -127,10 +130,14 @@ class Comp extends Component {
         children: this.state.files
       },
       openFile: (elem) => {
+        const that = this;
+        const uri = new URI(apiPaths.loadFile(this.props.params.submissionId, elem.name));
+        console.log(uri)
         console.log(elem)
-        Api.sendRequest(
+        console.log(Api.getFileRequest)
+        Api.getFileRequest(
           'GET',
-          apiPaths.loadFile(this.props.params.submissionId, elem.name),
+          uri.normalize().toString(),
           null,
           function (res) {
             console.log(res)
