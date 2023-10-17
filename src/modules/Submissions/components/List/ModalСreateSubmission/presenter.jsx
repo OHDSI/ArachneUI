@@ -173,7 +173,19 @@ export default function ModalCreateSubmission({
           }
         }
       }
-    }
+    },
+    {
+      name: 'environmentId',
+      InputComponent: {
+        component: FormSelect,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Runtime Environment',
+          options: environmentList,
+          required: true,
+        },
+      },
+    },
   ];
 
   const onCancel = () => {

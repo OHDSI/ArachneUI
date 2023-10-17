@@ -90,6 +90,13 @@ export default class SubmissionsTable extends Component {
         field="finished"
         format={this.formatDateCell}
       />,
+      <Cell
+        key="environment"
+        {...tableClasses('data-source')}
+        header="Environment"
+        field="environment"
+        format={this.formatCell}
+      />,
       <Status
         key="status"
         {...tableClasses('status')}
