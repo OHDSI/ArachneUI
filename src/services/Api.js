@@ -181,8 +181,12 @@ class Api {
       .then(res => {
         return res.text()
           // Protection from empty response
-          .then(text => text ? JSON.parse(text) : {})
-          .then(json => ({ ok: res.ok, status: res.status, json }))
+          .then(text => {
+            return text ? JSON.parse(text) : {}
+          })
+          .then(json => {
+            return { ok: res.ok, status: res.status, json }
+          })
       })
       .then((res) => {
         if (this.checkStatusError(res)) {
