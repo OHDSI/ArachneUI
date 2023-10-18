@@ -94,14 +94,6 @@ function FileBrowser(props) {
               antivirusStatus={selectedFile.antivirusStatus}
               antivirusDescription={selectedFile.antivirusDescription}
             />
-            // <FileViewer
-            //   file={{
-            //     ...selectedFile,
-            //   }}
-            //   downloadLink={downloadLink}
-            //   pageTitle={pageTitle}
-            //   isLoading={isLoading}
-            // />
           }
         </div>
       </div>
@@ -111,7 +103,7 @@ function FileBrowser(props) {
 }
 
 
-class Comp extends Component {
+class FileBrowserComponent extends Component {
   constructor() {
     super();
     this.state = {
@@ -195,9 +187,9 @@ class Comp extends Component {
   }
 }
 
-class Test extends ContainerBuilder {
+class FileBrowserBuilder extends ContainerBuilder {
   getComponent() {
-    return Comp;
+    return FileBrowserComponent;
   }
   mapStateToProps(state) {
     return {
@@ -221,4 +213,4 @@ class Test extends ContainerBuilder {
 }
 
 
-export default new Test().build();
+export default new FileBrowserBuilder().build();
