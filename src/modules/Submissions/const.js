@@ -11,6 +11,7 @@ const modal = keyMirror({
 
 const paths = {
   submissions: () => '/submissions/list',
+  detailsExplorer: (id) => `/submissions/${id}/results`
 };
 
 const apiPaths = {
@@ -21,6 +22,8 @@ const apiPaths = {
     }
     return uri.toString();
   },
+  submissionResults: (analysisId) => `/api/v1/analysis/${analysisId}/results/list`,
+  loadFile: (analysisId, filename) => `/api/v1/analysis/${analysisId}/results/list/${filename}`,
   invalidateAnalyses: () => '/api/v1/admin/analysis/invalidate',
   submissions: () => '/api/v1/analysis',
   dataSourcesOptionList: () => '/api/v1/data-sources',
@@ -107,5 +110,7 @@ function getTypeByShortPrefix(prefix) {
   }
 }
 
-export { forms, modal, paths, apiPaths, imgs, links, statusDictionary,
-  extensionsForEntryPoints, pollTime, sections, getTypeByShortPrefix };
+export {
+  forms, modal, paths, apiPaths, imgs, links, statusDictionary,
+  extensionsForEntryPoints, pollTime, sections, getTypeByShortPrefix
+};

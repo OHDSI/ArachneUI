@@ -2,18 +2,27 @@ import React, { Component } from 'react';
 import BEMHelper from 'services/BemHelper';
 import moment from 'moment';
 import { usDateTime } from 'const/formats';
-import { links, statusDictionary } from 'modules/Submissions/const';
-import { Table, TableCellText as Cell } from 'arachne-ui-components';
+import { links, statusDictionary, paths } from 'modules/Submissions/const';
+import { Table, TableCellText as Cell, Link } from 'arachne-ui-components';
 
 require('./style.scss');
 
 const CellDownload = ({ id, status }) => {
   const url = links.downloadResults(id);
-  const {className} = new BEMHelper('submission-download')('btn', 'download');
-  const classes = new BEMHelper('button')({ modifiers: ['rounded', 'submit'], extra: className });
-  return status.key === statusDictionary.EXECUTED.key ? (
-    <a {...classes} href={url} type="button">Download</a>
-  ) : (<span>-</span>);
+  const { className } = new BEMHelper('submission-download')('btn', 'download');
+  const classesExplorer = new BEMHelper('button')({ modifiers: ['rounded', 'submit'], extra: className });
+  const classesDownload = new BEMHelper('button')({ modifiers: ['rounded', 'success'], extra: className });
+
+  return (
+    status.key === statusDictionary.EXECUTED.key ? (
+      <div>
+        <Link {...classesExplorer} to={paths.detailsExplorer(id)}>
+          Explorer
+        </Link>
+
+        <a {...classesDownload} href={url} type="button">Download</a>
+      </div>) : (<span>-</span>)
+  );
 };
 
 function Status({ value }) {
