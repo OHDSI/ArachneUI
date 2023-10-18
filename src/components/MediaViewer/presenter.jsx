@@ -40,11 +40,11 @@ import { getScanResultDescription } from 'const/antivirus';
 class ViewerCore extends OriginalViewerCore {
   render() {
     // Workarounds for:
-    
+
     // 1) React-viewer plugin has hardcoded "transitionDuration"
     // If duration between the switch from visible = false to visible = true is less than the hardcoded duration (300ms),
     // new image won't show up. See "componentWillReceiveProps" and "render" -> "if (!this.state.visible && this.state.visibleStart) {"
-    
+
     // 2) The plugin waits for the "transitionend" event and displays content only after the event has taken place
     return super.render.apply(Object.assign(cloneDeep(this), { state: { ...this.state, visible: this.props.visible, transitionEnd: true, visibleStart: true } }));
   }
@@ -66,7 +66,7 @@ class Viewer extends OriginalViewer {
       if (!this.container) {
         if (this.props.container) {
           this.container = this.props.container;
-        }else {
+        } else {
           this.container = this.defaultContainer;
           document.body.appendChild(this.container);
         }
@@ -76,7 +76,7 @@ class Viewer extends OriginalViewer {
         this,
         <ViewerCore
           {...this.props}
-          />,
+        />,
         this.container,
         function () {
           instance.component = this;
@@ -203,7 +203,7 @@ function pdf({
                 onDocumentError={<EmptyState message={'Error while loading document'} />}
                 onPageError={<EmptyState message={'Error while loading page'} />}
                 width={pdfWidth * scale}
-                pageIndex={pageIndex-1}
+                pageIndex={pageIndex - 1}
                 onDocumentLoad={onPDFLoaded}
                 onPageLoad={(page) => {
                   if (!isInitialScaleSet) {
@@ -211,7 +211,7 @@ function pdf({
                   }
                 }}
               />
-              }
+            }
           </div>
           <div {...classes('pagination')}>
             <Pagination pages={totalPages} currentPage={pageIndex} path={path} />
@@ -276,7 +276,7 @@ function MediaViewer({
     case MimeTypes.ppt:
     case MimeTypes.pdf:
       element = (
-        <LazyPDF { ...{ classes, container, data, setContainer, totalPages, path, pageIndex, onPDFLoaded, scale, zoomIn, zoomOut, isLoaded, isInitialScaleSet, setInitialScale } } />
+        <LazyPDF {...{ classes, container, data, setContainer, totalPages, path, pageIndex, onPDFLoaded, scale, zoomIn, zoomOut, isLoaded, isInitialScaleSet, setInitialScale }} />
       );
       break;
     case MimeTypes.csv:

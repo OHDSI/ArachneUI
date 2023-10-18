@@ -64,13 +64,13 @@ export default class SubmissionsTable extends Component {
         field="author.fullName"
         format={this.formatCell}
       />,
-      <Cell
-        key="study"
-        {...tableClasses('study')}
-        header="Study"
-        field="study"
-        format={this.formatCell}
-      />,
+      // <Cell
+      //   key="study"
+      //   {...tableClasses('study')}
+      //   header="Study"
+      //   field="study"
+      //   format={this.formatCell}
+      // />,
       <Cell
         key="analysis"
         {...tableClasses('analysis')}
