@@ -95,8 +95,8 @@ module.exports = function (env) {
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|ru/),
   ];
 
-  if(isDevelopment){
-    plugins.push( new webpack.HotModuleReplacementPlugin())
+  if (isDevelopment) {
+    plugins.push(new webpack.HotModuleReplacementPlugin())
   }
 
   if (mode === ENV_TYPE.PRODUCTION) {
@@ -185,6 +185,15 @@ module.exports = function (env) {
       },
       https: true,
       disableHostCheck: true,
+      // proxy: [
+      //   {
+      //     context: ['/oauth2', '/api', '/arachne-websocket'],
+      //     target: appType === APP_TYPE.CENTRAL ? 'https://qacommunity.arachnenetwork.com/' : 'https://qacommunitynode.arachnenetwork.com/',
+      //     changeOrigin: true,
+      //     secure: false,
+
+      //   },
+      // ]
       proxy: [
         {
           context: ['/oauth2', '/api', '/arachne-websocket'],
