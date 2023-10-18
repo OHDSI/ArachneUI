@@ -185,38 +185,38 @@ module.exports = function (env) {
       },
       https: true,
       disableHostCheck: true,
-      proxy: [
-        {
-          context: ['/oauth2', '/api', '/arachne-websocket'],
-          target: appType === APP_TYPE.CENTRAL ? 'https://qacommunity.arachnenetwork.com/' : 'https://qacommunitynode.arachnenetwork.com/',
-          changeOrigin: true,
-          secure: false,
-
-        },
-      ]
       // proxy: [
       //   {
       //     context: ['/oauth2', '/api', '/arachne-websocket'],
-      //     target: {
-      //       "host": "localhost",
-      //       "protocol": 'https:',
-      //       "port": appType === APP_TYPE.CENTRAL ? 8443 : 8880,
-      //     },
+      //     target: appType === APP_TYPE.CENTRAL ? 'https://qacommunity.arachnenetwork.com/' : 'https://qacommunitynode.arachnenetwork.com/',
+      //     changeOrigin: true,
       //     secure: false,
-      //   },
-      //   {
-      //     context: [
-      //       'ws:**/arachne-websocket',
-      //       'wss:**/arachne-websocket'
-      //     ],
-      //     target: {
-      //       host: 'localhost',
-      //       protocol: 'wss:',
-      //       port: appType === APP_TYPE.CENTRAL ? 8443 : 8880,
-      //     },
-      //     secure: true,
+
       //   },
       // ]
+      proxy: [
+        {
+          context: ['/oauth2', '/api', '/arachne-websocket'],
+          target: {
+            "host": "localhost",
+            "protocol": 'https:',
+            "port": appType === APP_TYPE.CENTRAL ? 8443 : 8880,
+          },
+          secure: false,
+        },
+        {
+          context: [
+            'ws:**/arachne-websocket',
+            'wss:**/arachne-websocket'
+          ],
+          target: {
+            host: 'localhost',
+            protocol: 'wss:',
+            port: appType === APP_TYPE.CENTRAL ? 8443 : 8880,
+          },
+          secure: true,
+        },
+      ]
     },
   };
 

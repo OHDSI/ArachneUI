@@ -231,7 +231,6 @@ function canUseDom() {
 
 const detectLanguageByExtension = (file) => {
   let language;
-  console.log(file)
   if (file) {
     const docType = file.docType;
     if (!isText(docType)) {

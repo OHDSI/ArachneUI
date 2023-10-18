@@ -56,7 +56,7 @@ function FileBrowser(props) {
     <div {...classes({ extra: className })}>
       {toolbarOpts &&
         <Toolbar {...toolbarOpts} >
-        <a {...classesDownload} href={url} type="button">Download all</a>
+          <a {...classesDownload} href={url} type="button">Download all</a>
         </Toolbar>
       }
       <div {...classes('content')}>
@@ -129,9 +129,9 @@ class Comp extends Component {
     const id = this.props.params.submissionId;
     // request submissions list to obtain single selected submission data
     // there is no separate endpoint to request submission details
-    Api.sendRequest('GET', apiPaths.submissionList({query: {size:100000}}), null, function (res) {
+    Api.sendRequest('GET', apiPaths.submissionList({ query: { size: 100000 } }), null, function (res) {
       that.setState({
-        submission: res.content.find(item => item.id == id), 
+        submission: res.content.find(item => item.id == id),
       })
     });
 
@@ -183,7 +183,6 @@ class Comp extends Component {
           uri.normalize().toString(),
           null,
           function (res) {
-            console.log(res)
             that.setState({
               selectedFile: {
                 content: res,
