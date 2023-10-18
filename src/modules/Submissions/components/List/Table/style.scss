@@ -62,8 +62,11 @@
     }
 
     &__results-td {
-      a:not(:last-of-type) {
-        margin-right: 8px;
+      .ac-tooltip {
+        display: inline-block;
+        &:not(:last-of-type) {
+          margin-right: 8px;
+        }
       }
     }
   }
@@ -92,8 +95,9 @@
     }
   }
 
-  &submission-download__btn {
-    font-size: 1rem;
+  &submission-download,
+  &submission-explore {
+    @include material-icon();
   }
 
 }
