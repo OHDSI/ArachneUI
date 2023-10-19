@@ -34,7 +34,9 @@ function toFileTree(files) {
           }
           nodes.push(foundNode);
         }
-        parent = foundNode;
+        if (foundNode) {
+          parent = foundNode;
+        }
       });
       parent.children.push(file);
     } else {
