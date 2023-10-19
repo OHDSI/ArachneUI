@@ -13,6 +13,7 @@ import mimeTypes from 'const/mimeTypes';
 import URI from 'urijs';
 import { detectLanguageByExtension, detectMimeTypeByExtension } from 'services/Utils';
 import MediaViewer from 'components/MediaViewer';
+import { toFileTree } from "./utils";
 
 import './style.scss';
 
@@ -153,7 +154,7 @@ class FileBrowserComponent extends Component {
     // there is no separate endpoint to request submission details
     Api.sendRequest('GET', apiPaths.submissionList({ query: { size: 100000 } }), null, function (res) {
       that.setState({
-        submission: res.content.find(item => item.id == id),
+        submission: res.content.find(item => item.id === id),
       })
     });
 
@@ -203,26 +204,6 @@ class FileBrowserComponent extends Component {
       },
       openFile: (elem) => {
         this.openFile(elem);
-        // const that = this;
-        // const uri = new URI(apiPaths.loadFile(this.props.params.submissionId, elem.name));
-        // const mimeType = detectMimeTypeByExtension(elem);
-        // const language = detectLanguageByExtension(elem);
-        // Api.getFileRequest(
-        //   'GET',
-        //   uri.normalize().toString(),
-        //   null,
-        //   function (res) {
-        //     that.setState({
-        //       selectedFile: {
-        //         content: res,
-        //         language: language,
-        //         mimeType: mimeType,
-        //         name: elem.name,
-        //         path: elem.path // probably redundant
-        //       }
-        //     })
-        //   }
-        // )
       }
     });
   }

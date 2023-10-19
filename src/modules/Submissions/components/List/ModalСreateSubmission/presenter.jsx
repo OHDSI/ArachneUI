@@ -44,7 +44,7 @@ export default function ModalCreateSubmission({
 
   const isFilesTab = activeTab === modalSections.FILES || activeTab === modalSections.STRATEGUS;
   const isStrategusTab = activeTab === modalSections.STRATEGUS;
-  const placeholder = isFilesTab ? 'Add separate files' : 'Add files in archive';
+  const placeholder = isFilesTab ? (isStrategusTab ? 'Add json files' : 'Add separate files') : 'Add files in archive';
 
   const fileField = {
     name: 'file',
@@ -56,7 +56,7 @@ export default function ModalCreateSubmission({
         placeholder,
         dropzonePlaceholder: 'Drag and drop file',
         multiple: isFilesTab && !isStrategusTab,
-        accept: isFilesTab ? [] : ['.zip'],
+        accept: isFilesTab ? (isStrategusTab ? ['.json'] : []) : ['.zip'],
         onChangeCustom: populateData,
         filePlaceholder: 'Document name',
       },
@@ -152,7 +152,19 @@ export default function ModalCreateSubmission({
       datasourceField,
       titleField,
       studyField,
-      {
+    {
+      name: 'environmentId',
+      InputComponent: {
+        component: FormSelect,
+        props: {
+          mods: ['bordered'],
+          placeholder: 'Runtime Environment',
+          options: environmentList,
+          required: true,
+        },
+      },
+    },
+    {
         name: 'type',
         InputComponent: {
           component: FormInput,
@@ -173,18 +185,6 @@ export default function ModalCreateSubmission({
           }
         }
       }
-    },
-    {
-      name: 'environmentId',
-      InputComponent: {
-        component: FormSelect,
-        props: {
-          mods: ['bordered'],
-          placeholder: 'Runtime Environment',
-          options: environmentList,
-          required: true,
-        },
-      },
     },
   ];
 
