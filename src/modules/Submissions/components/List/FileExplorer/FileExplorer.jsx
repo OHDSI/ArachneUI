@@ -124,7 +124,7 @@ class FileBrowserComponent extends Component {
   openFile(elem) {
     const that = this;
     this.setState({ isLoadingFile: true })
-    const uri = new URI(apiPaths.loadFile(this.props.params.submissionId, elem.name));
+    const uri = new URI(apiPaths.loadFile(this.props.params.submissionId, elem.path));
     const mimeType = detectMimeTypeByExtension(elem);
     const language = detectLanguageByExtension(elem);
     Api.getFileRequest(
@@ -163,14 +163,7 @@ class FileBrowserComponent extends Component {
       apiPaths.submissionResults(id),
       null,
       function (res) {
-        const files = res?.map(elem => {
-          return {
-            name: elem.path,
-            docType: "text",
-            relativePath: elem.path,
-            ...elem
-          }
-        }) || []
+        const files = toFileTree(res) || []
 
         that.setState({
           files: files,
