@@ -3,38 +3,24 @@ import BEMHelper from 'services/BemHelper';
 import moment from 'moment';
 import { usDateTime } from 'const/formats';
 import { links, statusDictionary, paths } from 'modules/Submissions/const';
-import { Table, TableCellText as Cell, Link, Button } from 'arachne-ui-components';
+import { Table, TableCellText as Cell, Link } from 'arachne-ui-components';
 
 require('./style.scss');
 
 const CellDownload = ({ id, status }) => {
   const url = links.downloadResults(id);
+  const { className } = new BEMHelper('submission-download')('btn', 'download');
+  const classesExplorer = new BEMHelper('button')({ modifiers: ['rounded', 'submit'], extra: className });
+  const classesDownload = new BEMHelper('button')({ modifiers: ['rounded', 'success'], extra: className });
 
-  const classesExplorer = new BEMHelper('submission-explore');
-  const classesDownload = new BEMHelper('submission-download');
-  const tooltip = new BEMHelper('tooltip');
   return (
     status.key === statusDictionary.EXECUTED.key ? (
       <div>
-        <div {...tooltip()} aria-label="Explorer" >
-          <Link to={paths.detailsExplorer(id)}>
-            <Button
-              {...classesExplorer()}
-              mods={['submit', 'rounded']}>
-              remove_red_eye
-            </Button>
-          </Link>
-        </div>
-        <div {...tooltip()} aria-label="Download" >
-          <Button
-            {...classesDownload()}
-            mods={['success', 'rounded', 'ac-tooltip']}
-            link={url}
+        <Link {...classesExplorer} to={paths.detailsExplorer(id)}>
+          Explorer
+        </Link>
 
-            target="_self" >
-            file_download
-          </Button>
-        </div>
+        <a {...classesDownload} href={url} type="button">Download</a>
       </div>) : (<span>-</span>)
   );
 };
@@ -78,13 +64,13 @@ export default class SubmissionsTable extends Component {
         field="author.fullName"
         format={this.formatCell}
       />,
-      // <Cell
-      //   key="study"
-      //   {...tableClasses('study')}
-      //   header="Study"
-      //   field="study"
-      //   format={this.formatCell}
-      // />,
+      <Cell
+        key="study"
+        {...tableClasses('study')}
+        header="Study"
+        field="study"
+        format={this.formatCell}
+      />,
       <Cell
         key="analysis"
         {...tableClasses('analysis')}
