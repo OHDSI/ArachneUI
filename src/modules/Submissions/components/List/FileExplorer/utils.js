@@ -11,7 +11,7 @@ function itemsComparator(a, b) {
 }
 
 function toFileTree(files) {
-  let nodes = [];
+  const nodes = [];
   files?.forEach(f => {
     const path = f.path && f.path.split('/');
     const filename = path.pop();
@@ -24,7 +24,7 @@ function toFileTree(files) {
     if (path.length > 0) {
       let parent = nodes;
       path.filter(s => s !== filename).forEach(segment => {
-        let foundNode = parent.find(item => item.name === segment && item.docType === mimeTypes.folder);
+        let foundNode = parent?.find(item => item.name === segment && item.docType === mimeTypes.folder);
         if (!foundNode) {
           foundNode = {
             name: segment,
