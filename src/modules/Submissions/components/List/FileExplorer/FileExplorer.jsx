@@ -5,7 +5,9 @@ import { apiPaths, links, paths } from '../../../const'
 import BEMHelper from 'services/BemHelper';
 import {
   Toolbar,
+  LoadingPanel
 } from 'arachne-ui-components';
+
 import FileTree from 'components/FileTree';
 import mimeTypes from 'const/mimeTypes';
 import URI from 'urijs';
@@ -32,7 +34,8 @@ function FileBrowser(props) {
     summary,
     setContainer,
     container,
-    submission
+    submission,
+    isLoading
   } = props;
   // main info
   const {
@@ -77,7 +80,7 @@ function FileBrowser(props) {
                 doDelete={doDelete}
               />
             </div>
-            {/* <LoadingPanel active={isTreeLoading} label={'Loading files tree'} /> */}
+            <LoadingPanel active={isTreeLoading} label={'Loading files tree'} />
           </div>
           : null
         }
@@ -95,7 +98,9 @@ function FileBrowser(props) {
               antivirusStatus={selectedFile.antivirusStatus}
               antivirusDescription={selectedFile.antivirusDescription}
             />
+
           }
+          <LoadingPanel active={isLoading} />
         </div>
       </div>
       {children}
@@ -110,12 +115,41 @@ class FileBrowserComponent extends Component {
     this.state = {
       files: [],
       selectedFile: null,
-      submission: null
+      submission: null,
+      isLoadingFile: false,
+      isTreeLoading: false
     };
   }
+
+  openFile(elem) {
+    const that = this;
+    this.setState({ isLoadingFile: true })
+    const uri = new URI(apiPaths.loadFile(this.props.params.submissionId, elem.path));
+    const mimeType = detectMimeTypeByExtension(elem);
+    const language = detectLanguageByExtension(elem);
+    Api.getFileRequest(
+      'GET',
+      uri.normalize().toString(),
+      null,
+      function (res) {
+        that.setState({
+          selectedFile: {
+            content: res,
+            language: language,
+            mimeType: mimeType,
+            name: elem.name,
+            path: elem.path // probably redundant
+          },
+          isLoadingFile: false
+        })
+      }
+    )
+  }
+
   componentDidMount() {
     const that = this;
     const id = this.props.params.submissionId;
+    that.setState({ isTreeLoading: true })
     // request submissions list to obtain single selected submission data
     // there is no separate endpoint to request submission details
     Api.sendRequest('GET', apiPaths.submissionList({ query: { size: 100000 } }), null, function (res) {
@@ -129,13 +163,18 @@ class FileBrowserComponent extends Component {
       apiPaths.submissionResults(id),
       null,
       function (res) {
+        const files = toFileTree(res) || []
+
         that.setState({
-          files: toFileTree(res) || [],
-          selectedFile: null
+          files: files,
+          selectedFile: null,
+          isTreeLoading: false
         })
+        that.openFile(files[0])
       }
     )
   }
+
   render() {
     return FileBrowser({
       fileTreeData: {
@@ -144,6 +183,7 @@ class FileBrowserComponent extends Component {
       selectedFile: this.state.selectedFile,
       selectedFilePath: this.state.selectedFile?.path,
       submission: this.state.submission,
+      isLoading: this.state.isLoadingFile,
       // some hardcode
       toolbarOpts: {
         backUrl: paths.submissions(),
@@ -156,26 +196,7 @@ class FileBrowserComponent extends Component {
         caption: `${this.state.submission?.analysis} (${this.state.submission?.study})`,
       },
       openFile: (elem) => {
-        const that = this;
-        const uri = new URI(apiPaths.loadFile(this.props.params.submissionId, elem.path));
-        const mimeType = detectMimeTypeByExtension(elem);
-        const language = detectLanguageByExtension(elem);
-        Api.getFileRequest(
-          'GET',
-          uri.normalize().toString(),
-          null,
-          function (res) {
-            that.setState({
-              selectedFile: {
-                content: res,
-                language: language,
-                mimeType: mimeType,
-                name: elem.name,
-                path: elem.path // probably redundant
-              }
-            })
-          }
-        )
+        this.openFile(elem);
       }
     });
   }
