@@ -35,7 +35,7 @@ function toFileTree(files) {
           nodes.push(foundNode);
         }
         if (foundNode) {
-          parent = foundNode;
+          parent = foundNode.children;
         }
       });
       parent.children.push(file);
