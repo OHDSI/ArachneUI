@@ -1,14 +1,6 @@
 import mimeTypes from 'const/mimeTypes';
 
-function itemsComparator(a, b) {
-  if (a.docType === b.docType) {
-    return a.name.localeCompare(b.name);
-  } else if (a.docType === mimeTypes.folder) {
-    return -1;
-  } else {
-    return 1;
-  }
-}
+const itemsComparator = (a, b) => (a.docType === b.docType) ? a.name.localeCompare(b.name) : (a.docType === mimeTypes.folder ? -1 : 1);
 
 function toFileTree(files) {
   const nodes = [];
@@ -17,31 +9,25 @@ function toFileTree(files) {
     const filename = path.pop();
     const file = {
       name: filename,
-      docType: "text",
+      docType: mimeTypes.txt,
       relativePath: path,
       ...f
     };
-    if (path.length > 0) {
-      let parent = nodes;
-      let level = 0;
-      path.filter(s => s !== filename).forEach(segment => {
-        let foundNode = parent?.find(item => item.name === segment && item.docType === mimeTypes.folder);
-        if (!foundNode) {
-          foundNode = {
-            name: segment,
-            docType: mimeTypes.folder,
-            children: [],
-            isExpanded: true,
-          }
-          parent.push(foundNode);
+    let parent = nodes;
+    path.filter(s => s !== filename).forEach(segment => {
+      let foundNode = parent?.find(item => item.name === segment && item.docType === mimeTypes.folder);
+      if (!foundNode) {
+        foundNode = {
+          name: segment,
+          docType: mimeTypes.folder,
+          children: [],
+          isExpanded: true,
         }
-        level++;
-        parent = foundNode.children;
-      });
-      parent.push(file);
-    } else {
-      nodes.push(file);
-    }
+        parent.push(foundNode);
+      }
+      parent = foundNode.children.sort(itemsComparator);
+    });
+    parent.push(file);
   });
   return nodes.sort(itemsComparator);
 }
