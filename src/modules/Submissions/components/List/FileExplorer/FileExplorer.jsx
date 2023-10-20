@@ -13,9 +13,10 @@ import mimeTypes from 'const/mimeTypes';
 import URI from 'urijs';
 import { detectLanguageByExtension, detectMimeTypeByExtension } from 'services/Utils';
 import MediaViewer from 'components/MediaViewer';
-import { toFileTree } from "./utils";
+import { toFileTree, findNodeByPath } from "./utils";
 
 import './style.scss';
+import cloneDeep from 'lodash/cloneDeep';
 
 function FileBrowser(props) {
   const {
@@ -50,7 +51,8 @@ function FileBrowser(props) {
   const isFlat = fileTreeData.children.find(entry => entry.docType === mimeTypes.folder) === undefined;
   const isSummaryDisplaced = permissions?.remove || (!permissions?.remove && !isFlat);
   const classesDownload = new BEMHelper('button')({ modifiers: ['rounded', 'success'], extra: className });
-  const url = links.downloadResults(submission?.id);
+  const url = links.downloadResults(submission);
+  const downloadLink = links.downloadFile(submission, selectedFile?.path);
 
   return (
     <div {...classes({ extra: className })}>
@@ -91,7 +93,7 @@ function FileBrowser(props) {
               language={selectedFile.language}
               mimeType={selectedFile.mimeType}
               data={selectedFile.content}
-              // downloadLink={downloadLink}
+              downloadLink={downloadLink}
               name={selectedFile.name}
               title={selectedFile.title}
               createdAt={selectedFile.createdAt}
@@ -175,6 +177,13 @@ class FileBrowserComponent extends Component {
     )
   }
 
+  toggleFolder(node, expand) {
+    const files = cloneDeep(this.state.files);
+    const toggledNode =  findNodeByPath(files, node);
+    toggledNode.isExpanded = expand;
+    this.setState({files});
+  }
+
   render() {
     return FileBrowser({
       fileTreeData: {
@@ -182,7 +191,7 @@ class FileBrowserComponent extends Component {
       },
       selectedFile: this.state.selectedFile,
       selectedFilePath: this.state.selectedFile?.path,
-      submission: this.state.submission,
+      submission: this.props.params.submissionId,
       isLoading: this.state.isLoadingFile,
       // some hardcode
       toolbarOpts: {
@@ -197,7 +206,8 @@ class FileBrowserComponent extends Component {
       },
       openFile: (elem) => {
         this.openFile(elem);
-      }
+      },
+      toggleFolder: (node, state) => this.toggleFolder(node.path, state),
     });
   }
 }

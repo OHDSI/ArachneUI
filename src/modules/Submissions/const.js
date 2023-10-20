@@ -33,6 +33,7 @@ const apiPaths = {
 
 const links = {
   downloadResults: id => `/api/v1/analysis/${id}/results`,
+  downloadFile: (id, path) => `/api/v1/analysis/${id}/results/list/${path}`,
 };
 
 const imgs = {

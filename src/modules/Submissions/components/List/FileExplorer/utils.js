@@ -14,6 +14,7 @@ function toFileTree(files) {
       ...f
     };
     let parent = nodes;
+    let parentPath = "";
     path.filter(s => s !== filename).forEach(segment => {
       let foundNode = parent?.find(item => item.name === segment && item.docType === mimeTypes.folder);
       if (!foundNode) {
@@ -21,15 +22,28 @@ function toFileTree(files) {
           name: segment,
           docType: mimeTypes.folder,
           children: [],
-          isExpanded: true,
+          isExpanded: false,
+          path: parentPath + "/" + segment,
         }
         parent.push(foundNode);
       }
       parent = foundNode.children.sort(itemsComparator);
+      parentPath = foundNode.path;
     });
     parent.push(file);
   });
   return nodes.sort(itemsComparator);
 }
 
-export {toFileTree};
+function findNodeByPath(files, path) {
+  const folders = path.split("/").filter(p => p !== "");
+  let parent = files;
+  let found = null;
+  folders.forEach(seg => {
+    found = parent.find(item => item.name === seg && item.docType === mimeTypes.folder);
+    parent = found.children;
+  });
+  return found;
+}
+
+export {toFileTree, findNodeByPath};
