@@ -33,12 +33,12 @@ function toFileTree(files) {
             children: [],
             isExpanded: true,
           }
-          nodes.push(foundNode);
+          parent.push(foundNode);
         }
         level++;
-        parent = level > 1 ? foundNode.children : foundNode;
+        parent = foundNode.children;
       });
-      parent.children.push(file);
+      parent.push(file);
     } else {
       nodes.push(file);
     }
