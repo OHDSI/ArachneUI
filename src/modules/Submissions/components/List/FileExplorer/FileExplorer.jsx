@@ -156,7 +156,7 @@ class FileBrowserComponent extends Component {
     // there is no separate endpoint to request submission details
     Api.sendRequest('GET', apiPaths.submissionList({ query: { size: 100000 } }), null, function (res) {
       that.setState({
-        submission: res.content.find(item => item.id === id),
+        submission: res.content.find(item => item.id == id),
       })
     });
 
@@ -179,9 +179,9 @@ class FileBrowserComponent extends Component {
 
   toggleFolder(node, expand) {
     const files = cloneDeep(this.state.files);
-    const toggledNode =  findNodeByPath(files, node);
+    const toggledNode = findNodeByPath(files, node);
     toggledNode.isExpanded = expand;
-    this.setState({files});
+    this.setState({ files });
   }
 
   render() {
