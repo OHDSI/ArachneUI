@@ -25,7 +25,7 @@ import { connect } from 'react-redux';
 import actions from 'modules/Vocabulary/actions';
 import { change as reduxFormChange, reduxForm, reset, SubmissionError } from 'redux-form';
 import {ModalUtils} from 'arachne-ui-components';
-import { cdmVersions, forms, modal } from 'modules/Vocabulary/const';
+import { cdmVersions, vocabularyVersion, forms, modal } from 'modules/Vocabulary/const';
 import { get } from 'lodash';
 import selectors from 'modules/Vocabulary/components/List/components/Results/selectors';
 import presenter, { IModalDispatchProps, IModalProps, IModalStateProps } from './presenter';
@@ -55,13 +55,15 @@ function mapStateToProps(state: any): IModalStateProps {
   const isOpened = get(state, `modal.${modal.download}.isOpened`, false);
   const isLoading = get(state, 'vocabulary.download.isSaving', false)
     || get(state, 'vocabulary.notifications.isSaving', false);
-
+  const isDelta = get(state, "form.bundle.values.delta",false);
 	return {
     selectedVocabs,
     selectedVocabIds,
     isOpened,
+    isDelta,
     initialValues: {
       cdmVersion: cdmVersions[cdmVersions.length - 1].value,
+      vocabularyVersion: vocabularyVersion[0].value,
     },
     isLoading,
   };
@@ -92,11 +94,14 @@ function mergeProps(
         dispatchProps.close();
       }
     },
-    download: ({bundleName, cdmVersion, notify}) => {
+    download: ({bundleName, cdmVersion, vocabularyVersion, delta, deltaVersion, notify}) => {
       let downloadVocabsAction = dispatchProps.requestDownload({
         cdmVersion: cdmVersion,
         ids: stateProps.selectedVocabIds.join(','),
         name: bundleName,
+        vocabularyVersion: vocabularyVersion,
+        delta: delta,
+        deltaVersion: deltaVersion
       });
 
       if (notify) {

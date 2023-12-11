@@ -62,6 +62,25 @@
       margin-left: 1rem;
     }
 
+    &__delta-name {
+      padding: 0.5rem 2rem;
+      display: flex;
+    }
+
+    &__vocabulary-version-select {
+      width: 27rem;
+    }
+
+    &__delta-checkbox {
+      margin-left: 1rem;
+      margin-right: 1rem;
+    }
+
+    &__delta-version-select {
+      width: 27rem;
+    }
+
+
     &__errors {
       padding: 1rem 2rem 0;
       text-align: center;

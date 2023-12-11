@@ -24,7 +24,7 @@ import * as React from 'react';
 import BEMHelper from 'services/BemHelper';
 import { Modal, ListItem, Button, Select, Checkbox, LoadingPanel } from 'arachne-ui-components';
 import { DownloadParams } from 'modules/Vocabulary/actions/download';
-import { cdmVersions } from 'modules/Vocabulary/const';
+import { cdmVersions, vocabularyVersion } from 'modules/Vocabulary/const';
 import { Field } from 'redux-form';
 
 require('./style.scss');
@@ -39,6 +39,7 @@ interface IModalStateProps {
 	selectedVocabs: Array<IVocab>;
 	selectedVocabIds: Array<number>;
 	isOpened: boolean;
+	isDelta: boolean;
 	initialValues: {
 		[key: string]: any;
 	};
@@ -89,6 +90,39 @@ function cdmVersionSelect(props: IReduxFieldProps) {
    />);
 }
 
+function VocabularyVersion(props: IReduxFieldProps) {
+	const { options, input } = props;
+	return (<Select
+		className={options.className}
+		options={vocabularyVersion}
+		value={input.value}
+		onChange={input.onChange}
+	/>);
+}
+
+function Delta(props: IReduxFieldProps) {
+	const { options, input } = props;
+
+	return (<Checkbox
+		className={options.className}
+		isChecked={input.value === true}
+		onChange={input.onChange}
+		label='Delta from:'
+	/>);
+}
+
+function DeltaVersion(props: IReduxFieldProps) {
+	const { options, input} = props;
+
+	return (<Select
+		className={options.className}
+		options={vocabularyVersion}
+		value={input.value}
+		onChange={input.onChange}
+		disabled={options.isDisabled}
+	/>);
+}
+
 function Notify(props: IReduxFieldProps) {
 	const { options, input } = props;
 	return (<Checkbox
@@ -108,10 +142,12 @@ function ModalConfirmDownload(props: IModalProps) {
     handleSubmit,
     error,
     isLoading,
+	isDelta
   } = props;
+  console.log(props);
   const classes = BEMHelper('confirm-download');
 
-  return (
+	return (
     <Modal modal={modal} title='Download summary' mods={['no-padding']}>
 	    <form onSubmit={handleSubmit(download)}>
 	    	<div {...classes()}>
@@ -125,6 +161,23 @@ function ModalConfirmDownload(props: IModalProps) {
 			        name='cdmVersion'
 			      />
 	    		</div>
+				<div {...classes('delta-name')}>
+					<Field
+						component={VocabularyVersion}
+						options={{...classes('vocabulary-version-select')}}
+						name='vocabularyVersion'
+					/>
+					<Field
+						component={Delta}
+						options={{...classes('delta-checkbox')}}
+						name='delta'
+					/>
+					<Field
+						component={DeltaVersion}
+						options={{...classes('delta-version-select'), isDisabled: !isDelta}}
+						name='deltaVersion'
+					/>
+				</div>
 		      {selectedVocabs && selectedVocabs.map((voc: IVocab, index: number) =>
 		      	<ListItem key={index}>
 		      		{voc.name}

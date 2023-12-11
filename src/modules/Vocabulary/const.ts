@@ -72,6 +72,26 @@ const cdmVersions = [
   },
 ];
 
+// TODO DEV: Dev, we're supposed to retrieve this data from the server AVD-13.
+const vocabularyVersion = [
+  {
+    label: 'v20231017(current)',
+    value: '20231017',
+  },
+  {
+    label: 'v20230831',
+    value: '20230831',
+  },
+  {
+    label: 'v20230531',
+    value: '20230531',
+  },
+  {
+    label: 'v20230123',
+    value: '20230123',
+  },
+];
+
 const bundleStatuses: { [key: string]: string } = keyMirror({
   PENDING: null,
   READY: null,
@@ -83,6 +103,7 @@ export {
   actionTypes,
   apiPaths,
   cdmVersions,
+  vocabularyVersion,
   forms,
   modal,
   paths,

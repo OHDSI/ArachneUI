@@ -23,13 +23,16 @@
 import { ohdsiApi } from 'services/Api';
 import services from '../apiServices';
 
-import { actionTypes, apiPaths } from 'modules/Vocabulary/const';
+import {actionTypes, apiPaths, vocabularyVersion} from 'modules/Vocabulary/const';
 import { IAppAction } from 'actions';
 
 type DownloadParams = {
-	cdmVersion: string;
-	ids: string;
+  cdmVersion: string;
+  ids: string;
   name: string;
+  vocabularyVersion: string,
+  delta: boolean,
+  deltaVersion: string,
 };
 
 function toggleVocabsList(value: boolean): IAppAction<{ allChecked: boolean }> {
