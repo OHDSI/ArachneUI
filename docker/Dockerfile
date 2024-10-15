@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM ubuntu:groovy-20210325
 USER root
 RUN apt-get update && apt-get install curl -y
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
