@@ -32,7 +32,7 @@
     "autoprefixer": "^6.7.6",
     "clamp-js": "^0.7.0",
     "classnames": "^2.2.5",
-    "codemirror": "^5.22.0",
+    "codemirror": "^5.65.18",
     "comma-separated-values": "^3.6.4",
     "compression": "^1.6.0",
     "d3": "^4.10.0",
